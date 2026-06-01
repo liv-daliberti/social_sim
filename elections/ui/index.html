@@ -238,6 +238,10 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
   <div id="bar-legend">
     <div class="leg-item"><div class="leg-sw leg-cpt"></div><span>CPT conditional (this run)</span></div>
     <div class="leg-item"><div class="leg-sw leg-emp"></div><span>Empirical marginal (1k runs)</span></div>
+    <div class="leg-item" style="border-left:1px solid var(--border);padding-left:9px">
+      <span style="font-size:10px;font-weight:700;color:#fbbf24">%</span>
+      <span style="margin-left:3px">edge = causal influence (TVD)</span>
+    </div>
   </div>
 </div>
 
@@ -299,7 +303,7 @@ let animEpoch  = 0;
 let isAnimating = false;
 
 // ── Layout constants ──────────────────────────────────────────────────────────
-const NODE_W = 220, NODE_H = 140, HDR_H = 20, ROW_H = 37;
+const NODE_W = 220, NODE_H = 162, HDR_H = 20, ROW_H = 42;
 // Full-width bar: left-pad=7, right-pad=7 → bar fills the whole node body
 const BAR_X = 7, BAR_W = 206, BAR_H1 = 10, BAR_H2 = 6, BAR_GAP = 3;
 
@@ -450,12 +454,40 @@ function renderDAG(){
   mg.append("feMergeNode").attr("in","blur");
   mg.append("feMergeNode").attr("in","SourceGraphic");
 
-  svg.append("g").attr("id","edge-layer")
-    .selectAll("path").data(DAG_EDGES).join("path")
+  const edgeLayer=svg.append("g").attr("id","edge-layer");
+  edgeLayer.selectAll("path").data(DAG_EDGES).join("path")
     .attr("id",d=>`edge-${d[0]}-${d[1]}`)
-    .attr("fill","none").attr("stroke","#334155").attr("stroke-width",1.5)
+    .attr("fill","none").attr("stroke","#334155")
+    .attr("stroke-width",d=>{
+      const sc=(structure.edge_influence||{})[`${d[0]}-${d[1]}`]||0;
+      return 1.5+sc*6;
+    })
+    .attr("stroke-opacity",d=>{
+      const sc=(structure.edge_influence||{})[`${d[0]}-${d[1]}`]||0;
+      return 0.35+sc*1.0;
+    })
     .attr("marker-end","url(#arr)")
     .attr("d",d=>edgePath(gx(d[0]),gy(d[0]),gx(d[1]),gy(d[1])));
+
+  // ── Edge influence labels (midpoint of each bezier) ────────────────────
+  const inf=structure.edge_influence||{};
+  DAG_EDGES.forEach(([src,dst])=>{
+    const sc=inf[`${src}-${dst}`]||0;
+    if(sc<0.02) return;   // skip edges with no direct CPT dependency
+    const pct=Math.round(sc*100);
+    const lx=(gx(src)+gx(dst))/2, ly=(gy(src)+gy(dst))/2;
+    const pill=edgeLayer.append("g").attr("class","edge-inf-label")
+      .attr("transform",`translate(${lx},${ly})`);
+    pill.append("title").text(`${src}→${dst} causal influence: ${pct}% (avg TVD across parent states)`);
+    pill.append("rect")
+      .attr("x",-14).attr("y",-8).attr("width",28).attr("height",13)
+      .attr("rx",4).attr("fill","#0f172a").attr("stroke","#334155").attr("stroke-width",1);
+    pill.append("text")
+      .attr("text-anchor","middle").attr("dy","0.35em")
+      .attr("font-size",8).attr("font-weight",700)
+      .attr("fill",pct>=30?"#fbbf24":pct>=15?"#94a3b8":"#475569")
+      .text(`${pct}%`);
+  });
 
   const nodeG=svg.append("g").attr("id","node-layer");
   const gSel=nodeG.selectAll(".dag-group")
@@ -673,8 +705,10 @@ function animateEdgeParticles(fromGroups, result, epoch){
       if(t<1) requestAnimationFrame(step);
       else{
         pGrp.transition().duration(180).attr("opacity",0).on("end",()=>pGrp.remove());
+        const baseW=1.5+((structure.edge_influence||{})[`${src}-${tgt}`]||0)*6;
+        const baseOp=0.35+((structure.edge_influence||{})[`${src}-${tgt}`]||0)*1.0;
         d3.select(`#edge-${src}-${tgt}`).transition().duration(700)
-          .attr("stroke","#475569").attr("stroke-width",2).attr("marker-end","url(#arr)");
+          .attr("stroke","#334155").attr("stroke-width",baseW).attr("stroke-opacity",baseOp).attr("marker-end","url(#arr)");
         done();
       }
     }
@@ -705,7 +739,7 @@ async function animateRun(result){
     }
   });
   DAG_EDGES.forEach(([s,t])=>{
-    d3.select(`#edge-${s}-${t}`).attr("stroke","#1e293b").attr("stroke-width",1.5).attr("marker-end","url(#arr)");
+    d3.select(`#edge-${s}-${t}`).attr("stroke","#1e293b").attr("stroke-width",1).attr("stroke-opacity",0.2).attr("marker-end","url(#arr)");
   });
 
   for(const grps of ANIM_PHASES){

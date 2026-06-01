@@ -759,6 +759,50 @@ def _build_narrative(states: Dict, probs: Dict, surprise: Dict,
     return phases
 
 
+def _compute_edge_influence(src_group: str, dst_group: str) -> float:
+    """
+    Causal influence of src_group on dst_group: average TVD between child
+    distributions when a parent in src_group takes different values.
+    TVD in [0,1]: 0 = parent irrelevant, 1 = parent fully determines child.
+    """
+    scores = []
+    for dst_nid, dst_node in NODES.items():
+        if dst_node["group"] != dst_group or "prior" in dst_node:
+            continue
+        relevant_parents = [p for p in dst_node.get("parents", [])
+                            if NODES[p]["group"] == src_group]
+        for par_nid in relevant_parents:
+            # Bucket CPT rows by this parent's value
+            by_val: Dict[str, list] = {}
+            for rule in dst_node["cpt"]:
+                val = rule["cond"].get(par_nid)
+                if val is not None:
+                    by_val.setdefault(val, []).append(rule["dist"])
+            if len(by_val) < 2:
+                continue
+            # Average the distributions within each bucket
+            avg: Dict[str, Dict[str, float]] = {}
+            for val, dists in by_val.items():
+                merged: Dict[str, float] = {}
+                for d in dists:
+                    for s, p in d.items():
+                        merged[s] = merged.get(s, 0.0) + p
+                n = len(dists)
+                avg[val] = {s: p / n for s, p in merged.items()}
+            # Pairwise TVD across buckets
+            vals = list(avg.keys())
+            tvds = []
+            for i in range(len(vals)):
+                for j in range(i + 1, len(vals)):
+                    d1, d2 = avg[vals[i]], avg[vals[j]]
+                    all_s = set(d1) | set(d2)
+                    tvd = 0.5 * sum(abs(d1.get(s, 0.0) - d2.get(s, 0.0)) for s in all_s)
+                    tvds.append(tvd)
+            if tvds:
+                scores.append(sum(tvds) / len(tvds))
+    return round(sum(scores) / len(scores), 3) if scores else 0.0
+
+
 def get_structure() -> dict:
     """Return DAG structure for the UI (nodes + edges + group info)."""
     nodes_out = {}
@@ -770,9 +814,14 @@ def get_structure() -> dict:
             "parents": n.get("parents", []),
             "desc":    n.get("desc", ""),
         }
+    edge_influence = {
+        f"{src}-{dst}": _compute_edge_influence(src, dst)
+        for src, dst in DAG_EDGES
+    }
     return {
-        "nodes":      nodes_out,
-        "edges":      DAG_EDGES,
-        "groups":     GROUP_INFO,
-        "topo_order": TOPO_ORDER,
+        "nodes":          nodes_out,
+        "edges":          DAG_EDGES,
+        "groups":         GROUP_INFO,
+        "topo_order":     TOPO_ORDER,
+        "edge_influence": edge_influence,
     }
