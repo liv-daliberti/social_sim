@@ -697,10 +697,30 @@ def get_structure() -> dict:
         else:
             entry["cpt"] = n.get("cpt", [])
         nodes_out[nid] = entry
-    edge_influence = {
+    # Raw TVD per edge
+    raw: Dict[str, float] = {
         f"{src}-{dst}": _compute_edge_influence(src, dst)
         for src, dst in DAG_EDGES
     }
+
+    # Normalize per destination: incoming edges to each group sum to 1.0.
+    # Edges with 0 raw TVD stay at 0 (no direct CPT dependency detected).
+    # Non-zero incoming edges are re-scaled so their shares sum to 1.
+    incoming: Dict[str, list] = {}
+    for src, dst in DAG_EDGES:
+        incoming.setdefault(dst, []).append(src)
+
+    edge_influence: Dict[str, float] = {}
+    for dst, srcs in incoming.items():
+        pos = {src: raw[f"{src}-{dst}"] for src in srcs if raw[f"{src}-{dst}"] > 0}
+        total = sum(pos.values())
+        for src in srcs:
+            key = f"{src}-{dst}"
+            if total > 0 and raw[key] > 0:
+                edge_influence[key] = round(raw[key] / total, 3)
+            else:
+                edge_influence[key] = 0.0  # no direct CPT dependency
+
     return {
         "nodes":          nodes_out,
         "edges":          DAG_EDGES,

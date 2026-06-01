@@ -556,8 +556,11 @@ function getInfluence(src,dst){const k=`${src}-${dst}`;return customInfluence[k]
 // ── Init ──────────────────────────────────────────────────────────────────────
 async function init(){
   const r=await fetch("/api/structure"); structure=await r.json();
-  // Seed all edges at 50% visual influence — user can adjust per-edge with the slider
-  DAG_EDGES.forEach(([src,dst])=>{ customInfluence[`${src}-${dst}`]=0.5; });
+  // Seed from backend's normalized values (per-destination they sum to 100%)
+  DAG_EDGES.forEach(([src,dst])=>{
+    const k=`${src}-${dst}`;
+    customInfluence[k]=structure.edge_influence[k]??0;
+  });
   buildOverridesUI(); renderDAG();
 }
 
@@ -1387,10 +1390,40 @@ document.addEventListener("keydown", e=>{
 });
 
 // ── Edge influence editor ─────────────────────────────────────────────────────
+// Returns all edges sharing the same destination as (src,dst)
+function siblingEdges(src,dst){
+  return DAG_EDGES.filter(([s,d])=>d===dst&&s!==src);
+}
+
+function applyEdgeInfluence(src,dst,v){
+  const pct=Math.round(v*100);
+  d3.select(`#edge-${src}-${dst}`)
+    .attr("stroke-width",1.5+v*6)
+    .attr("stroke-opacity",Math.min(1,0.35+v*1.0));
+  const label=d3.select(`#inf-label-${src}-${dst}`);
+  if(pct<2){label.style("display","none");}
+  else{
+    label.style("display",null);
+    label.select("text").attr("fill",pct>=30?"#fbbf24":pct>=15?"#94a3b8":"#475569").text(`${pct}%`);
+    label.select("title").text(`${src}→${dst}: ${pct}% — click to adjust`);
+  }
+}
+
+function renderSiblingBreakdown(src,dst,container){
+  const sibs=siblingEdges(src,dst);
+  if(!sibs.length) return;
+  const parts=sibs.map(([s,d])=>{
+    const pct=Math.round(getInfluence(s,d)*100);
+    return `<span style="color:#64748b">${s}→${d}:</span> <strong style="color:#94a3b8">${pct}%</strong>`;
+  }).join(' &ensp; ');
+  container.innerHTML=`<div style="font-size:9px;margin-top:5px;line-height:1.6">${parts}</div>`;
+}
+
 function openInfluenceEditor(src,dst,pillEl){
   document.getElementById("inf-editor")?.remove();
   const key=`${src}-${dst}`;
   const cur=Math.round(getInfluence(src,dst)*100);
+  const sibs=siblingEdges(src,dst);
   const rect=pillEl.getBoundingClientRect();
 
   const ed=document.createElement("div");
@@ -1399,35 +1432,42 @@ function openInfluenceEditor(src,dst,pillEl){
   ed.style.top=`${rect.bottom+6}px`;
   ed.innerHTML=`
     <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:7px">
-      ${src} → ${dst} &nbsp;<span style="color:#475569;font-weight:400">(causal influence)</span>
+      ${src} → ${dst} &nbsp;<span style="color:#475569;font-weight:400">(causal share into ${dst})</span>
     </div>
     <div style="display:flex;align-items:center;gap:9px">
       <input type="range" min="0" max="100" value="${cur}" style="flex:1">
       <span id="inf-ed-val" style="font-size:13px;font-weight:700;color:var(--gold);min-width:36px">${cur}%</span>
     </div>
-    <div style="font-size:9px;color:#334155;margin-top:5px">drag slider · visual annotation only</div>`;
+    ${sibs.length?`<div style="font-size:9px;color:#475569;margin-top:4px">Other incoming → ${dst} auto-adjust to keep sum = 100%</div>
+    <div id="inf-ed-sibs"></div>`:''}`;
   document.body.appendChild(ed);
 
   const slider=ed.querySelector("input");
   const valEl=ed.querySelector("#inf-ed-val");
+  const sibDiv=ed.querySelector("#inf-ed-sibs");
+  if(sibDiv) renderSiblingBreakdown(src,dst,sibDiv);
+
   slider.oninput=()=>{
     const v=parseInt(slider.value)/100;
     customInfluence[key]=v;
     valEl.textContent=`${slider.value}%`;
-    // Update edge visual
-    const pct=parseInt(slider.value);
-    d3.select(`#edge-${src}-${dst}`)
-      .attr("stroke-width",1.5+v*6)
-      .attr("stroke-opacity",Math.min(1,0.35+v*1.0));
-    const label=d3.select(`#inf-label-${src}-${dst}`);
-    if(pct<2){label.style("display","none");}
-    else{
-      label.style("display",null);
-      label.select("text").attr("fill",pct>=30?"#fbbf24":pct>=15?"#94a3b8":"#475569").text(`${pct}%`);
-      label.select("title").text(`${src}→${dst}: ${pct}% — click to adjust`);
+    applyEdgeInfluence(src,dst,v);
+
+    // Redistribute remaining budget among siblings proportionally
+    if(sibs.length){
+      const sibCurrent=sibs.map(([s,d])=>({s,d,w:getInfluence(s,d)}));
+      const sibTotal=sibCurrent.reduce((sum,x)=>sum+x.w,0);
+      const budget=Math.max(0,1-v);
+      sibCurrent.forEach(({s,d,w})=>{
+        const k2=`${s}-${d}`;
+        const newV=sibTotal>0?(w/sibTotal)*budget:budget/sibs.length;
+        customInfluence[k2]=Math.round(newV*1000)/1000;
+        applyEdgeInfluence(s,d,customInfluence[k2]);
+      });
+      renderSiblingBreakdown(src,dst,sibDiv);
     }
   };
-  // Close on outside click
+
   setTimeout(()=>{
     document.addEventListener("click",function close(e){
       if(!ed.contains(e.target)){ed.remove();document.removeEventListener("click",close);}
