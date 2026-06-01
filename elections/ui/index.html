@@ -95,25 +95,33 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
 #cpt-tooltip {
   position:fixed; z-index:3000; pointer-events:none; display:none;
   background:var(--surface); border:1px solid var(--border);
-  border-radius:var(--radius); padding:0;
-  max-width:400px; max-height:460px; overflow-y:auto;
+  border-radius:var(--radius); padding:0; max-width:520px;
   box-shadow:0 8px 32px rgba(0,0,0,.7);
 }
 .cpt-grp-hdr {
-  padding:6px 12px; font-size:10px; font-weight:700;
+  padding:5px 12px; font-size:10px; font-weight:700;
   letter-spacing:.04em; text-transform:uppercase;
   border-radius:var(--radius) var(--radius) 0 0;
-  position:sticky; top:0; z-index:1;
 }
-.cpt-body { padding:10px 12px; }
-.cpt-node { margin-bottom:10px; }
-.cpt-node-hdr { font-size:11px; font-weight:700; color:var(--text); margin-bottom:1px; }
-.cpt-node-desc { font-size:10px; color:#475569; font-style:italic; margin-bottom:5px; }
-.cpt-parents-lbl { font-size:9px; color:#475569; margin-bottom:4px; text-transform:uppercase; letter-spacing:.03em; }
-.cpt-rule { margin-bottom:5px; }
-.cpt-cond { font-size:9px; color:#64748b; margin-bottom:2px; }
-.cpt-dist { font-size:10px; line-height:1.6; }
-.cpt-divider { border:none; border-top:1px solid var(--border); margin:8px 0; }
+.cpt-body { padding:8px 12px 10px; }
+.cpt-node { margin-bottom:0; }
+.cpt-node-hdr { font-size:11px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.cpt-parents-lbl { font-size:9px; color:#475569; margin-bottom:3px; }
+.cpt-divider { border:none; border-top:1px solid var(--border); margin:7px 0; }
+.cpt-table {
+  width:100%; border-collapse:collapse; font-size:9px; margin:2px 0 0;
+}
+.cpt-table th {
+  text-align:center; padding:2px 6px; color:#64748b; font-weight:600;
+  border-bottom:1px solid #334155; white-space:nowrap;
+}
+.cpt-table th:first-child { text-align:left; padding-left:0; }
+.cpt-table td {
+  padding:2px 6px; text-align:center;
+  border-bottom:1px solid #1a2540;
+}
+.cpt-table td:first-child { text-align:left; color:#64748b; padding-left:0; white-space:nowrap; }
+.cpt-table tr:last-child td { border-bottom:none; }
 
 #zoom-controls {
   position:absolute; bottom:12px; right:12px;
@@ -567,7 +575,10 @@ function renderDAG(){
   const defs=svg.append("defs");
   ["arr","arr-act"].forEach((id,i)=>{
     defs.append("marker").attr("id",id).attr("viewBox","0 -5 10 10")
-      .attr("refX",8).attr("refY",0).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto")
+      .attr("refX",8).attr("refY",0)
+      .attr("markerWidth",12).attr("markerHeight",12)
+      .attr("markerUnits","userSpaceOnUse")
+      .attr("orient","auto")
       .append("path").attr("d","M0,-5L10,0L0,5").attr("fill",i===0?"#475569":"#fbbf24");
   });
   const glow=defs.append("filter").attr("id","glow");
@@ -1300,9 +1311,11 @@ function hideCptTooltip(){
 function moveCptTooltip(event){
   const tt=document.getElementById("cpt-tooltip");
   if(tt.style.display==="none") return;
-  const x=event.clientX+16, y=event.clientY-24;
-  tt.style.left=Math.min(x, window.innerWidth-420)+"px";
-  tt.style.top=Math.max(8, Math.min(y, window.innerHeight-480))+"px";
+  const x=event.clientX+16;
+  const ttH=tt.offsetHeight, ttW=tt.offsetWidth;
+  const topY=Math.max(4, Math.min(event.clientY-24, window.innerHeight-ttH-4));
+  tt.style.left=Math.min(x, window.innerWidth-ttW-8)+"px";
+  tt.style.top=topY+"px";
 }
 
 function buildCptHtml(gid){
@@ -1315,23 +1328,35 @@ function buildCptHtml(gid){
     const node=structure.nodes[nid];
     if(!node) return;
     if(i>0) h+=`<hr class="cpt-divider">`;
-    h+=`<div class="cpt-node">`;
-    h+=`<div class="cpt-node-hdr">${nid} &middot; ${node.label}</div>`;
-    if(node.desc) h+=`<div class="cpt-node-desc">${node.desc}</div>`;
+    h+=`<div class="cpt-node"><div class="cpt-node-hdr">${nid} &middot; ${node.label}</div>`;
 
     if(node.prior){
-      h+=`<div class="cpt-parents-lbl">Unconditional prior (root node)</div>`;
-      h+=`<div class="cpt-rule"><div class="cpt-dist">${fmtDist(node.prior)}</div></div>`;
+      h+=`<div class="cpt-parents-lbl">Root node — unconditional prior</div>`;
+      h+=`<table class="cpt-table"><tbody><tr>`;
+      Object.entries(node.prior).forEach(([s,p])=>{
+        const pct=Math.round(p*100);
+        h+=`<td style="color:${stateTextColor(s)};font-weight:700">${abbrev(s)}</td><td style="color:${stateTextColor(s)}">${pct}%</td>`;
+      });
+      h+=`</tr></tbody></table>`;
     } else if(node.cpt&&node.cpt.length){
-      const parNames=node.parents.map(p=>`${p}&nbsp;<span style="color:#64748b">${structure.nodes[p]?.label||p}</span>`).join(', ');
-      h+=`<div class="cpt-parents-lbl">Parents: ${parNames}</div>`;
+      const parStr=node.parents.map(p=>`${p} (${structure.nodes[p]?.label||p})`).join(', ');
+      h+=`<div class="cpt-parents-lbl">Parents: ${parStr}</div>`;
+      h+=`<table class="cpt-table"><thead><tr><th>Conditions</th>`;
+      node.states.forEach(s=>{ h+=`<th style="color:${stateTextColor(s)}">${abbrev(s)}</th>`; });
+      h+=`</tr></thead><tbody>`;
       node.cpt.forEach(rule=>{
         const cond=Object.entries(rule.cond);
-        const condHtml=cond.length===0
-          ? `<span style="color:#334155;font-style:italic">default</span>`
-          : cond.map(([k,v])=>`<span style="color:#64748b">${k}</span> = <span style="color:#94a3b8">${v}</span>`).join(' &middot; ');
-        h+=`<div class="cpt-rule"><div class="cpt-cond">${condHtml}</div><div class="cpt-dist">${fmtDist(rule.dist)}</div></div>`;
+        const condStr=cond.length===0?'<em style="color:#334155">default</em>'
+          :cond.map(([k,v])=>`${k}=<span style="color:#94a3b8">${abbrev(v)}</span>`).join(' &middot; ');
+        h+=`<tr><td>${condStr}</td>`;
+        node.states.forEach(s=>{
+          const pct=Math.round((rule.dist[s]||0)*100);
+          const hi=pct>=50;
+          h+=`<td style="${hi?`font-weight:700;color:${stateTextColor(s)}`:''}">${pct?pct+'%':''}</td>`;
+        });
+        h+=`</tr>`;
       });
+      h+=`</tbody></table>`;
     }
     h+=`</div>`;
   });
