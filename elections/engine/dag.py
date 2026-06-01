@@ -435,26 +435,51 @@ NODES: Dict[str, Any] = {
 
 
     # ── I: Final Outcome ──────────────────────────────────────────────────────
+    # I1 is fully deterministic given (G1, G2, G3).
+    # Scoring: G1 High=+1/Normal=0/Low=-1, G2 Low=+1/Normal=0/High=-1,
+    #          G3 Blue+5=+1/Near-even=0/Red+5=-1.
+    # Score≥2→Blue landslide, 1→Blue narrow, 0→Recount, -1→Red narrow, ≤-2→Red landslide.
+    # Covers all 27 combinations (4+6+7+6+4=27).
     "I1": {
         "label": "Vote Share Category",
         "group": "I",
         "states": ["Blue landslide", "Blue narrow win", "Red narrow win", "Red landslide", "Recount/disputed"],
         "parents": ["G1", "G2", "G3"],
         "cpt": [
-            {"cond": {"G1": "High",   "G2": "Low",    "G3": "Blue +5"},  "dist": {"Blue landslide": 0.35, "Blue narrow win": 0.50, "Red narrow win": 0.10, "Red landslide": 0.02, "Recount/disputed": 0.03}},
-            {"cond": {"G1": "High",   "G2": "Normal", "G3": "Blue +5"},  "dist": {"Blue landslide": 0.20, "Blue narrow win": 0.55, "Red narrow win": 0.15, "Red landslide": 0.02, "Recount/disputed": 0.08}},
-            {"cond": {"G1": "High",   "G2": "High",   "G3": "Near-even"},"dist": {"Blue landslide": 0.07, "Blue narrow win": 0.38, "Red narrow win": 0.38, "Red landslide": 0.07, "Recount/disputed": 0.10}},
-            {"cond": {"G1": "Normal", "G2": "Normal", "G3": "Near-even"},"dist": {"Blue landslide": 0.05, "Blue narrow win": 0.35, "Red narrow win": 0.35, "Red landslide": 0.05, "Recount/disputed": 0.20}},
-            {"cond": {"G1": "Low",    "G2": "Low",    "G3": "Near-even"},"dist": {"Blue landslide": 0.03, "Blue narrow win": 0.32, "Red narrow win": 0.32, "Red landslide": 0.03, "Recount/disputed": 0.30}},
-            {"cond": {"G1": "Normal", "G2": "High",   "G3": "Red +5"},   "dist": {"Blue landslide": 0.02, "Blue narrow win": 0.15, "Red narrow win": 0.55, "Red landslide": 0.20, "Recount/disputed": 0.08}},
-            {"cond": {"G1": "Low",    "G2": "High",   "G3": "Red +5"},   "dist": {"Blue landslide": 0.02, "Blue narrow win": 0.10, "Red narrow win": 0.50, "Red landslide": 0.35, "Recount/disputed": 0.03}},
-            {"cond": {"G3": "Blue +5", "G1": "High"},                     "dist": {"Blue landslide": 0.25, "Blue narrow win": 0.52, "Red narrow win": 0.15, "Red landslide": 0.02, "Recount/disputed": 0.06}},
-            {"cond": {"G3": "Blue +5"},                                    "dist": {"Blue landslide": 0.15, "Blue narrow win": 0.50, "Red narrow win": 0.22, "Red landslide": 0.05, "Recount/disputed": 0.08}},
-            {"cond": {"G3": "Red +5",  "G2": "High"},                     "dist": {"Blue landslide": 0.02, "Blue narrow win": 0.15, "Red narrow win": 0.52, "Red landslide": 0.25, "Recount/disputed": 0.06}},
-            {"cond": {"G3": "Red +5"},                                     "dist": {"Blue landslide": 0.05, "Blue narrow win": 0.22, "Red narrow win": 0.50, "Red landslide": 0.15, "Recount/disputed": 0.08}},
-            {"cond": {},                                                    "dist": {"Blue landslide": 0.10, "Blue narrow win": 0.30, "Red narrow win": 0.30, "Red landslide": 0.10, "Recount/disputed": 0.20}},
+            # Score ≥ 2 → Blue landslide
+            {"cond": {"G1": "High",   "G2": "Low",    "G3": "Blue +5"},   "dist": {"Blue landslide": 1.0}},
+            {"cond": {"G1": "High",   "G2": "Low",    "G3": "Near-even"}, "dist": {"Blue landslide": 1.0}},
+            {"cond": {"G1": "High",   "G2": "Normal", "G3": "Blue +5"},   "dist": {"Blue landslide": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "Low",    "G3": "Blue +5"},   "dist": {"Blue landslide": 1.0}},
+            # Score = 1 → Blue narrow win
+            {"cond": {"G1": "High",   "G2": "Low",    "G3": "Red +5"},    "dist": {"Blue narrow win": 1.0}},
+            {"cond": {"G1": "High",   "G2": "Normal", "G3": "Near-even"}, "dist": {"Blue narrow win": 1.0}},
+            {"cond": {"G1": "High",   "G2": "High",   "G3": "Blue +5"},   "dist": {"Blue narrow win": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "Low",    "G3": "Near-even"}, "dist": {"Blue narrow win": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "Normal", "G3": "Blue +5"},   "dist": {"Blue narrow win": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "Low",    "G3": "Blue +5"},   "dist": {"Blue narrow win": 1.0}},
+            # Score = 0 → Recount/disputed
+            {"cond": {"G1": "High",   "G2": "Normal", "G3": "Red +5"},    "dist": {"Recount/disputed": 1.0}},
+            {"cond": {"G1": "High",   "G2": "High",   "G3": "Near-even"}, "dist": {"Recount/disputed": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "Low",    "G3": "Red +5"},    "dist": {"Recount/disputed": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "Normal", "G3": "Near-even"}, "dist": {"Recount/disputed": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "High",   "G3": "Blue +5"},   "dist": {"Recount/disputed": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "Low",    "G3": "Near-even"}, "dist": {"Recount/disputed": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "Normal", "G3": "Blue +5"},   "dist": {"Recount/disputed": 1.0}},
+            # Score = -1 → Red narrow win
+            {"cond": {"G1": "High",   "G2": "High",   "G3": "Red +5"},    "dist": {"Red narrow win": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "Normal", "G3": "Red +5"},    "dist": {"Red narrow win": 1.0}},
+            {"cond": {"G1": "Normal", "G2": "High",   "G3": "Near-even"}, "dist": {"Red narrow win": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "Low",    "G3": "Red +5"},    "dist": {"Red narrow win": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "Normal", "G3": "Near-even"}, "dist": {"Red narrow win": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "High",   "G3": "Blue +5"},   "dist": {"Red narrow win": 1.0}},
+            # Score ≤ -2 → Red landslide
+            {"cond": {"G1": "Normal", "G2": "High",   "G3": "Red +5"},    "dist": {"Red landslide": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "Normal", "G3": "Red +5"},    "dist": {"Red landslide": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "High",   "G3": "Near-even"}, "dist": {"Red landslide": 1.0}},
+            {"cond": {"G1": "Low",    "G2": "High",   "G3": "Red +5"},    "dist": {"Red landslide": 1.0}},
         ],
-        "desc": "The actual election result margin",
+        "desc": "Vote share determined by turnout + independent split",
     },
     "I2": {
         "label": "Winner",
@@ -462,14 +487,13 @@ NODES: Dict[str, Any] = {
         "states": ["Blue wins", "Red wins"],
         "parents": ["I1"],
         "cpt": [
-            # Recount/disputed in I1 resolves to one side; probability redistributed 50/50
-            {"cond": {"I1": "Blue landslide"},   "dist": {"Blue wins": 1.00, "Red wins": 0.00}},
-            {"cond": {"I1": "Blue narrow win"},  "dist": {"Blue wins": 0.95, "Red wins": 0.05}},
-            {"cond": {"I1": "Red narrow win"},   "dist": {"Blue wins": 0.05, "Red wins": 0.95}},
-            {"cond": {"I1": "Red landslide"},    "dist": {"Blue wins": 0.00, "Red wins": 1.00}},
-            {"cond": {"I1": "Recount/disputed"}, "dist": {"Blue wins": 0.50, "Red wins": 0.50}},
+            {"cond": {"I1": "Blue landslide"},   "dist": {"Blue wins": 1.0, "Red wins": 0.0}},
+            {"cond": {"I1": "Blue narrow win"},  "dist": {"Blue wins": 1.0, "Red wins": 0.0}},
+            {"cond": {"I1": "Red narrow win"},   "dist": {"Blue wins": 0.0, "Red wins": 1.0}},
+            {"cond": {"I1": "Red landslide"},    "dist": {"Blue wins": 0.0, "Red wins": 1.0}},
+            {"cond": {"I1": "Recount/disputed"}, "dist": {"Blue wins": 0.5, "Red wins": 0.5}},
         ],
-        "desc": "Declared election winner after all processes complete",
+        "desc": "Declared winner — deterministic except for a genuine recount",
     },
 }
 

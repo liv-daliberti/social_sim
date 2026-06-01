@@ -423,15 +423,18 @@ let animEpoch  = 0;
 let isAnimating = false;
 
 // ── Layout constants ──────────────────────────────────────────────────────────
-const NODE_W = 220, NODE_H = 162, HDR_H = 20, ROW_H = 42;
+const NODE_W = 220, HDR_H = 20, ROW_H = 38;
 // Full-width bar: left-pad=7, right-pad=7 → bar fills the whole node body
 const BAR_X = 7, BAR_W = 206, BAR_H1 = 10, BAR_H2 = 6, BAR_GAP = 3;
 
 const GROUP_DISPLAY = {
-  A:["A1","A2","A3"], B:["B1","B2","B3"], C:["C1","C2","C3"],
+  A:["A1","A2","A3"], B:["B1","B2","B3"], C:["C1","C2","C3","C4"],
   D:["D1","D2","D3"], E:["E3","E2","E4"],
   G:["G1","G2","G3"], I:["I1","I2"],
 };
+
+// Variable box height — groups with more nodes are taller
+function grpH(gid){ return HDR_H+3+(GROUP_DISPLAY[gid]||[]).length*ROW_H; }
 
 const GROUP_POS = {
   A:{cx:.06,cy:.50}, B:{cx:.22,cy:.26}, C:{cx:.31,cy:.73},
@@ -597,7 +600,7 @@ function renderDAG(){
     .attr("stroke-width",d=>1.5+getInfluence(d[0],d[1])*6)
     .attr("stroke-opacity",d=>Math.min(1,0.35+getInfluence(d[0],d[1])*1.0))
     .attr("marker-end","url(#arr)")
-    .attr("d",d=>edgePath(gx(d[0]),gy(d[0]),gx(d[1]),gy(d[1])));
+    .attr("d",d=>edgePath(d[0],d[1]));
 
   // ── Edge influence labels ─────────────────────────────────────────────
   DAG_EDGES.forEach(([src,dst])=>{
@@ -630,11 +633,11 @@ function renderDAG(){
       const t=d3.zoomTransform(svg.node());
       nodePos[gid].cx+=event.dx/t.k;
       nodePos[gid].cy+=event.dy/t.k;
-      d3.select(this).attr("transform",`translate(${nodePos[gid].cx-NODE_W/2},${nodePos[gid].cy-NODE_H/2})`);
+      d3.select(this).attr("transform",`translate(${nodePos[gid].cx-NODE_W/2},${nodePos[gid].cy-grpH(gid)/2})`);
       // Update connected edges + influence labels
       DAG_EDGES.forEach(([s,t2])=>{
         if(s!==gid&&t2!==gid) return;
-        d3.select(`#edge-${s}-${t2}`).attr("d",edgePath(gx(s),gy(s),gx(t2),gy(t2)));
+        d3.select(`#edge-${s}-${t2}`).attr("d",edgePath(s,t2));
         d3.select(`#inf-label-${s}-${t2}`)
           .attr("transform",`translate(${(gx(s)+gx(t2))/2},${(gy(s)+gy(t2))/2})`);
       });
@@ -644,7 +647,8 @@ function renderDAG(){
         const _cx=nodePos[gid].cx, _cy=nodePos[gid].cy;
         const _nids=GROUP_DISPLAY[gid]||[];
         const _FH=38+_nids.length*17+8;
-        const _fy=_cy-NODE_H/2-_FH-10>8?_cy-NODE_H/2-_FH-10:_cy+NODE_H/2+10;
+        const _bh=grpH(gid);
+        const _fy=_cy-_bh/2-_FH-10>8?_cy-_bh/2-_FH-10:_cy+_bh/2+10;
         const _fx=Math.max(4,Math.min(W-190-4,_cx-95));
         _fw.attr("transform",`translate(${_fx},${_fy})`);
       }
@@ -657,7 +661,7 @@ function renderDAG(){
   const gSel=nodeG.selectAll(".dag-group")
     .data(Object.keys(GROUP_POS)).join("g")
     .attr("class","dag-group").attr("id",d=>`grp-${d}`)
-    .attr("transform",d=>`translate(${gx(d)-NODE_W/2},${gy(d)-NODE_H/2})`)
+    .attr("transform",d=>`translate(${gx(d)-NODE_W/2},${gy(d)-grpH(d)/2})`)
     .style("cursor","grab")
     .call(drag)
     .on("mouseenter",function(event,gid){ showCptTooltip(event,gid); })
@@ -665,7 +669,7 @@ function renderDAG(){
     .on("mousemove",function(event){ moveCptTooltip(event); });
 
   gSel.append("rect").attr("class","grp-bg")
-    .attr("width",NODE_W).attr("height",NODE_H).attr("rx",8)
+    .attr("width",NODE_W).attr("height",d=>grpH(d)).attr("rx",8)
     .attr("fill",d=>groups[d].color).attr("stroke",d=>groups[d].text).attr("stroke-width",2);
 
   // Header strip
@@ -676,7 +680,7 @@ function renderDAG(){
     .attr("fill",d=>groups[d].text).text(d=>`${d}. ${groups[d].name}`);
 
   gSel.append("text").attr("class","grp-hint")
-    .attr("x",NODE_W/2).attr("y",NODE_H/2+14).attr("text-anchor","middle")
+    .attr("x",NODE_W/2).attr("y",d=>grpH(d)/2+14).attr("text-anchor","middle")
     .attr("font-size",9).attr("fill","#334155").text("pending…");
 
   gSel.append("g").attr("class","bars-layer");
@@ -696,11 +700,12 @@ function renderDAG(){
   window._dagZoom = dagZoom;   // expose for zoom control buttons
 }
 
-function edgePath(x1,y1,x2,y2){
+function edgePath(g1,g2){
+  const x1=gx(g1),y1=gy(g1),x2=gx(g2),y2=gy(g2);
   const dx=x2-x1,dy=y2-y1,a=Math.atan2(dy,dx);
-  const hw=NODE_W/2,hh=NODE_H/2;
-  const sx=x1+hw*Math.cos(a),sy=y1+hh*Math.sin(a);
-  const tx=x2-hw*Math.cos(a),ty=y2-hh*Math.sin(a);
+  const hw=NODE_W/2;
+  const sx=x1+hw*Math.cos(a), sy=y1+(grpH(g1)/2)*Math.sin(a);
+  const tx=x2-hw*Math.cos(a), ty=y2-(grpH(g2)/2)*Math.sin(a);
   const mx=(sx+tx)/2;
   return`M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`;
 }
@@ -805,7 +810,7 @@ function animateGroupFlip(gid, result, epoch){
     const cx=gx(gid),cy=gy(gid);
     const FW=190,FPAD=10,rowH=17;
     const FH=38+nodeIds.length*rowH+8;
-    const fy=cy-NODE_H/2-FH-10>8?cy-NODE_H/2-FH-10:cy+NODE_H/2+10;
+    const fy=cy-grpH(gid)/2-FH-10>8?cy-grpH(gid)/2-FH-10:cy+grpH(gid)/2+10;
     const fx=Math.max(4,Math.min(W-FW-4,cx-FW/2));
 
     d3.select(`#grp-${gid} .grp-bg`).attr("stroke","#fbbf24").attr("stroke-width",3.5);
@@ -911,7 +916,7 @@ async function animateRun(result){
     // If no previous bars (first run), show a placeholder
     if(g.select(".bars-layer").selectAll("*").size()===0){
       g.select(".bars-layer").append("text").attr("class","grp-hint")
-        .attr("x",NODE_W/2).attr("y",NODE_H/2+14).attr("text-anchor","middle")
+        .attr("x",NODE_W/2).attr("y",grpH(gid)/2+14).attr("text-anchor","middle")
         .attr("font-size",9).attr("fill","#334155").text("…");
     }
   });
@@ -954,7 +959,7 @@ function showQuickFlips(result){
     const nodeIds=GROUP_DISPLAY[gid]||[];
     const cx=gx(gid),cy=gy(gid);
     const FH=38+nodeIds.length*rowH+8;
-    const fy=cy-NODE_H/2-FH-10>8?cy-NODE_H/2-FH-10:cy+NODE_H/2+10;
+    const fy=cy-grpH(gid)/2-FH-10>8?cy-grpH(gid)/2-FH-10:cy+grpH(gid)/2+10;
     const fx=Math.max(4,Math.min(W-FW-4,cx-FW/2));
     let bl=0,rd=0;
     nodeIds.forEach(nid=>{const c=pClass((result.states||{})[nid]||"");if(c==="bl")bl++;else if(c==="rd")rd++;});
