@@ -253,6 +253,63 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
 .hoff-bar-fill.cpt  { background:var(--blue); }
 .hoff-bar-fill.emp  { background:var(--green); }
 
+/* ── CPT editor modal ── */
+#cpt-editor-overlay {
+  position:fixed; inset:0; z-index:4000; background:rgba(0,0,0,.78);
+  display:none; align-items:flex-start; justify-content:center; padding:28px 20px;
+}
+#cpt-editor-overlay.open { display:flex; }
+#cpt-editor-modal {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  width:min(97vw,980px); max-height:calc(100vh - 56px);
+  display:flex; flex-direction:column; box-shadow:0 24px 64px rgba(0,0,0,.9);
+  overflow:hidden;
+}
+.ed-header {
+  padding:11px 16px; display:flex; align-items:center; gap:10px;
+  border-bottom:1px solid var(--border); flex-shrink:0;
+  background:var(--surface2);
+}
+.ed-title { font-size:14px; font-weight:700; flex:1; color:var(--text); }
+.ed-tabs {
+  display:flex; gap:4px; padding:8px 16px; border-bottom:1px solid var(--border);
+  flex-shrink:0; flex-wrap:wrap;
+}
+.ed-tab {
+  background:var(--surface2); border:1px solid var(--border); border-radius:6px;
+  padding:5px 13px; font-size:11px; cursor:pointer; color:var(--muted);
+  transition:background .12s;
+}
+.ed-tab:hover { background:var(--border); color:var(--text); }
+.ed-tab.active { background:var(--blue-d); border-color:var(--blue); color:#fff; }
+.ed-body { flex:1; overflow-y:auto; padding:16px 20px; }
+.ed-table { width:100%; border-collapse:collapse; font-size:11px; margin-top:8px; }
+.ed-table th {
+  text-align:center; padding:5px 8px; background:var(--surface2);
+  border:1px solid var(--border); font-weight:600; color:var(--muted); white-space:nowrap;
+}
+.ed-table th:first-child { text-align:left; min-width:160px; }
+.ed-table td { padding:3px 6px; border:1px solid #1e293b; text-align:center; }
+.ed-table td:first-child { text-align:left; color:#64748b; font-size:10px; white-space:nowrap; }
+.ed-table input[type=number] {
+  width:68px; background:#0f172a; border:1px solid var(--border); border-radius:4px;
+  color:var(--text); padding:3px 6px; font-size:11px; text-align:center;
+}
+.ed-table input[type=number]:focus { outline:none; border-color:var(--blue); }
+.ed-sum { font-size:10px; font-weight:700; padding:3px 8px; white-space:nowrap; }
+.ed-sum.ok  { color:#86efac; }
+.ed-sum.bad { color:#fca5a5; }
+.ed-influence-note {
+  font-size:10px; color:#fbbf24; margin-bottom:10px; padding:6px 10px;
+  background:#78350f22; border:1px solid #fbbf2444; border-radius:6px; display:none;
+}
+.ed-influence-note.show { display:block; }
+.ed-footer {
+  padding:11px 16px; display:flex; gap:8px; justify-content:flex-end;
+  border-top:1px solid var(--border); flex-shrink:0; align-items:center;
+}
+.ed-footer-note { font-size:10px; color:#475569; flex:1; }
+
 /* ── Math tab ── */
 .math-section { margin-bottom:16px; }
 .math-hdr {
@@ -409,6 +466,22 @@ Setting α = 1%:
   </div>
 </div>
 
+<div id="cpt-editor-overlay">
+  <div id="cpt-editor-modal">
+    <div class="ed-header">
+      <div class="ed-title" id="ed-title">CPT Editor</div>
+      <button class="sec" style="font-size:11px;padding:4px 10px" onclick="closeCptEditor()">✕ Close</button>
+    </div>
+    <div class="ed-tabs" id="ed-tabs"></div>
+    <div class="ed-body" id="ed-body"></div>
+    <div class="ed-footer">
+      <div class="ed-footer-note" id="ed-note"></div>
+      <button class="sec" onclick="resetEditorNode()">Reset node</button>
+      <button onclick="applyCptChanges()">✓ Apply to simulation</button>
+    </div>
+  </div>
+</div>
+
 <div id="cpt-tooltip"></div>
 
 <script>
@@ -423,9 +496,9 @@ let animEpoch  = 0;
 let isAnimating = false;
 
 // ── Layout constants ──────────────────────────────────────────────────────────
-const NODE_W = 220, HDR_H = 20, ROW_H = 38;
-// Full-width bar: left-pad=7, right-pad=7 → bar fills the whole node body
-const BAR_X = 7, BAR_W = 206, BAR_H1 = 10, BAR_H2 = 6, BAR_GAP = 3;
+const NODE_W = 275, HDR_H = 24, ROW_H = 50;
+// Full-width bar: left-pad=8, right-pad=8 → bar fills the whole node body
+const BAR_X = 8, BAR_W = 259, BAR_H1 = 12, BAR_H2 = 6, BAR_GAP = 3;
 
 const GROUP_DISPLAY = {
   A:["A1","A2","A3"], B:["B1","B2","B3"], C:["C1","C2","C3","C4"],
@@ -551,6 +624,9 @@ const svg=d3.select("#dag-svg");
 let W=0,H=0;
 let nodePos={};         // gid → {cx,cy} current pixel centre (mutated by drag)
 let customInfluence={}; // gid-gid → user-overridden TVD score
+let customCPT={};       // nid → modified CPT array (sent to backend on apply)
+let editorGid=null;     // group currently open in CPT editor
+let editorNid=null;     // node currently shown in CPT editor
 function svgSize(){const el=document.getElementById("dag-svg");W=el.clientWidth||960;H=el.clientHeight||520;svg.attr("viewBox",`0 0 ${W} ${H}`);}
 function gx(g){return nodePos[g]?.cx??GROUP_POS[g].cx*W;}
 function gy(g){return nodePos[g]?.cy??GROUP_POS[g].cy*H;}
@@ -585,7 +661,7 @@ function renderDAG(){
       .attr("markerWidth",12).attr("markerHeight",12)
       .attr("markerUnits","userSpaceOnUse")
       .attr("orient","auto")
-      .append("path").attr("d","M0,-5L10,0L0,5").attr("fill",i===0?"#475569":"#fbbf24");
+      .append("path").attr("d","M0,-5L10,0L0,5").attr("fill",i===0?"#94a3b8":"#fbbf24");
   });
   const glow=defs.append("filter").attr("id","glow");
   glow.append("feGaussianBlur").attr("stdDeviation","3").attr("result","blur");
@@ -597,29 +673,28 @@ function renderDAG(){
   edgeLayer.selectAll("path").data(DAG_EDGES).join("path")
     .attr("id",d=>`edge-${d[0]}-${d[1]}`)
     .attr("fill","none").attr("stroke","#334155")
-    .attr("stroke-width",d=>1.5+getInfluence(d[0],d[1])*6)
-    .attr("stroke-opacity",d=>Math.min(1,0.35+getInfluence(d[0],d[1])*1.0))
+    .attr("stroke-width",d=>Math.max(1.5, 1.5+getInfluence(d[0],d[1])*6))
+    .attr("stroke-opacity",d=>Math.max(0.45, Math.min(1,0.35+getInfluence(d[0],d[1])*1.1)))
     .attr("marker-end","url(#arr)")
     .attr("d",d=>edgePath(d[0],d[1]));
 
   // ── Edge influence labels ─────────────────────────────────────────────
   DAG_EDGES.forEach(([src,dst])=>{
     const sc=getInfluence(src,dst);
-    if(sc<0.02) return;
     const pct=Math.round(sc*100);
     const lx=(gx(src)+gx(dst))/2, ly=(gy(src)+gy(dst))/2;
     const pill=edgeLayer.append("g").attr("class","edge-inf-label")
       .attr("id",`inf-label-${src}-${dst}`)
       .attr("transform",`translate(${lx},${ly})`)
       .style("cursor","pointer");
-    pill.append("title").text(`${src}→${dst}: ${pct}% — click to adjust`);
+    pill.append("title").text(`${src}→${dst}: ${pct}% causal share — click to adjust`);
     pill.append("rect")
       .attr("x",-14).attr("y",-8).attr("width",28).attr("height",13)
       .attr("rx",4).attr("fill","#0f172a").attr("stroke","#334155").attr("stroke-width",1);
     pill.append("text").attr("text-anchor","middle").attr("dy","0.35em")
       .attr("font-size",8).attr("font-weight",700)
-      .attr("fill",pct>=30?"#fbbf24":pct>=15?"#94a3b8":"#475569")
-      .text(`${pct}%`);
+      .attr("fill",pct>=30?"#fbbf24":pct>=15?"#94a3b8":pct>0?"#475569":"#2d3a4a")
+      .text(pct>0?`${pct}%`:"—");
     pill.on("click",function(event){event.stopPropagation();openInfluenceEditor(src,dst,this);});
   });
 
@@ -655,7 +730,7 @@ function renderDAG(){
     })
     .on("end",function(event,gid){
       d3.select(this).style("cursor","grab");
-      if(!this._moved) selectGroup(gid);
+      if(!this._moved) openCptEditor(gid);
     });
 
   const gSel=nodeG.selectAll(".dag-group")
@@ -676,8 +751,8 @@ function renderDAG(){
   gSel.append("rect").attr("width",NODE_W).attr("height",HDR_H).attr("rx",8).attr("fill","rgba(0,0,0,.2)");
   gSel.append("rect").attr("y",8).attr("width",NODE_W).attr("height",HDR_H-8).attr("fill","rgba(0,0,0,.2)");
   gSel.append("text").attr("class","grp-title")
-    .attr("x",7).attr("y",14).attr("font-size",12).attr("font-weight",700)
-    .attr("fill",d=>groups[d].text).text(d=>`${d}. ${groups[d].name}`);
+    .attr("x",9).attr("y",16).attr("font-size",13).attr("font-weight",700)
+    .attr("fill",d=>groups[d].text).text(d=>`${d}. ${groups[d].name} ✎`);
 
   gSel.append("text").attr("class","grp-hint")
     .attr("x",NODE_W/2).attr("y",d=>grpH(d)/2+14).attr("text-anchor","middle")
@@ -745,19 +820,19 @@ function revealGroup(gid, result){
 
     // ── Top line: label (left) + STATE NAME bold (right) ──────────────────
     bg.append("text")
-      .attr("x",BAR_X).attr("y",rowY+11)
-      .attr("font-size",9).attr("fill","#64748b")
+      .attr("x",BAR_X).attr("y",rowY+13)
+      .attr("font-size",11).attr("fill","#64748b")
       .text(shortLbl(node.label));
 
     bg.append("text")
-      .attr("x",NODE_W-BAR_X).attr("y",rowY+12)
+      .attr("x",NODE_W-BAR_X).attr("y",rowY+14)
       .attr("text-anchor","end")
-      .attr("font-size",13).attr("font-weight",700)
+      .attr("font-size",15).attr("font-weight",700)
       .attr("fill",stateTextColor(sampled))
       .text("► "+stateName(sampled));
 
-    // All-state probability distribution (replaces single p=XX%)
-    const distT=bg.append("text").attr("x",BAR_X).attr("y",rowY+22).attr("font-size",8);
+    // All-state probability distribution
+    const distT=bg.append("text").attr("x",BAR_X).attr("y",rowY+26).attr("font-size",9);
     let _added=0;
     node.states.forEach(s=>{
       const p=Math.round((dist[s]||0)*100);
@@ -772,11 +847,11 @@ function revealGroup(gid, result){
     });
 
     // ── Full-width probability bar ─────────────────────────────────────────
-    drawBar(bg,node.states,dist,sampled,BAR_X,rowY+25,BAR_W,BAR_H1,false);
+    drawBar(bg,node.states,dist,sampled,BAR_X,rowY+29,BAR_W,BAR_H1,false);
 
     // ── Empirical bar (after batch) ────────────────────────────────────────
     if(batchNodes&&batchNodes[nid]){
-      const empY=rowY+25+BAR_H1+BAR_GAP;
+      const empY=rowY+29+BAR_H1+BAR_GAP;
       drawBar(bg,node.states,batchNodes[nid],null,BAR_X,empY,BAR_W,BAR_H2,true);
     }
 
@@ -1382,6 +1457,176 @@ function fmtDist(dist){
   }).filter(Boolean).join("&ensp;");
 }
 
+// ── CPT Editor ────────────────────────────────────────────────────────────────
+function openCptEditor(gid){
+  if(!structure) return;
+  editorGid=gid;
+  const grp=structure.groups[gid];
+  const nodeIds=GROUP_DISPLAY[gid]||[];
+  document.getElementById("ed-title").textContent=`${gid}. ${grp.name} — Conditional Probability Editor`;
+  // Build node tabs
+  const tabs=document.getElementById("ed-tabs");
+  tabs.innerHTML="";
+  nodeIds.forEach((nid,i)=>{
+    const node=structure.nodes[nid];
+    const btn=document.createElement("button");
+    btn.className="ed-tab"+(i===0?" active":"");
+    btn.textContent=`${nid} · ${node.label}`;
+    btn.onclick=()=>{ document.querySelectorAll(".ed-tab").forEach(t=>t.classList.remove("active")); btn.classList.add("active"); renderEditorNode(nid); };
+    tabs.appendChild(btn);
+  });
+  if(nodeIds.length) renderEditorNode(nodeIds[0]);
+  document.getElementById("ed-note").textContent="";
+  document.getElementById("cpt-editor-overlay").classList.add("open");
+}
+
+function closeCptEditor(){
+  document.getElementById("cpt-editor-overlay").classList.remove("open");
+  editorGid=null; editorNid=null;
+}
+
+function renderEditorNode(nid){
+  editorNid=nid;
+  const node=structure.nodes[nid];
+  const body=document.getElementById("ed-body");
+  if(!node||!body) return;
+  const cpt=customCPT[nid]||node.cpt||[];
+  let h=`<div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">${nid} · ${node.label}</div>`;
+  if(node.desc) h+=`<div style="font-size:11px;color:#475569;font-style:italic;margin-bottom:10px">${node.desc}</div>`;
+  const noteId=`ed-inf-note-${nid}`;
+  h+=`<div class="ed-influence-note" id="${noteId}"></div>`;
+  if(node.prior){
+    const prior=customCPT[nid+"_prior"]||node.prior;
+    h+=`<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Root node — unconditional prior (no parents)</div>`;
+    h+=`<table class="ed-table"><thead><tr>`;
+    node.states.forEach(s=>{ h+=`<th style="color:${stateTextColor(s)}">${abbrev(s)}</th>`; });
+    h+=`<th>Sum</th></tr></thead><tbody><tr>`;
+    node.states.forEach(s=>{
+      const v=(prior[s]||0).toFixed(3);
+      h+=`<td><input type="number" min="0" max="1" step="0.005" value="${v}" data-nid="${nid}" data-row="-1" data-state="${s}" oninput="onCptInput(this)"></td>`;
+    });
+    const sum=Object.values(prior).reduce((a,b)=>a+b,0);
+    h+=`<td class="ed-sum ${Math.abs(sum-1)<0.02?'ok':'bad'}" id="edsum-${nid}-p">${Math.round(sum*100)}%</td>`;
+    h+=`</tr></tbody></table>`;
+  } else if(cpt.length){
+    const parStr=node.parents.map(p=>`${p} (${structure.nodes[p]?.label||p})`).join(', ');
+    h+=`<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Parents: ${parStr}</div>`;
+    h+=`<table class="ed-table"><thead><tr><th>Conditions</th>`;
+    node.states.forEach(s=>{ h+=`<th style="color:${stateTextColor(s)}">${abbrev(s)}</th>`; });
+    h+=`<th>Sum</th><th></th></tr></thead><tbody>`;
+    cpt.forEach((rule,ri)=>{
+      const cond=Object.entries(rule.cond);
+      const condStr=cond.length===0?'<em style="color:#475569">default</em>'
+        :cond.map(([k,v])=>`${k}=<b style="color:#94a3b8">${abbrev(v)}</b>`).join(' · ');
+      const rowSum=node.states.reduce((s,st)=>s+(rule.dist[st]||0),0);
+      h+=`<tr><td>${condStr}</td>`;
+      node.states.forEach(st=>{
+        const v=(rule.dist[st]||0).toFixed(3);
+        h+=`<td><input type="number" min="0" max="1" step="0.005" value="${v}" data-nid="${nid}" data-row="${ri}" data-state="${st}" oninput="onCptInput(this)"></td>`;
+      });
+      h+=`<td class="ed-sum ${Math.abs(rowSum-1)<0.02?'ok':'bad'}" id="edsum-${nid}-${ri}">${Math.round(rowSum*100)}%</td>`;
+      h+=`<td><button class="sec" style="font-size:9px;padding:2px 6px" onclick="normalizeRow('${nid}',${ri})">= 100%</button></td>`;
+      h+=`</tr>`;
+    });
+    h+=`</tbody></table>`;
+  } else {
+    h+=`<div style="color:var(--muted)">No CPT available for this node.</div>`;
+  }
+  body.innerHTML=h;
+}
+
+function onCptInput(inp){
+  const nid=inp.dataset.nid, ri=parseInt(inp.dataset.row), st=inp.dataset.state;
+  const val=Math.max(0,Math.min(1,parseFloat(inp.value)||0));
+  const node=structure.nodes[nid];
+  if(ri===-1){
+    if(!customCPT[nid+"_prior"]) customCPT[nid+"_prior"]={...node.prior};
+    customCPT[nid+"_prior"][st]=val;
+    const sum=Object.values(customCPT[nid+"_prior"]).reduce((a,b)=>a+b,0);
+    const el=document.getElementById(`edsum-${nid}-p`);
+    if(el){ el.textContent=`${Math.round(sum*100)}%`; el.className=`ed-sum ${Math.abs(sum-1)<0.02?'ok':'bad'}`; }
+  } else {
+    if(!customCPT[nid]) customCPT[nid]=(node.cpt||[]).map(r=>({...r,dist:{...r.dist}}));
+    customCPT[nid][ri].dist[st]=val;
+    const sum=node.states.reduce((s,x)=>s+(customCPT[nid][ri].dist[x]||0),0);
+    const el=document.getElementById(`edsum-${nid}-${ri}`);
+    if(el){ el.textContent=`${Math.round(sum*100)}%`; el.className=`ed-sum ${Math.abs(sum-1)<0.02?'ok':'bad'}`; }
+  }
+}
+
+function normalizeRow(nid,ri){
+  if(!customCPT[nid]) customCPT[nid]=(structure.nodes[nid].cpt||[]).map(r=>({...r,dist:{...r.dist}}));
+  const dist=customCPT[nid][ri].dist;
+  const node=structure.nodes[nid];
+  const total=node.states.reduce((s,st)=>s+(dist[st]||0),0);
+  if(total>0) node.states.forEach(st=>{ dist[st]=(dist[st]||0)/total; });
+  renderEditorNode(nid);
+}
+
+function resetEditorNode(){
+  if(!editorNid) return;
+  delete customCPT[editorNid]; delete customCPT[editorNid+"_prior"];
+  renderEditorNode(editorNid);
+  document.getElementById("ed-note").textContent="Node reset to original.";
+  setTimeout(()=>{ const n=document.getElementById("ed-note"); if(n) n.textContent=""; },2000);
+}
+
+async function applyCptChanges(){
+  const updates={};
+  Object.entries(customCPT).forEach(([k,v])=>{ if(!k.endsWith("_prior")&&Array.isArray(v)) updates[k]=v; });
+  if(!Object.keys(updates).length){
+    document.getElementById("ed-note").textContent="No changes to apply."; return;
+  }
+  try{
+    const r=await fetch("/api/update_cpt",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({updates})});
+    const d=await r.json();
+    // Sync structure.nodes so CPT tooltip reflects edits
+    Object.entries(updates).forEach(([nid,cpt])=>{ if(structure.nodes[nid]) structure.nodes[nid].cpt=cpt; });
+    document.getElementById("ed-note").textContent=`✓ Applied ${d.updated.length} node(s) to simulation.`;
+    setTimeout(()=>{ const n=document.getElementById("ed-note"); if(n) n.textContent=""; },3000);
+  }catch(e){ document.getElementById("ed-note").textContent="Error applying changes."; }
+}
+
+// When the causal slider moves for edge src→dst, interpolate CPT rows for
+// nodes in dst that have parents in src. influence=1 = original, 0 = uniform.
+function applyInfluenceToCpt(srcGroup,dstGroup,influence){
+  const nodeIds=GROUP_DISPLAY[dstGroup]||[];
+  nodeIds.forEach(nid=>{
+    const node=structure.nodes[nid];
+    if(!node||!node.cpt||!node.cpt.length) return;
+    const srcParents=(node.parents||[]).filter(p=>structure.nodes[p]?.group===srcGroup);
+    if(!srcParents.length) return;
+    const origCpt=node.cpt; // always interpolate from the original
+    const newCpt=origCpt.map(r=>({...r,dist:{...r.dist}}));
+    srcParents.forEach(parNid=>{
+      const byVal={};
+      origCpt.forEach((rule,i)=>{ const val=rule.cond[parNid]; if(val!==undefined)(byVal[val]=byVal[val]||[]).push(i); });
+      if(Object.keys(byVal).length<2) return;
+      const allIdx=Object.values(byVal).flat();
+      const meanDist={};
+      node.states.forEach(s=>{meanDist[s]=0;});
+      allIdx.forEach(i=>{ node.states.forEach(s=>{ meanDist[s]+=(origCpt[i].dist[s]||0)/allIdx.length; }); });
+      allIdx.forEach(i=>{
+        node.states.forEach(s=>{
+          newCpt[i].dist[s]=Math.max(0,(meanDist[s]||0)+influence*((origCpt[i].dist[s]||0)-(meanDist[s]||0)));
+        });
+        const total=node.states.reduce((sum,s)=>sum+(newCpt[i].dist[s]||0),0);
+        if(total>0) node.states.forEach(s=>{ newCpt[i].dist[s]=(newCpt[i].dist[s]||0)/total; });
+      });
+    });
+    customCPT[nid]=newCpt;
+  });
+  // Refresh editor if open for dstGroup
+  if(editorGid===dstGroup&&editorNid){
+    renderEditorNode(editorNid);
+    const note=document.getElementById(`ed-inf-note-${editorNid}`);
+    if(note){
+      note.textContent=`CPT rows updated — ${srcGroup}→${dstGroup} influence set to ${Math.round(influence*100)}%`;
+      note.classList.add("show");
+    }
+  }
+}
+
 // ── Zoom controls ─────────────────────────────────────────────────────────────
 function dagZoomIn()    { svg.transition().duration(250).call(window._dagZoom.scaleBy, 1.5); }
 function dagZoomOut()   { svg.transition().duration(250).call(window._dagZoom.scaleBy, 1/1.5); }
@@ -1457,6 +1702,8 @@ function openInfluenceEditor(src,dst,pillEl){
     customInfluence[key]=v;
     valEl.textContent=`${slider.value}%`;
     applyEdgeInfluence(src,dst,v);
+    // Update CPT values for dst nodes that have src parents
+    applyInfluenceToCpt(src,dst,v);
 
     // Redistribute remaining budget among siblings proportionally
     if(sibs.length){

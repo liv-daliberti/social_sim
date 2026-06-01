@@ -128,6 +128,18 @@ def batch():
     })
 
 
+@app.route("/api/update_cpt", methods=["POST"])
+def update_cpt():
+    """Receive {updates: {nid: cpt_list}} and patch NODES in memory."""
+    body = request.get_json() or {}
+    changed = []
+    for nid, cpt in body.get("updates", {}).items():
+        if nid in NODES and isinstance(cpt, list):
+            NODES[nid]["cpt"] = cpt
+            changed.append(nid)
+    return jsonify({"ok": True, "updated": changed})
+
+
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
