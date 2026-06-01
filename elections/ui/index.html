@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue-ian vs Red-ian Election Simulator</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #0f172a; --surface: #1e293b; --surface2: #273449;
+  --border:  #334155; --text:    #e2e8f0; --muted:    #94a3b8;
+  --blue:    #3b82f6; --blue-d:  #1e3a6e; --red:    #ef4444; --red-d:  #7f1d1d;
+  --neutral: #64748b; --gold:   #fbbf24;  --green:  #22c55e;
+  --radius: 8px;
+}
+body {
+  background:var(--bg); color:var(--text);
+  font-family:'Inter',system-ui,sans-serif; font-size:13px;
+  height:100vh; display:flex; flex-direction:column; overflow:hidden;
+}
+
+/* ── Header ── */
+#header {
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:7px 12px; display:flex; align-items:center; gap:10px;
+  flex-shrink:0; flex-wrap:wrap;
+}
+#header h1 { font-size:14px; font-weight:700; white-space:nowrap; }
+#header h1 .bl { color:var(--blue); } #header h1 .rd { color:var(--red); }
+#controls { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+
+button {
+  background:var(--blue-d); color:#fff; border:1px solid var(--blue);
+  border-radius:var(--radius); padding:5px 11px; font-size:12px;
+  font-weight:600; cursor:pointer; transition:background .15s; white-space:nowrap;
+}
+button:hover { background:var(--blue); }
+button:disabled { background:var(--border); border-color:var(--border); cursor:default; }
+button.sec { background:var(--surface2); border-color:var(--border); color:var(--muted); }
+button.sec:hover { background:var(--border); color:var(--text); }
+button.warn { background:#78350f; border-color:var(--gold); color:var(--gold); }
+button.warn:hover { background:#92400e; }
+
+input[type=number] {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius); color:var(--text); padding:4px 7px;
+  font-size:12px; width:64px;
+}
+input[type=number]:focus { outline:none; border-color:var(--blue); }
+label { color:var(--muted); font-size:11px; white-space:nowrap; }
+
+#run-badge {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius); padding:3px 9px; font-size:11px; color:var(--muted);
+}
+#bar-legend {
+  display:flex; align-items:center; gap:9px; font-size:10px; color:var(--muted);
+  padding:0 4px; border-left:1px solid var(--border); margin-left:2px;
+}
+.leg-item { display:flex; align-items:center; gap:4px; }
+.leg-sw { width:18px; height:6px; border-radius:2px; }
+.leg-cpt { background:var(--blue); } .leg-emp { background:var(--green); opacity:.7; }
+
+#winner-banner {
+  padding:5px 14px; border-radius:var(--radius);
+  font-weight:700; font-size:13px; display:none;
+  letter-spacing:0.02em;
+}
+#winner-banner.blue { background:#1e3a8a; color:#bfdbfe; border:1px solid #3b82f6; }
+#winner-banner.red  { background:#7f1d1d; color:#fecaca; border:1px solid #ef4444; }
+
+/* ── Layout ── */
+#main { display:flex; flex:1; overflow:hidden; }
+#dag-panel { flex:1; overflow:hidden; position:relative; }
+#dag-svg { width:100%; height:100%; display:block; cursor:grab; }
+#dag-svg:active { cursor:grabbing; }
+
+#zoom-controls {
+  position:absolute; bottom:12px; right:12px;
+  display:flex; flex-direction:column; gap:4px;
+}
+#zoom-controls button {
+  width:32px; height:32px; padding:0;
+  font-size:16px; font-weight:700;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:6px; color:var(--muted);
+  display:flex; align-items:center; justify-content:center;
+  line-height:1;
+}
+#zoom-controls button:hover { background:var(--border); color:var(--text); }
+
+/* ── Right panel ── */
+#right-panel {
+  width:310px; display:flex; flex-direction:column;
+  border-left:1px solid var(--border); overflow:hidden; flex-shrink:0;
+}
+#tabs { display:flex; border-bottom:1px solid var(--border); flex-shrink:0; }
+.tab-btn {
+  flex:1; background:transparent; border:none; border-radius:0;
+  color:var(--muted); padding:8px 3px; font-size:12px; font-weight:500;
+  cursor:pointer; border-bottom:2px solid transparent;
+}
+.tab-btn:hover { background:var(--surface2); color:var(--text); }
+.tab-btn.active { color:var(--blue); border-bottom-color:var(--blue); background:transparent; }
+.tab-pane { display:none; flex:1; overflow-y:auto; padding:10px; }
+.tab-pane.active { display:block; }
+
+/* ── Narrative ── */
+.phase-block { margin-bottom:8px; border-radius:var(--radius); overflow:hidden; border:1px solid var(--border); }
+.phase-hdr {
+  padding:7px 10px; font-size:12px; font-weight:700; letter-spacing:.04em;
+  text-transform:uppercase; cursor:pointer; user-select:none;
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--surface2);
+}
+.phase-hdr.hl { background:linear-gradient(90deg,#1e3a5f,#1e293b); }
+.phase-hdr .ph-title { color:var(--muted); }
+.phase-hdr.hl .ph-title { color:#93c5fd; }
+.phase-chev { color:var(--muted); font-size:9px; }
+.phase-body { display:none; } .phase-body.open { display:block; }
+
+.n-item { border-top:1px solid var(--border); }
+.n-item:hover { background:var(--surface2); }
+.n-row { display:flex; align-items:baseline; padding:7px 10px 3px; gap:7px; }
+.n-lbl  { color:var(--muted); font-size:13px; flex:0 0 116px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.n-state { flex:1; font-weight:700; font-size:15px; }
+.n-state.bl { color:#93c5fd; } .n-state.rd { color:#fca5a5; } .n-state.nt { color:var(--text); }
+.n-prob { font-size:12px; color:var(--muted); white-space:nowrap; }
+.n-surp { font-size:11px; padding:2px 5px; border-radius:3px; white-space:nowrap; }
+.surp-lo { background:#14532d22; color:#86efac; }
+.surp-md { background:#78350f22; color:#fcd34d; }
+.surp-hi { background:#7f1d1d22; color:#fca5a5; }
+
+.n-dist { padding:4px 10px 6px; }
+.n-dist-bar { display:flex; height:10px; border-radius:3px; overflow:hidden; background:var(--surface2); }
+.n-seg { height:100%; opacity:.3; transition:width .3s; }
+.n-seg.sel { opacity:1; }
+.n-seg.bl { background:var(--blue); } .n-seg.rd { background:var(--red); } .n-seg.nt { background:var(--neutral); }
+.n-dist-labels { display:flex; margin-top:4px; }
+.n-dl { font-size:10px; color:var(--muted); text-align:center; overflow:hidden; white-space:nowrap; }
+.n-dl.sel { color:var(--text); font-weight:600; }
+.n-parents { padding:0 10px 6px; font-size:12px; color:#64748b; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* ── Categorical slider ── */
+.ov-group { margin-bottom:10px; padding:8px; background:var(--surface2); border-radius:var(--radius); border:1px solid var(--border); }
+.ov-group h4 { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px; }
+.slider-node { margin-bottom:10px; }
+.slider-node-label { font-size:11px; color:var(--text); margin-bottom:3px; }
+.cat-slider {
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:4px; border-radius:2px;
+  background:var(--border); outline:none; cursor:pointer;
+}
+.cat-slider::-webkit-slider-thumb {
+  -webkit-appearance:none; width:14px; height:14px; border-radius:50%;
+  background:var(--blue); cursor:pointer; border:2px solid #0f172a;
+  box-shadow:0 0 0 2px var(--blue);
+}
+.cat-slider::-moz-range-thumb {
+  width:14px; height:14px; border-radius:50%;
+  background:var(--blue); cursor:pointer; border:2px solid #0f172a;
+}
+.cat-slider.free::-webkit-slider-thumb { background:var(--border); box-shadow:0 0 0 2px var(--border); }
+.cat-slider.free::-moz-range-thumb { background:var(--border); }
+.slider-ticks { display:flex; margin-top:4px; }
+.slider-tick {
+  flex:1; font-size:8px; color:var(--muted); text-align:center;
+  cursor:pointer; padding:1px 0; border-radius:3px;
+  overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+}
+.slider-tick:hover { color:var(--text); }
+.slider-tick.active { color:var(--text); font-weight:700; }
+.slider-tick:first-child { color:#475569; flex:0.7; }
+.slider-tick:first-child.active { color:var(--muted); }
+
+/* ── Batch / Hoeffding tab ── */
+.bar-row { margin-bottom:6px; }
+.bar-lbl { display:flex; justify-content:space-between; font-size:11px; margin-bottom:2px; }
+.bar-track { height:9px; background:var(--surface2); border-radius:4px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:4px; transition:width .4s; }
+.bar-fill.blue { background:var(--blue); } .bar-fill.red { background:var(--red); } .bar-fill.grey { background:var(--neutral); }
+
+.hoff-section { margin-top:12px; }
+.hoff-header {
+  font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;
+  letter-spacing:.04em; margin-bottom:6px; display:flex; align-items:center; gap:6px;
+}
+.hoff-summary {
+  font-size:10px; padding:5px 8px; border-radius:var(--radius);
+  margin-bottom:8px; border:1px solid;
+}
+.hoff-summary.all-good { background:#14532d22; border-color:#22c55e44; color:#86efac; }
+.hoff-summary.some-out { background:#78350f22; border-color:#fbbf2444; color:#fcd34d; }
+
+.hoff-node { margin-bottom:8px; }
+.hoff-node-title { font-size:10px; font-weight:600; color:var(--text); margin-bottom:3px; }
+.hoff-state-row {
+  display:flex; align-items:center; gap:5px; margin-bottom:2px; font-size:9px;
+}
+.hoff-state-name { flex:0 0 60px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hoff-bars { flex:1; display:flex; flex-direction:column; gap:2px; }
+.hoff-bar-row { display:flex; align-items:center; gap:4px; }
+.hoff-bar-track { flex:1; height:5px; background:#1e293b; border-radius:2px; overflow:hidden; }
+.hoff-bar-fill  { height:100%; border-radius:2px; }
+.hoff-bar-fill.cpt  { background:var(--blue); }
+.hoff-bar-fill.emp  { background:var(--green); }
+.hoff-pct { flex:0 0 26px; text-align:right; color:var(--muted); }
+.hoff-badge {
+  flex:0 0 22px; font-size:9px; text-align:center; border-radius:3px; padding:0 2px;
+}
+.hoff-badge.ok  { background:#14532d44; color:#86efac; }
+.hoff-badge.out { background:#7f1d1d44; color:#fca5a5; }
+.hoff-zone-line {
+  font-size:8px; color:#334155; margin-top:2px; padding-left:64px;
+}
+
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:var(--surface); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+#empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--muted); gap:6px; text-align:center; padding:20px; }
+#empty-state .arr { font-size:22px; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1><span class="bl">Blue-ian</span> vs <span class="rd">Red-ian</span> Election Simulator</h1>
+  <div id="controls">
+    <button id="run-btn" onclick="runSimulation()">&#9654; Run Election</button>
+    <button id="skip-btn" class="warn" onclick="skipAnimation()" style="display:none">&#9654;&#9654; Skip</button>
+    <button class="sec" id="batch-btn" onclick="runBatch()">Batch ×1000</button>
+    <label>Seed <input type="number" id="seed-input" placeholder="random"></label>
+    <div id="run-badge">Runs: 0</div>
+    <div id="winner-banner"></div>
+  </div>
+  <div id="bar-legend">
+    <div class="leg-item"><div class="leg-sw leg-cpt"></div><span>CPT conditional (this run)</span></div>
+    <div class="leg-item"><div class="leg-sw leg-emp"></div><span>Empirical marginal (1k runs)</span></div>
+  </div>
+</div>
+
+<div id="main">
+  <div id="dag-panel">
+    <svg id="dag-svg"></svg>
+    <div id="zoom-controls">
+      <button onclick="dagZoomIn()" title="Zoom in (= key)">+</button>
+      <button onclick="dagZoomReset()" title="Reset zoom (0 key)">⟳</button>
+      <button onclick="dagZoomOut()" title="Zoom out (- key)">−</button>
+      <div style="font-size:9px;color:#475569;text-align:center;line-height:1.4;margin-top:2px">scroll<br>or drag</div>
+    </div>
+  </div>
+
+  <div id="right-panel">
+    <div id="tabs">
+      <button class="tab-btn active" onclick="switchTab('narrative',this)">What Went Down</button>
+      <button class="tab-btn" onclick="switchTab('controls',this)">Fix Parameters</button>
+      <button class="tab-btn" onclick="switchTab('batch',this)">Batch & Hoeffding</button>
+    </div>
+
+    <div id="tab-narrative" class="tab-pane active">
+      <div id="empty-state">
+        <div class="arr">&#8593;</div>
+        <div>Click <strong>Run Election</strong></div>
+        <div style="font-size:10px;margin-top:4px">Watch each node flip in causal order.<br>Run <strong>Batch ×1000</strong> to add empirical bars<br>and Hoeffding validation.</div>
+      </div>
+      <div id="narrative-content" style="display:none"></div>
+    </div>
+
+    <div id="tab-controls" class="tab-pane">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted)">Sliders are free by default — drag to lock a node.</div>
+          <div id="ov-hint" style="font-size:10px;color:#475569;margin-top:1px">Drag to ← free to randomize a node.</div>
+        </div>
+        <button class="sec" style="font-size:10px;padding:4px 8px;white-space:nowrap" onclick="clearOverrides()">Free all</button>
+      </div>
+      <div id="ov-container"></div>
+    </div>
+
+    <div id="tab-batch" class="tab-pane">
+      <div id="batch-results">
+        <p style="color:var(--muted);font-size:10px">Click <strong>Batch ×1000</strong> to run a Monte-Carlo sweep. Results appear here with Hoeffding validation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Global state ──────────────────────────────────────────────────────────────
+let structure  = null;
+let lastResult = null;
+let batchNodes  = null;   // per-node empirical marginals  (what actually happened)
+let batchCptAvg = null;   // per-node average CPT = model-predicted marginals  (Hoeffding reference)
+let runCount   = 0;
+let overrides  = {};
+let animEpoch  = 0;
+let isAnimating = false;
+
+// ── Layout constants ──────────────────────────────────────────────────────────
+const NODE_W = 220, NODE_H = 140, HDR_H = 20, ROW_H = 37;
+// Full-width bar: left-pad=7, right-pad=7 → bar fills the whole node body
+const BAR_X = 7, BAR_W = 206, BAR_H1 = 10, BAR_H2 = 6, BAR_GAP = 3;
+
+const GROUP_DISPLAY = {
+  A:["A1","A2","A3"], B:["B1","B2","B3"], C:["C1","C2","C3"],
+  D:["D1","D2","D3"], E:["E3","E2","E4"], F:["F1","F2","F3"],
+  G:["G1","G2","G3"], H:["H1","H2"],      I:["I1","I2"],
+};
+
+const GROUP_POS = {
+  A:{cx:.06,cy:.50}, B:{cx:.22,cy:.26}, C:{cx:.31,cy:.73},
+  E:{cx:.46,cy:.17}, D:{cx:.55,cy:.55}, F:{cx:.71,cy:.22},
+  G:{cx:.71,cy:.76}, H:{cx:.86,cy:.36}, I:{cx:.94,cy:.66},
+};
+
+const DAG_EDGES = [
+  ["A","B"],["A","C"],["A","D"],["A","G"],
+  ["B","D"],["B","G"],
+  ["C","E"],["C","D"],["C","G"],
+  ["E","D"],["E","F"],
+  ["D","F"],["D","G"],["D","H"],
+  ["F","H"],["G","I"],
+];
+
+const ANIM_PHASES = [["A"],["B","C"],["E"],["D"],["F","G"],["H"],["I"]];
+
+// ── Colour helpers ────────────────────────────────────────────────────────────
+const BLUE_STATES = new Set([
+  "Blue wins","Blue landslide","Blue narrow win","Blue lead","Blue surge",
+  "Blue favored","Blue advantage","Blue +5","Helps Blue","Blue-favorable",
+  "Safe Blue","Likely Blue","Blue-leaning","Rising",
+]);
+const RED_STATES = new Set([
+  "Red wins","Red landslide","Red narrow win","Red lead","Red surge",
+  "Red favored","Red advantage","Red +5","Helps Red","Red-favorable",
+  "Safe Red","Likely Red","Red-leaning","Falling",
+]);
+
+function pClass(s){ return BLUE_STATES.has(s)?"bl":RED_STATES.has(s)?"rd":"nt"; }
+
+function segColor(state, isSampled, forEmp=false){
+  const cls=pClass(state);
+  if(forEmp) return isSampled?"#22c55e":"#14532d";
+  if(isSampled) return cls==="bl"?"#3b82f6":cls==="rd"?"#ef4444":"#64748b";
+  return cls==="bl"?"#1e3a6e":cls==="rd"?"#7f1d1d":"#2d3a4a";
+}
+function stateTextColor(s){const c=pClass(s);return c==="bl"?"#93c5fd":c==="rd"?"#fca5a5":"#94a3b8";}
+function surpriseClass(b){return b<1?"surp-lo":b<2.5?"surp-md":"surp-hi";}
+
+const SHORT_LBL={
+  "Economy":"Economy","Institutional Trust":"Inst.Trust","Partisan Baseline":"Baseline",
+  "Blue Candidate Quality":"Blue Cand.","Red Candidate Quality":"Red Cand.",
+  "Ground Game":"Ground Game","Major Event Occurs":"Event?","Event Type":"Type",
+  "Event Target":"Target","Event Severity":"Severity","News Type":"News Type",
+  "News Reliability":"Reliability","News Tone":"Tone","News Volume":"Volume",
+  "Blue Momentum":"Blue Momt.","Red Momentum":"Red Momt.","Voter Uncertainty":"Uncertainty",
+  "Issue Salience":"Salience","Polling Signal":"Polls","Social Signal":"Social",
+  "Prediction Market":"Market","Blue Turnout":"Blue Turnout","Red Turnout":"Red Turnout",
+  "Independent Split":"Ind. Split","Forecaster Rating":"Rating",
+  "Forecaster Confidence":"Confidence","Vote Share Category":"Vote Share","Winner":"Winner",
+};
+function shortLbl(l){return SHORT_LBL[l]||l.slice(0,12);}
+
+const ABBREV={
+  "Blue-leaning":"Bl-lean","Red-leaning":"Rd-lean","Statistical tie":"Tie",
+  "Blue narrow win":"Bl-narrow","Red narrow win":"Rd-narrow",
+  "Blue landslide":"Bl-slide","Red landslide":"Rd-slide","Recount/disputed":"Recount",
+  "Blue-favorable":"Bl-fav","Red-favorable":"Rd-fav","Neutral/mixed":"Neutral",
+  "Blue advantage":"Bl-adv","Red advantage":"Rd-adv",
+  "Blue favored":"Bl-fav","Red favored":"Rd-fav",
+  "Blue surge":"Bl-surge","Red surge":"Rd-surge","Noisy/mixed":"Noisy",
+  "Blue lead":"Bl-lead","Red lead":"Rd-lead","Blue +5":"Blue+5","Red +5":"Red+5",
+  "Geopolitical shock":"Geopolit.","Weather event":"Weather","Cultural event":"Cultural",
+  "Policy shock":"Policy","Foreign crisis":"Foreign","Weather/turnout":"Weather",
+  "Trust/corruption":"Trust","Climate/weather":"Climate",
+  "Safe Blue":"Safe Bl","Safe Red":"Safe Rd","Likely Blue":"Likely Bl","Likely Red":"Likely Rd",
+  "Blue wins":"Blue wins","Red wins":"Red wins",
+};
+function abbrev(s){return(ABBREV[s]||s).slice(0,9);}
+
+// Clearer display name for inside node boxes — longer than abbrev
+const STATE_DISPLAY={
+  "Blue-leaning":"Blue-lean","Red-leaning":"Red-lean",
+  "Statistical tie":"Tie","Blue narrow win":"Blue narrow","Red narrow win":"Red narrow",
+  "Blue landslide":"Blue landslide","Red landslide":"Red landslide",
+  "Recount/disputed":"Recount","Blue-favorable":"Blue-fav","Red-favorable":"Red-fav",
+  "Neutral/mixed":"Neutral","Blue advantage":"Blue adv","Red advantage":"Red adv",
+  "Blue favored":"Blue fav","Red favored":"Red fav",
+  "Blue surge":"Blue surge","Red surge":"Red surge","Noisy/mixed":"Noisy",
+  "Blue lead":"Blue lead","Red lead":"Red lead","Blue +5":"Blue +5","Red +5":"Red +5",
+  "Geopolitical shock":"Geo shock","Weather event":"Weather","Cultural event":"Cultural",
+  "Policy shock":"Policy shock","Foreign crisis":"Foreign crisis",
+  "Weather/turnout":"Weather","Trust/corruption":"Trust","Climate/weather":"Climate",
+  "Safe Blue":"Safe Blue","Safe Red":"Safe Red","Likely Blue":"Likely Blue","Likely Red":"Likely Red",
+  "Blue wins":"Blue wins","Red wins":"Red wins","Major Event Occurs":"Event?",
+};
+function stateName(s){return STATE_DISPLAY[s]||s;}
+
+function blendHex(h1,h2,t){
+  const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const[r1,g1,b1]=p(h1),[r2,g2,b2]=p(h2);
+  return`#${Math.round(r1*(1-t)+r2*t).toString(16).padStart(2,"0")}${Math.round(g1*(1-t)+g2*t).toString(16).padStart(2,"0")}${Math.round(b1*(1-t)+b2*t).toString(16).padStart(2,"0")}`;
+}
+
+function mk(tag,cls,text){
+  const e=document.createElement(tag);
+  if(cls) e.className=cls;
+  if(text!==undefined) e.textContent=text;
+  return e;
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(n,btn){
+  document.querySelectorAll(".tab-pane").forEach(e=>e.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(e=>e.classList.remove("active"));
+  document.getElementById("tab-"+n).classList.add("active");
+  btn.classList.add("active");
+}
+
+// ── SVG setup ──────────────────────────────────────────────────────────────────
+const svg=d3.select("#dag-svg");
+let W=0,H=0;
+function svgSize(){const el=document.getElementById("dag-svg");W=el.clientWidth||960;H=el.clientHeight||520;svg.attr("viewBox",`0 0 ${W} ${H}`);}
+function gx(g){return GROUP_POS[g].cx*W;}
+function gy(g){return GROUP_POS[g].cy*H;}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init(){
+  const r=await fetch("/api/structure"); structure=await r.json();
+  buildOverridesUI(); renderDAG();
+}
+
+// ── Static DAG ─────────────────────────────────────────────────────────────────
+function renderDAG(){
+  if(!structure) return;
+  svg.selectAll("*").remove(); svgSize();
+  const{groups}=structure;
+
+  const defs=svg.append("defs");
+  ["arr","arr-act"].forEach((id,i)=>{
+    defs.append("marker").attr("id",id).attr("viewBox","0 -5 10 10")
+      .attr("refX",8).attr("refY",0).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto")
+      .append("path").attr("d","M0,-5L10,0L0,5").attr("fill",i===0?"#475569":"#fbbf24");
+  });
+  const glow=defs.append("filter").attr("id","glow");
+  glow.append("feGaussianBlur").attr("stdDeviation","3").attr("result","blur");
+  const mg=glow.append("feMerge");
+  mg.append("feMergeNode").attr("in","blur");
+  mg.append("feMergeNode").attr("in","SourceGraphic");
+
+  svg.append("g").attr("id","edge-layer")
+    .selectAll("path").data(DAG_EDGES).join("path")
+    .attr("id",d=>`edge-${d[0]}-${d[1]}`)
+    .attr("fill","none").attr("stroke","#334155").attr("stroke-width",1.5)
+    .attr("marker-end","url(#arr)")
+    .attr("d",d=>edgePath(gx(d[0]),gy(d[0]),gx(d[1]),gy(d[1])));
+
+  const nodeG=svg.append("g").attr("id","node-layer");
+  const gSel=nodeG.selectAll(".dag-group")
+    .data(Object.keys(GROUP_POS)).join("g")
+    .attr("class","dag-group").attr("id",d=>`grp-${d}`)
+    .attr("transform",d=>`translate(${gx(d)-NODE_W/2},${gy(d)-NODE_H/2})`)
+    .style("cursor","pointer").on("click",(_,gid)=>selectGroup(gid));
+
+  gSel.append("rect").attr("class","grp-bg")
+    .attr("width",NODE_W).attr("height",NODE_H).attr("rx",8)
+    .attr("fill",d=>groups[d].color).attr("stroke",d=>groups[d].text).attr("stroke-width",2);
+
+  // Header strip
+  gSel.append("rect").attr("width",NODE_W).attr("height",HDR_H).attr("rx",8).attr("fill","rgba(0,0,0,.2)");
+  gSel.append("rect").attr("y",8).attr("width",NODE_W).attr("height",HDR_H-8).attr("fill","rgba(0,0,0,.2)");
+  gSel.append("text").attr("class","grp-title")
+    .attr("x",7).attr("y",14).attr("font-size",12).attr("font-weight",700)
+    .attr("fill",d=>groups[d].text).text(d=>`${d}. ${groups[d].name}`);
+
+  gSel.append("text").attr("class","grp-hint")
+    .attr("x",NODE_W/2).attr("y",NODE_H/2+14).attr("text-anchor","middle")
+    .attr("font-size",9).attr("fill","#334155").text("pending…");
+
+  gSel.append("g").attr("class","bars-layer");
+  svg.append("g").attr("id","overlay");
+
+  // ── Zoom / pan ────────────────────────────────────────────────────────────
+  const dagZoom = d3.zoom()
+    .scaleExtent([0.25, 5])
+    .on("zoom", event => {
+      const t = event.transform;
+      d3.select("#edge-layer").attr("transform", t);
+      d3.select("#node-layer").attr("transform", t);
+      d3.select("#overlay").attr("transform", t);
+    });
+
+  svg.call(dagZoom).on("dblclick.zoom", null);  // disable dblclick default
+  window._dagZoom = dagZoom;   // expose for zoom control buttons
+}
+
+function edgePath(x1,y1,x2,y2){
+  const dx=x2-x1,dy=y2-y1,a=Math.atan2(dy,dx);
+  const hw=NODE_W/2,hh=NODE_H/2;
+  const sx=x1+hw*Math.cos(a),sy=y1+hh*Math.sin(a);
+  const tx=x2-hw*Math.cos(a),ty=y2-hh*Math.sin(a);
+  const mx=(sx+tx)/2;
+  return`M${sx},${sy} C${mx},${sy} ${mx},${ty} ${tx},${ty}`;
+}
+
+// ── Reveal a group node's bars ─────────────────────────────────────────────────
+function revealGroup(gid, result){
+  const{groups}=structure;
+  const g=d3.select(`#grp-${gid}`);
+  const nodeIds=GROUP_DISPLAY[gid]||[];
+
+  let blN=0,rdN=0;
+  nodeIds.forEach(nid=>{const c=pClass((result.states||{})[nid]||"");if(c==="bl")blN++;else if(c==="rd")rdN++;});
+  let fill=groups[gid].color;
+  if(blN>rdN)       fill=blendHex(groups[gid].color,"#1e40af",.22);
+  else if(rdN>blN)  fill=blendHex(groups[gid].color,"#991b1b",.22);
+
+  // Restore solid border (was dashed while queued)
+  g.select(".grp-bg")
+    .attr("fill",fill)
+    .attr("stroke",groups[gid].text)
+    .attr("stroke-width",2)
+    .attr("stroke-dasharray","none")
+    .attr("stroke-opacity",1);
+
+  g.select(".grp-hint").remove();
+  const bl=g.select(".bars-layer");
+  bl.selectAll("*").remove();
+
+  nodeIds.forEach((nid,idx)=>{
+    const node=structure.nodes[nid];
+    const dist=(result.distributions||{})[nid]||{};
+    const sampled=(result.states||{})[nid];
+    const prob=Math.round((dist[sampled]||0)*100);
+    const rowY=HDR_H+3+idx*ROW_H;
+
+    const bg=bl.append("g").attr("class","row-"+nid).attr("opacity",0);
+
+    // ── Top line: label (left) + STATE NAME bold (right) ──────────────────
+    bg.append("text")
+      .attr("x",BAR_X).attr("y",rowY+11)
+      .attr("font-size",9).attr("fill","#64748b")
+      .text(shortLbl(node.label));
+
+    bg.append("text")
+      .attr("x",NODE_W-BAR_X).attr("y",rowY+12)
+      .attr("text-anchor","end")
+      .attr("font-size",13).attr("font-weight",700)
+      .attr("fill",stateTextColor(sampled))
+      .text("► "+stateName(sampled));
+
+    bg.append("text")
+      .attr("x",NODE_W-BAR_X).attr("y",rowY+22)
+      .attr("text-anchor","end")
+      .attr("font-size",10).attr("fill","#64748b")
+      .text(`p=${prob}%`);
+
+    // ── Full-width probability bar ─────────────────────────────────────────
+    drawBar(bg,node.states,dist,sampled,BAR_X,rowY+25,BAR_W,BAR_H1,false);
+
+    // ── Empirical bar (after batch) ────────────────────────────────────────
+    if(batchNodes&&batchNodes[nid]){
+      const empY=rowY+25+BAR_H1+BAR_GAP;
+      drawBar(bg,node.states,batchNodes[nid],null,BAR_X,empY,BAR_W,BAR_H2,true);
+    }
+
+    bg.transition().duration(300).attr("opacity",1);
+  });
+}
+
+function drawBar(parent,states,dist,selected,x,y,w,h,isEmp){
+  let xOff=x;
+  states.forEach(state=>{
+    const p=dist[state]||0,sw=p*w;
+    if(sw<.5){xOff+=sw;return;}
+    parent.append("rect")
+      .attr("x",xOff).attr("y",y).attr("width",sw).attr("height",h)
+      .attr("fill",segColor(state,state===selected,isEmp)).attr("rx",1);
+    xOff+=sw;
+  });
+}
+
+function updateAllGroups(result){
+  if(!result) return;
+  Object.keys(GROUP_POS).forEach(gid=>revealGroup(gid,result));
+}
+
+// ── Coin-flip animation ────────────────────────────────────────────────────────
+function animateGroupFlip(gid, result, epoch){
+  return new Promise(resolve=>{
+    if(animEpoch!==epoch){resolve();return;}
+    const overlay=d3.select("#overlay");
+    const nodeIds=GROUP_DISPLAY[gid]||[];
+    const cx=gx(gid),cy=gy(gid);
+    const FW=190,FPAD=10,rowH=17;
+    const FH=38+nodeIds.length*rowH+8;
+    const fy=cy-NODE_H/2-FH-10>8?cy-NODE_H/2-FH-10:cy+NODE_H/2+10;
+    const fx=Math.max(4,Math.min(W-FW-4,cx-FW/2));
+
+    d3.select(`#grp-${gid} .grp-bg`).attr("stroke","#fbbf24").attr("stroke-width",3.5);
+
+    const fw=overlay.append("g").attr("class","flip-widget").attr("opacity",0)
+      .attr("transform",`translate(${fx},${fy})`);
+    fw.append("rect").attr("class","fw-bg").attr("width",FW).attr("height",FH).attr("rx",7)
+      .attr("fill","#131e33").attr("stroke","#fbbf24").attr("stroke-width",1.5);
+    fw.append("text").attr("x",FPAD).attr("y",14)
+      .attr("font-size",11).attr("font-weight",700).attr("fill","#fbbf24").text("Run Outcome");
+    fw.append("text").attr("x",FPAD).attr("y",26)
+      .attr("font-size",8).attr("fill","#475569").text(`${gid}. ${structure.groups[gid].name}`);
+    fw.append("line").attr("x1",FPAD).attr("x2",FW-FPAD).attr("y1",31).attr("y2",31)
+      .attr("stroke","#1e293b").attr("stroke-width",1);
+    fw.transition().duration(150).attr("opacity",1);
+
+    const rowPromises=nodeIds.map((nid,idx)=>new Promise(rowDone=>{
+      const node=structure.nodes[nid];
+      const sampled=(result.states||{})[nid];
+      const ry=36+idx*rowH;
+      setTimeout(()=>{
+        if(animEpoch!==epoch){rowDone();return;}
+        const row=fw.append("g").attr("opacity",0);
+        row.append("text").attr("x",FPAD).attr("y",ry+11)
+          .attr("font-size",9).attr("fill","#64748b").text(shortLbl(node.label));
+        row.append("text").attr("x",FW-FPAD).attr("y",ry+11)
+          .attr("text-anchor","end").attr("font-size",10).attr("font-weight",700)
+          .attr("fill",stateTextColor(sampled)).text(stateName(sampled));
+        row.transition().duration(200).attr("opacity",1).on("end",rowDone);
+      }, idx*150);
+    }));
+
+    Promise.all(rowPromises).then(()=>{
+      if(animEpoch!==epoch){fw.remove();resolve();return;}
+      revealGroup(gid,result);
+      // Update border to outcome color; widget stays until next run
+      let bl=0,rd=0;
+      nodeIds.forEach(nid=>{const c=pClass((result.states||{})[nid]||"");if(c==="bl")bl++;else if(c==="rd")rd++;});
+      const outcomeCol=bl>rd?"#3b82f6":rd>bl?"#ef4444":"#94a3b8";
+      fw.select(".fw-bg").attr("stroke",outcomeCol).attr("stroke-width",2);
+      fw.select("text").attr("fill",outcomeCol);
+      resolve();
+    });
+  });
+}
+
+function animateEdgeParticles(fromGroups, result, epoch){
+  const edges=DAG_EDGES.filter(e=>fromGroups.includes(e[0]));
+  return Promise.all(edges.map(([src,tgt])=>new Promise(done=>{
+    if(animEpoch!==epoch){done();return;}
+    const pathEl=document.getElementById(`edge-${src}-${tgt}`);
+    if(!pathEl){done();return;}
+    const totalLen=pathEl.getTotalLength();
+
+    const nids=GROUP_DISPLAY[src]||[];
+    let bl=0,rd=0;
+    nids.forEach(nid=>{const c=pClass((result.states||{})[nid]||"");if(c==="bl")bl++;else if(c==="rd")rd++;});
+    const col=bl>rd?"#60a5fa":rd>bl?"#f87171":"#94a3b8";
+
+    d3.select(`#edge-${src}-${tgt}`).attr("stroke",col).attr("stroke-width",2.5).attr("marker-end","url(#arr-act)");
+
+    const overlay=d3.select("#overlay");
+    const pt0=pathEl.getPointAtLength(0);
+    const pGrp=overlay.append("g").attr("class","edge-particle")
+      .attr("transform",`translate(${pt0.x},${pt0.y})`);
+    pGrp.append("circle").attr("r",5).attr("fill",col).attr("opacity",.95).attr("filter","url(#glow)");
+    pGrp.append("circle").attr("r",9).attr("fill",col).attr("opacity",.18);
+
+    const DUR=320,start=performance.now();
+    function step(now){
+      if(animEpoch!==epoch){pGrp.remove();done();return;}
+      const t=Math.min((now-start)/DUR,1);
+      pGrp.attr("transform",`translate(${pathEl.getPointAtLength(t*totalLen).x},${pathEl.getPointAtLength(t*totalLen).y})`);
+      if(t<1) requestAnimationFrame(step);
+      else{
+        pGrp.transition().duration(180).attr("opacity",0).on("end",()=>pGrp.remove());
+        d3.select(`#edge-${src}-${tgt}`).transition().duration(700)
+          .attr("stroke","#475569").attr("stroke-width",2).attr("marker-end","url(#arr)");
+        done();
+      }
+    }
+    requestAnimationFrame(step);
+  })));
+}
+
+// ── Animation orchestrator ────────────────────────────────────────────────────
+async function animateRun(result){
+  isAnimating=true;
+  const epoch=++animEpoch;
+  document.getElementById("skip-btn").style.display="inline-block";
+
+  // Keep previous run's boxes visible — each is replaced only when its flip lands.
+  // Signal "new run starting" with a dashed border on all nodes.
+  svg.selectAll(".flip-widget,.edge-particle").remove();
+  const{groups}=structure;
+  Object.keys(GROUP_POS).forEach(gid=>{
+    const g=d3.select(`#grp-${gid}`);
+    g.select(".grp-bg")
+      .attr("stroke-dasharray","5,3")
+      .attr("stroke-opacity","0.45");
+    // If no previous bars (first run), show a placeholder
+    if(g.select(".bars-layer").selectAll("*").size()===0){
+      g.select(".bars-layer").append("text").attr("class","grp-hint")
+        .attr("x",NODE_W/2).attr("y",NODE_H/2+14).attr("text-anchor","middle")
+        .attr("font-size",9).attr("fill","#334155").text("…");
+    }
+  });
+  DAG_EDGES.forEach(([s,t])=>{
+    d3.select(`#edge-${s}-${t}`).attr("stroke","#1e293b").attr("stroke-width",1.5).attr("marker-end","url(#arr)");
+  });
+
+  for(const grps of ANIM_PHASES){
+    if(animEpoch!==epoch) return;
+    await Promise.all(grps.map(gid=>animateGroupFlip(gid,result,epoch)));
+    if(animEpoch!==epoch) return;
+    if(grps[0]!=="I") await animateEdgeParticles(grps,result,epoch);
+  }
+
+  if(animEpoch!==epoch) return;
+  finishRun(result);
+}
+
+function finishRun(result){
+  isAnimating=false;
+  document.getElementById("skip-btn").style.display="none";
+  updateWinnerBanner(result.states.I2);
+  renderNarrative(result);
+}
+
+function skipAnimation(){
+  animEpoch++;
+  isAnimating=false;
+  document.getElementById("skip-btn").style.display="none";
+  svg.selectAll(".flip-widget,.edge-particle").remove();
+  if(lastResult){updateAllGroups(lastResult);showQuickFlips(lastResult);finishRun(lastResult);}
+}
+
+// Instantly show result cards for all groups (used by skip)
+function showQuickFlips(result){
+  if(!structure) return;
+  const overlay=d3.select("#overlay");
+  const FW=190,FPAD=10,rowH=17;
+  Object.keys(GROUP_POS).forEach(gid=>{
+    const nodeIds=GROUP_DISPLAY[gid]||[];
+    const cx=gx(gid),cy=gy(gid);
+    const FH=38+nodeIds.length*rowH+8;
+    const fy=cy-NODE_H/2-FH-10>8?cy-NODE_H/2-FH-10:cy+NODE_H/2+10;
+    const fx=Math.max(4,Math.min(W-FW-4,cx-FW/2));
+    let bl=0,rd=0;
+    nodeIds.forEach(nid=>{const c=pClass((result.states||{})[nid]||"");if(c==="bl")bl++;else if(c==="rd")rd++;});
+    const outcomeCol=bl>rd?"#3b82f6":rd>bl?"#ef4444":"#94a3b8";
+    const fw=overlay.append("g").attr("class","flip-widget")
+      .attr("transform",`translate(${fx},${fy})`);
+    fw.append("rect").attr("class","fw-bg").attr("width",FW).attr("height",FH).attr("rx",7)
+      .attr("fill","#131e33").attr("stroke",outcomeCol).attr("stroke-width",2);
+    fw.append("text").attr("x",FPAD).attr("y",14)
+      .attr("font-size",11).attr("font-weight",700).attr("fill",outcomeCol).text("Run Outcome");
+    fw.append("text").attr("x",FPAD).attr("y",26)
+      .attr("font-size",8).attr("fill","#475569").text(`${gid}. ${structure.groups[gid].name}`);
+    fw.append("line").attr("x1",FPAD).attr("x2",FW-FPAD).attr("y1",31).attr("y2",31)
+      .attr("stroke","#1e293b").attr("stroke-width",1);
+    nodeIds.forEach((nid,idx)=>{
+      const node=structure.nodes[nid];
+      const sampled=(result.states||{})[nid];
+      const ry=36+idx*rowH;
+      fw.append("text").attr("x",FPAD).attr("y",ry+11)
+        .attr("font-size",9).attr("fill","#64748b").text(shortLbl(node.label));
+      fw.append("text").attr("x",FW-FPAD).attr("y",ry+11)
+        .attr("text-anchor","end").attr("font-size",10).attr("font-weight",700)
+        .attr("fill",stateTextColor(sampled)).text(stateName(sampled));
+    });
+  });
+}
+
+// ── Simulate ──────────────────────────────────────────────────────────────────
+async function runSimulation(){
+  const btn=document.getElementById("run-btn");
+  btn.disabled=true; btn.textContent="Running…";
+  const seed=document.getElementById("seed-input").value?parseInt(document.getElementById("seed-input").value):null;
+  try{
+    const resp=await fetch("/api/simulate",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({seed,overrides}),
+    });
+    lastResult=await resp.json();
+    runCount++;
+    document.getElementById("run-badge").textContent=`Runs: ${runCount}`;
+    await animateRun(lastResult);
+  }catch(e){console.error(e);}
+  btn.disabled=false; btn.textContent="▶ Run Election";
+}
+
+function updateWinnerBanner(winner){
+  const el=document.getElementById("winner-banner");
+  el.style.display="block";
+  if(winner==="Blue wins"){el.className="blue";el.textContent="🔵 Blue-ian wins";}
+  else{el.className="red";el.textContent="🔴 Red-ian wins";}
+  el.id="winner-banner";
+}
+
+// ── Batch + Hoeffding ─────────────────────────────────────────────────────────
+async function runBatch(){
+  const btn=document.getElementById("batch-btn");
+  btn.disabled=true; btn.textContent="Running 1000…";
+  try{
+    const q=Object.keys(overrides).length?`&overrides=${encodeURIComponent(JSON.stringify(overrides))}`:"";
+    const resp=await fetch(`/api/batch?n=1000${q}`);
+    const data=await resp.json();
+    batchNodes  = data.nodes;          // empirical marginals (green bar)
+    batchCptAvg = data.nodes_cpt_avg;  // model-predicted marginals (Hoeffding reference)
+    if(lastResult) updateAllGroups(lastResult);
+    renderBatchStats(data);
+    if(lastResult) renderNarrative(lastResult);
+    switchTab("batch",document.querySelectorAll(".tab-btn")[2]);
+  }catch(e){console.error(e);}
+  btn.disabled=false; btn.textContent="Batch ×1000";
+}
+
+// Hoeffding ε: P(|p̂-p|>ε) ≤ 2·exp(-2·n·ε²), n=1000, α=0.01
+const HOFF_EPS = Math.sqrt(-Math.log(0.005)/2000);  // ≈ 0.0515
+
+function renderBatchStats(data){
+  const{n,pct}=data;
+  const entries=Object.entries(pct).sort((a,b)=>b[1]-a[1]);
+
+  let html=`<p style="color:var(--muted);font-size:10px;margin-bottom:8px">Winner over <strong>${n}</strong> simulations:</p>`;
+  entries.forEach(([label,p])=>{
+    const cls=label.includes("Blue")?"blue":"red";
+    const p100=Math.round(p*100);
+    html+=`<div class="bar-row"><div class="bar-lbl"><span>${label}</span><strong>${p100}%</strong></div>
+      <div class="bar-track"><div class="bar-fill ${cls}" style="width:${p100}%"></div></div></div>`;
+  });
+
+  // ── Hoeffding validation ──────────────────────────────────────────────────
+  // Correct comparison: model marginal (avg CPT over all 1000 runs) vs empirical.
+  // By the law of total expectation, E[P(X|parents)] = P(X), so both should
+  // converge to the same value.  A violation signals a sampling or CPT bug.
+  if(data.nodes && data.nodes_cpt_avg){
+    const EPS=HOFF_EPS;
+    const modelAvg = data.nodes_cpt_avg;  // E[P(X|parents)] over 1000 runs
+    const empirical = data.nodes;         // observed frequency over 1000 runs
+    let nodesInZone=0, totalNodes=0;
+    const nodeResults=[];
+
+    Object.keys(structure.nodes).forEach(nid=>{
+      const node=structure.nodes[nid];
+      const mDist=modelAvg[nid]||{};
+      const eDist=empirical[nid]||{};
+      let nodeOk=true;
+      const stateRows=node.states.map(s=>{
+        const mdl=mDist[s]||0;
+        const emp=eDist[s]||0;
+        const delta=Math.abs(emp-mdl);
+        const inZone=delta<=EPS;
+        if(!inZone) nodeOk=false;
+        return{s, mdl:Math.round(mdl*100), emp:Math.round(emp*100), delta, inZone};
+      });
+      if(nodeOk) nodesInZone++;
+      totalNodes++;
+      const maxDelta=Math.max(...stateRows.map(r=>r.delta));
+      nodeResults.push({nid,node,stateRows,nodeOk,maxDelta});
+    });
+
+    nodeResults.sort((a,b)=>b.maxDelta-a.maxDelta);
+
+    const allOk=nodesInZone===totalNodes;
+    html+=`<div class="hoff-section">
+      <div class="hoff-header">
+        Hoeffding Validation
+        <span style="font-size:9px;font-weight:400;color:#475569">ε=${(EPS*100).toFixed(1)}pp &nbsp;|&nbsp; n=${n} &nbsp;|&nbsp; α=1%</span>
+      </div>
+      <div style="font-size:9px;color:#475569;margin-bottom:6px;line-height:1.4">
+        <strong style="color:var(--blue)">Model</strong> = avg CPT probability over all runs = E[P(X|parents)] = true marginal<br>
+        <strong style="color:var(--green)">Empirical</strong> = observed frequency over ${n} runs<br>
+        Both must converge by LLN. A ✗ means the sampler disagrees with the CPT.
+      </div>
+      <div class="hoff-summary ${allOk?"all-good":"some-out"}">
+        ${allOk
+          ? `✓ All ${totalNodes} nodes within ε — sampler consistent with CPTs`
+          : `⚠ ${totalNodes-nodesInZone}/${totalNodes} nodes outside ε — see below`}
+      </div>`;
+
+    nodeResults.slice(0,12).forEach(({nid,node,stateRows,nodeOk})=>{
+      const worstDelta=Math.max(...stateRows.map(r=>r.delta));
+      html+=`<div class="hoff-node">
+        <div class="hoff-node-title">${nid} · ${node.label}
+          <span style="font-size:8px;font-weight:400;color:${nodeOk?"#86efac":"#fca5a5"}">
+            max Δ=${(worstDelta*100).toFixed(1)}pp ${nodeOk?"✓":"✗"}
+          </span>
+        </div>`;
+      stateRows.forEach(({s,mdl,emp,delta,inZone})=>{
+        const deltaStr=(delta*100).toFixed(1);
+        const badge=inZone
+          ? `<span class="hoff-badge ok">✓</span>`
+          : `<span class="hoff-badge out">✗ ${deltaStr}pp</span>`;
+        html+=`<div class="hoff-state-row">
+          <div class="hoff-state-name" title="${s}">${abbrev(s)}</div>
+          <div class="hoff-bars">
+            <div class="hoff-bar-row">
+              <span style="font-size:8px;color:var(--blue);flex:0 0 26px">Mdl</span>
+              <div class="hoff-bar-track"><div class="hoff-bar-fill cpt" style="width:${mdl}%"></div></div>
+              <span class="hoff-pct">${mdl}%</span>
+            </div>
+            <div class="hoff-bar-row">
+              <span style="font-size:8px;color:var(--green);flex:0 0 26px">Emp</span>
+              <div class="hoff-bar-track"><div class="hoff-bar-fill emp" style="width:${emp}%"></div></div>
+              <span class="hoff-pct">${emp}%</span>
+            </div>
+          </div>
+          ${badge}
+        </div>`;
+      });
+      html+=`<div class="hoff-zone-line">ε band: ±${(EPS*100).toFixed(1)}pp</div></div>`;
+    });
+    html+=`</div>`;
+  }
+
+  document.getElementById("batch-results").innerHTML=html;
+}
+
+// ── Group click ───────────────────────────────────────────────────────────────
+function selectGroup(gid){
+  d3.selectAll(".grp-bg").attr("stroke-width",2);
+  d3.select(`#grp-${gid} .grp-bg`).attr("stroke-width",4);
+  const phaseEl=document.getElementById(`phase-${gid}`);
+  if(phaseEl){
+    phaseEl.scrollIntoView({behavior:"smooth",block:"nearest"});
+    phaseEl.querySelector(".phase-body")?.classList.add("open");
+    const chev=phaseEl.querySelector(".phase-chev");
+    if(chev) chev.textContent="▴";
+    switchTab("narrative",document.querySelectorAll(".tab-btn")[0]);
+  }
+}
+
+// ── Narrative ─────────────────────────────────────────────────────────────────
+function renderNarrative(result){
+  const container=document.getElementById("narrative-content");
+  const empty=document.getElementById("empty-state");
+  if(!result) return;
+  empty.style.display="none"; container.style.display="block"; container.innerHTML="";
+
+  result.narrative.forEach(phase=>{
+    const block=mk("div","phase-block"); block.id=`phase-${phase.group}`;
+    const hdr=mk("div","phase-hdr"+(phase.highlight?" hl":""));
+    const title=mk("span","ph-title"); title.textContent=phase.phase;
+    const chev=mk("span","phase-chev"); chev.textContent=phase.highlight?"▴":"▾";
+    hdr.append(title,chev);
+    const body=mk("div","phase-body"+(phase.highlight?" open":""));
+    hdr.onclick=()=>{const o=body.classList.toggle("open");chev.textContent=o?"▴":"▾";};
+
+    phase.items.forEach(it=>{
+      const item=mk("div","n-item");
+      const row=mk("div","n-row");
+      const lbl=mk("span","n-lbl"); lbl.textContent=it.label;
+      const stat=mk("span",`n-state ${pClass(it.state)}`); stat.textContent=it.state;
+      const prob=mk("span","n-prob"); prob.textContent=`${Math.round(it.prob*100)}%`;
+      const bits=it.surprise;
+      const surp=mk("span",`n-surp ${surpriseClass(bits)}`);
+      surp.textContent=bits>2.5?`⚡${bits.toFixed(1)}b`:bits>1?`${bits.toFixed(1)}b`:"";
+      row.append(lbl,stat,prob,surp);
+
+      const dw=mk("div","n-dist");
+      const bar=mk("div","n-dist-bar");
+      const lbls=mk("div","n-dist-labels"); lbls.style.display="flex";
+
+      if(it.distribution&&it.all_states){
+        it.all_states.forEach(s=>{
+          const p=it.distribution[s]||0,pct=Math.round(p*100);
+          const isSel=s===it.state,cls=pClass(s);
+          const seg=mk("div",`n-seg ${cls}${isSel?" sel":""}`);
+          seg.style.width=`${pct}%`; seg.title=`${s}: ${pct}%`;
+          bar.appendChild(seg);
+          const dl=mk("div",`n-dl${isSel?" sel":""}`);
+          dl.style.width=`${pct}%`; dl.title=s;
+          if(pct>=12) dl.textContent=pct>=20?`${abbrev(s)} ${pct}%`:`${pct}%`;
+          lbls.appendChild(dl);
+        });
+      }
+      dw.append(bar,lbls);
+
+      // Empirical overlay (after batch)
+      if(batchNodes&&batchNodes[it.node]&&it.all_states){
+        const eb=mk("div","n-dist-bar");
+        eb.style.marginTop="2px"; eb.title="Empirical (1000 runs)";
+        it.all_states.forEach(s=>{
+          const p=batchNodes[it.node][s]||0,pct=Math.round(p*100);
+          const seg=mk("div","n-seg");
+          seg.style.width=`${pct}%`; seg.style.background="#22c55e";
+          seg.style.opacity=s===it.state?"0.9":"0.2";
+          seg.title=`Emp. ${s}: ${pct}%`;
+          eb.appendChild(seg);
+        });
+        dw.appendChild(eb);
+      }
+
+      const parLine=mk("div","n-parents");
+      if(it.parents&&Object.keys(it.parents).length)
+        parLine.textContent="Given: "+Object.entries(it.parents).map(([k,v])=>`${k}=${abbrev(v)}`).join(", ");
+
+      item.append(row,dw);
+      if(it.parents&&Object.keys(it.parents).length) item.appendChild(parLine);
+      body.appendChild(item);
+    });
+
+    block.append(hdr,body);
+    container.appendChild(block);
+  });
+}
+
+// ── Categorical slider controls ───────────────────────────────────────────────
+function buildOverridesUI(){
+  if(!structure) return;
+  const container=document.getElementById("ov-container");
+  container.innerHTML="";
+
+  const groupMap={};
+  structure.topo_order.forEach(nid=>{
+    const g=structure.nodes[nid].group;
+    if(!groupMap[g]) groupMap[g]=[];
+    groupMap[g].push(nid);
+  });
+
+  Object.entries(groupMap).forEach(([gid,nodeIds])=>{
+    const grp=mk("div","ov-group");
+    const h4=mk("h4"); h4.textContent=`${gid}. ${structure.groups[gid].name}`; grp.appendChild(h4);
+
+    nodeIds.forEach(nid=>{
+      const node=structure.nodes[nid];
+      const states=node.states;
+
+      const sn=mk("div","slider-node");
+      const snLabel=mk("div","slider-node-label"); snLabel.textContent=node.label;
+
+      const slider=document.createElement("input");
+      slider.type="range"; slider.min=0; slider.max=states.length; slider.step=1; slider.value=0;
+      slider.className="cat-slider free"; slider.id=`ov-${nid}`;
+
+      const ticks=mk("div","slider-ticks");
+      const freeTick=mk("span","slider-tick active"); freeTick.textContent="free";
+      freeTick.onclick=()=>{slider.value=0;slider.dispatchEvent(new Event("input"));};
+      ticks.appendChild(freeTick);
+      states.forEach((s,i)=>{
+        const tick=mk("span","slider-tick"); tick.textContent=abbrev(s); tick.title=s;
+        tick.onclick=()=>{slider.value=i+1;slider.dispatchEvent(new Event("input"));};
+        ticks.appendChild(tick);
+      });
+
+      slider.oninput=()=>{
+        const val=parseInt(slider.value);
+        ticks.querySelectorAll(".slider-tick").forEach((t,i)=>t.classList.toggle("active",i===val));
+        slider.classList.toggle("free",val===0);
+        if(val===0) delete overrides[nid];
+        else overrides[nid]=states[val-1];
+        // Slider track fill
+        const pct=(val/states.length)*100;
+        slider.style.background=val===0
+          ? "var(--border)"
+          : `linear-gradient(to right, var(--blue) ${pct}%, var(--border) ${pct}%)`;
+        // Update hint
+        const locked=Object.keys(overrides).length;
+        const hint=document.getElementById("ov-hint");
+        if(hint) hint.textContent=locked===0
+          ? "All parameters free — each node will be sampled from its CPT."
+          : `${locked} of ${structure.topo_order.length} nodes locked.  ← drag to free to randomize.`;
+      };
+
+      sn.append(snLabel,slider,ticks);
+      grp.appendChild(sn);
+    });
+    container.appendChild(grp);
+  });
+}
+
+function clearOverrides(){
+  overrides={};
+  document.querySelectorAll(".cat-slider").forEach(s=>{
+    s.value=0; s.dispatchEvent(new Event("input"));
+  });
+  // Update the hint text
+  const hint=document.getElementById("ov-hint");
+  if(hint) hint.textContent="All parameters free — each node will be sampled from its CPT.";
+}
+
+function countLocked(){
+  return Object.keys(overrides).length;
+}
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+// ── Zoom controls ─────────────────────────────────────────────────────────────
+function dagZoomIn()    { svg.transition().duration(250).call(window._dagZoom.scaleBy, 1.5); }
+function dagZoomOut()   { svg.transition().duration(250).call(window._dagZoom.scaleBy, 1/1.5); }
+function dagZoomReset() { svg.transition().duration(350).call(window._dagZoom.transform, d3.zoomIdentity); }
+
+document.addEventListener("keydown", e=>{
+  if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA") return;
+  if(e.key==="="||e.key==="+") dagZoomIn();
+  else if(e.key==="-") dagZoomOut();
+  else if(e.key==="0") dagZoomReset();
+});
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+let resizeTimer;
+window.addEventListener("resize",()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(()=>{
+    animEpoch++;
+    renderDAG();
+    if(lastResult) updateAllGroups(lastResult);
+  },150);
+});
+
+init();
+</script>
+</body>
+</html>
