@@ -18,24 +18,19 @@ TOPO_ORDER = [
     "C1", "C2", "C3", "C4",
     "E1", "E2", "E3", "E4",
     "D1", "D2", "D3", "D4",
-    "F1", "F2", "F3",
     "G1", "G2", "G3",
-    "H1", "H2",
     "I1", "I2",
 ]
 
 # ── Group metadata (for UI) ───────────────────────────────────────────────────
 GROUP_INFO = {
-    # Colors match the original diagram: B=C share orange, E=F share purple, G=I share pink
-    "A": {"name": "Fundamentals",        "color": "#bfdbfe", "text": "#1e40af"},  # blue
-    "B": {"name": "Campaign State",      "color": "#fed7aa", "text": "#9a3412"},  # orange
-    "C": {"name": "External Events",     "color": "#fed7aa", "text": "#9a3412"},  # orange (= B)
-    "D": {"name": "Public Opinion",      "color": "#bbf7d0", "text": "#14532d"},  # green
-    "E": {"name": "News Layer",          "color": "#e9d5ff", "text": "#6b21a8"},  # purple
-    "F": {"name": "Forecasting Signals", "color": "#e9d5ff", "text": "#6b21a8"},  # purple (= E)
-    "G": {"name": "Election Mechanics",  "color": "#fecdd3", "text": "#9f1239"},  # pink/red
-    "H": {"name": "Forecaster Belief",   "color": "#c7d2fe", "text": "#3730a3"},  # indigo
-    "I": {"name": "Final Outcome",       "color": "#fecdd3", "text": "#9f1239"},  # pink/red (= G)
+    "A": {"name": "Fundamentals",       "color": "#bfdbfe", "text": "#1e40af"},  # blue
+    "B": {"name": "Campaign State",     "color": "#fed7aa", "text": "#9a3412"},  # orange
+    "C": {"name": "External Events",    "color": "#fed7aa", "text": "#9a3412"},  # orange
+    "D": {"name": "Public Opinion",     "color": "#bbf7d0", "text": "#14532d"},  # green
+    "E": {"name": "News Layer",         "color": "#e9d5ff", "text": "#6b21a8"},  # purple
+    "G": {"name": "Election Mechanics", "color": "#fecdd3", "text": "#9f1239"},  # pink/red
+    "I": {"name": "Final Outcome",      "color": "#fecdd3", "text": "#9f1239"},  # pink/red
 }
 
 # ── DAG edges for the UI (group level) ───────────────────────────────────────
@@ -43,12 +38,9 @@ DAG_EDGES = [
     ("A", "B"), ("A", "C"), ("A", "D"), ("A", "G"),
     ("B", "D"), ("B", "G"),
     ("C", "E"), ("C", "D"), ("C", "G"),
-    ("E", "D"), ("E", "F"),          # E→D is the key corrected arrow
-    ("D", "F"), ("D", "G"), ("D", "H"),
-    ("F", "H"),
+    ("E", "D"),
+    ("D", "G"),
     ("G", "I"),
-    # H→I removed: H (Forecaster Belief) observes the same upstream factors
-    # that determine I but does not causally produce the outcome.
 ]
 
 # ── Node definitions ──────────────────────────────────────────────────────────
@@ -365,68 +357,6 @@ NODES: Dict[str, Any] = {
         "desc": "Which policy dimension dominates voter decision-making",
     },
 
-    # ── F: Forecasting Signals ────────────────────────────────────────────────
-    "F1": {
-        "label": "Polling Signal",
-        "group": "F",
-        "states": ["Blue lead", "Statistical tie", "Red lead"],
-        "parents": ["D1", "D2", "D3"],
-        "cpt": [
-            {"cond": {"D1": "Rising",  "D2": "Falling", "D3": "Low"},    "dist": {"Blue lead": 0.80, "Statistical tie": 0.17, "Red lead": 0.03}},
-            {"cond": {"D1": "Rising",  "D2": "Falling", "D3": "Medium"}, "dist": {"Blue lead": 0.70, "Statistical tie": 0.25, "Red lead": 0.05}},
-            {"cond": {"D1": "Rising",  "D2": "Falling", "D3": "High"},   "dist": {"Blue lead": 0.55, "Statistical tie": 0.35, "Red lead": 0.10}},
-            {"cond": {"D1": "Rising",  "D2": "Stable",  "D3": "Medium"}, "dist": {"Blue lead": 0.60, "Statistical tie": 0.30, "Red lead": 0.10}},
-            {"cond": {"D1": "Rising",  "D2": "Stable",  "D3": "High"},   "dist": {"Blue lead": 0.45, "Statistical tie": 0.40, "Red lead": 0.15}},
-            {"cond": {"D1": "Stable",  "D2": "Stable",  "D3": "Low"},    "dist": {"Blue lead": 0.25, "Statistical tie": 0.50, "Red lead": 0.25}},
-            {"cond": {"D1": "Stable",  "D2": "Stable",  "D3": "Medium"}, "dist": {"Blue lead": 0.20, "Statistical tie": 0.55, "Red lead": 0.25}},
-            {"cond": {"D1": "Stable",  "D2": "Stable",  "D3": "High"},   "dist": {"Blue lead": 0.20, "Statistical tie": 0.60, "Red lead": 0.20}},
-            {"cond": {"D1": "Falling", "D2": "Rising",  "D3": "Low"},    "dist": {"Blue lead": 0.03, "Statistical tie": 0.17, "Red lead": 0.80}},
-            {"cond": {"D1": "Falling", "D2": "Rising",  "D3": "Medium"}, "dist": {"Blue lead": 0.05, "Statistical tie": 0.25, "Red lead": 0.70}},
-            {"cond": {"D1": "Falling", "D2": "Rising",  "D3": "High"},   "dist": {"Blue lead": 0.10, "Statistical tie": 0.40, "Red lead": 0.50}},
-            {"cond": {"D1": "Falling", "D2": "Stable",  "D3": "Medium"}, "dist": {"Blue lead": 0.10, "Statistical tie": 0.35, "Red lead": 0.55}},
-            {"cond": {"D1": "Stable",  "D2": "Rising",  "D3": "Medium"}, "dist": {"Blue lead": 0.10, "Statistical tie": 0.35, "Red lead": 0.55}},
-            {"cond": {"D1": "Rising"},                                     "dist": {"Blue lead": 0.60, "Statistical tie": 0.30, "Red lead": 0.10}},
-            {"cond": {"D2": "Rising"},                                     "dist": {"Blue lead": 0.10, "Statistical tie": 0.30, "Red lead": 0.60}},
-            {"cond": {},                                                    "dist": {"Blue lead": 0.30, "Statistical tie": 0.40, "Red lead": 0.30}},
-        ],
-        "desc": "Aggregate polling average direction",
-    },
-    "F2": {
-        "label": "Social Signal",
-        "group": "F",
-        "states": ["Blue surge", "Noisy/mixed", "Red surge"],
-        "parents": ["E3", "E4"],
-        "cpt": [
-            {"cond": {"E3": "Blue-favorable", "E4": "High"},   "dist": {"Blue surge": 0.65, "Noisy/mixed": 0.30, "Red surge": 0.05}},
-            {"cond": {"E3": "Blue-favorable", "E4": "Medium"}, "dist": {"Blue surge": 0.50, "Noisy/mixed": 0.40, "Red surge": 0.10}},
-            {"cond": {"E3": "Blue-favorable", "E4": "Low"},    "dist": {"Blue surge": 0.35, "Noisy/mixed": 0.50, "Red surge": 0.15}},
-            {"cond": {"E3": "Neutral/mixed"},                   "dist": {"Blue surge": 0.20, "Noisy/mixed": 0.60, "Red surge": 0.20}},
-            {"cond": {"E3": "Red-favorable",  "E4": "Low"},    "dist": {"Blue surge": 0.15, "Noisy/mixed": 0.50, "Red surge": 0.35}},
-            {"cond": {"E3": "Red-favorable",  "E4": "Medium"}, "dist": {"Blue surge": 0.10, "Noisy/mixed": 0.40, "Red surge": 0.50}},
-            {"cond": {"E3": "Red-favorable",  "E4": "High"},   "dist": {"Blue surge": 0.05, "Noisy/mixed": 0.30, "Red surge": 0.65}},
-            {"cond": {},                                         "dist": {"Blue surge": 0.25, "Noisy/mixed": 0.50, "Red surge": 0.25}},
-        ],
-        "desc": "Social media engagement and sentiment direction",
-    },
-    "F3": {
-        "label": "Prediction Market",
-        "group": "F",
-        "states": ["Blue favored", "Near-even", "Red favored"],
-        "parents": ["F1", "E3"],
-        "cpt": [
-            {"cond": {"F1": "Blue lead",       "E3": "Blue-favorable"}, "dist": {"Blue favored": 0.80, "Near-even": 0.15, "Red favored": 0.05}},
-            {"cond": {"F1": "Blue lead",       "E3": "Neutral/mixed"},  "dist": {"Blue favored": 0.65, "Near-even": 0.25, "Red favored": 0.10}},
-            {"cond": {"F1": "Blue lead",       "E3": "Red-favorable"},  "dist": {"Blue favored": 0.45, "Near-even": 0.35, "Red favored": 0.20}},
-            {"cond": {"F1": "Statistical tie", "E3": "Blue-favorable"}, "dist": {"Blue favored": 0.45, "Near-even": 0.40, "Red favored": 0.15}},
-            {"cond": {"F1": "Statistical tie", "E3": "Neutral/mixed"},  "dist": {"Blue favored": 0.25, "Near-even": 0.50, "Red favored": 0.25}},
-            {"cond": {"F1": "Statistical tie", "E3": "Red-favorable"},  "dist": {"Blue favored": 0.15, "Near-even": 0.40, "Red favored": 0.45}},
-            {"cond": {"F1": "Red lead",        "E3": "Blue-favorable"}, "dist": {"Blue favored": 0.20, "Near-even": 0.35, "Red favored": 0.45}},
-            {"cond": {"F1": "Red lead",        "E3": "Neutral/mixed"},  "dist": {"Blue favored": 0.10, "Near-even": 0.25, "Red favored": 0.65}},
-            {"cond": {"F1": "Red lead",        "E3": "Red-favorable"},  "dist": {"Blue favored": 0.05, "Near-even": 0.15, "Red favored": 0.80}},
-            {"cond": {},                                                  "dist": {"Blue favored": 0.33, "Near-even": 0.34, "Red favored": 0.33}},
-        ],
-        "desc": "Prediction market price — the market's implied win probability",
-    },
 
     # ── G: Election Mechanics ─────────────────────────────────────────────────
     "G1": {
@@ -503,48 +433,6 @@ NODES: Dict[str, Any] = {
         "desc": "How independent voters break — net margin among swing voters",
     },
 
-    # ── H: Forecaster Belief ──────────────────────────────────────────────────
-    "H1": {
-        "label": "Forecaster Rating",
-        "group": "H",
-        "states": ["Safe Blue", "Likely Blue", "Toss-up", "Likely Red", "Safe Red"],
-        "parents": ["F1", "F3", "E2"],
-        "cpt": [
-            {"cond": {"F1": "Blue lead",       "F3": "Blue favored", "E2": "Official"},  "dist": {"Safe Blue": 0.25, "Likely Blue": 0.55, "Toss-up": 0.15, "Likely Red": 0.04, "Safe Red": 0.01}},
-            {"cond": {"F1": "Blue lead",       "F3": "Blue favored", "E2": "Confirmed"}, "dist": {"Safe Blue": 0.18, "Likely Blue": 0.52, "Toss-up": 0.22, "Likely Red": 0.06, "Safe Red": 0.02}},
-            {"cond": {"F1": "Blue lead",       "F3": "Blue favored"},                    "dist": {"Safe Blue": 0.15, "Likely Blue": 0.50, "Toss-up": 0.25, "Likely Red": 0.08, "Safe Red": 0.02}},
-            {"cond": {"F1": "Blue lead",       "F3": "Near-even"},                       "dist": {"Safe Blue": 0.10, "Likely Blue": 0.35, "Toss-up": 0.40, "Likely Red": 0.12, "Safe Red": 0.03}},
-            {"cond": {"F1": "Blue lead"},                                                 "dist": {"Safe Blue": 0.12, "Likely Blue": 0.42, "Toss-up": 0.32, "Likely Red": 0.11, "Safe Red": 0.03}},
-            {"cond": {"F1": "Statistical tie", "F3": "Blue favored"},                    "dist": {"Safe Blue": 0.08, "Likely Blue": 0.30, "Toss-up": 0.42, "Likely Red": 0.15, "Safe Red": 0.05}},
-            {"cond": {"F1": "Statistical tie", "F3": "Near-even"},                       "dist": {"Safe Blue": 0.05, "Likely Blue": 0.20, "Toss-up": 0.50, "Likely Red": 0.20, "Safe Red": 0.05}},
-            {"cond": {"F1": "Statistical tie", "F3": "Red favored"},                     "dist": {"Safe Blue": 0.03, "Likely Blue": 0.12, "Toss-up": 0.40, "Likely Red": 0.32, "Safe Red": 0.13}},
-            {"cond": {"F1": "Red lead",        "F3": "Near-even"},                       "dist": {"Safe Blue": 0.03, "Likely Blue": 0.12, "Toss-up": 0.40, "Likely Red": 0.35, "Safe Red": 0.10}},
-            {"cond": {"F1": "Red lead",        "F3": "Red favored", "E2": "Official"},   "dist": {"Safe Blue": 0.01, "Likely Blue": 0.03, "Toss-up": 0.12, "Likely Red": 0.54, "Safe Red": 0.30}},
-            {"cond": {"F1": "Red lead",        "F3": "Red favored", "E2": "Confirmed"},  "dist": {"Safe Blue": 0.01, "Likely Blue": 0.04, "Toss-up": 0.15, "Likely Red": 0.55, "Safe Red": 0.25}},
-            {"cond": {"F1": "Red lead",        "F3": "Red favored"},                     "dist": {"Safe Blue": 0.02, "Likely Blue": 0.07, "Toss-up": 0.22, "Likely Red": 0.50, "Safe Red": 0.19}},
-            {"cond": {"F1": "Red lead"},                                                  "dist": {"Safe Blue": 0.02, "Likely Blue": 0.08, "Toss-up": 0.25, "Likely Red": 0.45, "Safe Red": 0.20}},
-            {"cond": {},                                                                   "dist": {"Safe Blue": 0.10, "Likely Blue": 0.20, "Toss-up": 0.40, "Likely Red": 0.20, "Safe Red": 0.10}},
-        ],
-        "desc": "Forecaster's race classification based on all available signals",
-    },
-    "H2": {
-        "label": "Forecaster Confidence",
-        "group": "H",
-        "states": ["High", "Medium", "Low"],
-        "parents": ["F1", "F3", "F2"],
-        "cpt": [
-            {"cond": {"F1": "Blue lead",       "F3": "Blue favored", "F2": "Blue surge"}, "dist": {"High": 0.65, "Medium": 0.30, "Low": 0.05}},
-            {"cond": {"F1": "Red lead",        "F3": "Red favored",  "F2": "Red surge"},  "dist": {"High": 0.65, "Medium": 0.30, "Low": 0.05}},
-            {"cond": {"F1": "Blue lead",       "F3": "Blue favored"},                     "dist": {"High": 0.50, "Medium": 0.38, "Low": 0.12}},
-            {"cond": {"F1": "Red lead",        "F3": "Red favored"},                      "dist": {"High": 0.50, "Medium": 0.38, "Low": 0.12}},
-            {"cond": {"F1": "Statistical tie", "F3": "Near-even",    "F2": "Noisy/mixed"},"dist": {"High": 0.15, "Medium": 0.55, "Low": 0.30}},
-            {"cond": {"F1": "Blue lead",       "F3": "Red favored"},                      "dist": {"High": 0.10, "Medium": 0.45, "Low": 0.45}},
-            {"cond": {"F1": "Red lead",        "F3": "Blue favored"},                     "dist": {"High": 0.10, "Medium": 0.45, "Low": 0.45}},
-            {"cond": {"F2": "Noisy/mixed"},                                                "dist": {"High": 0.12, "Medium": 0.50, "Low": 0.38}},
-            {"cond": {},                                                                    "dist": {"High": 0.20, "Medium": 0.50, "Low": 0.30}},
-        ],
-        "desc": "How confident the forecasting community is in their call",
-    },
 
     # ── I: Final Outcome ──────────────────────────────────────────────────────
     "I1": {
@@ -735,19 +623,9 @@ def _build_narrative(states: Dict, probs: Dict, surprise: Dict,
             "items": [item("D1"), item("D2"), item("D3"), item("D4")],
         },
         {
-            "phase": "F — Forecasting Signals",
-            "group": "F",
-            "items": [item("F1"), item("F2"), item("F3")],
-        },
-        {
             "phase": "G — Election Mechanics",
             "group": "G",
             "items": [item("G1"), item("G2"), item("G3")],
-        },
-        {
-            "phase": "H — Forecaster Belief",
-            "group": "H",
-            "items": [item("H1"), item("H2")],
         },
         {
             "phase": "I — Final Outcome",

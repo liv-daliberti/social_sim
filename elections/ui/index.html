@@ -333,7 +333,7 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
         <div class="math-note">Each node X has a set of parents Pa(X). We find the CPT row whose conditions are a subset of the current parent states — <em>most specific match wins</em> (highest count of matched conditions):</div>
         <div class="math-formula">P(X = x | Pa(X) = pa)</div>
         <div class="math-note">Then draw: <span class="math-hi">x ~ Categorical(P)</span>.</div>
-        <div class="math-note">Root nodes A1, A2, A3 have no parents and use a fixed prior P(X) directly. All 28 nodes are sampled left-to-right in topological order so every parent is already resolved before its children.</div>
+        <div class="math-note">Root nodes A1, A2, A3 have no parents and use a fixed prior P(X) directly. All 23 nodes are sampled left-to-right in topological order so every parent is already resolved before its children.</div>
       </div>
 
       <div class="math-section">
@@ -395,26 +395,26 @@ const BAR_X = 7, BAR_W = 206, BAR_H1 = 10, BAR_H2 = 6, BAR_GAP = 3;
 
 const GROUP_DISPLAY = {
   A:["A1","A2","A3"], B:["B1","B2","B3"], C:["C1","C2","C3"],
-  D:["D1","D2","D3"], E:["E3","E2","E4"], F:["F1","F2","F3"],
-  G:["G1","G2","G3"], H:["H1","H2"],      I:["I1","I2"],
+  D:["D1","D2","D3"], E:["E3","E2","E4"],
+  G:["G1","G2","G3"], I:["I1","I2"],
 };
 
 const GROUP_POS = {
   A:{cx:.06,cy:.50}, B:{cx:.22,cy:.26}, C:{cx:.31,cy:.73},
-  E:{cx:.46,cy:.17}, D:{cx:.55,cy:.55}, F:{cx:.71,cy:.22},
-  G:{cx:.71,cy:.76}, H:{cx:.86,cy:.36}, I:{cx:.94,cy:.66},
+  E:{cx:.46,cy:.17}, D:{cx:.58,cy:.50},
+  G:{cx:.78,cy:.65}, I:{cx:.93,cy:.50},
 };
 
 const DAG_EDGES = [
   ["A","B"],["A","C"],["A","D"],["A","G"],
   ["B","D"],["B","G"],
   ["C","E"],["C","D"],["C","G"],
-  ["E","D"],["E","F"],
-  ["D","F"],["D","G"],["D","H"],
-  ["F","H"],["G","I"],
+  ["E","D"],
+  ["D","G"],
+  ["G","I"],
 ];
 
-const ANIM_PHASES = [["A"],["B","C"],["E"],["D"],["F","G"],["H"],["I"]];
+const ANIM_PHASES = [["A"],["B","C"],["E"],["D"],["G"],["I"]];
 
 // ── Colour helpers ────────────────────────────────────────────────────────────
 const BLUE_STATES = new Set([
