@@ -685,13 +685,18 @@ def get_structure() -> dict:
     """Return DAG structure for the UI (nodes + edges + group info)."""
     nodes_out = {}
     for nid, n in NODES.items():
-        nodes_out[nid] = {
+        entry: Dict[str, Any] = {
             "label":   n["label"],
             "group":   n["group"],
             "states":  n["states"],
             "parents": n.get("parents", []),
             "desc":    n.get("desc", ""),
         }
+        if "prior" in n:
+            entry["prior"] = n["prior"]
+        else:
+            entry["cpt"] = n.get("cpt", [])
+        nodes_out[nid] = entry
     edge_influence = {
         f"{src}-{dst}": _compute_edge_influence(src, dst)
         for src, dst in DAG_EDGES

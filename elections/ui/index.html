@@ -91,6 +91,30 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
   width:100%; accent-color:var(--gold);
 }
 
+/* ── CPT hover tooltip ── */
+#cpt-tooltip {
+  position:fixed; z-index:3000; pointer-events:none; display:none;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:0;
+  max-width:400px; max-height:460px; overflow-y:auto;
+  box-shadow:0 8px 32px rgba(0,0,0,.7);
+}
+.cpt-grp-hdr {
+  padding:6px 12px; font-size:10px; font-weight:700;
+  letter-spacing:.04em; text-transform:uppercase;
+  border-radius:var(--radius) var(--radius) 0 0;
+  position:sticky; top:0; z-index:1;
+}
+.cpt-body { padding:10px 12px; }
+.cpt-node { margin-bottom:10px; }
+.cpt-node-hdr { font-size:11px; font-weight:700; color:var(--text); margin-bottom:1px; }
+.cpt-node-desc { font-size:10px; color:#475569; font-style:italic; margin-bottom:5px; }
+.cpt-parents-lbl { font-size:9px; color:#475569; margin-bottom:4px; text-transform:uppercase; letter-spacing:.03em; }
+.cpt-rule { margin-bottom:5px; }
+.cpt-cond { font-size:9px; color:#64748b; margin-bottom:2px; }
+.cpt-dist { font-size:10px; line-height:1.6; }
+.cpt-divider { border:none; border-top:1px solid var(--border); margin:8px 0; }
+
 #zoom-controls {
   position:absolute; bottom:12px; right:12px;
   display:flex; flex-direction:column; gap:4px;
@@ -377,6 +401,8 @@ Setting α = 1%:
   </div>
 </div>
 
+<div id="cpt-tooltip"></div>
+
 <script>
 // ── Global state ──────────────────────────────────────────────────────────────
 let structure  = null;
@@ -609,7 +635,10 @@ function renderDAG(){
     .attr("class","dag-group").attr("id",d=>`grp-${d}`)
     .attr("transform",d=>`translate(${gx(d)-NODE_W/2},${gy(d)-NODE_H/2})`)
     .style("cursor","grab")
-    .call(drag);
+    .call(drag)
+    .on("mouseenter",function(event,gid){ showCptTooltip(event,gid); })
+    .on("mouseleave",hideCptTooltip)
+    .on("mousemove",function(event){ moveCptTooltip(event); });
 
   gSel.append("rect").attr("class","grp-bg")
     .attr("width",NODE_W).attr("height",NODE_H).attr("rx",8)
@@ -1231,6 +1260,74 @@ function clearOverrides(){
 
 function countLocked(){
   return Object.keys(overrides).length;
+}
+
+// ── CPT hover tooltip ─────────────────────────────────────────────────────────
+let _cptTimer=null;
+
+function showCptTooltip(event,gid){
+  clearTimeout(_cptTimer);
+  _cptTimer=setTimeout(()=>{
+    const tt=document.getElementById("cpt-tooltip");
+    tt.innerHTML=buildCptHtml(gid);
+    tt.style.display="block";
+    moveCptTooltip(event);
+  },180);
+}
+function hideCptTooltip(){
+  clearTimeout(_cptTimer);
+  document.getElementById("cpt-tooltip").style.display="none";
+}
+function moveCptTooltip(event){
+  const tt=document.getElementById("cpt-tooltip");
+  if(tt.style.display==="none") return;
+  const x=event.clientX+16, y=event.clientY-24;
+  tt.style.left=Math.min(x, window.innerWidth-420)+"px";
+  tt.style.top=Math.max(8, Math.min(y, window.innerHeight-480))+"px";
+}
+
+function buildCptHtml(gid){
+  if(!structure) return "";
+  const grp=structure.groups[gid];
+  const nodeIds=GROUP_DISPLAY[gid]||[];
+  let h=`<div class="cpt-grp-hdr" style="background:${grp.color};color:${grp.text}">${gid}. ${grp.name}</div><div class="cpt-body">`;
+
+  nodeIds.forEach((nid,i)=>{
+    const node=structure.nodes[nid];
+    if(!node) return;
+    if(i>0) h+=`<hr class="cpt-divider">`;
+    h+=`<div class="cpt-node">`;
+    h+=`<div class="cpt-node-hdr">${nid} &middot; ${node.label}</div>`;
+    if(node.desc) h+=`<div class="cpt-node-desc">${node.desc}</div>`;
+
+    if(node.prior){
+      h+=`<div class="cpt-parents-lbl">Unconditional prior (root node)</div>`;
+      h+=`<div class="cpt-rule"><div class="cpt-dist">${fmtDist(node.prior)}</div></div>`;
+    } else if(node.cpt&&node.cpt.length){
+      const parNames=node.parents.map(p=>`${p}&nbsp;<span style="color:#64748b">${structure.nodes[p]?.label||p}</span>`).join(', ');
+      h+=`<div class="cpt-parents-lbl">Parents: ${parNames}</div>`;
+      node.cpt.forEach(rule=>{
+        const cond=Object.entries(rule.cond);
+        const condHtml=cond.length===0
+          ? `<span style="color:#334155;font-style:italic">default</span>`
+          : cond.map(([k,v])=>`<span style="color:#64748b">${k}</span> = <span style="color:#94a3b8">${v}</span>`).join(' &middot; ');
+        h+=`<div class="cpt-rule"><div class="cpt-cond">${condHtml}</div><div class="cpt-dist">${fmtDist(rule.dist)}</div></div>`;
+      });
+    }
+    h+=`</div>`;
+  });
+  h+=`</div>`;
+  return h;
+}
+
+function fmtDist(dist){
+  return Object.entries(dist).map(([s,p])=>{
+    const pct=Math.round(p*100);
+    if(pct===0) return "";
+    const c=pClass(s);
+    const col=c==="bl"?"#93c5fd":c==="rd"?"#fca5a5":"#94a3b8";
+    return `<span style="color:${col}">${s}</span>&thinsp;<strong style="color:#e2e8f0">${pct}%</strong>`;
+  }).filter(Boolean).join("&ensp;");
 }
 
 // ── Zoom controls ─────────────────────────────────────────────────────────────
