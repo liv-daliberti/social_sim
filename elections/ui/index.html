@@ -617,13 +617,23 @@ function renderDAG(){
       nodePos[gid].cx+=event.dx/t.k;
       nodePos[gid].cy+=event.dy/t.k;
       d3.select(this).attr("transform",`translate(${nodePos[gid].cx-NODE_W/2},${nodePos[gid].cy-NODE_H/2})`);
-      // Update connected edges + labels
+      // Update connected edges + influence labels
       DAG_EDGES.forEach(([s,t2])=>{
         if(s!==gid&&t2!==gid) return;
         d3.select(`#edge-${s}-${t2}`).attr("d",edgePath(gx(s),gy(s),gx(t2),gy(t2)));
         d3.select(`#inf-label-${s}-${t2}`)
           .attr("transform",`translate(${(gx(s)+gx(t2))/2},${(gy(s)+gy(t2))/2})`);
       });
+      // Move the Run Outcome card for this group
+      const _fw=d3.select(`#fw-${gid}`);
+      if(!_fw.empty()){
+        const _cx=nodePos[gid].cx, _cy=nodePos[gid].cy;
+        const _nids=GROUP_DISPLAY[gid]||[];
+        const _FH=38+_nids.length*17+8;
+        const _fy=_cy-NODE_H/2-_FH-10>8?_cy-NODE_H/2-_FH-10:_cy+NODE_H/2+10;
+        const _fx=Math.max(4,Math.min(W-190-4,_cx-95));
+        _fw.attr("transform",`translate(${_fx},${_fy})`);
+      }
     })
     .on("end",function(event,gid){
       d3.select(this).style("cursor","grab");
@@ -727,11 +737,20 @@ function revealGroup(gid, result){
       .attr("fill",stateTextColor(sampled))
       .text("► "+stateName(sampled));
 
-    bg.append("text")
-      .attr("x",NODE_W-BAR_X).attr("y",rowY+22)
-      .attr("text-anchor","end")
-      .attr("font-size",10).attr("fill","#64748b")
-      .text(`p=${prob}%`);
+    // All-state probability distribution (replaces single p=XX%)
+    const distT=bg.append("text").attr("x",BAR_X).attr("y",rowY+22).attr("font-size",8);
+    let _added=0;
+    node.states.forEach(s=>{
+      const p=Math.round((dist[s]||0)*100);
+      if(p===0) return;
+      if(_added>0) distT.append("tspan").attr("fill","#334155").text("  ");
+      const isSel=s===sampled;
+      distT.append("tspan")
+        .attr("fill",isSel?stateTextColor(s):"#475569")
+        .attr("font-weight",isSel?"700":"400")
+        .text(`${abbrev(s)} ${p}%`);
+      _added++;
+    });
 
     // ── Full-width probability bar ─────────────────────────────────────────
     drawBar(bg,node.states,dist,sampled,BAR_X,rowY+25,BAR_W,BAR_H1,false);
@@ -777,7 +796,7 @@ function animateGroupFlip(gid, result, epoch){
 
     d3.select(`#grp-${gid} .grp-bg`).attr("stroke","#fbbf24").attr("stroke-width",3.5);
 
-    const fw=overlay.append("g").attr("class","flip-widget").attr("opacity",0)
+    const fw=overlay.append("g").attr("class","flip-widget").attr("id",`fw-${gid}`).attr("opacity",0)
       .attr("transform",`translate(${fx},${fy})`);
     fw.append("rect").attr("class","fw-bg").attr("width",FW).attr("height",FH).attr("rx",7)
       .attr("fill","#131e33").attr("stroke","#fbbf24").attr("stroke-width",1.5);
@@ -926,7 +945,7 @@ function showQuickFlips(result){
     let bl=0,rd=0;
     nodeIds.forEach(nid=>{const c=pClass((result.states||{})[nid]||"");if(c==="bl")bl++;else if(c==="rd")rd++;});
     const outcomeCol=bl>rd?"#3b82f6":rd>bl?"#ef4444":"#94a3b8";
-    const fw=overlay.append("g").attr("class","flip-widget")
+    const fw=overlay.append("g").attr("class","flip-widget").attr("id",`fw-${gid}`)
       .attr("transform",`translate(${fx},${fy})`);
     fw.append("rect").attr("class","fw-bg").attr("width",FW).attr("height",FH).attr("rx",7)
       .attr("fill","#131e33").attr("stroke",outcomeCol).attr("stroke-width",2);
