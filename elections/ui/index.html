@@ -72,9 +72,24 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
 
 /* ── Layout ── */
 #main { display:flex; flex:1; overflow:hidden; }
-#dag-panel { flex:1; overflow:hidden; position:relative; }
-#dag-svg { width:100%; height:100%; display:block; cursor:grab; }
-#dag-svg:active { cursor:grabbing; }
+#dag-panel { flex:1; overflow:hidden; position:relative; min-width:200px; }
+#dag-svg { width:100%; height:100%; display:block; cursor:default; }
+
+#panel-divider {
+  width:6px; cursor:col-resize; background:var(--border);
+  flex-shrink:0; transition:background .15s; z-index:10;
+}
+#panel-divider:hover, #panel-divider.active { background:var(--blue); }
+
+#inf-editor {
+  position:fixed; z-index:2000;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:10px 13px;
+  box-shadow:0 6px 28px rgba(0,0,0,.6); min-width:190px;
+}
+#inf-editor input[type=range] {
+  width:100%; accent-color:var(--gold);
+}
 
 #zoom-controls {
   position:absolute; bottom:12px; right:12px;
@@ -256,6 +271,7 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
     </div>
   </div>
 
+  <div id="panel-divider" title="Drag to resize"></div>
   <div id="right-panel">
     <div id="tabs">
       <button class="tab-btn active" onclick="switchTab('narrative',this)">What Went Down</button>
@@ -426,9 +442,12 @@ function switchTab(n,btn){
 // ── SVG setup ──────────────────────────────────────────────────────────────────
 const svg=d3.select("#dag-svg");
 let W=0,H=0;
+let nodePos={};         // gid → {cx,cy} current pixel centre (mutated by drag)
+let customInfluence={}; // gid-gid → user-overridden TVD score
 function svgSize(){const el=document.getElementById("dag-svg");W=el.clientWidth||960;H=el.clientHeight||520;svg.attr("viewBox",`0 0 ${W} ${H}`);}
-function gx(g){return GROUP_POS[g].cx*W;}
-function gy(g){return GROUP_POS[g].cy*H;}
+function gx(g){return nodePos[g]?.cx??GROUP_POS[g].cx*W;}
+function gy(g){return nodePos[g]?.cy??GROUP_POS[g].cy*H;}
+function getInfluence(src,dst){const k=`${src}-${dst}`;return customInfluence[k]??((structure?.edge_influence)||{})[k]??0;}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 async function init(){
@@ -441,6 +460,11 @@ function renderDAG(){
   if(!structure) return;
   svg.selectAll("*").remove(); svgSize();
   const{groups}=structure;
+
+  // Initialise node centres (preserve custom positions from prior drag)
+  Object.keys(GROUP_POS).forEach(gid=>{
+    if(!nodePos[gid]) nodePos[gid]={cx:GROUP_POS[gid].cx*W, cy:GROUP_POS[gid].cy*H};
+  });
 
   const defs=svg.append("defs");
   ["arr","arr-act"].forEach((id,i)=>{
@@ -458,43 +482,62 @@ function renderDAG(){
   edgeLayer.selectAll("path").data(DAG_EDGES).join("path")
     .attr("id",d=>`edge-${d[0]}-${d[1]}`)
     .attr("fill","none").attr("stroke","#334155")
-    .attr("stroke-width",d=>{
-      const sc=(structure.edge_influence||{})[`${d[0]}-${d[1]}`]||0;
-      return 1.5+sc*6;
-    })
-    .attr("stroke-opacity",d=>{
-      const sc=(structure.edge_influence||{})[`${d[0]}-${d[1]}`]||0;
-      return 0.35+sc*1.0;
-    })
+    .attr("stroke-width",d=>1.5+getInfluence(d[0],d[1])*6)
+    .attr("stroke-opacity",d=>Math.min(1,0.35+getInfluence(d[0],d[1])*1.0))
     .attr("marker-end","url(#arr)")
     .attr("d",d=>edgePath(gx(d[0]),gy(d[0]),gx(d[1]),gy(d[1])));
 
-  // ── Edge influence labels (midpoint of each bezier) ────────────────────
-  const inf=structure.edge_influence||{};
+  // ── Edge influence labels ─────────────────────────────────────────────
   DAG_EDGES.forEach(([src,dst])=>{
-    const sc=inf[`${src}-${dst}`]||0;
-    if(sc<0.02) return;   // skip edges with no direct CPT dependency
+    const sc=getInfluence(src,dst);
+    if(sc<0.02) return;
     const pct=Math.round(sc*100);
     const lx=(gx(src)+gx(dst))/2, ly=(gy(src)+gy(dst))/2;
     const pill=edgeLayer.append("g").attr("class","edge-inf-label")
-      .attr("transform",`translate(${lx},${ly})`);
-    pill.append("title").text(`${src}→${dst} causal influence: ${pct}% (avg TVD across parent states)`);
+      .attr("id",`inf-label-${src}-${dst}`)
+      .attr("transform",`translate(${lx},${ly})`)
+      .style("cursor","pointer");
+    pill.append("title").text(`${src}→${dst}: ${pct}% — click to adjust`);
     pill.append("rect")
       .attr("x",-14).attr("y",-8).attr("width",28).attr("height",13)
       .attr("rx",4).attr("fill","#0f172a").attr("stroke","#334155").attr("stroke-width",1);
-    pill.append("text")
-      .attr("text-anchor","middle").attr("dy","0.35em")
+    pill.append("text").attr("text-anchor","middle").attr("dy","0.35em")
       .attr("font-size",8).attr("font-weight",700)
       .attr("fill",pct>=30?"#fbbf24":pct>=15?"#94a3b8":"#475569")
       .text(`${pct}%`);
+    pill.on("click",function(event){event.stopPropagation();openInfluenceEditor(src,dst,this);});
   });
 
   const nodeG=svg.append("g").attr("id","node-layer");
+
+  // ── Drag behaviour ────────────────────────────────────────────────────
+  const drag=d3.drag()
+    .on("start",function(){this._moved=false;d3.select(this).raise().style("cursor","grabbing");})
+    .on("drag",function(event,gid){
+      this._moved=true;
+      const t=d3.zoomTransform(svg.node());
+      nodePos[gid].cx+=event.dx/t.k;
+      nodePos[gid].cy+=event.dy/t.k;
+      d3.select(this).attr("transform",`translate(${nodePos[gid].cx-NODE_W/2},${nodePos[gid].cy-NODE_H/2})`);
+      // Update connected edges + labels
+      DAG_EDGES.forEach(([s,t2])=>{
+        if(s!==gid&&t2!==gid) return;
+        d3.select(`#edge-${s}-${t2}`).attr("d",edgePath(gx(s),gy(s),gx(t2),gy(t2)));
+        d3.select(`#inf-label-${s}-${t2}`)
+          .attr("transform",`translate(${(gx(s)+gx(t2))/2},${(gy(s)+gy(t2))/2})`);
+      });
+    })
+    .on("end",function(event,gid){
+      d3.select(this).style("cursor","grab");
+      if(!this._moved) selectGroup(gid);
+    });
+
   const gSel=nodeG.selectAll(".dag-group")
     .data(Object.keys(GROUP_POS)).join("g")
     .attr("class","dag-group").attr("id",d=>`grp-${d}`)
     .attr("transform",d=>`translate(${gx(d)-NODE_W/2},${gy(d)-NODE_H/2})`)
-    .style("cursor","pointer").on("click",(_,gid)=>selectGroup(gid));
+    .style("cursor","grab")
+    .call(drag);
 
   gSel.append("rect").attr("class","grp-bg")
     .attr("width",NODE_W).attr("height",NODE_H).attr("rx",8)
@@ -1118,7 +1161,6 @@ function countLocked(){
   return Object.keys(overrides).length;
 }
 
-// ── Resize ────────────────────────────────────────────────────────────────────
 // ── Zoom controls ─────────────────────────────────────────────────────────────
 function dagZoomIn()    { svg.transition().duration(250).call(window._dagZoom.scaleBy, 1.5); }
 function dagZoomOut()   { svg.transition().duration(250).call(window._dagZoom.scaleBy, 1/1.5); }
@@ -1131,11 +1173,81 @@ document.addEventListener("keydown", e=>{
   else if(e.key==="0") dagZoomReset();
 });
 
-// ── Resize ────────────────────────────────────────────────────────────────────
+// ── Edge influence editor ─────────────────────────────────────────────────────
+function openInfluenceEditor(src,dst,pillEl){
+  document.getElementById("inf-editor")?.remove();
+  const key=`${src}-${dst}`;
+  const cur=Math.round(getInfluence(src,dst)*100);
+  const rect=pillEl.getBoundingClientRect();
+
+  const ed=document.createElement("div");
+  ed.id="inf-editor";
+  ed.style.left=`${Math.max(4,rect.left-80)}px`;
+  ed.style.top=`${rect.bottom+6}px`;
+  ed.innerHTML=`
+    <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:7px">
+      ${src} → ${dst} &nbsp;<span style="color:#475569;font-weight:400">(causal influence)</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:9px">
+      <input type="range" min="0" max="100" value="${cur}" style="flex:1">
+      <span id="inf-ed-val" style="font-size:13px;font-weight:700;color:var(--gold);min-width:36px">${cur}%</span>
+    </div>
+    <div style="font-size:9px;color:#334155;margin-top:5px">drag slider · visual annotation only</div>`;
+  document.body.appendChild(ed);
+
+  const slider=ed.querySelector("input");
+  const valEl=ed.querySelector("#inf-ed-val");
+  slider.oninput=()=>{
+    const v=parseInt(slider.value)/100;
+    customInfluence[key]=v;
+    valEl.textContent=`${slider.value}%`;
+    // Update edge visual
+    const pct=parseInt(slider.value);
+    d3.select(`#edge-${src}-${dst}`)
+      .attr("stroke-width",1.5+v*6)
+      .attr("stroke-opacity",Math.min(1,0.35+v*1.0));
+    const label=d3.select(`#inf-label-${src}-${dst}`);
+    if(pct<2){label.style("display","none");}
+    else{
+      label.style("display",null);
+      label.select("text").attr("fill",pct>=30?"#fbbf24":pct>=15?"#94a3b8":"#475569").text(`${pct}%`);
+      label.select("title").text(`${src}→${dst}: ${pct}% — click to adjust`);
+    }
+  };
+  // Close on outside click
+  setTimeout(()=>{
+    document.addEventListener("click",function close(e){
+      if(!ed.contains(e.target)){ed.remove();document.removeEventListener("click",close);}
+    });
+  },0);
+}
+
+// ── Panel resize ──────────────────────────────────────────────────────────────
+(function(){
+  const divider=document.getElementById("panel-divider");
+  const rightPanel=document.getElementById("right-panel");
+  let startX,startW;
+  divider.addEventListener("mousedown",e=>{
+    e.preventDefault();
+    startX=e.clientX; startW=rightPanel.offsetWidth;
+    divider.classList.add("active");
+    document.addEventListener("mousemove",onMove);
+    document.addEventListener("mouseup",onUp,{once:true});
+  });
+  function onMove(e){
+    const newW=Math.max(200,Math.min(700,startW+(startX-e.clientX)));
+    rightPanel.style.width=newW+"px";
+    svgSize();
+  }
+  function onUp(){divider.classList.remove("active");document.removeEventListener("mousemove",onMove);}
+})();
+
+// ── Window resize ─────────────────────────────────────────────────────────────
 let resizeTimer;
 window.addEventListener("resize",()=>{
   clearTimeout(resizeTimer);
   resizeTimer=setTimeout(()=>{
+    nodePos={};   // reset to fractional defaults for new viewport
     animEpoch++;
     renderDAG();
     if(lastResult) updateAllGroups(lastResult);
