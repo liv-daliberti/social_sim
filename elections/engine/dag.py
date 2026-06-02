@@ -35,8 +35,8 @@ GROUP_INFO = {
 
 # ── DAG edges for the UI (group level) ───────────────────────────────────────
 DAG_EDGES = [
-    ("A", "B"), ("A", "C"), ("A", "D"), ("A", "G"),
-    ("B", "D"), ("B", "G"),
+    ("A", "B"), ("A", "C"), ("A", "D"), ("A", "E"), ("A", "G"),
+    ("B", "D"), ("B", "E"), ("B", "G"),
     ("C", "E"), ("C", "D"), ("C", "G"),
     ("E", "D"),
     ("D", "G"),
@@ -182,14 +182,19 @@ NODES: Dict[str, Any] = {
         "label": "News Type",
         "group": "E",
         "states": ["Economy", "Scandal", "Campaign", "Policy", "Foreign crisis", "Weather/turnout"],
-        "parents": ["C2"],
+        "parents": ["C2", "A1"],
         "cpt": [
+            # Event-driven rows — event type dominates regardless of A1
             {"cond": {"C2": "Policy shock"},       "dist": {"Economy": 0.20, "Scandal": 0.05, "Campaign": 0.10, "Policy": 0.55, "Foreign crisis": 0.05, "Weather/turnout": 0.05}},
             {"cond": {"C2": "Geopolitical shock"}, "dist": {"Economy": 0.10, "Scandal": 0.05, "Campaign": 0.05, "Policy": 0.10, "Foreign crisis": 0.65, "Weather/turnout": 0.05}},
             {"cond": {"C2": "Cultural event"},     "dist": {"Economy": 0.05, "Scandal": 0.10, "Campaign": 0.30, "Policy": 0.15, "Foreign crisis": 0.05, "Weather/turnout": 0.35}},
             {"cond": {"C2": "Weather event"},      "dist": {"Economy": 0.10, "Scandal": 0.05, "Campaign": 0.05, "Policy": 0.05, "Foreign crisis": 0.10, "Weather/turnout": 0.65}},
             {"cond": {"C2": "Scandal"},            "dist": {"Economy": 0.05, "Scandal": 0.70, "Campaign": 0.10, "Policy": 0.05, "Foreign crisis": 0.05, "Weather/turnout": 0.05}},
-            {"cond": {"C2": "None"},               "dist": {"Economy": 0.25, "Scandal": 0.10, "Campaign": 0.35, "Policy": 0.15, "Foreign crisis": 0.05, "Weather/turnout": 0.10}},
+            # No event: A1 drives the dominant news agenda
+            {"cond": {"C2": "None", "A1": "Weak"},    "dist": {"Economy": 0.45, "Scandal": 0.10, "Campaign": 0.20, "Policy": 0.15, "Foreign crisis": 0.05, "Weather/turnout": 0.05}},
+            {"cond": {"C2": "None", "A1": "Neutral"}, "dist": {"Economy": 0.25, "Scandal": 0.10, "Campaign": 0.35, "Policy": 0.15, "Foreign crisis": 0.05, "Weather/turnout": 0.10}},
+            {"cond": {"C2": "None", "A1": "Strong"},  "dist": {"Economy": 0.15, "Scandal": 0.10, "Campaign": 0.40, "Policy": 0.15, "Foreign crisis": 0.05, "Weather/turnout": 0.15}},
+            {"cond": {"C2": "None"},                  "dist": {"Economy": 0.25, "Scandal": 0.10, "Campaign": 0.35, "Policy": 0.15, "Foreign crisis": 0.05, "Weather/turnout": 0.10}},
         ],
         "desc": "The dominant type of news coverage during the campaign period",
     },
@@ -215,17 +220,35 @@ NODES: Dict[str, Any] = {
         "label": "News Tone",
         "group": "E",
         "states": ["Blue-favorable", "Neutral/mixed", "Red-favorable"],
-        "parents": ["C3", "E2"],
+        "parents": ["C3", "E2", "B1", "B2", "A3"],
         "cpt": [
+            # C3 = Helps Blue: event direction dominates; strong Blue campaign amplifies
+            {"cond": {"C3": "Helps Blue", "B1": "Strong", "E2": "Official"},  "dist": {"Blue-favorable": 0.85, "Neutral/mixed": 0.13, "Red-favorable": 0.02}},
+            {"cond": {"C3": "Helps Blue", "B1": "Strong", "E2": "Confirmed"}, "dist": {"Blue-favorable": 0.75, "Neutral/mixed": 0.22, "Red-favorable": 0.03}},
             {"cond": {"C3": "Helps Blue", "E2": "Official"},  "dist": {"Blue-favorable": 0.80, "Neutral/mixed": 0.17, "Red-favorable": 0.03}},
             {"cond": {"C3": "Helps Blue", "E2": "Confirmed"}, "dist": {"Blue-favorable": 0.70, "Neutral/mixed": 0.25, "Red-favorable": 0.05}},
             {"cond": {"C3": "Helps Blue", "E2": "Reported"},  "dist": {"Blue-favorable": 0.60, "Neutral/mixed": 0.30, "Red-favorable": 0.10}},
             {"cond": {"C3": "Helps Blue", "E2": "Rumor"},     "dist": {"Blue-favorable": 0.45, "Neutral/mixed": 0.40, "Red-favorable": 0.15}},
+            # C3 = Helps Red: event direction dominates; strong Red campaign amplifies
+            {"cond": {"C3": "Helps Red", "B2": "Strong", "E2": "Official"},  "dist": {"Blue-favorable": 0.02, "Neutral/mixed": 0.13, "Red-favorable": 0.85}},
+            {"cond": {"C3": "Helps Red", "B2": "Strong", "E2": "Confirmed"}, "dist": {"Blue-favorable": 0.03, "Neutral/mixed": 0.22, "Red-favorable": 0.75}},
             {"cond": {"C3": "Helps Red",  "E2": "Official"},  "dist": {"Blue-favorable": 0.03, "Neutral/mixed": 0.17, "Red-favorable": 0.80}},
             {"cond": {"C3": "Helps Red",  "E2": "Confirmed"}, "dist": {"Blue-favorable": 0.05, "Neutral/mixed": 0.25, "Red-favorable": 0.70}},
             {"cond": {"C3": "Helps Red",  "E2": "Reported"},  "dist": {"Blue-favorable": 0.10, "Neutral/mixed": 0.30, "Red-favorable": 0.60}},
             {"cond": {"C3": "Helps Red",  "E2": "Rumor"},     "dist": {"Blue-favorable": 0.15, "Neutral/mixed": 0.40, "Red-favorable": 0.45}},
-            {"cond": {"C3": "Ambiguous"},                      "dist": {"Blue-favorable": 0.30, "Neutral/mixed": 0.40, "Red-favorable": 0.30}},
+            # C3 = Ambiguous: campaign quality drives tone (score=3, wins over A3 rows)
+            {"cond": {"C3": "Ambiguous", "B1": "Strong", "B2": "Weak"},    "dist": {"Blue-favorable": 0.60, "Neutral/mixed": 0.30, "Red-favorable": 0.10}},
+            {"cond": {"C3": "Ambiguous", "B1": "Weak",   "B2": "Strong"},  "dist": {"Blue-favorable": 0.10, "Neutral/mixed": 0.30, "Red-favorable": 0.60}},
+            {"cond": {"C3": "Ambiguous", "B1": "Strong", "B2": "Average"}, "dist": {"Blue-favorable": 0.48, "Neutral/mixed": 0.38, "Red-favorable": 0.14}},
+            {"cond": {"C3": "Ambiguous", "B1": "Average","B2": "Strong"},  "dist": {"Blue-favorable": 0.14, "Neutral/mixed": 0.38, "Red-favorable": 0.48}},
+            {"cond": {"C3": "Ambiguous", "B1": "Average","B2": "Weak"},    "dist": {"Blue-favorable": 0.44, "Neutral/mixed": 0.40, "Red-favorable": 0.16}},
+            {"cond": {"C3": "Ambiguous", "B1": "Weak",   "B2": "Average"}, "dist": {"Blue-favorable": 0.16, "Neutral/mixed": 0.40, "Red-favorable": 0.44}},
+            {"cond": {"C3": "Ambiguous", "B1": "Strong", "B2": "Strong"},  "dist": {"Blue-favorable": 0.28, "Neutral/mixed": 0.44, "Red-favorable": 0.28}},
+            {"cond": {"C3": "Ambiguous", "B1": "Weak",   "B2": "Weak"},    "dist": {"Blue-favorable": 0.28, "Neutral/mixed": 0.44, "Red-favorable": 0.28}},
+            # C3 = Ambiguous: partisan baseline adds a lean when campaigns are roughly even (score=2)
+            {"cond": {"C3": "Ambiguous", "A3": "Blue-leaning"}, "dist": {"Blue-favorable": 0.42, "Neutral/mixed": 0.40, "Red-favorable": 0.18}},
+            {"cond": {"C3": "Ambiguous", "A3": "Red-leaning"},  "dist": {"Blue-favorable": 0.18, "Neutral/mixed": 0.40, "Red-favorable": 0.42}},
+            {"cond": {"C3": "Ambiguous"},                        "dist": {"Blue-favorable": 0.28, "Neutral/mixed": 0.44, "Red-favorable": 0.28}},
         ],
         "desc": "Overall partisan tilt of news coverage",
     },
@@ -233,11 +256,16 @@ NODES: Dict[str, Any] = {
         "label": "News Volume",
         "group": "E",
         "states": ["Low", "Medium", "High"],
-        "parents": ["C4"],
+        "parents": ["C4", "B3"],
         "cpt": [
-            {"cond": {"C4": "Low"},    "dist": {"Low": 0.65, "Medium": 0.25, "High": 0.10}},
-            {"cond": {"C4": "Medium"}, "dist": {"Low": 0.20, "Medium": 0.55, "High": 0.25}},
-            {"cond": {"C4": "High"},   "dist": {"Low": 0.05, "Medium": 0.25, "High": 0.70}},
+            # C4=High: major event drives wall-to-wall coverage regardless of ground game
+            {"cond": {"C4": "High"},                   "dist": {"Low": 0.05, "Medium": 0.25, "High": 0.70}},
+            # C4=Medium: active ground game (either side) adds modest volume boost
+            {"cond": {"C4": "Medium", "B3": "Even"},   "dist": {"Low": 0.20, "Medium": 0.55, "High": 0.25}},
+            {"cond": {"C4": "Medium"},                  "dist": {"Low": 0.15, "Medium": 0.52, "High": 0.33}},
+            # C4=Low: background campaign activity becomes the primary volume driver
+            {"cond": {"C4": "Low",    "B3": "Even"},   "dist": {"Low": 0.65, "Medium": 0.25, "High": 0.10}},
+            {"cond": {"C4": "Low"},                     "dist": {"Low": 0.50, "Medium": 0.37, "High": 0.13}},
         ],
         "desc": "Volume of election-related media coverage",
     },

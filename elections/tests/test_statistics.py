@@ -152,23 +152,46 @@ EVENT_CASES = [
 ]
 
 NEWS_CASES = [
-    # E1: News type | parent: C2
-    ("E1", {"C2": "Scandal"},            "scandal → scandal news dominant"),
-    ("E1", {"C2": "Geopolitical shock"}, "geo shock → foreign crisis coverage"),
-    ("E1", {"C2": "None"},               "no event → campaign/economy news"),
+    # E1: News type | parents: C2, A1
+    # When C2 is an event type, the score-1 C2-only rule wins regardless of A1.
+    # When C2=None, A1 drives the agenda via score-2 rules — so A1 must be specified.
+    ("E1", {"C2": "Scandal"},                       "scandal → scandal news dominant"),
+    ("E1", {"C2": "Geopolitical shock"},             "geo shock → foreign crisis coverage"),
+    ("E1", {"C2": "None", "A1": "Weak"},            "no event, weak economy → economy-heavy news"),
+    ("E1", {"C2": "None", "A1": "Neutral"},         "no event, neutral economy → campaign-heavy news"),
+    ("E1", {"C2": "None", "A1": "Strong"},          "no event, strong economy → campaign + other issues"),
     # E2: News reliability | parents: C4, A2
-    ("E2", {"C4": "High",   "A2": "High"},   "high severity + high trust → official coverage"),
-    ("E2", {"C4": "Low",    "A2": "Low"},    "low severity + low trust → rumour-heavy"),
-    ("E2", {"C4": "Medium", "A2": "Medium"}, "moderate scenario"),
-    # E3: News tone | parents: C3, E2
-    ("E3", {"C3": "Helps Blue",  "E2": "Official"},  "confirmed blue-helping event → blue-favorable tone"),
-    ("E3", {"C3": "Helps Red",   "E2": "Official"},  "confirmed red-helping event → red-favorable tone"),
-    ("E3", {"C3": "Helps Blue",  "E2": "Rumor"},     "rumour-grade blue story → tone muted"),
-    ("E3", {"C3": "Ambiguous"},                       "ambiguous event → mixed tone"),
-    # E4: News volume | parent: C4
-    ("E4", {"C4": "High"},   "high severity → high volume"),
-    ("E4", {"C4": "Low"},    "low severity → low volume"),
-    ("E4", {"C4": "Medium"}, "medium severity → medium volume"),
+    ("E2", {"C4": "High",   "A2": "High"},          "high severity + high trust → official coverage"),
+    ("E2", {"C4": "Low",    "A2": "Low"},           "low severity + low trust → rumour-heavy"),
+    ("E2", {"C4": "Medium", "A2": "Medium"},        "moderate scenario"),
+    # E3: News tone | parents: C3, E2, B1, B2, A3
+    # Score-3 rules fire when C3 + B-candidate quality + E2 all specified.
+    # Score-2 rules fire when only C3 + E2 specified (no B1/B2 in parents).
+    # Score-1 C3-only rules fire for Ambiguous with even candidates.
+    ("E3", {"C3":"Helps Blue","B1":"Strong","E2":"Official"},
+     "strong blue cand + confirmed blue event → strongly blue-favorable"),
+    ("E3", {"C3":"Helps Blue","B1":"Average","E2":"Official"},
+     "avg blue cand + confirmed blue event → blue-favorable"),
+    ("E3", {"C3":"Helps Blue","B1":"Average","E2":"Rumor"},
+     "blue event + rumour grade → muted blue tone"),
+    ("E3", {"C3":"Helps Red","B2":"Strong","E2":"Official"},
+     "strong red cand + confirmed red event → strongly red-favorable"),
+    ("E3", {"C3":"Helps Red","B2":"Average","E2":"Official"},
+     "avg red cand + confirmed red event → red-favorable"),
+    ("E3", {"C3":"Ambiguous","B1":"Strong","B2":"Weak"},
+     "ambiguous event, strong blue vs weak red → blue-leaning tone"),
+    ("E3", {"C3":"Ambiguous","B1":"Average","B2":"Average","A3":"Toss-up"},
+     "ambiguous event, even candidates, toss-up → neutral mixed tone"),
+    ("E3", {"C3":"Ambiguous","B1":"Average","B2":"Average","A3":"Blue-leaning"},
+     "ambiguous event, even candidates, blue-lean → slightly blue tone"),
+    # E4: News volume | parents: C4, B3
+    # C4=High has a single score-1 rule (B3 irrelevant).
+    # C4=Medium/Low: B3=Even triggers the score-2 rule; other B3 values use score-1.
+    ("E4", {"C4": "High"},                          "high severity → wall-to-wall coverage"),
+    ("E4", {"C4": "Medium", "B3": "Even"},          "medium severity + even ground game → standard medium volume"),
+    ("E4", {"C4": "Medium", "B3": "Blue advantage"},"medium severity + active blue gotv → boosted medium volume"),
+    ("E4", {"C4": "Low",    "B3": "Even"},          "low severity + even ground game → quiet cycle"),
+    ("E4", {"C4": "Low",    "B3": "Red advantage"}, "low severity + active red gotv → slightly higher volume"),
 ]
 
 OPINION_CASES = [
@@ -192,22 +215,7 @@ OPINION_CASES = [
     ("D4", {"C2":"Geopolitical shock","E1":"Foreign crisis"}, "geo shock → security dominates"),
 ]
 
-FORECAST_CASES = [
-    # F1: Polling signal | parents: D1, D2, D3
-    ("F1", {"D1":"Rising",  "D2":"Falling", "D3":"Low"},    "blue surge, certain → blue lead in polls"),
-    ("F1", {"D1":"Falling", "D2":"Rising",  "D3":"Low"},    "red surge, certain → red lead in polls"),
-    ("F1", {"D1":"Stable",  "D2":"Stable",  "D3":"High"},   "flat, uncertain → statistical tie"),
-    ("F1", {"D1":"Rising",  "D2":"Falling", "D3":"High"},   "blue surge but uncertain → less clear"),
-    # F2: Social signal | parents: E3, E4
-    ("F2", {"E3":"Blue-favorable", "E4":"High"},   "heavy blue-favored coverage → blue surge online"),
-    ("F2", {"E3":"Red-favorable",  "E4":"High"},   "heavy red-favored coverage → red surge online"),
-    ("F2", {"E3":"Neutral/mixed"},                  "mixed coverage → noisy social"),
-    # F3: Prediction market | parents: F1, E3
-    ("F3", {"F1":"Blue lead",      "E3":"Blue-favorable"}, "polls blue + blue news → market Blue favored"),
-    ("F3", {"F1":"Red lead",       "E3":"Red-favorable"},  "polls red + red news → market Red favored"),
-    ("F3", {"F1":"Statistical tie","E3":"Neutral/mixed"},  "polls tied + neutral → near-even market"),
-    ("F3", {"F1":"Blue lead",      "E3":"Red-favorable"},  "polls blue but red news → mixed market"),
-]
+# F and H layers removed from DAG — no FORECAST_CASES or FORECASTER_CASES.
 
 MECHANICS_CASES = [
     # G1: Blue turnout | parents: B3, C2, D1
@@ -232,38 +240,104 @@ MECHANICS_CASES = [
     ("G3", {"A3":"Red-leaning", "D4":"Culture","D2":"Rising", "D1":"Stable"}, "red-lean + rising → red independents"),
 ]
 
-FORECASTER_CASES = [
-    # H1: Forecaster rating | parents: F1, F3, E2
-    ("H1", {"F1":"Blue lead",      "F3":"Blue favored", "E2":"Official"},  "all blue signals → Likely Blue"),
-    ("H1", {"F1":"Red lead",       "F3":"Red favored",  "E2":"Official"},  "all red signals → Likely Red"),
-    ("H1", {"F1":"Statistical tie","F3":"Near-even",    "E2":"Reported"},  "all tied → Toss-up"),
-    ("H1", {"F1":"Blue lead",      "F3":"Near-even"},                       "polls blue, market mixed → uncertainty"),
-    # H2: Forecaster confidence | parents: F1, F3, F2
-    ("H2", {"F1":"Blue lead",       "F3":"Blue favored",  "F2":"Blue surge"}, "signals aligned blue → high confidence"),
-    ("H2", {"F1":"Red lead",        "F3":"Red favored",   "F2":"Red surge"},  "signals aligned red → high confidence"),
-    ("H2", {"F1":"Statistical tie", "F3":"Near-even",     "F2":"Noisy/mixed"},"all mixed → low confidence"),
-    ("H2", {"F1":"Blue lead",       "F3":"Red favored"},                        "conflicting signals → low confidence"),
-]
-
 OUTCOME_CASES = [
     # I1: Vote share category | parents: G1, G2, G3
-    ("I1", {"G1":"High",   "G2":"Low",    "G3":"Blue +5"},  "high blue / low red / blue independents → likely blue win"),
-    ("I1", {"G1":"Low",    "G2":"High",   "G3":"Red +5"},   "low blue / high red / red independents → likely red win"),
-    ("I1", {"G1":"Normal", "G2":"Normal", "G3":"Near-even"},"perfectly balanced → contested"),
-    ("I1", {"G1":"High",   "G2":"High",   "G3":"Near-even"},"both high turnout, tied independents → close"),
-    ("I1", {"G1":"Low",    "G2":"Low",    "G3":"Near-even"},"both depressed turnout → high recount risk"),
-    # I2: Winner | parent: I1
-    ("I2", {"I1":"Blue landslide"},   "landslide → certain blue wins"),
-    ("I2", {"I1":"Blue narrow win"},  "narrow blue → mostly blue wins"),
-    ("I2", {"I1":"Red narrow win"},   "narrow red → mostly red wins"),
-    ("I2", {"I1":"Red landslide"},    "red landslide → certain red wins"),
+    # I1 is fully deterministic — each (G1,G2,G3) combo maps to exactly one outcome.
+    ("I1", {"G1":"High",   "G2":"Low",    "G3":"Blue +5"},  "high blue turnout + low red + blue split → Blue landslide"),
+    ("I1", {"G1":"High",   "G2":"Normal", "G3":"Blue +5"},  "high blue + normal red + blue split → Blue landslide"),
+    ("I1", {"G1":"High",   "G2":"Normal", "G3":"Near-even"},"high blue + normal red + even split → Blue narrow win"),
+    ("I1", {"G1":"Normal", "G2":"Normal", "G3":"Near-even"},"perfectly balanced → Recount/disputed"),
+    ("I1", {"G1":"Normal", "G2":"Normal", "G3":"Red +5"},   "balanced turnout, red split → Red narrow win"),
+    ("I1", {"G1":"Low",    "G2":"High",   "G3":"Red +5"},   "low blue + high red + red split → Red landslide"),
+    ("I1", {"G1":"Low",    "G2":"High",   "G3":"Near-even"},"low blue + high red + even split → Red landslide"),
+    # I2: Winner | parent: I1  (now fully deterministic for landslide/narrow outcomes)
+    ("I2", {"I1":"Blue landslide"},   "blue landslide → certain Blue wins"),
+    ("I2", {"I1":"Blue narrow win"},  "blue narrow win → certain Blue wins"),
+    ("I2", {"I1":"Red narrow win"},   "red narrow win → certain Red wins"),
+    ("I2", {"I1":"Red landslide"},    "red landslide → certain Red wins"),
     ("I2", {"I1":"Recount/disputed"}, "recount → 50/50 coin flip"),
+]
+
+# ── Tie-breaker cases: every config where two equal-specificity rules match ────
+# These verify that the FIRST max-score rule wins (score > best_score).
+# They will fail if the comparator is ever reverted to >=.
+TIE_CASES = [
+    # D1 — C3-rule (rule[3]) beats E3-rule (rule[4] or rule[5])
+    ("D1", {"B1":"Strong","B2":"Average","C3":"Helps Blue","E3":"Blue-favorable"},
+     "strong blue + C3-helps + blue news: C3 rule must win over E3 rule"),
+    ("D1", {"B1":"Strong","B2":"Average","C3":"Helps Blue","E3":"Neutral/mixed"},
+     "strong blue + C3-helps + neutral news: C3 rule must win over E3-neutral rule"),
+
+    # D2 — C3-rule (rule[3]) beats E3-rule (rule[4] or rule[5])
+    ("D2", {"B2":"Strong","B1":"Average","C3":"Helps Red","E3":"Red-favorable"},
+     "strong red + C3-helps + red news: C3 rule must win over E3 rule"),
+    ("D2", {"B2":"Strong","B1":"Average","C3":"Helps Red","E3":"Neutral/mixed"},
+     "strong red + C3-helps + neutral news: C3 rule must win over E3-neutral rule"),
+
+    # D3 — A2-Low rule (rule[9]) beats E2-Official rule (rule[10])
+    ("D3", {"A2":"Low","E2":"Official","E4":"Low"},
+     "low trust + official news + low volume: low-trust uncertainty wins"),
+    ("D3", {"A2":"Low","E2":"Official","E4":"Medium"},
+     "low trust + official news + medium volume: low-trust uncertainty wins"),
+    ("D3", {"A2":"Low","E2":"Official","E4":"High"},
+     "low trust + official news + high volume: low-trust uncertainty wins"),
+
+    # G1 — weather rule beats momentum rule for same B3 group
+    ("G1", {"B3":"Blue advantage","C2":"Weather event","D1":"Stable"},
+     "blue gotv + weather + stable momentum: weather rule wins over D1-Stable"),
+    ("G1", {"B3":"Blue advantage","C2":"Weather event","D1":"Falling"},
+     "blue gotv + weather + falling momentum: weather rule wins over D1-Falling"),
+    ("G1", {"B3":"Even","C2":"Weather event","D1":"Rising"},
+     "even ground + weather + rising momentum: weather suppression wins over D1-Rising"),
+    ("G1", {"B3":"Even","C2":"Weather event","D1":"Stable"},
+     "even ground + weather + stable momentum: weather suppression wins over D1-Stable"),
+    ("G1", {"B3":"Even","C2":"Weather event","D1":"Falling"},
+     "even ground + weather + falling momentum: weather suppression wins over D1-Falling"),
+
+    # G2 — symmetric to G1
+    ("G2", {"B3":"Red advantage","C2":"Weather event","D2":"Stable"},
+     "red gotv + weather + stable momentum: weather rule wins over D2-Stable"),
+    ("G2", {"B3":"Red advantage","C2":"Weather event","D2":"Falling"},
+     "red gotv + weather + falling momentum: weather rule wins over D2-Falling"),
+    ("G2", {"B3":"Even","C2":"Weather event","D2":"Rising"},
+     "even ground + weather + rising momentum: weather suppression wins over D2-Rising"),
+    ("G2", {"B3":"Even","C2":"Weather event","D2":"Stable"},
+     "even ground + weather + stable momentum: weather suppression wins over D2-Stable"),
+    ("G2", {"B3":"Even","C2":"Weather event","D2":"Falling"},
+     "even ground + weather + falling momentum: weather suppression wins over D2-Falling"),
+
+    # G3 Toss-up — economy/trust rules: most critical ties (Blue+5 vs Red+5 reversal)
+    ("G3", {"A3":"Toss-up","D4":"Economy","D1":"Rising","D2":"Rising"},
+     "toss-up, economy, both rising: D1-economy rule wins → Blue+5 favored"),
+    ("G3", {"A3":"Toss-up","D4":"Economy","D1":"Rising","D2":"Falling"},
+     "toss-up, economy, blue rising/red falling: generic-momentum rule wins"),
+    ("G3", {"A3":"Toss-up","D4":"Economy","D1":"Falling","D2":"Rising"},
+     "toss-up, economy, red rising/blue falling: generic-momentum rule wins"),
+    ("G3", {"A3":"Toss-up","D4":"Trust/corruption","D1":"Rising","D2":"Rising"},
+     "toss-up, trust, both rising: D1-trust rule wins → Blue+5 favored"),
+    ("G3", {"A3":"Toss-up","D4":"Trust/corruption","D1":"Rising","D2":"Falling"},
+     "toss-up, trust, blue rising/red falling: generic-momentum rule wins"),
+    ("G3", {"A3":"Toss-up","D4":"Trust/corruption","D1":"Falling","D2":"Rising"},
+     "toss-up, trust, red rising/blue falling: generic-momentum rule wins"),
+    ("G3", {"A3":"Toss-up","D4":"Security","D1":"Falling","D2":"Rising"},
+     "toss-up, security, red rising: generic-momentum rule wins over security-D2 rule"),
+
+    # G3 Blue-leaning — D1-rules listed before D2-rules
+    ("G3", {"A3":"Blue-leaning","D4":"Culture","D1":"Rising","D2":"Rising"},
+     "blue-lean, both rising: D1-Rising rule wins over D2-Rising"),
+    ("G3", {"A3":"Blue-leaning","D4":"Culture","D1":"Stable","D2":"Rising"},
+     "blue-lean, stable blue / red rising: D1-Stable rule wins over D2-Rising"),
+
+    # G3 Red-leaning — D2-rules listed before D1-rules
+    ("G3", {"A3":"Red-leaning","D4":"Culture","D1":"Rising","D2":"Rising"},
+     "red-lean, both rising: D2-Rising rule wins over D1-Rising"),
+    ("G3", {"A3":"Red-leaning","D4":"Culture","D1":"Rising","D2":"Stable"},
+     "red-lean, blue rising / red stable: D2-Stable rule wins over D1-Rising"),
 ]
 
 ALL_CASES = (
     ROOT_CASES + CAMPAIGN_CASES + EVENT_CASES + NEWS_CASES +
-    OPINION_CASES + FORECAST_CASES + MECHANICS_CASES +
-    FORECASTER_CASES + OUTCOME_CASES
+    OPINION_CASES + MECHANICS_CASES + OUTCOME_CASES + TIE_CASES
 )
 
 
