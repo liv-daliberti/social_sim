@@ -35,7 +35,7 @@ GROUP_INFO = {
 
 # ── DAG edges for the UI (group level) ───────────────────────────────────────
 DAG_EDGES = [
-    ("A", "B"), ("A", "C"), ("A", "D"), ("A", "E"), ("A", "G"),
+    ("A", "B"), ("A", "C"), ("A", "E"),
     ("B", "D"), ("B", "E"), ("B", "G"),
     ("C", "E"), ("C", "D"), ("C", "G"),
     ("E", "D"),
@@ -346,21 +346,21 @@ NODES: Dict[str, Any] = {
         "label": "Voter Uncertainty",
         "group": "D",
         "states": ["High", "Medium", "Low"],
-        "parents": ["A2", "E2", "E4"],
+        "parents": ["E2", "E4"],
         "cpt": [
-            {"cond": {"A2": "High",   "E2": "Official",  "E4": "Low"},  "dist": {"High": 0.05, "Medium": 0.25, "Low": 0.70}},
-            {"cond": {"A2": "High",   "E2": "Official",  "E4": "High"}, "dist": {"High": 0.10, "Medium": 0.35, "Low": 0.55}},
-            {"cond": {"A2": "High",   "E2": "Confirmed"},               "dist": {"High": 0.10, "Medium": 0.35, "Low": 0.55}},
-            {"cond": {"A2": "Medium", "E2": "Reported"},                "dist": {"High": 0.25, "Medium": 0.50, "Low": 0.25}},
-            {"cond": {"A2": "Medium", "E2": "Rumor",     "E4": "High"}, "dist": {"High": 0.50, "Medium": 0.40, "Low": 0.10}},
-            {"cond": {"A2": "Medium", "E2": "Rumor"},                   "dist": {"High": 0.40, "Medium": 0.45, "Low": 0.15}},
-            {"cond": {"A2": "Low",    "E2": "Confirmed"},               "dist": {"High": 0.35, "Medium": 0.45, "Low": 0.20}},
-            {"cond": {"A2": "Low",    "E2": "Rumor",     "E4": "High"}, "dist": {"High": 0.75, "Medium": 0.20, "Low": 0.05}},
-            {"cond": {"A2": "Low",    "E2": "Rumor"},                   "dist": {"High": 0.60, "Medium": 0.30, "Low": 0.10}},
-            {"cond": {"A2": "Low"},                                      "dist": {"High": 0.45, "Medium": 0.40, "Low": 0.15}},
-            {"cond": {"E2": "Official"},                                 "dist": {"High": 0.08, "Medium": 0.30, "Low": 0.62}},
-            {"cond": {"E2": "Rumor"},                                    "dist": {"High": 0.50, "Medium": 0.35, "Low": 0.15}},
-            {"cond": {},                                                  "dist": {"High": 0.25, "Medium": 0.50, "Low": 0.25}},
+            {"cond": {"E2": "Official",  "E4": "Low"},    "dist": {"High": 0.05, "Medium": 0.22, "Low": 0.73}},
+            {"cond": {"E2": "Official",  "E4": "Medium"},  "dist": {"High": 0.08, "Medium": 0.28, "Low": 0.64}},
+            {"cond": {"E2": "Official",  "E4": "High"},    "dist": {"High": 0.10, "Medium": 0.33, "Low": 0.57}},
+            {"cond": {"E2": "Confirmed", "E4": "Low"},     "dist": {"High": 0.10, "Medium": 0.33, "Low": 0.57}},
+            {"cond": {"E2": "Confirmed", "E4": "Medium"},  "dist": {"High": 0.15, "Medium": 0.40, "Low": 0.45}},
+            {"cond": {"E2": "Confirmed", "E4": "High"},    "dist": {"High": 0.18, "Medium": 0.42, "Low": 0.40}},
+            {"cond": {"E2": "Reported",  "E4": "Low"},     "dist": {"High": 0.25, "Medium": 0.48, "Low": 0.27}},
+            {"cond": {"E2": "Reported",  "E4": "High"},    "dist": {"High": 0.38, "Medium": 0.42, "Low": 0.20}},
+            {"cond": {"E2": "Reported"},                    "dist": {"High": 0.30, "Medium": 0.45, "Low": 0.25}},
+            {"cond": {"E2": "Rumor",     "E4": "High"},    "dist": {"High": 0.68, "Medium": 0.25, "Low": 0.07}},
+            {"cond": {"E2": "Rumor",     "E4": "Low"},     "dist": {"High": 0.45, "Medium": 0.38, "Low": 0.17}},
+            {"cond": {"E2": "Rumor"},                       "dist": {"High": 0.55, "Medium": 0.32, "Low": 0.13}},
+            {"cond": {},                                     "dist": {"High": 0.25, "Medium": 0.50, "Low": 0.25}},
         ],
         "desc": "How uncertain voters are about the candidates and likely outcome",
     },
@@ -368,7 +368,7 @@ NODES: Dict[str, Any] = {
         "label": "Issue Salience",
         "group": "D",
         "states": ["Economy", "Trust/corruption", "Security", "Culture", "Climate/weather"],
-        "parents": ["A1", "C2", "E1"],
+        "parents": ["C2", "E1"],
         "cpt": [
             {"cond": {"C2": "Geopolitical shock", "E1": "Foreign crisis"}, "dist": {"Economy": 0.10, "Trust/corruption": 0.10, "Security": 0.65, "Culture": 0.10, "Climate/weather": 0.05}},
             {"cond": {"C2": "Geopolitical shock"},                          "dist": {"Economy": 0.15, "Trust/corruption": 0.10, "Security": 0.55, "Culture": 0.10, "Climate/weather": 0.10}},
@@ -377,10 +377,15 @@ NODES: Dict[str, Any] = {
             {"cond": {"C2": "Cultural event"},                               "dist": {"Economy": 0.15, "Trust/corruption": 0.15, "Security": 0.10, "Culture": 0.50, "Climate/weather": 0.10}},
             {"cond": {"C2": "Weather event"},                                "dist": {"Economy": 0.20, "Trust/corruption": 0.10, "Security": 0.10, "Culture": 0.10, "Climate/weather": 0.50}},
             {"cond": {"C2": "Policy shock"},                                 "dist": {"Economy": 0.35, "Trust/corruption": 0.20, "Security": 0.15, "Culture": 0.15, "Climate/weather": 0.15}},
-            {"cond": {"A1": "Weak",    "C2": "None"},                       "dist": {"Economy": 0.55, "Trust/corruption": 0.15, "Security": 0.10, "Culture": 0.10, "Climate/weather": 0.10}},
-            {"cond": {"A1": "Neutral", "C2": "None"},                       "dist": {"Economy": 0.35, "Trust/corruption": 0.20, "Security": 0.15, "Culture": 0.15, "Climate/weather": 0.15}},
-            {"cond": {"A1": "Strong",  "C2": "None"},                       "dist": {"Economy": 0.25, "Trust/corruption": 0.25, "Security": 0.15, "Culture": 0.20, "Climate/weather": 0.15}},
-            {"cond": {},                                                      "dist": {"Economy": 0.30, "Trust/corruption": 0.20, "Security": 0.15, "Culture": 0.20, "Climate/weather": 0.15}},
+            # No event: news coverage (E1) drives which issue is salient
+            {"cond": {"C2": "None", "E1": "Economy"},          "dist": {"Economy": 0.60, "Trust/corruption": 0.15, "Security": 0.10, "Culture": 0.10, "Climate/weather": 0.05}},
+            {"cond": {"C2": "None", "E1": "Scandal"},           "dist": {"Economy": 0.10, "Trust/corruption": 0.65, "Security": 0.05, "Culture": 0.15, "Climate/weather": 0.05}},
+            {"cond": {"C2": "None", "E1": "Campaign"},          "dist": {"Economy": 0.25, "Trust/corruption": 0.25, "Security": 0.15, "Culture": 0.25, "Climate/weather": 0.10}},
+            {"cond": {"C2": "None", "E1": "Policy"},            "dist": {"Economy": 0.30, "Trust/corruption": 0.25, "Security": 0.15, "Culture": 0.20, "Climate/weather": 0.10}},
+            {"cond": {"C2": "None", "E1": "Foreign crisis"},    "dist": {"Economy": 0.10, "Trust/corruption": 0.10, "Security": 0.60, "Culture": 0.10, "Climate/weather": 0.10}},
+            {"cond": {"C2": "None", "E1": "Weather/turnout"},   "dist": {"Economy": 0.15, "Trust/corruption": 0.10, "Security": 0.10, "Culture": 0.10, "Climate/weather": 0.55}},
+            {"cond": {"C2": "None"},                             "dist": {"Economy": 0.35, "Trust/corruption": 0.20, "Security": 0.15, "Culture": 0.20, "Climate/weather": 0.10}},
+            {"cond": {},                                          "dist": {"Economy": 0.30, "Trust/corruption": 0.20, "Security": 0.15, "Culture": 0.20, "Climate/weather": 0.15}},
         ],
         "desc": "Which policy dimension dominates voter decision-making",
     },
@@ -435,28 +440,24 @@ NODES: Dict[str, Any] = {
         "label": "Independent Split",
         "group": "G",
         "states": ["Blue +5", "Near-even", "Red +5"],
-        "parents": ["A3", "D4", "D1", "D2"],
+        "parents": ["D4", "D1", "D2"],
         "cpt": [
-            # Toss-up baseline
-            {"cond": {"A3": "Toss-up", "D1": "Rising",  "D2": "Falling"},              "dist": {"Blue +5": 0.60, "Near-even": 0.30, "Red +5": 0.10}},
-            {"cond": {"A3": "Toss-up", "D1": "Stable",  "D2": "Stable"},               "dist": {"Blue +5": 0.25, "Near-even": 0.50, "Red +5": 0.25}},
-            {"cond": {"A3": "Toss-up", "D1": "Falling", "D2": "Rising"},               "dist": {"Blue +5": 0.10, "Near-even": 0.30, "Red +5": 0.60}},
-            {"cond": {"A3": "Toss-up", "D4": "Economy",          "D1": "Rising"},      "dist": {"Blue +5": 0.55, "Near-even": 0.33, "Red +5": 0.12}},
-            {"cond": {"A3": "Toss-up", "D4": "Economy",          "D2": "Rising"},      "dist": {"Blue +5": 0.12, "Near-even": 0.33, "Red +5": 0.55}},
-            {"cond": {"A3": "Toss-up", "D4": "Trust/corruption", "D1": "Rising"},      "dist": {"Blue +5": 0.55, "Near-even": 0.35, "Red +5": 0.10}},
-            {"cond": {"A3": "Toss-up", "D4": "Trust/corruption", "D2": "Rising"},      "dist": {"Blue +5": 0.10, "Near-even": 0.35, "Red +5": 0.55}},
-            {"cond": {"A3": "Toss-up", "D4": "Security",         "D2": "Rising"},      "dist": {"Blue +5": 0.15, "Near-even": 0.35, "Red +5": 0.50}},
-            # Blue-leaning baseline
-            {"cond": {"A3": "Blue-leaning", "D1": "Rising"},                            "dist": {"Blue +5": 0.55, "Near-even": 0.35, "Red +5": 0.10}},
-            {"cond": {"A3": "Blue-leaning", "D1": "Stable"},                            "dist": {"Blue +5": 0.45, "Near-even": 0.40, "Red +5": 0.15}},
-            {"cond": {"A3": "Blue-leaning", "D2": "Rising"},                            "dist": {"Blue +5": 0.30, "Near-even": 0.45, "Red +5": 0.25}},
-            {"cond": {"A3": "Blue-leaning"},                                             "dist": {"Blue +5": 0.48, "Near-even": 0.38, "Red +5": 0.14}},
-            # Red-leaning baseline
-            {"cond": {"A3": "Red-leaning",  "D2": "Rising"},                            "dist": {"Blue +5": 0.10, "Near-even": 0.35, "Red +5": 0.55}},
-            {"cond": {"A3": "Red-leaning",  "D2": "Stable"},                            "dist": {"Blue +5": 0.15, "Near-even": 0.40, "Red +5": 0.45}},
-            {"cond": {"A3": "Red-leaning",  "D1": "Rising"},                            "dist": {"Blue +5": 0.25, "Near-even": 0.45, "Red +5": 0.30}},
-            {"cond": {"A3": "Red-leaning"},                                              "dist": {"Blue +5": 0.14, "Near-even": 0.38, "Red +5": 0.48}},
-            {"cond": {},                                                                  "dist": {"Blue +5": 0.30, "Near-even": 0.40, "Red +5": 0.30}},
+            # Clear momentum divergence drives the split
+            {"cond": {"D1": "Rising",  "D2": "Falling"},                           "dist": {"Blue +5": 0.60, "Near-even": 0.30, "Red +5": 0.10}},
+            {"cond": {"D1": "Falling", "D2": "Rising"},                            "dist": {"Blue +5": 0.10, "Near-even": 0.30, "Red +5": 0.60}},
+            # Both stable: issue salience is the tiebreaker
+            {"cond": {"D1": "Stable", "D2": "Stable", "D4": "Economy"},           "dist": {"Blue +5": 0.28, "Near-even": 0.44, "Red +5": 0.28}},
+            {"cond": {"D1": "Stable", "D2": "Stable", "D4": "Trust/corruption"},  "dist": {"Blue +5": 0.32, "Near-even": 0.44, "Red +5": 0.24}},
+            {"cond": {"D1": "Stable", "D2": "Stable", "D4": "Security"},          "dist": {"Blue +5": 0.22, "Near-even": 0.44, "Red +5": 0.34}},
+            {"cond": {"D1": "Stable", "D2": "Stable"},                             "dist": {"Blue +5": 0.28, "Near-even": 0.44, "Red +5": 0.28}},
+            # Issue salience modifies the momentum-driven baseline
+            {"cond": {"D4": "Economy",          "D1": "Rising"},                   "dist": {"Blue +5": 0.48, "Near-even": 0.37, "Red +5": 0.15}},
+            {"cond": {"D4": "Economy",          "D2": "Rising"},                   "dist": {"Blue +5": 0.15, "Near-even": 0.37, "Red +5": 0.48}},
+            {"cond": {"D4": "Trust/corruption", "D1": "Rising"},                   "dist": {"Blue +5": 0.50, "Near-even": 0.36, "Red +5": 0.14}},
+            {"cond": {"D4": "Trust/corruption", "D2": "Rising"},                   "dist": {"Blue +5": 0.14, "Near-even": 0.36, "Red +5": 0.50}},
+            {"cond": {"D4": "Security",         "D1": "Rising"},                   "dist": {"Blue +5": 0.32, "Near-even": 0.42, "Red +5": 0.26}},
+            {"cond": {"D4": "Security",         "D2": "Rising"},                   "dist": {"Blue +5": 0.15, "Near-even": 0.37, "Red +5": 0.48}},
+            {"cond": {},                                                             "dist": {"Blue +5": 0.30, "Near-even": 0.40, "Red +5": 0.30}},
         ],
         "desc": "How independent voters break — net margin among swing voters",
     },
@@ -779,4 +780,221 @@ def get_structure() -> dict:
         "groups":         GROUP_INFO,
         "topo_order":     TOPO_ORDER,
         "edge_influence": edge_influence,
+    }
+
+
+def compute_exact_news_forecast(overrides: Optional[Dict[str, str]] = None) -> Dict:
+    """
+    Analytically compute P(I2=Blue wins | E1,E2,E3,E4) via exact variable elimination.
+
+    overrides: same dict used by simulate() — forced nodes become point masses,
+               so the computation conditions on exactly the same fixed values
+               as the empirical batch.
+
+    Strategy (3 precomputation passes + 1 enumeration pass):
+
+      Pass 1 — p_blue_d[b3,c2,d1,d2,d4]
+        = Σ_{g1,g2,g3} P(G1|b3,c2,d1) · P(G2|b3,c2,d2) · P(G3|d4,d1,d2) · blue(g1,g2,g3)
+
+      Pass 2 — v[b3,c2,d1,d2,e1]
+        = Σ_{d4} P(D4|c2,e1) · p_blue_d[b3,c2,d1,d2,d4]
+
+      Pass 3 — u[b1,b2,c3,e3,b3,c2,e1]
+        = Σ_{d1,d2} P(D1|b1,b2,c3,e3) · P(D2|b1,b2,c3,e3) · v[b3,c2,d1,d2,e1]
+
+      Enumeration — over (A,B,C,E) in topological order:
+        weight = P(a1)·P(a2)·P(a3)·P(b1|a3)·P(b2|a3)·P(b3|a3,a2)
+                ·P(c1|a1,a2)·P(c2|c1)·P(c3|c2)·P(c4|c2)
+                ·P(e1|c2,a1)·P(e2|c4,a2)·P(e3|c3,e2,b1,b2,a3)·P(e4|c4,b3)
+        P(Blue|e_key) = Σ_upstream weight · u[b1,b2,c3,e3,b3,c2,e1]
+                       / Σ_upstream weight
+
+    Overrides collapse any forced node's distribution to a point mass {state: 1.0},
+    which naturally propagates through all lookup tables and loops.
+
+    D3 (Voter Uncertainty) has no path to I2 and is correctly omitted.
+    """
+    if overrides is None:
+        overrides = {}
+
+    S = {nid: NODES[nid]["states"] for nid in TOPO_ORDER}
+
+    def dn(nid: str, ps: Dict) -> Dict[str, float]:
+        if nid in overrides:
+            return {overrides[nid]: 1.0}
+        return _find_dist(NODES[nid], ps)
+
+    def prior(nid: str) -> Dict[str, float]:
+        if nid in overrides:
+            return {overrides[nid]: 1.0}
+        return NODES[nid]["prior"]
+
+    # ── Precompute all CPT lookups as plain dicts ─────────────────────────────
+    b1_lkp = {a3: dn("B1", {"A3": a3}) for a3 in S["A3"]}
+    b2_lkp = {a3: dn("B2", {"A3": a3}) for a3 in S["A3"]}
+    b3_lkp = {(a3, a2): dn("B3", {"A3": a3, "A2": a2})
+              for a3 in S["A3"] for a2 in S["A2"]}
+    c1_lkp = {(a1, a2): dn("C1", {"A1": a1, "A2": a2})
+              for a1 in S["A1"] for a2 in S["A2"]}
+    c2_lkp = {c1: dn("C2", {"C1": c1}) for c1 in S["C1"]}
+    c3_lkp = {c2: dn("C3", {"C2": c2}) for c2 in S["C2"]}
+    c4_lkp = {c2: dn("C4", {"C2": c2}) for c2 in S["C2"]}
+    e1_lkp = {(c2, a1): dn("E1", {"C2": c2, "A1": a1})
+              for c2 in S["C2"] for a1 in S["A1"]}
+    e2_lkp = {(c4, a2): dn("E2", {"C4": c4, "A2": a2})
+              for c4 in S["C4"] for a2 in S["A2"]}
+    e3_lkp = {(c3, e2, b1, b2, a3):
+              dn("E3", {"C3": c3, "E2": e2, "B1": b1, "B2": b2, "A3": a3})
+              for c3 in S["C3"] for e2 in S["E2"]
+              for b1 in S["B1"] for b2 in S["B2"] for a3 in S["A3"]}
+    e4_lkp = {(c4, b3): dn("E4", {"C4": c4, "B3": b3})
+              for c4 in S["C4"] for b3 in S["B3"]}
+    g1_lkp = {(b3, c2, d1): dn("G1", {"B3": b3, "C2": c2, "D1": d1})
+              for b3 in S["B3"] for c2 in S["C2"] for d1 in S["D1"]}
+    g2_lkp = {(b3, c2, d2): dn("G2", {"B3": b3, "C2": c2, "D2": d2})
+              for b3 in S["B3"] for c2 in S["C2"] for d2 in S["D2"]}
+    g3_lkp = {(d4, d1, d2): dn("G3", {"D4": d4, "D1": d1, "D2": d2})
+              for d4 in S["D4"] for d1 in S["D1"] for d2 in S["D2"]}
+    d4_lkp = {(c2, e1): dn("D4", {"C2": c2, "E1": e1})
+              for c2 in S["C2"] for e1 in S["E1"]}
+    d1_lkp = {(b1, b2, c3, e3): dn("D1", {"B1": b1, "B2": b2, "C3": c3, "E3": e3})
+              for b1 in S["B1"] for b2 in S["B2"] for c3 in S["C3"] for e3 in S["E3"]}
+    d2_lkp = {(b1, b2, c3, e3): dn("D2", {"B2": b2, "B1": b1, "C3": c3, "E3": e3})
+              for b1 in S["B1"] for b2 in S["B2"] for c3 in S["C3"] for e3 in S["E3"]}
+
+    G1S = {"High": 1, "Normal": 0, "Low": -1}
+    G2S = {"Low": 1, "Normal": 0, "High": -1}
+    G3S = {"Blue +5": 1, "Near-even": 0, "Red +5": -1}
+
+    def blue_i(g1: str, g2: str, g3: str) -> float:
+        sc = G1S[g1] + G2S[g2] + G3S[g3]
+        return 1.0 if sc >= 1 else (0.5 if sc == 0 else 0.0)
+
+    # ── Pass 1: P(Blue | b3,c2,d1,d2,d4) via G marginalization ──────────────
+    p_blue_d: Dict = {}
+    for b3 in S["B3"]:
+        for c2 in S["C2"]:
+            for d1 in S["D1"]:
+                g1d = g1_lkp[(b3, c2, d1)]
+                for d2 in S["D2"]:
+                    g2d = g2_lkp[(b3, c2, d2)]
+                    for d4 in S["D4"]:
+                        g3d = g3_lkp[(d4, d1, d2)]
+                        val = 0.0
+                        for g1, pg1 in g1d.items():
+                            for g2, pg2 in g2d.items():
+                                for g3, pg3 in g3d.items():
+                                    val += pg1 * pg2 * pg3 * blue_i(g1, g2, g3)
+                        p_blue_d[(b3, c2, d1, d2, d4)] = val
+
+    # ── Pass 2: v[b3,c2,d1,d2,e1] = Σ_d4 P(D4|c2,e1) · p_blue_d ────────────
+    v: Dict = {}
+    for b3 in S["B3"]:
+        for c2 in S["C2"]:
+            for d1 in S["D1"]:
+                for d2 in S["D2"]:
+                    for e1 in S["E1"]:
+                        v[(b3, c2, d1, d2, e1)] = sum(
+                            pd4 * p_blue_d[(b3, c2, d1, d2, d4)]
+                            for d4, pd4 in d4_lkp[(c2, e1)].items()
+                        )
+
+    # ── Pass 3: u[b1,b2,c3,e3,b3,c2,e1] = Σ_{d1,d2} P(D1)·P(D2)·v ─────────
+    u: Dict = {}
+    for b1 in S["B1"]:
+        for b2 in S["B2"]:
+            for c3 in S["C3"]:
+                for e3 in S["E3"]:
+                    d1d = d1_lkp[(b1, b2, c3, e3)]
+                    d2d = d2_lkp[(b1, b2, c3, e3)]
+                    for b3 in S["B3"]:
+                        for c2 in S["C2"]:
+                            for e1 in S["E1"]:
+                                u[(b1, b2, c3, e3, b3, c2, e1)] = sum(
+                                    pd1 * pd2 * v[(b3, c2, d1, d2, e1)]
+                                    for d1, pd1 in d1d.items()
+                                    for d2, pd2 in d2d.items()
+                                )
+
+    # ── Enumeration: Σ over (A,B,C,E) accumulating P(Blue,E) and P(E) ────────
+    # Use tuple keys (faster hash than formatted strings) + defaultdict.
+    from collections import defaultdict
+    joint_blue: Dict = defaultdict(float)
+    joint_wt:   Dict = defaultdict(float)
+
+    for a1, pa1 in prior("A1").items():
+     for a2, pa2 in prior("A2").items():
+      for a3, pa3 in prior("A3").items():
+       for b1, pb1 in b1_lkp[a3].items():
+        for b2, pb2 in b2_lkp[a3].items():
+         for b3, pb3 in b3_lkp[(a3, a2)].items():
+          for c1, pc1 in c1_lkp[(a1, a2)].items():
+           for c2, pc2 in c2_lkp[c1].items():
+            if pc2 < 1e-10: continue
+            c3d = c3_lkp[c2]; c4d = c4_lkp[c2]
+            for c3, pc3 in c3d.items():
+             if pc3 < 1e-10: continue
+             for c4, pc4 in c4d.items():
+              if pc4 < 1e-10: continue
+              p_up = pa1*pa2*pa3 * pb1*pb2*pb3 * pc1*pc2*pc3*pc4
+              if p_up < 1e-15: continue
+              e1d = e1_lkp[(c2, a1)]
+              e2d = e2_lkp[(c4, a2)]
+              e4d = e4_lkp[(c4, b3)]
+              for e1, pe1 in e1d.items():
+               if pe1 < 1e-10: continue
+               p_up_e1 = p_up * pe1
+               for e2, pe2 in e2d.items():
+                if pe2 < 1e-10: continue
+                p_up_e12 = p_up_e1 * pe2
+                e3d = e3_lkp[(c3, e2, b1, b2, a3)]
+                for e3, pe3 in e3d.items():
+                 if pe3 < 1e-10: continue
+                 # Hoist pb_u and the pre-e4 weight outside the e4 loop
+                 pb_u  = u[(b1, b2, c3, e3, b3, c2, e1)]
+                 w123  = p_up_e12 * pe3
+                 pb_w  = w123 * pb_u
+                 for e4, pe4 in e4d.items():
+                  if pe4 < 1e-10: continue
+                  ek = (e1, e2, e3, e4)
+                  joint_blue[ek] += pb_w  * pe4
+                  joint_wt[ek]   += w123  * pe4
+
+    # ── Aggregate ─────────────────────────────────────────────────────────────
+    cond: Dict = {}
+    for ek, wt in joint_wt.items():
+        if wt > 1e-9:
+            cond[f"{ek[0]}|{ek[1]}|{ek[2]}|{ek[3]}"] = {
+                "p_blue": round(joint_blue[ek] / wt, 4),
+                "p_e":    round(wt, 6),
+            }
+
+    p_tot     = sum(d["p_e"]                           for d in cond.values())
+    bayes_acc = sum(d["p_e"] * max(d["p_blue"], 1 - d["p_blue"]) for d in cond.values()) / p_tot
+    base_blue = sum(d["p_e"] * d["p_blue"]             for d in cond.values()) / p_tot
+    base_acc  = max(base_blue, 1 - base_blue)
+
+    # brier_optimal: E[p*(1−p*)] — irreducible variance of the E→I2 channel.
+    # This is the Brier loss a perfect model would achieve if settlement_yes were a noisy
+    # 0/1 draw (one simulation per task).  With float settlement_yes = p_blue the optimal
+    # Brier loss is 0, so the achievable reward ceiling is 2 * 0.25 = 0.5.
+    brier_optimal  = sum(d["p_e"] * d["p_blue"] * (1 - d["p_blue"]) for d in cond.values()) / p_tot
+    reward_ceiling = 0.5   # 2 * 0.25: perfect model hits brier=0 against float settlement_yes
+
+    e3_b: Dict[str, float] = {}; e3_t: Dict[str, float] = {}
+    for ek, d in cond.items():
+        e3 = ek.split("|")[2]
+        e3_b[e3] = e3_b.get(e3, 0.0) + d["p_e"] * d["p_blue"]
+        e3_t[e3] = e3_t.get(e3, 0.0) + d["p_e"]
+    e3_blue_prob = {k: round(e3_b[k] / e3_t[k], 3) for k in e3_t if e3_t[k] > 0}
+
+    return {
+        "conditional":    cond,
+        "bayes_accuracy": round(bayes_acc, 4),
+        "base_accuracy":  round(base_acc, 4),
+        "base_blue":      round(base_blue, 4),
+        "info_gain_pp":   round((bayes_acc - base_acc) * 100, 1),
+        "brier_optimal":  round(brier_optimal, 4),
+        "reward_ceiling": reward_ceiling,
+        "e3_blue_prob":   e3_blue_prob,
     }

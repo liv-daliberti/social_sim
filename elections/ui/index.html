@@ -345,16 +345,197 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
 
 #empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--muted); gap:6px; text-align:center; padding:20px; }
 #empty-state .arr { font-size:22px; }
+
+/* ── Mode switcher ── */
+.mode-btn {
+  background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius);
+  color:var(--muted); padding:4px 11px; font-size:11px; font-weight:600; cursor:pointer;
+}
+.mode-btn:hover { color:var(--text); background:var(--border); }
+.mode-btn.active { background:var(--blue-d); border-color:var(--blue); color:#bfdbfe; }
+#mode-tabs { display:flex; gap:3px; padding-left:10px; border-left:1px solid var(--border); margin-left:2px; }
+
+/* ── Training Monitor page ── */
+#training-page {
+  flex:1; overflow:hidden; display:none; flex-direction:column;
+}
+.tm-statusbar {
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:5px 10px; display:flex; align-items:center; gap:8px; flex-shrink:0;
+}
+.tm-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; background:var(--neutral); }
+.tm-dot.live  { background:#22c55e; box-shadow:0 0 6px #22c55e88; }
+.tm-status-txt { font-size:11px; color:var(--muted); }
+.tm-layout {
+  display:flex; padding:8px; flex:1; overflow:hidden; min-height:0;
+}
+/* Left+mid panel group — default 50%, drag overrides with px width */
+.tm-panel-lm {
+  display:flex; gap:8px; flex:1; overflow:hidden; min-width:300px;
+}
+.tm-col-left  { width:180px; flex-shrink:0; overflow-y:auto; display:flex; flex-direction:column; gap:8px; }
+.tm-col-mid   { flex:1; min-width:180px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; }
+/* Drag splitter */
+.tm-splitter {
+  width:8px; flex-shrink:0; cursor:col-resize; background:transparent;
+  display:flex; align-items:center; justify-content:center;
+}
+.tm-splitter::after {
+  content:''; width:2px; height:60px; background:var(--border); border-radius:2px;
+  transition:background .15s;
+}
+.tm-splitter:hover::after, .tm-splitter.dragging::after { background:var(--blue); }
+.tm-col-right { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:200px; margin-left:8px; }
+.tm-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:10px;
+}
+/* Spark card takes remaining vertical space in mid column */
+.tm-card-spark {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:10px; flex:1; display:flex; flex-direction:column; min-height:160px;
+}
+.tm-card-ttl {
+  font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;
+  letter-spacing:.06em; margin-bottom:7px;
+}
+.tm-cfg-row { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px; }
+.tm-cfg-k { font-size:10px; color:#64748b; }
+.tm-cfg-v { font-size:11px; font-weight:600; color:var(--text); font-family:monospace; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.tm-stat { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.tm-stat-k { font-size:11px; color:var(--muted); }
+.tm-stat-v { font-size:13px; font-weight:700; }
+.tm-feed-tabs { display:flex; gap:4px; margin-bottom:7px; flex-shrink:0; align-items:center; }
+.tm-ftab {
+  background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius);
+  color:var(--muted); padding:5px 12px; font-size:11px; font-weight:600; cursor:pointer;
+}
+.tm-ftab:hover { background:var(--border); color:var(--text); }
+.tm-ftab.active { background:var(--blue-d); border-color:var(--blue); color:#bfdbfe; }
+.tm-feed { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:7px; }
+.tm-card-roll {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:10px 12px; flex-shrink:0;
+}
+.tm-card-roll:hover { border-color:var(--blue); }
+.tm-roll-top { display:flex; align-items:center; gap:5px; margin-bottom:6px; flex-wrap:wrap; }
+.tm-roll-meta { font-size:11px; color:#475569; flex-shrink:0; }
+.tm-pill { font-size:10px; font-weight:600; padding:2px 6px; border-radius:3px; white-space:nowrap; flex-shrink:0; }
+.tm-pill-type { background:#2e1065; color:#d8b4fe; }
+.tm-pill-rel  { background:#172554; color:#93c5fd; }
+.tm-pill-tone-bl { background:#1e3a5f; color:#93c5fd; }
+.tm-pill-tone-rd { background:#450a0a; color:#fca5a5; }
+.tm-pill-tone-nt { background:var(--surface2); color:var(--muted); }
+.tm-pill-vol-lo  { background:var(--surface2); color:#64748b; }
+.tm-pill-vol-md  { background:#1c1800; color:#fcd34d; }
+.tm-pill-vol-hi  { background:#052e16; color:#86efac; }
+.tm-roll-mid { display:flex; align-items:center; gap:7px; margin-bottom:5px; }
+.tm-prob-bar  { flex:1; height:7px; background:var(--surface2); border-radius:4px; overflow:hidden; }
+.tm-prob-fill { height:100%; background:var(--blue); border-radius:4px; }
+.tm-prob-lbl  { font-size:13px; font-weight:700; min-width:38px; text-align:right; color:var(--text); }
+.tm-reward    { font-size:13px; font-weight:700; min-width:56px; text-align:right; }
+.tm-reward.pos { color:var(--green); } .tm-reward.neg { color:var(--red); }
+.tm-correct   { font-size:13px; font-weight:700; min-width:16px; }
+.tm-correct.ok { color:var(--green); } .tm-correct.ng { color:var(--red); }
+.tm-rationale { font-size:11px; color:#64748b; line-height:1.5; margin-top:2px; }
+.tm-chart-hint { font-size:9px; color:#475569; font-weight:400; text-transform:none; letter-spacing:0; margin-left:4px; }
+/* Collapsible hidden-var groups in sim stats */
+.tm-hgroup-hdr {
+  display:flex; align-items:center; gap:4px; cursor:pointer; padding:3px 0;
+  font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.04em;
+  user-select:none; border-top:1px solid var(--border); margin-top:5px;
+}
+.tm-hgroup-hdr:first-child { border-top:none; margin-top:0; }
+.tm-hgroup-chev { font-size:9px; transition:transform .12s; }
+.tm-hgroup-hdr.open .tm-hgroup-chev { transform:rotate(90deg); }
+.tm-hgroup-body { display:none; }
+.tm-hgroup-body.open { display:block; }
+.tm-hgroup-field { font-size:9px; font-weight:600; color:#94a3b8; margin:4px 0 2px; text-transform:none; }
+/* Chart section dividers */
+.tm-chart-section {
+  font-size:9px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:.06em;
+  padding:4px 0 2px; border-bottom:1px solid var(--border); margin-bottom:2px; flex-shrink:0;
+}
+/* Sim stats */
+.tm-dist-row { display:flex; align-items:center; gap:5px; margin-bottom:4px; }
+.tm-dist-lbl { font-size:10px; color:#64748b; white-space:nowrap; min-width:70px; overflow:hidden; text-overflow:ellipsis; }
+.tm-dist-bar-wrap { flex:1; height:5px; background:var(--surface2); border-radius:3px; overflow:hidden; }
+.tm-dist-bar-fill { height:100%; background:var(--blue); border-radius:3px; }
+.tm-dist-pct { font-size:10px; color:#94a3b8; min-width:30px; text-align:right; }
+.tm-section-ttl { font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;
+  letter-spacing:.06em; margin:8px 0 4px; }
+.tm-kv { display:flex; justify-content:space-between; margin-bottom:3px; }
+.tm-kv-k { font-size:10px; color:#64748b; }
+.tm-kv-v { font-size:11px; font-weight:600; color:var(--text); font-family:monospace; }
+/* Accordion batch groups */
+.tm-batch { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; flex-shrink:0; }
+.tm-batch-hdr {
+  display:flex; align-items:center; gap:7px; padding:7px 10px;
+  background:var(--surface); cursor:pointer; user-select:none;
+}
+.tm-batch-hdr:hover { background:var(--surface2); }
+.tm-batch-hdr.open  { border-bottom:1px solid var(--border); }
+.tm-batch-chevron { font-size:10px; color:#64748b; transition:transform .15s; flex-shrink:0; }
+.tm-batch-hdr.open .tm-batch-chevron { transform:rotate(90deg); }
+.tm-batch-label { font-size:11px; font-weight:700; color:var(--text); flex-shrink:0; }
+.tm-batch-stats { display:flex; gap:10px; flex:1; justify-content:flex-end; flex-wrap:wrap; }
+.tm-batch-stat  { font-size:10px; color:#64748b; }
+.tm-batch-stat span { font-weight:700; color:var(--text); }
+.tm-batch-body  { display:none; padding:6px; display:flex; flex-direction:column; gap:5px; background:var(--surface); }
+.tm-batch-body.collapsed { display:none; }
+/* Zoom controls row */
+.tm-zoom-row {
+  display:flex; align-items:center; gap:5px; margin-top:6px; flex-shrink:0;
+}
+.tm-zoom-btn {
+  background:var(--surface2); border:1px solid var(--border); border-radius:3px;
+  color:var(--text); font-size:13px; font-weight:700; width:22px; height:22px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; line-height:1;
+}
+.tm-zoom-btn:hover { background:var(--border); }
+#tm-zoom-slider { flex:1; accent-color:var(--blue); cursor:pointer; height:4px; }
+#tm-zoom-lbl { font-size:10px; color:#475569; min-width:40px; text-align:right; }
+/* Info icon and rich tooltip */
+.tm-info-icon {
+  display:inline-block; width:13px; height:13px; border-radius:50%;
+  background:#334155; color:#94a3b8; font-size:9px; font-weight:700;
+  text-align:center; line-height:13px; cursor:default; margin-left:4px;
+  vertical-align:middle; flex-shrink:0;
+}
+.tm-info-icon:hover { background:#475569; color:#e2e8f0; }
+#tm-ceiling-tooltip {
+  position:fixed; z-index:9000; display:none; pointer-events:none;
+  background:#1e293b; border:1px solid #475569; border-radius:8px;
+  padding:12px 14px; max-width:360px; font-size:11px; color:#e2e8f0;
+  line-height:1.55; box-shadow:0 8px 32px rgba(0,0,0,.8);
+}
+#tm-ceiling-tooltip .tc-h { font-weight:700; font-size:12px; margin-bottom:6px; color:#fbbf24; }
+#tm-ceiling-tooltip .tc-formula {
+  font-family:monospace; font-size:10px; background:#0f172a;
+  padding:4px 7px; border-radius:4px; margin:5px 0; color:#93c5fd;
+}
+#tm-ceiling-tooltip .tc-leg { display:flex; gap:8px; align-items:center; margin-top:6px; font-size:10px; color:#94a3b8; }
+#tm-ceiling-tooltip .tc-swatch { width:20px; height:2px; display:inline-block; border-radius:1px; }
+/* E3 breakdown table in ceiling card */
+.tm-e3-row { display:flex; align-items:center; gap:5px; margin:3px 0; }
+.tm-e3-lbl { font-size:10px; color:#64748b; min-width:88px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tm-e3-bar-wrap { flex:1; height:5px; background:var(--surface2); border-radius:3px; overflow:hidden; }
+.tm-e3-bar-fill { height:100%; border-radius:3px; }
+.tm-e3-pct { font-size:10px; color:#94a3b8; min-width:34px; text-align:right; }
 </style>
 </head>
 <body>
 
 <div id="header">
   <h1><span class="bl">Blue-ian</span> vs <span class="rd">Red-ian</span> Election Simulator</h1>
+  <div id="mode-tabs">
+    <button class="mode-btn active" id="mode-sim"      onclick="switchMode('sim')">Simulator</button>
+    <button class="mode-btn"        id="mode-training" onclick="switchMode('training')">Training</button>
+  </div>
   <div id="controls">
     <button id="run-btn" onclick="runSimulation()">&#9654; Run Election</button>
     <button id="skip-btn" class="warn" onclick="skipAnimation()" style="display:none">&#9654;&#9654; Skip</button>
-    <button class="sec" id="batch-btn" onclick="runBatch()">Batch ×1000</button>
+    <button class="sec" id="batch-btn" onclick="runBatch()">Batch ×10k</button>
     <label>Seed <input type="number" id="seed-input" placeholder="random"></label>
     <div id="run-badge">Runs: 0</div>
     <div id="winner-banner"></div>
@@ -393,7 +574,7 @@ label { color:var(--muted); font-size:11px; white-space:nowrap; }
       <div id="empty-state">
         <div class="arr">&#8593;</div>
         <div>Click <strong>Run Election</strong></div>
-        <div style="font-size:10px;margin-top:4px">Watch each node flip in causal order.<br>Run <strong>Batch ×1000</strong> to add empirical bars<br>and Hoeffding validation.</div>
+        <div style="font-size:10px;margin-top:4px">Watch each node flip in causal order.<br>Run <strong>Batch ×10k</strong> to add empirical bars,<br>Hoeffding validation, and the<br><strong>news-only forecaster panel</strong>.</div>
       </div>
       <div id="narrative-content" style="display:none"></div>
     </div>
@@ -462,6 +643,148 @@ Setting α = 1%:
         <div class="math-note" style="margin-top:5px">By the <em>law of total expectation</em>: E[P(X|Pa)] = P(X), so both quantities converge to the same value as n → ∞. A <span class="math-rd">✗</span> means the sampler's output disagrees with the CPT — a bug signal, not a model finding.</div>
       </div>
 
+      <div class="math-section">
+        <div class="math-hdr">News Forecast Power — Two Methods</div>
+        <div class="math-note">How much of the election outcome can an observer predict knowing <em>only</em> E = (E1,E2,E3,E4)? Both methods compute the same quantity but differently. The gap between them is sampling noise.</div>
+
+        <div class="math-hdr" style="font-size:10px;margin-top:10px;color:#86efac">Method 1 · Empirical Monte Carlo</div>
+        <div class="math-note">Run N simulations from the model. Group runs by the E-values they produced. Count wins per group.</div>
+        <div class="math-formula">P̂(Blue | E=e) = #{runs where E=e AND Blue wins}
+                  / #{runs where E=e}
+
+acc(e) = max( P̂(Blue|e),  1 − P̂(Blue|e) )
+
+Acc_emp = Σ_e  (#{E=e}/N) · acc(e)</div>
+        <div class="math-note">Cells with &lt;5 hits are excluded (single-sample overfitting). Converges to the exact answer as N → ∞.</div>
+
+        <div class="math-hdr" style="font-size:10px;margin-top:10px;color:#fbbf24">Method 2 · Exact Variable Elimination</div>
+        <div class="math-note">Enumerate all states analytically in topological order, exploiting the DAG structure to precompute reusable partial sums.</div>
+        <div class="math-formula">Pass 1 — marginalize G (deterministic I1/I2):
+  p_blue_d[b3,c2,d1,d2,d4]
+    = Σ_{g1,g2,g3} P(G1|·)·P(G2|·)·P(G3|·)·blue(g1,g2,g3)
+
+Pass 2 — fold in D4 (Issue Salience):
+  v[b3,c2,d1,d2,e1]
+    = Σ_{d4} P(D4|c2,e1) · p_blue_d[·]
+
+Pass 3 — fold in D1,D2 (Momentum):
+  u[b1,b2,c3,e3,b3,c2,e1]
+    = Σ_{d1,d2} P(D1|·)·P(D2|·) · v[·]
+
+Enumeration — over (A,B,C,E) in topo order:
+  w = P(a1)·P(a2)·P(a3)·P(b|a)·P(c1|a)·P(c2|c1)
+     ·P(c3|c2)·P(c4|c2)·P(e1|c2,a1)·P(e2|c4,a2)
+     ·P(e3|c3,e2,b1,b2,a3)·P(e4|c4,b3)
+  joint_blue[e] += w · u[b1,b2,c3,e3,b3,c2,e1]
+  joint_wt[e]   += w
+
+Result:
+  P(Blue|E=e) = joint_blue[e] / joint_wt[e]
+  P(E=e)      = joint_wt[e]
+
+  Acc_exact = Σ_e  P(E=e) · max(P(Blue|e), P(Red|e))</div>
+        <div class="math-note" style="margin-top:4px">D3 (Voter Uncertainty) has no path to I2 and is correctly omitted. All CPT lookups are precomputed as dicts before the enumeration. Result is cached and recomputed only when CPTs change.</div>
+        <div class="math-note" style="margin-top:5px"><strong>Observation vs intervention:</strong> Both methods compute P(I2|E=e), the observational posterior. This differs from P(I2|do(E=e)) because observing E updates beliefs about upstream A,B,C nodes that also directly influence D and G.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── Training Monitor page ── -->
+<div id="training-page">
+  <div class="tm-statusbar">
+    <div class="tm-dot" id="tm-dot"></div>
+    <span class="tm-status-txt" id="tm-status-txt">Waiting for training data…</span>
+    <span style="flex:1"></span>
+    <label style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px;cursor:pointer">
+      <input type="checkbox" id="tm-auto-chk" checked onchange="onTmAutoChange()"> Auto-refresh (5 s)
+    </label>
+    <button class="sec" style="font-size:11px;padding:4px 10px" onclick="refreshTraining()">Refresh</button>
+  </div>
+
+  <div class="tm-layout">
+    <!-- Left + Mid panel group (resizable via drag handle; defaults to 50%) -->
+    <div class="tm-panel-lm" id="tm-panel-lm">
+
+      <!-- Left column: model config + sim stats + checkpoints -->
+      <div class="tm-col-left">
+        <div class="tm-card">
+          <div class="tm-card-ttl">Model Setup</div>
+          <div id="tm-config"><span style="color:var(--muted);font-size:11px">—</span></div>
+        </div>
+        <div class="tm-card">
+          <div class="tm-card-ttl">Simulation Data</div>
+          <div id="tm-sim-stats"><span style="color:var(--muted);font-size:11px">—</span></div>
+        </div>
+        <div class="tm-card">
+          <div class="tm-card-ttl">Checkpoints</div>
+          <div id="tm-ckpt"><span style="color:var(--muted);font-size:11px">None yet</span></div>
+        </div>
+        <div class="tm-card">
+          <div class="tm-card-ttl" style="display:flex;align-items:center">
+            Bayes Ceiling
+            <span class="tm-info-icon" id="tm-ceiling-info-btn">i</span>
+          </div>
+          <div id="tm-bayes-ceiling"><span style="color:var(--muted);font-size:11px">—</span></div>
+        </div>
+      </div>
+
+      <!-- Middle column: live metrics + reward sparkline -->
+      <div class="tm-col-mid">
+        <div class="tm-card">
+          <div class="tm-card-ttl">Live Metrics <span id="tm-step-lbl" style="font-size:10px;color:#475569;font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px"></span></div>
+          <div id="tm-metrics"><span style="color:var(--muted);font-size:11px">—</span></div>
+        </div>
+        <div class="tm-chart-section">Training Steps</div>
+        <div class="tm-card-spark">
+          <div class="tm-card-ttl">Reward <span class="tm-chart-hint">per optimizer step</span></div>
+          <svg id="tm-spark-reward" style="width:100%;flex:1;display:block;overflow:visible;min-height:80px"></svg>
+        </div>
+        <div class="tm-card-spark">
+          <div class="tm-card-ttl">KL Divergence <span class="tm-chart-hint">policy vs base</span></div>
+          <svg id="tm-spark-kl" style="width:100%;flex:1;display:block;overflow:visible;min-height:80px"></svg>
+        </div>
+        <div class="tm-card-spark">
+          <div class="tm-card-ttl">Entropy <span class="tm-chart-hint">policy output</span></div>
+          <svg id="tm-spark-entropy" style="width:100%;flex:1;display:block;overflow:visible;min-height:80px"></svg>
+        </div>
+        <div class="tm-chart-section">Rollout Metrics</div>
+        <div class="tm-card-spark">
+          <div class="tm-card-ttl">Brier Loss <span class="tm-chart-hint">(lower = better)</span></div>
+          <svg id="tm-spark-brier" style="width:100%;flex:1;display:block;overflow:visible;min-height:80px"></svg>
+        </div>
+        <div class="tm-card-spark">
+          <div class="tm-card-ttl">Log Score <span class="tm-chart-hint">(lower = better)</span></div>
+          <svg id="tm-spark-logloss" style="width:100%;flex:1;display:block;overflow:visible;min-height:80px"></svg>
+        </div>
+        <div class="tm-card-spark">
+          <div class="tm-card-ttl">Accuracy <span class="tm-chart-hint">(higher = better)</span></div>
+          <svg id="tm-spark-accuracy" style="width:100%;flex:1;display:block;overflow:visible;min-height:80px"></svg>
+        </div>
+        <!-- Shared zoom row -->
+        <div class="tm-zoom-row" style="flex-shrink:0;padding:2px 0">
+          <button class="tm-zoom-btn" onclick="tmZoom(-1)" title="Zoom in (fewer steps)">−</button>
+          <input type="range" id="tm-zoom-slider" min="2" max="200" value="200" oninput="tmZoomSlider(this.value)">
+          <button class="tm-zoom-btn" onclick="tmZoom(1)" title="Zoom out (more steps)">+</button>
+          <span id="tm-zoom-lbl" style="font-size:10px;color:#475569;min-width:44px;text-align:right">all</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drag splitter -->
+    <div class="tm-splitter" id="tm-splitter"></div>
+
+    <!-- Right column: scrollable rollout feed -->
+    <div class="tm-col-right">
+      <div class="tm-feed-tabs">
+        <button class="tm-ftab active" id="tm-ftab-train" onclick="switchTmFeed('train')">Train Batches</button>
+        <button class="tm-ftab"        id="tm-ftab-val"   onclick="switchTmFeed('val')">Eval Batches</button>
+        <span id="tm-feed-count" style="font-size:10px;color:#475569;margin-left:auto"></span>
+      </div>
+      <div class="tm-feed" id="tm-feed">
+        <div style="color:var(--muted);font-size:12px;padding:20px 0;text-align:center">No rollouts yet.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -483,13 +806,40 @@ Setting α = 1%:
 </div>
 
 <div id="cpt-tooltip"></div>
+<div id="tm-ceiling-tooltip">
+  <div class="tc-h">Bayes Ceiling — Best Possible Performance</div>
+  <p>The model only ever sees <b>E1–E4</b> (news signals). The best it can ever do is predict the true conditional probability:</p>
+  <div class="tc-formula">p*(E) = P(Blue wins | E1, E2, E3, E4)</div>
+
+  <p style="margin-top:6px"><b>Reward ceiling depends on label type:</b></p>
+  <p><b>Float-prob labels</b> (current): settlement_yes = p*(E). A perfect model predicts p* exactly → Brier ≈ 0 → reward ≈ 0.5. The dashed line is at <b>0.5</b>.</p>
+  <p style="margin-top:4px"><b>Binary labels</b>: settlement_yes ∈ {0,1} (single draw). Even a perfect model has irreducible noise:</p>
+  <div class="tc-formula">Brier_floor = E[ p*(E) · (1 − p*(E)) ] ≈ 0.241</div>
+  <div class="tc-formula">Reward_ceiling = 2 × (0.25 − Brier_floor) ≈ 0.017</div>
+
+  <p style="margin-top:6px"><b>Accuracy ceiling (always meaningful):</b> Even knowing p* exactly, the best classification accuracy (predicting Blue vs Red) given only news signals is:</p>
+  <div class="tc-formula">Acc_ceiling = E[ max(p*(E), 1−p*(E)) ] ≈ 57.3%</div>
+  <p>This is shown as a dashed line on the accuracy chart. It represents the best any model could classify elections given only news signals — not more information can be extracted from E1–E4 for binary classification.</p>
+
+  <p style="margin-top:6px"><b>P(Blue | News Tone)</b>: p*(E3) for each tone — the single most informative signal. Yellow = analytical (exact), purple = empirical (10K MC).</p>
+  <div class="tc-leg">
+    <span class="tc-swatch" style="background:#fbbf24;border-top:2px dashed #fbbf24"></span> Analytical — exact variable elimination over the full DAG
+  </div>
+  <div class="tc-leg">
+    <span class="tc-swatch" style="background:#a78bfa;border-top:2px dashed #a78bfa"></span> Empirical — 10 000 Monte Carlo sims (5-min server cache)
+  </div>
+</div>
 
 <script>
 // ── Global state ──────────────────────────────────────────────────────────────
 let structure  = null;
 let lastResult = null;
-let batchNodes  = null;   // per-node empirical marginals  (what actually happened)
-let batchCptAvg = null;   // per-node average CPT = model-predicted marginals  (Hoeffding reference)
+let batchNodes     = null;   // per-node empirical marginals  (what actually happened)
+let batchCptAvg    = null;   // per-node average CPT = model-predicted marginals  (Hoeffding reference)
+let batchForecast  = null;   // news-forecast stats from last batch run
+let exactForecast   = null;   // exact analytical forecast (null | {status:"computing"} | {status:"ready",...})
+let _exactPollTimer = null;
+let _exactOverrides = null;   // overrides snapshot that was active when exact computation started
 let runCount   = 0;
 let overrides  = {};
 let animEpoch  = 0;
@@ -516,8 +866,8 @@ const GROUP_POS = {
 };
 
 const DAG_EDGES = [
-  ["A","B"],["A","C"],["A","D"],["A","G"],
-  ["B","D"],["B","G"],
+  ["A","B"],["A","C"],["A","E"],
+  ["B","D"],["B","E"],["B","G"],
   ["C","E"],["C","D"],["C","G"],
   ["E","D"],
   ["D","G"],
@@ -1091,19 +1441,88 @@ function updateWinnerBanner(winner){
 // ── Batch + Hoeffding ─────────────────────────────────────────────────────────
 async function runBatch(){
   const btn=document.getElementById("batch-btn");
-  btn.disabled=true; btn.textContent="Running 1000…";
+  btn.disabled=true; btn.textContent="Running 10 000…";
   try{
     const q=Object.keys(overrides).length?`&overrides=${encodeURIComponent(JSON.stringify(overrides))}`:"";
-    const resp=await fetch(`/api/batch?n=1000${q}`);
+    const resp=await fetch(`/api/batch?n=10000${q}`);
     const data=await resp.json();
-    batchNodes  = data.nodes;          // empirical marginals (green bar)
-    batchCptAvg = data.nodes_cpt_avg;  // model-predicted marginals (Hoeffding reference)
+    batchNodes    = data.nodes;          // empirical marginals (green bar)
+    batchCptAvg   = data.nodes_cpt_avg;  // model-predicted marginals (Hoeffding reference)
+    batchForecast = data.news_forecast || null;
+    // Share empirical ceiling with training monitor globals (avoid duplicate batch fetch)
+    if (batchForecast) {
+      _tmBayesCeilingEmp = batchForecast.reward_emp_ceiling ?? null;
+      _tmBrierCeilingEmp = batchForecast.brier_emp_ceiling  ?? null;
+      _tmE3BlueProbEmp   = batchForecast.e3_blue_prob        ?? null;
+      _tmEmpCeilingFetched = true;
+    }
     if(lastResult) updateAllGroups(lastResult);
+    // If overrides changed since the last exact computation, clear the stale result
+    const currentOvJson = JSON.stringify(overrides);
+    if(_exactOverrides !== null && _exactOverrides !== currentOvJson){
+      if(_exactPollTimer){ clearInterval(_exactPollTimer); _exactPollTimer=null; }
+      exactForecast  = null;
+      _exactOverrides = null;
+    }
     renderBatchStats(data);
     if(lastResult) renderNarrative(lastResult);
     switchTab("batch",document.querySelectorAll(".tab-btn")[2]);
   }catch(e){console.error(e);}
-  btn.disabled=false; btn.textContent="Batch ×1000";
+  btn.disabled=false; btn.textContent="Batch ×10k";
+}
+
+// ── Exact forecast (polling) ──────────────────────────────────────────────────
+function _exactQuery(){
+  const q = Object.keys(overrides).length
+    ? `?overrides=${encodeURIComponent(JSON.stringify(overrides))}` : "";
+  return `/api/exact_forecast${q}`;
+}
+
+async function triggerExactForecast(){
+  if(_exactPollTimer) return;
+  _exactOverrides = JSON.stringify(overrides);   // snapshot which overrides we're computing for
+  exactForecast = {status:"computing"};
+  _refreshForecastSection();
+  const resp = await fetch(_exactQuery());
+  const d = await resp.json();
+  if(d.status === "ready"){
+    exactForecast = d;
+    _refreshForecastSection();
+  } else {
+    _exactPollTimer = setInterval(_pollExactForecast, 1500);
+  }
+}
+
+async function _pollExactForecast(){
+  try{
+    const resp = await fetch(_exactQuery());
+    const d = await resp.json();
+    if(d.status === "ready"){
+      clearInterval(_exactPollTimer); _exactPollTimer = null;
+      exactForecast = d;
+      _refreshForecastSection();
+    }
+  }catch(e){ console.error(e); }
+}
+
+function _refreshForecastSection(){
+  if(!batchForecast) return;
+  // Re-render just the batch tab content (cheapest approach)
+  const brEl = document.getElementById("batch-results");
+  if(!brEl) return;
+  // Find and replace the forecast section via a partial re-render
+  const tmp = document.createElement("div");
+  tmp.innerHTML = buildForecastSection(batchForecast, exactForecast);
+  const old = brEl.querySelector(".hoff-section[data-forecast]");
+  if(old){ old.replaceWith(tmp.firstElementChild); }
+  else {
+    // Append to batch results
+    const sec = tmp.firstElementChild;
+    if(sec) brEl.appendChild(sec);
+  }
+  // Re-attach button
+  const exBtn = document.getElementById("exact-btn");
+  if(exBtn) exBtn.onclick = triggerExactForecast;
 }
 
 // Hoeffding ε: P(|p̂-p|>ε) ≤ 2·exp(-2·n·ε²), n=1000, α=0.01
@@ -1205,7 +1624,105 @@ function renderBatchStats(data){
     html+=`</div>`;
   }
 
+  // ── News Forecast Power ───────────────────────────────────────────────────
+  if(data.news_forecast){
+    html += buildForecastSection(data.news_forecast, exactForecast);
+  }
+
   document.getElementById("batch-results").innerHTML=html;
+  // Re-attach the "Compute Exact" button handler after innerHTML is set
+  const exBtn = document.getElementById("exact-btn");
+  if(exBtn) exBtn.onclick = triggerExactForecast;
+}
+
+// ── Forecast section builder (shared by both empirical & exact data) ─────────
+function e3Bar(pPct, exactPct){
+  const exactMark = exactPct!=null
+    ? `<div style="position:absolute;left:${exactPct}%;top:-2px;width:2px;height:11px;background:#fbbf24;border-radius:1px" title="Exact: ${exactPct}%"></div>`
+    : "";
+  return `<div style="flex:1;height:7px;border-radius:3px;background:var(--surface2);overflow:hidden;position:relative">
+    <div style="width:${pPct}%;height:100%;background:var(--blue);opacity:.7;border-radius:3px"></div>
+    <div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:#475569"></div>
+    ${exactMark}
+  </div>`;
+}
+
+function buildForecastSection(nf, ex){
+  const baseAcc  = Math.round(nf.base_accuracy  * 100);
+  const bayesAcc = Math.round(nf.bayes_accuracy * 100);
+  const gain     = nf.info_gain_pp;
+  const gainDir  = gain >= 0 ? "+" : "";
+
+  // Exact numbers (if available)
+  const exReady    = ex && ex.status === "ready";
+  const exBase     = exReady ? Math.round(ex.base_accuracy  * 100) : null;
+  const exBayes    = exReady ? Math.round(ex.bayes_accuracy * 100) : null;
+  const exGain     = exReady ? ex.info_gain_pp : null;
+  const exGainDir  = exGain  != null ? (exGain>=0?"+":"") : "";
+  const exBlueBase = exReady ? Math.round(ex.base_blue * 100) : null;
+
+  // E3 breakdown rows with optional exact gold marker
+  const e3Order = ["Blue-favorable","Neutral/mixed","Red-favorable"];
+  const e3Rows = e3Order.map(val=>{
+    const p = nf.e3_blue_prob[val];
+    if(p == null) return "";
+    const pPct    = Math.round(p*100);
+    const exP     = exReady && ex.e3_blue_prob ? ex.e3_blue_prob[val] : null;
+    const exPct   = exP != null ? Math.round(exP*100) : null;
+    const labelClr = val==="Blue-favorable"?"#93c5fd":val==="Red-favorable"?"#fca5a5":"var(--muted)";
+    const exLabel  = exPct!=null ? `<span style="font-size:9px;color:#fbbf24;margin-left:4px">exact ${exPct}%</span>` : "";
+    return `<div style="margin-bottom:5px">
+      <div style="display:flex;align-items:baseline;gap:3px">
+        <span style="font-size:10px;color:${labelClr}">${val}</span>${exLabel}
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;margin-top:1px">
+        ${e3Bar(pPct, exPct)}
+        <span style="font-size:10px;font-weight:700;color:${pPct>=50?"#93c5fd":"#fca5a5"};min-width:28px">${pPct}%</span>
+      </div>
+    </div>`;
+  }).join("");
+
+  const exCard = exReady
+    ? `<div style="flex:1;background:#1a1f10;border:1px solid #fbbf24;border-radius:var(--radius);padding:7px 9px">
+        <div style="font-size:9px;color:#fbbf24;margin-bottom:2px">Exact (analytic)</div>
+        <div style="font-size:17px;font-weight:700;color:var(--text)">${exBayes}%</div>
+        <div style="font-size:9px;color:#fbbf24">${exGainDir}${exGain}pp vs base ${exBase}%</div>
+       </div>`
+    : `<div style="flex:1;background:var(--surface2);border:1px dashed var(--border);border-radius:var(--radius);padding:7px 9px;display:flex;align-items:center;justify-content:center">
+        <button id="exact-btn" style="font-size:10px;padding:4px 10px">Compute Exact ▸</button>
+       </div>`;
+
+  const exStatus = ex && ex.status==="computing"
+    ? `<div style="font-size:9px;color:#fbbf24;margin-bottom:4px">⟳ Computing exact forecast… (~5s)</div>` : "";
+
+  return `<div class="hoff-section" style="margin-top:10px" data-forecast="1">
+    <div class="hoff-header">News Forecast Power</div>
+    <div style="font-size:9px;color:#475569;margin-bottom:7px;line-height:1.5">
+      Best accuracy achievable knowing only E1–E4 (all 4 news signals).
+      <strong style="color:#e2e8f0">Empirical</strong> = from this batch.
+      <strong style="color:#fbbf24">Exact</strong> = variable elimination over full CPT structure.
+    </div>
+    ${exStatus}
+    <div style="display:flex;gap:6px;margin-bottom:8px">
+      <div style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:7px 9px">
+        <div style="font-size:9px;color:var(--muted);margin-bottom:2px">Base rate (empirical)</div>
+        <div style="font-size:17px;font-weight:700;color:var(--muted)">${baseAcc}%</div>
+        <div style="font-size:9px;color:#475569">always pick majority</div>
+      </div>
+      <div style="flex:1;background:#1e293b;border:1px solid var(--blue);border-radius:var(--radius);padding:7px 9px">
+        <div style="font-size:9px;color:var(--blue);margin-bottom:2px">With news (empirical)</div>
+        <div style="font-size:17px;font-weight:700;color:var(--text)">${bayesAcc}%</div>
+        <div style="font-size:9px;color:var(--blue)">${gainDir}${gain}pp info gain</div>
+      </div>
+      ${exCard}
+    </div>
+    <div style="font-size:10px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">
+      P(Blue wins) by News Tone
+      ${exReady ? `<span style="font-size:9px;color:#fbbf24;font-weight:400;margin-left:6px">● exact gold markers</span>` : ""}
+    </div>
+    ${e3Rows}
+    <div style="font-size:9px;color:#475569;margin-top:4px">Center = 50% · Re-run batch after CPT edits to refresh empirical.</div>
+  </div>`;
 }
 
 // ── Group click ───────────────────────────────────────────────────────────────
@@ -1228,6 +1745,77 @@ function renderNarrative(result){
   const empty=document.getElementById("empty-state");
   if(!result) return;
   empty.style.display="none"; container.style.display="block"; container.innerHTML="";
+
+  // ── Forecaster panel ─────────────────────────────────────────────────────
+  // Show what an observer who only sees the 4 news signals could predict.
+  if(batchForecast && result.states){
+    const s = result.states;
+    const eKey = `${s.E1||""}|${s.E2||""}|${s.E3||""}|${s.E4||""}`;
+    const p = batchForecast.news_conditional?.[eKey];
+    const basePct = Math.round((batchForecast.base_blue||0.5)*100);
+    const e3Val = s.E3 || "";
+    const e3P   = batchForecast.e3_blue_prob?.[e3Val];
+
+    let forecastHtml = "";
+    if(p != null){
+      const pPct = Math.round(p*100);
+      const clr  = pPct>=55?"#93c5fd":pPct<=45?"#fca5a5":"var(--muted)";
+      const delta = pPct - basePct;
+      const sign  = delta>=0?"+":"";
+      forecastHtml = `
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:100px">
+            <div style="font-size:9px;color:var(--muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em">P(Blue wins | this news)</div>
+            <div style="display:flex;height:10px;border-radius:4px;overflow:hidden;background:var(--surface)">
+              <div style="width:${pPct}%;background:var(--blue);opacity:.8"></div>
+              <div style="width:${100-pPct}%;background:var(--red);opacity:.6"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:2px">
+              <span style="color:#93c5fd;font-weight:700">${pPct}% Blue</span>
+              <span style="color:#fca5a5;font-weight:700">${100-pPct}% Red</span>
+            </div>
+          </div>
+          <div style="font-size:10px;color:${delta>=0?"#86efac":"#fca5a5"}">
+            ${sign}${delta}pp vs base
+          </div>
+        </div>`;
+    } else if(e3P != null){
+      const pPct = Math.round(e3P*100);
+      const delta = pPct - basePct;
+      const sign  = delta>=0?"+":"";
+      forecastHtml = `
+        <div>
+          <div style="font-size:9px;color:var(--muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em">P(Blue wins | Tone: ${e3Val})</div>
+          <div style="display:flex;height:10px;border-radius:4px;overflow:hidden;background:var(--surface)">
+            <div style="width:${pPct}%;background:var(--blue);opacity:.8"></div>
+            <div style="width:${100-pPct}%;background:var(--red);opacity:.6"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:2px">
+            <span style="color:#93c5fd;font-weight:700">${pPct}% Blue</span>
+            <span style="color:#fca5a5;font-weight:700">${100-pPct}% Red</span>
+          </div>
+          <div style="font-size:9px;color:#475569;margin-top:1px">(Based on tone only — run a larger batch for full E1–E4 lookup)</div>
+        </div>`;
+    } else {
+      forecastHtml = `<div style="font-size:9px;color:#475569">This exact news combo was too rare in the batch to estimate. Run a larger batch.</div>`;
+    }
+
+    const panel = mk("div","");
+    panel.style.cssText="background:linear-gradient(135deg,#0f2040,#1e293b);border:1px solid #334155;border-radius:8px;padding:9px 11px;margin-bottom:8px";
+    panel.innerHTML=`
+      <div style="font-size:10px;font-weight:700;color:#7c9dd4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">
+        Forecaster's View · News Only
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:5px">
+        E1 <strong style="color:var(--text)">${abbrev(s.E1||"?")}</strong>
+        &nbsp;·&nbsp; E2 <strong style="color:var(--text)">${abbrev(s.E2||"?")}</strong>
+        &nbsp;·&nbsp; E3 <strong style="color:var(--text)">${abbrev(s.E3||"?")}</strong>
+        &nbsp;·&nbsp; E4 <strong style="color:var(--text)">${abbrev(s.E4||"?")}</strong>
+      </div>
+      ${forecastHtml}
+    `;
+    container.appendChild(panel);
+  }
 
   result.narrative.forEach(phase=>{
     const block=mk("div","phase-block"); block.id=`phase-${phase.group}`;
@@ -1271,7 +1859,7 @@ function renderNarrative(result){
       // Empirical overlay (after batch)
       if(batchNodes&&batchNodes[it.node]&&it.all_states){
         const eb=mk("div","n-dist-bar");
-        eb.style.marginTop="2px"; eb.title="Empirical (1000 runs)";
+        eb.style.marginTop="2px"; eb.title="Empirical (10 000 runs)";
         it.all_states.forEach(s=>{
           const p=batchNodes[it.node][s]||0,pct=Math.round(p*100);
           const seg=mk("div","n-seg");
@@ -1760,6 +2348,795 @@ window.addEventListener("resize",()=>{
 });
 
 init();
+
+// ── Training Monitor ──────────────────────────────────────────────────────────
+let _tmCurrentFeed   = 'train';
+let _tmInterval      = null;
+let _tmAllStepPts        = [];   // train reward per optimizer step
+let _tmAllKLPts          = [];   // KL divergence per step
+let _tmAllEntropyPts     = [];   // entropy per step
+let _tmAllBrierPts       = [];   // train brier (rollout-binned)
+let _tmAllLoglossPts     = [];   // train log score (rollout-binned)
+let _tmAllAccuracyPts    = [];   // train accuracy (rollout-binned)
+let _tmAllEvalRewardPts  = [];   // eval reward per eval pass
+let _tmAllEvalBrierPts   = [];   // eval brier (rollout-binned)
+let _tmAllEvalLoglossPts = [];   // eval log score (rollout-binned)
+let _tmAllEvalAccuracyPts= [];   // eval accuracy (rollout-binned)
+let _tmZoomWindow    = null; // null = all; integer = show last N pts (shared across charts)
+// Bayes ceiling values (null = not yet fetched)
+let _tmBayesCeiling       = null;   // reward ceiling — label-type-corrected (0.5 for float, ~0.017 for binary)
+let _tmBayesCeilingEmp    = null;   // empirical reward ceiling (label-type-corrected)
+let _tmBrierCeiling       = null;   // analytical brier_optimal (binary-label reference)
+let _tmBrierCeilingEmp    = null;   // empirical brier_optimal (binary-label reference)
+let _tmAccuracyCeiling    = null;   // Bayes classification accuracy ceiling (always ~57.3%)
+let _tmE3BlueProbAnalyt   = null;   // P(Blue|E3) from exact_forecast
+let _tmE3BlueProbEmp      = null;   // P(Blue|E3) from batch
+let _tmLabelType          = null;   // "float_prob" | "binary" | "unknown"
+let _tmEmpCeilingFetched  = false;  // one-time flag: empirical ceiling batch fetch
+
+// ── Drag-to-resize splitter ───────────────────────────────────────────────────
+(function() {
+  const splitter = document.getElementById('tm-splitter');
+  const panel    = document.getElementById('tm-panel-lm');
+  if (!splitter || !panel) return;
+  let dragging = false, startX = 0, startW = 0;
+  splitter.addEventListener('mousedown', e => {
+    dragging = true; startX = e.clientX; startW = panel.offsetWidth;
+    splitter.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const delta = e.clientX - startX;
+    const newW  = Math.max(300, Math.min(800, startW + delta));
+    panel.style.flex = `0 0 ${newW}px`;
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    splitter.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    setTimeout(_tmRedrawAll, 0);  // redraw after layout reflow
+  });
+})();
+
+// ── Sparkline zoom helpers ────────────────────────────────────────────────────
+function _tmSlice(arr) {
+  if (!_tmZoomWindow || _tmZoomWindow >= arr.length) return arr;
+  return arr.slice(-_tmZoomWindow);
+}
+function _tmMaxLen() {
+  const isEval = _tmCurrentFeed === 'val';
+  return Math.max(
+    isEval ? _tmAllEvalRewardPts.length : _tmAllStepPts.length,
+    isEval ? 0 : _tmAllKLPts.length,
+    isEval ? 0 : _tmAllEntropyPts.length,
+    isEval ? _tmAllEvalBrierPts.length   : _tmAllBrierPts.length,
+    isEval ? _tmAllEvalLoglossPts.length : _tmAllLoglossPts.length,
+    isEval ? _tmAllEvalAccuracyPts.length: _tmAllAccuracyPts.length,
+    2
+  );
+}
+function _tmSyncZoomUI() {
+  const max = _tmMaxLen();
+  const sl  = document.getElementById('tm-zoom-slider');
+  const lbl = document.getElementById('tm-zoom-lbl');
+  if (!sl) return;
+  sl.max = max;
+  const w = _tmZoomWindow && _tmZoomWindow < max ? _tmZoomWindow : max;
+  sl.value = w;
+  lbl.textContent = (w >= max) ? 'all' : `last ${w}`;
+}
+function _tmRedrawAll() {
+  const isEval = _tmCurrentFeed === 'val';
+
+  // Update section labels
+  const stepSection = document.querySelector('.tm-chart-section');
+  if (stepSection) stepSection.textContent = isEval ? 'Eval Passes' : 'Training Steps';
+
+  // Training-steps section: reward + KL + entropy (train) or eval reward only
+  const _isFloat  = _tmLabelType === 'float_prob';
+  const _ceilLabel = _isFloat ? 'Max reward (float labels) ↑' : 'Bayes ceiling ↑';
+  const _rewardCeilings = [];
+  if (_tmBayesCeiling    != null) _rewardCeilings.push({value: _tmBayesCeiling,    color: '#fbbf24', label: _ceilLabel});
+  _tmDrawChart('tm-spark-reward',  _tmSlice(isEval ? _tmAllEvalRewardPts : _tmAllStepPts), '#3b82f6', false, _rewardCeilings);
+  // Accuracy ceiling: Bayes-optimal classification accuracy given news signals (~57%)
+  const _accCeilings = _tmAccuracyCeiling != null
+    ? [{value: _tmAccuracyCeiling, color: '#fbbf24', label: 'Bayes class. ceiling ↑'}]
+    : [];
+  const klEl      = document.getElementById('tm-spark-kl')?.closest('.tm-card-spark');
+  const entropyEl = document.getElementById('tm-spark-entropy')?.closest('.tm-card-spark');
+  if (klEl)      klEl.style.display      = isEval ? 'none' : '';
+  if (entropyEl) entropyEl.style.display = isEval ? 'none' : '';
+  if (!isEval) {
+    _tmDrawChart('tm-spark-kl',      _tmSlice(_tmAllKLPts),       '#fb923c', false);
+    _tmDrawChart('tm-spark-entropy', _tmSlice(_tmAllEntropyPts),  '#e879f9', false);
+  }
+
+  // Rollout section
+  _tmDrawChart('tm-spark-brier',    _tmSlice(isEval ? _tmAllEvalBrierPts    : _tmAllBrierPts),    '#f97316', true);
+  _tmDrawChart('tm-spark-logloss',  _tmSlice(isEval ? _tmAllEvalLoglossPts  : _tmAllLoglossPts),  '#a855f7', true);
+  _tmDrawChart('tm-spark-accuracy', _tmSlice(isEval ? _tmAllEvalAccuracyPts : _tmAllAccuracyPts), '#22c55e', false, _accCeilings);
+}
+function tmZoomSlider(val) {
+  const v = parseInt(val, 10);
+  _tmZoomWindow = (v >= _tmMaxLen()) ? null : Math.max(2, v);
+  _tmSyncZoomUI();
+  _tmRedrawAll();
+}
+function tmZoom(dir) {
+  const max  = _tmMaxLen();
+  const cur  = _tmZoomWindow || max;
+  const step = Math.max(1, Math.round(cur * 0.25));
+  const next = dir < 0 ? Math.max(2, cur - step) : Math.min(max, cur + step);
+  _tmZoomWindow = (next >= max) ? null : next;
+  _tmSyncZoomUI();
+  _tmRedrawAll();
+}
+
+function switchMode(m) {
+  const isSim = m === 'sim';
+  document.getElementById('main').style.display          = isSim ? 'flex' : 'none';
+  document.getElementById('training-page').style.display = isSim ? 'none' : 'flex';
+  document.getElementById('mode-sim').classList.toggle('active',      isSim);
+  document.getElementById('mode-training').classList.toggle('active', !isSim);
+  clearInterval(_tmInterval);
+  _tmInterval = null;
+  if (!isSim) {
+    // Allow re-fetching the empirical ceiling each time training view is opened
+    // (CPTs may have changed via the editor since last visit)
+    _tmEmpCeilingFetched = false;
+    refreshTraining();
+    if (document.getElementById('tm-auto-chk').checked)
+      _tmInterval = setInterval(refreshTraining, 5000);
+  }
+}
+
+function onTmAutoChange() {
+  clearInterval(_tmInterval);
+  _tmInterval = null;
+  const active = document.getElementById('training-page').style.display !== 'none';
+  if (document.getElementById('tm-auto-chk').checked && active)
+    _tmInterval = setInterval(refreshTraining, 5000);
+}
+
+function switchTmFeed(f) {
+  _tmCurrentFeed = f;
+  document.getElementById('tm-ftab-train').classList.toggle('active', f === 'train');
+  document.getElementById('tm-ftab-val').classList.toggle('active',   f === 'val');
+  _tmSyncZoomUI();
+  _tmRedrawAll();   // swap charts immediately without waiting for poll
+  refreshTraining();
+}
+
+async function refreshTraining() {
+  try {
+    const fetches = [
+      fetch('/api/training/status'),
+      fetch(`/api/training/rollouts?mode=${_tmCurrentFeed}&grouped=1`),
+      fetch('/api/exact_forecast'),
+    ];
+    const [sRes, rRes, exRes] = await Promise.all(fetches);
+    const status   = await sRes.json();
+    const rollData = await rRes.json();
+    const exactD   = await exRes.json();
+
+    // Update analytical ceiling whenever exact_forecast is ready
+    if (exactD.status === 'ready') {
+      const changed = (_tmBayesCeiling !== exactD.reward_ceiling);
+      _tmBayesCeiling     = exactD.reward_ceiling     ?? null;
+      _tmBrierCeiling     = exactD.brier_optimal      ?? null;
+      _tmE3BlueProbAnalyt = exactD.e3_blue_prob        ?? null;
+      if (changed) _tmRedrawAll();
+    }
+
+    // One-time Bayes ceiling: analytical + empirical (10K sims, server-cached 5 min)
+    if (!_tmEmpCeilingFetched) {
+      _tmEmpCeilingFetched = true;
+      fetch('/api/training/bayes').then(r => r.json()).then(d => {
+        const analyt = d.analytical || {};
+        const emp    = d.empirical  || {};
+        _tmLabelType      = d.label_type   ?? null;
+        _tmAccuracyCeiling = d.accuracy_ceiling ?? null;
+
+        // reward_ceiling is label-type-corrected by the server:
+        //   float_prob labels → 0.5 (can learn p* exactly)
+        //   binary labels     → ~0.017 (brier-based irreducible floor)
+        _tmBayesCeiling    = d.reward_ceiling         ?? null;
+        _tmBayesCeilingEmp = d.reward_ceiling         ?? null;  // same rule applied to empirical
+        // Keep raw brier-based ceilings for the Bayes Ceiling card detail
+        _tmBrierCeiling    = analyt.brier_optimal     ?? null;
+        _tmBrierCeilingEmp = emp.brier_optimal        ?? null;
+        _tmE3BlueProbAnalyt = analyt.e3_blue_prob     ?? null;
+        _tmE3BlueProbEmp    = emp.e3_blue_prob        ?? null;
+        _tmRenderBayesCeiling();
+        _tmRedrawAll();
+      }).catch(() => {});
+    }
+
+    _tmRenderStatus(status);
+    _tmRenderConfig(status.config || {});
+    _tmRenderSimStats(status.sim_stats || {}, status.config || {});
+    _tmRenderMetrics(status.metrics || {}, status.step_metrics || [], status.timeseries || [], status);
+    _tmRenderCheckpoints(status.checkpoints || {});
+    _tmRenderBatchedRollouts(rollData.batches || [], rollData.total || 0);
+    _tmRenderBayesCeiling();
+  } catch(e) {
+    document.getElementById('tm-status-txt').textContent = 'Error: ' + e.message;
+  }
+}
+
+function _tmRenderStatus(s) {
+  const dot = document.getElementById('tm-dot');
+  const txt = document.getElementById('tm-status-txt');
+  if (!s.exists) {
+    dot.className = 'tm-dot';
+    txt.textContent = 'No training data found — run the training script to start.';
+    return;
+  }
+  const m = s.metrics || {};
+  if (s.is_active) {
+    dot.className = 'tm-dot live';
+    txt.textContent = `Training active — ${m.train_rollouts||0} train rollouts, ${m.eval_rollouts||0} eval`;
+  } else {
+    dot.className = 'tm-dot';
+    txt.textContent = `Idle — ${m.total_rollouts||0} total rollouts recorded`;
+  }
+}
+
+function _tmRenderConfig(cfg) {
+  const el = document.getElementById('tm-config');
+  if (!cfg || Object.keys(cfg).length === 0) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:11px">Not started yet</span>';
+    return;
+  }
+  const model = (cfg.model || cfg.model_name || '—').split('/').pop();
+  const rows = [
+    ['Model',      model],
+    ['Tasks',      cfg.tasks_file ? cfg.tasks_file.split('/').pop() : (cfg.train_rows ?? '—')],
+    ['LR',         cfg.learning_rate ?? '—'],
+    ['Batch',      cfg.batch_size ?? '—'],
+    ['Group',      cfg.group_size ?? '—'],
+    ['Epochs',     cfg.n_epochs ?? '—'],
+    ['LoRA rank',  cfg.lora_rank ?? '—'],
+    ['Reward ×',   cfg.forecast_reward_scale ?? '—'],
+    ['Reward ver', cfg.reward_version ?? '—'],
+  ];
+  el.innerHTML = rows.map(([k,v]) =>
+    `<div class="tm-cfg-row"><span class="tm-cfg-k">${k}</span><span class="tm-cfg-v" title="${v}">${v}</span></div>`
+  ).join('');
+}
+
+function _tmRenderSimStats(s, cfg) {
+  const el = document.getElementById('tm-sim-stats');
+  if (!s || !s.total_tasks) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:11px">—</span>';
+    return;
+  }
+  const pct      = v => (v * 100).toFixed(1) + '%';
+  const blueClr  = s.blue_win_rate >= 0.5 ? 'var(--blue)' : 'var(--red)';
+  const toneClr  = k => k.includes('Blue') ? 'var(--blue)' : k.includes('Red') ? 'var(--red)' : '#64748b';
+  const volClr   = k => k === 'High' ? '#22c55e' : k === 'Medium' ? '#fbbf24' : '#64748b';
+  const blueRedClr = k => k.toLowerCase().includes('blue') ? 'var(--blue)' : k.toLowerCase().includes('red') ? 'var(--red)' : 'var(--blue)';
+
+  function distBars(dist, colorFn) {
+    return Object.entries(dist).map(([k, v]) =>
+      `<div class="tm-dist-row">
+        <span class="tm-dist-lbl" title="${k}">${k}</span>
+        <div class="tm-dist-bar-wrap"><div class="tm-dist-bar-fill" style="width:${(v*100).toFixed(1)}%;background:${colorFn?colorFn(k):'var(--blue)'}"></div></div>
+        <span class="tm-dist-pct">${pct(v)}</span>
+      </div>`
+    ).join('');
+  }
+
+  // Collapsible group for hidden variables
+  let hiddenGroupId = 0;
+  function hiddenGroup(title, fields) {
+    const id = 'hg' + (hiddenGroupId++);
+    const rows = Object.entries(fields).map(([fieldLabel, dist]) =>
+      `<div class="tm-hgroup-field">${fieldLabel}</div>${distBars(dist, blueRedClr)}`
+    ).join('');
+    return `
+      <div class="tm-hgroup-hdr" id="${id}-hdr" onclick="toggleHGroup('${id}')">
+        <span class="tm-hgroup-chev">▶</span>${title}
+      </div>
+      <div class="tm-hgroup-body" id="${id}-body">${rows}</div>`;
+  }
+
+  const hiddenHtml = Object.entries(s.hidden_groups || {})
+    .map(([name, fields]) => hiddenGroup(name, fields)).join('');
+
+  el.innerHTML = `
+    <div class="tm-kv"><span class="tm-kv-k">Tasks (sample)</span><span class="tm-kv-v">${s.total_tasks.toLocaleString()}</span></div>
+    <div class="tm-kv"><span class="tm-kv-k">Blue win rate</span><span class="tm-kv-v" style="color:${blueClr}">${pct(s.blue_win_rate)}</span></div>
+    <div class="tm-kv"><span class="tm-kv-k">Used in run</span><span class="tm-kv-v">${cfg.task_selection?.selected_rows ?? cfg.max_tasks ?? '—'}</span></div>
+    <div class="tm-section-ttl" style="margin-top:6px">Model-Visible Signals</div>
+    <div class="tm-hgroup-field">News Tone</div>${distBars(s.news_tone, toneClr)}
+    <div class="tm-hgroup-field">Volume</div>${distBars(s.news_volume, volClr)}
+    <div class="tm-hgroup-field">Reliability</div>${distBars(s.news_reliability, null)}
+    <div class="tm-hgroup-field">Type</div>${distBars(s.news_type, null)}
+    <div class="tm-section-ttl" style="margin-top:8px">Hidden Causal Variables</div>
+    ${hiddenHtml}
+  `;
+}
+
+function toggleHGroup(id) {
+  const hdr  = document.getElementById(id + '-hdr');
+  const body = document.getElementById(id + '-body');
+  if (!hdr || !body) return;
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  hdr.classList.toggle('open', !open);
+}
+
+function _tmRenderMetrics(m, stepMetrics, ts, status) {
+  const el  = document.getElementById('tm-metrics');
+  const lbl = document.getElementById('tm-step-lbl');
+
+  const flt = v => v == null ? '—' : v.toFixed(4);
+  const pct = v => v == null ? '—' : (v*100).toFixed(1)+'%';
+
+  // Pull latest per-step GRPO metrics from metrics.jsonl if available
+  const latest = stepMetrics.length ? stepMetrics[stepMetrics.length - 1] : null;
+  const stepNum  = latest ? (latest['progress/batch'] ?? latest['step'] ?? null) : null;
+  const stepReward = latest ? (latest['env/all/reward/total'] ?? null) : null;
+  const evalReward = latest ? (latest['test/env/all/reward/total'] ?? null) : null;
+  const kl       = latest ? (latest['optim/kl_sample_train_v1'] ?? latest['optim/kl'] ?? null) : null;
+  const totalBatches = stepMetrics.length;
+
+  lbl.textContent = stepNum != null
+    ? `step ${stepNum} / ${totalBatches} recorded`
+    : m.train_rollouts ? `(${m.train_rollouts} rollouts)` : '';
+
+  const rewardColor = v => v == null ? 'var(--text)' : v >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // Compute gap to ceiling: use best available reward vs best available ceiling
+  const curReward = stepReward ?? evalReward ?? null;
+  const bestCeil  = (_tmBayesCeiling != null && _tmBayesCeilingEmp != null)
+    ? Math.min(_tmBayesCeiling, _tmBayesCeilingEmp)   // tighter (empirical usually ≈ analytical)
+    : (_tmBayesCeiling ?? _tmBayesCeilingEmp ?? null);
+  const gapToCeil = (curReward != null && bestCeil != null) ? bestCeil - curReward : null;
+  const gapColor  = gapToCeil == null ? 'var(--text)' : gapToCeil < 0.01 ? 'var(--green)' : gapToCeil < 0.05 ? 'var(--gold)' : 'var(--muted)';
+
+  const ceilInfoHtml = `<span class="tm-info-icon" style="cursor:default" id="tm-ceil-metrics-info">i</span>`;
+
+  const rows = [
+    ['Step reward',  flt(stepReward),         rewardColor(stepReward)],
+    ['Eval reward',  flt(evalReward),          rewardColor(evalReward)],
+    ['KL (sample)',  kl != null ? kl.toExponential(2) : '—', 'var(--muted)'],
+    ['Accuracy',     pct(m.recent_accuracy),   'var(--text)'],
+    ['Mean Brier',   flt(m.recent_mean_brier), 'var(--text)'],
+    ['Train rolls',  m.train_rollouts ?? '—',  'var(--muted)'],
+    ['Eval rolls',   m.eval_rollouts  ?? '—',  'var(--muted)'],
+  ];
+  el.innerHTML = rows.map(([k,v,c]) =>
+    `<div class="tm-stat"><span class="tm-stat-k">${k}</span><span class="tm-stat-v" style="color:${c}">${v}</span></div>`
+  ).join('') + `
+  <div style="border-top:1px solid var(--border);margin:6px 0 4px"></div>
+  <div class="tm-stat">
+    <span class="tm-stat-k" style="display:flex;align-items:center;gap:2px">
+      Ceiling (anlyt) ${ceilInfoHtml}
+    </span>
+    <span class="tm-stat-v" style="color:#fbbf24">${_tmBayesCeiling != null ? _tmBayesCeiling.toFixed(4) : '…'}</span>
+  </div>
+  <div class="tm-stat">
+    <span class="tm-stat-k">Ceiling (emp)</span>
+    <span class="tm-stat-v" style="color:#a78bfa">${_tmBayesCeilingEmp != null ? _tmBayesCeilingEmp.toFixed(4) : '…'}</span>
+  </div>
+  <div class="tm-stat">
+    <span class="tm-stat-k">Gap to ceiling</span>
+    <span class="tm-stat-v" style="color:${gapColor}">${gapToCeil != null ? gapToCeil.toFixed(4) : '—'}</span>
+  </div>`;
+
+  // Wire the inline info icon in the metrics card to the same tooltip
+  setTimeout(() => {
+    const btn2 = document.getElementById('tm-ceil-metrics-info');
+    const tip  = document.getElementById('tm-ceiling-tooltip');
+    if (btn2 && tip) {
+      btn2.addEventListener('mouseenter', e => { tip.style.display='block'; _positionCeilingTip(e); });
+      btn2.addEventListener('mousemove',  e => _positionCeilingTip(e));
+      btn2.addEventListener('mouseleave', () => { tip.style.display='none'; });
+    }
+  }, 0);
+
+  // Store timeseries; reward from step_metrics if rich enough, else rollout-binned
+  _tmAllStepPts    = stepMetrics.length >= 2
+    ? stepMetrics.map(s => s['env/all/reward/total'] ?? null).filter(v => v != null)
+    : ts;
+  _tmAllKLPts           = (status.step_kl                   || []);
+  _tmAllEntropyPts      = (status.step_entropy              || []);
+  _tmAllBrierPts        = (status.timeseries_brier          || []);
+  _tmAllLoglossPts      = (status.timeseries_logloss        || []);
+  _tmAllAccuracyPts     = (status.timeseries_accuracy       || []);
+  _tmAllEvalRewardPts   = (status.step_eval_reward          || []);
+  _tmAllEvalBrierPts    = (status.timeseries_eval_brier     || []);
+  _tmAllEvalLoglossPts  = (status.timeseries_eval_logloss   || []);
+  _tmAllEvalAccuracyPts = (status.timeseries_eval_accuracy  || []);
+  _tmSyncZoomUI();
+  _tmRedrawAll();
+}
+
+// color: hex string; inverted: true if lower = better (Brier, Log Score)
+// ceilings: [{value, color, label}] — horizontal reference lines (e.g. Bayes ceiling)
+function _tmDrawChart(svgId, pts, color, inverted, ceilings) {
+  ceilings = ceilings || [];
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  const hasPts  = pts && pts.length >= 1;
+  const ceilVals = ceilings.map(c => c.value).filter(v => v != null && isFinite(v));
+
+  if (!hasPts && ceilVals.length === 0) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const t = document.createElementNS(ns, 'text');
+    t.setAttribute('x', '50%'); t.setAttribute('y', '50%');
+    t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle');
+    t.setAttribute('fill', '#475569'); t.setAttribute('font-size', '10');
+    t.textContent = 'No data yet';
+    svg.appendChild(t);
+    return;
+  }
+
+  const W   = svg.clientWidth  || 200;
+  const H   = Math.max(svg.clientHeight || 90, 60);
+  const pad = {t:8, r:8, b:18, l:38};
+  const cw  = W - pad.l - pad.r;
+  const ch  = H - pad.t - pad.b;
+  const n   = hasPts ? pts.length : 0;
+
+  const allVals = [...(hasPts ? pts : []), ...ceilVals];
+  const minV = Math.min(...allVals);
+  const maxV = Math.max(...allVals);
+  const rng  = (maxV - minV) || 0.001;
+  const pad_v = rng * 0.1;
+
+  const lo = minV - pad_v;
+  const hi = maxV + pad_v;
+
+  const xS  = i => pad.l + (n <= 1 ? cw/2 : i * cw / (n - 1));
+  const yS  = v => pad.t + ch * (1 - (v - lo) / (hi - lo));
+
+  // Baseline — for reward charts at y=0 if in range; for loss charts at min
+  const baselineVal = (!inverted && minV <= 0 && maxV >= 0) ? 0 : lo;
+  const y0 = yS(baselineVal);
+
+  const ns  = 'http://www.w3.org/2000/svg';
+  const mk  = (tag, attrs, text) => {
+    const e = document.createElementNS(ns, tag);
+    Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+    if (text !== undefined) e.textContent = text;
+    return e;
+  };
+
+  // Baseline dashes
+  svg.appendChild(mk('line', {x1:pad.l, y1:y0, x2:W-pad.r, y2:y0,
+    stroke:'#334155', 'stroke-width':'1', 'stroke-dasharray':'3 3'}));
+
+  // Ceiling lines — drawn before data so data renders on top
+  ceilings.forEach(({value, color: ccolor, label}) => {
+    if (value == null || !isFinite(value)) return;
+    const yc = yS(value);
+    svg.appendChild(mk('line', {
+      x1: pad.l, y1: yc, x2: W - pad.r, y2: yc,
+      stroke: ccolor, 'stroke-width': '1.5', 'stroke-dasharray': '6 4', opacity: '0.85',
+    }));
+    if (label) {
+      svg.appendChild(mk('text', {
+        x: W - pad.r - 2, y: yc - 3,
+        'text-anchor': 'end', fill: ccolor, 'font-size': '7.5', opacity: '0.9',
+      }, label));
+    }
+  });
+
+  // Y-axis tick labels — min, midpoint, max
+  const midV = (minV + maxV) / 2;
+  [minV, midV, maxV].forEach(v => {
+    const y = yS(v);
+    const fmt = Math.abs(v) < 10 ? v.toFixed(2) : v.toFixed(1);
+    svg.appendChild(mk('text', {x:pad.l-3, y:y+3.5, 'text-anchor':'end', fill:'#64748b', 'font-size':'8.5'}, fmt));
+    svg.appendChild(mk('line', {x1:pad.l, y1:y, x2:pad.l-2, y2:y, stroke:'#334155', 'stroke-width':'1'}));
+  });
+
+  if (!hasPts) return;  // ceiling-only mode: just draw the reference lines
+
+  // X-axis step count label
+  const xLbl = (_tmZoomWindow && _tmZoomWindow < _tmMaxLen()) ? `last ${n}` : `${n} steps`;
+  svg.appendChild(mk('text', {x:pad.l+cw/2, y:H-2, 'text-anchor':'middle', fill:'#475569', 'font-size':'8.5'}, xLbl));
+
+  // Trend line (thin, muted) — linear regression
+  if (n >= 4) {
+    let sx=0, sy=0, sxy=0, sx2=0;
+    pts.forEach((v,i) => { sx+=i; sy+=v; sxy+=i*v; sx2+=i*i; });
+    const det = n*sx2 - sx*sx;
+    if (det) {
+      const slope = (n*sxy - sx*sy) / det;
+      const intercept = (sy - slope*sx) / n;
+      const ty0 = yS(intercept), ty1 = yS(intercept + slope*(n-1));
+      svg.appendChild(mk('line', {x1:pad.l, y1:ty0, x2:xS(n-1), y2:ty1,
+        stroke:color, 'stroke-width':'1', 'stroke-dasharray':'4 3', opacity:'0.4'}));
+    }
+  }
+
+  // Fill area between line and baseline
+  const areaD = `M${pad.l},${y0} ` +
+    pts.map((v,i) => `L${xS(i)},${yS(v)}`).join(' ') +
+    ` L${xS(n-1)},${y0} Z`;
+  const fillColor = color + '18';
+  svg.appendChild(mk('path', {d:areaD, fill:fillColor, stroke:'none'}));
+
+  // Main line
+  const lineD = pts.map((v,i) => `${i===0?'M':'L'}${xS(i)},${yS(v)}`).join(' ');
+  svg.appendChild(mk('path', {d:lineD, fill:'none', stroke:color, 'stroke-width':'1.5', 'stroke-linejoin':'round'}));
+
+  // Endpoint dot
+  const last = pts[n-1];
+  svg.appendChild(mk('circle', {cx:xS(n-1), cy:yS(last), r:'3', fill:color, stroke:'#1e293b', 'stroke-width':'1.5'}));
+}
+
+function _tmRenderCheckpoints(c) {
+  const el = document.getElementById('tm-ckpt');
+  if (!c || c.count === 0) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:11px">None yet</span>';
+    return;
+  }
+  let html = `<div class="tm-cfg-row"><span class="tm-cfg-k">Saved</span><span class="tm-cfg-v">${c.count}</span></div>`;
+  if (c.latest) {
+    const sp = c.latest.state_path || c.latest.sampler_path || '';
+    if (sp) {
+      const name = sp.split('/').pop();
+      html += `<div class="tm-cfg-row" style="margin-top:3px"><span class="tm-cfg-k">Latest</span><span class="tm-cfg-v" title="${sp}">${name}</span></div>`;
+    }
+  }
+  el.innerHTML = html;
+}
+
+function _tmRenderBayesCeiling() {
+  const el = document.getElementById('tm-bayes-ceiling');
+  if (!el) return;
+  const flt4 = v => v == null ? '—' : v.toFixed(4);
+
+  const haveAnalyt = _tmBayesCeiling != null;
+  const haveEmp    = _tmBayesCeilingEmp != null;
+
+  if (!haveAnalyt && !haveEmp) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:11px">Computing…</span>';
+    return;
+  }
+
+  // Label-type badge
+  const ltLabel = _tmLabelType === 'float_prob' ? 'float prob (p*)' : _tmLabelType === 'binary' ? 'binary (0/1)' : '?';
+  const ltColor = _tmLabelType === 'float_prob' ? '#86efac' : '#fcd34d';
+  let html = `<div class="tm-cfg-row" style="margin-bottom:5px">
+    <span class="tm-cfg-k">Label type</span>
+    <span class="tm-cfg-v" style="color:${ltColor}">${ltLabel}</span>
+  </div>`;
+
+  // Reward ceiling row — label-type corrected
+  if (haveAnalyt) {
+    const ceilLabel = _tmLabelType === 'float_prob' ? 'Reward ceiling' : 'Reward ceil (binary)';
+    html += `
+      <div class="tm-cfg-row">
+        <span class="tm-cfg-k">${ceilLabel}</span>
+        <span class="tm-cfg-v" style="color:#fbbf24">${flt4(_tmBayesCeiling)}</span>
+      </div>
+      <div class="tm-cfg-row" style="margin-bottom:4px">
+        <span class="tm-cfg-k">Brier floor (binary)</span>
+        <span class="tm-cfg-v">${flt4(_tmBrierCeiling)}</span>
+      </div>
+      <div class="tm-cfg-row" style="margin-bottom:5px">
+        <span class="tm-cfg-k">Acc ceiling</span>
+        <span class="tm-cfg-v" style="color:#fbbf24">${_tmAccuracyCeiling != null ? (_tmAccuracyCeiling*100).toFixed(1)+'%' : '…'}</span>
+      </div>`;
+  } else {
+    html += `<div class="tm-cfg-row"><span class="tm-cfg-k">Reward ceiling</span><span class="tm-cfg-v" style="color:#fbbf24">…</span></div>`;
+  }
+
+  // Empirical row
+  if (haveEmp) {
+    html += `
+      <div class="tm-cfg-row">
+        <span class="tm-cfg-k" style="color:#5b21b6">Empirical</span>
+        <span class="tm-cfg-v" style="color:#a78bfa">${flt4(_tmBayesCeilingEmp)}</span>
+      </div>
+      <div class="tm-cfg-row" style="margin-bottom:6px">
+        <span class="tm-cfg-k">Brier floor</span>
+        <span class="tm-cfg-v">${flt4(_tmBrierCeilingEmp)}</span>
+      </div>`;
+  } else {
+    html += `<div class="tm-cfg-row"><span class="tm-cfg-k" style="color:#5b21b6">Empirical</span><span class="tm-cfg-v" style="color:#a78bfa">…</span></div>`;
+  }
+
+  // E3 breakdown — show analytical and empirical side-by-side
+  const e3Ana = _tmE3BlueProbAnalyt;
+  const e3Emp = _tmE3BlueProbEmp;
+  const e3Any = e3Ana || e3Emp;
+  if (e3Any) {
+    const haveEmpCol = e3Emp != null;
+    html += `<div class="tm-section-ttl" style="margin-top:6px;margin-bottom:3px">
+      P(Blue wins | News Tone)
+    </div>`;
+    // column headers
+    html += `<div style="display:flex;gap:5px;margin-bottom:2px">
+      <span style="flex:1;font-size:9px;color:#475569;min-width:88px"></span>
+      <span style="font-size:9px;color:#fbbf24;min-width:32px;text-align:right">Ana</span>
+      ${haveEmpCol ? '<span style="font-size:9px;color:#a78bfa;min-width:32px;text-align:right">Emp</span>' : ''}
+    </div>`;
+
+    const e3order = ['Blue-favorable', 'Neutral/mixed', 'Red-favorable'];
+    const allKeys = [...new Set([
+      ...e3order.filter(k => (e3Ana||{})[k] != null || (e3Emp||{})[k] != null),
+      ...Object.keys(e3Any).filter(k => !e3order.includes(k))
+    ])];
+
+    allKeys.forEach(tone => {
+      const pA = e3Ana ? e3Ana[tone] : null;
+      const pE = e3Emp ? e3Emp[tone] : null;
+      const p  = pA ?? pE;
+      if (p == null) return;
+      const isBlue = tone.toLowerCase().includes('blue');
+      const isRed  = tone.toLowerCase().includes('red');
+      const barColor = isBlue ? '#3b82f6' : isRed ? '#ef4444' : '#64748b';
+      html += `<div class="tm-e3-row">
+        <span class="tm-e3-lbl" title="${tone}">${tone}</span>
+        <div class="tm-e3-bar-wrap"><div class="tm-e3-bar-fill" style="width:${(p*100).toFixed(1)}%;background:${barColor}"></div></div>
+        <span class="tm-e3-pct" style="color:#fbbf24">${pA != null ? (pA*100).toFixed(1)+'%' : '—'}</span>
+        ${haveEmpCol ? `<span class="tm-e3-pct" style="color:#a78bfa">${pE != null ? (pE*100).toFixed(1)+'%' : '—'}</span>` : ''}
+      </div>`;
+    });
+  }
+
+  el.innerHTML = html;
+}
+
+// ── Bayes Ceiling tooltip ─────────────────────────────────────────────────────
+(function() {
+  const btn = document.getElementById('tm-ceiling-info-btn');
+  const tip = document.getElementById('tm-ceiling-tooltip');
+  if (!btn || !tip) return;
+  function showTip(e) {
+    tip.style.display = 'block';
+    _positionCeilingTip(e);
+  }
+  function moveTip(e) { _positionCeilingTip(e); }
+  function hideTip()  { tip.style.display = 'none'; }
+  btn.addEventListener('mouseenter', showTip);
+  btn.addEventListener('mousemove',  moveTip);
+  btn.addEventListener('mouseleave', hideTip);
+})();
+function _positionCeilingTip(e) {
+  const tip = document.getElementById('tm-ceiling-tooltip');
+  if (!tip) return;
+  const tw = 370, th = 260;
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + tw > window.innerWidth  - 10) x = e.clientX - tw - 10;
+  if (y + th > window.innerHeight - 10) y = e.clientY - th - 10;
+  tip.style.left = x + 'px';
+  tip.style.top  = y + 'px';
+}
+
+function _tmTonePill(tone) {
+  if (!tone) return '';
+  const lc = tone.toLowerCase();
+  const cls = lc.includes('blue') ? 'tm-pill-tone-bl' : lc.includes('red') ? 'tm-pill-tone-rd' : 'tm-pill-tone-nt';
+  return `<span class="tm-pill ${cls}">${tone}</span>`;
+}
+function _tmVolPill(vol) {
+  if (!vol) return '';
+  const lc = vol.toLowerCase();
+  const cls = lc === 'high' ? 'tm-pill-vol-hi' : lc === 'medium' ? 'tm-pill-vol-md' : 'tm-pill-vol-lo';
+  return `<span class="tm-pill ${cls}">${vol}</span>`;
+}
+
+function _tmRolloutCard(r) {
+  const prob    = r.yes_prob ?? 0.5;
+  const pct     = Math.round(prob * 100);
+  const reward  = r.reward;
+  const rStr    = reward != null ? (reward >= 0 ? '+' : '') + reward.toFixed(3) : '—';
+  const rCls    = reward == null ? '' : reward >= 0 ? 'pos' : 'neg';
+  const correct = r.is_correct;
+  const cStr    = correct == null ? '' : correct ? '✓' : '✗';
+  const cCls    = correct == null ? '' : correct ? 'ok' : 'ng';
+  const settled = r.settlement_yes;
+  // Float probability label: show p* and lean direction. Bool label: show Blue/Red.
+  let outcome, outClr;
+  if (typeof settled === 'number') {
+    const pct = Math.round(settled * 100);
+    outcome = settled > 0.5 ? `p*=${pct}% Blue` : settled < 0.5 ? `p*=${pct}% Red` : `p*=50%`;
+    outClr  = settled > 0.52 ? 'var(--blue)' : settled < 0.48 ? 'var(--red)' : 'var(--muted)';
+  } else {
+    outcome = settled === true ? 'Blue' : settled === false ? 'Red' : '?';
+    outClr  = settled === true ? 'var(--blue)' : settled === false ? 'var(--red)' : 'var(--muted)';
+  }
+  const tid     = (r.task_id || '').replace('election_sim_', '#');
+  const rat     = (r.rationale || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const brier   = r.brier_loss != null ? r.brier_loss.toFixed(3) : null;
+  const ll      = r.log_loss   != null ? r.log_loss.toFixed(3) : null;
+  return `<div class="tm-card-roll">
+  <div class="tm-roll-top">
+    <span class="tm-roll-meta">${tid}</span>
+    <span class="tm-pill tm-pill-type">${r.news_type||'—'}</span>
+    <span class="tm-pill tm-pill-rel">${r.news_reliability||'—'}</span>
+    ${_tmTonePill(r.news_tone)}
+    ${_tmVolPill(r.news_volume)}
+    <span style="flex:1"></span>
+    <span style="font-size:10px;font-weight:700;color:${outClr}">${outcome}</span>
+  </div>
+  <div class="tm-roll-mid">
+    <div class="tm-prob-bar"><div class="tm-prob-fill" style="width:${pct}%"></div></div>
+    <span class="tm-prob-lbl">${pct}%</span>
+    <span class="tm-reward ${rCls}">${rStr}</span>
+    <span class="tm-correct ${cCls}">${cStr}</span>
+  </div>
+  ${brier || ll ? `<div style="display:flex;gap:12px;margin-top:3px">
+    ${brier ? `<span style="font-size:10px;color:#64748b">Brier <b style="color:var(--text)">${brier}</b></span>` : ''}
+    ${ll    ? `<span style="font-size:10px;color:#64748b">LogLoss <b style="color:var(--text)">${ll}</b></span>` : ''}
+  </div>` : ''}
+  ${rat ? `<div class="tm-rationale">${rat}</div>` : ''}
+</div>`;
+}
+
+// Track which batch accordions are open (set of batch keys like "train-3")
+const _tmOpenBatches = new Set();
+
+function _tmRenderBatchedRollouts(batches, total) {
+  document.getElementById('tm-feed-count').textContent = total ? `${total} rollouts` : '';
+  const feed = document.getElementById('tm-feed');
+  if (!batches || !batches.length) {
+    feed.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:20px 0;text-align:center">No batches yet.</div>';
+    return;
+  }
+
+  // Auto-open the most recent batch on first load
+  const firstKey = `${_tmCurrentFeed}-${batches[0].batch_idx}`;
+  if (_tmOpenBatches.size === 0) _tmOpenBatches.add(firstKey);
+
+  feed.innerHTML = batches.map(b => {
+    const key    = `${_tmCurrentFeed}-${b.batch_idx}`;
+    const isOpen = _tmOpenBatches.has(key);
+    const st     = b.stats || {};
+    const rStr   = st.mean_reward != null ? (st.mean_reward >= 0 ? '+' : '') + st.mean_reward.toFixed(3) : '—';
+    const rClr   = st.mean_reward == null ? '#64748b' : st.mean_reward >= 0 ? 'var(--green)' : 'var(--red)';
+    const acc    = st.accuracy != null ? (st.accuracy * 100).toFixed(0) + '%' : '—';
+    const brier  = st.mean_brier != null ? st.mean_brier.toFixed(3) : '—';
+    const label  = _tmCurrentFeed === 'train' ? `Train batch ${b.batch_idx}` : `Eval pass ${b.batch_idx}`;
+
+    return `<div class="tm-batch" id="batch-${key}">
+  <div class="tm-batch-hdr${isOpen ? ' open' : ''}" onclick="toggleBatch('${key}')">
+    <span class="tm-batch-chevron">▶</span>
+    <span class="tm-batch-label">${label}</span>
+    <span class="tm-batch-stats">
+      <span class="tm-batch-stat">reward <span style="color:${rClr}">${rStr}</span></span>
+      <span class="tm-batch-stat">brier <span>${brier}</span></span>
+      <span class="tm-batch-stat">acc <span>${acc}</span></span>
+      <span class="tm-batch-stat" style="color:#475569">${st.count ?? 0} rolls</span>
+    </span>
+  </div>
+  <div class="tm-batch-body${isOpen ? '' : ' collapsed'}" id="body-${key}">
+    ${b.rollouts.map(_tmRolloutCard).join('')}
+  </div>
+</div>`;
+  }).join('');
+}
+
+function toggleBatch(key) {
+  const hdr  = document.querySelector(`#batch-${key} .tm-batch-hdr`);
+  const body = document.getElementById(`body-${key}`);
+  if (!hdr || !body) return;
+  const open = _tmOpenBatches.has(key);
+  if (open) {
+    _tmOpenBatches.delete(key);
+    hdr.classList.remove('open');
+    body.classList.add('collapsed');
+  } else {
+    _tmOpenBatches.add(key);
+    hdr.classList.add('open');
+    body.classList.remove('collapsed');
+  }
+}
 </script>
 </body>
 </html>
