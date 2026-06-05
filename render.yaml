@@ -1,7 +1,7 @@
 services:
   - type: web
-    name: social-sim
+    name: social-sim-forecaster
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: cd elections && gunicorn server:app --bind 0.0.0.0:$PORT
+    startCommand: cd exp1_prospective/viewer && gunicorn app:app --bind 0.0.0.0:$PORT
