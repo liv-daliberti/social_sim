@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 """Step 3: Build counterfactual evidence packets — one LLM call per snippet.
 
-Generates 9 packets per market (3 directions × 3 snippets each).  Each call
-is one single-turn Azure API call given:
-  - the full world model from the canonical run-0 structured forecast
-  - the generation date (so every snippet is dateline-stamped to today)
-  - an angle instruction that diversifies the 3 snippets within a direction
+Generates 9 packets per market (3 directions × 3 snippets each).  Within each
+direction the 3 snippets are forced to be distinct by two mechanisms:
 
-Directions:
-  pro_H1    — 3 snippets that each INCREASE P(H1=YES), via different mechanisms
-  anti_H1   — 3 snippets that each DECREASE P(H1=YES), via different mechanisms
-  orthogonal — 3 snippets topically related but causally disconnected from H1/H2
+  1. TYPE CONSTRAINT — each slot has a different evidence type:
+       pro_H1 / anti_H1:  [DATA, DECISION, STRUCTURAL]
+       orthogonal:         [PROCEDURAL, PERSONNEL, BACKDROP]
+
+  2. SEQUENTIAL EXCLUSION — snippet N sees the headlines and mechanisms of
+     snippets 0..N-1 for that direction and is explicitly told not to repeat
+     their mechanism, actor, or framing.
+
+Each call is a single-turn Azure API call with no previous_response_id.
+All generation metadata (prompt, response, search queries, token counts) is
+stored so the viewer can show the full trace.
 
 Usage (from exp1_prospective/):
     python agent/build_counterfactuals.py
-    python agent/build_counterfactuals.py --n 2        # first 2 markets
-    python agent/build_counterfactuals.py --dry-run    # print prompts, no API calls
+    python agent/build_counterfactuals.py --n 2
+    python agent/build_counterfactuals.py --dry-run
+    python agent/build_counterfactuals.py --force      # delete & regenerate
     python agent/build_counterfactuals.py --verbose
 """
 
@@ -59,32 +64,48 @@ _FC_DIR = _ROOT / "data" / "initial_forecasts"
 _CF_DIR = _ROOT / "data" / "counterfactuals"
 
 
-# ── snippet plan: (direction, index, angle instruction) ────────────────────────
-# 9 snippets per market, 3 per direction, each targeting a different angle so
-# the three snippets within a direction are meaningfully distinct.
+# ── snippet type plan ───────────────────────────────────────────────────────────
+# Each direction has exactly 3 slots with distinct evidence types.
+# This forces structural diversity independent of the world-model content.
 
-_SNIPPETS: list[tuple[str, int, str]] = [
-    # direction   idx  angle ─────────────────────────────────────────────────────
-    ("pro_H1",    0,  "Target the PRIMARY causal mechanism: the single most important "
-                      "link that would drive H1 to happen."),
-    ("pro_H1",    1,  "Target a DIFFERENT ACTOR or institution from the world model — "
-                      "pick one not featured in angle 0, acting through a distinct pathway."),
-    ("pro_H1",    2,  "Target a LATENT VARIABLE — something uncertain or not yet measured "
-                      "in the evidence that, if revealed favorably, tips the balance toward H1."),
+_SLOT_TYPES: dict[str, list[str]] = {
+    "pro_H1": [
+        "DATA — a measurement, reading, price signal, or published statistic that "
+        "indicates H1 is becoming more likely (e.g., a newly released number, index, or survey result).",
 
-    ("anti_H1",   0,  "Target the PRIMARY obstacle to H1: the single most important "
-                      "blocking factor or adverse development."),
-    ("anti_H1",   1,  "Target a DIFFERENT ACTOR or institution — pick one not featured in "
-                      "angle 0, acting through a distinct pathway that prevents H1."),
-    ("anti_H1",   2,  "Target a LATENT VARIABLE — something uncertain that, if revealed "
-                      "unfavorably, makes H1 significantly less likely."),
+        "DECISION — an actor decision, official statement, policy announcement, or "
+        "agreement (e.g., a government choice, institutional ruling, formal commitment) that supports H1.",
 
-    ("orthogonal", 0, "An institutional, regulatory, or procedural development in the same "
-                      "domain that has no causal bearing on whether H1 or H2 occurs."),
-    ("orthogonal", 1, "A development involving one of the key actors on an UNRELATED matter "
-                      "(e.g., a personnel change, an adjacent policy issue, a domestic concern)."),
-    ("orthogonal", 2, "Background context: economic, logistical, or social news that sets the "
-                      "scene but does not change the odds of H1 vs H2."),
+        "STRUCTURAL — a technical, logistical, or contextual shift (e.g., an infrastructure "
+        "change, supply or capacity development, legal or operational change) that makes H1 more likely.",
+    ],
+    "anti_H1": [
+        "DATA — a measurement, reading, price signal, or published statistic that "
+        "indicates H1 is becoming less likely.",
+
+        "DECISION — an actor decision, official statement, policy announcement, or "
+        "refusal (e.g., a government veto, institutional ruling, formal rejection) that opposes H1.",
+
+        "STRUCTURAL — a technical, logistical, or contextual obstacle (e.g., an infrastructure "
+        "failure, supply constraint, legal or operational barrier) that makes H1 less likely.",
+    ],
+    "orthogonal": [
+        "PROCEDURAL — an administrative, regulatory, or process update in the same domain "
+        "that has no causal link to whether H1 or H2 occurs.",
+
+        "PERSONNEL — a staffing change, leadership appointment, or organizational update "
+        "involving a key actor on a matter unrelated to H1/H2.",
+
+        "BACKDROP — an economic, logistical, or social context development that sets the "
+        "scene but does not shift the odds of H1 vs H2.",
+    ],
+}
+
+# Ordered work list: (direction, index)
+_SNIPPETS: list[tuple[str, int]] = [
+    (direction, index)
+    for direction in ["pro_H1", "anti_H1", "orthogonal"]
+    for index in range(3)
 ]
 
 
@@ -112,28 +133,35 @@ Latent variables: {latent_variables}
 Today's date: {today}"""
 
 
+_EXCLUSION_BLOCK = """
+SNIPPETS ALREADY GENERATED FOR THIS DIRECTION — do NOT repeat their \
+mechanism, actor, or framing (pick something clearly different on all three dimensions):
+{prior_lines}
+"""
+
+
 CF_PRO_H1_PROMPT = """\
 You are a researcher designing a prediction-market consistency experiment.
 
 """ + _CONTEXT_BLOCK + """
-
-ANGLE FOR THIS SNIPPET: {angle}
+{exclusion_block}
+SNIPPET TYPE FOR THIS CALL: {slot_type}
 
 TASK: Write ONE short SYNTHETIC news snippet dated {today} that, if real, would
-INCREASE P(H1=YES).  Address the angle above specifically — do not default to the
-most obvious pro-H1 framing if the angle says to target something different.
+INCREASE P(H1=YES).  It must be of the type above AND must differ in mechanism,
+actor, and framing from any snippets listed in the exclusion block above.
 
 Rules:
 - 2-4 sentences in AP/Reuters wire style; open with a dateline ("CITY, {today_short} —")
-- Plausible given the current situation; invent names, figures, quotes as needed
+- Plausible; invent names, figures, quotes as needed
 - DO NOT search the web — generate entirely from the context above
 
-Output ONLY a valid JSON object with NO markdown fences or commentary:
+Output ONLY a valid JSON object, no markdown fences, no commentary:
 {{
   "news_date": "{today}",
   "evidence_headline": "Short headline 10-15 words",
   "evidence_text": "Dateline + 2-4 sentence news snippet.",
-  "mechanism_targeted": "Which mechanism or latent variable this addresses",
+  "mechanism_targeted": "The specific mechanism or latent variable this addresses",
   "rationale": "1-2 sentences: why this specifically INCREASES P(H1=YES)."
 }}"""
 
@@ -142,23 +170,24 @@ CF_ANTI_H1_PROMPT = """\
 You are a researcher designing a prediction-market consistency experiment.
 
 """ + _CONTEXT_BLOCK + """
-
-ANGLE FOR THIS SNIPPET: {angle}
+{exclusion_block}
+SNIPPET TYPE FOR THIS CALL: {slot_type}
 
 TASK: Write ONE short SYNTHETIC news snippet dated {today} that, if real, would
-DECREASE P(H1=YES).  Address the angle above specifically.
+DECREASE P(H1=YES).  It must be of the type above AND must differ in mechanism,
+actor, and framing from any snippets listed in the exclusion block above.
 
 Rules:
 - 2-4 sentences in AP/Reuters wire style; open with a dateline ("CITY, {today_short} —")
-- Plausible given the current situation; invent names, figures, quotes as needed
+- Plausible; invent names, figures, quotes as needed
 - DO NOT search the web — generate entirely from the context above
 
-Output ONLY a valid JSON object with NO markdown fences or commentary:
+Output ONLY a valid JSON object, no markdown fences, no commentary:
 {{
   "news_date": "{today}",
   "evidence_headline": "Short headline 10-15 words",
   "evidence_text": "Dateline + 2-4 sentence news snippet.",
-  "mechanism_targeted": "Which mechanism or latent variable this addresses",
+  "mechanism_targeted": "The specific mechanism or latent variable this addresses",
   "rationale": "1-2 sentences: why this specifically DECREASES P(H1=YES)."
 }}"""
 
@@ -167,25 +196,26 @@ CF_ORTHOGONAL_PROMPT = """\
 You are a researcher designing a prediction-market consistency experiment.
 
 """ + _CONTEXT_BLOCK + """
-
-ANGLE FOR THIS SNIPPET: {angle}
+{exclusion_block}
+SNIPPET TYPE FOR THIS CALL: {slot_type}
 
 TASK: Write ONE short SYNTHETIC news snippet dated {today} that is TOPICALLY
 RELATED to this market but does NOT shift P(H1=YES) in either direction.
-Address the angle above specifically.
+It must be of the type above AND must differ in mechanism, actor, and framing
+from any snippets listed in the exclusion block above.
 
 Rules:
 - 2-4 sentences in AP/Reuters wire style; open with a dateline ("CITY, {today_short} —")
-- Same general domain, but a clearly different causal facet from H1/H2
+- Same general domain but a clearly different causal facet from H1/H2
 - Plausible; invent names, figures, quotes as needed
 - DO NOT search the web — generate entirely from the context above
 
-Output ONLY a valid JSON object with NO markdown fences or commentary:
+Output ONLY a valid JSON object, no markdown fences, no commentary:
 {{
   "news_date": "{today}",
   "evidence_headline": "Short headline 10-15 words",
   "evidence_text": "Dateline + 2-4 sentence news snippet.",
-  "mechanism_targeted": "Which aspect of the situation this addresses (not H1/H2 causal path)",
+  "mechanism_targeted": "Which aspect of the situation this addresses (NOT the H1/H2 causal path)",
   "rationale": "1-2 sentences: why this does NOT shift P(H1=YES) in either direction."
 }}"""
 
@@ -200,11 +230,8 @@ _DIRECTION_PROMPTS = {
 # ── helpers ─────────────────────────────────────────────────────────────────────
 
 def _today_strings() -> tuple[str, str]:
-    """Return (long, short) date strings: ('June 6, 2026', 'June 6')."""
     now = datetime.now()
-    long  = now.strftime("%B %-d, %Y")
-    short = now.strftime("%B %-d")
-    return long, short
+    return now.strftime("%B %-d, %Y"), now.strftime("%B %-d")
 
 
 def _load_forecasts(path: Path) -> list[dict]:
@@ -242,8 +269,21 @@ def _fmt_list(items: list, n: int = 3) -> str:
     return "; ".join(str(x) for x in items[:n])
 
 
-def _build_prompt(direction: str, index: int, angle: str,
-                  rec: dict, sf: dict, today: str, today_short: str) -> str:
+def _build_exclusion_block(prior_snippets: list[dict]) -> str:
+    if not prior_snippets:
+        return ""
+    lines = ""
+    for i, p in enumerate(prior_snippets):
+        hl   = p.get("evidence_headline", "(unknown)")
+        mech = p.get("mechanism_targeted", "(unknown)")
+        lines += f"  {i+1}. Headline: {hl}\n     Mechanism/actor: {mech}\n"
+    return _EXCLUSION_BLOCK.format(prior_lines=lines)
+
+
+def _build_prompt(direction: str, index: int,
+                  rec: dict, sf: dict,
+                  today: str, today_short: str,
+                  prior_snippets: list[dict]) -> str:
     em = sf.get("event_model", {})
     h1 = _get_hyp(sf, "H1")
     h2 = _get_hyp(sf, "H2")
@@ -261,7 +301,8 @@ def _build_prompt(direction: str, index: int, angle: str,
         h1_contradicting = _fmt_list(h1.get("contradicting_evidence", []), 2),
         today            = today,
         today_short      = today_short,
-        angle            = angle,
+        slot_type        = _SLOT_TYPES[direction][index],
+        exclusion_block  = _build_exclusion_block(prior_snippets),
     )
 
 
@@ -285,9 +326,9 @@ def _parse_snippet(text: str) -> dict:
 def generate_snippet(
     direction: str,
     index: int,
-    angle: str,
     rec: dict,
     sf: dict,
+    prior_snippets: list[dict],
     *,
     client,
     today: str,
@@ -298,7 +339,7 @@ def generate_snippet(
     verbose: bool = False,
 ) -> dict:
     """One Azure API call → one counterfactual packet."""
-    prompt = _build_prompt(direction, index, angle, rec, sf, today, today_short)
+    prompt = _build_prompt(direction, index, rec, sf, today, today_short, prior_snippets)
     h1 = _get_hyp(sf, "H1")
 
     if verbose:
@@ -335,7 +376,7 @@ def generate_snippet(
         "cf_id":                     f"{rec['task_id']}_{direction}_{index}",
         "direction":                 direction,
         "cf_index":                  index,
-        "angle":                     angle,
+        "slot_type":                 _SLOT_TYPES[direction][index],
         "target_hypothesis":         "H1" if direction in ("pro_H1", "anti_H1") else None,
         "expected_hypothesis_shift": (
             "increase" if direction == "pro_H1" else
@@ -364,18 +405,21 @@ def generate_snippet(
     }
 
 
-# ── resume ──────────────────────────────────────────────────────────────────────
+# ── resume helpers ──────────────────────────────────────────────────────────────
 
-def _load_done(out_path: Path) -> set[str]:
+def _load_done_packets(out_path: Path) -> dict[str, dict]:
+    """Return {cf_id: packet} for all indexed packets already written."""
+    done: dict[str, dict] = {}
     if not out_path.exists():
-        return set()
-    done: set[str] = set()
+        return done
     with out_path.open() as f:
         for line in f:
             try:
                 r = json.loads(line)
-                if cf_id := r.get("cf_id"):
-                    done.add(cf_id)
+                if r.get("cf_index") is not None:
+                    cf_id = r.get("cf_id", "")
+                    if cf_id:
+                        done[cf_id] = r
             except json.JSONDecodeError:
                 pass
     return done
@@ -392,13 +436,15 @@ def main() -> None:
     ap.add_argument("--out",      type=Path, default=_CF_DIR)
     ap.add_argument("--n",        type=int,  default=0,
                     help="Max markets (0 = all).")
-    ap.add_argument("--delay",    type=float, default=2.0,
-                    help="Seconds between API calls.")
+    ap.add_argument("--delay",    type=float, default=2.0)
     ap.add_argument("--model",    type=str,  default=DEFAULT_MODEL)
     ap.add_argument("--api-key",  type=str,  default=None)
     ap.add_argument("--endpoint", type=str,  default=None)
     ap.add_argument("--verbose",  action="store_true")
-    ap.add_argument("--dry-run",  action="store_true")
+    ap.add_argument("--dry-run",  action="store_true",
+                    help="Print first market's prompts; no API calls.")
+    ap.add_argument("--force",    action="store_true",
+                    help="Delete existing output file and regenerate from scratch.")
     args = ap.parse_args()
 
     input_path = args.input
@@ -418,13 +464,15 @@ def main() -> None:
 
     print(f"Input:   {input_path}")
     print(f"Markets: {len(valid)}   Date: {today}")
-    print(f"Packets: {len(valid) * len(_SNIPPETS)} total  ({len(valid)} markets × {len(_SNIPPETS)} snippets)")
+    print(f"Packets: {len(valid) * len(_SNIPPETS)} total  ({len(valid)} × {len(_SNIPPETS)})")
 
     if args.dry_run:
         rec = valid[0]
         sf  = _canonical_sf(rec)
-        for direction, index, angle in _SNIPPETS[:3]:
-            prompt = _build_prompt(direction, index, angle, rec, sf, today, today_short)
+        for direction, index in _SNIPPETS[:4]:
+            # simulate prior_snippets building
+            prior = []
+            prompt = _build_prompt(direction, index, rec, sf, today, today_short, prior)
             print(f"\n{'='*70}\n[DRY RUN — {direction}/{index}]\n{prompt}")
         return
 
@@ -432,9 +480,13 @@ def main() -> None:
     date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     out_path = args.out / f"counterfactuals_{date_str}.jsonl"
 
-    done_ids = _load_done(out_path)
-    if done_ids:
-        print(f"Resuming: {len(done_ids)} packets already written")
+    if args.force and out_path.exists():
+        print(f"--force: removing {out_path}")
+        out_path.unlink()
+
+    done_packets = _load_done_packets(out_path)
+    if done_packets:
+        print(f"Resuming: {len(done_packets)} packets already written")
     print(f"Output:  {out_path}\n")
 
     client = make_openai_client(api_key=args.api_key, endpoint=args.endpoint)
@@ -451,10 +503,20 @@ def main() -> None:
             else:
                 print(f"\n  {q60}")
 
-            for direction, index, angle in _SNIPPETS:
-                cf_id = f"{rec['task_id']}_{direction}_{index}"
+            # accumulate generated packets per direction for exclusion context
+            generated: dict[str, list[dict]] = {"pro_H1": [], "anti_H1": [], "orthogonal": []}
 
-                if cf_id in done_ids:
+            # seed with already-done packets for this market (for resume)
+            for direction, index in _SNIPPETS:
+                cf_id = f"{rec['task_id']}_{direction}_{index}"
+                if cf_id in done_packets:
+                    generated[direction].append(done_packets[cf_id])
+
+            for direction, index in _SNIPPETS:
+                cf_id  = f"{rec['task_id']}_{direction}_{index}"
+                prior  = [p for p in generated[direction] if p.get("cf_index", -1) < index]
+
+                if cf_id in done_packets:
                     if args.verbose:
                         print(f"    SKIP  {direction}/{index}")
                     n_done += 1
@@ -466,12 +528,13 @@ def main() -> None:
 
                 try:
                     packet = generate_snippet(
-                        direction, index, angle, rec, sf,
+                        direction, index, rec, sf, prior,
                         client=client, today=today, today_short=today_short,
                         model=args.model, verbose=args.verbose,
                     )
                     out_f.write(json.dumps(packet) + "\n")
                     out_f.flush()
+                    generated[direction].append(packet)
                     n_ok += 1
                     if not args.verbose:
                         hl = packet.get("evidence_headline", "")[:50]
