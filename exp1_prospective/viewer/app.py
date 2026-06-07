@@ -14,9 +14,11 @@ from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
-_ROOT         = Path(__file__).resolve().parent.parent
-_FORECAST_DIR = _ROOT / "data" / "initial_forecasts"
-_MARKETS_DIR  = _ROOT / "data" / "selected_markets"
+_ROOT           = Path(__file__).resolve().parent.parent
+_FORECAST_DIR   = _ROOT / "data" / "initial_forecasts"
+_MARKETS_DIR    = _ROOT / "data" / "selected_markets"
+_CF_DIR         = _ROOT / "data" / "counterfactuals"
+_UF_DIR         = _ROOT / "data" / "updated_forecasts"
 
 
 # ── market price history (loaded once at startup) ──────────────────────────────
@@ -119,9 +121,70 @@ def get_forecast(task_id: str):
     return jsonify({"error": "not found"}), 404
 
 
+def _load_counterfactuals(task_id: str) -> list[dict]:
+    """Return all CF packets for a task_id, newest file first, deduplicated by cf_id."""
+    packets: list[dict] = []
+    seen: set[str] = set()
+    _order = {"pro_H1": 0, "anti_H1": 1, "orthogonal": 2}
+
+    for path in sorted(_CF_DIR.glob("counterfactuals_*.jsonl"), reverse=True):
+        with open(path) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                try:
+                    rec = json.loads(line)
+                    if rec.get("task_id") != task_id:
+                        continue
+                    # skip old single-packet format (no cf_index field)
+                    if rec.get("cf_index") is None:
+                        continue
+                    cf_id = rec.get("cf_id", "")
+                    if cf_id and cf_id not in seen:
+                        seen.add(cf_id)
+                        packets.append(rec)
+                except json.JSONDecodeError:
+                    pass
+
+    packets.sort(key=lambda r: _order.get(r.get("direction", ""), 99))
+    return packets
+
+
+@app.route("/api/counterfactuals/<task_id>")
+def get_counterfactuals(task_id: str):
+    return jsonify(_load_counterfactuals(task_id))
+
+
+def _load_updated_forecasts(task_id: str) -> list[dict]:
+    """Return all updated-forecast records for a task_id, deduplicated by update_id."""
+    records: list[dict] = []
+    seen: set[str] = set()
+    for path in sorted(_UF_DIR.glob("updated_*.jsonl"), reverse=True):
+        with open(path) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                try:
+                    rec = json.loads(line)
+                    if rec.get("task_id") != task_id:
+                        continue
+                    uid = rec.get("update_id", "")
+                    if uid and uid not in seen:
+                        seen.add(uid)
+                        records.append(rec)
+                except json.JSONDecodeError:
+                    pass
+    return records
+
+
+@app.route("/api/updated_forecasts/<task_id>")
+def get_updated_forecasts(task_id: str):
+    return jsonify(_load_updated_forecasts(task_id))
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--port", type=int, default=5001)
+    ap.add_argument("--port", type=int, default=5050)
     ap.add_argument("--host", default="0.0.0.0")
     args = ap.parse_args()
     print(f"Starting viewer at http://{args.host}:{args.port}")

@@ -487,6 +487,43 @@
     height: 180px;
   }
 
+  /* ── VIEW TABS (top-level: Agentic Forecast / Counterfactuals / Model Update) ── */
+  .view-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 0;
+  }
+
+  .view-tab {
+    padding: 11px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #777;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .view-tab:hover { color: #333; }
+
+  .view-tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+  }
+
+  .view-tab.pending {
+    color: #bbb;
+  }
+
+  .view-tab.pending:hover { color: #999; }
+
+  .view-panel { display: none; padding-top: 20px; }
+  .view-panel.active { display: block; }
+
   /* ── error state ── */
   .error-card {
     background: #fff5f5;
@@ -495,6 +532,217 @@
     padding: 16px;
     color: #991b1b;
     font-size: 13px;
+  }
+
+  /* ── COUNTERFACTUALS PANEL ── */
+  .cf-loading {
+    padding: 16px 24px;
+    color: #999;
+    font-size: 13px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .cf-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .cf-tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .cf-tab.pro   { background: #dcfce7; color: #15803d; }
+  .cf-tab.anti  { background: #fee2e2; color: #b91c1c; }
+  .cf-tab.ortho { background: #ede9fe; color: #6d28d9; }
+
+  .cf-tab.pro.active   { background: #15803d; color: #fff; border-color: #15803d; }
+  .cf-tab.anti.active  { background: #b91c1c; color: #fff; border-color: #b91c1c; }
+  .cf-tab.ortho.active { background: #6d28d9; color: #fff; border-color: #6d28d9; }
+
+  .cf-panel { display: none; }
+  .cf-panel.active { display: block; }
+
+  .cf-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .cf-direction-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .cf-direction-badge.pro   { background: #dcfce7; color: #15803d; }
+  .cf-direction-badge.anti  { background: #fee2e2; color: #b91c1c; }
+  .cf-direction-badge.ortho { background: #ede9fe; color: #6d28d9; }
+
+  .cf-headline {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #111;
+    margin-bottom: 10px;
+  }
+
+  .cf-snippet {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+    background: #f9fafb;
+    border-left: 3px solid #d1d5db;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+
+  .cf-meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .cf-meta-block label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .cf-meta-block p {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.5;
+  }
+
+  .cf-generation {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+
+  .cf-gen-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0;
+  }
+
+  .cf-gen-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #999;
+  }
+
+  .cf-gen-body { display: none; margin-top: 12px; }
+  .cf-gen-body.open { display: block; }
+
+  .cf-gen-stat {
+    font-size: 11px;
+    color: #aaa;
+    margin-left: auto;
+  }
+
+  .cf-gen-block { margin-bottom: 12px; }
+
+  .cf-gen-block-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #bbb;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .cf-gen-text {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    background: #f7f7fb;
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #334;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    display: none;
+  }
+  .cf-gen-text.open { display: block; }
+
+  /* ── story card (one per snippet within a direction) ── */
+  .cf-story-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .cf-story-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .cf-story-num {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .cf-date-badge {
+    font-size: 11px;
+    font-weight: 600;
+    background: #f3f4f6;
+    color: #555;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: "SF Mono", "Fira Code", monospace;
+  }
+
+  .cf-angle-badge {
+    font-size: 10px;
+    color: #aaa;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 1px 6px;
+    border-radius: 8px;
+    cursor: help;
+    margin-left: auto;
   }
 </style>
 </head>
@@ -568,6 +816,125 @@ async function loadForecast(taskId) {
   const rec = await res.json();
   detail.innerHTML = renderForecast(rec);
   renderPriceChart(rec);
+
+  // load counterfactuals and updated forecasts asynchronously
+  loadCounterfactuals(taskId);
+  loadUpdatedForecasts(taskId);
+}
+
+async function loadCounterfactuals(taskId) {
+  const section = document.getElementById('cf-section');
+  if (!section) return;
+  section.innerHTML = '<div class="cf-loading">Loading counterfactuals…</div>';
+  try {
+    const res     = await fetch('/api/counterfactuals/' + encodeURIComponent(taskId));
+    const packets = await res.json();
+    section.innerHTML = renderCFSection(packets);
+  } catch(e) {
+    section.innerHTML = `<div class="cf-loading" style="color:#dc2626">Failed to load counterfactuals: ${esc(String(e))}</div>`;
+  }
+}
+
+async function loadUpdatedForecasts(taskId) {
+  const section = document.getElementById('uf-section');
+  if (!section) return;
+  try {
+    const res     = await fetch('/api/updated_forecasts/' + encodeURIComponent(taskId));
+    const records = await res.json();
+    section.innerHTML = renderUFSection(records);
+  } catch(e) {
+    section.innerHTML = `<div class="cf-loading" style="color:#dc2626">Failed to load: ${esc(String(e))}</div>`;
+  }
+}
+
+function renderUFSection(records) {
+  if (!records || records.length === 0) {
+    return `<div class="section-card">
+      <h2>Model Update</h2>
+      <div style="padding:36px 0;text-align:center;color:#bbb;font-size:14px;line-height:2">
+        <div style="font-size:32px;margin-bottom:12px;color:#e5e7eb">→</div>
+        Each counterfactual packet will be injected into each of the 5 k-runs,<br>
+        giving a paired delta: <em>updated_yes_prob − initial_yes_prob</em>.<br><br>
+        <span style="font-size:11px;background:#f0f3ff;color:#4455aa;padding:4px 12px;border-radius:10px;font-family:monospace">
+          python agent/updated_forecast.py
+        </span><br>
+        <span style="font-size:11px;color:#ccc;margin-top:8px;display:inline-block">
+          5 markets × 5 runs × 9 packets = 225 calls · no web search
+        </span>
+      </div>
+    </div>`;
+  }
+
+  // group by cf_id, then by run_idx
+  const byCF = {};
+  for (const r of records) {
+    const key = r.cf_id || r.cf_id;
+    if (!byCF[key]) byCF[key] = { direction: r.direction, cf_index: r.cf_index, runs: [] };
+    byCF[key].runs.push(r);
+  }
+  for (const key of Object.keys(byCF)) {
+    byCF[key].runs.sort((a, b) => (a.initial_run_id ?? 0) - (b.initial_run_id ?? 0));
+  }
+
+  const dirOrder = { pro_H1: 0, anti_H1: 1, orthogonal: 2 };
+  const cfKeys = Object.keys(byCF).sort((a, b) => {
+    const da = dirOrder[byCF[a].direction] ?? 9;
+    const db = dirOrder[byCF[b].direction] ?? 9;
+    return da !== db ? da - db : (byCF[a].cf_index ?? 0) - (byCF[b].cf_index ?? 0);
+  });
+
+  const dirMeta = {
+    pro_H1:     { cls: 'pro',   color: '#15803d', label: '↑ Pro H1' },
+    anti_H1:    { cls: 'anti',  color: '#dc2626', label: '↓ Anti H1' },
+    orthogonal: { cls: 'ortho', color: '#7c3aed', label: '↔ Orthogonal' },
+  };
+
+  let html = `<div class="section-card">
+    <h2>Model Update
+      <span style="font-size:11px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">
+        &nbsp;${records.length} updates · no web search
+      </span>
+    </h2>`;
+
+  for (const cfKey of cfKeys) {
+    const g   = byCF[cfKey];
+    const m   = dirMeta[g.direction] || { cls: 'ortho', color: '#888', label: g.direction };
+    const deltas = g.runs.map(r => r.delta_yes_prob).filter(d => d != null);
+    const meanDelta = deltas.length ? deltas.reduce((a,b)=>a+b,0)/deltas.length : null;
+    const correct   = g.runs.filter(r => r.shift_correct === true).length;
+    const total_r   = g.runs.filter(r => r.shift_correct != null).length;
+
+    html += `<div style="margin-bottom:20px;border:1px solid #f0f0f0;border-radius:8px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:#fafafa;border-bottom:1px solid #f0f0f0">
+        <span class="cf-direction-badge ${m.cls}" style="margin:0">${m.label} · Story ${(g.cf_index??0)+1}</span>
+        ${meanDelta != null ? `<span style="font-size:13px;font-weight:700;color:${meanDelta>0.005?'#15803d':meanDelta<-0.005?'#dc2626':'#888'}">
+          mean Δ ${meanDelta>=0?'+':''}${Math.round(meanDelta*100)}pp
+        </span>` : ''}
+        ${total_r > 0 ? `<span style="font-size:11px;color:#aaa;margin-left:auto">
+          ${correct}/${total_r} runs shifted correctly
+        </span>` : ''}
+      </div>
+      <div style="padding:12px 16px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">`;
+
+    for (const run of g.runs) {
+      const d   = run.delta_yes_prob;
+      const ok  = run.shift_correct;
+      const dStr = d != null ? `${d>=0?'+':''}${Math.round(d*100)}pp` : '—';
+      const dColor = d==null?'#aaa':d>0.005?'#15803d':d<-0.005?'#dc2626':'#888';
+      const okIcon = ok===true?'✓':ok===false?'✗':'—';
+      const okColor = ok===true?'#15803d':ok===false?'#dc2626':'#aaa';
+      html += `<div style="background:#f7f7fb;border-radius:6px;padding:8px 12px;min-width:80px;text-align:center">
+        <div style="font-size:10px;color:#aaa;margin-bottom:3px">run ${run.initial_run_id+1}</div>
+        <div style="font-size:15px;font-weight:700;color:${dColor}">${dStr}</div>
+        <div style="font-size:12px;color:${okColor}">${okIcon}</div>
+      </div>`;
+    }
+    html += `</div></div></div>`;
+  }
+
+  html += `</div>`;
+  return html;
 }
 
 // ── normalise old (single-run) vs new (k-run) records ──
@@ -653,31 +1020,50 @@ function renderForecast(rec) {
 
   html += '</div>'; // end forecast-header
 
-  // ── global error ──
+  // ── three view tabs ──
+  html += `<div class="view-tabs">
+    <div class="view-tab active"  id="vtab-forecast"        onclick="selectViewTab('forecast')">Agentic Forecast</div>
+    <div class="view-tab"         id="vtab-counterfactuals" onclick="selectViewTab('counterfactuals')">Counterfactual Packets</div>
+    <div class="view-tab pending" id="vtab-updated"         onclick="selectViewTab('updated')">Model Update</div>
+  </div>`;
+
+  // ── Tab 1: Agentic Forecast ──
+  html += `<div class="view-panel active" id="vpanel-forecast">`;
+
   if (rec.error && !rec.k_runs?.length) {
     html += `<div class="error-card"><strong>Error:</strong> ${esc(rec.error)}</div>`;
   }
 
-  // ── run tabs (only if k > 1) ──
   if (k > 1) {
     html += `<div class="run-tabs">`;
     for (let i = 0; i < runs.length; i++) {
-      const rp = runs[i].yes_prob;
+      const rp    = runs[i].yes_prob;
       const label = `Run ${i+1}${rp != null ? ` (${Math.round(rp*100)}%)` : ''}`;
       html += `<div class="run-tab${i === 0 ? ' active' : ''}" id="tab-${i}" onclick="selectTab(${i})">${esc(label)}</div>`;
     }
     html += `</div>`;
   }
 
-  // ── per-run panels ──
   for (let i = 0; i < runs.length; i++) {
-    const run = runs[i];
-    const sf  = run.structured_forecast || {};
+    const run    = runs[i];
+    const sf     = run.structured_forecast || {};
     const active = i === 0 ? ' active' : '';
     html += `<div class="run-panel${active}" id="run-panel-${i}">`;
     html += renderRunContent(run, sf, k, i);
     html += `</div>`;
   }
+
+  html += `</div>`; // end vpanel-forecast
+
+  // ── Tab 2: Counterfactual Packets (filled async) ──
+  html += `<div class="view-panel" id="vpanel-counterfactuals">
+    <div id="cf-section"><div class="cf-loading">Loading counterfactual packets…</div></div>
+  </div>`;
+
+  // ── Tab 3: Model Update (loads data async if available, else placeholder) ──
+  html += `<div class="view-panel" id="vpanel-updated">
+    <div id="uf-section"><div class="cf-loading">Loading updated forecasts…</div></div>
+  </div>`;
 
   return html;
 }
@@ -788,6 +1174,178 @@ function renderRunContent(run, sf, k, runIdx) {
   html += '</div>';
 
   return html;
+}
+
+// ── counterfactual rendering ────────────────────────────────────────────────
+
+function renderCFSection(packets) {
+  if (!packets || packets.length === 0) {
+    return `<div class="section-card">
+      <h2>Counterfactual Evidence Packets</h2>
+      <div style="color:#999;font-size:13px;padding:8px 0">No counterfactuals generated yet.
+        Run <code style="background:#f0f0f0;padding:1px 5px;border-radius:3px">python agent/build_counterfactuals.py</code>
+      </div>
+    </div>`;
+  }
+
+  const dirMeta = {
+    pro_H1:     { label: '↑ Pro H1',     cls: 'pro',   icon: '↑', desc: 'Increases P(H1=YES)',     borderColor: '#16a34a' },
+    anti_H1:    { label: '↓ Anti H1',    cls: 'anti',  icon: '↓', desc: 'Decreases P(H1=YES)',     borderColor: '#dc2626' },
+    orthogonal: { label: '↔ Orthogonal', cls: 'ortho', icon: '↔', desc: 'No directional effect',   borderColor: '#7c3aed' },
+  };
+
+  // group packets by direction, preserving order pro → anti → ortho
+  const groups = {};
+  for (const p of packets) {
+    if (!groups[p.direction]) groups[p.direction] = [];
+    groups[p.direction].push(p);
+  }
+  // sort each group by cf_index
+  for (const dir of Object.keys(groups)) {
+    groups[dir].sort((a, b) => (a.cf_index ?? 0) - (b.cf_index ?? 0));
+  }
+  const dirOrder = ['pro_H1', 'anti_H1', 'orthogonal'];
+  const presentDirs = dirOrder.filter(d => groups[d]?.length > 0);
+
+  // ── direction tabs ──
+  let tabsHtml = `<div class="cf-tabs">`;
+  for (const dir of presentDirs) {
+    const m      = dirMeta[dir] || { label: dir, cls: 'ortho' };
+    const n      = groups[dir].length;
+    const active = dir === presentDirs[0] ? ' active' : '';
+    tabsHtml += `<div class="cf-tab ${m.cls}${active}" id="cftab-${dir}" onclick="selectCFTab('${dir}')">
+      ${m.label} <span style="font-size:10px;opacity:0.7">${n}</span>
+    </div>`;
+  }
+  tabsHtml += `</div>`;
+
+  // ── direction panels (each contains N stacked story cards) ──
+  let panelsHtml = '';
+  for (const dir of presentDirs) {
+    const m      = dirMeta[dir] || { label: dir, cls: 'ortho', icon: '?', desc: '', borderColor: '#888' };
+    const active = dir === presentDirs[0] ? ' active' : '';
+    const grp    = groups[dir];
+
+    let cardsHtml = '';
+    for (const p of grp) {
+      const gen     = p.generation || {};
+      const searches = gen.search_queries || [];
+      const genId   = `cfgen-${p.cf_id}`;
+      const storyNum = (p.cf_index ?? 0) + 1;
+
+      const searchHtml = searches.length > 0
+        ? `<div class="searches" style="margin-top:8px">${searches.map(q => `<span class="search-chip">${esc(q)}</span>`).join('')}</div>`
+        : `<div style="font-size:11px;color:#bbb;margin-top:5px">No web searches — model used provided context only</div>`;
+
+      cardsHtml += `
+        <div class="cf-story-card" style="border-left:3px solid ${m.borderColor}">
+          <div class="cf-story-header">
+            <span class="cf-story-num" style="color:${m.borderColor}">Story ${storyNum}</span>
+            ${p.news_date ? `<span class="cf-date-badge">${esc(p.news_date)}</span>` : ''}
+            ${p.angle ? `<span class="cf-angle-badge" title="${esc(p.angle)}">angle ${storyNum}</span>` : ''}
+          </div>
+
+          ${p.error ? `<div class="error-card" style="margin:8px 0">${esc(p.error)}</div>` : `
+          <div class="cf-headline">${esc(p.evidence_headline || '(no headline)')}</div>
+          <div class="cf-snippet">${esc(p.evidence_text || '(no text)')}</div>
+
+          <div class="cf-meta-row">
+            <div class="cf-meta-block">
+              <label>Mechanism targeted</label>
+              <p>${esc(p.mechanism_targeted || '—')}</p>
+            </div>
+            <div class="cf-meta-block">
+              <label>Rationale</label>
+              <p>${esc(p.rationale || '—')}</p>
+            </div>
+          </div>
+          `}
+
+          <div class="cf-generation">
+            <div class="cf-gen-header" onclick="toggleCFGen('${genId}')">
+              <span class="cf-gen-title">Generation trace</span>
+              ${gen.input_tokens || gen.output_tokens
+                ? `<span class="cf-gen-stat">${(gen.input_tokens||0).toLocaleString()} in / ${(gen.output_tokens||0).toLocaleString()} out tokens</span>`
+                : ''}
+              <span class="chevron" id="chev-${genId}" style="margin-left:8px">▶</span>
+            </div>
+            <div class="cf-gen-body" id="${genId}">
+
+              <div class="cf-gen-block">
+                <div class="cf-gen-block-label" onclick="toggleCFText('prompt-${p.cf_id}')">
+                  <span class="chevron" id="chev-prompt-${p.cf_id}">▶</span>
+                  Prompt sent to model
+                </div>
+                <div class="cf-gen-text" id="prompt-${p.cf_id}">${esc(gen.prompt || '(none)')}</div>
+              </div>
+
+              <div class="cf-gen-block">
+                <div class="cf-gen-block-label">Web searches triggered</div>
+                ${searchHtml}
+              </div>
+
+              <div class="cf-gen-block">
+                <div class="cf-gen-block-label" onclick="toggleCFText('response-${p.cf_id}')">
+                  <span class="chevron" id="chev-response-${p.cf_id}">▶</span>
+                  Raw model response
+                </div>
+                <div class="cf-gen-text" id="response-${p.cf_id}">${esc(gen.response || '(none)')}</div>
+              </div>
+
+            </div>
+          </div>
+        </div>`;
+    }
+
+    panelsHtml += `<div class="cf-panel${active}" id="cfpanel-${dir}">${cardsHtml}</div>`;
+  }
+
+  const totalPackets = packets.length;
+  return `<div class="section-card">
+    <h2>Counterfactual Evidence Packets
+      <span style="font-size:11px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">
+        &nbsp;${totalPackets} packets · SYNTHETIC · 3 per direction
+      </span>
+    </h2>
+    ${tabsHtml}
+    ${panelsHtml}
+  </div>`;
+}
+
+function selectCFTab(dir) {
+  document.querySelectorAll('.cf-tab').forEach(el => {
+    el.classList.toggle('active', el.id === 'cftab-' + dir);
+  });
+  document.querySelectorAll('.cf-panel').forEach(el => {
+    el.classList.toggle('active', el.id === 'cfpanel-' + dir);
+  });
+}
+
+function toggleCFGen(genId) {
+  const body = document.getElementById(genId);
+  const chev = document.getElementById('chev-' + genId);
+  if (!body) return;
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  if (chev) chev.classList.toggle('open', !open);
+}
+
+function toggleCFText(textId) {
+  const el   = document.getElementById(textId);
+  const chev = document.getElementById('chev-' + textId);
+  if (!el) return;
+  const open = el.classList.contains('open');
+  el.classList.toggle('open', !open);
+  if (chev) chev.classList.toggle('open', !open);
+}
+
+function selectViewTab(name) {
+  document.querySelectorAll('.view-tab').forEach(el => {
+    el.classList.toggle('active', el.id === 'vtab-' + name);
+  });
+  document.querySelectorAll('.view-panel').forEach(el => {
+    el.classList.toggle('active', el.id === 'vpanel-' + name);
+  });
 }
 
 function selectTab(idx) {
