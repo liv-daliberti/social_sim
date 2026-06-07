@@ -460,6 +460,77 @@
   }
   .search-chip::before { content: "🔍 "; }
 
+  /* ── UF TRACE (expandable per-run trace in Model Update) ── */
+  .uf-run-chip {
+    background: #f7f7fb;
+    border-radius: 6px;
+    padding: 8px 12px;
+    min-width: 80px;
+    text-align: center;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: border-color 0.12s;
+    user-select: none;
+  }
+  .uf-run-chip:hover { border-color: #c7d2fe; }
+  .uf-run-chip.open  { border-color: #6c8fff; background: #eef2ff; }
+
+  .uf-trace-block {
+    display: none;
+    margin: 10px 0 4px;
+    border: 1px solid #e0e6ff;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .uf-trace-block.open { display: block; }
+
+  .uf-trace-header {
+    padding: 8px 12px;
+    background: #f5f7ff;
+    border-bottom: 1px solid #e0e6ff;
+    font-size: 11px;
+    color: #666;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .uf-trace-section {
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .uf-trace-section:first-child { border-top: none; }
+
+  .uf-trace-section-label {
+    padding: 7px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #aaa;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+
+  .uf-trace-text {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    background: #f7f7fb;
+    padding: 10px 12px;
+    color: #334;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    display: none;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .uf-trace-text.open { display: block; }
+
   /* ── SCROLLBAR ── */
   #market-list::-webkit-scrollbar { width: 4px; }
   #market-list::-webkit-scrollbar-thumb { background: #3a3a60; border-radius: 2px; }
@@ -486,6 +557,39 @@
     position: relative;
     height: 180px;
   }
+
+  /* ── MODEL TABS (sidebar) ── */
+  #model-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 10px 12px 0;
+    flex-wrap: wrap;
+  }
+
+  .model-tab-btn {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    background: #2a2a50;
+    color: #8888cc;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .model-tab-btn:hover { background: #33335a; color: #aaaaee; }
+  .model-tab-btn.active {
+    background: #3a3a7a;
+    color: #fff;
+    border-color: #6c8fff;
+  }
+
+  .model-market-list { display: none; }
+  .model-market-list.active { display: block; }
 
   /* ── VIEW TABS (top-level: Agentic Forecast / Counterfactuals / Model Update) ── */
   .view-tabs {
@@ -951,35 +1055,53 @@
 <div id="sidebar">
   <div id="sidebar-header">
     <h1>Exp 1 — Forecast Viewer</h1>
-    <p>{{ records | length }} market{{ 's' if records | length != 1 else '' }} forecasted</p>
-    <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">
-      <span class="model-badge">{{ model_name }}</span>
-      <span class="blind-badge">market-blind forecasts</span>
-    </div>
+    <p>{{ model_order | length }} model{{ 's' if model_order | length != 1 else '' }} ·
+       {{ models_data.values() | map('length') | sum }} market forecasts total</p>
+    <span class="blind-badge" style="margin-top:6px;display:inline-flex">market-blind forecasts</span>
   </div>
+
+  <!-- model tabs -->
+  <div id="model-tabs">
+    {% for model_name in model_order %}
+    <div class="model-tab-btn{% if loop.first %} active{% endif %}"
+         data-model="{{ model_name }}"
+         onclick="selectModel('{{ model_name }}')">
+      {{ model_name }}
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- one market list per model -->
   <div id="market-list">
-    {% for rec in records %}
-    <div class="market-item" onclick="loadForecast('{{ rec.task_id }}')" id="item-{{ rec.task_id }}">
-      <div class="market-prob">
-        {% if rec.yes_prob is not none %}
-          <div class="prob-yes" style="color: {{ '#dc2626' if rec.yes_prob < 0.25 else '#d97706' if rec.yes_prob < 0.55 else '#16a34a' }}">
-            {{ (rec.yes_prob * 100) | int }}%
+    {% for model_name in model_order %}
+    <div class="model-market-list{% if loop.first %} active{% endif %}"
+         id="mlist-{{ loop.index }}" data-model="{{ model_name }}">
+      {% for rec in models_data[model_name] %}
+      <div class="market-item"
+           onclick="loadForecast('{{ rec.task_id }}', '{{ model_name }}')"
+           id="item-{{ rec.task_id }}-{{ loop.index0 }}">
+        <div class="market-prob">
+          {% if rec.yes_prob is not none %}
+            <div class="prob-yes" style="color: {{ '#dc2626' if rec.yes_prob < 0.25 else '#d97706' if rec.yes_prob < 0.55 else '#16a34a' }}">
+              {{ (rec.yes_prob * 100) | int }}%
+            </div>
+          {% else %}
+            <div class="prob-yes" style="color: #999">—</div>
+          {% endif %}
+          <div class="prob-label">agent median</div>
+        </div>
+        <div class="market-meta">
+          <div class="market-question">{{ rec.question }}</div>
+          <div class="market-tags">
+            {% if rec.category %}<span class="tag">{{ rec.category }}</span>{% endif %}
+            {% if rec.days_to_resolution %}<span class="tag days">{{ rec.days_to_resolution | int }}d</span>{% endif %}
+            {% if rec.yes_price_market %}<span class="tag market-p">mkt {{ (rec.yes_price_market * 100) | int }}%</span>{% endif %}
+            {% if rec.get('k') %}<span class="tag k-runs">{{ rec.get('k_done', rec.k) }}/{{ rec.k }} runs</span>{% endif %}
+            {% if rec.error %}<span class="tag err">error</span>{% endif %}
           </div>
-        {% else %}
-          <div class="prob-yes" style="color: #999">—</div>
-        {% endif %}
-        <div class="prob-label">agent median</div>
-      </div>
-      <div class="market-meta">
-        <div class="market-question">{{ rec.question }}</div>
-        <div class="market-tags">
-          {% if rec.category %}<span class="tag">{{ rec.category }}</span>{% endif %}
-          {% if rec.days_to_resolution %}<span class="tag days">{{ rec.days_to_resolution | int }}d</span>{% endif %}
-          {% if rec.yes_price_market %}<span class="tag market-p">mkt {{ (rec.yes_price_market * 100) | int }}%</span>{% endif %}
-          {% if rec.get('k') %}<span class="tag k-runs">{{ rec.get('k_done', rec.k) }}/{{ rec.k }} runs</span>{% endif %}
-          {% if rec.error %}<span class="tag err">error</span>{% endif %}
         </div>
       </div>
+      {% endfor %}
     </div>
     {% endfor %}
   </div>
@@ -992,32 +1114,59 @@
 </div>
 
 <script>
-let currentTask = null;
+let currentTask  = null;
+let currentModel = null;
 
-async function loadForecast(taskId) {
-  if (currentTask === taskId) return;
+function selectModel(modelName) {
+  currentModel = modelName;
+  document.querySelectorAll('.model-tab-btn').forEach(el =>
+    el.classList.toggle('active', el.dataset.model === modelName));
+  document.querySelectorAll('.model-market-list').forEach(el =>
+    el.classList.toggle('active', el.dataset.model === modelName));
+  // clear detail — stale data shouldn't show for a different model
+  currentTask = null;
+  document.getElementById('detail').style.display = 'none';
+  document.getElementById('empty-state').style.display = 'flex';
+}
+
+function _mp() {
+  return currentModel ? '?model=' + encodeURIComponent(currentModel) : '';
+}
+
+async function loadForecast(taskId, modelName) {
+  if (modelName && modelName !== currentModel) {
+    currentModel = modelName;
+    document.querySelectorAll('.model-tab-btn').forEach(el =>
+      el.classList.toggle('active', el.dataset.model === modelName));
+    document.querySelectorAll('.model-market-list').forEach(el =>
+      el.classList.toggle('active', el.dataset.model === modelName));
+  }
+
+  const sameMarket = (currentTask === taskId);
   currentTask = taskId;
 
   document.querySelectorAll('.market-item').forEach(el => el.classList.remove('active'));
-  const item = document.getElementById('item-' + taskId);
-  if (item) {
-    item.classList.add('active');
-    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
+  document.querySelectorAll('.model-market-list.active .market-item').forEach(el => {
+    if (el.getAttribute('onclick')?.includes("'" + taskId + "'")) {
+      el.classList.add('active');
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
 
   const detail = document.getElementById('detail');
   const empty  = document.getElementById('empty-state');
   empty.style.display  = 'none';
   detail.style.display = 'block';
-  detail.innerHTML = '<div style="padding:40px;color:#999;text-align:center">Loading…</div>';
 
-  const res = await fetch('/api/forecast/' + encodeURIComponent(taskId));
-  const rec = await res.json();
-  detail.innerHTML = renderForecast(rec);
-  renderPriceChart(rec);
+  if (!sameMarket) {
+    detail.innerHTML = '<div style="padding:40px;color:#999;text-align:center">Loading…</div>';
+    const res = await fetch('/api/forecast/' + encodeURIComponent(taskId) + _mp());
+    const rec = await res.json();
+    detail.innerHTML = renderForecast(rec);
+    renderPriceChart(rec);
+    loadCounterfactuals(taskId);
+  }
 
-  // load secondary panels asynchronously
-  loadCounterfactuals(taskId);
   loadUpdatedForecasts(taskId);
   loadConsistency(taskId);
 }
@@ -1039,7 +1188,7 @@ async function loadUpdatedForecasts(taskId) {
   const section = document.getElementById('uf-section');
   if (!section) return;
   try {
-    const res     = await fetch('/api/updated_forecasts/' + encodeURIComponent(taskId));
+    const res     = await fetch('/api/updated_forecasts/' + encodeURIComponent(taskId) + _mp());
     const records = await res.json();
     section.innerHTML = renderUFSection(records);
   } catch(e) {
@@ -1051,7 +1200,7 @@ async function loadConsistency(taskId) {
   const section = document.getElementById('cons-section');
   if (!section) return;
   try {
-    const res  = await fetch('/api/consistency/' + encodeURIComponent(taskId));
+    const res  = await fetch('/api/consistency/' + encodeURIComponent(taskId) + _mp());
     const data = await res.json();
     section.innerHTML = renderConsistencySection(data);
   } catch(e) {
@@ -1270,14 +1419,14 @@ function renderUFSection(records) {
     return `<div class="section-card">
       <h2>Model Update</h2>
       <div style="padding:36px 0;text-align:center;color:#bbb;font-size:14px;line-height:2">
-        <div style="font-size:32px;margin-bottom:12px;color:#e5e7eb">→</div>
-        Each counterfactual packet will be injected into each of the 5 k-runs,<br>
-        giving a paired delta: <em>updated_yes_prob − initial_yes_prob</em>.<br><br>
+        <div style="font-size:28px;margin-bottom:10px">⏳</div>
+        <strong style="color:#aaa">Not yet generated for this market</strong><br>
+        <span style="font-size:12px">
+          The script processes markets sequentially — try another market,<br>
+          or wait for this one to complete.
+        </span><br><br>
         <span style="font-size:11px;background:#f0f3ff;color:#4455aa;padding:4px 12px;border-radius:10px;font-family:monospace">
           python agent/updated_forecast.py
-        </span><br>
-        <span style="font-size:11px;color:#ccc;margin-top:8px;display:inline-block">
-          5 markets × 5 runs × 9 packets = 225 calls · no web search
         </span>
       </div>
     </div>`;
@@ -1336,19 +1485,54 @@ function renderUFSection(records) {
         <div style="display:flex;gap:8px;flex-wrap:wrap">`;
 
     for (const run of g.runs) {
-      const d   = run.delta_yes_prob;
-      const ok  = run.shift_correct;
-      const dStr = d != null ? `${d>=0?'+':''}${Math.round(d*100)}pp` : '—';
+      const d      = run.delta_yes_prob;
+      const ok     = run.shift_correct;
+      const dStr   = d != null ? `${d>=0?'+':''}${Math.round(d*100)}pp` : '—';
       const dColor = d==null?'#aaa':d>0.005?'#15803d':d<-0.005?'#dc2626':'#888';
       const okIcon = ok===true?'✓':ok===false?'✗':'—';
-      const okColor = ok===true?'#15803d':ok===false?'#dc2626':'#aaa';
-      html += `<div style="background:#f7f7fb;border-radius:6px;padding:8px 12px;min-width:80px;text-align:center">
-        <div style="font-size:10px;color:#aaa;margin-bottom:3px">run ${run.initial_run_id+1}</div>
+      const okColor= ok===true?'#15803d':ok===false?'#dc2626':'#aaa';
+      const traceId= `uftrace-${cfKey}-run${run.initial_run_id}`;
+      const gen    = run.generation || {};
+      html += `<div class="uf-run-chip" onclick="toggleUFTrace('${traceId}')">
+        <div style="font-size:10px;color:#aaa;margin-bottom:3px">run ${(run.initial_run_id??0)+1}</div>
         <div style="font-size:15px;font-weight:700;color:${dColor}">${dStr}</div>
         <div style="font-size:12px;color:${okColor}">${okIcon}</div>
+        <div style="font-size:9px;color:#ccc;margin-top:3px">▶ trace</div>
       </div>`;
     }
-    html += `</div></div></div>`;
+
+    html += `</div>`;
+
+    // expandable trace blocks — one per run, stacked below the chips
+    for (const run of g.runs) {
+      const traceId = `uftrace-${cfKey}-run${run.initial_run_id}`;
+      const gen     = run.generation || {};
+      const inTok   = (gen.input_tokens||0).toLocaleString();
+      const outTok  = (gen.output_tokens||0).toLocaleString();
+      const promptId   = `ufprompt-${cfKey}-run${run.initial_run_id}`;
+      const responseId = `ufresponse-${cfKey}-run${run.initial_run_id}`;
+      html += `<div class="uf-trace-block" id="${traceId}">
+        <div class="uf-trace-header">
+          <strong>Run ${(run.initial_run_id??0)+1} trace</strong>
+          <span>${inTok} in / ${outTok} out tokens</span>
+          <span style="margin-left:auto;color:#bbb">no web search</span>
+        </div>
+        <div class="uf-trace-section">
+          <div class="uf-trace-section-label" onclick="toggleUFText('${promptId}')">
+            <span class="chevron" id="chev-${promptId}">▶</span> Prompt (initial SF + evidence injected)
+          </div>
+          <div class="uf-trace-text" id="${promptId}">${esc(gen.prompt||'(none)')}</div>
+        </div>
+        <div class="uf-trace-section">
+          <div class="uf-trace-section-label" onclick="toggleUFText('${responseId}')">
+            <span class="chevron" id="chev-${responseId}">▶</span> Model response (updated SF JSON)
+          </div>
+          <div class="uf-trace-text" id="${responseId}">${esc(gen.response||'(none)')}</div>
+        </div>
+      </div>`;
+    }
+
+    html += `</div></div>`;
   }
 
   html += `</div>`;
@@ -1770,6 +1954,11 @@ function selectViewTab(name) {
   document.querySelectorAll('.view-panel').forEach(el => {
     el.classList.toggle('active', el.id === 'vpanel-' + name);
   });
+  // re-fetch live panels so data is always current when switching tabs
+  if (currentTask) {
+    if (name === 'updated')     loadUpdatedForecasts(currentTask);
+    if (name === 'consistency') loadConsistency(currentTask);
+  }
 }
 
 function selectTab(idx) {
@@ -1925,8 +2114,36 @@ function renderPriceChart(rec) {
   });
 }
 
+function toggleUFTrace(traceId) {
+  const block = document.getElementById(traceId);
+  const chip  = block?.previousElementSibling
+                  ? null  // find chip by data attr
+                  : null;
+  if (!block) return;
+  const open = block.classList.contains('open');
+  block.classList.toggle('open', !open);
+  // also toggle .open on the chip that triggered it
+  document.querySelectorAll('.uf-run-chip').forEach(el => {
+    if (el.getAttribute('onclick')?.includes(traceId))
+      el.classList.toggle('open', !open);
+  });
+}
+
+function toggleUFText(textId) {
+  const el   = document.getElementById(textId);
+  const chev = document.getElementById('chev-' + textId);
+  if (!el) return;
+  const open = el.classList.contains('open');
+  el.classList.toggle('open', !open);
+  if (chev) chev.classList.toggle('open', !open);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
-  const first = document.querySelector('.market-item');
+  // init model from first tab
+  const firstTab = document.querySelector('.model-tab-btn');
+  if (firstTab) currentModel = firstTab.dataset.model;
+  // auto-select first market
+  const first = document.querySelector('.model-market-list.active .market-item');
   if (first) first.click();
 });
 </script>

@@ -11,7 +11,7 @@ import json
 import math
 from pathlib import Path
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
 
@@ -54,16 +54,19 @@ _market_histories: dict[str, dict] = _load_market_histories()
 
 # ── forecast loading ────────────────────────────────────────────────────────────
 
-def _load_forecasts() -> tuple[list[dict], str]:
-    """Load all forecast records from all JSONL files, newest file first.
-    Returns (records, model_name)."""
-    records: list[dict] = []
-    seen: set[str] = set()
-    model_name = "gpt-5.4"
+def _load_all_forecasts():
+    """Load all forecast records grouped by model.
 
-    files = sorted(_FORECAST_DIR.glob("forecasts_*.jsonl"), reverse=True)
-    for path in files:
+    Returns:
+        models_data: {model_name: [records sorted by yes_prob desc]}
+        model_order: [model names in discovery order, newest-run first]
+    """
+    by_model = {}       # model_name -> {task_id -> record}
+    model_order = []
+
+    for path in sorted(_FORECAST_DIR.glob("forecasts_*.jsonl"), reverse=True):
         mani = path.with_suffix("").with_suffix(".manifest.json")
+        model_name = "unknown"
         if mani.exists():
             try:
                 m = json.loads(mani.read_text())
@@ -72,7 +75,12 @@ def _load_forecasts() -> tuple[list[dict], str]:
             except Exception:
                 pass
 
-        latest: dict[str, dict] = {}
+        if model_name not in by_model:
+            by_model[model_name] = {}
+        if model_name not in model_order:
+            model_order.append(model_name)
+
+        latest = {}
         with open(path) as f:
             for line in f:
                 line = line.strip()
@@ -87,12 +95,17 @@ def _load_forecasts() -> tuple[list[dict], str]:
                     pass
 
         for tid, rec in latest.items():
-            if tid not in seen:
-                seen.add(tid)
-                records.append(rec)
+            if tid not in by_model[model_name]:
+                rec["model"] = model_name
+                by_model[model_name][tid] = rec
 
-    records.sort(key=lambda r: (r.get("yes_prob") is None, -(r.get("yes_prob") or 0)))
-    return records, model_name
+    models_data = {}
+    for model_name, tid_map in by_model.items():
+        recs = list(tid_map.values())
+        recs.sort(key=lambda r: (r.get("yes_prob") is None, -(r.get("yes_prob") or 0)))
+        models_data[model_name] = recs
+
+    return models_data, model_order
 
 
 def _attach_price_history(rec: dict) -> dict:
@@ -109,16 +122,22 @@ def _attach_price_history(rec: dict) -> dict:
 
 @app.route("/")
 def index():
-    records, model_name = _load_forecasts()
-    return render_template("index.html", records=records, model_name=model_name)
+    models_data, model_order = _load_all_forecasts()
+    return render_template("index.html",
+                           models_data=models_data,
+                           model_order=model_order)
 
 
 @app.route("/api/forecast/<task_id>")
 def get_forecast(task_id: str):
-    records, _ = _load_forecasts()
-    for rec in records:
-        if rec.get("task_id") == task_id:
-            return jsonify(_attach_price_history(rec))
+    model_filter = request.args.get("model")
+    models_data, _ = _load_all_forecasts()
+    search_models = ([model_filter] if model_filter and model_filter in models_data
+                     else list(models_data.keys()))
+    for m in search_models:
+        for rec in models_data[m]:
+            if rec.get("task_id") == task_id:
+                return jsonify(_attach_price_history(rec))
     return jsonify({"error": "not found"}), 404
 
 
@@ -156,10 +175,10 @@ def get_counterfactuals(task_id: str):
     return jsonify(_load_counterfactuals(task_id))
 
 
-def _load_updated_forecasts(task_id: str) -> list[dict]:
-    """Return all updated-forecast records for a task_id, deduplicated by update_id."""
-    records: list[dict] = []
-    seen: set[str] = set()
+def _load_updated_forecasts(task_id, model=None):
+    """Return updated-forecast records for a task_id, optionally filtered by forecast_model."""
+    records = []
+    seen = set()
     for path in sorted(_UF_DIR.glob("updated_*.jsonl"), reverse=True):
         with open(path) as f:
             for line in f:
@@ -168,6 +187,8 @@ def _load_updated_forecasts(task_id: str) -> list[dict]:
                 try:
                     rec = json.loads(line)
                     if rec.get("task_id") != task_id:
+                        continue
+                    if model and rec.get("forecast_model") and rec["forecast_model"] != model:
                         continue
                     uid = rec.get("update_id", "")
                     if uid and uid not in seen:
@@ -180,7 +201,8 @@ def _load_updated_forecasts(task_id: str) -> list[dict]:
 
 @app.route("/api/updated_forecasts/<task_id>")
 def get_updated_forecasts(task_id: str):
-    return jsonify(_load_updated_forecasts(task_id))
+    model = request.args.get("model")
+    return jsonify(_load_updated_forecasts(task_id, model))
 
 
 # ── consistency metrics ─────────────────────────────────────────────────────────
@@ -358,7 +380,8 @@ def _compute_consistency(uf_records, cf_lookup):
 
 @app.route("/api/consistency/<task_id>")
 def get_consistency(task_id: str):
-    uf_records = _load_updated_forecasts(task_id)
+    model      = request.args.get("model")
+    uf_records = _load_updated_forecasts(task_id, model)
     cf_packets = _load_counterfactuals(task_id)
     cf_lookup  = {p["cf_id"]: p for p in cf_packets}
     if not uf_records:
