@@ -125,7 +125,8 @@ class ForecastRecord:
 
 # ── client factory ─────────────────────────────────────────────────────────────
 
-def make_openai_client(api_key: str | None = None, endpoint: str | None = None):
+def make_openai_client(api_key: str | None = None, endpoint: str | None = None,
+                       agent_name: str | None = None):
     """Return an OpenAI client pointed at the Azure AI Foundry agent endpoint.
 
     Azure AI Foundry Responses-API protocol:
@@ -138,8 +139,9 @@ def make_openai_client(api_key: str | None = None, endpoint: str | None = None):
         raise ValueError(
             "API key not set.  Export AZURE_AI_API_KEY=<key> or pass --api-key."
         )
-    ep = (endpoint or PROJECT_ENDPOINT).rstrip("/")
-    base_url = f"{ep}/agents/{AGENT_NAME}/endpoint/protocols/openai"
+    ep   = (endpoint or PROJECT_ENDPOINT).rstrip("/")
+    name = agent_name or AGENT_NAME
+    base_url = f"{ep}/agents/{name}/endpoint/protocols/openai"
     return OpenAI(
         base_url=base_url,
         api_key="placeholder",            # SDK requires non-empty; real auth via header
@@ -172,9 +174,12 @@ def _extract_tool_calls(response) -> tuple[list[dict], list[str]]:
         item_type = getattr(item, "type", None)
         if item_type in ("web_search_call", "tool_call"):
             call = {"type": item_type}
-            if hasattr(item, "query"):
-                call["query"] = item.query
-                queries.append(item.query)
+            # Azure Claude agent: query lives in item.action.query
+            query = (getattr(item, "query", None)
+                     or getattr(getattr(item, "action", None), "query", None))
+            if query:
+                call["query"] = query
+                queries.append(query)
             if hasattr(item, "name"):
                 call["name"] = item.name
             calls.append(call)

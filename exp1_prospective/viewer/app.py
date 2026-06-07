@@ -9,6 +9,7 @@ Usage (from exp1_prospective/):
 import argparse
 import json
 import math
+import re
 from pathlib import Path
 
 from flask import Flask, render_template, jsonify, request
@@ -66,14 +67,23 @@ def _load_all_forecasts():
 
     for path in sorted(_FORECAST_DIR.glob("forecasts_*.jsonl"), reverse=True):
         mani = path.with_suffix("").with_suffix(".manifest.json")
-        model_name = "unknown"
+        # Try manifest first; fall back to filename slug for in-progress runs
+        model_name = None
         if mani.exists():
             try:
                 m = json.loads(mani.read_text())
-                if m.get("model"):
-                    model_name = m["model"]
+                model_name = m.get("model") or None
             except Exception:
                 pass
+        if not model_name:
+            # forecasts_{slug}_{YYYY-MM-DD}.jsonl  →  slug is the model name
+            fm = re.match(r"forecasts_(.+)_\d{4}-\d{2}-\d{2}$", path.stem)
+            if fm:
+                model_name = fm.group(1)
+            else:
+                # Plain-date filename (forecasts_YYYY-MM-DD.jsonl) with no manifest
+                # yet — skip until the manifest is written at run completion.
+                continue
 
         if model_name not in by_model:
             by_model[model_name] = {}
@@ -102,7 +112,7 @@ def _load_all_forecasts():
     models_data = {}
     for model_name, tid_map in by_model.items():
         recs = list(tid_map.values())
-        recs.sort(key=lambda r: (r.get("yes_prob") is None, -(r.get("yes_prob") or 0)))
+        recs.sort(key=lambda r: (-(r.get("yes_price_market") or 0), r.get("task_id", "")))
         models_data[model_name] = recs
 
     return models_data, model_order
@@ -120,12 +130,51 @@ def _attach_price_history(rec: dict) -> dict:
 
 # ── routes ──────────────────────────────────────────────────────────────────────
 
+def _build_market_list(models_data, model_order):
+    """Return ordered list of markets with per-model probability snapshots.
+
+    Order: union of task_ids across all models, primary-model-first (most
+    markets wins), stable across page reloads.
+    """
+    primary_order = sorted(model_order, key=lambda m: -len(models_data.get(m, [])))
+    seen = {}
+    for model_name in primary_order:
+        for rec in models_data.get(model_name, []):
+            tid = rec.get("task_id", "")
+            if not tid:
+                continue
+            if tid not in seen:
+                seen[tid] = {
+                    "task_id":            tid,
+                    "question":           rec.get("question", ""),
+                    "category":           rec.get("category"),
+                    "days_to_resolution": rec.get("days_to_resolution"),
+                    "yes_price_market":   rec.get("yes_price_market"),
+                    "per_model":          {},
+                }
+            seen[tid]["per_model"][model_name] = {
+                "yes_prob": rec.get("yes_prob"),
+                "k_done":   rec.get("k_done", len(rec.get("k_runs", []))),
+                "k":        rec.get("k"),
+            }
+    # Only keep markets covered by every known model
+    all_models = set(model_order)
+    matched = [m for m in seen.values() if set(m["per_model"].keys()) >= all_models]
+    # Stable shared order: highest market probability first, then by task_id
+    matched.sort(key=lambda m: (-(m.get("yes_price_market") or 0), m["task_id"]))
+    return matched
+
+
 @app.route("/")
 def index():
     models_data, model_order = _load_all_forecasts()
+    market_list = _build_market_list(models_data, model_order)
+    # display order: most-markets first so the primary model's chips appear first
+    display_order = sorted(model_order, key=lambda m: -len(models_data.get(m, [])))
     return render_template("index.html",
                            models_data=models_data,
-                           model_order=model_order)
+                           model_order=display_order,
+                           market_list=market_list)
 
 
 @app.route("/api/forecast/<task_id>")
@@ -188,7 +237,7 @@ def _load_updated_forecasts(task_id, model=None):
                     rec = json.loads(line)
                     if rec.get("task_id") != task_id:
                         continue
-                    if model and rec.get("forecast_model") and rec["forecast_model"] != model:
+                    if model and rec.get("forecast_model") != model:
                         continue
                     uid = rec.get("update_id", "")
                     if uid and uid not in seen:
@@ -203,6 +252,150 @@ def _load_updated_forecasts(task_id, model=None):
 def get_updated_forecasts(task_id: str):
     model = request.args.get("model")
     return jsonify(_load_updated_forecasts(task_id, model))
+
+
+# ── shared helper ───────────────────────────────────────────────────────────────
+
+def _mean_se(vals):
+    """Return (mean, SE) for a list of floats; either may be None."""
+    vals = [v for v in vals if v is not None]
+    if not vals:
+        return None, None
+    mean = sum(vals) / len(vals)
+    if len(vals) < 2:
+        return mean, None
+    var = sum((v - mean) ** 2 for v in vals) / (len(vals) - 1)
+    return mean, math.sqrt(var / len(vals))
+
+
+# ── aggregate report ─────────────────────────────────────────────────────────────
+
+def _load_aggregate():
+    """Aggregate stats across all markets for every model.
+
+    Returns a dict: { model_order: [...], models: { model_name: {...} } }
+    """
+    models_data, model_order = _load_all_forecasts()
+    result = {}
+
+    for model_name in model_order:
+        recs = models_data[model_name]
+
+        yp_vals  = [r["yes_prob"]        for r in recs if r.get("yes_prob") is not None]
+        std_vals = [r["yes_prob_std"]     for r in recs if r.get("yes_prob_std") is not None]
+        mp_vals  = [r["yes_price_market"] for r in recs if r.get("yes_price_market") is not None]
+        div_vals = [
+            abs(r["yes_prob"] - r["yes_price_market"])
+            for r in recs
+            if r.get("yes_prob") is not None and r.get("yes_price_market") is not None
+        ]
+
+        per_market = []
+        for rec in recs:
+            tid        = rec["task_id"]
+            uf_records = _load_updated_forecasts(tid, model_name)
+            cf_packets = _load_counterfactuals(tid)
+            cf_lookup  = {p["cf_id"]: p for p in cf_packets}
+
+            entry = {
+                "task_id":          tid,
+                "question":         rec.get("question", ""),
+                "category":         rec.get("category", ""),
+                "yes_prob":         rec.get("yes_prob"),
+                "yes_prob_std":     rec.get("yes_prob_std"),
+                "yes_price_market": rec.get("yes_price_market"),
+                "n_updates":        len(uf_records),
+                "EHC_rate":         None,
+                "HFC_rate":         None,
+                "ICS_rate":         None,
+                "by_direction":     {},
+            }
+
+            if uf_records:
+                cons = _compute_consistency(uf_records, cf_lookup)
+                if cons and cons.get("summary"):
+                    s = cons["summary"]
+                    entry["EHC_rate"]     = s.get("EHC_rate")
+                    entry["HFC_rate"]     = s.get("HFC_rate")
+                    entry["ICS_rate"]     = s.get("ICS_rate")
+                    entry["by_direction"] = s.get("by_direction", {})
+
+            per_market.append(entry)
+
+        # global consistency aggregated across markets
+        ehc_r, ehc_se = _mean_se([m["EHC_rate"] for m in per_market])
+        hfc_r, hfc_se = _mean_se([m["HFC_rate"] for m in per_market])
+        ics_r, ics_se = _mean_se([m["ICS_rate"] for m in per_market])
+        yp_r,  _      = _mean_se(yp_vals)
+        std_r, std_se = _mean_se(std_vals)
+        div_r, div_se = _mean_se(div_vals)
+
+        # direction-level aggregate (average market-level rates per direction)
+        dir_agg = {}
+        for d in ("pro_H1", "anti_H1", "orthogonal"):
+            d_ehc = [m["by_direction"].get(d, {}).get("EHC_rate") for m in per_market]
+            d_hfc = [m["by_direction"].get(d, {}).get("HFC_rate") for m in per_market]
+            d_ics = [m["by_direction"].get(d, {}).get("ICS_rate") for m in per_market]
+            er, es = _mean_se(d_ehc)
+            hr, hs = _mean_se(d_hfc)
+            ir, isr = _mean_se(d_ics)
+            dir_agg[d] = {
+                "EHC_rate": round(er, 3) if er is not None else None,
+                "EHC_se":   round(es, 3) if es is not None else None,
+                "HFC_rate": round(hr, 3) if hr is not None else None,
+                "HFC_se":   round(hs, 3) if hs is not None else None,
+                "ICS_rate": round(ir, 3) if ir is not None else None,
+                "ICS_se":   round(isr, 3) if isr is not None else None,
+            }
+
+        # category-level aggregate
+        cat_agg = {}
+        cats = sorted({m["category"] for m in per_market if m["category"]})
+        for cat in cats:
+            cm = [m for m in per_market if m["category"] == cat]
+            er, es = _mean_se([m["EHC_rate"] for m in cm])
+            hr, hs = _mean_se([m["HFC_rate"] for m in cm])
+            ir, isr = _mean_se([m["ICS_rate"] for m in cm])
+            cat_agg[cat] = {
+                "EHC_rate": round(er, 3) if er is not None else None,
+                "EHC_se":   round(es, 3) if es is not None else None,
+                "HFC_rate": round(hr, 3) if hr is not None else None,
+                "HFC_se":   round(hs, 3) if hs is not None else None,
+                "ICS_rate": round(ir, 3) if ir is not None else None,
+                "ICS_se":   round(isr, 3) if isr is not None else None,
+                "n":        len(cm),
+            }
+
+        result[model_name] = {
+            "n_markets":  len(recs),
+            "n_with_uf":  sum(1 for m in per_market if m["n_updates"] > 0),
+            "forecast": {
+                "mean_yes_prob":      round(yp_r,  3) if yp_r  is not None else None,
+                "mean_run_std":       round(std_r, 3) if std_r is not None else None,
+                "mean_run_std_se":    round(std_se,3) if std_se is not None else None,
+                "mean_divergence":    round(div_r, 3) if div_r is not None else None,
+                "mean_divergence_se": round(div_se,3) if div_se is not None else None,
+            },
+            "consistency": {
+                "EHC_rate": round(ehc_r, 3) if ehc_r is not None else None,
+                "EHC_se":   round(ehc_se,3) if ehc_se is not None else None,
+                "HFC_rate": round(hfc_r, 3) if hfc_r is not None else None,
+                "HFC_se":   round(hfc_se,3) if hfc_se is not None else None,
+                "ICS_rate": round(ics_r, 3) if ics_r is not None else None,
+                "ICS_se":   round(ics_se,3) if ics_se is not None else None,
+                "n_markets_with_data": sum(1 for m in per_market if m["EHC_rate"] is not None),
+            },
+            "by_direction": dir_agg,
+            "by_category":  cat_agg,
+            "per_market":   per_market,
+        }
+
+    return {"models": result, "model_order": model_order}
+
+
+@app.route("/api/aggregate")
+def get_aggregate():
+    return jsonify(_load_aggregate())
 
 
 # ── consistency metrics ─────────────────────────────────────────────────────────
@@ -226,14 +419,7 @@ def _compute_consistency(uf_records, cf_lookup):
         ICS = 1 if |yes_prob - H1.posterior| < 0.02, else 0.
     """
 
-    def _rate_se(vals):
-        if not vals:
-            return None, None
-        mean = sum(vals) / len(vals)
-        if len(vals) < 2:
-            return mean, None
-        var = sum((v - mean) ** 2 for v in vals) / (len(vals) - 1)
-        return mean, math.sqrt(var / len(vals))
+    _rate_se = _mean_se  # use module-level helper
 
     # group by cf_id
     by_cf = {}

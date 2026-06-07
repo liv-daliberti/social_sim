@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exp 1 — Forecast Viewer</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -145,6 +147,43 @@
   .tag.market-p { color: #cc9944; background: #2a2012; }
   .tag.err    { color: #cc4444; background: #2a1212; }
   .tag.k-runs { color: #bb88ff; background: #201a30; }
+
+  /* per-model probability row in sidebar */
+  .model-prob-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .model-prob-chip {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    background: #1e1e3a;
+    border: 1px solid #2d2d52;
+    border-radius: 5px;
+    padding: 2px 7px 2px 6px;
+  }
+  .model-prob-chip.partial { border-color: #4a3a10; background: #231e10; }
+  .model-prob-chip.none    { opacity: .45; }
+  .mpc-name {
+    font-size: 9px;
+    font-weight: 700;
+    color: #6666aa;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .mpc-val {
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .mpc-progress {
+    font-size: 9px;
+    color: #d97706;
+    margin-left: 1px;
+    font-weight: 600;
+  }
 
   /* ── MAIN PANEL ── */
   #main {
@@ -558,75 +597,87 @@
     height: 180px;
   }
 
-  /* ── MODEL TABS (sidebar) ── */
-  #model-tabs {
-    display: flex;
-    gap: 4px;
-    padding: 10px 12px 0;
-    flex-wrap: wrap;
+  /* ── MODEL × STEP MATRIX ── */
+  .model-matrix {
+    width: 100%;
+    border-collapse: collapse;
   }
 
-  .model-tab-btn {
-    padding: 5px 12px;
-    border-radius: 6px;
+  .model-matrix th {
+    padding: 10px 16px;
     font-size: 11px;
     font-weight: 700;
-    cursor: pointer;
-    background: #2a2a50;
-    color: #8888cc;
-    border: 1.5px solid transparent;
-    transition: all 0.15s;
-    letter-spacing: 0.03em;
-    user-select: none;
-    white-space: nowrap;
-  }
-
-  .model-tab-btn:hover { background: #33335a; color: #aaaaee; }
-  .model-tab-btn.active {
-    background: #3a3a7a;
-    color: #fff;
-    border-color: #6c8fff;
-  }
-
-  .model-market-list { display: none; }
-  .model-market-list.active { display: block; }
-
-  /* ── VIEW TABS (top-level: Agentic Forecast / Counterfactuals / Model Update) ── */
-  .view-tabs {
-    display: flex;
-    gap: 0;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: #666;
+    text-align: left;
     border-bottom: 2px solid #e5e7eb;
-    margin-bottom: 0;
+    white-space: nowrap;
+    background: #fafbff;
   }
 
-  .view-tab {
-    padding: 11px 24px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #777;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-    transition: color 0.15s, border-color 0.15s;
-    user-select: none;
+  .col-hdr { cursor: pointer; transition: background .12s; }
+  .col-hdr:hover { background: #f0f4ff !important; }
+
+  .model-name-cell {
+    padding: 14px 16px;
+    vertical-align: top;
+    border-bottom: 1px solid #f0f0f0;
     white-space: nowrap;
   }
 
-  .view-tab:hover { color: #333; }
-
-  .view-tab.active {
-    color: #2563eb;
-    border-bottom-color: #2563eb;
+  .matrix-cell {
+    padding: 14px 16px;
+    vertical-align: top;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    border-left: 1px solid #f5f5f5;
+    transition: background .12s;
+    min-width: 140px;
   }
 
-  .view-tab.pending {
-    color: #bbb;
+  .matrix-cell:hover { background: #f7f9ff; }
+  .matrix-cell.sel   { background: #eef2ff; border-top: 2px solid #6c8fff; }
+
+  /* partial data: amber diagonal stripe */
+  .matrix-cell.partial {
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 7px,
+      rgba(234,179,8,.07) 7px, rgba(234,179,8,.07) 14px
+    );
   }
+  .matrix-cell.partial:hover { background: #fefce8; }
+  .matrix-cell.partial.sel   { background: #fef9c3; border-top-color: #d97706; }
 
-  .view-tab.pending:hover { color: #999; }
+  /* no data: muted, non-interactive */
+  .matrix-cell.no-data {
+    background: #f9f9f9;
+    cursor: default;
+    opacity: .6;
+  }
+  .matrix-cell.no-data:hover { background: #f9f9f9; }
 
-  .view-panel { display: none; padding-top: 20px; }
-  .view-panel.active { display: block; }
+  /* row-level run-count badge beside model name */
+  .run-progress {
+    font-size: 10px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .run-progress-bar {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: #e5e7eb;
+    max-width: 60px;
+    overflow: hidden;
+  }
+  .run-progress-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width .3s;
+  }
 
   /* ── error state ── */
   .error-card {
@@ -1047,6 +1098,157 @@
 
   .cons-agg-item { display: flex; align-items: center; gap: 4px; }
   .cons-agg-label { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #aaa; }
+
+  /* ── AGGREGATE VIEW ── */
+  #empty-state {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 16px;
+    overflow-y: auto;
+  }
+
+  #empty-state.agg {
+    display: block;
+    align-items: unset;
+    justify-content: unset;
+    padding: 24px 32px;
+  }
+
+  .agg-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 1200px) {
+    .agg-stat-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .agg-stat-chip {
+    background: #f7f9ff;
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    border: 1px solid #e8ecff;
+  }
+
+  .agg-stat-chip .chip-label {
+    font-size: 9px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 4px;
+  }
+
+  .agg-stat-chip .chip-val {
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .agg-stat-chip .chip-sub {
+    font-size: 10px;
+    color: #bbb;
+    margin-top: 3px;
+  }
+
+  .agg-mkt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .agg-mkt-table th {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #888;
+    padding: 6px 8px;
+    border-bottom: 2px solid #eee;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .agg-mkt-table td {
+    padding: 9px 8px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  .agg-mkt-table tr:hover td { background: #f7f9ff; cursor: pointer; }
+
+  .agg-mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .agg-mini-table th {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #aaa;
+    padding: 5px 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+  }
+
+  .agg-mini-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #f5f5f5;
+    vertical-align: middle;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6c8fff;
+    background: #eef2ff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+    margin-bottom: 14px;
+    transition: background .12s;
+  }
+
+  .back-btn:hover { background: #dbe4ff; }
+
+  /* ── metric tooltip ────────────────────────────────────────────────────── */
+  #metric-tooltip {
+    position: fixed; z-index: 9999; pointer-events: none;
+    max-width: 440px; padding: 16px 18px; border-radius: 10px;
+    background: #1a1d2e; color: #e8eaf6; font-size: 13px; line-height: 1.55;
+    box-shadow: 0 8px 32px rgba(0,0,0,.55); border: 1px solid #3a3d5c;
+    opacity: 0; transition: opacity .15s ease; display: none;
+  }
+  #metric-tooltip.visible { opacity: 1; display: block; }
+  #metric-tooltip .mt-title {
+    font-size: 15px; font-weight: 700; color: #a5b4fc; margin-bottom: 6px;
+  }
+  #metric-tooltip .mt-subtitle {
+    font-size: 11px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: #6c7aae; margin-bottom: 10px;
+  }
+  #metric-tooltip .mt-body { color: #c5c8e8; margin-bottom: 10px; }
+  #metric-tooltip .mt-eq {
+    background: #12142080; border-radius: 6px; padding: 8px 12px;
+    margin: 8px 0; text-align: center;
+  }
+  #metric-tooltip .mt-together {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #3a3d5c;
+    font-size: 12px; color: #9da4cc;
+  }
+  #metric-tooltip .mt-together b { color: #c5c8e8; }
+  [data-metric] { cursor: help; }
 </style>
 </head>
 <body>
@@ -1060,48 +1262,43 @@
     <span class="blind-badge" style="margin-top:6px;display:inline-flex">market-blind forecasts</span>
   </div>
 
-  <!-- model tabs -->
-  <div id="model-tabs">
-    {% for model_name in model_order %}
-    <div class="model-tab-btn{% if loop.first %} active{% endif %}"
-         data-model="{{ model_name }}"
-         onclick="selectModel('{{ model_name }}')">
-      {{ model_name }}
-    </div>
-    {% endfor %}
-  </div>
-
-  <!-- one market list per model -->
+  <!-- market list: all markets across all models, per-model prob chips -->
   <div id="market-list">
-    {% for model_name in model_order %}
-    <div class="model-market-list{% if loop.first %} active{% endif %}"
-         id="mlist-{{ loop.index }}" data-model="{{ model_name }}">
-      {% for rec in models_data[model_name] %}
-      <div class="market-item"
-           onclick="loadForecast('{{ rec.task_id }}', '{{ model_name }}')"
-           id="item-{{ rec.task_id }}-{{ loop.index0 }}">
-        <div class="market-prob">
-          {% if rec.yes_prob is not none %}
-            <div class="prob-yes" style="color: {{ '#dc2626' if rec.yes_prob < 0.25 else '#d97706' if rec.yes_prob < 0.55 else '#16a34a' }}">
-              {{ (rec.yes_prob * 100) | int }}%
-            </div>
-          {% else %}
-            <div class="prob-yes" style="color: #999">—</div>
-          {% endif %}
-          <div class="prob-label">agent median</div>
+    {% for mkt in market_list %}
+    {%- set has_any = mkt.per_model | length > 0 %}
+    <div class="market-item"
+         onclick="loadForecast('{{ mkt.task_id }}')"
+         data-task="{{ mkt.task_id }}">
+      <div class="market-meta">
+        <div class="market-question">{{ mkt.question }}</div>
+        <div class="market-tags">
+          {% if mkt.category %}<span class="tag">{{ mkt.category }}</span>{% endif %}
+          {% if mkt.days_to_resolution %}<span class="tag days">{{ mkt.days_to_resolution | int }}d</span>{% endif %}
+          {% if mkt.yes_price_market %}<span class="tag market-p">mkt {{ (mkt.yes_price_market * 100) | int }}%</span>{% endif %}
         </div>
-        <div class="market-meta">
-          <div class="market-question">{{ rec.question }}</div>
-          <div class="market-tags">
-            {% if rec.category %}<span class="tag">{{ rec.category }}</span>{% endif %}
-            {% if rec.days_to_resolution %}<span class="tag days">{{ rec.days_to_resolution | int }}d</span>{% endif %}
-            {% if rec.yes_price_market %}<span class="tag market-p">mkt {{ (rec.yes_price_market * 100) | int }}%</span>{% endif %}
-            {% if rec.get('k') %}<span class="tag k-runs">{{ rec.get('k_done', rec.k) }}/{{ rec.k }} runs</span>{% endif %}
-            {% if rec.error %}<span class="tag err">error</span>{% endif %}
-          </div>
+        <div class="model-prob-row">
+          {% for model_name in model_order %}
+            {%- set mp = mkt.per_model.get(model_name) %}
+            {%- set k_done = mp.k_done if mp else 0 %}
+            {%- set k_total = mp.k if mp else 0 %}
+            {%- set is_partial = mp and k_total and k_done < k_total %}
+            {%- set chip_cls = 'partial' if is_partial else ('none' if not mp else '') %}
+            {%- set _pfx = model_name.split('-')[0] | lower %}
+            {%- set abbrev = 'GPT' if _pfx == 'gpt' else 'CLD' if _pfx == 'claude' else (_pfx[:4] | upper) %}
+            <div class="model-prob-chip {{ chip_cls }}">
+              <span class="mpc-name">{{ abbrev }}</span>
+              {%- if mp and mp.yes_prob is not none %}
+                {%- set yp = mp.yes_prob %}
+                {%- set col = '#dc2626' if yp < 0.25 else '#d97706' if yp < 0.55 else '#16a34a' %}
+                <span class="mpc-val" style="color:{{ col }}">{{ (yp * 100) | int }}%</span>
+                {%- if is_partial %}<span class="mpc-progress">{{ k_done }}/{{ k_total }}</span>{%- endif %}
+              {%- else %}
+                <span class="mpc-val" style="color:#444">—</span>
+              {%- endif %}
+            </div>
+          {% endfor %}
         </div>
       </div>
-      {% endfor %}
     </div>
     {% endfor %}
   </div>
@@ -1114,98 +1311,73 @@
 </div>
 
 <script>
+const ALL_MODELS = {{ model_order | tojson }};
 let currentTask  = null;
-let currentModel = null;
 
-function selectModel(modelName) {
-  currentModel = modelName;
-  document.querySelectorAll('.model-tab-btn').forEach(el =>
-    el.classList.toggle('active', el.dataset.model === modelName));
-  document.querySelectorAll('.model-market-list').forEach(el =>
-    el.classList.toggle('active', el.dataset.model === modelName));
-  // clear detail — stale data shouldn't show for a different model
-  currentTask = null;
-  document.getElementById('detail').style.display = 'none';
-  document.getElementById('empty-state').style.display = 'flex';
+// ── data cache ──────────────────────────────────────────────────────────────
+// taskId → { models: { modelName: { forecast, uf, cons } }, cfs: null|[] }
+const _cache = {};
+
+async function _ensureModelData(taskId, modelName) {
+  _cache[taskId] = _cache[taskId] || { models: {}, cfs: null };
+  if (_cache[taskId].models[modelName] !== undefined) return _cache[taskId].models[modelName];
+  const mp = '?model=' + encodeURIComponent(modelName);
+  const [fr, ufr, consr] = await Promise.all([
+    fetch('/api/forecast/'          + encodeURIComponent(taskId) + mp)
+      .then(r => r.ok ? r.json() : null),
+    fetch('/api/updated_forecasts/' + encodeURIComponent(taskId) + mp).then(r => r.json()),
+    fetch('/api/consistency/'       + encodeURIComponent(taskId) + mp).then(r => r.json()),
+  ]);
+  // treat error/missing forecasts as null so _fcState returns 'none'
+  const forecast = (fr && !fr.error && fr.task_id) ? fr : null;
+  _cache[taskId].models[modelName] = { forecast, uf: ufr || [], cons: consr };
+  return _cache[taskId].models[modelName];
 }
 
-function _mp() {
-  return currentModel ? '?model=' + encodeURIComponent(currentModel) : '';
+async function _ensureCFs(taskId) {
+  _cache[taskId] = _cache[taskId] || { models: {}, cfs: null };
+  if (_cache[taskId].cfs !== null) return _cache[taskId].cfs;
+  _cache[taskId].cfs = await fetch('/api/counterfactuals/' + encodeURIComponent(taskId)).then(r => r.json());
+  return _cache[taskId].cfs;
 }
 
-async function loadForecast(taskId, modelName) {
-  if (modelName && modelName !== currentModel) {
-    currentModel = modelName;
-    document.querySelectorAll('.model-tab-btn').forEach(el =>
-      el.classList.toggle('active', el.dataset.model === modelName));
-    document.querySelectorAll('.model-market-list').forEach(el =>
-      el.classList.toggle('active', el.dataset.model === modelName));
-  }
-
-  const sameMarket = (currentTask === taskId);
+// ── main entry point ─────────────────────────────────────────────────────────
+async function loadForecast(taskId) {
   currentTask = taskId;
 
-  document.querySelectorAll('.market-item').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.model-market-list.active .market-item').forEach(el => {
-    if (el.getAttribute('onclick')?.includes("'" + taskId + "'")) {
-      el.classList.add('active');
-      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-  });
+  // sidebar highlight
+  document.querySelectorAll('.market-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.task === taskId));
+  const activeItem = document.querySelector('.market-item[data-task="' + taskId + '"]');
+  if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   const detail = document.getElementById('detail');
   const empty  = document.getElementById('empty-state');
   empty.style.display  = 'none';
   detail.style.display = 'block';
+  detail.innerHTML = '<div style="padding:40px;color:#999;text-align:center">Loading…</div>';
+  detail.scrollTop = 0;
 
-  if (!sameMarket) {
-    detail.innerHTML = '<div style="padding:40px;color:#999;text-align:center">Loading…</div>';
-    const res = await fetch('/api/forecast/' + encodeURIComponent(taskId) + _mp());
-    const rec = await res.json();
-    detail.innerHTML = renderForecast(rec);
-    renderPriceChart(rec);
-    loadCounterfactuals(taskId);
-  }
-
-  loadUpdatedForecasts(taskId);
-  loadConsistency(taskId);
-}
-
-async function loadCounterfactuals(taskId) {
-  const section = document.getElementById('cf-section');
-  if (!section) return;
-  section.innerHTML = '<div class="cf-loading">Loading counterfactuals…</div>';
+  // load all models + CFs in parallel
   try {
-    const res     = await fetch('/api/counterfactuals/' + encodeURIComponent(taskId));
-    const packets = await res.json();
-    section.innerHTML = renderCFSection(packets);
+    await Promise.all([
+      _ensureCFs(taskId),
+      ...ALL_MODELS.map(m => _ensureModelData(taskId, m)),
+    ]);
   } catch(e) {
-    section.innerHTML = `<div class="cf-loading" style="color:#dc2626">Failed to load counterfactuals: ${esc(String(e))}</div>`;
+    detail.innerHTML = '<div style="padding:40px;color:#dc2626">Error: ' + esc(String(e)) + '</div>';
+    return;
   }
-}
 
-async function loadUpdatedForecasts(taskId) {
-  const section = document.getElementById('uf-section');
-  if (!section) return;
-  try {
-    const res     = await fetch('/api/updated_forecasts/' + encodeURIComponent(taskId) + _mp());
-    const records = await res.json();
-    section.innerHTML = renderUFSection(records);
-  } catch(e) {
-    section.innerHTML = `<div class="cf-loading" style="color:#dc2626">Failed to load: ${esc(String(e))}</div>`;
-  }
-}
+  const cache    = _cache[taskId];
+  const firstMod = ALL_MODELS[0];
+  const firstRec = (cache.models[firstMod] || {}).forecast || {};
 
-async function loadConsistency(taskId) {
-  const section = document.getElementById('cons-section');
-  if (!section) return;
-  try {
-    const res  = await fetch('/api/consistency/' + encodeURIComponent(taskId) + _mp());
-    const data = await res.json();
-    section.innerHTML = renderConsistencySection(data);
-  } catch(e) {
-    section.innerHTML = `<div class="cf-loading" style="color:#dc2626">Failed to load consistency: ${esc(String(e))}</div>`;
-  }
+  detail.innerHTML = renderQuestionHeader(firstRec) + renderMatrixContent(taskId);
+  renderPriceChart(firstRec);
+
+  // auto-select first model × Agentic Forecast
+  selectCell(taskId, firstMod, 'forecast');
 }
 
 function renderConsistencySection(data) {
@@ -1556,33 +1728,31 @@ function getRuns(rec) {
   }];
 }
 
-function renderForecast(rec) {
-  const runs    = getRuns(rec);
-  const k       = runs.length;
-  const yp      = rec.yes_prob;
-  const ypStd   = rec.yes_prob_std;
-  const ypRuns  = rec.yes_prob_runs || runs.map(r => r.yes_prob).filter(v => v != null);
-  const mp      = rec.yes_price_market;
+// ── question header card ─────────────────────────────────────────────────────
+function renderQuestionHeader(rec) {
+  const runs   = getRuns(rec);
+  const k      = runs.length;
+  const yp     = rec.yes_prob;
+  const ypStd  = rec.yes_prob_std;
+  const ypRuns = rec.yes_prob_runs || runs.map(r => r.yes_prob).filter(v => v != null);
+  const mp     = rec.yes_price_market;
 
-  // ── header card ──
   let html = `<div id="forecast-header">
-    <div id="forecast-question">${esc(rec.question)}</div>
+    <button class="back-btn" onclick="showOverview()">← Results Overview</button>
+    <div id="forecast-question">${esc(rec.question || '—')}</div>
     <div class="meta-row">
       <span><strong>Category:</strong> ${esc(rec.category || '—')}</span>
       <span><strong>Days to resolution:</strong> ${rec.days_to_resolution != null ? Math.round(rec.days_to_resolution) : '—'}</span>
-      <span><strong>Runs:</strong> ${rec.k_done != null && rec.k_done < k ? `${rec.k_done}/${k} (in progress)` : k}</span>
-      <span><strong>Total tokens out:</strong> ${(rec.total_output_tokens || 0).toLocaleString()}</span>
+      <span><strong>k-runs:</strong> ${k}</span>
       ${ypStd != null ? `<span><strong>Std dev:</strong> ±${Math.round(ypStd*100)}pp</span>` : ''}
     </div>`;
 
   if (yp != null || mp != null) {
-    const diff = (yp != null && mp != null) ? (yp - mp) : null;
+    const diff      = (yp != null && mp != null) ? (yp - mp) : null;
     const diffColor = diff == null ? '#888' : Math.abs(diff) < 0.05 ? '#888' : diff > 0 ? '#2563eb' : '#d97706';
-    const diffStr   = diff != null ? `${diff > 0 ? '+' : ''}${Math.round(diff*100)}pp vs mkt` : '';
-
-    // individual run dots
-    const dotsHtml = ypRuns.map((p, i) =>
-      `<span class="run-dot" onclick="selectTab(${i})" id="dot-${i}" title="Run ${i+1}: ${Math.round(p*100)}%">${Math.round(p*100)}%</span>`
+    const diffStr   = diff != null ? (diff > 0 ? '+' : '') + Math.round(diff*100) + 'pp vs mkt' : '';
+    const dotsHtml  = ypRuns.map((p, i) =>
+      `<span class="run-dot" id="dot-${i}" title="Run ${i+1}: ${Math.round(p*100)}%">${Math.round(p*100)}%</span>`
     ).join('');
 
     html += `<div class="prob-display">
@@ -1609,70 +1779,268 @@ function renderForecast(rec) {
       </div>
     </div>`;
   }
-  // ── price history chart ──
+
   const ph = rec.price_history || [];
   if (ph.length > 1) {
     html += `<div class="price-chart-wrap">
       <div class="price-chart-title">Polymarket price history · YES probability</div>
-      <div class="price-chart-canvas-wrap">
-        <canvas id="price-chart"></canvas>
-      </div>
+      <div class="price-chart-canvas-wrap"><canvas id="price-chart"></canvas></div>
     </div>`;
   }
 
-  html += '</div>'; // end forecast-header
+  html += '</div>';  // end forecast-header
+  return html;
+}
 
-  // ── four view tabs ──
-  html += `<div class="view-tabs">
-    <div class="view-tab active" id="vtab-forecast"        onclick="selectViewTab('forecast')">Agentic Forecast</div>
-    <div class="view-tab"        id="vtab-counterfactuals" onclick="selectViewTab('counterfactuals')">Counterfactual Packets</div>
-    <div class="view-tab"        id="vtab-updated"         onclick="selectViewTab('updated')">Model Update</div>
-    <div class="view-tab"        id="vtab-consistency"     onclick="selectViewTab('consistency')">Consistency Analysis</div>
+// ── model × step matrix ──────────────────────────────────────────────────────
+
+// Returns 'none' | 'partial' | 'complete'
+function _fcState(mData) {
+  if (!mData || !mData.forecast) return 'none';
+  const rec    = mData.forecast;
+  const kDone  = rec.k_done != null ? rec.k_done : (rec.k_runs || []).length;
+  const kTotal = rec.k      != null ? rec.k      : kDone;
+  return (kTotal > 0 && kDone < kTotal) ? 'partial' : 'complete';
+}
+
+function _runProgressHTML(mData) {
+  if (!mData || !mData.forecast) return '';
+  const rec    = mData.forecast;
+  const kDone  = rec.k_done != null ? rec.k_done : (rec.k_runs || []).length;
+  const kTotal = rec.k      != null ? rec.k      : kDone;
+  const pct    = kTotal > 0 ? Math.round(100 * kDone / kTotal) : 100;
+  const color  = kDone === kTotal ? '#16a34a' : '#d97706';
+  const label  = kDone === kTotal
+    ? `<span style="color:#16a34a;font-weight:600">✓ ${kDone} run${kDone!==1?'s':''}</span>`
+    : `<span style="color:#d97706;font-weight:600">${kDone}/${kTotal} runs</span>`;
+  return `<div class="run-progress">
+    ${label}
+    <div class="run-progress-bar">
+      <div class="run-progress-bar-fill" style="width:${pct}%;background:${color}"></div>
+    </div>
   </div>`;
+}
 
-  // ── Tab 1: Agentic Forecast ──
-  html += `<div class="view-panel active" id="vpanel-forecast">`;
+function renderMatrixContent(taskId) {
+  const cache = _cache[taskId] || { models: {}, cfs: null };
+  const cfs   = cache.cfs || [];
+  const tid   = taskId.replace(/'/g, "\\'");
 
-  if (rec.error && !rec.k_runs?.length) {
-    html += `<div class="error-card"><strong>Error:</strong> ${esc(rec.error)}</div>`;
+  let html = `<div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-top:16px">
+    <table class="model-matrix">
+      <thead><tr>
+        <th style="min-width:110px">Model</th>
+        <th class="col-hdr" onclick="selectColumn('${tid}','forecast')">Agentic Forecast</th>
+        <th class="col-hdr" onclick="selectColumn('${tid}','cfs')">Counterfactual Packets</th>
+        <th class="col-hdr" onclick="selectColumn('${tid}','update')">Model Update</th>
+        <th class="col-hdr" onclick="selectColumn('${tid}','cons')">Consistency</th>
+      </tr></thead><tbody>`;
+
+  for (const modelName of ALL_MODELS) {
+    const mData = cache.models[modelName];
+    const sid   = modelName.replace(/[^a-zA-Z0-9]/g, '_');
+    const mn    = modelName.replace(/'/g, "\\'");
+    const st    = _fcState(mData);
+
+    // cells for a model with no data at all can't be clicked meaningfully
+    const clickOrNot = (step) => st === 'none'
+      ? ''
+      : `onclick="selectCell('${tid}','${mn}','${step}')"`;
+
+    html += `<tr>
+      <td class="model-name-cell">
+        <span class="model-badge" style="${st==='none'?'opacity:.5':''}">${esc(modelName)}</span>
+        ${st !== 'none' ? _runProgressHTML(mData) : '<div style="font-size:10px;color:#bbb;margin-top:5px">not run</div>'}
+      </td>
+      <td class="matrix-cell${st==='none'?' no-data':st==='partial'?' partial':''}" id="mc-${sid}-forecast"  ${clickOrNot('forecast')}>${cellForecast(mData, st)}</td>
+      <td class="matrix-cell${st==='none'?' no-data':''}"                           id="mc-${sid}-cfs"       ${clickOrNot('cfs')}>${st==='none'?_cellNone():cellCFs(cfs)}</td>
+      <td class="matrix-cell${st==='none'?' no-data':st==='partial'?' partial':''}" id="mc-${sid}-update"    ${clickOrNot('update')}>${cellUpdate(mData, st)}</td>
+      <td class="matrix-cell${st==='none'?' no-data':st==='partial'?' partial':''}" id="mc-${sid}-cons"      ${clickOrNot('cons')}>${cellCons(mData, st)}</td>
+    </tr>`;
+  }
+
+  html += `</tbody></table></div>
+  <div id="model-detail-panel" style="margin-top:16px"></div>`;
+  return html;
+}
+
+function _cellNone() {
+  return '<div style="color:#ccc;font-size:11px;font-style:italic">not run</div>';
+}
+
+// compact per-cell renderers
+function cellForecast(mData, st) {
+  if (!mData || !mData.forecast) return '<div style="color:#ccc;font-size:12px">—</div>';
+  const rec    = mData.forecast;
+  const yp     = rec.yes_prob;
+  const std    = rec.yes_prob_std;
+  const runs   = rec.yes_prob_runs || (rec.k_runs||[]).map(r => r.yes_prob).filter(v => v != null);
+  const kDone  = rec.k_done != null ? rec.k_done : runs.length;
+  const kTotal = rec.k      != null ? rec.k      : kDone;
+
+  // mute color when partial so it reads as provisional
+  const alpha  = st === 'partial' ? '99' : '';
+  const color  = (yp==null?'#aaa':yp<0.25?'#dc2626':yp<0.55?'#d97706':'#16a34a') + alpha;
+  const dots   = runs.map(p => {
+    const c = p<0.25?'#dc2626':p<0.55?'#d97706':'#16a34a';
+    return `<span title="${Math.round(p*100)}%" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${c};margin:1px;${st==='partial'?'opacity:.55':''}"></span>`;
+  }).join('');
+
+  let suffix = '';
+  if (st === 'partial') {
+    const pct = kTotal > 0 ? Math.round(100 * kDone / kTotal) : 0;
+    suffix = `<div style="margin-top:7px;height:3px;border-radius:2px;background:#e5e7eb;overflow:hidden">
+      <div style="width:${pct}%;height:100%;background:#d97706;border-radius:2px"></div>
+    </div>
+    <div style="font-size:10px;color:#d97706;margin-top:3px;font-weight:600">${kDone}/${kTotal} runs · in progress</div>`;
+  } else {
+    suffix = `<div style="font-size:10px;color:#bbb;margin-top:4px">${runs.length} run${runs.length!==1?'s':''} · market-blind</div>`;
+  }
+
+  return `<div style="font-size:26px;font-weight:900;color:${color};line-height:1">${yp!=null?Math.round(yp*100)+'%':'—'}</div>
+    ${std!=null?`<div style="font-size:11px;color:#aaa;margin-top:2px">±${Math.round(std*100)}pp</div>`:''}
+    <div style="margin-top:6px">${dots}</div>
+    ${suffix}`;
+}
+
+function cellCFs(cfs) {
+  if (!cfs || !cfs.length) return '<div style="color:#ccc;font-size:12px">—</div>';
+  const dirs = {};
+  for (const p of cfs) dirs[p.direction] = (dirs[p.direction]||0)+1;
+  const meta = { pro_H1:['↑','#15803d'], anti_H1:['↓','#dc2626'], orthogonal:['↔','#7c3aed'] };
+  const badges = Object.entries(dirs).map(([d,n]) => {
+    const [icon,color] = meta[d] || ['?','#888'];
+    return `<span style="font-size:11px;font-weight:700;color:${color}">${icon}×${n}</span>`;
+  }).join('<span style="color:#ddd;margin:0 3px">·</span>');
+  return `<div style="font-size:22px;font-weight:900;color:#555;line-height:1">${cfs.length}</div>
+    <div style="font-size:11px;color:#aaa;margin-top:2px">synthetic packets</div>
+    <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap;align-items:center">${badges}</div>`;
+}
+
+function cellUpdate(mData, st) {
+  if (!mData || !mData.uf || !mData.uf.length) {
+    if (st === 'partial') {
+      const rec = mData && mData.forecast;
+      const kDone  = rec ? (rec.k_done != null ? rec.k_done : 0) : 0;
+      const kTotal = rec ? (rec.k      != null ? rec.k      : kDone) : 0;
+      return `<div style="color:#d97706;font-size:11px;font-style:italic">awaiting forecast<br><span style="font-size:10px">(${kDone}/${kTotal} runs)</span></div>`;
+    }
+    return '<div style="color:#ccc;font-size:11px">pending…</div>';
+  }
+  const byDir = {};
+  for (const r of mData.uf) {
+    if (!byDir[r.direction]) byDir[r.direction] = [];
+    if (r.delta_yes_prob != null) byDir[r.direction].push(r.delta_yes_prob);
+  }
+  const dirInfo = [['pro_H1','↑','#15803d'],['anti_H1','↓','#dc2626'],['orthogonal','↔','#7c3aed']];
+  let html = '';
+  for (const [dir, icon, dirColor] of dirInfo) {
+    const deltas = byDir[dir] || [];
+    if (!deltas.length) continue;
+    const mean = deltas.reduce((a,b) => a+b, 0) / deltas.length;
+    const mc   = mean>0.005?'#15803d':mean<-0.005?'#dc2626':'#888';
+    html += `<div style="margin-bottom:3px">
+      <span style="color:${dirColor};font-weight:700;font-size:13px">${icon}</span>
+      <span style="font-weight:700;color:${mc};margin-left:4px;font-size:13px">${mean>=0?'+':''}${Math.round(mean*100)}pp</span>
+    </div>`;
+  }
+  return html || '<div style="color:#ccc;font-size:11px">no data</div>';
+}
+
+function cellCons(mData, st) {
+  if (!mData || !mData.cons || !mData.cons.summary) {
+    if (st === 'partial') {
+      const rec = mData && mData.forecast;
+      const kDone  = rec ? (rec.k_done != null ? rec.k_done : 0) : 0;
+      const kTotal = rec ? (rec.k      != null ? rec.k      : kDone) : 0;
+      return `<div style="color:#d97706;font-size:11px;font-style:italic">awaiting forecast<br><span style="font-size:10px">(${kDone}/${kTotal} runs)</span></div>`;
+    }
+    return '<div style="color:#ccc;font-size:11px">pending…</div>';
+  }
+  const s = mData.cons.summary;
+  const fmtRate    = v => v==null?'—':Math.round(v*100)+'%';
+  const scoreColor = v => v==null?'#aaa':v>=0.8?'#15803d':v>=0.6?'#d97706':'#dc2626';
+  return ['EHC','HFC','ICS'].map(m =>
+    `<div style="margin-bottom:4px">
+      <span style="font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin-right:4px">${m}</span>
+      <span style="font-size:15px;font-weight:700;color:${scoreColor(s[m+'_rate'])}">${fmtRate(s[m+'_rate'])}</span>
+    </div>`
+  ).join('');
+}
+
+// ── cell selection + detail panel ─────────────────────────────────────────────
+function selectCell(taskId, modelName, step) {
+  // highlight selected cell
+  document.querySelectorAll('.matrix-cell').forEach(el => el.classList.remove('sel'));
+  const sid  = modelName.replace(/[^a-zA-Z0-9]/g, '_');
+  const cell = document.getElementById('mc-' + sid + '-' + step);
+  if (cell) cell.classList.add('sel');
+
+  const panel = document.getElementById('model-detail-panel');
+  if (!panel) return;
+
+  const cache = _cache[taskId] || {};
+  const mData = (cache.models||{})[modelName];
+  const cfs   = cache.cfs || [];
+
+  const stepNames = {
+    forecast: 'Agentic Forecast',
+    cfs:      'Counterfactual Packets',
+    update:   'Model Update',
+    cons:     'Consistency Analysis',
+  };
+
+  let content = '';
+  if (step === 'forecast') content = renderDetailForecast(mData);
+  else if (step === 'cfs')  content = renderCFSection(cfs);
+  else if (step === 'update') content = renderUFSection(mData ? mData.uf : []);
+  else if (step === 'cons')   content = renderConsistencySection(mData ? mData.cons : null);
+
+  panel.innerHTML = `<div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden">
+    <div style="padding:10px 20px;background:#f7f9ff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span class="model-badge">${esc(modelName)}</span>
+      <span style="font-size:14px;font-weight:700;color:#333">${esc(stepNames[step]||step)}</span>
+      ${step==='cfs'?'<span style="font-size:11px;color:#aaa">(model-independent)</span>':''}
+    </div>
+    <div>${content}</div>
+  </div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function selectColumn(taskId, step) {
+  // select first model's cell for that column (shows that step's detail)
+  if (ALL_MODELS.length > 0) selectCell(taskId, ALL_MODELS[0], step);
+}
+
+function renderDetailForecast(mData) {
+  if (!mData || !mData.forecast)
+    return '<div style="padding:40px;text-align:center;color:#bbb">No data</div>';
+  const rec  = mData.forecast;
+  const runs = getRuns(rec);
+  const k    = runs.length;
+  let html   = '';
+
+  if (rec.error && !(rec.k_runs && rec.k_runs.length)) {
+    html += `<div class="error-card" style="margin:16px 24px"><strong>Error:</strong> ${esc(rec.error)}</div>`;
   }
 
   if (k > 1) {
-    html += `<div class="run-tabs">`;
+    html += `<div class="run-tabs" style="padding:16px 24px 0">`;
     for (let i = 0; i < runs.length; i++) {
-      const rp    = runs[i].yes_prob;
-      const label = `Run ${i+1}${rp != null ? ` (${Math.round(rp*100)}%)` : ''}`;
-      html += `<div class="run-tab${i === 0 ? ' active' : ''}" id="tab-${i}" onclick="selectTab(${i})">${esc(label)}</div>`;
+      const rp = runs[i].yes_prob;
+      html += `<div class="run-tab${i===0?' active':''}" id="tab-${i}" onclick="selectTab(${i})">Run ${i+1}${rp!=null?' ('+Math.round(rp*100)+'%)':''}</div>`;
     }
     html += `</div>`;
   }
 
+  html += `<div style="padding:16px 24px">`;
   for (let i = 0; i < runs.length; i++) {
-    const run    = runs[i];
-    const sf     = run.structured_forecast || {};
-    const active = i === 0 ? ' active' : '';
-    html += `<div class="run-panel${active}" id="run-panel-${i}">`;
-    html += renderRunContent(run, sf, k, i);
+    const sf = runs[i].structured_forecast || {};
+    html += `<div class="run-panel${i===0?' active':''}" id="run-panel-${i}">`;
+    html += renderRunContent(runs[i], sf, k, i);
     html += `</div>`;
   }
-
-  html += `</div>`; // end vpanel-forecast
-
-  // ── Tab 2: Counterfactual Packets (filled async) ──
-  html += `<div class="view-panel" id="vpanel-counterfactuals">
-    <div id="cf-section"><div class="cf-loading">Loading counterfactual packets…</div></div>
-  </div>`;
-
-  // ── Tab 3: Model Update (loads data async if available, else placeholder) ──
-  html += `<div class="view-panel" id="vpanel-updated">
-    <div id="uf-section"><div class="cf-loading">Loading updated forecasts…</div></div>
-  </div>`;
-
-  // ── Tab 4: Consistency Analysis ──
-  html += `<div class="view-panel" id="vpanel-consistency">
-    <div id="cons-section"><div class="cf-loading">Loading consistency analysis…</div></div>
-  </div>`;
-
+  html += `</div>`;
   return html;
 }
 
@@ -1947,20 +2315,6 @@ function toggleCFText(textId) {
   if (chev) chev.classList.toggle('open', !open);
 }
 
-function selectViewTab(name) {
-  document.querySelectorAll('.view-tab').forEach(el => {
-    el.classList.toggle('active', el.id === 'vtab-' + name);
-  });
-  document.querySelectorAll('.view-panel').forEach(el => {
-    el.classList.toggle('active', el.id === 'vpanel-' + name);
-  });
-  // re-fetch live panels so data is always current when switching tabs
-  if (currentTask) {
-    if (name === 'updated')     loadUpdatedForecasts(currentTask);
-    if (name === 'consistency') loadConsistency(currentTask);
-  }
-}
-
 function selectTab(idx) {
   // update tab buttons
   document.querySelectorAll('.run-tab').forEach((el, i) => {
@@ -2138,14 +2492,299 @@ function toggleUFText(textId) {
   if (chev) chev.classList.toggle('open', !open);
 }
 
+// ── aggregate report ────────────────────────────────────────────────────────────
+
+async function loadAggregate() {
+  const el = document.getElementById('empty-state');
+  el.className = '';
+  el.innerHTML = '<div style="padding:40px;color:#999;text-align:center">Loading overview…</div>';
+  try {
+    const res  = await fetch('/api/aggregate');
+    const data = await res.json();
+    el.className = 'agg';
+    el.innerHTML = renderAggregate(data);
+  } catch(e) {
+    el.innerHTML = '<div style="padding:40px;color:#dc2626">Failed to load overview: ' + esc(String(e)) + '</div>';
+  }
+}
+
+function showOverview() {
+  currentTask = null;
+  document.querySelectorAll('.market-item').forEach(el => el.classList.remove('active'));
+  const detail = document.getElementById('detail');
+  const empty  = document.getElementById('empty-state');
+  detail.style.display = 'none';
+  empty.style.display = 'block';
+}
+
+function renderAggregate(data) {
+  const order  = data.model_order || [];
+  const models = data.models     || {};
+  if (!order.length) return '<div style="padding:40px;text-align:center;color:#bbb">No forecast data found.</div>';
+
+  const fmtRate    = v => v == null ? '—' : Math.round(v * 100) + '%';
+  const rateColor  = v => v == null ? '#aaa' : v >= 0.8 ? '#15803d' : v >= 0.6 ? '#d97706' : '#dc2626';
+  const dirMeta    = {
+    pro_H1:     { label: '↑ Pro H1',     cls: 'pro'  },
+    anti_H1:    { label: '↓ Anti H1',    cls: 'anti' },
+    orthogonal: { label: '↔ Orthogonal', cls: 'ortho'},
+  };
+
+  let html = `<div style="margin-bottom:16px;display:flex;align-items:baseline;gap:12px">
+    <span style="font-size:16px;font-weight:800;color:#1a1a2e">Results Overview</span>
+    <span style="font-size:12px;color:#888">${order.length} model${order.length!==1?'s':''} · ${(models[order[0]]||{}).n_markets||0} markets</span>
+  </div>`;
+
+  for (const modelName of order) {
+    const m    = models[modelName] || {};
+    const f    = m.forecast    || {};
+    const cons = m.consistency || {};
+    const perM = m.per_market  || [];
+
+    const statChips = [
+      { key: 'mean-forecast', label: 'Mean forecast',    val: f.mean_yes_prob   != null ? Math.round(f.mean_yes_prob*100)+'%'   : '—', sub: 'agent median across mkts', color: '#2563eb' },
+      { key: 'krun-sigma',    label: 'k-run σ',          val: f.mean_run_std    != null ? '±'+Math.round(f.mean_run_std*100)+'pp' : '—', sub: 'avg intra-market spread',  color: '#7c3aed' },
+      { key: 'calibration',   label: '|Agent − Market|', val: f.mean_divergence != null ? Math.round(f.mean_divergence*100)+'pp' : '—', sub: 'avg calibration gap',       color: '#d97706' },
+      { key: 'EHC', label: 'EHC', val: fmtRate(cons.EHC_rate), sub: 'evidence → hypothesis',  color: rateColor(cons.EHC_rate) },
+      { key: 'HFC', label: 'HFC', val: fmtRate(cons.HFC_rate), sub: 'hypothesis → forecast',  color: rateColor(cons.HFC_rate) },
+      { key: 'ICS', label: 'ICS', val: fmtRate(cons.ICS_rate), sub: 'internal coherence',     color: rateColor(cons.ICS_rate) },
+    ];
+
+    html += `<div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px">
+      <div style="padding:12px 20px;background:#f7f9ff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="model-badge">${esc(modelName)}</span>
+        <span style="font-size:13px;font-weight:600;color:#444">${m.n_markets||0} markets · k=5 runs each</span>
+        <span style="font-size:12px;color:#888">${m.n_with_uf||0}/${m.n_markets||0} with model updates</span>
+        ${cons.n_markets_with_data != null ? `<span style="font-size:11px;color:#bbb;margin-left:auto">${cons.n_markets_with_data} mkts in consistency stats</span>` : ''}
+      </div>
+
+      <div style="padding:16px 20px">
+
+        <!-- summary stat chips -->
+        <div class="agg-stat-grid">
+          ${statChips.map(s => `<div class="agg-stat-chip" data-metric="${s.key}" style="cursor:help">
+            <div class="chip-label">${esc(s.label)}</div>
+            <div class="chip-val" style="color:${s.color}">${esc(s.val)}</div>
+            <div class="chip-sub">${esc(s.sub)}</div>
+          </div>`).join('')}
+        </div>
+
+        <!-- per-market table -->
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">Per-market breakdown — click any row to open detail</div>
+        <table class="agg-mkt-table">
+          <thead><tr>
+            <th>Question</th><th>Category</th><th>Agent</th><th>Market</th>
+            <th>k-run σ</th><th>Divergence</th><th>EHC</th><th>HFC</th><th>ICS</th><th>n updates</th>
+          </tr></thead>
+          <tbody>
+            ${perM.map(pm => {
+              const ac  = pm.yes_prob==null?'#aaa':pm.yes_prob<0.25?'#dc2626':pm.yes_prob<0.55?'#d97706':'#16a34a';
+              const div = pm.yes_prob!=null&&pm.yes_price_market!=null ? pm.yes_prob-pm.yes_price_market : null;
+              const ds  = div!=null ? (div>=0?'+':'')+Math.round(div*100)+'pp' : '—';
+              const dc  = div==null?'#aaa':Math.abs(div)<0.05?'#888':div>0?'#2563eb':'#d97706';
+              const tid = pm.task_id.replace(/'/g,"\\'");
+              return `<tr onclick="loadForecast('${tid}')">
+                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(pm.question)}">${esc(pm.question)}</td>
+                <td><span style="font-size:10px;background:#f0f3ff;color:#3344aa;padding:2px 6px;border-radius:4px;white-space:nowrap">${esc(pm.category||'—')}</span></td>
+                <td style="font-weight:700;color:${ac}">${pm.yes_prob!=null?Math.round(pm.yes_prob*100)+'%':'—'}</td>
+                <td style="color:#d97706;font-weight:600">${pm.yes_price_market!=null?Math.round(pm.yes_price_market*100)+'%':'—'}</td>
+                <td style="color:#7c3aed;font-weight:600">${pm.yes_prob_std!=null?'±'+Math.round(pm.yes_prob_std*100)+'pp':'—'}</td>
+                <td style="font-weight:700;color:${dc}">${ds}</td>
+                <td style="font-weight:700;color:${rateColor(pm.EHC_rate)}">${fmtRate(pm.EHC_rate)}</td>
+                <td style="font-weight:700;color:${rateColor(pm.HFC_rate)}">${fmtRate(pm.HFC_rate)}</td>
+                <td style="font-weight:700;color:${rateColor(pm.ICS_rate)}">${fmtRate(pm.ICS_rate)}</td>
+                <td>${pm.n_updates>0?`<span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:4px;font-weight:700;font-size:12px">${pm.n_updates}</span>`:'<span style="color:#ddd;font-size:12px">—</span>'}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+
+        <!-- direction + category breakdown -->
+        <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">By direction</div>
+            <table class="agg-mini-table">
+              <thead><tr><th>Direction</th><th>EHC</th><th>HFC</th><th>ICS</th></tr></thead>
+              <tbody>
+                ${['pro_H1','anti_H1','orthogonal'].map(dir => {
+                  const dm = dirMeta[dir] || { label: dir, cls: 'ortho' };
+                  const bd = (m.by_direction || {})[dir] || {};
+                  return `<tr>
+                    <td><span class="cf-direction-badge ${dm.cls}" style="margin:0;font-size:10px">${dm.label}</span></td>
+                    <td style="font-weight:700;color:${rateColor(bd.EHC_rate)}">${fmtRate(bd.EHC_rate)}${bd.EHC_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.EHC_se*100)}pp</span>`:''}</td>
+                    <td style="font-weight:700;color:${rateColor(bd.HFC_rate)}">${fmtRate(bd.HFC_rate)}${bd.HFC_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.HFC_se*100)}pp</span>`:''}</td>
+                    <td style="font-weight:700;color:${rateColor(bd.ICS_rate)}">${fmtRate(bd.ICS_rate)}${bd.ICS_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.ICS_se*100)}pp</span>`:''}</td>
+                  </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">By category</div>
+            <table class="agg-mini-table">
+              <thead><tr><th>Category</th><th>n</th><th>EHC</th><th>HFC</th><th>ICS</th></tr></thead>
+              <tbody>
+                ${Object.entries(m.by_category || {}).map(([cat, bd]) => `<tr>
+                  <td><span style="font-size:10px;background:#f0f3ff;color:#3344aa;padding:1px 5px;border-radius:3px">${esc(cat)}</span></td>
+                  <td style="color:#aaa;font-size:11px">${bd.n||0}</td>
+                  <td style="font-weight:700;color:${rateColor(bd.EHC_rate)}">${fmtRate(bd.EHC_rate)}</td>
+                  <td style="font-weight:700;color:${rateColor(bd.HFC_rate)}">${fmtRate(bd.HFC_rate)}</td>
+                  <td style="font-weight:700;color:${rateColor(bd.ICS_rate)}">${fmtRate(bd.ICS_rate)}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+  }
+
+  return html;
+}
+
 window.addEventListener('DOMContentLoaded', () => {
-  // init model from first tab
-  const firstTab = document.querySelector('.model-tab-btn');
-  if (firstTab) currentModel = firstTab.dataset.model;
-  // auto-select first market
-  const first = document.querySelector('.model-market-list.active .market-item');
-  if (first) first.click();
+  // show aggregate overview on load; user clicks a market to drill in
+  loadAggregate();
 });
+</script>
+
+<!-- ── metric tooltip ──────────────────────────────────────────────────── -->
+<div id="metric-tooltip"></div>
+<script>
+(function () {
+  const METRICS = {
+    'mean-forecast': {
+      title: 'Mean Forecast — Average Agent Probability',
+      subtitle: 'Median yes_prob across k runs, then averaged across markets',
+      body: 'For each market the agent runs k=5 independent forecast trials. The per-market probability is the median across those k runs, making it robust to outlier runs. Mean Forecast is then the arithmetic mean of those per-market medians — a single number summarising where the model thinks the markets should trade.',
+      eqs: [
+        '\\bar{p} = \\frac{1}{M}\\sum_{j=1}^{M} \\underbrace{\\operatorname{median}_{i=1}^{k}\\bigl(p_{ij}\\bigr)}_{\\text{per-market}}',
+      ],
+      eqNote: 'M = number of markets, k = runs per market.',
+    },
+    'krun-sigma': {
+      title: 'k-run σ — Intra-Market Run Spread',
+      subtitle: 'Average standard deviation of yes_prob across k independent runs',
+      body: 'The agent is run k=5 times independently per market with the same prompt but different random seeds. k-run σ is the standard deviation of yes_prob across those runs, averaged across markets. A large σ means the model\'s answer is sensitive to sampling noise — the same question gets very different answers on different trials. A small σ indicates stable, reproducible beliefs.',
+      eqs: [
+        '\\bar{\\sigma} = \\frac{1}{M}\\sum_{j=1}^{M} \\operatorname{std}\\!\\left(p_{1j},\\, \\ldots,\\, p_{kj}\\right)',
+      ],
+      eqNote: 'std is the sample standard deviation across the k runs for market j.',
+    },
+    'calibration': {
+      title: '|Agent − Market| — Calibration Gap',
+      subtitle: 'Average absolute deviation between agent forecast and market price',
+      body: 'The Polymarket price represents the crowd\'s best aggregate estimate. This metric measures how far the agent\'s market-blind forecast deviates from that benchmark, averaged across all markets. A large gap can reflect either genuine information the market hasn\'t priced in, or systematic over/under-confidence. A well-calibrated forecaster should approach zero on a large enough sample.',
+      eqs: [
+        '\\overline{|A{-}M|} = \\frac{1}{M}\\sum_{j=1}^{M} \\bigl|\\hat{p}_j - m_j\\bigr|',
+      ],
+      eqNote: 'p̂ⱼ = agent median for market j, mⱼ = Polymarket mid-price at forecast time.',
+    },
+    EHC: {
+      title: 'EHC — Evidence-Hypothesis Consistency',
+      subtitle: 'Does the model update its hypothesis in the right direction?',
+      body: 'A model that reads evidence correctly should update its H1 posterior-probability in the direction the evidence implies. EHC checks this at the hypothesis field level, ignoring whatever the model wrote in yes_prob. A model can have high EHC but still show low HFC — meaning it "understood" the evidence at the hypothesis level but failed to carry that update through to the final forecast number.',
+      eqs: [
+        '\\text{EHC}_i = \\mathbf{1}\\!\\left[\\Delta p(H_1)_i \\cdot d_i > 0\\right]',
+        '\\overline{\\text{EHC}} = \\frac{1}{N}\\sum_{i=1}^{N} \\text{EHC}_i',
+      ],
+      eqNote: 'where dᵢ = +1 (pro-H1 evidence), −1 (anti-H1); orthogonal CFs excluded.',
+    },
+    HFC: {
+      title: 'HFC — Hypothesis-Forecast Consistency',
+      subtitle: 'Does the headline yes_prob shift in the right direction?',
+      body: 'Checks the final output: did yes_prob actually move in the right direction? For this two-hypothesis model yes_prob should equal H1.posterior exactly, so EHC and HFC should be identical — but they diverge when the model updates one field and not the other. High EHC + Low HFC is the key signature of an "anchored" forecast where hypothesis beliefs update but the headline number does not.',
+      eqs: [
+        '\\text{HFC}_i = \\mathbf{1}\\!\\left[\\Delta\\hat{p}_i \\cdot d_i > 0\\right]',
+        '\\overline{\\text{HFC}} = \\frac{1}{N}\\sum_{i=1}^{N} \\text{HFC}_i',
+      ],
+      eqNote: 'where p̂ᵢ is yes_prob for update i.',
+    },
+    ICS: {
+      title: 'ICS — Internal Coherence Score',
+      subtitle: 'Does the model maintain its own invariant: yes_prob = P(H1)?',
+      body: 'The model\'s structural invariant is yes_prob = P(H1). ICS = 1 when |yes_prob − H1.posterior| < 0.02 after updating. Low ICS means the model broke its own accounting: each field may look reasonable in isolation, but they do not add up. This is a necessary condition for the forecast to be internally valid, independent of whether the direction of the update was correct.',
+      eqs: [
+        '\\text{ICS}_i = \\mathbf{1}\\!\\left[|\\hat{p}_i^{\\,\\text{upd}} - p(H_1)_i^{\\,\\text{upd}}| < 0.02\\right]',
+        '\\overline{\\text{ICS}} = \\frac{1}{N}\\sum_{i=1}^{N} \\text{ICS}_i',
+      ],
+      eqNote: 'Threshold 0.02 is unconditional — no direction filter applied.',
+    },
+  };
+
+  const TOGETHER = `
+    <b>High EHC + High HFC + High ICS</b> → fully consistent response.<br>
+    <b>High EHC + Low HFC</b> → evidence-sensitive at hypothesis level but anchored final number.<br>
+    <b>High EHC + High HFC + Low ICS</b> → both fields move correctly but drift apart by different amounts.<br>
+    <b>Low EHC + Low HFC</b> → evidence is not influencing the model's beliefs at all.`;
+
+  const tip = document.getElementById('metric-tooltip');
+  let hideTimer = null;
+
+  function renderEq(latex) {
+    const span = document.createElement('span');
+    try { katex.render(latex, span, { displayMode: true, throwOnError: false }); }
+    catch(e) { span.textContent = latex; }
+    return span.outerHTML;
+  }
+
+  function show(metric, targetEl) {
+    const m = METRICS[metric];
+    if (!m) return;
+    clearTimeout(hideTimer);
+
+    const eqsHtml = m.eqs.map(eq =>
+      `<div class="mt-eq">${renderEq(eq)}</div>`
+    ).join('');
+
+    tip.innerHTML = `
+      <div class="mt-title">${m.title}</div>
+      <div class="mt-subtitle">${m.subtitle}</div>
+      <div class="mt-body">${m.body}</div>
+      ${eqsHtml}
+      <div style="font-size:11px;color:#6c7aae;margin-top:4px">${m.eqNote}</div>
+      <div class="mt-together"><b>Together they tell a story:</b><br>${TOGETHER}</div>`;
+
+    tip.classList.add('visible');
+    position(targetEl);
+  }
+
+  function position(el) {
+    const r = el.getBoundingClientRect();
+    const tw = Math.min(440, window.innerWidth - 24);
+    let left = r.left + r.width / 2 - tw / 2;
+    left = Math.max(12, Math.min(left, window.innerWidth - tw - 12));
+    let top = r.bottom + 10;
+    // flip above if near bottom
+    tip.style.width = tw + 'px';
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+    // if it overflows bottom, place above
+    const th = tip.offsetHeight;
+    if (top + th > window.innerHeight - 12) {
+      tip.style.top = Math.max(8, r.top - th - 10) + 'px';
+    }
+  }
+
+  function hide() {
+    hideTimer = setTimeout(() => tip.classList.remove('visible'), 120);
+  }
+
+  // Event delegation — works on static + dynamically injected content.
+  // Checks data-metric attribute first (whole-chip hover), falls back to
+  // exact text match for bare abbreviation labels (th, span, etc.).
+  document.addEventListener('mouseover', function (e) {
+    const chip = e.target.closest('[data-metric]');
+    const key  = chip ? chip.dataset.metric : e.target.textContent.trim();
+    if (METRICS[key]) show(key, chip || e.target);
+  });
+  document.addEventListener('mouseout', function (e) {
+    const chip = e.target.closest('[data-metric]');
+    const key  = chip ? chip.dataset.metric : e.target.textContent.trim();
+    if (METRICS[key]) hide();
+  });
+})();
 </script>
 </body>
 </html>

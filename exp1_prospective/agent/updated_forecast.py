@@ -224,6 +224,7 @@ def run_update(
 
     return {
         "update_id":                  update_id,
+        "forecast_model":             model,
         "task_id":                    rec["task_id"],
         "market_id":                  rec["market_id"],
         "question":                   rec.get("question", ""),

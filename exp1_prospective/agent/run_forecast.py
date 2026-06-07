@@ -118,6 +118,8 @@ def _run_k_times(
     verbose: bool,
     run_delay: float = 1.0,
     write_fn=None,
+    agent_name: str = AGENT_NAME,
+    agent_version: str = AGENT_VERSION,
 ) -> dict:
     """Run forecast_market k times.
 
@@ -134,6 +136,8 @@ def _run_k_times(
             market,
             client=client,
             model=model,
+            agent_name=agent_name,
+            agent_version=agent_version,
             do_third_turn=do_third_turn,
             verbose=verbose,
         )
@@ -220,6 +224,10 @@ def main() -> None:
                     help="Azure AI API key (overrides AZURE_AI_API_KEY env var).")
     ap.add_argument("--endpoint",       type=str,  default=None,
                     help="Azure agent endpoint base URL.")
+    ap.add_argument("--agent-name",     type=str,  default=AGENT_NAME,
+                    help="Azure AI Foundry agent name.")
+    ap.add_argument("--agent-version",  type=str,  default=AGENT_VERSION,
+                    help="Azure AI Foundry agent version.")
     ap.add_argument("--no-third-turn",  action="store_true",
                     help="Skip the optional 3rd evidence-deepening turn (faster).")
     ap.add_argument("--verbose",        action="store_true",
@@ -238,12 +246,18 @@ def main() -> None:
         markets = [json.loads(line) for line in f if line.strip()]
 
     print(f"Input:  {input_path}  ({len(markets)} markets)")
+    print(f"Model:  {args.model}  agent={args.agent_name}@v{args.agent_version}")
     print(f"k={args.k} runs per market")
 
-    # ── output path ────────────────────────────────────────────────────────────
-    date_str  = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    out_path  = args.out / f"forecasts_{date_str}.jsonl"
-    mani_path = args.out / f"forecasts_{date_str}.manifest.json"
+    # ── output path: include model slug when not using the default model ────────
+    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if args.model != DEFAULT_MODEL:
+        slug = args.model.replace("/", "-").replace(":", "-").replace(".", "-")
+        out_path  = args.out / f"forecasts_{slug}_{date_str}.jsonl"
+        mani_path = args.out / f"forecasts_{slug}_{date_str}.manifest.json"
+    else:
+        out_path  = args.out / f"forecasts_{date_str}.jsonl"
+        mani_path = args.out / f"forecasts_{date_str}.manifest.json"
     args.out.mkdir(parents=True, exist_ok=True)
 
     done_ids = _load_done(out_path, args.k)
@@ -279,7 +293,27 @@ def main() -> None:
         return
 
     # ── build client ───────────────────────────────────────────────────────────
-    client = make_openai_client(api_key=args.api_key, endpoint=args.endpoint)
+    client = make_openai_client(api_key=args.api_key, endpoint=args.endpoint,
+                                agent_name=args.agent_name)
+
+    # ── manifest helper — written immediately so the viewer can identify the
+    #    model during a partial run, then overwritten at the end with final counts
+    def _write_manifest(n_ok=0, n_errors=0, done=False):
+        manifest = {
+            "created_at":  datetime.now(timezone.utc).isoformat(),
+            "source_file": str(input_path),
+            "model":       args.model,
+            "k":           args.k,
+            "n_markets":   len(pending),
+            "n_ok":        n_ok,
+            "n_errors":    n_errors,
+            "third_turn":  not args.no_third_turn,
+            "status":      "complete" if done else "running",
+        }
+        with mani_path.open("w") as f:
+            json.dump(manifest, f, indent=2)
+
+    _write_manifest()   # write immediately so viewer sees the model name
 
     # ── run ────────────────────────────────────────────────────────────────────
     progress = _Progress(len(pending))
@@ -310,6 +344,8 @@ def main() -> None:
                     verbose=args.verbose,
                     run_delay=args.run_delay,
                     write_fn=_write,
+                    agent_name=args.agent_name,
+                    agent_version=args.agent_version,
                 )
                 # final record already written by write_fn on last run
 
@@ -354,19 +390,8 @@ def main() -> None:
 
     progress.done_line()
 
-    # ── manifest ───────────────────────────────────────────────────────────────
-    manifest = {
-        "created_at":  datetime.now(timezone.utc).isoformat(),
-        "source_file": str(input_path),
-        "model":       args.model,
-        "k":           args.k,
-        "n_markets":   len(pending),
-        "n_ok":        n_ok,
-        "n_errors":    n_err,
-        "third_turn":  not args.no_third_turn,
-    }
-    with mani_path.open("w") as f:
-        json.dump(manifest, f, indent=2)
+    # ── manifest (final) ───────────────────────────────────────────────────────
+    _write_manifest(n_ok=n_ok, n_errors=n_err, done=True)
     print(f"Manifest → {mani_path}")
 
 
