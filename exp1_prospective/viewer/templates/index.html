@@ -744,6 +744,205 @@
     cursor: help;
     margin-left: auto;
   }
+
+  /* ── CONSISTENCY PANEL ── */
+  .cons-metric-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .cons-metric-box {
+    flex: 1;
+    min-width: 160px;
+    background: #f7f9ff;
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid #e0e6ff;
+  }
+
+  .cons-metric-box .cons-score {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .cons-metric-box .cons-name {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #555;
+    margin-bottom: 6px;
+  }
+
+  .cons-metric-box .cons-desc {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .cons-metric-box .cons-n {
+    font-size: 10px;
+    color: #aaa;
+    margin-top: 6px;
+  }
+
+  .cons-dir-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .cons-dir-table th {
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    padding: 6px 10px;
+    border-bottom: 2px solid #eee;
+  }
+
+  .cons-dir-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+
+  .cons-rate {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .cons-na {
+    font-size: 12px;
+    color: #ccc;
+  }
+
+  .cons-explain {
+    background: #fffbea;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #78350f;
+  }
+
+  .cons-explain h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #92400e;
+    margin-bottom: 10px;
+  }
+
+  .cons-explain dl { margin: 0; }
+  .cons-explain dt {
+    font-weight: 700;
+    margin-top: 8px;
+    color: #92400e;
+  }
+  .cons-explain dd {
+    margin-left: 0;
+    margin-top: 2px;
+    color: #78350f;
+  }
+
+  .cons-cf-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 3px solid #e5e7eb;
+  }
+
+  .cons-cf-card.pro   { border-left-color: #15803d; }
+  .cons-cf-card.anti  { border-left-color: #dc2626; }
+  .cons-cf-card.ortho { border-left-color: #7c3aed; }
+
+  .cons-cf-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .cons-cf-hl {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a2e;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cons-slot-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 8px;
+    background: #f0f3ff;
+    color: #3344aa;
+    flex-shrink: 0;
+  }
+
+  .cons-run-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .cons-run-cell {
+    background: #f7f7fb;
+    border-radius: 6px;
+    padding: 7px 10px;
+    min-width: 68px;
+    text-align: center;
+  }
+
+  .cons-run-label { font-size: 10px; color: #aaa; margin-bottom: 3px; }
+  .cons-run-delta { font-size: 13px; font-weight: 700; }
+  .cons-run-chips {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    margin-top: 3px;
+  }
+
+  .cons-chip {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  .cons-chip.pass  { background: #dcfce7; color: #15803d; }
+  .cons-chip.fail  { background: #fee2e2; color: #dc2626; }
+  .cons-chip.skip  { background: #f3f4f6; color: #aaa; }
+
+  .cons-agg-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #555;
+  }
+
+  .cons-agg-item { display: flex; align-items: center; gap: 4px; }
+  .cons-agg-label { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #aaa; }
 </style>
 </head>
 <body>
@@ -817,9 +1016,10 @@ async function loadForecast(taskId) {
   detail.innerHTML = renderForecast(rec);
   renderPriceChart(rec);
 
-  // load counterfactuals and updated forecasts asynchronously
+  // load secondary panels asynchronously
   loadCounterfactuals(taskId);
   loadUpdatedForecasts(taskId);
+  loadConsistency(taskId);
 }
 
 async function loadCounterfactuals(taskId) {
@@ -845,6 +1045,224 @@ async function loadUpdatedForecasts(taskId) {
   } catch(e) {
     section.innerHTML = `<div class="cf-loading" style="color:#dc2626">Failed to load: ${esc(String(e))}</div>`;
   }
+}
+
+async function loadConsistency(taskId) {
+  const section = document.getElementById('cons-section');
+  if (!section) return;
+  try {
+    const res  = await fetch('/api/consistency/' + encodeURIComponent(taskId));
+    const data = await res.json();
+    section.innerHTML = renderConsistencySection(data);
+  } catch(e) {
+    section.innerHTML = `<div class="cf-loading" style="color:#dc2626">Failed to load consistency: ${esc(String(e))}</div>`;
+  }
+}
+
+function renderConsistencySection(data) {
+  if (!data || !data.n_updates) {
+    return `<div class="section-card">
+      <h2>Consistency Analysis</h2>
+      <div style="padding:36px 0;text-align:center;color:#bbb;font-size:14px;line-height:2">
+        <div style="font-size:32px;margin-bottom:12px">📊</div>
+        Run <span style="font-family:monospace;background:#f0f0f0;padding:2px 6px;border-radius:3px">
+          python agent/updated_forecast.py
+        </span> first to generate the updated forecasts.<br>
+        Consistency metrics are computed automatically from those results.
+      </div>
+    </div>`;
+  }
+
+  const s = data.summary || {};
+  const dirOrder = ['pro_H1', 'anti_H1', 'orthogonal'];
+  const dirMeta = {
+    pro_H1:     { cls: 'pro',   label: '↑ Pro H1',     color: '#15803d' },
+    anti_H1:    { cls: 'anti',  label: '↓ Anti H1',    color: '#dc2626' },
+    orthogonal: { cls: 'ortho', label: '↔ Orthogonal', color: '#7c3aed' },
+  };
+
+  function fmtRate(v) {
+    if (v == null) return '—';
+    return Math.round(v * 100) + '%';
+  }
+  function rateColor(v) {
+    if (v == null) return '#aaa';
+    return v >= 0.8 ? '#15803d' : v >= 0.6 ? '#d97706' : '#dc2626';
+  }
+
+  // ── aggregate metric boxes ──
+  let html = `<div class="section-card">
+    <h2>Consistency Analysis
+      <span style="font-size:11px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">
+        &nbsp;${data.n_updates} updates · metrics auto-computed
+      </span>
+    </h2>
+
+    <div class="cons-metric-row">
+      <div class="cons-metric-box">
+        <div class="cons-name">EHC — Evidence → Hypothesis</div>
+        <div class="cons-score" style="color:${rateColor(s.EHC_rate)}">${fmtRate(s.EHC_rate)}</div>
+        ${s.EHC_se != null ? `<div style="font-size:11px;color:#aaa">±${Math.round(s.EHC_se*100)}pp SE</div>` : ''}
+        <div class="cons-desc">When shown evidence that implies H1 is more/less likely, does H1.posterior move in the expected direction?</div>
+        <div class="cons-n">${s.n_EHC ?? '?'} valid runs (|ΔH1| ≥ 3pp threshold)</div>
+      </div>
+      <div class="cons-metric-box">
+        <div class="cons-name">HFC — Hypothesis → Forecast</div>
+        <div class="cons-score" style="color:${rateColor(s.HFC_rate)}">${fmtRate(s.HFC_rate)}</div>
+        ${s.HFC_se != null ? `<div style="font-size:11px;color:#aaa">±${Math.round(s.HFC_se*100)}pp SE</div>` : ''}
+        <div class="cons-desc">Does the final yes_prob field move in the same direction the evidence implied? Tests end-to-end propagation from evidence → final number.</div>
+        <div class="cons-n">${s.n_HFC ?? '?'} valid runs (|Δyes| ≥ 3pp threshold)</div>
+      </div>
+      <div class="cons-metric-box">
+        <div class="cons-name">ICS — Internal Coherence</div>
+        <div class="cons-score" style="color:${rateColor(s.ICS_rate)}">${fmtRate(s.ICS_rate)}</div>
+        ${s.ICS_se != null ? `<div style="font-size:11px;color:#aaa">±${Math.round(s.ICS_se*100)}pp SE</div>` : ''}
+        <div class="cons-desc">After updating, is yes_prob ≈ H1.posterior_probability? The model's own invariant. ICS fails when the model updates H1 and yes_prob to different values.</div>
+        <div class="cons-n">${s.n_ICS ?? '?'} runs evaluated (no threshold applied)</div>
+      </div>
+    </div>
+
+    <div class="cons-explain">
+      <h4>Why these metrics?</h4>
+      <dl>
+        <dt>EHC — Evidence-Hypothesis Consistency</dt>
+        <dd>A model that reads evidence correctly should update its <em>hypothesis-level</em> probability
+        in the direction the evidence implies. EHC checks this at the H1 field level, ignoring whatever
+        the model wrote in yes_prob. A model can have high EHC but still show low HFC — meaning it
+        "understood" the evidence at the hypothesis level but failed to carry that update through to
+        the final forecast number.</dd>
+
+        <dt>HFC — Hypothesis-Forecast Consistency</dt>
+        <dd>This checks the <em>final output</em>: did yes_prob actually shift in the right direction?
+        For this two-hypothesis model yes_prob should equal H1.posterior exactly, so EHC and HFC
+        should be identical — but they diverge when the model updates one field and not the other.
+        High EHC + Low HFC is the key signature of an "anchored" forecast where hypothesis beliefs
+        update but the headline number does not.</dd>
+
+        <dt>ICS — Internal Coherence Score</dt>
+        <dd>The model's structural invariant is yes_prob = P(H1). ICS = 1 when
+        |yes_prob − H1.posterior| &lt; 0.02 after updating. Low ICS means the model broke its own
+        accounting: each field may look reasonable in isolation, but they do not add up. This is a
+        necessary condition for the forecast to be internally valid, independent of whether the
+        direction of the update was correct.</dd>
+
+        <dt>Together, they tell a story</dt>
+        <dd>High EHC + High HFC + High ICS → fully consistent response. High EHC + Low HFC →
+        evidence-sensitive at hypothesis level but anchored final number. High EHC + High HFC +
+        Low ICS → both fields move correctly, but drift apart (each by a different amount).
+        Low EHC + Low HFC → evidence is not influencing the model's beliefs at all.</dd>
+      </dl>
+    </div>
+
+    <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#666;margin-bottom:12px">
+      By Direction
+    </h2>
+    <table class="cons-dir-table">
+      <thead><tr>
+        <th>Direction</th>
+        <th>EHC</th><th>HFC</th><th>ICS</th>
+        <th style="color:#aaa">Avg Δpp</th>
+      </tr></thead><tbody>`;
+
+  // direction breakdown rows
+  for (const dir of dirOrder) {
+    const dm = dirMeta[dir] || { cls: 'ortho', label: dir, color: '#888' };
+    const bd = (s.by_direction || {})[dir] || {};
+    const dirCFs = (data.cf_results || []).filter(cf => cf.direction === dir);
+    const allDeltas = dirCFs.flatMap(cf => cf.runs.map(r => r.delta_yes_prob)).filter(d => d != null);
+    const avgDelta  = allDeltas.length ? allDeltas.reduce((a,b) => a+b, 0) / allDeltas.length : null;
+
+    html += `<tr>
+      <td><span class="cf-direction-badge ${dm.cls}" style="margin:0">${dm.label}</span></td>
+      <td>${bd.EHC_rate != null
+        ? `<span class="cons-rate" style="color:${rateColor(bd.EHC_rate)}">${fmtRate(bd.EHC_rate)}</span>
+           <span style="font-size:10px;color:#aaa">&nbsp;n=${bd.n_EHC}</span>`
+        : `<span class="cons-na">—</span>`
+      }</td>
+      <td>${bd.HFC_rate != null
+        ? `<span class="cons-rate" style="color:${rateColor(bd.HFC_rate)}">${fmtRate(bd.HFC_rate)}</span>
+           <span style="font-size:10px;color:#aaa">&nbsp;n=${bd.n_HFC}</span>`
+        : `<span class="cons-na">—</span>`
+      }</td>
+      <td>${bd.ICS_rate != null
+        ? `<span class="cons-rate" style="color:${rateColor(bd.ICS_rate)}">${fmtRate(bd.ICS_rate)}</span>
+           <span style="font-size:10px;color:#aaa">&nbsp;n=${bd.n_ICS}</span>`
+        : `<span class="cons-na">—</span>`
+      }</td>
+      <td style="font-size:13px;font-weight:700;color:${avgDelta==null?'#aaa':avgDelta>0.005?'#15803d':avgDelta<-0.005?'#dc2626':'#888'}">
+        ${avgDelta != null ? (avgDelta >= 0 ? '+' : '') + Math.round(avgDelta * 100) + 'pp' : '—'}
+      </td>
+    </tr>`;
+  }
+
+  html += `</tbody></table>
+
+    <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#666;margin-bottom:12px">
+      Per-Packet Detail
+    </h2>`;
+
+  // ── per-CF cards ──
+  for (const cf of (data.cf_results || [])) {
+    const dm = dirMeta[cf.direction] || { cls: 'ortho', color: '#888', label: cf.direction };
+
+    html += `<div class="cons-cf-card ${dm.cls}">
+      <div class="cons-cf-header">
+        <span class="cf-direction-badge ${dm.cls}" style="margin:0;font-size:10px">
+          ${dm.label} · Story ${(cf.cf_index ?? 0) + 1}
+        </span>
+        ${cf.slot_type ? `<span class="cons-slot-badge">${esc(cf.slot_type)}</span>` : ''}
+        <span class="cons-cf-hl" title="${esc(cf.evidence_headline)}">${esc(cf.evidence_headline || '(no headline)')}</span>
+      </div>
+      ${cf.mechanism_targeted ? `<div style="font-size:11px;color:#888;margin-bottom:8px">
+        Mechanism: ${esc(cf.mechanism_targeted)}
+      </div>` : ''}
+      <div class="cons-agg-row">
+        ${cf.EHC_rate != null ? `<span class="cons-agg-item">
+          <span class="cons-agg-label">EHC</span>
+          <span style="font-weight:700;color:${rateColor(cf.EHC_rate)}">${fmtRate(cf.EHC_rate)}</span>
+        </span>` : ''}
+        ${cf.HFC_rate != null ? `<span class="cons-agg-item">
+          <span class="cons-agg-label">HFC</span>
+          <span style="font-weight:700;color:${rateColor(cf.HFC_rate)}">${fmtRate(cf.HFC_rate)}</span>
+        </span>` : ''}
+        ${cf.ICS_rate != null ? `<span class="cons-agg-item">
+          <span class="cons-agg-label">ICS</span>
+          <span style="font-weight:700;color:${rateColor(cf.ICS_rate)}">${fmtRate(cf.ICS_rate)}</span>
+        </span>` : ''}
+        ${cf.mean_delta != null ? `<span class="cons-agg-item">
+          <span class="cons-agg-label">mean Δ</span>
+          <span style="font-weight:700;color:${rateColor(null)}">${cf.mean_delta >= 0 ? '+' : ''}${Math.round(cf.mean_delta * 100)}pp</span>
+        </span>` : ''}
+      </div>
+      <div class="cons-run-row">`;
+
+    for (const run of cf.runs) {
+      const d  = run.delta_yes_prob;
+      const dStr = d != null ? (d >= 0 ? '+' : '') + Math.round(d * 100) + 'pp' : '—';
+      const dColor = d == null ? '#aaa' : d > 0.005 ? '#15803d' : d < -0.005 ? '#dc2626' : '#888';
+
+      function chipHtml(label, val) {
+        if (val === null) return `<span class="cons-chip skip">${label}:?</span>`;
+        return `<span class="cons-chip ${val ? 'pass' : 'fail'}">${label}:${val ? '✓' : '✗'}</span>`;
+      }
+
+      html += `<div class="cons-run-cell">
+        <div class="cons-run-label">run ${(run.run_id ?? 0) + 1}</div>
+        <div class="cons-run-delta" style="color:${dColor}">${dStr}</div>
+        <div class="cons-run-chips">
+          ${chipHtml('E', run.EHC)}
+          ${chipHtml('H', run.HFC)}
+          ${chipHtml('I', run.ICS)}
+        </div>
+        ${run.ics_deviation != null ? `<div style="font-size:9px;color:#bbb;margin-top:2px">|dev|=${Math.round(run.ics_deviation*100)}pp</div>` : ''}
+      </div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  html += `</div>`;
+  return html;
 }
 
 function renderUFSection(records) {
@@ -1020,11 +1438,12 @@ function renderForecast(rec) {
 
   html += '</div>'; // end forecast-header
 
-  // ── three view tabs ──
+  // ── four view tabs ──
   html += `<div class="view-tabs">
-    <div class="view-tab active"  id="vtab-forecast"        onclick="selectViewTab('forecast')">Agentic Forecast</div>
-    <div class="view-tab"         id="vtab-counterfactuals" onclick="selectViewTab('counterfactuals')">Counterfactual Packets</div>
-    <div class="view-tab pending" id="vtab-updated"         onclick="selectViewTab('updated')">Model Update</div>
+    <div class="view-tab active" id="vtab-forecast"        onclick="selectViewTab('forecast')">Agentic Forecast</div>
+    <div class="view-tab"        id="vtab-counterfactuals" onclick="selectViewTab('counterfactuals')">Counterfactual Packets</div>
+    <div class="view-tab"        id="vtab-updated"         onclick="selectViewTab('updated')">Model Update</div>
+    <div class="view-tab"        id="vtab-consistency"     onclick="selectViewTab('consistency')">Consistency Analysis</div>
   </div>`;
 
   // ── Tab 1: Agentic Forecast ──
@@ -1063,6 +1482,11 @@ function renderForecast(rec) {
   // ── Tab 3: Model Update (loads data async if available, else placeholder) ──
   html += `<div class="view-panel" id="vpanel-updated">
     <div id="uf-section"><div class="cf-loading">Loading updated forecasts…</div></div>
+  </div>`;
+
+  // ── Tab 4: Consistency Analysis ──
+  html += `<div class="view-panel" id="vpanel-consistency">
+    <div id="cons-section"><div class="cf-loading">Loading consistency analysis…</div></div>
   </div>`;
 
   return html;
