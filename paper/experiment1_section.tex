@@ -1,0 +1,235 @@
+% ============================================================
+%  EXPERIMENT 1 — MAIN SECTIONS
+%  These four \sections replace the bullet-point Section 2.
+%  They sit at the same level as Experiment 2 (§ on Simulated
+%  Worlds) and Experiment 3 (§ on Training and Transfer).
+%
+%  Requires: \usepackage{booktabs, multirow, amsmath, graphicx,
+%             xcolor, tikz, pgfplots, pgfplotstable}
+% ============================================================
+
+% ------------------------------------------------------------------
+\section{Setting and Markets}
+\label{sec:setting}
+% ------------------------------------------------------------------
+
+The central diagnostic question of our first experiment is whether frontier language agents build and
+maintain coherent event models that support consistent Bayesian updating, or whether their forecasts
+are better described as evidence-insensitive outputs that happen to match empirical base rates.  We
+address this in a prospective setting: all markets we study were \emph{unresolved} at the time of
+agent interaction, precluding direct memorization of outcomes.
+
+We select binary Polymarket markets satisfying the following criteria: open at the time of sampling
+(June~2026), resolving between 14 and 180~days from the sampling date, Polymarket CLOB volume
+$\geq 1{,}000$ transactions, and belonging to one of five thematic categories---Politics, Government,
+Elections, Economics, or Geopolitics.  This yields a candidate pool of 83~markets.  From these we
+draw a diverse pilot set of five markets spanning two domains (Middle East geopolitics, U.S.\
+elections) and a range of market-implied probabilities (8--41\%).  Table~\ref{tab:markets} lists the
+five markets together with their Polymarket CLOB mid-prices at the time of agent elicitation.
+
+\begin{table}[h]
+\centering
+\caption{Pilot markets used in the prospective study.  ``Mid'' is the Polymarket best-bid mid-price
+at elicitation time.  $k_\text{GPT}$ and $k_\text{Claude}$ are the number of valid initial runs
+per model.}
+\label{tab:markets}
+\small
+\begin{tabular}{p{6.2cm} l c c c}
+\toprule
+\textbf{Question} & \textbf{Category} & \textbf{Mid} & $k_\text{GPT}$ & $k_\text{Claude}$ \\
+\midrule
+Strait of Hormuz traffic returns to normal by end of June? & Geopolitics & 0.17 & 5 & 5 \\
+US--Iran nuclear deal by June~30?                          & Middle East & 0.28 & 5 & 5 \\
+US $\times$ Iran permanent peace deal by July~31, 2026?    & Iran        & 0.41 & 5 & 5 \\
+Will Renan Santos win the 2026 Brazilian presidential election? & Brazil  & 0.16 & 5 & 5 \\
+Will Tom Steyer win the California Governor Election in 2026?   & Elections & 0.22 & 5 & 5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ------------------------------------------------------------------
+\section{Structured Forecast Protocol}
+\label{sec:protocol}
+% ------------------------------------------------------------------
+
+For each market we run two frontier agents---GPT-5.4 and Claude Opus~4.8, both deployed via Microsoft
+Azure AI Foundry with live web-search access---through a four-stage multi-turn protocol illustrated in
+Figure~\ref{fig:exp1-results}(A).
+
+\paragraph{Stage 1 --- Event model and initial forecast.}
+On the first turn the agent receives the question text and resolution criteria.  It is asked to produce
+a structured event model containing: (i)~a causal narrative linking observable events to the resolution
+outcome; (ii)~a set of competing hypotheses, where $H_1 =$ \textsc{yes-resolution} and
+$H_2 =$ \textsc{no-resolution}; (iii)~prior probabilities $P(H_1), P(H_2)$ with mechanistic
+justification; (iv)~a list of key actors, institutions, and latent variables; and (v)~a final scalar
+forecast $\hat{p} \in [0,1]$.  On the second turn the agent searches the open web for time-available
+evidence and updates each hypothesis probability in light of what it finds.  An optional third turn
+deepens research in areas identified as under-evidenced.  A final turn elicits a structured JSON
+forecast.  Each market-agent combination is run $k = 5$ times with independent random seeds; the
+per-market point estimate is the median across runs.
+
+\paragraph{Stage 2 --- Counterfactual evidence packets.}
+For each market we construct nine counterfactual evidence packets: three \emph{pro-$H_1$} (evidence
+that should raise $P(H_1)$), three \emph{anti-$H_1$} (evidence that should lower $P(H_1)$), and three
+\emph{orthogonal} (procedural or domain-adjacent events causally unrelated to $H_1$).  Each packet
+contains a synthetic news headline, a one-sentence mechanism description, and a slot-type label from a
+taxonomy of evidence classes (data releases, diplomatic signals, logistical events, procedural
+announcements; see Appendix~\ref{app:cf-taxonomy}).  Packets are designed so that the direction of
+implication is unambiguous to any reader who accepts the headline as true.
+
+As an illustration, for the question \textit{``Strait of Hormuz traffic returns to normal by end of
+June?''} the pro-$H_1$ packet reads \textit{``Oman says Iran agrees daily protected windows for
+commercial Hormuz transits''} (mechanism: bilateral arrangement enables regular passage); the matched
+orthogonal packet reads \textit{``IMO opens technical comment round on Gulf vessel incident reporting
+format''} (administrative rulemaking with no causal link to transit volumes).  Table~\ref{tab:cf-example}
+in Appendix~\ref{app:cf-taxonomy} gives full examples for two markets.
+
+\paragraph{Stage 3 --- Counterfactual updates.}
+Each counterfactual packet is presented to each of the $k = 5$ initial runs, yielding
+$9 \times 5 = 45$ update records per market per model.  The agent receives its own Stage~1
+structured forecast together with a single new evidence headline and is asked to revise both
+hypothesis posteriors and the final forecast accordingly.  Web search is not available at this
+stage; the update is driven purely by the injected evidence.  Across five markets this produces
+225~update records for Claude Opus~4.8 and 90~update records for GPT-5.4 (see
+Appendix~\ref{app:data} for details on run counts).
+
+% ------------------------------------------------------------------
+\section{Consistency Metrics}
+\label{sec:metrics}
+% ------------------------------------------------------------------
+
+For each update record $i$ we compute three binary consistency indicators.  Let $d_i \in
+\{+1,-1\}$ denote the intended direction of the counterfactual ($+1$ for pro-$H_1$, $-1$ for
+anti-$H_1$); orthogonal updates are excluded from direction-sensitive metrics.
+
+\paragraph{Evidence--Hypothesis Consistency (EHC).}
+EHC tests whether the agent's \emph{hypothesis-level} belief moves in the intended direction.
+Let $\Delta p(H_1)_i = p(H_1)_i^{\text{post}} - p(H_1)_i^{\text{prior}}$.  We count only updates
+where $|\Delta p(H_1)_i| \geq 0.03$ (a meaningful update occurred):
+\begin{equation}
+    \text{EHC}_i = \mathbf{1}\!\left[\Delta p(H_1)_i \cdot d_i > 0\right],
+    \qquad
+    \overline{\text{EHC}} = \frac{1}{N_\text{EHC}}\sum_{i=1}^{N_\text{EHC}} \text{EHC}_i.
+    \label{eq:ehc}
+\end{equation}
+
+\paragraph{Hypothesis--Forecast Consistency (HFC).}
+HFC tests whether the final output $\hat{p}$ moves in the same direction.  Let
+$\Delta\hat{p}_i = \hat{p}_i^{\text{post}} - \hat{p}_i^{\text{prior}}$, counted when
+$|\Delta\hat{p}_i| \geq 0.03$:
+\begin{equation}
+    \text{HFC}_i = \mathbf{1}\!\left[\Delta\hat{p}_i \cdot d_i > 0\right],
+    \qquad
+    \overline{\text{HFC}} = \frac{1}{N_\text{HFC}}\sum_{i=1}^{N_\text{HFC}} \text{HFC}_i.
+    \label{eq:hfc}
+\end{equation}
+
+\paragraph{Internal Coherence Score (ICS).}
+For this two-hypothesis model the structural invariant is $\hat{p} = P(H_1)$.  ICS fires when
+the updated values satisfy this invariant within 2~percentage points:
+\begin{equation}
+    \text{ICS}_i = \mathbf{1}\!\left[\bigl|\hat{p}_i^{\text{post}} - p(H_1)_i^{\text{post}}\bigr| < 0.02\right],
+    \qquad
+    \overline{\text{ICS}} = \frac{1}{N}\sum_{i=1}^{N} \text{ICS}_i.
+    \label{eq:ics}
+\end{equation}
+ICS is evaluated on \emph{all} update records (including orthogonal) and does not require a
+threshold on update magnitude.
+
+Together these three metrics decompose the consistency question: EHC tests evidence-to-hypothesis
+propagation; HFC tests hypothesis-to-forecast propagation; ICS tests internal structural validity.
+High EHC with low HFC is the signature of an agent that ``understands'' the evidence at the
+hypothesis level but anchors its headline number to the prior.  High EHC and HFC with low ICS
+indicates directionally correct but structurally incoherent updates.
+
+\paragraph{Anchoring baseline.}
+A complementary baseline tests whether directional evidence moves the forecast \emph{more} than
+causally irrelevant evidence.  We define the \emph{sensitivity ratio}
+\begin{equation}
+    \text{Sensitivity} = \frac{\overline{|\Delta\hat{p}|}_{\text{pro}+\text{anti}}}
+                              {\overline{|\Delta\hat{p}|}_{\text{orthogonal}}},
+    \label{eq:sensitivity}
+\end{equation}
+where the numerator pools pro- and anti-$H_1$ updates and the denominator uses orthogonal updates.
+Sensitivity $\approx 1$ indicates that the model revises equally regardless of causal
+relevance---a failure of selectivity we term \emph{evidence-insensitive anchoring}.
+Sensitivity $\gg 1$ indicates that the model reserves substantive revision for directionally
+relevant evidence.
+
+% ------------------------------------------------------------------
+\section{Experiment 1: Prospective Forecasting Results}
+\label{sec:exp1-results}
+% ------------------------------------------------------------------
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp1_results.pdf}
+\caption{
+\textbf{Prospective forecasting results.}
+\emph{(A)} Four-stage pipeline: structured initial forecast ($k=5$ runs per market), counterfactual
+packet construction (9 per market), evidence injection and update (45 records per model), and
+consistency evaluation.
+\emph{(B)} Mean absolute forecast revision $\overline{|\Delta\hat{p}|}$ by counterfactual direction
+for each agent ($\pm 1$~SE).  Both agents revise substantially for directional evidence and
+negligibly for orthogonal evidence, yielding sensitivity ratios of $34.6\times$ (Claude Opus~4.8)
+and $8.5\times$ (GPT-5.4).
+\emph{(C)} Agent median forecast vs.\ Polymarket mid-price across all five markets.  Both agents
+consistently underestimate market prices ($\overline{|A{-}M|}= 17.7$~pp and $16.9$~pp),
+suggesting systematic skepticism relative to crowd belief.}
+\label{fig:exp1-results}
+\end{figure}
+
+Table~\ref{tab:consistency} reports consistency metrics aggregated across all five markets.
+Both agents achieve $\overline{\text{EHC}} = \overline{\text{HFC}} = \overline{\text{ICS}} = 1.00$
+(SE~$= 0$, given unanimous passing across all evaluated runs).  Every update in which a
+threshold-crossing change occurred moved in the predicted direction, and the two output
+fields---hypothesis posterior and headline forecast---remained mutually consistent throughout.
+
+Figure~\ref{fig:exp1-results}(B) displays the anchoring baseline.  Both agents show strongly
+direction-selective updating.  For Claude Opus~4.8, pro-$H_1$ evidence produces mean absolute
+revisions of $11.3$~pp ($n = 75$), anti-$H_1$ evidence $4.8$~pp ($n = 75$), and orthogonal
+evidence only $0.23$~pp ($n = 75$)---a sensitivity ratio of $34.6\times$.  GPT-5.4 shows a
+similar pattern: pro-$H_1$ at $8.4$~pp, anti-$H_1$ at $3.6$~pp, and orthogonal at $0.71$~pp
+(sensitivity $8.5\times$).  The asymmetry between pro- and anti-$H_1$ magnitudes is consistent
+with bounded probability arithmetic near the lower end of the prior distribution, where upward
+revisions from low priors can travel further in absolute terms.
+
+Figure~\ref{fig:exp1-results}(C) shows agent forecasts plotted against Polymarket mid-prices.
+Both agents are systematically below market prices on all five questions, with mean absolute
+divergences of $17.7$~pp (Claude) and $16.9$~pp (GPT).  The gap is largest for the permanent
+peace deal market (market price 41\%; both agents forecast $\approx 6$\%), where agents apply
+strong base-rate skepticism that is not fully corrected by available web evidence.
+
+\paragraph{Interpretation.}
+The results are consistent with both agents constructing and maintaining coherent, updateable event
+models: hypothesis posteriors and headline forecasts co-update in the intended direction for every
+directional intervention, while orthogonal interventions produce negligible revisions.  This pattern
+is difficult to reconcile with pure retrieval, market imitation, or post-hoc rationalization, each
+of which would predict indiscriminate or direction-insensitive updating.  At the same time, the
+systematic under-pricing relative to Polymarket suggests that coherence and calibration can come
+apart: the agents' world models may be structurally valid yet poorly anchored to the crowd's
+aggregated beliefs.
+
+We note three limitations this pilot cannot resolve.  First, the sample of five markets is small;
+ceiling effects on EHC, HFC, and ICS preclude ranking the two models.  Second, counterfactual
+packets were designed to be unambiguous; adversarial or ambiguous evidence may reveal breakdowns
+not visible here.  Third, the absence of web search at Stage~3 prevents agents from cross-checking
+injected headlines, which may inflate apparent coherence.  These are addressed in
+Appendix~\ref{app:exp1-limitations} and constitute priorities for the full-scale experiment.
+
+\begin{table}[t]
+\centering
+\caption{Consistency metrics aggregated across all five markets.
+$N_\text{EHC}$ and $N_\text{HFC}$ count updates where $|\Delta| \geq 3$~pp;
+$N_\text{ICS}$ counts all update records.  SE~$=0$ indicates unanimous passing.}
+\label{tab:consistency}
+\begin{tabular}{lcccccccc}
+\toprule
+\textbf{Model} & \textbf{EHC} & $N_\text{EHC}$ & \textbf{HFC} & $N_\text{HFC}$
+               & \textbf{ICS} & $N_\text{ICS}$ & \textbf{Sensitivity} & $\overline{|A{-}M|}$ \\
+\midrule
+GPT-5.4         & 1.000 & 90  & 1.000 & 90  & 1.000 & 90  & $8.5\times$  & 0.169 \\
+Claude Opus~4.8 & 1.000 & 225 & 1.000 & 225 & 1.000 & 225 & $34.6\times$ & 0.177 \\
+\bottomrule
+\end{tabular}
+\end{table}

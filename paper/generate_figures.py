@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate Figure 2 (exp1_results.pdf) for the paper.
-Run from exp1_prospective/:  python paper/generate_figures.py
+Run from the repo root:  python paper/generate_figures.py
 Requires: matplotlib, numpy, pathlib
 """
 import json
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 
-_ROOT = Path(__file__).resolve().parent.parent
+_ROOT = Path(__file__).resolve().parent.parent / "exp1_prospective"
 OUT   = Path(__file__).resolve().parent / "figures"
 OUT.mkdir(exist_ok=True)
 
