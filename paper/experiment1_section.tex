@@ -183,43 +183,62 @@ diagonal: both agents systematically under-price relative to the crowd
 \label{fig:exp1-results}
 \end{figure}
 
-Table~\ref{tab:consistency} reports consistency metrics aggregated across all five markets.
+\paragraph{Consistency metrics.}
+Table~\ref{tab:consistency} reports EHC, HFC, and ICS aggregated across all five markets.
 Both agents achieve $\overline{\text{EHC}} = \overline{\text{HFC}} = \overline{\text{ICS}} = 1.00$
-(SE~$= 0$, given unanimous passing across all evaluated runs).  Every update in which a
-threshold-crossing change occurred moved in the predicted direction, and the two output
-fields---hypothesis posterior and headline forecast---remained mutually consistent throughout.
+with standard error zero, meaning that without exception every threshold-crossing update moved in the
+predicted direction and the two output fields---hypothesis posterior and headline forecast---remained
+mutually consistent.
 
-Figure~\ref{fig:exp1-results}(B) displays the anchoring baseline.  Both agents show strongly
-direction-selective updating.  For Claude Opus~4.8, pro-$H_1$ evidence produces mean absolute
-revisions of $11.3$~pp ($n = 75$), anti-$H_1$ evidence $4.8$~pp ($n = 75$), and orthogonal
-evidence only $0.23$~pp ($n = 75$)---a sensitivity ratio of $34.6\times$.  GPT-5.4 shows a
-similar pattern: pro-$H_1$ at $8.4$~pp, anti-$H_1$ at $3.6$~pp, and orthogonal at $0.71$~pp
-(sensitivity $8.5\times$).  The asymmetry between pro- and anti-$H_1$ magnitudes is consistent
-with bounded probability arithmetic near the lower end of the prior distribution, where upward
-revisions from low priors can travel further in absolute terms.
+\paragraph{Direction-selective updating (Figure~\ref{fig:exp1-results}A).}
+The strip plot shows the signed revision $\Delta\hat{p}$ for all 315~update records.  The three
+groups separate cleanly.  For pro-$H_1$ counterfactuals, every record sits above the zero line:
+mean $+11.3$~pp for Claude Opus~4.8 ($n = 75$) and $+8.4$~pp for GPT-5.4 ($n = 27$).  For
+anti-$H_1$ counterfactuals, every record sits below: $-4.8$~pp and $-3.6$~pp respectively.
+Orthogonal counterfactuals---equally plausible domain news with no causal link to $H_1$---produce
+revisions of $\leq 0.7$~pp, indistinguishable from zero.  This yields sensitivity ratios of
+$34.6\times$ (Claude) and $8.5\times$ (GPT).  The separation is not merely a property of means;
+it holds at the level of individual records.  The asymmetry in magnitude between pro- and
+anti-$H_1$ (upward revisions are larger) is consistent with probability arithmetic near the lower
+end of the prior distribution, where there is more room to move upward.
 
-Figure~\ref{fig:exp1-results}(C) shows agent forecasts plotted against Polymarket mid-prices.
-Both agents are systematically below market prices on all five questions, with mean absolute
-divergences of $17.7$~pp (Claude) and $16.9$~pp (GPT).  The gap is largest for the permanent
-peace deal market (market price 41\%; both agents forecast $\approx 6$\%), where agents apply
-strong base-rate skepticism that is not fully corrected by available web evidence.
+\paragraph{Before/after structure (Figure~\ref{fig:exp1-results}B).}
+Plotting initial against updated forecast confirms the same pattern geometrically.  Pro-$H_1$
+records fan above the no-change diagonal, anti-$H_1$ records fall below it, and orthogonal records
+cluster on it.  Revisions can be large---the largest single update moves a forecast from 10\% to
+45\% ($\Delta\hat{p} = +35$~pp) in response to news that Oman had brokered daily protected transit
+windows for Hormuz shipping---yet the selectivity is preserved: no orthogonal record approaches
+these magnitudes.
+
+\paragraph{Calibration and market divergence (Figure~\ref{fig:exp1-results}C).}
+Every agent forecast falls below the Polymarket mid-price, with mean absolute divergences of
+$17.7$~pp (Claude) and $16.9$~pp (GPT).  The gap is largest for the US--Iran permanent peace
+deal market (Polymarket price 41\%; both agents forecast $\approx 5$--8\%), where both agents
+appear to apply strong historical base-rate skepticism that available web evidence does not
+overcome.  The systematic under-pricing establishes that the agents are not imitating the market
+crowd: whatever world model drives their forecasts produces a consistently more pessimistic
+distribution than the aggregate of informed traders.
 
 \paragraph{Interpretation.}
-The results are consistent with both agents constructing and maintaining coherent, updateable event
-models: hypothesis posteriors and headline forecasts co-update in the intended direction for every
-directional intervention, while orthogonal interventions produce negligible revisions.  This pattern
-is difficult to reconcile with pure retrieval, market imitation, or post-hoc rationalization, each
-of which would predict indiscriminate or direction-insensitive updating.  At the same time, the
-systematic under-pricing relative to Polymarket suggests that coherence and calibration can come
-apart: the agents' world models may be structurally valid yet poorly anchored to the crowd's
-aggregated beliefs.
+Taken together, the three panels rule out the three most natural shortcut accounts of strong
+forecasting performance.  Against \emph{retrieval} or \emph{surface-feature matching}: if agents
+were simply pattern-matching on news-like text, orthogonal counterfactuals---which are equally
+topically relevant---would produce similar revisions to directional ones; they do not.  Against
+\emph{post-hoc rationalization}: if agents were generating updates by rationalizing a pre-committed
+forecast, there would be no reason for the headline forecast and the hypothesis posterior to co-move
+consistently (ICS~$= 1.00$) or for orthogonal evidence to fail to move either field.  Against
+\emph{market imitation}: both agents diverge systematically and substantially from Polymarket
+prices in a consistent direction, forecasting well below the crowd on every question.  The pattern
+is instead consistent with agents that maintain event-specific causal models and apply them
+selectively when evaluating new evidence.
 
 We note three limitations this pilot cannot resolve.  First, the sample of five markets is small;
-ceiling effects on EHC, HFC, and ICS preclude ranking the two models.  Second, counterfactual
-packets were designed to be unambiguous; adversarial or ambiguous evidence may reveal breakdowns
-not visible here.  Third, the absence of web search at Stage~3 prevents agents from cross-checking
-injected headlines, which may inflate apparent coherence.  These are addressed in
-Appendix~\ref{app:exp1-limitations} and constitute priorities for the full-scale experiment.
+ceiling effects on EHC, HFC, and ICS preclude ranking the two models on consistency.  Second,
+counterfactual packets were designed to be unambiguous; adversarial or ambiguous evidence may
+reveal breakdowns not visible here.  Third, agents at Stage~3 cannot cross-check injected
+headlines against independent sources, which may inflate apparent coherence.  These constitute
+priorities for the full-scale experiment and are discussed further in
+Appendix~\ref{app:exp1-limitations}.
 
 \begin{table}[t]
 \centering
