@@ -166,16 +166,20 @@ relevant evidence.
 \includegraphics[width=\linewidth]{figures/exp1_results.pdf}
 \caption{
 \textbf{Prospective forecasting results.}
-\emph{(A)} Four-stage pipeline: structured initial forecast ($k=5$ runs per market), counterfactual
-packet construction (9 per market), evidence injection and update (45 records per model), and
-consistency evaluation.
-\emph{(B)} Mean absolute forecast revision $\overline{|\Delta\hat{p}|}$ by counterfactual direction
-for each agent ($\pm 1$~SE).  Both agents revise substantially for directional evidence and
-negligibly for orthogonal evidence, yielding sensitivity ratios of $34.6\times$ (Claude Opus~4.8)
-and $8.5\times$ (GPT-5.4).
-\emph{(C)} Agent median forecast vs.\ Polymarket mid-price across all five markets.  Both agents
-consistently underestimate market prices ($\overline{|A{-}M|}= 17.7$~pp and $16.9$~pp),
-suggesting systematic skepticism relative to crowd belief.}
+\emph{(A)} Signed forecast revision $\Delta\hat{p}$ for every update record ($n=315$), grouped by
+counterfactual direction.  Horizontal bars mark group means.  Pro-$H_1$ evidence drives
+consistently positive revisions (mean $+$11.3~pp for Claude Opus~4.8, $+$8.4~pp for GPT-5.4);
+anti-$H_1$ drives negative revisions ($-$4.8, $-$3.6~pp); orthogonal evidence produces
+near-zero revisions ($\leq 0.7$~pp), despite being equally plausible domain news.  The clean
+three-way separation---EHC~$=$~HFC~$=$~100\% across all individual records---is the core
+evidence for coherent, evidence-sensitive updating.
+\emph{(B)} Initial vs.\ updated forecast $\hat{p}'$ for every record, colored by CF direction.
+Pro-$H_1$ records fall above the no-change diagonal; anti-$H_1$ below; orthogonal on the
+diagonal---confirming causal selectivity at the individual-record level across all five markets
+and both agents.
+\emph{(C)} Agent median forecast vs.\ Polymarket mid-price.  Every point falls below the
+diagonal: both agents systematically under-price relative to the crowd
+($\overline{|A{-}M|}=17.7$~pp and $16.9$~pp), ruling out market imitation as a shortcut.}
 \label{fig:exp1-results}
 \end{figure}
 
