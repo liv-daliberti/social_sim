@@ -291,9 +291,11 @@ def _load_aggregate():
         ]
 
         per_market = []
+        all_uf_records = []  # collect for anchoring check
         for rec in recs:
             tid        = rec["task_id"]
             uf_records = _load_updated_forecasts(tid, model_name)
+            all_uf_records.extend(uf_records)
             cf_packets = _load_counterfactuals(tid)
             cf_lookup  = {p["cf_id"]: p for p in cf_packets}
 
@@ -366,6 +368,30 @@ def _load_aggregate():
                 "n":        len(cm),
             }
 
+        # anchoring baseline: mean |Δyes_prob| per direction + sensitivity ratio
+        _anc_dir: dict[str, list[float]] = {"pro_H1": [], "anti_H1": [], "orthogonal": []}
+        for ufr in all_uf_records:
+            d   = ufr.get("direction", "")
+            dyp = ufr.get("delta_yes_prob")
+            if d in _anc_dir and dyp is not None:
+                _anc_dir[d].append(abs(dyp))
+
+        anc_agg: dict = {}
+        for d, vals in _anc_dir.items():
+            m_v, se_v = _mean_se(vals)
+            anc_agg[d] = {
+                "mean_abs_delta": round(m_v,  4) if m_v  is not None else None,
+                "se":             round(se_v, 4) if se_v is not None else None,
+                "n": len(vals),
+            }
+        _directed = _anc_dir["pro_H1"] + _anc_dir["anti_H1"]
+        m_dir, _ = _mean_se(_directed)
+        m_ort, _ = _mean_se(_anc_dir["orthogonal"])
+        sensitivity = (round(m_dir / m_ort, 2)
+                       if (m_dir is not None and m_ort is not None and m_ort > 0)
+                       else None)
+        anc_agg["sensitivity_ratio"] = sensitivity
+
         result[model_name] = {
             "n_markets":  len(recs),
             "n_with_uf":  sum(1 for m in per_market if m["n_updates"] > 0),
@@ -388,6 +414,7 @@ def _load_aggregate():
             "by_direction": dir_agg,
             "by_category":  cat_agg,
             "per_market":   per_market,
+            "anchoring":    anc_agg,
         }
 
     return {"models": result, "model_order": model_order}

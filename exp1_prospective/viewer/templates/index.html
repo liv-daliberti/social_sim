@@ -2541,6 +2541,10 @@ function renderAggregate(data) {
     const cons = m.consistency || {};
     const perM = m.per_market  || [];
 
+    const anc  = m.anchoring || {};
+    const sens = anc.sensitivity_ratio;
+    const sensColor = sens == null ? '#aaa' : sens >= 5 ? '#15803d' : sens >= 2 ? '#d97706' : '#dc2626';
+
     const statChips = [
       { key: 'mean-forecast', label: 'Mean forecast',    val: f.mean_yes_prob   != null ? Math.round(f.mean_yes_prob*100)+'%'   : '—', sub: 'agent median across mkts', color: '#2563eb' },
       { key: 'krun-sigma',    label: 'k-run σ',          val: f.mean_run_std    != null ? '±'+Math.round(f.mean_run_std*100)+'pp' : '—', sub: 'avg intra-market spread',  color: '#7c3aed' },
@@ -2548,6 +2552,7 @@ function renderAggregate(data) {
       { key: 'EHC', label: 'EHC', val: fmtRate(cons.EHC_rate), sub: 'evidence → hypothesis',  color: rateColor(cons.EHC_rate) },
       { key: 'HFC', label: 'HFC', val: fmtRate(cons.HFC_rate), sub: 'hypothesis → forecast',  color: rateColor(cons.HFC_rate) },
       { key: 'ICS', label: 'ICS', val: fmtRate(cons.ICS_rate), sub: 'internal coherence',     color: rateColor(cons.ICS_rate) },
+      { key: 'sensitivity',   label: 'Sensitivity',      val: sens != null ? sens.toFixed(1)+'×' : '—',  sub: 'directed ÷ orthogonal |Δ|', color: sensColor },
     ];
 
     html += `<div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px">
@@ -2604,20 +2609,42 @@ function renderAggregate(data) {
           <div>
             <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">By direction</div>
             <table class="agg-mini-table">
-              <thead><tr><th>Direction</th><th>EHC</th><th>HFC</th><th>ICS</th></tr></thead>
+              <thead><tr><th>Direction</th><th>EHC</th><th>HFC</th><th>ICS</th><th title="Mean absolute Δyes_prob — anchoring baseline">mean |Δ|</th></tr></thead>
               <tbody>
                 ${['pro_H1','anti_H1','orthogonal'].map(dir => {
-                  const dm = dirMeta[dir] || { label: dir, cls: 'ortho' };
-                  const bd = (m.by_direction || {})[dir] || {};
+                  const dm  = dirMeta[dir] || { label: dir, cls: 'ortho' };
+                  const bd  = (m.by_direction || {})[dir] || {};
+                  const ad  = (anc[dir] || {});
+                  const mad = ad.mean_abs_delta;
+                  // bar: scale to max 40pp shown as 100%
+                  const barW = mad != null ? Math.min(100, Math.round(mad / 0.40 * 100)) : 0;
+                  const barColor = dir === 'orthogonal' ? '#a78bfa' : dir === 'pro_H1' ? '#16a34a' : '#dc2626';
                   return `<tr>
                     <td><span class="cf-direction-badge ${dm.cls}" style="margin:0;font-size:10px">${dm.label}</span></td>
                     <td style="font-weight:700;color:${rateColor(bd.EHC_rate)}">${fmtRate(bd.EHC_rate)}${bd.EHC_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.EHC_se*100)}pp</span>`:''}</td>
                     <td style="font-weight:700;color:${rateColor(bd.HFC_rate)}">${fmtRate(bd.HFC_rate)}${bd.HFC_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.HFC_se*100)}pp</span>`:''}</td>
                     <td style="font-weight:700;color:${rateColor(bd.ICS_rate)}">${fmtRate(bd.ICS_rate)}${bd.ICS_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.ICS_se*100)}pp</span>`:''}</td>
+                    <td style="min-width:90px">
+                      ${mad != null ? `
+                        <div style="display:flex;align-items:center;gap:5px">
+                          <div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden">
+                            <div style="width:${barW}%;height:100%;background:${barColor};border-radius:3px"></div>
+                          </div>
+                          <span style="font-size:11px;font-weight:700;color:${barColor};min-width:32px">${Math.round(mad*100)}pp</span>
+                        </div>
+                        ${ad.se!=null?`<div style="font-size:9px;color:#bbb;margin-top:1px">±${Math.round(ad.se*100)}pp · n=${ad.n}</div>`:''}
+                      ` : '<span style="color:#ccc;font-size:11px">—</span>'}
+                    </td>
                   </tr>`;
                 }).join('')}
               </tbody>
             </table>
+            ${sens != null ? `
+              <div style="margin-top:8px;padding:6px 10px;background:#f0fdf4;border-radius:6px;font-size:11px;color:#15803d;border:1px solid #bbf7d0">
+                <strong>Sensitivity ratio ${sens.toFixed(1)}×</strong>
+                <span style="color:#6b7280"> — directed CFs move the forecast ${sens.toFixed(1)}× more than orthogonal ones</span>
+              </div>
+            ` : ''}
           </div>
           <div>
             <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">By category</div>
@@ -2710,6 +2737,15 @@ window.addEventListener('DOMContentLoaded', () => {
         '\\overline{\\text{ICS}} = \\frac{1}{N}\\sum_{i=1}^{N} \\text{ICS}_i',
       ],
       eqNote: 'Threshold 0.02 is unconditional — no direction filter applied.',
+    },
+    sensitivity: {
+      title: 'Sensitivity — Anchoring Baseline',
+      subtitle: 'How much more does the model respond to directional CFs vs. orthogonal ones?',
+      body: 'An agent that is genuinely updating on evidence should show larger |Δyes_prob| when the counterfactual evidence points toward or against H1 (pro/anti) compared to evidence that is causally unrelated (orthogonal). Orthogonal CFs act as a noise baseline: any update they cause is evidence of anchoring rather than evidence-driven updating. The sensitivity ratio normalises by that baseline.',
+      eqs: [
+        '\\text{Sensitivity} = \\frac{\\overline{|\\Delta \\hat{p}|_{\\text{directed}}}}{\\overline{|\\Delta \\hat{p}|_{\\text{orthogonal}}}}',
+      ],
+      eqNote: 'directed = pro_H1 + anti_H1 CFs pooled. Ratio > 1 is healthy; ≫ 1 is strongly signal-driven.',
     },
   };
 
