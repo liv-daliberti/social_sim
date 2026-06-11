@@ -36,7 +36,7 @@ from prompts import (
 
 PROJECT_ENDPOINT = os.environ.get(
     "AZURE_PROJECT_ENDPOINT",
-    "https://liv.services.ai.azure.com/api/projects/Liv-project",
+    "https://forecasting-agents-resource.services.ai.azure.com/api/projects/forecasting-agents",
 )
 AZURE_API_KEY  = os.environ.get("AZURE_AI_API_KEY", "")
 AGENT_NAME     = os.environ.get("AZURE_AGENT_NAME", "forecasting-agent")
@@ -130,24 +130,23 @@ def make_openai_client(api_key: str | None = None, endpoint: str | None = None,
     """Return an OpenAI client pointed at the Azure AI Foundry agent endpoint.
 
     Azure AI Foundry Responses-API protocol:
-      base_url = {project_endpoint}/agents/{agent_name}/endpoint/protocols/openai
-      api-version = v1   (sent as query param on every request)
+      base_url = {project_endpoint}/openai/v1
       auth header = api-key: <key>
+      agent is routed via agent_reference in extra_body (not via URL)
     """
     key = api_key or AZURE_API_KEY
     if not key:
         raise ValueError(
             "API key not set.  Export AZURE_AI_API_KEY=<key> or pass --api-key."
         )
-    ep   = (endpoint or PROJECT_ENDPOINT).rstrip("/")
-    name = agent_name or AGENT_NAME
-    base_url = f"{ep}/agents/{name}/endpoint/protocols/openai"
+    ep = (endpoint or PROJECT_ENDPOINT).rstrip("/")
+    base_url = f"{ep}/openai/v1"
     return OpenAI(
         base_url=base_url,
         api_key="placeholder",            # SDK requires non-empty; real auth via header
         default_headers={"api-key": key},
-        default_query={"api-version": _AZURE_API_VERSION},
         max_retries=0,
+        timeout=150.0,                    # per-call limit; observed max ~110s for gpt-5.4
     )
 
 
@@ -239,7 +238,14 @@ def _call_with_retry(fn, *args, **kwargs):
             wait = _RETRY_BASE * (2 ** attempt)
             print(f"\n    [rate-limit] sleeping {wait:.0f}s …", end="", flush=True)
             time.sleep(wait)
-        except (APITimeoutError, APIError):
+        except APIError as e:
+            # 408 = Azure server-side timeout; retrying the same request won't help
+            if getattr(e, "status_code", None) == 408:
+                raise
+            if attempt == _MAX_RETRIES - 1:
+                raise
+            time.sleep(_RETRY_BASE * (2 ** attempt))
+        except APITimeoutError:
             if attempt == _MAX_RETRIES - 1:
                 raise
             time.sleep(_RETRY_BASE * (2 ** attempt))
@@ -268,6 +274,7 @@ def forecast_market(
     agent_name: str = AGENT_NAME,
     agent_version: str = AGENT_VERSION,
     do_third_turn: bool = True,
+    max_output_tokens: int | None = None,
     verbose: bool = False,
 ) -> ForecastRecord:
     """Run the multi-turn forecast for one market.  Returns a ForecastRecord."""
@@ -283,17 +290,20 @@ def forecast_market(
     )
 
     prev_id: str | None = None
-    extra = _agent_ref(agent_name, agent_version)
+    extra = _agent_ref(agent_name, agent_version) if agent_name else {}
 
     def _create(user_content: str) -> object:
         params: dict = dict(
-            model=model,
             input=[{"role": "user", "content": user_content}],
             store=True,
             extra_body=extra,
         )
+        if model:                   # omit model field when empty — agent picks its own
+            params["model"] = model
         if prev_id:
             params["previous_response_id"] = prev_id
+        if max_output_tokens is not None:
+            params["max_output_tokens"] = max_output_tokens
         return _call_with_retry(client.responses.create, **params)
 
     # ── Turn 1: event model + hypotheses ───────────────────────────────────────
@@ -319,7 +329,8 @@ def forecast_market(
     # ── Turn 2: evidence gathering ─────────────────────────────────────────────
     if verbose:
         print(f"  [T2] Researching …")
-    r2 = _create(TURN2_TEMPLATE)
+    t2_content = TURN2_TEMPLATE.format(days_to_resolution=rec.days_to_resolution or 0)
+    r2 = _create(t2_content)
     t2_text = _extract_text(r2)
     t2_calls, t2_queries = _extract_tool_calls(r2)
     t2_in, t2_out = _extract_usage(r2)
@@ -334,7 +345,7 @@ def forecast_market(
         t2_text = _REFUSAL_PLACEHOLDER
     prev_id = r2.id
 
-    rec.turns.append(Turn(2, TURN2_TEMPLATE, r2.id, t2_text, t2_calls, t2_queries, t2_in, t2_out))
+    rec.turns.append(Turn(2, t2_content, r2.id, t2_text, t2_calls, t2_queries, t2_in, t2_out))
     if verbose:
         print(f"     T2 done ({t2_out} out-tokens, {len(t2_queries)} searches)")
 
@@ -372,7 +383,14 @@ def forecast_market(
     parsed, err = _parse_json_forecast(tf_text)
     if parsed:
         rec.structured_forecast = parsed
-        rec.yes_prob = float(parsed.get("yes_prob", 0))
+        raw_yp = parsed.get("yes_prob", 0)
+        if isinstance(raw_yp, str) and raw_yp.strip().endswith("%"):
+            raw_yp = float(raw_yp.strip()[:-1]) / 100.0
+        else:
+            raw_yp = float(raw_yp)
+        if raw_yp > 1.0:
+            raw_yp = raw_yp / 100.0
+        rec.yes_prob = round(raw_yp, 6)
     else:
         rec.parse_error = err
 
