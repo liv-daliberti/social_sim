@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Information and consent · Stage 3 evidence review{% endblock %}
+{% block content %}
+  <section class="card prose-card">
+    <p class="eyebrow">Before you begin</p>
+    <h1>Information and consent</h1>
+    <p>You are invited to review 18 short synthetic news reports created for a forecasting study. Your judgments will be used to characterize the reports, not to evaluate you. The reports are fictional research materials and are not claims about events that actually occurred.</p>
+    <p><strong>For this task, place yourself on June 10, 2026.</strong> Treat that date as today and judge each report using only the question, resolution criteria, the June 10 background summary, and synthetic report on the page. Every item includes the background information available before the synthetic report. Do not use events, outcomes, or information learned after June 10, 2026.</p>
+    <p>The task should take approximately 15–20 minutes. Do not search the web, use an AI assistant, or discuss the items while completing the task. Participation is voluntary, and you may stop at any time. This form does not request your name, email address, demographics, IP address, or sensitive personal information.</p>
+    {% if reviewer.cohort == 'practice' %}
+      <p><strong>Practice status:</strong> Your self-review is for testing the process. It is isolated from the registered annotations and will not be analyzed as one of the six independent reviews.</p>
+    {% endif %}
+    <form method="post" class="consent-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="check-row">
+        <input type="checkbox" name="adult_consent" value="yes" required>
+        <span>I am at least 18 years old, have read the information above, and consent to participate.</span>
+      </label>
+      <button class="primary-button" type="submit">Begin review</button>
+    </form>
+  </section>
+{% endblock %}

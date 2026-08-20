@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: stage3-evidence-review
+    runtime: python
+    plan: free
+    region: virginia
+    autoDeploy: false
+    buildCommand: pip install -r exp1_prospective/stage3_materials_annotation/requirements-render.txt
+    startCommand: gunicorn exp1_prospective.stage3_materials_annotation.review_site.wsgi:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: stage3-evidence-review-db
+          property: connectionString
+      - key: STAGE3_ANNOTATION_SECRET_KEY
+        generateValue: true
+      - key: STAGE3_ANNOTATION_ADMIN_TOKEN
+        sync: false
+      - key: STAGE3_ANNOTATION_REVIEWER_CODES
+        sync: false
+      - key: STAGE3_ANNOTATION_PRODUCTION
+        value: "1"
+      - key: STAGE3_ANNOTATION_ENABLE_PRACTICE
+        value: "0"
+      - key: STAGE3_ANNOTATION_PRACTICE_ONLY
+        value: "0"
+      - key: STAGE3_ANNOTATION_SECURE_COOKIE
+        value: "1"
+
+databases:
+  - name: stage3-evidence-review-db
+    plan: free
+    region: virginia
+    ipAllowList: []
