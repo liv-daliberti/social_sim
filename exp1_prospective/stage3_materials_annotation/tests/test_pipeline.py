@@ -9,7 +9,7 @@ from exp1_prospective.stage3_materials_annotation import analyze_annotations
 
 
 HERE = Path(__file__).resolve().parent.parent
-GENERATED = HERE / "generated_v5"
+GENERATED = HERE / "generated_v6"
 
 
 class AnnotationPipelineTest(unittest.TestCase):
@@ -45,7 +45,7 @@ class AnnotationPipelineTest(unittest.TestCase):
             self.responses, self.assignments, self.private_rows
         )
         summary = analyze_annotations.summarize(joined)
-        self.assertEqual(summary["rating_count"], 108)
+        self.assertEqual(summary["rating_count"], 126)
         self.assertEqual(summary["passing_item_count"], 18)
         self.assertAlmostEqual(summary["fleiss_kappa_conditional_direction"], 1.0)
         self.assertTrue(summary["global_gate_pass"])
@@ -62,8 +62,8 @@ class AnnotationPipelineTest(unittest.TestCase):
             self.responses, self.assignments, self.private_rows
         )
         summary = analyze_annotations.summarize(joined)
-        self.assertEqual(summary["rating_count"], 108)
-        self.assertEqual(summary["direction_correct_n"], 107)
+        self.assertEqual(summary["rating_count"], 126)
+        self.assertEqual(summary["direction_correct_n"], 125)
 
     def test_every_item_has_frozen_june_10_context(self) -> None:
         public_rows = analyze_annotations.read_jsonl(

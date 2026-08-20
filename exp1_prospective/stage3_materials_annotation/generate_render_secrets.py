@@ -10,7 +10,7 @@ import secrets
 def main() -> int:
     codes = {
         f"annotator_{index:02d}": f"s3-{secrets.token_urlsafe(12)}"
-        for index in range(1, 7)
+        for index in range(1, 8)
     }
     print("STAGE3_ANNOTATION_ADMIN_TOKEN")
     print(secrets.token_urlsafe(32))

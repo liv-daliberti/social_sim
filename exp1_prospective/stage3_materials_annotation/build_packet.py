@@ -26,16 +26,16 @@ DEFAULT_FORECASTS = (
     REPO
     / "exp1_prospective/data/initial_forecasts/forecasts_DeepSeek-V4-Pro_2026-06-10.jsonl"
 )
-DEFAULT_OUTPUT = HERE / "generated_v5"
+DEFAULT_OUTPUT = HERE / "generated_v6"
 SEED = "stage3_materials_annotation_v1_20260820"
-VERSION = "stage3_materials_annotation_v5"
+VERSION = "stage3_materials_annotation_v6"
 DIRECTIONS = ("pro_H1", "anti_H1", "orthogonal")
 EXPECTED = {
     "pro_H1": "more_likely",
     "anti_H1": "less_likely",
     "orthogonal": "no_material_effect",
 }
-REVIEWERS = tuple(f"annotator_{index:02d}" for index in range(1, 7))
+REVIEWERS = tuple(f"annotator_{index:02d}" for index in range(1, 8))
 RESPONSE_FIELDS = (
     "consent_confirmed",
     "conditional_direction",
@@ -366,7 +366,7 @@ def main() -> int:
         "market_count": 18,
         "direction_counts": dict(Counter(row["registered_direction"] for row in private_rows)),
         "reviewer_count": len(REVIEWERS),
-        "expected_rating_count": 108,
+        "expected_rating_count": len(REVIEWERS) * 18,
         "public_items_sha256": sha256_bytes(public_data),
         "private_key_sha256": sha256_bytes(private_data),
         "assignments_sha256": sha256_bytes(assignment_data),
@@ -376,7 +376,10 @@ def main() -> int:
     write_frozen(output / "manifest.json", json_bytes(manifest))
 
     print("PASS: selected 18 distinct markets; 6 pro, 6 anti, 6 orthogonal")
-    print("PASS: built 6 independently ordered packets and 108 response rows")
+    print(
+        f"PASS: built {len(REVIEWERS)} independently ordered packets and "
+        f"{len(REVIEWERS) * 18} response rows"
+    )
     print(f"manifest: {output / 'manifest.json'}")
     return 0
 

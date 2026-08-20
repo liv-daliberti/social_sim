@@ -35,10 +35,10 @@ from flask import (
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-GENERATED = ROOT / "generated_v5"
+GENERATED = ROOT / "generated_v6"
 DEFAULT_PUBLIC = GENERATED / "public_items.jsonl"
 DEFAULT_ASSIGNMENTS = GENERATED / "assignments.json"
-DEFAULT_DB = ROOT / "data/reviews_v5.sqlite3"
+DEFAULT_DB = ROOT / "data/reviews_v6.sqlite3"
 PRACTICE_ID = "self_review"
 PRACTICE_CODE = "self"
 EXPORT_FIELDS = (
@@ -138,8 +138,8 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
     }
     if configured_codes and set(configured_codes) != registered_ids:
         raise RuntimeError(
-            "STAGE3_ANNOTATION_REVIEWER_CODES must contain exactly annotator_01 "
-            "through annotator_06"
+            "STAGE3_ANNOTATION_REVIEWER_CODES must contain exactly the frozen "
+            f"reviewer IDs: {', '.join(sorted(registered_ids))}"
         )
     if configured_codes and (
         any(len(code) < 12 for code in configured_codes.values())
@@ -171,7 +171,7 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
             "cohort": "practice",
             "item_ids": practice_order(list(items)),
         }
-    expected_reviewer_count = 7 if app.config["ENABLE_PRACTICE"] else 6
+    expected_reviewer_count = len(registered_ids) + int(app.config["ENABLE_PRACTICE"])
     if len(reviewers) != expected_reviewer_count:
         raise RuntimeError(f"expected {expected_reviewer_count} configured reviewers")
     access_codes = {
@@ -591,8 +591,8 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
                     for reviewer_id, count in ratings.items()
                     if count == 18
                 ),
-                "expected_reviewers": 6,
-                "expected_ratings": 108,
+                "expected_reviewers": len(registered_ids),
+                "expected_ratings": len(registered_ids) * len(items),
             }
         )
 

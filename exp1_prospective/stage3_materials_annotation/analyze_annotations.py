@@ -13,7 +13,7 @@ from typing import Any
 
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_GENERATED = HERE / "generated_v5"
+DEFAULT_GENERATED = HERE / "generated_v6"
 DIRECTION_VALUES = (
     "more_likely",
     "less_likely",
@@ -84,8 +84,11 @@ def validate_and_join(
         missing = sorted(expected - observed_set)
         extra = sorted(observed_set - expected)
         raise SystemExit(f"response coverage mismatch: missing={missing[:5]} extra={extra[:5]}")
-    if len(responses) != 108:
-        raise SystemExit(f"expected 108 responses, found {len(responses)}")
+    expected_count = int(assignments["expected_rating_count"])
+    if len(responses) != expected_count:
+        raise SystemExit(
+            f"expected {expected_count} responses, found {len(responses)}"
+        )
 
     joined = []
     for row in responses:
@@ -131,26 +134,30 @@ def summarize(joined: list[dict[str, Any]]) -> dict[str, Any]:
 
     item_results = []
     for item_id, rows in sorted(by_item.items()):
-        if len(rows) != 6:
-            raise SystemExit(f"{item_id}: expected six ratings, found {len(rows)}")
+        reviewer_count = len({row["reviewer_id"] for row in joined})
+        if len(rows) != reviewer_count:
+            raise SystemExit(
+                f"{item_id}: expected {reviewer_count} ratings, found {len(rows)}"
+            )
+        agreement_required = reviewer_count - 1
         correct = sum(bool(row["direction_correct"]) for row in rows)
         usable = sum(row["usable_premise"] == "yes" for row in rows)
         confidence = statistics.median(row["direction_confidence"] for row in rows)
         clarity = statistics.median(row["clarity"] for row in rows)
         plausibility = statistics.median(row["plausibility"] for row in rows)
         passed = (
-            correct >= 5
+            correct >= agreement_required
             and confidence >= 4
             and clarity >= 4
             and plausibility >= 3
-            and usable >= 5
+            and usable >= agreement_required
         )
         item_results.append(
             {
                 "item_id": item_id,
                 "registered_direction": rows[0]["registered_direction"],
                 "direction_correct_n": correct,
-                "direction_correct_denom": 6,
+                "direction_correct_denom": reviewer_count,
                 "median_direction_confidence": confidence,
                 "median_clarity": clarity,
                 "median_plausibility": plausibility,
@@ -173,7 +180,7 @@ def summarize(joined: list[dict[str, Any]]) -> dict[str, Any]:
         }
 
     return {
-        "version": "stage3_materials_annotation_v5",
+        "version": "stage3_materials_annotation_v6",
         "rating_count": len(joined),
         "reviewer_count": len({row["reviewer_id"] for row in joined}),
         "item_count": len(by_item),
@@ -218,9 +225,11 @@ def render_markdown(summary: dict[str, Any]) -> str:
     ]
     for item in summary["items"]:
         lines.append(
-            "| {item_id} | {registered_direction} | {direction_correct_n}/6 | "
+            "| {item_id} | {registered_direction} | "
+            "{direction_correct_n}/{direction_correct_denom} | "
             "{median_direction_confidence:g} | {median_clarity:g} | "
-            "{median_plausibility:g} | {usable_premise_yes_n}/6 | {gate} |".format(
+            "{median_plausibility:g} | "
+            "{usable_premise_yes_n}/{direction_correct_denom} | {gate} |".format(
                 **item, gate="PASS" if item["passes_item_gate"] else "FAIL"
             )
         )

@@ -1,6 +1,6 @@
 # Frozen protocol: human annotation of Stage 3 synthetic evidence
 
-Version: `stage3_materials_annotation_v5`
+Version: `stage3_materials_annotation_v6`
 
 Freeze date: 2026-08-20
 
@@ -13,7 +13,7 @@ made about individual annotators or a population of human forecasters.
 
 ## Annotators and consent
 
-Use six volunteer adults, unpaid, recruited from the authors' academic networks.
+Use seven volunteer adults, unpaid, recruited from the authors' academic networks.
 Annotators must not have generated the packets or seen their intended labels,
 rationales, mechanism targets, or model responses. Participation is voluntary;
 the task page states that annotators may withdraw at any time.
@@ -98,11 +98,11 @@ Report:
 
 An item passes materials validation only when:
 
-1. at least five of six annotators select its registered conditional direction;
+1. at least six of seven annotators select its registered conditional direction;
 2. median direction confidence is at least 4/5;
 3. median clarity is at least 4/5;
 4. median plausibility is at least 3/5; and
-5. at least five of six annotators mark it usable as a hypothetical premise.
+5. at least six of seven annotators mark it usable as a hypothetical premise.
 
 The sampled packet passes globally only if at least 15 of 18 items pass and
 Fleiss' kappa for conditional direction is at least .70. All failures remain in
