@@ -35,7 +35,7 @@ from flask import (
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-GENERATED = ROOT / "generated_v6"
+GENERATED = ROOT / "generated_v7"
 DEFAULT_PUBLIC = GENERATED / "public_items.jsonl"
 DEFAULT_ASSIGNMENTS = GENERATED / "assignments.json"
 DEFAULT_DB = ROOT / "data/reviews_v6.sqlite3"
@@ -101,6 +101,9 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
         REVIEWER_CODES_JSON=os.environ.get(
             "STAGE3_ANNOTATION_REVIEWER_CODES", ""
         ),
+        REVIEWER_08_CODE=os.environ.get(
+            "STAGE3_ANNOTATION_REVIEWER_08_CODE", ""
+        ),
         PRODUCTION=os.environ.get("STAGE3_ANNOTATION_PRODUCTION", "0") == "1",
         ENABLE_PRACTICE=os.environ.get(
             "STAGE3_ANNOTATION_ENABLE_PRACTICE", "1"
@@ -136,6 +139,14 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
         str(reviewer_id): str(code).strip()
         for reviewer_id, code in configured_codes.items()
     }
+    reviewer_08_code = str(app.config["REVIEWER_08_CODE"] or "").strip()
+    if reviewer_08_code:
+        existing_code = configured_codes.get("annotator_08")
+        if existing_code and not hmac.compare_digest(existing_code, reviewer_08_code):
+            raise RuntimeError(
+                "annotator_08 has conflicting codes in the reviewer-code settings"
+            )
+        configured_codes["annotator_08"] = reviewer_08_code
     if configured_codes and set(configured_codes) != registered_ids:
         raise RuntimeError(
             "STAGE3_ANNOTATION_REVIEWER_CODES must contain exactly the frozen "

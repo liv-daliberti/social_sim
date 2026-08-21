@@ -17,8 +17,8 @@ def make_app(tmp_path):
             "SECRET_KEY": "test-secret",
             "ADMIN_TOKEN": "test-admin",
             "DATABASE": tmp_path / "reviews.sqlite3",
-            "PUBLIC_ITEMS": ROOT / "generated_v6/public_items.jsonl",
-            "ASSIGNMENTS": ROOT / "generated_v6/assignments.json",
+            "PUBLIC_ITEMS": ROOT / "generated_v7/public_items.jsonl",
+            "ASSIGNMENTS": ROOT / "generated_v7/assignments.json",
         }
     )
 
@@ -125,8 +125,8 @@ def test_practice_only_deployment_rejects_registered_codes(tmp_path):
             "ADMIN_TOKEN": "test-admin",
             "PRACTICE_ONLY": True,
             "DATABASE": tmp_path / "reviews.sqlite3",
-            "PUBLIC_ITEMS": ROOT / "generated_v6/public_items.jsonl",
-            "ASSIGNMENTS": ROOT / "generated_v6/assignments.json",
+            "PUBLIC_ITEMS": ROOT / "generated_v7/public_items.jsonl",
+            "ASSIGNMENTS": ROOT / "generated_v7/assignments.json",
         }
     )
     client = app.test_client()
@@ -144,6 +144,7 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
         f"annotator_{index:02d}": f"review-code-{index:02d}-private"
         for index in range(1, 8)
     }
+    reviewer_08_code = "review-code-08-private"
     app = create_app(
         {
             "TESTING": True,
@@ -153,9 +154,10 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
             "ENABLE_PRACTICE": False,
             "PRACTICE_ONLY": False,
             "REVIEWER_CODES_JSON": json.dumps(codes),
+            "REVIEWER_08_CODE": reviewer_08_code,
             "DATABASE": tmp_path / "reviews.sqlite3",
-            "PUBLIC_ITEMS": ROOT / "generated_v6/public_items.jsonl",
-            "ASSIGNMENTS": ROOT / "generated_v6/assignments.json",
+            "PUBLIC_ITEMS": ROOT / "generated_v7/public_items.jsonl",
+            "ASSIGNMENTS": ROOT / "generated_v7/assignments.json",
         }
     )
     client = app.test_client()
@@ -169,6 +171,10 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
     assert b"not recognized" in response.data
 
     response = post_with_csrf(client, "/", {"access_code": codes["annotator_01"]})
+    assert response.status_code == 302
+
+    client = app.test_client()
+    response = post_with_csrf(client, "/", {"access_code": reviewer_08_code})
     assert response.status_code == 302
 
 
@@ -185,4 +191,4 @@ def test_health_is_private_and_admin_status_is_token_gated(tmp_path):
     assert client.get("/admin/status").status_code == 403
     response = client.get("/admin/status?token=test-admin")
     assert response.status_code == 200
-    assert response.get_json()["expected_ratings"] == 126
+    assert response.get_json()["expected_ratings"] == 144

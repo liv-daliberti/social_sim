@@ -13,7 +13,7 @@ from typing import Any
 
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_GENERATED = HERE / "generated_v6"
+DEFAULT_GENERATED = HERE / "generated_v7"
 DIRECTION_VALUES = (
     "more_likely",
     "less_likely",
@@ -180,7 +180,7 @@ def summarize(joined: list[dict[str, Any]]) -> dict[str, Any]:
         }
 
     return {
-        "version": "stage3_materials_annotation_v6",
+        "version": "stage3_materials_annotation_v7",
         "rating_count": len(joined),
         "reviewer_count": len({row["reviewer_id"] for row in joined}),
         "item_count": len(by_item),

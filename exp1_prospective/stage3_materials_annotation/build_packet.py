@@ -26,16 +26,16 @@ DEFAULT_FORECASTS = (
     REPO
     / "exp1_prospective/data/initial_forecasts/forecasts_DeepSeek-V4-Pro_2026-06-10.jsonl"
 )
-DEFAULT_OUTPUT = HERE / "generated_v6"
+DEFAULT_OUTPUT = HERE / "generated_v7"
 SEED = "stage3_materials_annotation_v1_20260820"
-VERSION = "stage3_materials_annotation_v6"
+VERSION = "stage3_materials_annotation_v7"
 DIRECTIONS = ("pro_H1", "anti_H1", "orthogonal")
 EXPECTED = {
     "pro_H1": "more_likely",
     "anti_H1": "less_likely",
     "orthogonal": "no_material_effect",
 }
-REVIEWERS = tuple(f"annotator_{index:02d}" for index in range(1, 8))
+REVIEWERS = tuple(f"annotator_{index:02d}" for index in range(1, 9))
 RESPONSE_FIELDS = (
     "consent_confirmed",
     "conditional_direction",
@@ -351,7 +351,7 @@ def main() -> int:
 
     manifest = {
         "version": VERSION,
-        "freeze_date": "2026-08-20",
+        "freeze_date": "2026-08-21",
         "seed": SEED,
         "source": str(args.source.relative_to(REPO)),
         "source_sha256": file_sha256(args.source),
