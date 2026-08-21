@@ -35,7 +35,7 @@ from flask import (
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-GENERATED = ROOT / "generated_v7"
+GENERATED = ROOT / "generated_v8"
 DEFAULT_PUBLIC = GENERATED / "public_items.jsonl"
 DEFAULT_ASSIGNMENTS = GENERATED / "assignments.json"
 DEFAULT_DB = ROOT / "data/reviews_v6.sqlite3"
@@ -104,6 +104,9 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
         REVIEWER_08_CODE=os.environ.get(
             "STAGE3_ANNOTATION_REVIEWER_08_CODE", ""
         ),
+        REVIEWER_09_CODE=os.environ.get(
+            "STAGE3_ANNOTATION_REVIEWER_09_CODE", ""
+        ),
         PRODUCTION=os.environ.get("STAGE3_ANNOTATION_PRODUCTION", "0") == "1",
         ENABLE_PRACTICE=os.environ.get(
             "STAGE3_ANNOTATION_ENABLE_PRACTICE", "1"
@@ -139,14 +142,19 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
         str(reviewer_id): str(code).strip()
         for reviewer_id, code in configured_codes.items()
     }
-    reviewer_08_code = str(app.config["REVIEWER_08_CODE"] or "").strip()
-    if reviewer_08_code:
-        existing_code = configured_codes.get("annotator_08")
-        if existing_code and not hmac.compare_digest(existing_code, reviewer_08_code):
+    for reviewer_id, config_key in (
+        ("annotator_08", "REVIEWER_08_CODE"),
+        ("annotator_09", "REVIEWER_09_CODE"),
+    ):
+        additional_code = str(app.config[config_key] or "").strip()
+        if not additional_code:
+            continue
+        existing_code = configured_codes.get(reviewer_id)
+        if existing_code and not hmac.compare_digest(existing_code, additional_code):
             raise RuntimeError(
-                "annotator_08 has conflicting codes in the reviewer-code settings"
+                f"{reviewer_id} has conflicting codes in the reviewer-code settings"
             )
-        configured_codes["annotator_08"] = reviewer_08_code
+        configured_codes[reviewer_id] = additional_code
     if configured_codes and set(configured_codes) != registered_ids:
         raise RuntimeError(
             "STAGE3_ANNOTATION_REVIEWER_CODES must contain exactly the frozen "
