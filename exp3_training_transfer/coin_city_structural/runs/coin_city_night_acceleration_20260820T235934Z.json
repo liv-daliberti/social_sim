@@ -1,0 +1,83 @@
+{
+  "action": "accelerate_canaries_and_prestage_confirmatory_jobs",
+  "applied_at_utc": "20260820T235934Z",
+  "campaign": "coin_city_structural_transfer_v1",
+  "canary_memory_adjustment": {
+    "jobs": [
+      "30723973",
+      "30723974",
+      "30723975",
+      "30723976",
+      "30723977"
+    ],
+    "previous_request": "100G",
+    "new_request": "56G",
+    "basis": {
+      "maximum_observed_batch_MaxRSS_GiB": 44.83,
+      "comparison_runs": "completed matched Qwen3-4B, Qwen3-8B, and Llama-3.1-8B structural-OOD training jobs",
+      "headroom_percent": 24.9
+    },
+    "scientific_configuration_changed": false
+  },
+  "active_canary_at_verification": {
+    "job_id": "30723972",
+    "state": "RUNNING",
+    "node": "node207",
+    "requested_hardware": "gres/gpu:a6000:2",
+    "observed_MaxRSS_at_startup_GiB": 10.67,
+    "training_contract": "max_steps=10",
+    "startup_health": "actor and learner initialized; distributed group initialized; no runtime error"
+  },
+  "prestaged_jobs": {
+    "canary_gate": [
+      "30723978"
+    ],
+    "confirmatory_training": [
+      "30723979",
+      "30723980",
+      "30723981",
+      "30723982",
+      "30723983",
+      "30723984",
+      "30730378",
+      "30730379",
+      "30730380",
+      "30730381",
+      "30730382",
+      "30730383",
+      "30730384",
+      "30730385",
+      "30730386",
+      "30730387",
+      "30730388",
+      "30730389"
+    ],
+    "structureless_controls": [
+      "30723998",
+      "30723999",
+      "30724000"
+    ],
+    "base_evaluations": [
+      "30724001",
+      "30724002",
+      "30724003"
+    ],
+    "scheduler_route": {
+      "account": "mltheory",
+      "partition": "all",
+      "qos": "normal"
+    },
+    "dependency_gate_preserved": true,
+    "scientific_configuration_changed": false
+  },
+  "unchanged_invariants": [
+    "models and arms",
+    "seeds",
+    "datasets",
+    "training examples and steps",
+    "optimizer and learning rate",
+    "rollout and evaluation settings",
+    "two-A6000 request for training jobs",
+    "fail-closed canary audit"
+  ]
+}

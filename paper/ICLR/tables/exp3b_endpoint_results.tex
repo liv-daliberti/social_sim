@@ -1,0 +1,16 @@
+% Completed checkpoint-300 locked-test results, 2026-08-13.
+% Source: reports/exp3b_locked_test_j30505540.summary.json.
+\begin{tabular}{lrrrrr}
+\toprule
+Forecaster & Updates & Brier $\downarrow$ & $\Delta$ base & $\Delta$ market & Log loss $\downarrow$ \\
+\midrule
+Untrained Qwen3-4B       & 0   & .1316 & ---    & +.0179 & .5114 \\
+Trained, seed 42         & 300 & .1142 & -.0174 & +.0005 & .3780 \\
+Trained, seed 43         & 300 & .1140 & -.0176 & +.0003 & .3772 \\
+Trained, seed 44         & 300 & .1194 & -.0122 & +.0058 & .4330 \\
+Trained mean             & 300 & .1159 & -.0157 & +.0022 & .3960 \\
+\midrule
+Contemporaneous market   & --- & .1137 & -.0179 & ---    & .3658 \\
+Market + train-fit logit & --- & .1123 & -.0193 & -.0014 & .3605 \\
+\bottomrule
+\end{tabular}

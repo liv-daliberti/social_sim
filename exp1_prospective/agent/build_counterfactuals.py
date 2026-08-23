@@ -130,6 +130,7 @@ Key actors:       {key_actors}
 Key mechanisms:   {key_mechanisms}
 Latent variables: {latent_variables}
 
+AGENT'S INITIAL FORECAST: {agent_yes_prob:.0%} probability of YES
 Today's date: {today}"""
 
 
@@ -162,7 +163,9 @@ Output ONLY a valid JSON object, no markdown fences, no commentary:
   "evidence_headline": "Short headline 10-15 words",
   "evidence_text": "Dateline + 2-4 sentence news snippet.",
   "mechanism_targeted": "The specific mechanism or latent variable this addresses",
-  "rationale": "1-2 sentences: why this specifically INCREASES P(H1=YES)."
+  "rationale": "1-2 sentences: why this specifically INCREASES P(H1=YES).",
+  "plausibility_rating": 4,
+  "plausibility_note": "1 sentence: why this could or could not appear as a real AP wire item."
 }}"""
 
 
@@ -188,7 +191,9 @@ Output ONLY a valid JSON object, no markdown fences, no commentary:
   "evidence_headline": "Short headline 10-15 words",
   "evidence_text": "Dateline + 2-4 sentence news snippet.",
   "mechanism_targeted": "The specific mechanism or latent variable this addresses",
-  "rationale": "1-2 sentences: why this specifically DECREASES P(H1=YES)."
+  "rationale": "1-2 sentences: why this specifically DECREASES P(H1=YES).",
+  "plausibility_rating": 4,
+  "plausibility_note": "1 sentence: why this could or could not appear as a real AP wire item."
 }}"""
 
 
@@ -216,7 +221,9 @@ Output ONLY a valid JSON object, no markdown fences, no commentary:
   "evidence_headline": "Short headline 10-15 words",
   "evidence_text": "Dateline + 2-4 sentence news snippet.",
   "mechanism_targeted": "Which aspect of the situation this addresses (NOT the H1/H2 causal path)",
-  "rationale": "1-2 sentences: why this does NOT shift P(H1=YES) in either direction."
+  "rationale": "1-2 sentences: why this does NOT shift P(H1=YES) in either direction.",
+  "plausibility_rating": 4,
+  "plausibility_note": "1 sentence: why this could or could not appear as a real AP wire item."
 }}"""
 
 
@@ -299,6 +306,7 @@ def _build_prompt(direction: str, index: int,
         latent_variables = _fmt_list(em.get("latent_variables", []), 4),
         h1_supporting    = _fmt_list(h1.get("supporting_evidence", []), 2),
         h1_contradicting = _fmt_list(h1.get("contradicting_evidence", []), 2),
+        agent_yes_prob   = rec.get("yes_prob") or h1.get("posterior_probability", 0.5),
         today            = today,
         today_short      = today_short,
         slot_type        = _SLOT_TYPES[direction][index],
@@ -400,6 +408,8 @@ def generate_snippet(
         "evidence_text":      parsed.get("evidence_text", ""),
         "mechanism_targeted": parsed.get("mechanism_targeted", ""),
         "rationale":          parsed.get("rationale", ""),
+        "plausibility_rating": parsed.get("plausibility_rating"),
+        "plausibility_note":   parsed.get("plausibility_note", ""),
         "parse_error":        parsed.get("_parse_error"),
         "generated_at":       datetime.now(timezone.utc).isoformat(),
     }

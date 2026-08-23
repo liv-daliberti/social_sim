@@ -1,7 +1,14 @@
 services:
   - type: web
-    name: social-sim-forecaster
+    name: social-sim-viewer
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: cd exp1_prospective/viewer && gunicorn app:app --bind 0.0.0.0:$PORT
+    # Unified hub: launch the three experiment sub-viewers on fixed internal ports,
+    # then run the public-facing reverse-proxy hub under gunicorn on Render's $PORT.
+    # The hub proxies /exp1 /exp2 /exp3 to 5051/5052/5053 respectively.
+    startCommand: >-
+      python exp1_prospective/viewer/app.py --port 5051 &
+      python exp2_simulated_worlds/biased_news/viewer/app.py --port 5052 &
+      PORT=5053 python exp3_training_transfer/elections/server.py &
+      gunicorn viewer.server:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120

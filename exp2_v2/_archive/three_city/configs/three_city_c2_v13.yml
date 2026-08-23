@@ -1,0 +1,21 @@
+experiment: three_city_c2_v13_two_regime_structural_choice
+run_root: data/three_city_c2_v13/full_k1_5_two_regime_structural_choice
+episodes: 120
+seed_offset: 105000
+models:
+  - claude-opus-4-8
+  - DeepSeek-V4-Pro
+  - gpt-5.4
+arms:
+  - c_only
+  - abc
+  - abc_structural_clue
+rounds: [1, 2, 3, 4, 5]
+city_c_cases_by_round: [1, 2, 4, 8, 16]
+reference_cases_per_city: 2
+case_noise_sd_poll_points: 9.5
+city_deviation_sd_response_units: 0.10
+prior_effective_cases: 2.0
+response_center_range: [0.95, 1.15]
+regime_gap_range: [1.70, 2.10]
+temperature: 0

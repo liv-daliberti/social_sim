@@ -1,0 +1,46 @@
+# Small optimizer-movement proof for the elections news-only forecasting task.
+# 16 training tasks / batch_size 4 = 4 batches/epoch; 10 epochs = 40 optimizer steps.
+# Purpose: verify Tinker GRPO updates can move Brier reward on the elections env.
+mode: train
+
+tasks_file: data/elections_train.tasks.jsonl
+eval_tasks_file: data/elections_eval.tasks.jsonl
+output_dir: reports/tinker_elections_grpo/elections_smoke_v9
+
+max_tasks: 16
+eval_max_tasks: 32
+
+model: Qwen/Qwen3-4B-Instruct-2507
+renderer_name: qwen3
+agent_lightning_examples_path: /n/fs/similarity/social_sim/.runtime/agl_tinker_examples
+
+learning_rate: 1.0e-4
+batch_size: 4
+group_size: 4
+n_epochs: 10
+train_shuffle: false
+train_seed: 42
+n_runners: 1
+lora_rank: 16
+num_substeps: 1
+eval_every: 2
+skip_initial_eval: false
+save_every: 5
+execution_strategy: shm
+strategy_main: algorithm
+llm_proxy_launch_mode: thread
+llm_proxy_port: 12358
+store_port: 4747
+
+max_tokens: 512
+temperature: 1.0
+eval_temperature: 0.0
+forecast_reward_scale: 2.0
+llm_request_timeout_seconds: 90
+
+wandb: true
+wandb_project: elections_tinker
+wandb_entity: ogd3-princeton-university
+wandb_mode: online
+wandb_run_name: elections-smoke-v9
+wandb_tags: elections,smoke,brier,news-only,qwen3-4b

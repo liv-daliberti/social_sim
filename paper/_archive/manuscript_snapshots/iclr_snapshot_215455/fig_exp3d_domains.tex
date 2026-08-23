@@ -1,0 +1,135 @@
+% Experiment 3D -- the Coin-* domain family, drawn in TikZ.
+% Hand-drawn (vector) rather than generated, but the numbers quoted in each card are the displayed
+% parameters from exp3_training_transfer/domain_family/domains.py; regenerate the companion table
+% (which carries the full affine skin) with make_domain_table.py if the registry changes.
+%
+% Geometry: 5 cards in one row -- card 2.62cm wide, 3.10cm tall, 0.20cm gutter
+%           -> 5*2.62 + 4*0.20 = 13.90cm = \textwidth.
+
+% ---- pastel palette: one accent per domain, plus a shared neutral ---------------------------
+\definecolor{ccInk}{HTML}{3F4550}      % text / hairlines
+\definecolor{ccMute}{HTML}{8A93A3}     % secondary text
+\definecolor{ccCard}{HTML}{FDFCF9}     % card ground
+\definecolor{ccLatent}{HTML}{ECEAF4}   % hidden-state cloud
+\definecolor{ccLatentEdge}{HTML}{9A93BC}
+
+\definecolor{cityFill}{HTML}{CFE0F3}   \definecolor{cityEdge}{HTML}{6B8FB8}
+\definecolor{fishFill}{HTML}{C6E7E2}   \definecolor{fishEdge}{HTML}{5C9A92}
+\definecolor{farmFill}{HTML}{DEEAC0}   \definecolor{farmEdge}{HTML}{86994F}
+\definecolor{ballFill}{HTML}{F8DCC2}   \definecolor{ballEdge}{HTML}{C4854A}
+\definecolor{clinFill}{HTML}{EFD3E4}   \definecolor{clinEdge}{HTML}{A9738C}
+
+\tikzset{
+  ccard/.style={rounded corners=4pt, draw=ccMute!45, line width=0.5pt, fill=ccCard},
+  cheld/.style={rounded corners=4pt, draw=#1!85, line width=0.9pt,
+                dash pattern=on 2.6pt off 1.8pt, fill=ccCard},
+  chip/.style={rounded corners=2.6pt, draw=#1!85, fill=#1!22, line width=0.5pt,
+               inner xsep=2.6pt, inner ysep=1.7pt, font=\sffamily\tiny, text=ccInk},
+  cloudy/.style={rounded corners=5pt, draw=ccLatentEdge, fill=ccLatent, line width=0.5pt,
+                 dash pattern=on 1.7pt off 1.3pt, inner xsep=2.6pt, inner ysep=1.7pt,
+                 font=\sffamily\tiny\itshape, text=ccInk!85},
+  flow/.style={-{Stealth[length=3.0pt,width=2.4pt]}, draw=ccMute, line width=0.5pt,
+               shorten >=0.6pt, shorten <=0.6pt},
+  dname/.style={font=\sffamily\scriptsize\bfseries, text=ccInk},
+  dmeta/.style={font=\sffamily\tiny, text=ccMute},
+  badge/.style={rounded corners=1.8pt, fill=#1, draw=none, inner xsep=3pt, inner ysep=1.4pt,
+                font=\sffamily\tiny\bfseries, text=white},
+}
+
+% ---- the five little icons (drawn about the origin, ~0.7cm tall) -----------------------------
+\newcommand{\iconCity}[1]{%
+  \begin{scope}[shift={(#1)}, scale=0.24]
+    \fill[cityFill, draw=cityEdge, line width=1.6pt, rounded corners=1pt] (-1.5,-1) rectangle (-0.55,0.55);
+    \fill[cityFill, draw=cityEdge, line width=1.6pt, rounded corners=1pt] (-0.42,-1) rectangle (0.42,1.25);
+    \fill[cityFill, draw=cityEdge, line width=1.6pt, rounded corners=1pt] (0.55,-1) rectangle (1.5,0.15);
+    \foreach \x/\y in {-1.05/0.05, 0/0.75, 0/0.1, 1.02/-0.35}
+      \fill[cityEdge] (\x-0.18,\y-0.18) rectangle (\x+0.18,\y+0.18);
+  \end{scope}}
+\newcommand{\iconFish}[1]{%
+  \begin{scope}[shift={(#1)}, scale=0.24]
+    \fill[fishFill, draw=fishEdge, line width=1.6pt]
+      (-1.15,0.15) .. controls (-0.5,1.05) and (0.5,1.05) .. (0.95,0.15)
+                   .. controls (0.5,-0.75) and (-0.5,-0.75) .. (-1.15,0.15) -- cycle;
+    \fill[fishFill, draw=fishEdge, line width=1.6pt] (0.92,0.15) -- (1.5,0.78) -- (1.5,-0.48) -- cycle;
+    \fill[fishEdge] (-0.58,0.34) circle (0.15);
+    \draw[fishEdge, line width=1.3pt] (-1.4,-1.1) .. controls (-0.8,-0.75) and (-0.2,-1.45) .. (0.4,-1.1)
+                                      .. controls (1.0,-0.75) and (1.3,-1.3) .. (1.5,-1.15);
+  \end{scope}}
+\newcommand{\iconFarm}[1]{%
+  \begin{scope}[shift={(#1)}, scale=0.24]
+    \fill[farmFill!60, draw=farmEdge, line width=1.5pt] (-1.5,-1.2) rectangle (1.5,-0.7);
+    \foreach \x in {-0.9,0,0.9}{
+      \draw[farmEdge, line width=1.5pt] (\x,-0.7) -- (\x,0.7);
+      \fill[farmFill, draw=farmEdge, line width=1.3pt] (\x,0.74) ellipse (0.21 and 0.44);
+      \fill[farmFill, draw=farmEdge, line width=1.2pt] (\x-0.36,0.2) ellipse (0.17 and 0.31);
+      \fill[farmFill, draw=farmEdge, line width=1.2pt] (\x+0.36,0.2) ellipse (0.17 and 0.31);
+    }
+  \end{scope}}
+\newcommand{\iconBall}[1]{%
+  \begin{scope}[shift={(#1)}, scale=0.24]
+    \fill[ballFill, draw=ballEdge, line width=1.6pt] (0,0) circle (1.18);
+    \draw[ballEdge, line width=1.3pt] (0,-1.18) -- (0,1.18);
+    \draw[ballEdge, line width=1.3pt] (-1.18,0) -- (1.18,0);
+    \draw[ballEdge, line width=1.3pt] (-0.84,-0.84) .. controls (-0.1,-0.2) and (-0.1,0.2) .. (-0.84,0.84);
+    \draw[ballEdge, line width=1.3pt] (0.84,-0.84) .. controls (0.1,-0.2) and (0.1,0.2) .. (0.84,0.84);
+  \end{scope}}
+\newcommand{\iconClinic}[1]{%
+  \begin{scope}[shift={(#1)}, scale=0.24]
+    \fill[clinFill, draw=clinEdge, line width=1.6pt, rounded corners=2pt]
+      (-1.2,-1.15) rectangle (1.2,0.85);
+    \fill[clinEdge] (-0.24,-0.7) rectangle (0.24,0.5);
+    \fill[clinEdge] (-0.84,-0.34) rectangle (0.84,0.14);
+    \draw[clinEdge, line width=1.5pt] (-1.28,0.85) -- (0,1.6) -- (1.28,0.85);
+  \end{scope}}
+
+% ---- one domain card, with a VERTICAL driver -> latent -> observable chain --------------------
+% #1 x  #2 y (north-west corner)  #3 accent  #4 icon  #5 name  #6 meta  #7 driver  #8 latent  #9 observable
+\newcommand{\domcard}[9]{%
+  \coordinate (ic) at (#1+1.31,#2-0.50);
+  #4{ic}
+  \node[dname, anchor=north] at (#1+1.31,#2-0.90) {#5};
+  \node[dmeta, anchor=north] at (#1+1.31,#2-1.18) {#6};
+  \node[chip=#3, anchor=north] (dv#5) at (#1+1.31,#2-1.56) {#7};
+  \node[cloudy,  anchor=north] (lt#5) at (#1+1.31,#2-2.06) {#8};
+  \node[chip=#3, anchor=north] (ob#5) at (#1+1.31,#2-2.56) {#9};
+  \draw[flow] (dv#5) -- (lt#5);
+  \draw[flow] (lt#5) -- (ob#5);
+}
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[every node/.style={outer sep=0pt}, x=1cm, y=1cm]
+
+% ---- badges spanning their groups ------------------------------------------------------------
+% The shared driver -> hidden state -> observable chain is described in the
+% caption rather than drawn as a banner, so the cards carry the figure alone.
+\node[badge=ccMute,   anchor=west] at (0,-0.26) {TRAINING POOL};
+\node[badge=ballEdge, anchor=west] at (8.46,-0.26) {HELD OUT};
+
+% ---- the five cards, one row -----------------------------------------------------------------
+\foreach \x in {0,2.82,5.64}
+  \node[ccard, minimum width=2.62cm, minimum height=3.10cm, anchor=north west] at (\x,-0.52) {};
+\node[cheld=ballEdge, minimum width=2.62cm, minimum height=3.10cm, anchor=north west] at (8.46,-0.52) {};
+\node[cheld=clinEdge, minimum width=2.62cm, minimum height=3.10cm, anchor=north west] at (11.28,-0.52) {};
+
+\domcard{0}{-0.52}{cityEdge}{\iconCity}{CoinCity}%
+        {$0$--$100$ pts}{news}{public opinion}{poll}
+\domcard{2.82}{-0.52}{fishEdge}{\iconFish}{CoinFishing}%
+        {$0$--$400$ crates}{sea state}{fish stock}{catch}
+\domcard{5.64}{-0.52}{farmEdge}{\iconFarm}{CoinFarm}%
+        {$0$--$240$ bu/ac}{rainfall}{soil condition}{yield}
+\domcard{8.46}{-0.52}{ballEdge}{\iconBall}{CoinBasketball}%
+        {$70$--$130$ pts}{roster}{team form}{points}
+\domcard{11.28}{-0.52}{clinEdge}{\iconClinic}{CoinClinic}%
+        {$0$--$180$ min}{staffing}{congestion}{wait}
+
+\end{tikzpicture}
+\caption{\textbf{The Coin-$*$ domain family.} One fixed structure, five surface
+worlds: in this precursor, an observed driver $x_t$ moves a hidden state that
+retains $0.9$ of its previous deviation, and that state emits a noisy observable
+$y_t$. Only the surface changes. Each domain has its own offset, observable scale,
+driver scale, and noise, so the sensitivity $g$ that must be inferred also changes.
+Three domains are used for training and two are held out entirely;
+Table~\ref{tab:exp3d-domains} gives the full parameters.}
+\label{fig:exp3d-domains}
+\end{figure*}

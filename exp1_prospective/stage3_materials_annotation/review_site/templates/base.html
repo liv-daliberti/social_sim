@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Stage 3 evidence review{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="site-name" href="{{ url_for('review_index') if reviewer is defined else url_for('login') }}">Synthetic forecasting evidence review</a>
+        {% if reviewer is defined and reviewer.cohort == 'practice' %}
+          <span class="cohort-badge">Self-review practice</span>
+        {% endif %}
+        {% if reviewer is defined %}
+          <form class="logout-form" method="post" action="{{ url_for('logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="text-button" type="submit">Exit</button>
+          </form>
+        {% endif %}
+      </div>
+    </header>
+    <main class="page-shell">
+      {% if reviewer is defined and reviewer.cohort == 'practice' %}
+        <aside class="practice-note">
+          You are using the exact reviewer workflow in practice mode. These responses are stored separately and will never be included in the six-reviewer validation dataset or paper results.
+        </aside>
+      {% endif %}
+      {% if reviewer is defined %}
+        <aside class="temporal-note">
+          <strong>Time frame: June 10, 2026 is today.</strong>
+          Judge each report from that point in time. Do not use events, outcomes, or information learned after June 10, 2026.
+        </aside>
+      {% endif %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="messages" role="alert">
+            {% for category, message in messages %}
+              <p class="message {{ category }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

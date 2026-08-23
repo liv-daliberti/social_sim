@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exp 2 — Biased News</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px; background: #0f0f1e; color: #e0e0f0; height: 100vh;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* ── TOP NAV ── */
+#topnav {
+  display: flex; align-items: center; gap: 0;
+  background: #0a0a18; border-bottom: 1px solid #2d2d4e; flex-shrink: 0;
+  padding: 0 16px;
+}
+#topnav .brand {
+  font-size: 13px; font-weight: 700; color: #7878aa; padding: 10px 16px 10px 0;
+  margin-right: 12px; border-right: 1px solid #2d2d4e; white-space: nowrap;
+}
+.nav-btn {
+  padding: 11px 18px; font-size: 12px; font-weight: 600; cursor: pointer;
+  background: none; border: none; border-bottom: 3px solid transparent;
+  color: #5050a0; transition: color .12s; white-space: nowrap;
+}
+.nav-btn:hover { color: #aaa; }
+.nav-btn.active { color: #aac4ff; border-bottom-color: #6c8fff; }
+
+/* ── SCREENS ── */
+#screen-sim, #screen-results {
+  flex: 1; display: flex; overflow: hidden;
+}
+#screen-results { display: none; }
+
+/* ═══════════════════════════════════════════════════
+   SIMULATOR SCREEN
+═══════════════════════════════════════════════════ */
+#sim-controls {
+  width: 280px; background: #12122a; border-right: 1px solid #2d2d4e;
+  display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0;
+}
+#sim-controls-header {
+  padding: 14px; background: #0a0a18; border-bottom: 1px solid #2d2d4e;
+}
+#sim-controls-header h1 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+#sim-controls-header p { font-size: 11px; color: #5050a0; }
+
+.ctrl-section { padding: 12px 14px; border-bottom: 1px solid #1e1e3e; }
+.ctrl-section h3 {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: #5050a0; margin-bottom: 8px;
+}
+.ctrl-row { display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px; gap: 8px; }
+.ctrl-label { font-size: 11px; color: #9090c0; }
+.ctrl-input {
+  background: #1a1a3e; border: 1px solid #2d2d4e; color: #c0c0ff;
+  padding: 4px 8px; border-radius: 4px; font-size: 12px; width: 100px; text-align: right;
+}
+.ctrl-input:focus { outline: none; border-color: #6c8fff; }
+select.ctrl-input { cursor: pointer; }
+
+.chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid #2d2d4e; background: #1a1a3e; color: #9090c0;
+  transition: all .12s;
+}
+.chip:hover { border-color: #6060c0; color: #c0c0ff; }
+.chip.active { background: #1e2a50; border-color: #6c8fff; color: #aac4ff; }
+.chip.neutral.active { background: #0c2240; border-color: #38bdf8; color: #7dd3fc; }
+.chip.biased.active  { background: #2a1010; border-color: #f87171; color: #fca5a5; }
+
+.big-btn {
+  width: 100%; padding: 9px; border-radius: 6px; font-size: 12px; font-weight: 700;
+  cursor: pointer; border: none; transition: all .15s; margin-top: 2px;
+}
+.big-btn.primary  { background: #2a3a80; color: #aac4ff; }
+.big-btn.primary:hover  { background: #3a4a9f; }
+.big-btn.success  { background: #14442a; color: #4ade80; }
+.big-btn.success:hover  { background: #1a5535; }
+.big-btn.stop     { background: #441414; color: #fca5a5; }
+.big-btn.stop:hover     { background: #551a1a; }
+.big-btn:disabled { opacity: .4; cursor: default; }
+
+.speed-row { display: flex; align-items: center; gap: 8px; }
+.speed-row label { font-size: 11px; color: #9090c0; flex: 1; }
+input[type=range] { flex: 1; accent-color: #6c8fff; cursor: pointer; }
+
+/* variant description box */
+#variant-desc {
+  margin: 10px 0 0;
+  padding: 8px 10px; border-radius: 5px; background: #0c1a30;
+  border: 1px solid #1e3a5e; font-size: 10px; color: #7aadda; line-height: 1.6;
+  min-height: 40px;
+}
+
+/* ── Sim main area ── */
+#sim-main {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0;
+}
+
+#sim-chart-area {
+  flex: 0 0 260px; padding: 14px 16px 8px; border-bottom: 1px solid #2d2d4e;
+  position: relative;
+}
+#sim-chart-area h2 { font-size: 12px; font-weight: 700; color: #c0c0e0; margin-bottom: 8px; }
+#sim-chart-wrap { position: relative; height: 200px; }
+#sim-chart { position: absolute; inset: 0; }
+
+/* city reveal banner */
+#city-reveal {
+  display: none; position: absolute; top: 10px; right: 14px;
+  padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+}
+#city-reveal.neutral { background: #0c2240; border: 1px solid #38bdf8; color: #7dd3fc; }
+#city-reveal.biased  { background: #2a1010; border: 1px solid #f87171; color: #fca5a5; }
+
+/* progress bar */
+#sim-progress-wrap {
+  padding: 6px 16px; border-bottom: 1px solid #1e1e3e; flex-shrink: 0;
+  display: flex; align-items: center; gap: 10px;
+}
+#sim-progress-bar-bg {
+  flex: 1; height: 4px; background: #1e1e3e; border-radius: 2px; overflow: hidden;
+}
+#sim-progress-bar { height: 100%; background: #6c8fff; border-radius: 2px; transition: width .3s; width: 0; }
+#sim-step-label { font-size: 10px; color: #5050a0; white-space: nowrap; }
+
+/* timeline */
+#sim-timeline {
+  flex: 1; overflow-y: auto; padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+#sim-empty {
+  display: flex; align-items: center; justify-content: center;
+  flex: 1; color: #3a3a6a; font-size: 13px; text-align: center; line-height: 2;
+}
+
+.timeline-step {
+  background: #12122a; border: 1px solid #2d2d4e; border-radius: 8px;
+  padding: 10px 12px; animation: slideIn .25s ease-out;
+}
+@keyframes slideIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: none; } }
+.timeline-step.lm-wins  { border-left: 3px solid #22c55e; }
+.timeline-step.lm-loses { border-left: 3px solid #ef4444; }
+.timeline-step.lm-tie   { border-left: 3px solid #6b7280; }
+
+.ts-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.ts-week { font-size: 10px; font-weight: 700; color: #5050a0; text-transform: uppercase; }
+.ts-event-pill {
+  font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 600; flex-shrink: 0;
+}
+.ts-event-pill.positive { background: #14442a; color: #4ade80; }
+.ts-event-pill.negative { background: #441414; color: #fca5a5; }
+.ts-event-pill.neutral  { background: #1e1e3e; color: #9090c0; }
+.ts-event-text { font-size: 11px; color: #9090c0; flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ts-preds {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; font-size: 11px;
+}
+.ts-pred { text-align: center; }
+.ts-pred-label { font-size: 9px; color: #5050a0; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.ts-pred-val { font-size: 14px; font-weight: 700; }
+.ts-pred-err { font-size: 9px; color: #5050a0; }
+.c-gold  { color: #e0e0f0; }
+.c-lm    { color: #6366f1; }
+.c-bayes { color: #fbbf24; }
+.c-naive { color: #94a3b8; }
+
+.ts-pbiased {
+  margin-top: 6px; font-size: 10px; color: #5050a0;
+  display: flex; align-items: center; gap: 6px;
+}
+.pbiased-bar-bg { flex: 1; height: 3px; background: #1e1e3e; border-radius: 2px; overflow: hidden; }
+.pbiased-bar    { height: 100%; background: #f87171; border-radius: 2px; transition: width .4s; }
+
+/* ═══════════════════════════════════════════════════
+   RESULTS SCREEN  (sidebar + main)
+═══════════════════════════════════════════════════ */
+#res-sidebar {
+  width: 340px; min-width: 260px;
+  background: #1a1a2e; color: #e0e0f0;
+  display: flex; flex-direction: column; overflow: hidden;
+  border-right: 1px solid #2d2d4e; flex-shrink: 0;
+}
+#res-sidebar-header {
+  padding: 14px 14px 10px;
+  background: #12122a; border-bottom: 1px solid #2d2d4e;
+}
+#res-sidebar-header h1 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+#res-sidebar-header p  { font-size: 11px; color: #7878aa; }
+
+#res-filters {
+  padding: 10px 12px; border-bottom: 1px solid #2d2d4e;
+  display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;
+}
+.filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.filter-label { font-size: 10px; color: #7878aa; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .05em; min-width: 54px; }
+.res-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 10px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid #2d2d4e; background: #1e1e3e; color: #9090c0;
+  transition: all .12s;
+}
+.res-chip:hover { border-color: #6060c0; color: #c0c0ff; }
+.res-chip.active { background: #2a2a5e; border-color: #6c8fff; color: #aac4ff; }
+.res-chip.model-q.active { background: #0c2240; border-color: #38bdf8; color: #7dd3fc; }
+.res-chip.model-l.active { background: #1e0a40; border-color: #a78bfa; color: #c4b5fd; }
+
+#res-summary-box {
+  padding: 8px 12px; border-bottom: 1px solid #2d2d4e; flex-shrink: 0;
+}
+#res-summary-box h3 { font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .05em; color: #7878aa; margin-bottom: 6px; }
+.sum-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.sum-table th { text-align: left; padding: 2px 4px; color: #7878aa; font-weight: 600;
+  border-bottom: 1px solid #2d2d4e; font-size: 10px; }
+.sum-table td { padding: 3px 4px; border-bottom: 1px solid #1a1a35; font-variant-numeric: tabular-nums; }
+.sum-table .lm-cell  { color: #7dd3fc; font-weight: 700; }
+.sum-table .bay-cell { color: #fbbf24; font-weight: 700; }
+.sum-table .nv-cell  { color: #94a3b8; }
+
+#ep-list-wrap { flex: 1; overflow-y: auto; }
+#ep-list-header {
+  position: sticky; top: 0;
+  padding: 6px 12px; background: #141428; border-bottom: 1px solid #2d2d4e;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 10px; color: #7878aa; font-weight: 600; text-transform: uppercase; z-index: 10;
+}
+.sort-btn { background: none; border: none; color: #7878aa; cursor: pointer;
+  font-size: 10px; padding: 0 3px; }
+.sort-btn:hover { color: #aaa; }
+.sort-btn.active { color: #6c8fff; }
+.ep-item {
+  padding: 7px 12px; border-bottom: 1px solid #1e1e3e; cursor: pointer;
+  display: flex; align-items: center; gap: 8px; transition: background .1s;
+}
+.ep-item:hover  { background: #1e1e3e; }
+.ep-item.active { background: #1e2a50; border-left: 3px solid #6c8fff; }
+.ep-bias { font-size: 9px; font-weight: 700; text-transform: uppercase;
+  padding: 1px 5px; border-radius: 4px; flex-shrink: 0; }
+.ep-bias.neutral { background: #0c2240; color: #7dd3fc; }
+.ep-bias.biased  { background: #2a1010; color: #fca5a5; }
+.ep-id   { font-size: 11px; color: #c0c0e0; flex: 1; }
+.ep-errs { font-size: 10px; display: flex; gap: 6px; flex-shrink: 0; }
+.ep-err-lm  { color: #7dd3fc; font-weight: 700; }
+.ep-err-bay { color: #fbbf24; }
+.ep-sparkline { flex-shrink: 0; }
+
+#ep-pager { padding: 8px 12px; border-top: 1px solid #2d2d4e; display: flex;
+  gap: 8px; align-items: center; justify-content: center; flex-shrink: 0; }
+.page-btn { background: #1e1e3e; border: 1px solid #2d2d4e; color: #9090c0;
+  padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+.page-btn:hover { border-color: #6060c0; color: #c0c0ff; }
+.page-btn:disabled { opacity: .4; cursor: default; }
+#page-info { font-size: 11px; color: #7878aa; }
+
+/* ── Results main ── */
+#res-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+#res-main-tabs { display: flex; background: #12122a; border-bottom: 1px solid #2d2d4e; flex-shrink: 0; }
+.main-tab {
+  padding: 10px 18px; font-size: 12px; font-weight: 600; cursor: pointer;
+  border-bottom: 3px solid transparent; color: #5050a0; background: none;
+  border-top: none; border-left: none; border-right: none; transition: color .1s;
+}
+.main-tab:hover { color: #aaa; }
+.main-tab.active { color: #aac4ff; border-bottom-color: #6c8fff; }
+#res-main-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+/* agg pane */
+#agg-pane { flex: 1; overflow-y: auto; padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.curve-card {
+  background: #12122a; border-radius: 8px; border: 1px solid #2d2d4e;
+  padding: 14px; display: flex; flex-direction: column; gap: 10px;
+}
+.curve-card h2 { font-size: 13px; font-weight: 700; color: #c0c0e0; }
+.curve-card .chart-wrap { position: relative; height: 240px; }
+.curve-card canvas { position: absolute; inset: 0; }
+#agg-header-note { grid-column: 1 / -1; font-size: 11px; color: #5050a0; line-height: 1.6;
+  padding: 4px 0 0; }
+
+/* matrix pane */
+#matrix-pane { flex: 1; overflow: auto; padding: 12px; background: #0f0f1e; }
+#matrix-wrap { background: #12122a; border-radius: 8px; border: 1px solid #2d2d4e;
+  padding: 12px; overflow: auto; }
+#matrix-table { border-collapse: collapse; font-size: 11px; }
+#matrix-table th {
+  padding: 4px 8px; background: #1a1a3e; border: 1px solid #2d2d4e;
+  color: #7878aa; font-weight: 600; text-align: center; white-space: nowrap;
+}
+#matrix-table td {
+  padding: 3px 6px; border: 1px solid #1e1e3e; text-align: center;
+  cursor: pointer; font-variant-numeric: tabular-nums; font-size: 10px;
+}
+#matrix-table td:hover { outline: 2px solid #6c8fff; }
+.mat-ep-id  { text-align: left !important; font-weight: 600; white-space: nowrap; padding-right: 10px !important; color: #c0c0e0; }
+.mat-bias   { font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 1px 4px; border-radius: 3px; }
+.mat-bias.neutral { background: #0c2240; color: #7dd3fc; }
+.mat-bias.biased  { background: #2a1010; color: #fca5a5; }
+
+/* detail pane */
+#detail-pane { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; background: #0f0f1e; }
+#detail-empty { display: flex; align-items: center; justify-content: center;
+  flex: 1; color: #3a3a6a; font-size: 13px; }
+#detail-header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.det-badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.det-badge.bias-neutral { background: #0c2240; color: #7dd3fc; }
+.det-badge.bias-biased  { background: #2a1010; color: #fca5a5; }
+.det-badge.variant { background: #1e1e3e; color: #9090c0; }
+.det-badge.model   { background: #1e0a40; color: #c4b5fd; }
+#det-chart-wrap { background: #12122a; border-radius: 8px; border: 1px solid #2d2d4e;
+  padding: 12px; }
+#det-chart-inner { position: relative; height: 220px; }
+#det-chart { position: absolute; inset: 0; }
+#det-table-wrap { background: #12122a; border-radius: 8px; border: 1px solid #2d2d4e; overflow: auto; }
+#det-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+#det-table th { padding: 6px 10px; background: #1a1a3e; border-bottom: 1px solid #2d2d4e;
+  color: #7878aa; font-weight: 600; text-align: left; }
+#det-table td { padding: 5px 10px; border-bottom: 1px solid #1e1e3e; }
+#det-table tr:last-child td { border-bottom: none; }
+.pred-lm  { color: #818cf8; font-weight: 700; }
+.pred-bay { color: #fbbf24; font-weight: 700; }
+.err-low  { color: #4ade80; }
+.err-mid  { color: #facc15; }
+.err-high { color: #f87171; }
+</style>
+</head>
+<body>
+
+<!-- ── TOP NAV ── -->
+<div id="topnav">
+  <div class="brand">Exp 2 · Biased News</div>
+  <button class="nav-btn active" id="nav-sim"     onclick="showScreen('sim')">🎬 Simulator</button>
+  <button class="nav-btn"        id="nav-results" onclick="showScreen('results')">📊 Results</button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SIMULATOR SCREEN
+════════════════════════════════════════════════════════ -->
+<div id="screen-sim">
+
+  <!-- Controls sidebar -->
+  <div id="sim-controls">
+    <div id="sim-controls-header">
+      <h1>Episode Simulator</h1>
+      <p>Step through the biased-news DGP</p>
+    </div>
+
+    <div class="ctrl-section">
+      <h3>Episode setup</h3>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Seed</span>
+        <input class="ctrl-input" type="number" id="sim-seed" value="42" min="0" max="999999" style="flex:1">
+        <button onclick="randomizeSeed()" title="New random episode"
+          style="margin-left:6px;background:#1e1e3e;color:#9090c0;border:1px solid #2d2d4e;border-radius:5px;cursor:pointer;padding:2px 8px">🎲</button>
+      </div>
+      <label style="font-size:10px;color:#7878aa;display:flex;align-items:center;gap:5px;margin-top:5px;cursor:pointer">
+        <input type="checkbox" id="sim-seed-lock"> Lock seed (replay the exact same episode)
+      </label>
+      <div class="ctrl-row" style="align-items:flex-start">
+        <span class="ctrl-label">City type</span>
+        <div class="chip-group">
+          <span class="chip neutral active" id="chip-neutral" onclick="setBias('neutral')">Neutral</span>
+          <span class="chip biased"         id="chip-biased"  onclick="setBias('biased')">Biased</span>
+          <span class="chip active"         id="chip-random"  onclick="setBias('random')">Random</span>
+        </div>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Steps (T)</span>
+        <input class="ctrl-input" type="number" id="sim-T" value="12" min="3" max="20">
+      </div>
+    </div>
+
+    <div class="ctrl-section">
+      <h3>World parameters <span style="font-size:9px;color:#5050a0;font-weight:400">(apply on next Generate)</span></h3>
+      <div class="speed-row" style="margin-bottom:6px">
+        <label style="width:96px">Neutral effect</label>
+        <input type="range" id="wp-base"  min="4" max="20" value="10" step="1"   oninput="updateWP()">
+        <span id="wp-base-v"  style="font-size:10px;color:#7878aa;width:40px;text-align:right">±10</span>
+      </div>
+      <div class="speed-row" style="margin-bottom:6px">
+        <label style="width:96px">Biased responds</label>
+        <input type="range" id="wp-gain"  min="0" max="100" value="20" step="5"  oninput="updateWP()">
+        <span id="wp-gain-v"  style="font-size:10px;color:#7878aa;width:40px;text-align:right">20%</span>
+      </div>
+      <div class="speed-row" style="margin-bottom:6px">
+        <label style="width:96px">σ opinion</label>
+        <input type="range" id="wp-sop"   min="0" max="6"  value="2" step="0.5"  oninput="updateWP()">
+        <span id="wp-sop-v"   style="font-size:10px;color:#7878aa;width:40px;text-align:right">2.0</span>
+      </div>
+      <div class="speed-row">
+        <label style="width:96px">σ survey</label>
+        <input type="range" id="wp-ssv"   min="0" max="10" value="2" step="0.5"  oninput="updateWP()">
+        <span id="wp-ssv-v"   style="font-size:10px;color:#7878aa;width:40px;text-align:right">2.0</span>
+      </div>
+      <p style="font-size:10px;color:#5050a0;margin-top:6px">
+        Default = clean world (±10 neutral, ±2 biased, 5× muted). Watch whether
+        <b style="color:#fbbf24">Bayes</b> beats <b style="color:#94a3b8">Naïve</b> — and
+        whether the LLM matches Bayes — as P(biased) resolves.
+      </p>
+    </div>
+
+    <div class="ctrl-section">
+      <h3>Prompt variant</h3>
+      <div class="chip-group">
+        <span class="chip active" id="sv-V0" onclick="setVariant('V0')">V0 — no context</span>
+        <span class="chip"        id="sv-V2" onclick="setVariant('V2')">V2 — world knowledge</span>
+      </div>
+      <div id="variant-desc">No additional context given to the LM.</div>
+    </div>
+
+    <div class="ctrl-section">
+      <h3>LM comparison</h3>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Model</span>
+        <select class="ctrl-input" id="sim-model">
+          <option value="">— none (Bayes only) —</option>
+        </select>
+      </div>
+      <p style="font-size:10px;color:#5050a0;margin-top:4px">
+        Loads pre-computed predictions from the batch run.
+      </p>
+    </div>
+
+    <div class="ctrl-section">
+      <h3>Playback</h3>
+      <div class="speed-row" style="margin-bottom:8px">
+        <label>Speed</label>
+        <input type="range" id="sim-speed" min="200" max="3000" value="1200" step="100" oninput="updateSpeedLabel()">
+        <span id="speed-label" style="font-size:10px;color:#7878aa;width:36px;text-align:right">1.2s</span>
+      </div>
+      <button class="big-btn primary" id="btn-generate" onclick="generateEpisode()">⟳ Generate Episode</button>
+      <button class="big-btn success" id="btn-play" onclick="togglePlay()" disabled style="margin-top:6px">▶ Play</button>
+      <button class="big-btn" id="btn-step" onclick="stepForward()"
+        style="margin-top:6px;background:#1e1e3e;color:#9090c0;border:1px solid #2d2d4e" disabled>
+        Step →
+      </button>
+    </div>
+
+    <!-- Stats box -->
+    <div class="ctrl-section" id="sim-stats" style="display:none">
+      <h3>Running stats</h3>
+      <table style="width:100%;font-size:11px;border-collapse:collapse">
+        <tr>
+          <td style="color:#5050a0;padding:2px 0">LM MAE</td>
+          <td style="text-align:right;color:#818cf8;font-weight:700" id="stat-lm">—</td>
+        </tr>
+        <tr>
+          <td style="color:#5050a0;padding:2px 0">Bayes MAE</td>
+          <td style="text-align:right;color:#fbbf24;font-weight:700" id="stat-bayes">—</td>
+        </tr>
+        <tr>
+          <td style="color:#5050a0;padding:2px 0">Naïve MAE</td>
+          <td style="text-align:right;color:#94a3b8" id="stat-naive">—</td>
+        </tr>
+        <tr>
+          <td style="color:#5050a0;padding:2px 0">LM wins</td>
+          <td style="text-align:right;color:#4ade80;font-weight:700" id="stat-wins">—</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Main simulation view -->
+  <div id="sim-main">
+    <!-- Chart -->
+    <div id="sim-chart-area">
+      <h2 id="sim-chart-title">Opinion & Survey Trajectory</h2>
+      <div id="city-reveal"></div>
+      <div id="sim-chart-wrap"><canvas id="sim-chart"></canvas></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div id="sim-progress-wrap">
+      <div id="sim-progress-bar-bg"><div id="sim-progress-bar"></div></div>
+      <span id="sim-step-label">Step 0 / 0</span>
+    </div>
+
+    <!-- Timeline -->
+    <div id="sim-timeline">
+      <div id="sim-empty">
+        Generate an episode, then press Play or Step →<br>
+        <span style="font-size:11px">Each step reveals the next week's event and survey result</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+     RESULTS SCREEN
+════════════════════════════════════════════════════════ -->
+<div id="screen-results">
+
+  <div id="res-sidebar">
+    <div id="res-sidebar-header">
+      <h1>Batch Results</h1>
+      <p>LM vs Bayesian ceiling — 600 episodes × 2 models</p>
+    </div>
+
+    <div id="res-filters">
+      <div class="filter-row">
+        <span class="filter-label">Model</span>
+        <div id="res-model-chips"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Variant</span>
+        <div id="res-variant-chips">
+          <span class="res-chip active" data-v="V0">V0</span>
+          <span class="res-chip active" data-v="V1">V1</span>
+          <span class="res-chip active" data-v="V2">V2</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Bias</span>
+        <div id="res-bias-chips">
+          <span class="res-chip active" data-b="neutral">Neutral</span>
+          <span class="res-chip active" data-b="biased">Biased</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="res-summary-box">
+      <h3>Mean Absolute Error</h3>
+      <table class="sum-table">
+        <thead><tr>
+          <th>Condition</th><th>Naïve</th><th>LM</th><th>Bayes</th><th title="LM MAE − Bayes MAE (0 = matches the optimal inferer)">Δvs Bayes</th>
+        </tr></thead>
+        <tbody id="res-summary-tbody">
+          <tr><td colspan="5" style="color:#7878aa;font-size:10px;padding:4px">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="ep-list-wrap">
+      <div id="ep-list-header">
+        <span>Episodes (<span id="ep-count">0</span>)</span>
+        <div>
+          <button class="sort-btn active" data-sort="lm_err_desc"  onclick="setSort(this)">LM↕</button>
+          <button class="sort-btn"        data-sort="bayes_err_desc" onclick="setSort(this)">Bay↕</button>
+          <button class="sort-btn"        data-sort="lm_wins_desc"  onclick="setSort(this)">Wins↕</button>
+          <button class="sort-btn"        data-sort="episode_asc"   onclick="setSort(this)">ID↕</button>
+        </div>
+      </div>
+      <div id="ep-list"></div>
+    </div>
+
+    <div id="ep-pager">
+      <button class="page-btn" id="prev-btn" onclick="changePage(-1)" disabled>‹</button>
+      <span id="page-info">Page 1</span>
+      <button class="page-btn" id="next-btn" onclick="changePage(1)">›</button>
+    </div>
+  </div>
+
+  <div id="res-main">
+    <div id="res-main-tabs">
+      <button class="main-tab active" onclick="switchResTab('agg', this)">📈 Learning Curves</button>
+      <button class="main-tab"        onclick="switchResTab('matrix', this)">🔲 Episode Matrix</button>
+      <button class="main-tab"        onclick="switchResTab('detail', this)">🔍 Episode Detail</button>
+    </div>
+    <div id="res-main-content">
+
+      <!-- AGGREGATE -->
+      <div id="agg-pane" class="res-tab-pane">
+        <div id="agg-header-note">
+          Three comparisons in one chart:
+          <strong style="color:#38bdf8">V0 vs Naïve EMA</strong> → does LM use event information? &nbsp;|&nbsp;
+          <strong style="color:#818cf8">V2 vs V0</strong> → does world knowledge help? &nbsp;|&nbsp;
+          <strong style="color:#fbbf24">V2 vs Bayes</strong> → how close to the optimal ceiling?
+        </div>
+        <div class="curve-card">
+          <h2>Neutral City — MAE vs observed weeks</h2>
+          <div class="chart-wrap"><canvas id="chart-neutral"></canvas></div>
+        </div>
+        <div class="curve-card">
+          <h2>Biased City — MAE vs observed weeks</h2>
+          <div class="chart-wrap"><canvas id="chart-biased"></canvas></div>
+        </div>
+      </div>
+
+      <!-- MATRIX -->
+      <div id="matrix-pane" class="res-tab-pane" style="display:none">
+        <div id="matrix-wrap">
+          <div id="matrix-table-wrap"><div style="color:#5050a0;padding:20px">Select episodes to view matrix.</div></div>
+        </div>
+      </div>
+
+      <!-- DETAIL -->
+      <div id="detail-pane" class="res-tab-pane" style="display:none">
+        <div id="detail-empty">← Select an episode from the sidebar</div>
+        <div id="detail-content" style="display:none; flex-direction:column; gap:14px;">
+          <div id="detail-header"></div>
+          <div id="det-chart-wrap"><div id="det-chart-inner"><canvas id="det-chart"></canvas></div></div>
+          <div id="det-table-wrap"><table id="det-table">
+            <thead><tr>
+              <th>Week T+1</th><th>Event</th><th>LM pred</th><th>Bayes pred</th>
+              <th>Gold</th><th>LM err</th><th>Bayes err</th><th>P(biased)</th>
+            </tr></thead>
+            <tbody id="det-tbody"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<script>
+// ═══════════════════════════════════════════════════════════
+//  SCREEN SWITCH
+// ═══════════════════════════════════════════════════════════
+function showScreen(name) {
+  document.getElementById("screen-sim").style.display     = name === "sim"     ? "flex" : "none";
+  document.getElementById("screen-results").style.display = name === "results" ? "flex" : "none";
+  document.getElementById("nav-sim").classList.toggle("active",     name === "sim");
+  document.getElementById("nav-results").classList.toggle("active", name === "results");
+  if (name === "results" && !resInitialised) initResults();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIMULATOR
+// ═══════════════════════════════════════════════════════════
+let simBias    = "neutral";
+let simVariant = "V0";
+let simEp      = null;   // full episode from /api/simulate
+let simStep    = 0;      // how many steps revealed
+let simPlaying = false;
+let simTimer   = null;
+let simChart   = null;
+let variantTexts = {};
+
+const BIAS_COLORS = { neutral: "#38bdf8", biased: "#f87171" };
+
+function setBias(b) {
+  simBias = b;
+  ["neutral","biased","random"].forEach(x => {
+    document.getElementById("chip-" + x)?.classList.toggle("active", x === b);
+  });
+}
+
+function setVariant(v) {
+  simVariant = v;
+  ["V0","V2"].forEach(x => document.getElementById("sv-" + x)?.classList.toggle("active", x === v));
+  document.getElementById("variant-desc").textContent =
+    variantTexts[v] || (v === "V0" ? "No additional context given to the LM." : "");
+}
+
+function updateSpeedLabel() {
+  const ms = parseInt(document.getElementById("sim-speed").value);
+  document.getElementById("speed-label").textContent = (ms / 1000).toFixed(1) + "s";
+}
+
+function updateWP() {
+  document.getElementById("wp-base-v").textContent = "±" + document.getElementById("wp-base").value;
+  document.getElementById("wp-gain-v").textContent = document.getElementById("wp-gain").value + "%";
+  document.getElementById("wp-sop-v").textContent  = parseFloat(document.getElementById("wp-sop").value).toFixed(1);
+  document.getElementById("wp-ssv-v").textContent  = parseFloat(document.getElementById("wp-ssv").value).toFixed(1);
+}
+
+async function loadSimMeta() {
+  try {
+    const [vmeta, mmeta] = await Promise.all([
+      fetch("/api/variants").then(r => r.json()),
+      fetch("/api/meta").then(r => r.json()),
+    ]);
+    variantTexts = vmeta;
+    document.getElementById("variant-desc").textContent =
+      vmeta["V0"] || "No additional context given to the LM.";
+
+    const sel = document.getElementById("sim-model");
+    mmeta.models.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m; opt.textContent = m;
+      sel.appendChild(opt);
+    });
+  } catch(e) { console.warn("meta load failed", e); }
+}
+
+function randomizeSeed() {
+  document.getElementById("sim-seed").value = Math.floor(Math.random() * 1000000);
+  generateEpisode();
+}
+
+async function generateEpisode() {
+  // Each Generate draws a NEW random episode unless the seed is locked, so the
+  // simulator shows the full (symmetric) variety of up- and down-trending cities
+  // instead of replaying whatever is in the seed box.
+  const locked = document.getElementById("sim-seed-lock")?.checked;
+  let seed = parseInt(document.getElementById("sim-seed").value) || 0;
+  if (!locked) {
+    seed = Math.floor(Math.random() * 1000000);
+    document.getElementById("sim-seed").value = seed;
+  }
+  const T     = parseInt(document.getElementById("sim-T").value) || 12;
+  const model = document.getElementById("sim-model").value || "";
+  const params = new URLSearchParams({ seed, bias: simBias, T, variant: simVariant });
+  if (model) params.append("model", model);
+  // World parameters from the sliders
+  params.append("base_effect",   document.getElementById("wp-base").value);
+  params.append("biased_gain",   (parseFloat(document.getElementById("wp-gain").value) / 100).toFixed(3));
+  params.append("sigma_opinion", document.getElementById("wp-sop").value);
+  params.append("sigma_survey",  document.getElementById("wp-ssv").value);
+
+  stopPlay();
+  document.getElementById("btn-generate").disabled = true;
+  document.getElementById("btn-generate").textContent = "Generating…";
+
+  try {
+    const r = await fetch("/api/simulate?" + params);
+    simEp = await r.json();
+    simStep = 0;
+    resetSimDisplay();
+    document.getElementById("btn-play").disabled = false;
+    document.getElementById("btn-step").disabled = false;
+    document.getElementById("sim-stats").style.display = "block";
+  } catch(e) {
+    alert("Error: " + e);
+  } finally {
+    document.getElementById("btn-generate").disabled = false;
+    document.getElementById("btn-generate").textContent = "⟳ Generate Episode";
+  }
+}
+
+function resetSimDisplay() {
+  // Hide the placeholder, then remove only the step cards.
+  // NOTE: #sim-empty lives INSIDE #sim-timeline, so wiping the timeline's
+  // innerHTML would delete #sim-empty and the next lookup would null-crash.
+  const empty = document.getElementById("sim-empty");
+  if (empty) empty.style.display = "none";
+  const tl = document.getElementById("sim-timeline");
+  tl.querySelectorAll(".timeline-step").forEach(card => card.remove());
+
+  // Reset reveal
+  const rev = document.getElementById("city-reveal");
+  rev.style.display = "none";
+
+  // Reset progress
+  document.getElementById("sim-progress-bar").style.width = "0";
+  document.getElementById("sim-step-label").textContent = `Step 0 / ${simEp.T}`;
+
+  // Reset chart
+  if (simChart) { simChart.destroy(); simChart = null; }
+  initSimChart();
+
+  // Reset stats
+  updateSimStats();
+}
+
+function initSimChart() {
+  const ctx = document.getElementById("sim-chart").getContext("2d");
+  const T   = simEp.T;
+  const labels = Array.from({length: T + 1}, (_, i) => i === 0 ? "Start" : `W${i}`);
+  const hasLM  = simEp && Object.keys(simEp.lm_by_t || {}).length > 0;
+
+  const datasets = [
+    {
+      label: "Observed survey",
+      data: [simEp.steps[0]?.obs_survey ?? null, ...Array(T).fill(null)],
+      borderColor: "#38bdf8", backgroundColor: "#38bdf818",
+      borderWidth: 2, pointRadius: 4, tension: 0.3,
+    },
+    {
+      label: "True opinion (hidden → revealed)",
+      data: [parseFloat(simEp.steps[0]?.obs_opinion ?? simEp.opinion_init), ...Array(T).fill(null)],
+      borderColor: "#22c55e", backgroundColor: "transparent",
+      borderWidth: 1.5, borderDash: [3, 3], pointRadius: 3, tension: 0.3,
+    },
+    {
+      label: "Bayes prediction",
+      data: Array(T + 1).fill(null),
+      borderColor: "#fbbf24", backgroundColor: "transparent",
+      borderWidth: 2, borderDash: [5, 3], pointRadius: 3, tension: 0.3,
+    },
+    {
+      label: "Naïve (averages polls)",
+      data: Array(T + 1).fill(null),
+      borderColor: "#94a3b8", backgroundColor: "transparent",
+      borderWidth: 1.5, borderDash: [2, 4], pointRadius: 2, tension: 0.3,
+    },
+  ];
+
+  if (hasLM) datasets.push({
+    label: "LM prediction (" + (document.getElementById("sim-model").value || "") + " " + simVariant + ")",
+    data: Array(T + 1).fill(null),
+    borderColor: "#818cf8", backgroundColor: "transparent",
+    borderWidth: 2, borderDash: [5, 3], pointRadius: 3, tension: 0.3,
+  });
+
+  simChart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 400 },
+      plugins: {
+        legend: { position: "bottom", labels: { color: "#7878aa", font: { size: 10 }, boxWidth: 14 } },
+        tooltip: { mode: "index", intersect: false },
+      },
+      scales: {
+        x: { ticks: { color: "#5050a0", font: { size: 10 } }, grid: { color: "#1e1e3e" } },
+        y: { min: 0, max: 100,
+          ticks: { color: "#5050a0", font: { size: 10 } },
+          grid:  { color: "#1e1e3e" },
+          title: { display: true, text: "Survey (0–100)", color: "#5050a0", font: { size: 10 } } },
+      },
+    },
+  });
+}
+
+function stepForward() {
+  if (!simEp || simStep >= simEp.T) { stopPlay(); return; }
+  const s = simEp.steps[simStep];
+  simStep++;
+
+  // Update chart
+  const d = simChart.data.datasets;
+  // survey: index simStep is the gold_survey for this step
+  d[0].data[simStep] = s.gold_survey;
+  // opinion (hidden)
+  d[1].data[simStep] = s.gold_opinion;
+  // bayes pred goes at simStep (predicting next step from simStep-1 obs)
+  d[2].data[simStep] = s.bayes_pred;
+  // naive
+  d[3].data[simStep] = s.naive_pred;
+  // LM
+  if (d.length > 4) {
+    const lmVal = simEp.lm_by_t?.[s.T_obs] ?? null;
+    d[4].data[simStep] = lmVal;
+  }
+  simChart.update("active");
+
+  // Progress
+  const pct = (simStep / simEp.T) * 100;
+  document.getElementById("sim-progress-bar").style.width = pct + "%";
+  document.getElementById("sim-step-label").textContent = `Step ${simStep} / ${simEp.T}`;
+
+  // Timeline card
+  addTimelineCard(s, simStep);
+
+  // Update stats
+  updateSimStats();
+
+  // Last step: reveal bias
+  if (simStep >= simEp.T) {
+    revealBias();
+    stopPlay();
+  }
+}
+
+function addTimelineCard(s, stepNum) {
+  const tl = document.getElementById("sim-timeline");
+  const lmPred = simEp.lm_by_t?.[s.T_obs] ?? null;
+  const lmErr  = lmPred != null ? Math.abs(lmPred - s.gold_survey) : null;
+  const bayErr = Math.abs(s.bayes_pred - s.gold_survey);
+  const cls    = lmErr != null ? (lmErr < bayErr ? "lm-wins" : lmErr > bayErr ? "lm-loses" : "lm-tie") : "";
+
+  const polColor = s.obs_event.polarity === "positive" ? "#4ade80"
+                 : s.obs_event.polarity === "negative" ? "#f87171" : "#9090c0";
+
+  const card = document.createElement("div");
+  card.className = "timeline-step " + cls;
+  card.innerHTML = `
+    <div class="ts-header">
+      <span class="ts-week">Week ${stepNum}</span>
+      <span class="ts-event-pill ${s.obs_event.polarity}">${s.obs_event.polarity}</span>
+      <span class="ts-event-text" title="${s.obs_event.text}">${s.obs_event.text}</span>
+    </div>
+    <div class="ts-preds">
+      <div class="ts-pred">
+        <div class="ts-pred-label">Survey</div>
+        <div class="ts-pred-val c-gold">${s.gold_survey}</div>
+        <div class="ts-pred-err">gold</div>
+      </div>
+      <div class="ts-pred">
+        <div class="ts-pred-label">Bayes</div>
+        <div class="ts-pred-val c-bayes">${s.bayes_pred}</div>
+        <div class="ts-pred-err ${bayErr < 3 ? 'err-low' : bayErr < 8 ? 'err-mid' : 'err-high'}">±${bayErr.toFixed(1)}</div>
+      </div>
+      ${lmPred != null ? `
+      <div class="ts-pred">
+        <div class="ts-pred-label">LM</div>
+        <div class="ts-pred-val c-lm">${lmPred}</div>
+        <div class="ts-pred-err ${lmErr < 3 ? 'err-low' : lmErr < 8 ? 'err-mid' : 'err-high'}">±${lmErr.toFixed(1)}</div>
+      </div>` : ""}
+      <div class="ts-pred">
+        <div class="ts-pred-label">Opinion</div>
+        <div class="ts-pred-val" style="color:#22c55e;font-size:12px">${s.gold_opinion}</div>
+        <div class="ts-pred-err">hidden</div>
+      </div>
+    </div>
+    <div class="ts-pbiased">
+      <span>P(biased): ${(s.bayes_p_biased * 100).toFixed(0)}%</span>
+      <div class="pbiased-bar-bg"><div class="pbiased-bar" style="width:${s.bayes_p_biased * 100}%"></div></div>
+    </div>`;
+
+  tl.appendChild(card);
+  card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function revealBias() {
+  const rev = document.getElementById("city-reveal");
+  rev.className = "city-reveal " + simEp.bias;
+  rev.textContent = simEp.bias === "biased"
+    ? "🔴 Biased city revealed"
+    : "🔵 Neutral city revealed";
+  rev.style.display = "block";
+  document.getElementById("sim-chart-title").textContent =
+    `Opinion & Survey — ${simEp.bias.toUpperCase()} city (seed ${simEp.seed})`;
+}
+
+function updateSimStats() {
+  if (!simEp || simStep === 0) return;
+  const steps = simEp.steps.slice(0, simStep);
+
+  const bayErrs  = steps.map(s => Math.abs(s.bayes_pred - s.gold_survey));
+  const naiveErrs = steps.map(s => Math.abs(s.naive_pred - s.gold_survey));
+  const lmErrs   = steps
+    .filter(s => simEp.lm_by_t?.[s.T_obs] != null)
+    .map(s => Math.abs(simEp.lm_by_t[s.T_obs] - s.gold_survey));
+  const lmWins   = steps.filter(s => {
+    const lm = simEp.lm_by_t?.[s.T_obs];
+    return lm != null && Math.abs(lm - s.gold_survey) < Math.abs(s.bayes_pred - s.gold_survey);
+  }).length;
+
+  const avg = arr => arr.length ? (arr.reduce((a,b) => a+b, 0) / arr.length).toFixed(2) : "—";
+  document.getElementById("stat-bayes").textContent = avg(bayErrs);
+  document.getElementById("stat-naive").textContent = avg(naiveErrs);
+  document.getElementById("stat-lm").textContent    = lmErrs.length ? avg(lmErrs) : "—";
+  document.getElementById("stat-wins").textContent  = lmErrs.length
+    ? `${lmWins}/${lmErrs.length}` : "—";
+}
+
+function togglePlay() {
+  simPlaying ? stopPlay() : startPlay();
+}
+
+function startPlay() {
+  if (!simEp) return;
+  simPlaying = true;
+  document.getElementById("btn-play").textContent = "⏸ Pause";
+  document.getElementById("btn-play").className   = "big-btn stop";
+  scheduleNext();
+}
+
+function scheduleNext() {
+  if (!simPlaying) return;
+  if (simStep >= simEp.T) { stopPlay(); return; }
+  const ms = parseInt(document.getElementById("sim-speed").value);
+  simTimer = setTimeout(() => { stepForward(); scheduleNext(); }, ms);
+}
+
+function stopPlay() {
+  simPlaying = false;
+  clearTimeout(simTimer);
+  document.getElementById("btn-play").textContent = "▶ Play";
+  document.getElementById("btn-play").className   = "big-btn success";
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RESULTS SCREEN
+// ═══════════════════════════════════════════════════════════
+let resInitialised = false;
+let resMeta        = {};
+let activeModels   = new Set();
+let activeVars     = new Set(["V0","V1","V2"]);
+let activeBiases   = new Set(["neutral","biased"]);
+let sortBy         = "lm_err_desc";
+let currentPage    = 1;
+let totalPages     = 1;
+const PER_PAGE     = 40;
+let selectedEp     = null;
+let aggCharts      = {neutral: null, biased: null};
+let detChart       = null;
+const BAYES_COLOR  = "#fbbf24";
+const NAIVE_COLOR  = "#94a3b8";
+
+async function initResults() {
+  resInitialised = true;
+  const r = await fetch("/api/meta");
+  resMeta = await r.json();
+
+  const mc = document.getElementById("res-model-chips");
+  resMeta.models.forEach(m => {
+    activeModels.add(m);
+    const cls = m.includes("qwen") ? "model-q" : m.includes("llama") ? "model-l" : "";
+    const chip = document.createElement("span");
+    chip.className = `res-chip active ${cls}`;
+    chip.dataset.m = m;
+    chip.textContent = m;
+    chip.addEventListener("click", () => { toggleSet(activeModels, m); chip.classList.toggle("active"); resRefreshAll(); });
+    mc.appendChild(chip);
+  });
+  document.querySelectorAll("#res-variant-chips .res-chip").forEach(c =>
+    c.addEventListener("click", () => { toggleSet(activeVars, c.dataset.v); c.classList.toggle("active"); resRefreshAll(); })
+  );
+  document.querySelectorAll("#res-bias-chips .res-chip").forEach(c =>
+    c.addEventListener("click", () => { toggleSet(activeBiases, c.dataset.b); c.classList.toggle("active"); resRefreshAll(); })
+  );
+  await resRefreshAll();
+}
+
+function toggleSet(s, v) { s.has(v) ? s.delete(v) : s.add(v); }
+async function resRefreshAll() { currentPage = 1; await Promise.all([loadAggregate(), loadEpisodes()]); }
+
+async function loadAggregate() {
+  const baseModels = new URLSearchParams();
+  activeModels.forEach(m => baseModels.append("model", m));
+  const fetchVariant = async (v) => {
+    const p = new URLSearchParams(baseModels); p.append("variant", v);
+    return fetch("/api/aggregate?" + p).then(r => r.json());
+  };
+  const fetchAll = async () => {
+    const p = new URLSearchParams(baseModels);
+    activeVars.forEach(v => p.append("variant", v));
+    return fetch("/api/aggregate?" + p).then(r => r.json());
+  };
+  const [datV0, datV2, datAll] = await Promise.all([fetchVariant("V0"), fetchVariant("V2"), fetchAll()]);
+  renderCurveChart("chart-neutral", "neutral", datV0.neutral, datV2.neutral, datAll.neutral);
+  renderCurveChart("chart-biased",  "biased",  datV0.biased,  datV2.biased,  datAll.biased);
+  renderSummary(datAll);
+}
+
+function renderCurveChart(canvasId, bias, datV0, datV2, datAll) {
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  if (aggCharts[bias]) aggCharts[bias].destroy();
+  const labels = (datAll.T_obs || datV0.T_obs || []).map(t => `W${t}`);
+  const mk = (label, data, color, dash, width, ptR) => ({
+    label, data, borderColor: color, backgroundColor: color + "12",
+    borderWidth: width, borderDash: dash || [], pointRadius: ptR, tension: 0.3,
+  });
+  const datasets = [
+    mk("LM V0 — no context",                      datV0.lm_mae,    "#38bdf8", [5,4], 2,   3),
+    mk("LM V2 — world knowledge",                 datV2.lm_mae,    "#818cf8", [],    2.5, 4),
+    mk("Bayes ceiling (infers latent)",           datAll.bayes_mae, BAYES_COLOR, [6,3], 2, 3),
+    mk("Naïve (averages polls)",                  datAll.naive_mae, NAIVE_COLOR, [2,4], 1.5, 2),
+  ];
+  aggCharts[bias] = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "bottom", labels: { color: "#7878aa", font: { size: 11 }, boxWidth: 16, padding: 12 } },
+        tooltip: {
+          mode: "index", intersect: false,
+          callbacks: {
+            footer: (items) => {
+              const v0  = items.find(i => i.dataset.label.includes("V0"));
+              const v2  = items.find(i => i.dataset.label.includes("V2"));
+              const bay = items.find(i => i.dataset.label.includes("Bayes"));
+              const nv  = items.find(i => i.dataset.label.includes("Naïve"));
+              const lines = [];
+              if (v0 && nv && v0.raw != null && nv.raw != null)
+                lines.push(`V0 vs Naïve: ${(nv.raw - v0.raw).toFixed(2)} advantage`);
+              if (v2 && v0 && v2.raw != null && v0.raw != null)
+                lines.push(`V2 vs V0: ${(v0.raw - v2.raw).toFixed(2)} world-knowledge gain`);
+              if (v2 && bay && v2.raw != null && bay.raw != null)
+                lines.push(`V2 vs Bayes: ${(bay.raw - v2.raw).toFixed(2)}`);
+              return lines;
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: bias === "biased"
+            ? ["Biased city — surveys underreport true opinion change (~20% of true shift)",
+               "Key: does V2 world knowledge beat Bayes ceiling early?"]
+            : ["Neutral city — surveys track true opinion clearly",
+               "V0 vs Naïve → does LM use events?  V2 vs Bayes → cost of no world model?"],
+          font: { size: 11 }, color: "#5050a0", padding: { bottom: 8 },
+        },
+      },
+      scales: {
+        x: { title: { display: true, text: "Observed weeks (T)", color: "#5050a0", font: { size: 11 } },
+             ticks: { color: "#5050a0" }, grid: { color: "#1e1e3e" } },
+        y: { title: { display: true, text: "MAE (survey points)", color: "#5050a0", font: { size: 11 } },
+             min: 0, ticks: { color: "#5050a0" }, grid: { color: "#1e1e3e" } },
+      },
+    },
+  });
+}
+
+function renderSummary(dat) {
+  const tbody = document.getElementById("res-summary-tbody");
+  tbody.innerHTML = "";
+  [{ label: "Neutral", d: dat.neutral }, { label: "Biased", d: dat.biased }].forEach(({label, d}) => {
+    if (!d || !d.T_obs || !d.T_obs.length) return;
+    const avg = arr => { const v = arr.filter(x => x != null); return v.length ? v.reduce((a,b)=>a+b)/v.length : null; };
+    const tr = document.createElement("tr");
+    const lm    = avg(d.lm_mae);
+    const bayes = avg(d.bayes_mae);
+    const naive = avg(d.naive_mae);
+    const excess = (lm != null && bayes != null) ? lm - bayes : null;
+    tr.innerHTML = `<td>${label} <small style="color:#5050a0">(n=${d.n})</small></td>
+      <td class="nv-cell">${naive != null ? naive.toFixed(1) : "—"}</td>
+      <td class="lm-cell">${lm != null ? lm.toFixed(1) : "—"}</td>
+      <td class="bay-cell">${bayes != null ? bayes.toFixed(1) : "—"}</td>
+      <td style="color:${excess != null && excess <= 1 ? '#4ade80' : '#f0a868'};font-weight:700">${excess != null ? "+"+excess.toFixed(1) : "—"}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+async function loadEpisodes() {
+  const params = new URLSearchParams({ sort: sortBy, page: currentPage, per_page: PER_PAGE });
+  activeModels.forEach(m => params.append("model", m));
+  activeVars.forEach(v   => params.append("variant", v));
+  activeBiases.forEach(b => params.append("bias", b));
+  const dat = await fetch("/api/episodes?" + params).then(r => r.json());
+  totalPages = dat.pages;
+  document.getElementById("ep-count").textContent  = dat.total;
+  document.getElementById("page-info").textContent = `Page ${dat.page} / ${dat.pages}`;
+  document.getElementById("prev-btn").disabled = dat.page <= 1;
+  document.getElementById("next-btn").disabled = dat.page >= dat.pages;
+  const list = document.getElementById("ep-list");
+  list.innerHTML = "";
+  dat.episodes.forEach(ep => {
+    const item = document.createElement("div");
+    item.className = "ep-item" + (selectedEp?.episode_id === ep.episode_id ? " active" : "");
+    const better = ep.mean_lm_err != null && ep.mean_bayes_err != null && ep.mean_lm_err < ep.mean_bayes_err;
+    item.innerHTML = `
+      <span class="ep-bias ${ep.bias}">${ep.bias[0].toUpperCase()}</span>
+      <span class="ep-id">${ep.episode_id.replace(/^(neutral|biased)_/, '')} <small style="color:#5050a0">${ep.variant}</small></span>
+      <span class="ep-errs">
+        <span class="ep-err-lm">${ep.mean_lm_err != null ? ep.mean_lm_err.toFixed(1) : "—"}</span>
+        <span style="color:#444">vs</span>
+        <span class="ep-err-bay">${ep.mean_bayes_err != null ? ep.mean_bayes_err.toFixed(1) : "—"}</span>
+        <span style="color:${better ? '#22c55e' : '#ef4444'};font-size:9px">${better ? "▲" : "▼"}</span>
+      </span>
+      <svg class="ep-sparkline" width="48" height="20">${sparkline(ep.lm_err_by_t, ep.bayes_err_by_t)}</svg>`;
+    item.addEventListener("click", () => selectEpisode(ep.episode_id, ep.model, ep.variant));
+    list.appendChild(item);
+  });
+  renderMatrix(dat.episodes);
+}
+
+function sparkline(lm, bayes) {
+  const all = [...(lm||[]).filter(v=>v!=null), ...(bayes||[]).filter(v=>v!=null)];
+  if (!all.length) return "";
+  const mx = Math.max(...all, 1); const W = 48; const H = 18;
+  function pts(arr) {
+    if (!arr || !arr.length) return "";
+    const n = arr.length;
+    return arr.map((v,i) => `${Math.round(i/(n-1||1)*W)},${Math.round(H-(v||0)/mx*H)}`).join(" ");
+  }
+  return `<polyline points="${pts(lm)}"    fill="none" stroke="#818cf8" stroke-width="1.5"/>
+          <polyline points="${pts(bayes)}" fill="none" stroke="#fbbf24" stroke-width="1" stroke-dasharray="2,1"/>`;
+}
+
+function setSort(btn) {
+  document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  sortBy = btn.dataset.sort; currentPage = 1;
+  loadEpisodes();
+}
+function changePage(d) {
+  currentPage = Math.max(1, Math.min(totalPages, currentPage + d));
+  loadEpisodes();
+}
+
+function renderMatrix(episodes) {
+  if (!episodes?.length) return;
+  const maxT = Math.max(...episodes.map(e => (e.lm_err_by_t || []).length));
+  const wrap = document.getElementById("matrix-table-wrap");
+  let html = `<table id="matrix-table"><thead><tr><th></th><th>Bias</th>`;
+  for (let t = 1; t <= maxT; t++) html += `<th>W${t}</th>`;
+  html += "</tr></thead><tbody>";
+  episodes.forEach(ep => {
+    html += `<tr><td class="mat-ep-id" onclick="selectEpisode('${ep.episode_id}','${ep.model}','${ep.variant}')">${ep.episode_id.replace(/^(neutral|biased)_/,'')} <small style="color:#5050a0">${ep.variant}</small></td><td><span class="mat-bias ${ep.bias}">${ep.bias[0]}</span></td>`;
+    (ep.lm_err_by_t || []).forEach((lv, idx) => {
+      const bv = (ep.bayes_err_by_t || [])[idx];
+      if (lv == null) { html += `<td></td>`; return; }
+      const diff = lv - (bv || 0);
+      const bg   = errBg(lv);
+      const mark = diff < 0 ? "▲" : diff > 2 ? "▼" : "·";
+      const mc   = diff < 0 ? "#22c55e" : diff > 2 ? "#ef4444" : "#555";
+      html += `<td style="background:${bg}" title="LM=${lv.toFixed(1)} Bayes=${(bv||0).toFixed(1)}"><span style="color:${mc};font-size:9px">${mark}</span>${lv.toFixed(0)}</td>`;
+    });
+    html += "</tr>";
+  });
+  html += "</tbody></table>";
+  wrap.innerHTML = html;
+}
+
+function errBg(v) {
+  const t = Math.min((v || 0) / 20, 1);
+  return `rgba(${Math.round(34+t*186)},${Math.round(197-t*159)},${Math.round(94-t*56)},0.16)`;
+}
+
+async function selectEpisode(epId, model, variant) {
+  selectedEp = { episode_id: epId, model, variant };
+  switchResTab("detail", document.querySelectorAll(".main-tab")[2]);
+  const r   = await fetch(`/api/episode/${encodeURIComponent(epId)}?${new URLSearchParams({model, variant})}`);
+  const dat = await r.json();
+  if (dat.error) return;
+  document.getElementById("detail-empty").style.display   = "none";
+  document.getElementById("detail-content").style.display = "flex";
+  document.getElementById("detail-header").innerHTML = `
+    <span style="font-size:15px;font-weight:700;color:#e0e0f0">${dat.episode_id}</span>
+    <span class="det-badge bias-${dat.bias}">${dat.bias}</span>
+    <span class="det-badge variant">${dat.variant}</span>
+    <span class="det-badge model">${dat.model}</span>
+    <span style="color:#5050a0;font-size:11px">T_max=${dat.T_max} seed=${dat.ep_seed ?? "?"}</span>`;
+  renderDetailChart(dat);
+  document.getElementById("det-tbody").innerHTML = dat.steps.map(s => {
+    const lmErr = s.lm_abs_err; const bayErr = s.bayes_abs_err;
+    const ec = v => v == null ? "" : v < 3 ? "err-low" : v < 8 ? "err-mid" : "err-high";
+    const wins = lmErr != null && lmErr < bayErr;
+    return `<tr style="${wins ? 'background:#0a1a0a' : ''}">
+      <td><strong>W${s.T_obs + 1}</strong></td>
+      <td style="font-size:10px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${s.next_event_text}">${s.next_event_text.slice(0,55)}…</td>
+      <td class="pred-lm">${s.lm_pred ?? "—"}</td>
+      <td class="pred-bay">${s.bayes_pred.toFixed(1)}</td>
+      <td><strong style="color:#e0e0f0">${s.gold_survey}</strong></td>
+      <td class="${ec(lmErr)}">${lmErr != null ? lmErr.toFixed(1) : "—"}</td>
+      <td class="${ec(bayErr)}">${bayErr.toFixed(1)}</td>
+      <td style="color:#5050a0;font-size:10px">${(s.bayes_p_biased*100).toFixed(0)}%</td>
+    </tr>`;
+  }).join("");
+}
+
+function renderDetailChart(dat) {
+  const ctx = document.getElementById("det-chart").getContext("2d");
+  if (detChart) detChart.destroy();
+  const labels  = dat.steps.map(s => `W${s.T_obs}`);
+  detChart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets: [
+      { label: "Observed survey",       data: dat.steps.map(s => s.gold_survey), borderColor: "#38bdf8", borderWidth: 2, pointRadius: 4, tension: 0.3 },
+      { label: "LM prediction",         data: dat.steps.map(s => s.lm_pred),    borderColor: "#818cf8", borderWidth: 2, borderDash: [5,3], pointRadius: 3, tension: 0.3 },
+      { label: "Bayes ceiling",         data: dat.steps.map(s => s.bayes_pred), borderColor: BAYES_COLOR, borderWidth: 1.5, borderDash: [3,3], pointRadius: 2, tension: 0.3 },
+      { label: "True opinion (hidden)", data: dat.episode.opinion_traj ? dat.steps.map(s => dat.episode.opinion_traj[s.T_obs]) : [], borderColor: "#22c55e", borderWidth: 1, borderDash: [2,4], pointRadius: 2, tension: 0.3 },
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "bottom", labels: { color: "#7878aa", font: { size: 10 }, boxWidth: 14 } },
+        tooltip: { mode: "index", intersect: false },
+      },
+      scales: {
+        x: { ticks: { color: "#5050a0" }, grid: { color: "#1e1e3e" } },
+        y: { min: 0, max: 100, ticks: { color: "#5050a0" }, grid: { color: "#1e1e3e" },
+          title: { display: true, text: "Survey score (0–100)", color: "#5050a0", font: { size: 10 } } },
+      },
+    },
+  });
+}
+
+function switchResTab(name, btn) {
+  document.querySelectorAll(".main-tab").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll(".res-tab-pane").forEach(p => p.style.display = "none");
+  const pane = document.getElementById(name + "-pane");
+  if (pane) pane.style.display = name === "agg" ? "grid" : "flex";
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+document.getElementById("sim-seed").value = Math.floor(Math.random() * 1000000);
+loadSimMeta();
+</script>
+</body>
+</html>

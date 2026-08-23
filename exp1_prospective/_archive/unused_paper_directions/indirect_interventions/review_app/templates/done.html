@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Review complete{% endblock %}
+{% block content %}
+  <section class="card narrow centered">
+    <p class="eyebrow">All {{ complete }} cases saved</p>
+    <h2>Thank you—your review is complete.</h2>
+    <p>You may close this window. Use the sign-out button if this is a shared computer.</p>
+    <a class="button-link" href="{{ url_for('review_task', task_id=reviewer.task_ids[0]) }}">Review or edit responses</a>
+  </section>
+{% endblock %}

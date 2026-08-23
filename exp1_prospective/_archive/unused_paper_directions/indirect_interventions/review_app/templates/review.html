@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Case {{ index + 1 }} of {{ total }}{% endblock %}
+{% macro scale(name, low, high, low_label, high_label, selected) %}
+  <fieldset class="scale">
+    <legend>{{ caller() }}</legend>
+    <div class="scale-labels"><span>{{ low }} — {{ low_label }}</span><span>{{ high }} — {{ high_label }}</span></div>
+    <div class="scale-options">
+      {% for value in range(low, high + 1) %}
+        <label><input type="radio" name="{{ name }}" value="{{ value }}" {% if selected|string == value|string %}checked{% endif %} required>{{ value }}</label>
+      {% endfor %}
+    </div>
+  </fieldset>
+{% endmacro %}
+{% block content %}
+  <section class="progress-card">
+    <div><strong>Case {{ index + 1 }} of {{ total }}</strong><span>{{ completed }} saved</span></div>
+    <progress max="{{ total }}" value="{{ completed }}">{{ completed }}/{{ total }}</progress>
+  </section>
+
+  <section class="task-intro" aria-label="Reviewer instructions">
+    {% if reviewer.panel == 'full_context' %}
+      <strong>Your task:</strong> Treat the stated connection as true, then decide
+      whether the new information makes YES more likely, less likely, or unchanged.
+    {% else %}
+      <strong>Your task:</strong> Use only the new information shown. If it does not
+      determine a direction by itself, choose “The connection is unclear.”
+    {% endif %}
+    Do not research or add outside assumptions.
+  </section>
+
+  <section class="card target-card">
+    <p class="eyebrow">Question</p>
+    <h2>{{ task.market.question }}</h2>
+    <details>
+      <summary>Show full resolution rules (optional)</summary>
+      <p class="preserve">{{ task.market.resolution_criteria }}</p>
+    </details>
+  </section>
+
+  <article class="case-grid">
+    <section class="card evidence">
+      <p class="step-label"><span>1</span> New information</p>
+      <h3>{{ task.evidence.headline }}</h3>
+      <p>{{ task.evidence.text }}</p>
+    </section>
+
+    {% if reviewer.panel == 'full_context' and task.bridge_context %}
+      <section class="card bridge">
+        <p class="step-label"><span>2</span> How it connects</p>
+        <p>{{ task.bridge_context }}</p>
+      </section>
+    {% endif %}
+  </article>
+
+  <form method="post" class="card response-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <fieldset>
+      <legend>What does the new information do to the chance that the answer is YES?</legend>
+      <div class="radio-list">
+        {% for value, label in directions %}
+          <label><input type="radio" name="direction" value="{{ value }}" {% if saved.direction == value %}checked{% endif %} required>{{ label }}</label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    {% call scale('confidence', 1, 5, 'not sure', 'very sure', saved.confidence) %}How sure are you?{% endcall %}
+
+    <div class="actions">
+      <button type="submit">Save and continue</button>
+      {% if previous_id %}<a href="{{ url_for('review_task', task_id=previous_id) }}">Previous case</a>{% endif %}
+      {% if next_id %}<a href="{{ url_for('review_task', task_id=next_id) }}">Next case</a>{% endif %}
+    </div>
+  </form>
+{% endblock %}

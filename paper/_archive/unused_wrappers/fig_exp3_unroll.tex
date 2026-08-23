@@ -1,0 +1,48 @@
+% Experiment 3 — companion to fig:exp3-family: the direct structure unrolled over two weeks.
+% Anchors the temporal reading (the family self-loops are this o_t -> o_{t+1} edge; task = forecast y_{t+1}).
+% Requires: \usepackage{tikz}\usetikzlibrary{arrows.meta} and xcolor (teal). Place beside fig:exp3-family.
+\begin{figure}[t]
+\centering
+\resizebox{0.92\linewidth}{!}{%
+\begin{tikzpicture}[
+  >=Latex,
+  obs/.style={circle, draw=black!70, fill=gray!22, minimum size=0.72cm, inner sep=0pt, font=\small},
+  lat/.style={circle, draw=black!70, fill=white,   minimum size=0.72cm, inner sep=0pt, font=\small},
+  kn/.style={->, semithick, black!70},
+  hid/.style={->, thick, teal!60!black, dashed},
+  per/.style={->, semithick, black!55},
+  ttl/.style={font=\small\itshape, text=black!60},
+  hl/.style={font=\scriptsize, text=teal!55!black},
+  fc/.style={font=\scriptsize, text=black!60}]
+
+\node[obs] (xt) at (0,1.5)   {$x_t$};
+\node[lat] (ot) at (0,0)     {$o_t$};
+\node[obs] (yt) at (0,-1.5)  {$y_t$};
+\node[obs] (xn) at (3.0,1.5)  {$x_{t+1}$};
+\node[lat] (on) at (3.0,0)    {$o_{t+1}$};
+\node[obs] (yn) at (3.0,-1.5) {$y_{t+1}$};
+
+\draw[hid] (xt) -- node[hl,right]{$g$} (ot);
+\draw[hid] (xn) -- node[hl,right]{$g$} (on);
+\draw[kn]  (ot) -- (yt);
+\draw[kn]  (on) -- (yn);
+
+\draw[per] (-1.35,0) -- (ot.west);
+\draw[per] (ot) -- node[fc,above]{$\phi$} (on);
+\draw[per] (on.east) -- (4.35,0);
+\node[text=black!45] at (-1.55,0) {$\cdots$};
+\node[text=black!45] at (4.55,0)  {$\cdots$};
+
+\node[ttl] at (0,2.15)   {week $t$ (observed)};
+\node[ttl] at (3.0,2.15) {week $t{+}1$};
+\node[fc, text=black!70] at (3.0,-2.25) {forecast target};
+\draw[->, black!45, shorten >=2pt] (3.0,-2.05) -- (yn.south);
+\end{tikzpicture}}
+\caption{\textbf{One structure unrolled in time.} The \emph{Direct} world of
+Fig.~\ref{fig:exp3-family} across two weeks: each week's news $x_t$ moves the latent opinion $o_t$
+by the \textcolor{teal!60!black}{hidden gain $g$}, which emits the poll $y_t$; opinion carries over
+and mean-reverts week to week ($\phi$)---so the self-loops in Fig.~\ref{fig:exp3-family} are exactly
+this $o_t{\to}o_{t+1}$ edge. The forecaster sees weeks $1{:}t$ and must predict $y_{t+1}$, tracking
+a moving latent it never observes.}
+\label{fig:exp3-unroll}
+\end{figure}

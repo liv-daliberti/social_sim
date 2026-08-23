@@ -1,0 +1,71 @@
+experiment:
+  id: three_city_c2_v8
+  status: design_only_no_model_runs
+  description: "Figure-1-aligned three-city C2 structure and context experiment."
+
+hidden_evaluator_world:
+  source_world: three_city_c2_v2
+  starting_poll: 50.0
+  net_news_per_case: 8
+  high_response: 1.0
+  buffered_response: 0.25
+  case_noise_sd: 3.25
+  reference_cases_per_city: 6
+  reference_residuals_mean_balanced: true
+  context_cue_reliability_for_privileged_oracle_only: 0.80
+
+design:
+  episodes: 120
+  seed_offset: 80000
+  target_prefixes: [0, 1, 2, 3, 4, 6, 8]
+  figure_1_sparse_anchor: 2
+  convergence_anchor: 8
+  prompt_arms:
+    - blind
+    - hint
+    - strong_hint
+  context_conditions:
+    - none
+    - orthogonal
+    - cue_high
+    - cue_low
+  context_paraphrase_families: 3
+  calls_per_model: 10080
+  total_calls_three_models: 30240
+
+model_prompt:
+  disclose_equation: false
+  disclose_response_values: false
+  disclose_noise_sd: false
+  disclose_prior_probability: false
+  disclose_context_reliability: false
+  ask_one_forecast_only: true
+  state_cases_are_independent: true
+  state_each_case_starts_at_50: true
+  same_output_contract_across_arms: true
+  same_token_budget_across_arms: true
+
+main_structure_curve:
+  condition: none
+  target_only_label: "Use City C only"
+  target_only_k0_fallback: "displayed A/B midpoint"
+  world_model_label: "Combine A/B/C"
+  world_model_method: "two fitted A/B response regressions weighted by City C likelihood"
+
+context_panel:
+  paired_same_numeric_episode: true
+  cue_high_and_low_crossed_with_true_type: true
+  orthogonal_control: true
+  key_outcomes:
+    - early_relevant_context_movement
+    - orthogonal_context_specificity
+    - cue_direction
+    - misleading_context_override_by_k8
+
+analysis:
+  primary_k: 2
+  bootstrap_draws: 10000
+  bootstrap_unit: episode
+  report_models_separately: true
+  no_cross_model_population_claim: true
+  unparseable_received_completion_is_terminal: true

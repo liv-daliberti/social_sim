@@ -13,7 +13,7 @@ You will work in multiple turns:
 PRINCIPLES:
 - There are always exactly 2 outcomes: H1 (resolves YES) and H2 (resolves NO).
 - Assign a prior probability to each before gathering information; P(H1) + P(H2) = 1.
-- Update those probabilities after reviewing information (use Bayesian reasoning).
+- Update your probability estimates as you gather and weigh evidence; later evidence should revise earlier estimates.
 - Since yes_prob = P(H1), the mapping is direct.
 - Be calibrated: 70% confidence should be right roughly 70% of the time.
 - Prefer recent, primary-source information over secondary commentary.
@@ -48,7 +48,9 @@ MARKET METADATA:
 
 STEP 1 — Build your event model and frame the two outcomes.
 
-First, reason through:
+First, briefly restate the question in your own words to confirm your understanding of what constitutes a YES vs. NO resolution. Flag any ambiguity in the resolution criteria.
+
+Then reason through:
 - Who are the key actors and institutions involved?
 - What are the key mechanisms or causal chains?
 - What are the critical latent variables (things we don't know but that matter a lot)?
@@ -62,44 +64,67 @@ For each hypothesis, give:
 - An initial prior probability (P(H1) + P(H2) must equal 1.0)
 - What information would most shift your assessment toward or away from this outcome
 
-Format your response with a clear section "EVENT MODEL" followed by "HYPOTHESES (H1=YES, H2=NO)".
+Finally, state the STATUS QUO: what is the most likely outcome if the world simply continues on its current trajectory without significant change or intervention before the resolution date?
+
+Format your response with a clear section "QUESTION RESTATEMENT", then "EVENT MODEL", then "HYPOTHESES (H1=YES, H2=NO)", then "STATUS QUO".
 Do not produce the final forecast yet — we will gather information first."""
 
 
-# ── turn 2: probabilistic reasoning + optional search ─────────────────────────
+# ── turn 2: research + probabilistic reasoning ────────────────────────────────
 TURN2_TEMPLATE = """\
-STEP 2 — Reason through your probability estimates.
+STEP 2 — Research the current situation and reason through probability estimates.
 
-Think carefully about the likelihood of H1 (YES) and H2 (NO):
+You MUST search the web for current information before forming your estimate. \
+Do not rely solely on your training knowledge, which may be stale or incomplete.
 
-1. BASE RATES — For events of this type and scale, what fraction historically resolve YES? What comparable precedents exist?
+Perform AT LEAST 3 web searches. Suggested searches:
+  1. Recent news or developments directly about the question topic
+  2. Base rates, historical precedents, or expert forecasts for this type of event
+  3. Any key actors, deadlines, or conditions mentioned in the resolution criteria
 
-2. CURRENT TRAJECTORY — Given what you know about the situation, is the outcome trending toward YES or NO relative to the resolution deadline? What is the pace of relevant change?
+After searching, reason through:
 
-3. KEY CONSIDERATIONS — What are the 2–3 most important factors that determine which outcome is more likely?
+1. BASE RATES — For events of this type and scale, what fraction historically \
+resolve YES? What comparable precedents exist?
 
-4. CALIBRATION — Given the time remaining and the resolution criteria, what probability would a well-calibrated forecaster assign?
+2. CURRENT TRAJECTORY — Given what you found, is the outcome trending toward \
+YES or NO relative to the resolution deadline? Given the {days_to_resolution:.0f} days \
+remaining, what is the realistic chain of events required for H1 to occur, \
+and is that pace of change plausible in the available window?
 
-If looking up specific recent data or figures would materially sharpen your estimate, do so and cite the source. Otherwise, reason from what you know.
+3. KEY CONSIDERATIONS — What are the 2–3 most important factors that determine \
+which outcome is more likely?
+
+4. CALIBRATION — What probability would a well-calibrated forecaster assign? \
+Remember: good forecasters put extra weight on the status quo. Only depart \
+substantially from the status quo you identified in Step 1 if you have strong, \
+concrete directional evidence.
 
 State your updated estimates:
   H1 (YES): X%
   H2 (NO):  Y%
 
-Explain your reasoning concisely. Record any source URLs you use."""
+Explain your reasoning concisely. Record all source URLs you use."""
 
 
-# ── turn 3 (optional): stress-test ────────────────────────────────────────────
+# ── turn 3 (optional): red/blue team ──────────────────────────────────────────
 TURN3_TEMPLATE = """\
-STEP 3 — Stress-test your estimate.
+STEP 3 — Red/Blue Team.
 
-You currently have H1 (YES) and H2 (NO) at certain probabilities. Before finalizing:
+Before finalizing, subject your current estimate to adversarial scrutiny from both sides.
 
-- What is the strongest argument for the outcome you consider LESS likely? Are you underweighting it?
-- Is there a specific recent development — something that happened in the past week or two — that would shift your estimate? If it's worth checking, look it up and cite it.
-- What single piece of news or data would most change your mind?
+TEAM RED — Steelman H1 (YES):
+Write the strongest possible argument that H1 will occur. What evidence, trends, mechanisms, or actors would a committed H1 advocate cite? Take the most favorable plausible reading of every ambiguous signal. Are you currently underweighting any of these?
 
-Adjust your probability estimates if warranted, and state your final pre-synthesis figures for H1 and H2."""
+TEAM BLUE — Steelman H2 (NO):
+Write the strongest possible argument that H2 will occur. What evidence, trends, mechanisms, or actors would a committed H2 advocate cite? Take the most unfavorable plausible reading of every ambiguous signal. Are you currently underweighting any of these?
+
+SYNTHESIS:
+Having considered both cases at their strongest, state your revised probability estimates:
+  H1 (YES): X%
+  H2 (NO):  Y%
+
+Briefly note whether and why your estimate shifted from the end of Step 2."""
 
 
 

@@ -1,0 +1,47 @@
+{
+  "api_protocol": "openai_chat_completion_tokens",
+  "arm": "abc_wrong_context",
+  "context_alignment": "0_percent_correct_news_environment",
+  "effective_max_output_tokens": 16384,
+  "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/",
+  "episodes": [
+    0,
+    1
+  ],
+  "execution_mode": "local_login_node",
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "http_client_retries": 0,
+  "max_attempts": 1,
+  "max_tokens": 512,
+  "model": "gemini-3.6-flash",
+  "new_errors_this_run": 0,
+  "newly_parsed_this_run": 2,
+  "order_seed": 20260804,
+  "planned_calls_this_model": 1250,
+  "pre_model_transport_retry_policy": {
+    "max_retries": 12,
+    "model_responses_never_repeated": true,
+    "retried_http_status": [
+      408,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "shard_transport_retries": 0
+  },
+  "prefixes": [
+    4
+  ],
+  "reasoning_effort": "low",
+  "responses_received": 2,
+  "sampling_matches_truthful_arm": true,
+  "selected_model_calls": 2,
+  "status": "complete",
+  "successfully_parsed": 2,
+  "task_file": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/design/tasks_abc_wrong_context.jsonl",
+  "task_file_sha256": "32ab926d1e93a49ad764c538dc973006280e348b5aa1cd4fb9a3afda3d8f9fb8",
+  "temperature": 0.0,
+  "updated_at": "2026-08-12T13:55:56.943303+00:00"
+}

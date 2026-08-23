@@ -1,0 +1,23 @@
+{
+  "excluded_from_analysis": true,
+  "model": "gemini-3.1-pro-preview",
+  "model_responses_received": 54,
+  "parsed_attempts": 54,
+  "pilot_configuration": {
+    "effective_max_output_tokens": 16384,
+    "http_client_retries": 0,
+    "parallel_shards": 15,
+    "rate_limiter": "none",
+    "reasoning_effort": "low",
+    "temperature": 0
+  },
+  "reason": "The project key caps this deployment at 25 requests/minute (GenerateRequestsPerMinutePerProjectPerModel). Fifteen unthrottled shards issued roughly 30 requests/minute, so the service rejected 3,694 requests with HTTP 429 and two with HTTP 503 before the model ran. The harness records one terminal record per task, so every rejected task was lost and the whole attempt was discarded rather than analysed.",
+  "rejected_attempts": {
+    "http_429": 3694,
+    "http_503": 2
+  },
+  "remediation": "Shards now share a file-locked 22 requests/minute token bucket and re-issue requests the service rejects before the model runs. No task that received a model response is ever re-asked.",
+  "status": "aborted_infrastructure_failure",
+  "total_attempts": 3750,
+  "unparseable_attempts": 3696
+}

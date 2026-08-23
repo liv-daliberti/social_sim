@@ -35,7 +35,6 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:

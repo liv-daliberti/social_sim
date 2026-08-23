@@ -1,0 +1,180 @@
+{
+  "base_evaluations": {
+    "job_id_map": {
+      "30633446": "30634987",
+      "30633447": "30634988",
+      "30633448": "30634989",
+      "30633449": "30634990",
+      "30633450": "30634991",
+      "30633451": "30634992"
+    },
+    "jobs": [
+      {
+        "disclosure": "disclosed",
+        "greedy_overall_parse_rate": 1.0,
+        "greedy_scored_draws": 720,
+        "job_id": "30634987",
+        "model": "qwen3_4b",
+        "replaces_job_id": "30633446",
+        "report": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/base_disclosed_qwen3_4b_j30634987",
+        "stochastic_overall_parse_rate": 0.9988888888888889,
+        "stochastic_scored_draws": 3600
+      },
+      {
+        "disclosure": "disclosed",
+        "greedy_overall_parse_rate": 1.0,
+        "greedy_scored_draws": 720,
+        "job_id": "30634988",
+        "model": "qwen3_8b",
+        "replaces_job_id": "30633447",
+        "report": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/base_disclosed_qwen3_8b_j30634988",
+        "stochastic_overall_parse_rate": 0.9983333333333333,
+        "stochastic_scored_draws": 3600
+      },
+      {
+        "disclosure": "disclosed",
+        "greedy_overall_parse_rate": 0.9986111111111111,
+        "greedy_scored_draws": 720,
+        "job_id": "30634989",
+        "model": "llama3_1_8b",
+        "replaces_job_id": "30633448",
+        "report": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/base_disclosed_llama3_1_8b_j30634989",
+        "stochastic_overall_parse_rate": 0.9997222222222222,
+        "stochastic_scored_draws": 3600
+      },
+      {
+        "disclosure": "undisclosed",
+        "greedy_overall_parse_rate": 1.0,
+        "greedy_scored_draws": 720,
+        "job_id": "30634990",
+        "model": "qwen3_4b",
+        "replaces_job_id": "30633449",
+        "report": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/base_undisclosed_qwen3_4b_j30634990",
+        "stochastic_overall_parse_rate": 1.0,
+        "stochastic_scored_draws": 3600
+      },
+      {
+        "disclosure": "undisclosed",
+        "greedy_overall_parse_rate": 1.0,
+        "greedy_scored_draws": 720,
+        "job_id": "30634991",
+        "model": "qwen3_8b",
+        "replaces_job_id": "30633450",
+        "report": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/base_undisclosed_qwen3_8b_j30634991",
+        "stochastic_overall_parse_rate": 0.9963888888888889,
+        "stochastic_scored_draws": 3600
+      },
+      {
+        "disclosure": "undisclosed",
+        "greedy_overall_parse_rate": 0.9902777777777778,
+        "greedy_scored_draws": 720,
+        "job_id": "30634992",
+        "model": "llama3_1_8b",
+        "replaces_job_id": "30633451",
+        "report": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/base_undisclosed_llama3_1_8b_j30634992",
+        "stochastic_overall_parse_rate": 0.9997222222222222,
+        "stochastic_scored_draws": 3600
+      }
+    ],
+    "ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T145523Z.json",
+    "protocol": "c3_mechanism_base_canary_gate_v4",
+    "status": "pass"
+  },
+  "base_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T145523Z.json",
+  "jobs": [
+    {
+      "adapter": "exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s42_20260817_134310_j30636260/debug_0817T13:47:50/saved_models/step_00011",
+      "disclosure": "disclosed",
+      "greedy_overall_parse_rate": 0.9805555555555555,
+      "job_id": "30636260",
+      "maximum_no_eos_count": 0.0,
+      "maximum_training_truncation_rate": 0.0,
+      "model": "qwen3_4b",
+      "reward_trace_points": 10,
+      "reward_trace_std": 0.016959487961385772,
+      "stochastic_overall_parse_rate": 1.0
+    },
+    {
+      "adapter": "exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s42_20260817_164420_j30637351/debug_0817T16:44:43/saved_models/step_00011",
+      "disclosure": "disclosed",
+      "greedy_overall_parse_rate": 0.9916666666666667,
+      "job_id": "30637351",
+      "maximum_no_eos_count": 3.0,
+      "maximum_training_truncation_rate": 0.0234375,
+      "model": "qwen3_8b",
+      "reward_trace_points": 10,
+      "reward_trace_std": 0.028130299110109388,
+      "stochastic_overall_parse_rate": 0.9969444444444444
+    },
+    {
+      "adapter": "exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_llama3_1_8b_s42_20260817_145113_j30636262/debug_0817T14:51:45/saved_models/step_00011",
+      "disclosure": "disclosed",
+      "greedy_overall_parse_rate": 0.9805555555555555,
+      "job_id": "30636262",
+      "maximum_no_eos_count": 5.0,
+      "maximum_training_truncation_rate": 0.0390625,
+      "model": "llama3_1_8b",
+      "reward_trace_points": 9,
+      "reward_trace_std": 0.032509496931041146,
+      "stochastic_overall_parse_rate": 1.0
+    },
+    {
+      "adapter": "exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_4b_s42_20260817_145213_j30636263/debug_0817T14:52:39/saved_models/step_00011",
+      "disclosure": "undisclosed",
+      "greedy_overall_parse_rate": 0.9694444444444444,
+      "job_id": "30636263",
+      "maximum_no_eos_count": 0.0,
+      "maximum_training_truncation_rate": 0.0,
+      "model": "qwen3_4b",
+      "reward_trace_points": 10,
+      "reward_trace_std": 0.02287592627158556,
+      "stochastic_overall_parse_rate": 0.9977777777777778
+    },
+    {
+      "adapter": "exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s42_20260817_154417_j30636264/debug_0817T15:44:40/saved_models/step_00011",
+      "disclosure": "undisclosed",
+      "greedy_overall_parse_rate": 0.9819444444444444,
+      "job_id": "30636264",
+      "maximum_no_eos_count": 4.0,
+      "maximum_training_truncation_rate": 0.03125,
+      "model": "qwen3_8b",
+      "reward_trace_points": 10,
+      "reward_trace_std": 0.029239142807214506,
+      "stochastic_overall_parse_rate": 0.9980555555555556
+    },
+    {
+      "adapter": "exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_llama3_1_8b_s42_20260817_154816_j30636265/debug_0817T15:48:38/saved_models/step_00011",
+      "disclosure": "undisclosed",
+      "greedy_overall_parse_rate": 0.975,
+      "job_id": "30636265",
+      "maximum_no_eos_count": 4.0,
+      "maximum_training_truncation_rate": 0.03125,
+      "model": "llama3_1_8b",
+      "reward_trace_points": 10,
+      "reward_trace_std": 0.020612803722381733,
+      "stochastic_overall_parse_rate": 0.9997222222222222
+    }
+  ],
+  "ledger": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T174010Z_recovery_j30637351.json",
+  "protocol": "c3_mechanism_canary_gate_v4",
+  "recovery": {
+    "replacements": [
+      {
+        "cell": {
+          "arm": "causal_family",
+          "disclosure": "disclosed",
+          "model": "qwen3_8b",
+          "seed": 42
+        },
+        "failed_job_id": "30636261",
+        "replacement_job_id": "30637351",
+        "scheduler_time_limit_override": "01:30:00",
+        "scientific_configuration": "identical"
+      }
+    ],
+    "source_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T174010Z.json",
+    "source_ledger_sha256": "f879f2fb213eeb2fdb3306b0f50020f0af9cf138db14372ac4334fbbc6c7d3bb"
+  },
+  "source_ledger": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T174010Z.json",
+  "status": "pass"
+}

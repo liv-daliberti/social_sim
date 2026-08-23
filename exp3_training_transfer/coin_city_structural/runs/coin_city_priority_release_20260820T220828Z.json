@@ -1,0 +1,48 @@
+{
+  "recorded_at": "2026-08-20T22:08:28Z",
+  "reason": "User authorized Coin City to proceed before the remaining Structural-OOD and Polymarket extension jobs and requested the earliest available A6000 capacity.",
+  "scientific_configuration": "identical",
+  "scheduler_change_only": {
+    "released_upstream_dependencies": {
+      "job_ids": [
+        "30723972",
+        "30723973",
+        "30723974",
+        "30723975",
+        "30723976",
+        "30723977"
+      ],
+      "dependency_after_change": null,
+      "time_limit_after_change": "04:00:00"
+    },
+    "preserved_internal_canary_gate": {
+      "gate_job_id": "30723978",
+      "semantics": "afterok",
+      "downstream_scientific_jobs": 24
+    },
+    "reversible_user_holds": {
+      "structural_ood": [
+        "30788373",
+        "30730367",
+        "30730368",
+        "30730369",
+        "30730370",
+        "30730371"
+      ],
+      "polymarket_training": [
+        "30730372",
+        "30730373",
+        "30730374",
+        "30730375",
+        "30730376",
+        "30730377"
+      ]
+    },
+    "priority_operation": {
+      "requested": "scontrol top",
+      "result": "denied by Slurm permissions",
+      "effective_priority_method": "release Coin City canaries and hold competing pending campaign jobs"
+    }
+  },
+  "source_ledger": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json"
+}

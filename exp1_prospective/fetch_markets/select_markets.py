@@ -29,12 +29,10 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 _HERE = Path(__file__).resolve().parent
 _ROOT = _HERE.parent
@@ -317,7 +315,7 @@ def main() -> None:
         now_ts=now_ts,
     )
 
-    print(f"\nFilter funnel:")
+    print("\nFilter funnel:")
     print(f"  total input          : {counts['total']:>6,}")
     print(f"  binary               : {counts['binary']:>6,}")
     print(f"  active+unresolved    : {counts['active']:>6,}")
@@ -338,7 +336,7 @@ def main() -> None:
 
     # Category breakdown
     cats = Counter((r.get("category") or "unknown").lower() for r in deduped)
-    print(f"\nCategory breakdown:")
+    print("\nCategory breakdown:")
     for cat, cnt in cats.most_common(20):
         bar = "▪" * min(30, max(1, cnt))
         print(f"  {cat:<35s} {cnt:>4,}  {bar}")
@@ -348,19 +346,19 @@ def main() -> None:
     prices = [r.get("yes_price") for r in deduped if r.get("yes_price") is not None]
     if vols:
         n = len(vols)
-        print(f"\nVolume stats (USD):")
+        print("\nVolume stats (USD):")
         print(f"  min    ${vols[0]:>12,.0f}")
         print(f"  median ${vols[n//2]:>12,.0f}")
         print(f"  p90    ${vols[int(n*0.9)]:>12,.0f}")
         print(f"  max    ${vols[-1]:>12,.0f}")
     if prices:
-        print(f"\nYes-price stats:")
+        print("\nYes-price stats:")
         print(f"  min    {min(prices):.3f}")
         print(f"  mean   {sum(prices)/len(prices):.3f}")
         print(f"  max    {max(prices):.3f}")
 
     # Sample
-    print(f"\nSample (top 20 by volume):")
+    print("\nSample (top 20 by volume):")
     for r in deduped[:20]:
         dtd = days_to_resolution(r, now_ts)
         vol = r.get("volume_usd") or 0.0

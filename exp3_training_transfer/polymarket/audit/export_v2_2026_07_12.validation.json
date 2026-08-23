@@ -1,0 +1,58 @@
+{
+  "export_path": "/n/fs/similarity/kalshi/agentic_forecasting/reports/polymarket_full_market_dataset_2026_07_12_235011.json",
+  "generated_at": "2026-07-13T00:06:44.381486+00:00",
+  "row_schema_version": "polymarket_market_export_v2",
+  "checks": {
+    "header_row_count": 1788703,
+    "actual_rows": 1788703,
+    "row_count_match": true,
+    "header_markets_with_candles": 1787257,
+    "actual_markets_with_candles": 1787257,
+    "markets_with_candles_match": true,
+    "unique_market_ids": 1788703,
+    "unique_condition_ids": 1787326
+  },
+  "issues": {
+    "null_condition_id": 1377
+  },
+  "issue_examples": {
+    "null_condition_id": "row 7659 market_id=252234"
+  },
+  "missing_required_keys": {},
+  "stats": {
+    "closed": 1713784,
+    "resolved": 0,
+    "active": 1733879,
+    "event_present": 1788701,
+    "availability_has_candles": 1787257,
+    "availability_has_resolution": 1715580,
+    "availability_has_memory_case": 46824,
+    "resolution_object_present": 1715580,
+    "resolution_methods": {
+      "deterministic_winner": 29686,
+      "price_extreme": 1685894
+    },
+    "total_candle_rows": 38263931,
+    "candles_nonnull_close": 24911189,
+    "interval_inventory_markets": {
+      "1": 356,
+      "5": 24,
+      "15": 134,
+      "60": 44173,
+      "1440": 1787257
+    },
+    "created_time_range": [
+      "2020-10-02T16:10:01.467000+00:00",
+      "2026-07-12T16:12:07.186821+00:00"
+    ],
+    "candle_end_ts_range": [
+      "2020-10-02T23:59:59.999999+00:00",
+      "2028-11-07T00:00:00+00:00"
+    ]
+  },
+  "summary_cross_check": {
+    "summary_row_count": 1788703,
+    "summary_matches_actual": true
+  },
+  "verdict": "PASS"
+}

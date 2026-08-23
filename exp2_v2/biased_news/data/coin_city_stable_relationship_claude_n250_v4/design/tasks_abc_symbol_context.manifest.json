@@ -1,0 +1,39 @@
+{
+  "arm": "abc_symbol_context",
+  "city_c_case_levels": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "context_alignment": "episode_randomized_arbitrary_symbol_mapping",
+  "design": "KIV/ZOR replace every national/local cue. Their higher/lower-response mapping reverses by episode parity and must be induced from City A/B examples before applying the matching label to City C.",
+  "episodes": 250,
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "frozen_episode_file_sha256": "c1d9ea5a2ae17010f7d34ce11bc02b4d1bf7bfed462b0f81b64495c994db3f5f",
+  "frozen_truthful_task_file_sha256": "d5752831f8c995ac1939048d0ec9f37d99393e0e2f24492c5ed47ea94842be10",
+  "mapping_counts": {
+    "higher_response=KIV": 125,
+    "higher_response=ZOR": 125
+  },
+  "numeric_tokens_match_truthful_semantic_arm": true,
+  "source_sha256": {
+    "analysis/analyze_coin_city_symbol_context.py": "ed1995abe7abe4ed05274bdbda13426ceaed39eb9d79992bd7ecf3b113680285",
+    "engine/coin_city_symbol_context_arm.py": "31c765b53c0ba8cb6344c0047d838b60136f5ab62d99b00d84c93e9fab34ab53",
+    "eval/build_coin_city_symbol_context_tasks.py": "59078fae4dad56a13373bad18a1448408bf14e48966a6bef51263e0c555f07aa",
+    "eval/run_coin_city_symbol_context.py": "1ad1da927ccb5055dda584f8bb7b4254eb36db8e905cd655f93c59ef2341186e"
+  },
+  "symbols": [
+    "KIV",
+    "ZOR"
+  ],
+  "target_regime_by_symbol": {
+    "higher_response:KIV": 63,
+    "higher_response:ZOR": 62,
+    "lower_response:KIV": 63,
+    "lower_response:ZOR": 62
+  },
+  "task_file_sha256": "91ea6940ff934bf1a21b0bd8682b34ef1b3d25d543af7af504e8c3d4a67fff70",
+  "tasks": 1250
+}

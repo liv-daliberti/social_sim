@@ -1,0 +1,48 @@
+{
+  "configuration_selection_criterion": "Required-answer schema completion only; forecast accuracy was not evaluated.",
+  "deployment_smoke_calls": {
+    "count": 1,
+    "experimental_task": false,
+    "purpose": "Confirm deployment and API protocol."
+  },
+  "excluded_task_shaped_calls": {
+    "archived": 118,
+    "direct_unarchived_probe": 1,
+    "total": 119
+  },
+  "final_production_configuration": {
+    "effective_max_output_tokens": 16384,
+    "http_client_retries": 0,
+    "reasoning_effort": "low",
+    "temperature": 0
+  },
+  "model": "FW-Kimi-K3",
+  "pilots": [
+    {
+      "attempts": 36,
+      "archive": "fw_kimi_k3_default_reasoning_max4096_20260810",
+      "parsed": 5,
+      "status": "aborted"
+    },
+    {
+      "attempts": 1,
+      "archive": null,
+      "parsed": 1,
+      "purpose": "Confirm that low reasoning can return the required JSON.",
+      "status": "completed_probe"
+    },
+    {
+      "attempts": 77,
+      "archive": "fw_kimi_k3_low_reasoning_max4096_20260810",
+      "parsed": 74,
+      "status": "aborted"
+    },
+    {
+      "attempts": 5,
+      "archive": "fw_kimi_k3_low_reasoning_max16384_hard_task_test_20260810",
+      "parsed": 5,
+      "status": "completed_probe"
+    }
+  ],
+  "production_namespace_started_empty": true
+}

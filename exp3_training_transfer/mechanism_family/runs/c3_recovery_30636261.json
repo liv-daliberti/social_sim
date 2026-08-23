@@ -1,0 +1,223 @@
+{
+  "base_canary_checks": {
+    "greedy_scored_draws": 4320,
+    "job_ids": [
+      "30634987",
+      "30634988",
+      "30634989",
+      "30634990",
+      "30634991",
+      "30634992"
+    ],
+    "ledger": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T145523Z.json",
+    "minimum_greedy_parse_rate": 0.9902777777777778,
+    "minimum_stochastic_parse_rate": 0.9963888888888889,
+    "status": "pass",
+    "stochastic_scored_draws": 21600
+  },
+  "canary_ledger": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T174010Z.json",
+  "dependency_chain": {
+    "llama3_1_8b_standby_90m": "afternotok:30636262",
+    "qwen3_4b_standby_90m": "afternotok:30636263",
+    "qwen3_8b_fallback_90m": "afternotok:30637351",
+    "qwen3_8b_replacement_90m": "afternotok:30636261"
+  },
+  "completed_canary_checks": [
+    {
+      "greedy_overall_parse_rate": 0.9805555555555555,
+      "job_id": "30636260",
+      "maximum_training_truncation_rate": 0.0,
+      "reward_trace_std": 0.016959,
+      "stochastic_overall_parse_rate": 1.0
+    },
+    {
+      "greedy_overall_parse_rate": 0.9805555555555555,
+      "job_id": "30636262",
+      "maximum_training_truncation_rate": 0.0390625,
+      "reward_trace_std": 0.032509,
+      "stochastic_overall_parse_rate": 1.0
+    },
+    {
+      "greedy_overall_parse_rate": 0.9694444444444444,
+      "job_id": "30636263",
+      "maximum_training_truncation_rate": 0.0,
+      "reward_trace_std": 0.022876,
+      "stochastic_overall_parse_rate": 0.9977777777777778
+    },
+    {
+      "greedy_overall_parse_rate": 0.9819444444444444,
+      "job_id": "30636264",
+      "maximum_training_truncation_rate": 0.03125,
+      "reward_trace_std": 0.029239142807,
+      "stochastic_overall_parse_rate": 0.9980555555555556
+    },
+    {
+      "greedy_overall_parse_rate": 0.975,
+      "job_id": "30636265",
+      "maximum_training_truncation_rate": 0.03125,
+      "reward_trace_std": 0.020612803722,
+      "stochastic_overall_parse_rate": 0.9997222222222222
+    },
+    {
+      "greedy_overall_parse_rate": 0.9916666666666667,
+      "job_id": "30637351",
+      "maximum_training_truncation_rate": 0.0234375,
+      "replaces_job_id": "30636261",
+      "reward_trace_std": 0.02813029911,
+      "stochastic_overall_parse_rate": 0.9969444444444444
+    }
+  ],
+  "failed_job": {
+    "elapsed": "01:00:15",
+    "exit_code": "0:0",
+    "job_id": "30636261",
+    "state": "TIMEOUT",
+    "time_limit": "01:00:00"
+  },
+  "fallback_job_id": "30637081",
+  "original_job_id": "30636261",
+  "gate": {
+    "current_dependencies": [
+      "30637351",
+      "30636264",
+      "30636265"
+    ],
+    "enforced_cells": "six training canaries plus six base evaluations",
+    "job_id": "30638325",
+    "state": "COMPLETED",
+    "completed_at": "2026-08-17T17:53:56-04:00",
+    "output": "exp3_training_transfer/mechanism_family/protocol/canary_audit_recovery_j30637351_with_base.json",
+    "replacement_mappings": [
+      "30636261=30637351"
+    ],
+    "replaces_dependency_never_satisfied_gate": "30636327",
+    "replaces_training_only_gate": "30637649"
+  },
+  "full_campaign_launch": {
+    "synthetic_ledger": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T215355Z.json",
+    "synthetic_jobs": 48,
+    "synthetic_training_jobs": 42,
+    "synthetic_base_evaluation_jobs": 6,
+    "polymarket_ledger": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z.json",
+    "polymarket_training_jobs": 6,
+    "polymarket_locked_evaluation_jobs": 2,
+    "status": "submitted_and_roster_validated"
+  },
+  "full_grid_base_evaluation_audit": {
+    "artifact": "exp3_training_transfer/mechanism_family/protocol/full_grid_base_evaluation_audit_20260817.json",
+    "audited_at": "2026-08-17T18:19:11-04:00",
+    "cells": 6,
+    "job_ids": [
+      "30639760",
+      "30639761",
+      "30639762",
+      "30639763",
+      "30639764",
+      "30639765"
+    ],
+    "minimum_greedy_parse_rate": 0.9902777777777778,
+    "minimum_stochastic_parse_rate": 0.9963888888888889,
+    "status": "pass",
+    "total_greedy_scored_draws": 4320,
+    "total_stochastic_scored_draws": 21600
+  },
+  "pending_time_limit_overrides": [
+    {
+      "job_id": "30636264",
+      "model": "qwen3_8b",
+      "disclosure": "undisclosed",
+      "old_time_limit": "01:00:00",
+      "new_time_limit": "01:30:00"
+    },
+    {
+      "job_id": "30636265",
+      "model": "llama3_1_8b",
+      "disclosure": "undisclosed",
+      "old_time_limit": "01:00:00",
+      "new_time_limit": "01:30:00"
+    }
+  ],
+  "protocol": "c3_canary_queue_recovery_v4",
+  "reason": "The original Qwen3-8B canary timed out while producing endpoint outputs; the account could not extend the running job.",
+  "replacement_job_id": "30637351",
+  "scientific_configuration": "Identical model, disclosure, arm, seed, data, optimizer, rollout, decoding, and endpoint settings.",
+  "scheduler_configurations": {
+    "fallback": {
+      "gpus": "2 x NVIDIA A6000",
+      "partition": "cs",
+      "time_limit": "01:30:00"
+    },
+    "replacement": {
+      "gpus": "2 x NVIDIA A6000",
+      "partition": "all",
+      "time_limit": "01:30:00"
+    }
+  },
+  "scheduler_cleanup": [
+    {
+      "job_id": "30633441",
+      "action": "cancelled",
+      "at": "2026-08-17T16:46:14-04:00",
+      "reason": "Held superseded disclosed Qwen3-8B canary retired after replacement 30637351 began running; failure-only fallback 30637081 remains available."
+    },
+    {
+      "job_id": "30633445",
+      "action": "cancelled",
+      "at": "2026-08-17T16:46:14-04:00",
+      "reason": "Held superseded undisclosed Llama-3.1-8B canary retired after corrected job 30636265 completed and passed all health checks."
+    },
+    {
+      "job_id": "30633444",
+      "action": "cancelled",
+      "at": "2026-08-17T16:50:27-04:00",
+      "reason": "Held superseded undisclosed Qwen3-8B canary retired after corrected job 30636264 completed and passed all health checks."
+    },
+    {
+      "job_id": "30637081",
+      "action": "cancelled",
+      "at": "2026-08-17T17:52:32-04:00",
+      "reason": "Failure-only fallback retired automatically after replacement 30637351 completed successfully."
+    }
+  ],
+  "standby_recoveries": [
+    {
+      "dependency": "afternotok:30636262",
+      "job_id": "30637848",
+      "model": "llama3_1_8b",
+      "disclosure": "disclosed",
+      "partition": "cs",
+      "resolution": "Parent job 30636262 completed; standby cancelled at 2026-08-17T15:48:37-04:00.",
+      "time_limit": "01:30:00",
+      "scientific_configuration": "Identical to original job 30636262."
+    },
+    {
+      "dependency": "afternotok:30636263",
+      "job_id": "30637885",
+      "model": "qwen3_4b",
+      "disclosure": "undisclosed",
+      "partition": "cs",
+      "resolution": "Parent job 30636263 completed; standby cancelled at 2026-08-17T15:48:37-04:00.",
+      "time_limit": "01:30:00",
+      "scientific_configuration": "Identical to original job 30636263."
+    }
+  ],
+  "timeline": [
+    "30637081 submitted at 2026-08-17T14:23:34-04:00 as a 90-minute fallback.",
+    "30637351 submitted at 2026-08-17T14:39:10-04:00 as a serial recovery.",
+    "After 30636261 timed out, 30637351 was extended before start from 60 to 90 minutes.",
+    "30637081 was rewired to run only if 30637351 also fails.",
+    "Pending undisclosed jobs 30636264 and 30636265 were extended before start from 60 to 90 minutes.",
+    "30637848 was submitted as a 90-minute disclosed Llama standby that becomes eligible only if 30636262 fails.",
+    "30637885 was submitted as a 90-minute undisclosed Qwen3-4B standby that becomes eligible only if 30636263 fails.",
+    "Jobs 30636262 and 30636263 completed and passed their artifact, parsing, reward-variation, and truncation checks; their failure-only standbys 30637848 and 30637885 were cancelled.",
+    "The six replacement base evaluations completed and passed an explicit audit of job state, configuration, all 4 blocks x 3 horizons, 4,320 greedy scored draws, 21,600 stochastic scored draws, and parse coverage.",
+    "Gate 30638325 replaced training-only gate 30637649; it audits all six resolved training canaries and all six resolved base evaluations before either full-grid launcher can execute.",
+    "Job 30636265 completed and passed the artifact, parsing, reward-variation, and truncation checks; held duplicate 30633445 was cancelled.",
+    "Replacement 30637351 began running; held duplicate 30633441 was cancelled while failure-only fallback 30637081 remained armed.",
+    "Job 30636264 completed and passed the artifact, parsing, reward-variation, and truncation checks; held duplicate 30633444 was cancelled.",
+    "Replacement 30637351 completed and passed all health checks; fallback 30637081 was cancelled.",
+    "Gate 30638325 passed the combined 12-cell audit and completed at 2026-08-17T17:53:56-04:00.",
+    "The exact 48-job synthetic roster and 8-job Polymarket extension were submitted and their ledgers validated.",
+    "Full-grid base evaluations 30639760--30639765 completed in 10:03--12:53 each and passed the exact six-cell audit with 4,320 greedy and 21,600 stochastic scored draws; minimum overall parse rates were 0.9903 and 0.9964."
+  ]
+}

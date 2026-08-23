@@ -1,0 +1,40 @@
+\section{Related Work}
+\label{related_work}
+
+\textbf{Judgemental and language-model forecasting.}
+Research on judgemental forecasting separates accuracy from process. Strong human
+forecasters use base rates, decompose questions, seek diverse evidence, and update
+frequently; unaided expert judgment and manual adjustments can remain
+miscalibrated or biased
+\citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting,lawrence2006judgmental}.
+Autocast and ForecastBench provide time-indexed, leakage-controlled evaluations of
+language models \citep{zou2022forecasting,karger2025forecastbench}. Retrieval-augmented
+generation, aggregation, and ensembling have brought some systems close to crowd
+accuracy \citep{lewis2020retrieval,halawi2024approaching,schoenegger2024wisdom},
+while tournament entries report more mixed real-world performance
+\citep{schoenegger2023prediction}. These studies measure forecast
+quality; we test how forecasts respond to evidence, examples, and training.
+
+\textbf{In-context inference and analogy.}
+Transformers can infer unseen functions from input--output examples, with success
+depending on the training distribution
+\citep{garg2022what,chan2022data}. Language models also solve some abstract
+analogy tasks, and analogical prompting can improve reasoning
+\citep{webb2023emergent,yasunaga2024large}. Because either relationship inference or
+analogical matching could explain Coin City performance, we compare model forecasts
+with a deterministic, context-conditioned analogical regression.
+
+\textbf{World structure and behavioral evidence.}
+World models represent environmental dynamics for prediction or control
+\citep{ha2018world,lecun2022path}, and sequence models can encode task state and
+support predictions about agents \citep{li2023emergent,andreas2022agent}. Predictive
+success can rest on shortcut features and need not generalize to a new task or
+structural change
+\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. Causal formalisms
+make such structure explicit \citep{pearl2009causality,peters2017elements}, and
+formal benchmarks test queries over specified graphs \citep{jin2023cladder}; we test whether forecasts behave as if a model inferred
+and reused predictive relationships when no graph label is requested. Because
+natural-language rationales may not faithfully describe the computation behind an
+answer \citep{jacovi2020towards,turpin2023language}, we use behavioral interventions
+that specify expected invariances or directional changes
+\citep{ribeiro2020beyond,elazar2021measuring}.

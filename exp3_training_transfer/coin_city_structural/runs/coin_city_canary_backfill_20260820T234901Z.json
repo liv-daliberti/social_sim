@@ -1,0 +1,39 @@
+{
+  "action": "shorten_pending_canary_scheduler_time_limit",
+  "applied_at_utc": "20260820T234901Z",
+  "campaign": "coin_city_structural_transfer_v1",
+  "jobs": [
+    "30723972",
+    "30723973",
+    "30723974",
+    "30723975",
+    "30723976",
+    "30723977"
+  ],
+  "new_time_limit": "02:00:00",
+  "previous_time_limit": "04:00:00",
+  "reason": "Improve Slurm backfill eligibility for the six released ten-step canaries while the A6000 nodes are fragmented by active and planned allocations.",
+  "scientific_configuration_changed": false,
+  "scientific_invariants": [
+    "model",
+    "arm",
+    "seed",
+    "training examples",
+    "training steps",
+    "optimizer and learning rate",
+    "rollout and evaluation settings",
+    "two-A6000 hardware request"
+  ],
+  "safety": {
+    "node206_remains_excluded": true,
+    "node206_reason": "Prior scheduler GPU aliasing caused concurrent allocations to receive the same physical GPU and fail with OOM.",
+    "upstream_dependency_removed_previously": true,
+    "internal_canary_gate_preserved": true
+  },
+  "verification": {
+    "dependency": null,
+    "requested_gpus_per_job": "gres/gpu:a6000=2",
+    "scheduler_state_after_update": "PENDING",
+    "start_time_after_update": "Unknown"
+  }
+}

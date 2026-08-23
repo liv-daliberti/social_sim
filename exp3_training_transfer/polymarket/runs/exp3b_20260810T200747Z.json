@@ -1,0 +1,122 @@
+{
+  "baseline_report_sha256": "88239a4656a0c5bcec12c1a70734cafadf4e258ae4ec29920a0f041aeca19ed4",
+  "dataset_manifest_sha256": "91ee617aff7e8629ed2d17fd7165d80c01e4c78384ef4520e9d184ef8618de6d",
+  "locked_final_split": "test",
+  "locked_test_slurm_sha256": "8e9fe863c927d6c0f1573dcfe5cc52272b966d007cb21138b8b559f00f1c6d51",
+  "locked_test_submission": {
+    "adapter_spec": "42:30459333;43:30459334;44:30459335",
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--partition=all",
+      "--gres=gpu:a6000:1",
+      "--time=02:00:00",
+      "--dependency=afterok:30459333:30459334:30459335",
+      "--export=ALL,TRAIN_ADAPTERS=42:30459333;43:30459334;44:30459335",
+      "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test.sbatch"
+    ],
+    "job_id": "30459336"
+  },
+  "preflight_sha256": "e3fdeb2a1cc9b391432efe06d96a73b1095446b9e135b2e6caaca64dbd415bdf",
+  "protocol_version": "exp3b_registered_v1",
+  "scorer_sha256": "74518f3089df2685164be729801f51ddf7b4fee465b867911761cfefb8357151",
+  "slurm_script_sha256": "18ed3b948f0622a41a82ee9ac3255b2a070fc80b953832f979599facf8914823",
+  "submissions": [
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=08:00:00",
+        "--export=ALL,DATA=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/data/exp3b_registered,TAG=market,MODEL=Qwen/Qwen3-4B-Instruct-2507,VLLM_RATIO=0.40,LORA_RANK=32,LORA_ALPHA=64,BATCH=16,ROLLOUT_PER_PROMPT=8,MAX_TRAIN=4800,TEMP=1.3,LR=0.000001,EVAL_STEPS=25,GEN_LEN=128,MAX_MODEL_LEN=1920,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,SEED=42",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl.sh"
+      ],
+      "environment": {
+        "BATCH": "16",
+        "DATA": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/data/exp3b_registered",
+        "EVAL_STEPS": "25",
+        "GEN_LEN": "128",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "LR": "0.000001",
+        "MAX_MODEL_LEN": "1920",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "ROLLOUT_PER_PROMPT": "8",
+        "SEED": "42",
+        "TAG": "market",
+        "TEMP": "1.3",
+        "VLLM_RATIO": "0.40"
+      },
+      "job_id": "30459333",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=08:00:00",
+        "--export=ALL,DATA=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/data/exp3b_registered,TAG=market,MODEL=Qwen/Qwen3-4B-Instruct-2507,VLLM_RATIO=0.40,LORA_RANK=32,LORA_ALPHA=64,BATCH=16,ROLLOUT_PER_PROMPT=8,MAX_TRAIN=4800,TEMP=1.3,LR=0.000001,EVAL_STEPS=25,GEN_LEN=128,MAX_MODEL_LEN=1920,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,SEED=43",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl.sh"
+      ],
+      "environment": {
+        "BATCH": "16",
+        "DATA": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/data/exp3b_registered",
+        "EVAL_STEPS": "25",
+        "GEN_LEN": "128",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "LR": "0.000001",
+        "MAX_MODEL_LEN": "1920",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "ROLLOUT_PER_PROMPT": "8",
+        "SEED": "43",
+        "TAG": "market",
+        "TEMP": "1.3",
+        "VLLM_RATIO": "0.40"
+      },
+      "job_id": "30459334",
+      "seed": 43
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=08:00:00",
+        "--export=ALL,DATA=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/data/exp3b_registered,TAG=market,MODEL=Qwen/Qwen3-4B-Instruct-2507,VLLM_RATIO=0.40,LORA_RANK=32,LORA_ALPHA=64,BATCH=16,ROLLOUT_PER_PROMPT=8,MAX_TRAIN=4800,TEMP=1.3,LR=0.000001,EVAL_STEPS=25,GEN_LEN=128,MAX_MODEL_LEN=1920,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,SEED=44",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl.sh"
+      ],
+      "environment": {
+        "BATCH": "16",
+        "DATA": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/data/exp3b_registered",
+        "EVAL_STEPS": "25",
+        "GEN_LEN": "128",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "LR": "0.000001",
+        "MAX_MODEL_LEN": "1920",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "ROLLOUT_PER_PROMPT": "8",
+        "SEED": "44",
+        "TAG": "market",
+        "TEMP": "1.3",
+        "VLLM_RATIO": "0.40"
+      },
+      "job_id": "30459335",
+      "seed": 44
+    }
+  ],
+  "submitted_at": "20260810T200747Z",
+  "trainer_sha256": "f2459a85474e08c9cfccd0d6ead820ab090bc84c70ed040585ebbec44aee45de",
+  "training_evaluation_split": "dev"
+}

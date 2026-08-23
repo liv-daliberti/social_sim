@@ -1,9 +1,61 @@
+# caches / build
 __pycache__/
 *.py[cod]
 *.pyo
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 *.egg-info/
 dist/
 build/
 .env
+
+# editor/recovery leftovers
+*.orig
+*.bak
+*.unrecoverable
+
+# logs (slurm + app)
 *.log
+*.out
+*.err
+logs/
+
+# local venv / runtime scratch
+.runtime/
+.vizchk/
+
+# heavy training artifacts (regenerable; not for deploy)
+wandb/
+reports/
+*.arrow
+
+# GitHub publication boundary: large research payloads stay local and are
+# distributed through the data release, while manifests/results stay tracked.
+exp3_training_transfer/polymarket/raw/
+exp1_prospective/data/raw_markets/*.jsonl
+exp1_prospective/data/initial_forecasts/*.jsonl
+exp1_prospective/data/initial_forecasts/_archive/
+exp1_prospective/data/updated_forecasts/*.jsonl
+exp1_prospective/data/daily_tracking/snapshot_*.jsonl
+exp1_prospective/data/selected_markets/*.jsonl
+exp1_prospective/data/selected_markets/_archive/
+!exp1_prospective/data/selected_markets/diverse_2026-06-09.jsonl
+exp1_prospective/data/_recovery_audit/
+exp1_prospective/_archive/interim_results/
+**/_archive/**/data/
+**/_archive/**/*.pdf
+**/_archive/**/*.png
+**/_archive/**/*.webp
+**/_archive/**/*.zip
+
+# NFS silly-rename turds
+.nfs*
+
+# LaTeX build products (source, figures, PDFs, and checked-in .bbl stay visible)
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+paper/ICLR_submission_*.zip

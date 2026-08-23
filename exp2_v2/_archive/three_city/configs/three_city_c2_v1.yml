@@ -1,0 +1,67 @@
+experiment:
+  id: three_city_c2_v1
+  status: preregistered_no_model_runs
+  description: "Infer structure from two city examples; forecast a third."
+
+model_prompt:
+  disclose_number_of_types: false
+  disclose_target_matches_reference: false
+  disclose_gain: false
+  disclose_prior: false
+  disclose_equation: false
+  disclose_noise: false
+  ask_type_probability: false
+  ask_gain: false
+  ask_one_forecast_only: true
+
+hidden_evaluator_world:
+  initial_poll: 50.0
+  high_response: 1.0
+  buffered_response: 0.25
+  target_step_noise: 2.0
+  reference_step_noise: 0.75
+  context_cue_reliability_for_oracle_only: 0.80
+
+design:
+  episodes: 120
+  reference_weeks: 6
+  target_news_magnitudes: [2, 12, 10]
+  target_prefixes: [0, 1, 2, 3]
+  context_conditions:
+    - none
+    - orthogonal
+    - cue_high
+    - cue_low
+  context_paraphrase_families: 3
+  balanced_factors:
+    - target_response
+    - reference_A_B_label
+    - target_news_sign
+    - context_paraphrase_family
+
+baselines:
+  - naive_no_news_response
+  - frequentist_target_only
+  - pooled_exemplar_regression
+  - two_prototype_exemplar
+  - target_only_structure_informed_bayes
+  - context_oracle_ceiling
+  - clairvoyant_ceiling
+
+primary_metrics:
+  - next_poll_mae
+  - behavioral_response_error
+  - behavioral_type_accuracy
+  - aligned_context_improvement_at_k0_k1
+  - orthogonal_context_movement
+  - paired_high_vs_low_context_movement
+  - misleading_context_override_after_k2
+
+gates_before_model_evaluation:
+  - frozen_task_jsonl_and_manifest
+  - prompt_non_disclosure_tests
+  - weak_k1_and_diagnostic_k2_oracle_check
+  - label_and_sign_balance
+  - orthogonal_context_invariance
+  - human_context_template_review
+  - equal_completed_episode_set_across_models

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Reviewer access · Stage 3 evidence review{% endblock %}
+{% block content %}
+  <section class="card narrow-card">
+    <p class="eyebrow">Stage 3 materials annotation</p>
+    <h1>Reviewer access</h1>
+    <p>Enter the reviewer code you were given. The code determines your blinded item order and keeps your progress available if you return later.</p>
+    <form method="post" class="stacked-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="access_code">Reviewer code</label>
+      <input id="access_code" name="access_code" type="password" autocomplete="off" required autofocus>
+      <button class="primary-button" type="submit">Continue</button>
+    </form>
+  </section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Reviewer login{% endblock %}
+{% block content %}
+  <section class="card narrow">
+    <h2>Reviewer access</h2>
+    <p>
+      Enter the code you received. You will see a short set of hypothetical
+      forecasting cases. Judge only the material shown in each case and work
+      independently; please do not discuss individual items with other reviewers.
+    </p>
+    <p class="note">
+      The cases test the instrument, not you. Some premises are deliberately
+      hypothetical. Do not search the web or use an AI assistant.
+    </p>
+    <form method="post" class="stack">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="access_code">Reviewer code</label>
+      <input id="access_code" name="access_code" autocomplete="off" required autofocus>
+      <button type="submit">Begin review</button>
+    </form>
+  </section>
+{% endblock %}

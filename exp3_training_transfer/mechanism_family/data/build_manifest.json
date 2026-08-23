@@ -1,0 +1,57 @@
+{
+  "calibration_length": 10,
+  "calibration_trajectories": 3,
+  "datasets": [
+    {
+      "disclosure": "disclosed",
+      "heldout_rows": 720,
+      "mode": "causal_family",
+      "path": "data/disclosed_causal_family",
+      "train_rows": 4800
+    },
+    {
+      "disclosure": "disclosed",
+      "heldout_rows": 720,
+      "mode": "population_prior",
+      "path": "data/disclosed_population_prior",
+      "train_rows": 4800
+    },
+    {
+      "disclosure": "disclosed",
+      "heldout_rows": 720,
+      "mode": "structureless",
+      "path": "data/disclosed_structureless",
+      "train_rows": 4800
+    },
+    {
+      "disclosure": "undisclosed",
+      "heldout_rows": 720,
+      "mode": "causal_family",
+      "path": "data/undisclosed_causal_family",
+      "train_rows": 4800
+    },
+    {
+      "disclosure": "undisclosed",
+      "heldout_rows": 720,
+      "mode": "population_prior",
+      "path": "data/undisclosed_population_prior",
+      "train_rows": 4800
+    },
+    {
+      "disclosure": "undisclosed",
+      "heldout_rows": 720,
+      "mode": "structureless",
+      "path": "data/undisclosed_structureless",
+      "train_rows": 4800
+    }
+  ],
+  "k_values": [
+    3,
+    6,
+    9
+  ],
+  "n_eval_per_world": 60,
+  "n_train_per_world": 600,
+  "protocol": "c3_mechanism_disclosure_v3",
+  "target_length": 9
+}

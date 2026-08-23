@@ -1,0 +1,104 @@
+{
+  "candidate_counts_before_family_filter": {
+    "dev": 1567,
+    "test": 2339,
+    "train": 1736
+  },
+  "cross_split_key_overlap": {
+    "dev_test": 0,
+    "train_dev": 0,
+    "train_test": 0
+  },
+  "design": {
+    "cross_split_exclusions": [
+      "event_id",
+      "series_id",
+      "normalized_question_template"
+    ],
+    "dev": "2025-07-01 <= decision_ts < 2026-01-01",
+    "domains": "politics, government, macroeconomics, and geopolitics",
+    "forbidden_model_fields": [
+      "resolution",
+      "latest_prices",
+      "final volume",
+      "closed/active flags",
+      "post-cutoff candles",
+      "carry-forward candles"
+    ],
+    "history_points_in_prompt": 14,
+    "horizon_days": 30,
+    "labels": "price_extreme YES/NO resolutions only",
+    "maximum_price_staleness_days": 7,
+    "minimum_genuine_prices": 4,
+    "one_cutoff_per_market": true,
+    "test": "2026-01-01 <= decision_ts < 2026-07-01",
+    "train": "decision_ts < 2025-07-01",
+    "training_prompt_presentations": 4800
+  },
+  "known_limitation": "The archive has no revision history for static question/rules text; this protocol treats those listing fields as time-invariant and censors every timestamped field.",
+  "output_sha256": {
+    "dev.tasks.jsonl": "702f257fd952a4fed5f4798cd4a64165dab630d67b2e4e1b6820c68e3af8f59f",
+    "test.tasks.jsonl": "b5fd65f8ad6272e5e7de07d5ad602d00fa84cc216a6db55e682ad4595bf09a20",
+    "train.tasks.jsonl": "cf0ab18be6046cb45292c7021ebd268c97a1599ff5e1a60f2e79b01f121c50af"
+  },
+  "protocol_version": "exp3b_registered_v1",
+  "selected": {
+    "dev": {
+      "count": 512,
+      "distinct_events": 292,
+      "distinct_series": 0,
+      "distinct_templates": 453,
+      "first_decision_ts": "2025-07-01T00:00:00Z",
+      "last_decision_ts": "2025-12-31T00:00:00Z",
+      "mean_market_yes_prob": 0.30462597656250007,
+      "yes_rate": 0.275390625
+    },
+    "test": {
+      "count": 1024,
+      "distinct_events": 493,
+      "distinct_series": 0,
+      "distinct_templates": 866,
+      "first_decision_ts": "2026-01-01T00:00:00Z",
+      "last_decision_ts": "2026-06-06T00:00:00Z",
+      "mean_market_yes_prob": 0.3226118164062503,
+      "yes_rate": 0.30078125
+    },
+    "train": {
+      "count": 1736,
+      "distinct_events": 991,
+      "distinct_series": 0,
+      "distinct_templates": 1456,
+      "first_decision_ts": "2023-01-02T00:00:00Z",
+      "last_decision_ts": "2025-06-30T12:00:00Z",
+      "mean_market_yes_prob": 0.32039256912442365,
+      "yes_rate": 0.31105990783410137
+    }
+  },
+  "skipped": {
+    "already_effectively_resolved": 3631,
+    "dev_seen_family": 78,
+    "fewer_than_four_real_prices": 6522,
+    "missing_open_or_close_time": 330,
+    "not_open_before_cutoff": 29161,
+    "not_price_extreme_resolution": 57637,
+    "not_yes_no_binary": 1120894,
+    "outside_judgment_domain": 563262,
+    "outside_registered_time_window": 1624,
+    "test_seen_family": 149
+  },
+  "source": {
+    "expected_sha256": "5697f7672bcb8dcc0af73272ff9ff1ec662241e92b0ac84f6e2bd4ba8f638e7d",
+    "fully_scanned": true,
+    "parsed_rows": 1788703,
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/raw/polymarket_full_market_dataset_2026_07_12_235011.json",
+    "sha256": "5697f7672bcb8dcc0af73272ff9ff1ec662241e92b0ac84f6e2bd4ba8f638e7d"
+  },
+  "status": "pass",
+  "training_schedule": {
+    "maximum_repetitions": 3,
+    "minimum_repetitions": 2,
+    "prompt_presentations": 4800,
+    "task_order_sha256": "2af4b46b53bed6d04b00f0e2980adb0890f7638ff4b6d2a18b1be330784e72d1",
+    "unique_markets": 1736
+  }
+}

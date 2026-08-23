@@ -1,0 +1,25 @@
+{
+  "applied": true,
+  "arm": "abc_wrong_context",
+  "duplicate_records_discarded": 11,
+  "lines_parsed": 1250,
+  "malformed_lines_discarded": 14,
+  "missing_task_ids": [
+    "coincityclaude250v4_0005_c4",
+    "coincityclaude250v4_0025_c4",
+    "coincityclaude250v4_0036_c4",
+    "coincityclaude250v4_0037_c4",
+    "coincityclaude250v4_0042_c4",
+    "coincityclaude250v4_0095_c4",
+    "coincityclaude250v4_0144_c4",
+    "coincityclaude250v4_0147_c4",
+    "coincityclaude250v4_0173_c4",
+    "coincityclaude250v4_0234_c4",
+    "coincityclaude250v4_0242_c4"
+  ],
+  "model": "FW-Kimi-K3",
+  "reason": "concurrent appends by a resumed shard and an interrupted controller's stragglers",
+  "resolution": "kept the earliest record carrying a model response for each task; no task contributes more than one response",
+  "tasks_missing_after_repair": 11,
+  "unique_tasks_kept": 1239
+}

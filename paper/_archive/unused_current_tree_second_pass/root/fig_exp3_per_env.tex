@@ -1,0 +1,23 @@
+% Experiment 3 — per-environment transfer: each held-out world on its own scale.
+% GENERATED: paper/figures/exp3_per_env.pdf from the OAT eval dumps by
+% exp3_training_transfer/dag_family/plot_per_env.py. Regenerate with:  python3 plot_per_env.py
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp3_per_env.pdf}
+\caption{\textbf{Per-environment transfer.} Figure~\ref{fig:exp3-curves} pools four worlds. Here each held-out world is
+reported separately, on its own scale, against its own references at $h^\star$ and informative
+prefixes. First, $\pi$ is dominated by the
+delayed worlds (\emph{mediators}, \emph{chain-4}), where both arms sit \emph{above} persistence; on the
+two immediate worlds both comfortably beat it. Second, $\varepsilon$ is \emph{not comparable across
+columns}: the recoverable response $\gamma^\star$ spans $0.10$--$1.00$ in \emph{direct} but only
+$0.022$--$0.216$ in \emph{chain-4}, so pooling $|\hat\gamma-\gamma^\star|$ across worlds averages
+quantities on different scales.
+The columns also show why $\varepsilon$ and $\rho$ must be read \emph{together}. On \emph{chain-4} the
+structureless control attains the \emph{lower} $\varepsilon$ while its $\rho$ collapses toward zero: it shrinks $\hat\gamma$ onto the small true mean and is calibrated but
+uninformative. This is the shrinkage solution the reward was designed to exclude. On \emph{mediators} the family arm separates on both axes.
+At the completed endpoint the family arm has lower $\pi$ and higher $\rho$ on
+\emph{direct} and \emph{two-news-feedback}, while the control has lower $\pi$ on
+the two delayed worlds. Bands are 95\% t-CI over all three paired seeds, clipped
+to each statistic's admissible range.}
+\label{fig:exp3-per-env}
+\end{figure*}

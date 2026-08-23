@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Item {{ index + 1 }} of {{ total }} · Stage 3 evidence review{% endblock %}
+{% block content %}
+  <div class="progress-block" aria-label="Review progress">
+    <div class="progress-copy">
+      <strong>Item {{ index + 1 }} of {{ total }}</strong>
+      <span>{{ completed }} saved</span>
+    </div>
+    <div class="progress-track"><span style="width: {{ (completed / total * 100) | round }}%"></span></div>
+  </div>
+
+  <article class="card evidence-card">
+    <p class="eyebrow">Forecasting question</p>
+    <h1>{{ item.question }}</h1>
+    {% if item.get('forecast_context') %}
+      <div class="forecast-context"><strong>Information available on June 10, before the synthetic report</strong><span>{{ item.forecast_context }}</span></div>
+    {% endif %}
+    <details class="resolution-box">
+      <summary>Read the full resolution criteria</summary>
+      <div class="resolution-text">{{ item.resolution_criteria }}</div>
+    </details>
+    <div class="synthetic-report">
+      <div class="report-label">Synthetic report</div>
+      <p class="synthetic-notice">{{ item.synthetic_notice }}</p>
+      <h2>{{ item.evidence_headline }}</h2>
+      <p>{{ item.evidence_text }}</p>
+    </div>
+  </article>
+
+  <form method="post" class="card questions-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <fieldset>
+      <legend><span>1</span> Conditional direction</legend>
+      <p class="prompt">If this synthetic report were accurate, how would it affect the probability that the market resolves YES?</p>
+      <div class="choice-list">
+        {% for value, label in directions %}
+          <label class="choice-row"><input type="radio" name="conditional_direction" value="{{ value }}" {% if saved.get('conditional_direction') == value %}checked{% endif %} required><span>{{ label }}</span></label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    {% set scales = [
+      ('direction_confidence', 'Confidence in your direction judgment', 'Not confident', 'Very confident'),
+      ('clarity', 'Clarity of the report and its relevance', 'Very unclear', 'Very clear'),
+      ('plausibility', 'Plausibility as a real news development', 'Very implausible', 'Very plausible')
+    ] %}
+    <fieldset>
+      <legend><span>2</span> Quick ratings</legend>
+      <p class="prompt">Choose one score on each row. For plausibility, ignore whether the fictional report actually occurred.</p>
+      <div class="rating-group">
+        {% for field, heading, low, high in scales %}
+          <div class="compact-scale">
+            <h3>{{ heading }}</h3>
+            <div class="scale-labels"><span>{{ low }}</span><span>{{ high }}</span></div>
+            <div class="scale-row">
+              {% for score in range(1, 6) %}
+                <label><input type="radio" name="{{ field }}" value="{{ score }}" {% if saved.get(field) | string == score | string %}checked{% endif %} required><span>{{ score }}</span></label>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span>3</span> Usable hypothetical premise</legend>
+      <p class="prompt">Is the report coherent and specific enough to use as a hypothetical premise if a forecasting task explicitly tells you to assume it is accurate?</p>
+      <div class="choice-list compact-choices">
+        {% for value, label in ternary %}
+          <label class="choice-row"><input type="radio" name="usable_premise" value="{{ value }}" {% if saved.get('usable_premise') == value %}checked{% endif %} required><span>{{ label }}</span></label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <div class="submit-row">
+      <button class="primary-button" type="submit">Save and continue</button>
+      <span>Your answer can be edited later.</span>
+    </div>
+  </form>
+
+  <nav class="item-nav" aria-label="Move between items">
+    {% if previous_id %}<a href="{{ url_for('review_item', item_id=previous_id) }}">← Previous item</a>{% else %}<span></span>{% endif %}
+    {% if next_id %}<a href="{{ url_for('review_item', item_id=next_id) }}">Next item →</a>{% endif %}
+  </nav>
+{% endblock %}

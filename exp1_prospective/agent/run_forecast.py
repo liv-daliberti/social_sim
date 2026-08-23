@@ -27,9 +27,7 @@ from __future__ import annotations
 import argparse
 import json
 import fcntl
-import math
 import statistics
-import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -120,6 +118,7 @@ def _run_k_times(
     write_fn=None,
     agent_name: str = AGENT_NAME,
     agent_version: str = AGENT_VERSION,
+    max_output_tokens: int | None = None,
 ) -> dict:
     """Run forecast_market k times.
 
@@ -139,6 +138,7 @@ def _run_k_times(
             agent_name=agent_name,
             agent_version=agent_version,
             do_third_turn=do_third_turn,
+            max_output_tokens=max_output_tokens,
             verbose=verbose,
         )
         d = rec.to_dict()
@@ -228,6 +228,8 @@ def main() -> None:
                     help="Azure AI Foundry agent name.")
     ap.add_argument("--agent-version",  type=str,  default=AGENT_VERSION,
                     help="Azure AI Foundry agent version.")
+    ap.add_argument("--max-output-tokens", type=int, default=None,
+                    help="Cap output tokens per turn (use 1500 for gpt-5.4-pro to avoid Azure timeout).")
     ap.add_argument("--no-third-turn",  action="store_true",
                     help="Skip the optional 3rd evidence-deepening turn (faster).")
     ap.add_argument("--verbose",        action="store_true",
@@ -239,7 +241,7 @@ def main() -> None:
     # ── resolve input ──────────────────────────────────────────────────────────
     input_path = args.input or _latest_diverse(_SEL_DIR)
     if input_path is None or not input_path.exists():
-        print(f"No diverse JSONL found.  Run diversify_markets.py first.")
+        print("No diverse JSONL found.  Run diversify_markets.py first.")
         sys.exit(1)
 
     with input_path.open() as f:
@@ -346,6 +348,7 @@ def main() -> None:
                     write_fn=_write,
                     agent_name=args.agent_name,
                     agent_version=args.agent_version,
+                    max_output_tokens=args.max_output_tokens,
                 )
                 # final record already written by write_fn on last run
 

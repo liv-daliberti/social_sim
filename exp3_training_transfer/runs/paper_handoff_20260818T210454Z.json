@@ -1,0 +1,57 @@
+{
+  "created_at": "20260818T210454Z",
+  "policy": "afterany scheduler handoff followed by fail-closed exact-roster validation; no table is written from an incomplete grid",
+  "current_campaign": {
+    "finalizer_job_id": "30728529",
+    "replaces_cancelled_job_id": "30727842",
+    "dependency_semantics": "afterany",
+    "dependency_count": 56,
+    "mechanism_ledger": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T215355Z.json",
+    "polymarket_extension_ledger": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z.json",
+    "script": "exp3_training_transfer/finalize_current_campaign.sbatch",
+    "script_sha256": "64953a0b2cebda47ca8f4d030e16d949edb30e8754120025497b65ea504473e4",
+    "renderers": {
+      "mechanism_sha256": "03db6ee83a9d4084eed427d9dcfea9cc0812e9891d0f65c51eeaa9195d2bd57c",
+      "polymarket_sha256": "f9b64c3e0115c2213067ccc69ab6c808ada43a3610dd3595e7a391f8339b69a4"
+    },
+    "outputs": [
+      "paper/tables/exp3c_structural_ood_overall.tex",
+      "paper/tables/exp3c_structural_ood_greedy.tex",
+      "paper/tables/exp3c_structural_ood_stochastic.tex",
+      "paper/tables/exp3c_structural_ood_secondary.tex",
+      "paper/tables/exp3b_model_roster_results.tex",
+      "paper/ICLR/tables/exp3c_structural_ood_overall.tex",
+      "paper/ICLR/tables/exp3b_model_roster_results.tex",
+      "paper/main.pdf",
+      "paper/ICLR/main.pdf"
+    ]
+  },
+  "coin_city_structural_campaign": {
+    "finalizer_job_id": "30728530",
+    "replaces_cancelled_job_id": "30727843",
+    "dependency_semantics": "afterany",
+    "dependency_job_ids": [
+      "30723979", "30723980", "30723981", "30723982", "30723983", "30723984",
+      "30723985", "30723987", "30723988", "30723989", "30723990", "30723991",
+      "30723992", "30723993", "30723994", "30723995", "30723996", "30723997",
+      "30723998", "30723999", "30724000", "30724001", "30724002", "30724003"
+    ],
+    "campaign_ledger": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z.json",
+    "script": "exp3_training_transfer/coin_city_structural/finalize_campaign.sbatch",
+    "script_sha256": "c032aca3f653b73d2053024024c1244ea660d98b2b14fcb4d6a094034611a174",
+    "renderer": "exp3_training_transfer/coin_city_structural/make_paper_outputs.py",
+    "renderer_sha256": "fbd2464a4de0f19047818d2d85109fd7d94e13b6ab24390fa4bd7e90cc5de67e",
+    "outputs": [
+      "paper/tables/exp3_coin_structural_summary.tex",
+      "paper/tables/exp3_coin_structural_primary.tex",
+      "paper/tables/exp3_coin_structural_cues.tex",
+      "paper/tables/exp3_coin_structural_diagnostics.tex",
+      "paper/ICLR/tables/exp3_coin_structural_summary.tex",
+      "paper/ICLR/tables/exp3_coin_structural_primary.tex",
+      "paper/ICLR/tables/exp3_coin_structural_cues.tex",
+      "paper/ICLR/tables/exp3_coin_structural_diagnostics.tex",
+      "paper/main.pdf",
+      "paper/ICLR/main.pdf"
+    ]
+  }
+}

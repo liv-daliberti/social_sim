@@ -42,7 +42,6 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 # ── self-contained: import vendored client from this folder ────────────────────
 _HERE = Path(__file__).resolve().parent
@@ -276,9 +275,9 @@ def main() -> None:
     if ok:
         pts = sorted(r["n_price_points"] for r in ok)
         n   = len(pts)
-        print(f"Price-point counts (markets with data):")
+        print("Price-point counts (markets with data):")
         print(f"  min {pts[0]}  median {pts[n//2]}  p90 {pts[int(n*0.9)]}  max {pts[-1]}")
-        print(f"\nSample (first 5):")
+        print("\nSample (first 5):")
         for r in ok[:5]:
             first = r["price_history"][0]  if r["price_history"] else {}
             last  = r["price_history"][-1] if r["price_history"] else {}

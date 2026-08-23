@@ -1,0 +1,45 @@
+{
+  "datasets": [
+    {
+      "heldout_rows": 1440,
+      "mode": "causal",
+      "path": "data/causal",
+      "train_rows": 4800
+    },
+    {
+      "heldout_rows": 1440,
+      "mode": "population_prior",
+      "path": "data/population_prior",
+      "train_rows": 4800
+    },
+    {
+      "heldout_rows": 1440,
+      "mode": "structureless",
+      "path": "data/structureless",
+      "train_rows": 4800
+    }
+  ],
+  "domains": [
+    "coin_city",
+    "coin_harbor"
+  ],
+  "eval_per_domain_structure_cue_k": 30,
+  "eval_structures": [
+    "direct_a",
+    "mediated_b"
+  ],
+  "heldout_rows": 1440,
+  "k_values": [
+    0,
+    2,
+    4,
+    8
+  ],
+  "protocol": "coin_city_structural_transfer_v1",
+  "reference_length": 14,
+  "target_length": 8,
+  "train_rows": 4800,
+  "train_structures": [
+    "direct_a"
+  ]
+}

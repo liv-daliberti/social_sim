@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "annotation.schema.json",
+  "title": "Blinded human annotation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reviewer_id",
+    "panel",
+    "task_id",
+    "direction",
+    "confidence",
+    "started_at",
+    "submitted_at",
+    "duration_seconds"
+  ],
+  "properties": {
+    "reviewer_id": {"type": "string"},
+    "panel": {"enum": ["full_context", "shortcut"]},
+    "task_id": {"type": "string"},
+    "direction": {"enum": ["increase", "decrease", "no_effect", "ambiguous"]},
+    "confidence": {"type": "integer", "minimum": 1, "maximum": 5},
+    "started_at": {"type": "string", "format": "date-time"},
+    "submitted_at": {"type": "string", "format": "date-time"},
+    "duration_seconds": {"type": "number", "minimum": 0}
+  }
+}

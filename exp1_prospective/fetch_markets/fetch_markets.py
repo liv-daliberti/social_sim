@@ -329,13 +329,13 @@ def write(records: list[dict], stats: dict, out_dir: Path) -> tuple[Path, Path]:
 
 def print_summary(records: list[dict]) -> None:
     q = [r for r in records if is_active_unresolved(r) and is_binary(r)]
-    print(f"Summary")
+    print("Summary")
     print(f"  Total records       : {len(records):>7,}")
     print(f"  Active + binary     : {len(q):>7,}")
 
     vols = sorted(r.get("volume_usd") or 0.0 for r in q)
     if vols:
-        print(f"\nVolume (active+binary, USD):")
+        print("\nVolume (active+binary, USD):")
         for lbl, p in [("min","min"),("p10",0.10),("p25",0.25),("median",0.50),
                        ("p75",0.75),("p90",0.90),("max","max")]:
             v = vols[0] if p == "min" else vols[-1] if p == "max" else _pct(vols, p)
@@ -347,14 +347,14 @@ def print_summary(records: list[dict]) -> None:
         print(f"  vol >= $100k: {sum(1 for v in vols if v >= 100_000):>7,}")
 
     cats = Counter((r.get("category") or "unknown").lower() for r in q)
-    print(f"\nTop categories (active+binary):")
+    print("\nTop categories (active+binary):")
     for cat, cnt in cats.most_common(15):
         bar = "▪" * min(40, cnt // max(1, len(q) // 40))
         print(f"  {cat:<30s} {cnt:>5,}  {bar}")
 
     sample = [r for r in q if (r.get("volume_usd") or 0) >= 10_000][:8]
     if sample:
-        print(f"\nSample (vol >= $10k):")
+        print("\nSample (vol >= $10k):")
         for r in sample:
             vol = r.get("volume_usd") or 0
             p   = r.get("yes_price")

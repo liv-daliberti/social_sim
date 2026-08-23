@@ -1,0 +1,49 @@
+experiment:
+  id: three_city_latent_type_v1
+  description: "Observe two reference cities, then repeatedly forecast a third."
+
+world:
+  initial_poll: 50
+  phi: 0.90
+  sigma_opinion: 1.0
+  sigma_survey: 2.0
+
+city_types:
+  strong_gain: 1.0
+  weak_gain: 0.25
+  target_prior:
+    matches_reference_a: 0.5
+    matches_reference_b: 0.5
+  randomise_reference_labels: true
+
+histories:
+  reference_weeks: 6
+  target_weeks: 5
+  reference_evidence: diagnostic
+  target_evidence: diagnostic
+
+probe:
+  prefixes: [0, 1, 2, 3, 4, 5]
+  counterfactual_next_news: [-10, -5, 5, 10]
+  one_model_call_per_prefix: true
+  direct_readouts:
+    - prob_matches_a
+    - points_per_news
+  behavioural_readout: "slope of predicted next poll on counterfactual news"
+
+primary_metrics:
+  - probability_assigned_to_correct_city_type
+  - type_brier_score
+  - absolute_gain_error
+  - adaptation_from_midpoint_to_correct_prototype
+  - counterfactual_next_poll_mae
+
+controls:
+  - name: naive
+    description: "Always uses the fixed 50/50 population-average gain."
+  - name: frequentist
+    description: "Unregularized gain regression using only City C observations."
+  - name: bayes_oracle
+    description: "Knows the DGP, learns both reference gains, and classifies City C."
+  - name: clairvoyant_ceiling
+    description: "Also knows City C's hidden gain and current latent opinion."

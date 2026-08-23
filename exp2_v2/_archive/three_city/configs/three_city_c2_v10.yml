@@ -1,0 +1,59 @@
+experiment:
+  id: three_city_c2_v10_structural_choice_clue
+  version: 10
+  run_directory: data/three_city_c2_v10/full_k1_5_structural_choice
+  execution: local_login_node_after_prompt_approval
+
+design:
+  episodes: 120
+  seed_offset: 91000
+  evidence_rounds: [1, 2, 3, 4, 5]
+  cumulative_city_c_cases: [1, 2, 4, 8, 16]
+  reference_cases_per_city: 8
+  task_count_per_arm: 600
+  calls_per_model: 1800
+  total_calls_three_models: 5400
+  numerical_dgp_identical_to_v9: true
+
+arms:
+  - id: c_only
+    information: City C observations and City C profile score only
+    prompt_identical_to_v9: true
+  - id: abc
+    information: City A, B, and C observations and continuous profile scores
+    prompt_identical_to_v9: true
+  - id: abc_structural_clue
+    information: identical to abc
+    guidance: structural choice exists but the clue does not identify A or B
+
+structural_choice_clue:
+  reveals_closer_city: false
+  reveals_distances: false
+  reveals_outcome_information: false
+  text: >-
+    Structural clue: One of Cities A and B is a more relevant analogue for
+    City C than the other. The displayed regional-profile indices are
+    informative about which reference is more relevant, although the
+    resemblance is imperfect and City C may still respond differently.
+
+continuous_dgp:
+  starting_poll: 50.0
+  news_value: 8
+  case_noise_sd_poll_points: 4.0
+  city_deviation_sd_response_units: 0.18
+  low_reference_profile_range: [0.10, 0.35]
+  high_reference_profile_range: [0.65, 0.90]
+  target_profile_margin_inside_references: 0.05
+  episode_intercept_range: [0.30, 0.45]
+  episode_profile_slope_range: [0.35, 0.65]
+  discrete_city_types: false
+
+models:
+  - claude-opus-4-8
+  - DeepSeek-V4-Pro
+  - gpt-5.4
+
+generation:
+  temperature: 0
+  max_tokens: 512
+  max_attempts: 1
