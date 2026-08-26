@@ -19,11 +19,12 @@ and six scale-valid Qwen~2.5 or Llama-family open-weight models
 \citep{qwen2025qwen25,grattafiori2024llama}; Appendix~\ref{app:record-processing}
 retains one mixed-scale deployment for compliance diagnostics.
 
-Agents return an event model, $P(H_1)$ (YES), $P(H_2)$ (NO), and headline forecast
-$\hat p=P(H_1)$. With search then disabled, they receive nine generated packets per
-market: three pro-$H_1$, three anti-$H_1$, and three topical but orthogonal, giving
-30,094 valid updates. The prompt carries one packet field, the snippet text; every other field is
-withheld and read only at scoring (Appendix~\ref{app:exp1-withholding}).
+Agents return an event model and $P(H_1)$ (YES), $P(H_2)$ (NO), with headline
+forecast $\hat p=P(H_1)$. With search then disabled, they receive nine generated
+packets per market---three pro-$H_1$, three anti-$H_1$, three topical but
+orthogonal---giving 30,094 valid updates. The prompt carries one packet field, the
+snippet text; every other field is withheld and read only at scoring
+(Appendix~\ref{app:exp1-withholding}).
 
 We report two measures and designate neither as primary. \textbf{Sensitivity}
 divides mean absolute directional by orthogonal movement, with D/O reporting both
@@ -31,16 +32,13 @@ means in percentage points, and asks whether a model discriminates probative fro
 topic-matched evidence. \textbf{Evidence--Hypothesis Consistency (EHC)} is
 directional correctness for stated $P(H_1)$ among updates of at least 3 points,
 and asks whether it moves the right way. Appendix~\ref{app:exp1-alternatives}
-gives the lexical and human baselines that bound each. Color bands use sensitivity cutpoints $2.5,5,10$ and
-EHC cutpoints $.90,.95,.98$. Intervals use 20,000 market-clustered resamples
-retaining all packets and repeated initial runs;
-Appendix~\ref{app:exp1-threshold-robustness} gives threshold and headline-field
-checks.
-
-Seven analysis-set reviewers judged 18 balanced packets against the frozen
-direction key, matching it on 76.2\% of judgments.
-Appendix~\ref{app:exp1-limitations} gives the eight-completer tally, the disclosed
-post-inspection exclusion, and every item-level judgment.
+gives the lexical and human baselines that bound each, and color bands use
+sensitivity cutpoints $2.5,5,10$ and EHC cutpoints $.90,.95,.98$. Intervals use
+20,000 market-clustered resamples retaining all packets and repeated initial runs
+(Appendix~\ref{app:exp1-threshold-robustness}). Seven analysis-set reviewers
+judged 18 balanced packets against the frozen direction key, matching it on
+76.2\% of judgments; Appendix~\ref{app:exp1-limitations} gives the tally, the
+disclosed post-inspection exclusion, and every item-level judgment.
 
 
 \begin{figure}[!ht]
@@ -59,10 +57,10 @@ opposite-context arms change only the City C sentence.}
 \label{sec:methods-coin-city}
 
 Each Coin City episode describes three cities with stable but unobserved poll
-responses to news. City A and City B provide reference cases. City C provides up to
-four observations and a one-sentence description of its news environment. That
-sentence names a response regime, and the reference descriptions state which regime
-responds more strongly, but no prompt states a coefficient.
+responses to news. City A and City B provide reference cases; City C provides up to
+four observations and a one-sentence description naming a response regime. The
+reference descriptions state which regime responds more strongly, but no prompt
+states a coefficient.
 
 We generate 250 independent episodes. For city $j$ in episode $i$,
 \begin{equation}
@@ -90,9 +88,8 @@ details appear in Appendix~\ref{app:coin-city}.
 Claude Opus~4.8, Claude Opus~5, GPT-5.6, DeepSeek-V4-Pro, Kimi K3, and Gemini 3.6
 Flash are evaluated on every frozen episode, evidence depth, and arm: 30,000
 attempts in total. Forecast MAE is measured against the noise-free expectation
-$p_0+g_Cx$. The forecast-implied response is
-$\hat g=(\hat p-p_0)/x$. We report its MAE and across-episode correlation with
-$g_C$.
+$p_0+g_Cx$; the forecast-implied response $\hat g=(\hat p-p_0)/x$ is reported as
+MAE and as across-episode correlation with $g_C$.
 
 A deterministic analogical benchmark uses the cue to choose City A or B, fits that
 reference by through-origin OLS, and refits as City C cases arrive
@@ -133,11 +130,10 @@ task before a paired seed-first bootstrap. The Qwen3-4B scale replication,
 structureless control, Llama-8B comparator, prompts, and parameters appear in
 Appendix~\ref{app:exp3-coin-structural}.
 
-\begin{center}
-\begin{minipage}{\linewidth}
+\begin{figure}[b]
 \centering
 \includegraphics[width=\linewidth]{figures/exp1_protocol_four_panels.pdf}
-\captionof{figure}{\textbf{Prospective evidence-intervention protocol.} An agent forecasts an
+\caption{\textbf{Prospective evidence-intervention protocol.} An agent forecasts an
 unresolved question, then receives one generated evidence packet with search off.
 The packet's intended direction is never shown to the agent; it is read only when
 the update is scored.
@@ -146,8 +142,7 @@ packet. Selectivity compares movement under directional and orthogonal packets.
 The output contract requires $\hat p=P(H_1)$, so agreement between those fields is
 partly schema compliance.}
 \label{fig:exp1-pipeline}
-\end{minipage}
-\end{center}
+\end{figure}
 
 \subsection{Experiment 4: Historical-Market Training and Sealed Evaluation}
 \label{sec:methods-exp4-polymarket}

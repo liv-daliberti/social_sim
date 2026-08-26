@@ -1,103 +1,93 @@
 \begin{abstract}
-Language models produce accurate forecasts, but accuracy alone does not reveal
-whether they reason about how a situation works or rely on surface cues.
-Forecasting provides a demanding behavioral test: reliable predictions should use
-relevant evidence, infer relationships from limited observations, revise them when
-context changes, and transfer beyond familiar cases. Across real forecasting
-questions and controlled tasks\footnote{%
+A forecast commits to a structured view of the world: which evidence matters, how it
+connects to an outcome, and when that relationship should change. This paper evaluates how
+language models (LM) revise that commitment in real markets and controlled
+tasks\footnote{%
   \micon{huggingface.png}\;%
   \href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
-  {Study dataset and artifacts}. Link anonymized for review.%
-}, models distinguish direction-bearing evidence, use context to select predictive
-relationships, and benefit from training when mechanisms or events change. These
-gains extend to unfamiliar synthetic dynamics and held-out market events, although
-lower error does not always recover the hidden dynamics. Together, the results show
-that language models infer and reuse predictive structure when a task makes that
-structure recoverable.
+  {Study dataset and artifacts}\quad
+  \micon{gh_logo.png}\;%
+  \href{https://github.com/anonymous-review/forecasting-study-code}%
+  {Code repository}. Links anonymized for review.%
+}.
+Across 30,094 market updates, models move $1.9$--$24\times$ farther for
+outcome-bearing evidence than for topic-matched controls. In Coin City, a
+qualitative cue selects a response regime: reversing the mapping reverses
+forecasts, while observations progressively override the cue. Hidden-state probes
+across Qwen and Llama recover the cue-selected response family but not
+within-family coefficient variation.
+Sufficiently large models also recover arbitrary mappings that change by episode,
+at family-specific scales. Episode-matched training transfers structure under
+joint domain-and-mechanism shift; proper-score training improves base checkpoints
+on sealed markets. The operative relationship can be intervened on, decoded from
+hidden states, revised, and transferred. These capabilities demonstrate LM
+inductive reasoning.
 \end{abstract}
-
 \section{Introduction}
+\label{sec:introduction}
 \begin{wrapfigure}{r}{0.52\textwidth}
 \vspace{-2.0em}
 \centering
 \includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{figures/teaser_revised.pdf}
 \vspace{-0.6cm}
-\caption{
+\caption{ \textbf{LM forecasts are not solely na\"\i ve or frequentists.}
 \small
-After observing two heads in a row at a carnival coin-flipping game, forecasts
-differ depending on whether the coin is treated as fair or potentially rigged.
-We asked GPT-5.4, Claude Opus~4.8, and DeepSeek V4-Pro to forecast the next-flip
-question shown. Each logo marks that model's mean over eight temperature-$0.7$
-forecasts: $.644$, $.681$, and $.712$, respectively
-(Appendix~\ref{app:carnival-coin-probe}).}
+After two heads in a carnival coin game, LMs forecast another head more often
+when the coin may be rigged. Mean forecasts are $.644$, $.681$, and $.712$ for
+GPT-5.4, Claude Opus~4.8, and DeepSeek V4-Pro, respectively, over 8
+temperature-$0.7$ calls each (Appendix~\ref{app:carnival-coin-probe}).}
 \vspace{-0.5cm}
 \label{fig:world-knowledge-evidence}
 \end{wrapfigure}
 
-Recent language model (LM) systems approach human-crowd forecasting accuracy, and
-model ensembles can match it on some question sets
-\citep{halawi2024approaching,schoenegger2024wisdom}. Forecasting agents have now
-been tested on Metaculus, Polymarket, and Kalshi, with mixed results
-\citep{lu2025evaluating,cao2026auditable,zhang2026prediction}. Their growing ability
-motivates our question: \emph{why are language models good at forecasting?}
+Language models (LMs) achieve forecasting accuracy near a human crowd; ensembles
+match it on some question sets \citep{halawi2024approaching,schoenegger2024wisdom}.
+Results on Metaculus, Polymarket, and Kalshi
+\citep{lu2025evaluating,cao2026auditable,zhang2026prediction} raise the question:
+\emph{why are LMs competitive forecasters?} Accuracy alone cannot distinguish a
+base rate, retrieved case, market signal, or predictive relationship. These
+strategies can agree on familiar questions but diverge when context changes.
 
-A forecast connects limited evidence to an outcome through assumptions about how a
-process behaves. Figure~\ref{fig:world-knowledge-evidence} illustrates the
-distinction: after two heads, the next-flip probability remains $0.5$ if the coin is
-known to be fair, but rises when the carnival setting makes a rigged coin plausible.
-Real forecasts require similar judgments: whether news matters depends on what it
-changes, how long its effect lasts, and how that effect reaches the outcome
-\citep{mellers2014psychological,tetlock2016superforecasting}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates the distinction. After two
+heads, the next-flip probability stays at $0.5$ for a known-fair coin but rises
+when the carnival setting makes persistent bias plausible. Context, not changed
+observations, selects the past--future relationship. \textbf{Judgmental
+forecasting} performs this operation routinely, combining base rates, sparse
+observations, qualitative evidence, and domain knowledge to estimate future
+events \citep{mellers2014psychological,tetlock2016superforecasting}.
 
-The same probability can result from retrieving a similar case, mapping an analogy,
-copying a market, or applying a learned model of the process. Prompted rationales
-raise accuracy on some reasoning tasks \citep{kojima2022large}, but a verbal
-rationale cannot distinguish these possibilities, because generated explanations
-need not identify the cause of a model's output
-\citep{jacovi2020towards,turpin2023language}.
-We therefore ask: \emph{Do language models' forecasts exhibit behavioral signatures
-of inductive reasoning over learned world structure?} Here, \textbf{judgemental
-forecasting} converts incomplete, heterogeneous evidence into probabilities about
-future events. We define \emph{inductive reasoning} as inferring a predictive
-relationship from context and observations,
-revising that relationship with evidence, and applying it to a new case
-\citep{tenenbaum2006theory,tenenbaum2011mind,griffiths2010probabilistic,lake2015human,lake2017building}. \emph{World structure} refers here
-to predictive relationships among variables, not to a specified internal
-representation.
 
-\subsection{Empirical Approach}
+In this paper, we ask whether LM forecasts exhibit behavioral signatures of this process, which we refer to as \emph{inductive reasoning}: the selection of a predictive relationship from context and sparse observations, the revision of that selection as evidence accumulates, and the application of the relationship to a new case \citep{tenenbaum2006theory,tenenbaum2011mind,griffiths2010probabilistic,lake2015human,lake2017building}. We use \emph{world structure} to denote the predictive relationships among variables. Both definitions are behavioral and presume neither an explicit graph nor a particular internal representation.
+
+Pointwise accuracy cannot identify this process, and generated explanations need not reflect it \citep{jacovi2020towards,turpin2023language}. We, therefore, intervene on forecasts and measure the resulting change under contrasts with predicted directions \citep{ribeiro2020beyond,elazar2021measuring}: varying evidence direction while holding topic fixed, reversing a context--regime assignment while holding all numerical inputs fixed, adding observations that conflict with a contextual cue, and preserving the distribution of training answers while breaking their episode-level correspondence.
+
+\subsection{Empirical Progression}
 \label{sec:forecasting-as-inductive}
 
-We test three requirements of inductive forecasting:
+The four experiments form a progression organized by three questions:
 \begin{itemize}[nosep,leftmargin=*]
-  \item \textbf{Selective updating
-  (\hyperref[sec:exp1]{Experiment~1}).} On unresolved real questions, we intervene
-  on evidence direction and relevance. Across nine models and 30,094 updates,
-  forecasts follow the packet's stated direction and move $1.9$--$24\times$ farther
-  under directional packets than under topically matched orthogonal ones. The test
-  rejects indiscriminate topic reactivity, but a model can pass by classifying the
-  packet's stated implication.
-  \item \textbf{Context-guided response inference
-  (\hyperref[sec:exp2]{Experiment~2}).} In Coin City, matched prompts isolate a
-  qualitative cue that links a target city to a response regime. Adding that one
-  sentence raises the correlation between forecast-implied and latent
-  responsiveness from $-.07$--$.08$ to $\rho=.52$--$.70$ with every number held
-  fixed, and inverting it inverts the assignment. Cue inversion and accumulating
-  observations reveal whether the model uses and overrides that link; a
-  deterministic analogical baseline tests whether explicit mechanism recovery is
-  needed.
-  \item \textbf{Transfer after training
-  (\hyperref[sec:exp3]{Experiments~3 and~4}).} We train forecasting policies and
-  extend Coin City by crossing an unseen persistent mechanism with a new surface
-  domain. Rewarding episode-specific relationships beats a matched population-prior
-  control by $.32$ $[.13,.49]$ MAE under joint domain-and-mechanism shift, and
-  training on historical markets lowers sealed-test Brier score from $.1316$ to
-  $.1159$ over 1,024 held-out events. A second synthetic study evaluates broader
-  unseen mechanism compositions. Matched rewards distinguish episode-specific
-  relationships from a population response, while structureless and untrained
-  policies diagnose format learning and base-rate improvement.
+  \item \textbf{Do LMs react selectively to evidence?
+  (\hyperref[sec:exp1]{Experiment~1}).}
+  Across 30,094 updates on unresolved real questions, nine models move
+  $1.9$--$24\times$ farther for directional evidence than for topically matched
+  controls, and follow packet sign at $.89$--$.99$, where a market-held-out lexical
+  classifier reaches $.69$ and human readers $.76$. Packets withhold their polarity,
+  so the sign result is not surface matching, though the arms differ in wording and
+  the relationships involved are ones models already hold.
+  \item \textbf{Can an LM select a relationship based on context?
+  (\hyperref[sec:exp2]{Experiment~2}).}
+  A cue selects one of two response regimes: reversing it reverses forecasts,
+  and target observations weaken its effect. When arbitrary cue meanings reverse
+  across episodes, twelve of fifteen systems recover the new mapping, every hosted
+  one among them, and within Qwen3 and Llama only the larger checkpoints do. On
+  sealed episodes, linear probes of five open checkpoints decode the cue-selected
+  regime exactly where forecasts recover the mapping, and patching that
+  representation moves Qwen3-14B's zero-shot forecast.
+  \item \textbf{Are finetuned LMs able to transfer contextual relationships?
+  (\hyperref[sec:exp3]{Experiments~3} and~\hyperref[sec:exp4]{4}).}
+  Under joint domain-and-mechanism shift, Qwen3-8B episode-matched response MAE is
+  $.25$ $[.06,.47]$ lower than the population-prior control, with the same direction
+  at 4B. On a new 318-market holdout, trained Brier falls from $.1366$ to
+  $.1286$ to $.1270$ across Qwen3-4B, 8B, and 14B; the 14B score differs from
+  the contemporaneous Polymarket crowd by $+.0004$ $[-.0003,+.0014]$.
 \end{itemize}
-
-Together, these interventions test whether forecasts track changes in evidence,
-context, and the governing relationship. That pattern goes beyond outcome accuracy
-and is expected if models infer and reuse predictive structure.
