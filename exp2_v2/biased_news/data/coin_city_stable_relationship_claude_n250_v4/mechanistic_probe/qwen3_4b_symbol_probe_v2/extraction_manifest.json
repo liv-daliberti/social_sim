@@ -1,0 +1,69 @@
+{
+  "behavior_sha256": "08e2b833f0fbef89a92b108b7492dcd2fb1d1e71c198446c835362c6e75d1bdd",
+  "behavior_summary": {
+    "elapsed_seconds": 215.58499145507812,
+    "max_new_tokens": 160,
+    "parsed_count": 528,
+    "record_count": 528
+  },
+  "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+  "completed_at": "2026-08-26T16:48:40.256921+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "cuda": {
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "max_memory_allocated_bytes": 9575974400,
+        "name": "NVIDIA RTX A6000"
+      }
+    ]
+  },
+  "decode_seed": 20260824,
+  "device_map_request": "none",
+  "feature_summary": {
+    "elapsed_seconds": 155.69944310188293,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      1488,
+      37,
+      2560
+    ],
+    "hidden_size": 2560,
+    "layer_count_including_embedding": 37,
+    "mean_control_shape": [
+      1488,
+      2,
+      2560
+    ],
+    "record_count": 1488,
+    "token_count_max": 713,
+    "token_count_median": 645.0,
+    "token_count_min": 582,
+    "transformer_layer_count": 36
+  },
+  "features_sha256": "78ed5f663af03af8eebe6245d888cec0809e704a6abf24239be9d36004001a6e",
+  "gpu_memory_gib": null,
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "model_commit_source": "read from the loaded checkpoint config",
+  "model_label": "Qwen3-4B-Instruct-2507",
+  "parameter_count": 4022468096,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {},
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "python": "3.10.20",
+    "safetensors": "0.8.0",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "complete",
+  "study": "qwen3_4b_symbol_probe_v2",
+  "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+  "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01"
+}
