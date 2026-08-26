@@ -421,10 +421,13 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     assert "Forecast MAE [95\\% CI]" in source
     # Both main-text figures must stay: the roster table and the four-arm pattern.
     assert "figures/exp2_coin_city_results.pdf" in source
-    assert "figures/exp2_reference_selection.pdf" in source
     assert "figures/exp2_symbol_decoding.pdf" in source
+    # The reference-selection figure lives with its tables in the appendix.
+    assert "figures/exp2_reference_selection.pdf" not in source
+    appendix = compact("paper/experiment2_appendix.tex")
+    assert "figures/exp2_reference_selection.pdf" in appendix
     assert "cannot be reading a word it already knows" in source
-    assert "A prior attached to the words" in source
+    assert "A prior attached to the words" in appendix
 
     # The three structural claims the section is organised around.
     for heading in (
