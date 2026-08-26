@@ -2,85 +2,27 @@
 % EXPERIMENT 2 -- COIN CITY FULL DETAILS
 % ============================================================
 
-\section{Experiment 2: Context-Guided Latent-Response Inference in Coin City}
+\section{Experiment 2: Contextual Relationship Selection and Revision in Coin City}
 \label{app:coin-city}
 
-Experiment~2 tests whether models use context and sparse observations to infer a
-response relationship.
-All six deployments reuse the same 250 seeded episodes, so model and prompt-arm
-differences are paired rather than comparisons between independently sampled tests.
-
-\subsection{Figure 1 Carnival-Coin Forecasts}
-\label{app:carnival-coin-probe}
-
-The model markers in Figure~\ref{fig:world-knowledge-evidence} are empirical
-forecasts, not illustrative placements. We queried GPT-5.4, Claude Opus~4.8, and
-DeepSeek V4-Pro eight times each ($24$ calls total) at temperature $0.7$ and a
-600-token output ceiling. All $24$ responses parsed. The figure places each
-model's logo at its eight-sample mean; the green $\approx .68$ badge rounds the
-pooled mean of $.679$.
-
-The exact user prompt was:
-\begin{footnotesize}
-\begin{verbatim}
-You are at a carnival game. A coin you have never seen before is flipped
-twice in front of you, and it comes up heads both times. These two flips
-are everything you know about this coin.
-
-What is the probability that the next flip comes up heads?
-
-Think about it intuitively, the way you actually would in the
-moment -- do NOT use any formula, rule, or calculation, and do not
-work out any numbers in your reasoning. Just reason in plain words
-about what you'd expect and why. Then END your reply with your gut
-answer as a JSON object on its own line:
-{"rationale": "one short sentence, no math",
- "p_heads": <number between 0 and 1>}
-\end{verbatim}
-\end{footnotesize}
-
-\begin{center}
-\begin{minipage}{0.78\linewidth}
-\centering
-\captionof{table}{Forecasts underlying the three model markers in
-Figure~\ref{fig:world-knowledge-evidence}. Each row summarizes eight independent
-temperature-$0.7$ calls.}
-\label{tab:carnival-coin-probe}
-\small
-\begin{tabular}{lccc}
-\toprule
-Model & Mean & Median & Range \\
-\midrule
-GPT-5.4 & $.644$ & $.670$ & $[.60,.67]$ \\
-Claude Opus~4.8 & $.681$ & $.675$ & $[.65,.75]$ \\
-DeepSeek V4-Pro & $.712$ & $.750$ & $[.60,.75]$ \\
-\midrule
-Pooled ($n=24$) & $.679$ & $.670$ & $[.60,.75]$ \\
-\bottomrule
-\end{tabular}
-\end{minipage}
-\end{center}
-
-The prompt, temperature, output limit, parsed probabilities, rationales, and raw
-completions are stored in
-\path{exp2_simulated_worlds/biased_news/data/coin_probe/coin_probe_2026-06-30.jsonl};
-the collection and parsing code is
-\path{exp2_simulated_worlds/biased_news/eval/run_coin_probe.py}. The prompt names
-neither a fair nor a rigged coin. It asks for qualitative reasoning to avoid
-collapsing the probe into a requested formula, while requiring a numeric forecast
-for the plotted quantity.
+Experiment~2 tests whether context
+selects which response relationship a model applies and whether direct target
+observations revise that selection. The six primary deployments and symbol-control
+comparisons reuse the same 250 seeded episodes, so prompt-arm differences are
+paired rather than comparisons between independently sampled tests.
 
 \subsection{Design, Data-Generating Process, and Freeze}
 \label{app:coin-city-design}
 
-\subsubsection{Design at a glance}
+\subsubsection{Design summary}
 The frozen design identifier is
 \path{coin_city_stable_relationship_claude_n250_v4}. It contains 250 independent
 episodes generated from seeds 930000--930249, five target-city prefixes
-\(k\in\{0,1,2,3,4\}\), and three primary prompt arms frozen before model calls. The
-misleading-context and arbitrary-symbol arms are later, additive controls described in
-Section~\ref{app:coin-city-execution}. Every model received the same episode
-records, queries, and arm-specific prompt text.
+\(k\in\{0,1,2,3,4\}\), and three semantic-selection arms frozen before the initial
+model calls. Cue-inversion and arbitrary-symbol modules reuse those episode
+identities and numerical inputs; each has its own task manifest frozen before its
+calls (Section~\ref{app:coin-city-execution}). Every model received the same
+episode records, queries, and arm-specific prompt text.
 
 \subsubsection{Balanced latent regimes}
 Each episode crosses two binary factors: whether City A or City B is the strongly
@@ -134,11 +76,13 @@ Independent episodes & 250 \\
 Factorial cells & 63, 62, 62, 63 across the four A/B-by-C regimes \\
 Target-city prefixes & \(k\in\{0,1,2,3,4\}\) \\
 Primary prompt arms & target only; ABC/no C context; ABC/correct C context \\
-Additive control arms & ABC/misleading C context; ABC/episode-randomized arbitrary labels \\
-Evaluated deployments & Claude Opus~4.8; GPT-5.6; DeepSeek-V4-Pro; Kimi K3; Gemini 3.6 Flash; Claude Opus~5 \\
+Intervention modules & ABC/misleading C context; ABC/episode-randomized arbitrary labels \\
+Primary deployment roster & Claude Opus~4.8; GPT-5.6; DeepSeek-V4-Pro; Kimi K3; Gemini 3.6 Flash; Claude Opus~5 \\
+Symbol-comparison roster & Qwen3 4B/8B/14B/32B; Qwen2.5 7B/14B/32B/72B;
+Llama~3.1 8B/70B; DeepSeek-V4-Pro; Kimi K3; Claude Opus~4.8/5; GPT-5.6 Sol \\
 Primary task cells / final records & 22,500 / 22,500 (22,497 parseable) \\
 Misleading task cells / final records & 7,500 / 7,500 (all parseable) \\
-Symbol-control matched task cells / final records & 3,750 / 3,750 (DeepSeek; all parseable) \\
+Symbol-comparison task cells / response records & 56,250 / 56,250 (15 models) \\
 Strong / weak slope means & 0.90 / 0.25 poll points per news point \\
 Slope standard deviation & 0.03 within each regime \\
 Reference-case noise & 5 poll points \\
@@ -181,11 +125,16 @@ prompt asks for no step-by-step derivation.
   from target-city evidence alone.
 
   \item[ABC, no City C context.]
-  The model also sees four cases from each reference city. The strongly responsive
-  reference city is described as receiving sustained national coverage, whereas
-  the weakly responsive city receives local coverage where campaign stories
-  compete with local issues. City C receives no background description. This arm
-  tests numeric transfer without a cue that aligns C to either reference regime.
+  The model also sees four cases from each reference city, each introduced by a
+  background sentence. The strongly responsive reference city is described
+  verbatim as receiving ``national news coverage, where campaign stories receive
+  sustained attention and tend to produce larger immediate poll movements'', and
+  the weakly responsive city as receiving ``local news coverage, where campaign
+  stories compete with local issues and tend to produce smaller immediate poll
+  movements''. The direction of the coverage-to-response mapping is therefore
+  stated in words, though no numerical value is. City C receives no background
+  description. This arm tests numeric transfer without a cue that aligns C to
+  either reference regime.
 
   \item[ABC plus correct City C context.]
   The numeric rows and query are identical to the preceding arm. The sole added
@@ -194,7 +143,7 @@ prompt asks for no step-by-step derivation.
   condition.
 
   \item[ABC plus misleading City C context.]
-  This additive arm is identical to the correct-context prompt except that its
+  This intervention arm is identical to the correct-context prompt except that its
   City C sentence names the opposite coverage regime. Every number, case row,
   query, and other instruction is unchanged. This arm tests whether the model
   follows the semantic cue when it conflicts with the truth.
@@ -216,6 +165,21 @@ correct-versus-misleading comparison isolates the sentence's regime assignment.
 The symbol-versus-no-context contrast asks whether the same assignment can be
 induced without lexical knowledge of national and local coverage.
 
+Because the reference sentences state the direction of the mapping, the semantic
+arms are not by themselves a test of whether that direction can be induced. A
+policy that reads no displayed number and assigns slope $1.0$ to the
+nationally covered regime and $0.2$ to the locally covered one attains $k=0$
+forecast MAE $0.523$ and implied-slope correlation $.996$, better than any
+deployment and better than the analogical-regression benchmark of
+Table~\ref{tab:coin-city-analogical}; $42$ of $108$ prior pairs on the grid
+$\{0.4,\dots,1.5\}\times\{0.0,\dots,0.8\}$ beat every deployment's $k=0$ MAE.
+The semantic arms therefore measure how a stated regime assignment is converted
+into a numerical response. Two separate controls carry the induction claim: the
+arbitrary-symbol arm, whose labels have no stated direction and whose mapping
+reverses across episodes, and the reference-selection analysis of
+Section~\ref{app:coin-city-reference-selection}, which shows that the forecast
+tracks the named reference city's own sampling error rather than any fixed prior.
+
 \subsection{Model Execution and Response Processing}
 \label{app:coin-city-execution}
 
@@ -232,7 +196,7 @@ zero. No deployment used tools or retrieval.
 \label{tab:coin-city-execution}
 \scriptsize
 \setlength{\tabcolsep}{3.5pt}
-\begin{tabular}{p{0.16\linewidth} p{0.21\linewidth} p{0.27\linewidth} r r}
+\begin{tabular}{p{0.16\linewidth} p{0.21\linewidth} p{0.27\linewidth} @{\hspace{1.5em}} r r}
 \toprule
 Deployment & Interface & Reasoning / sampling & Output ceiling & Parsed \\
 \midrule
@@ -249,11 +213,11 @@ Claude Opus~5 & Foundry Anthropic Messages & default extended thinking; temperat
 
 Claude Opus~5 returns extended thinking before its answer; the runner therefore
 selects its first text block. Gemini is the sole fast-tier deployment, so the six
-systems should be read as a replication set, not a tier-matched leaderboard.
+systems should be read as a replication set rather than a tier-matched leaderboard.
 Authentication material was supplied at runtime and was not written to source,
 manifests, logs, or response files.
 
-\subsubsection{Attempts, transport retries, and excluded pilots}
+\subsubsection{Deployment attempts, retries, and pilots}
 Every primary model--prompt pair received one application-level attempt. A failed
 or answerless task was not re-asked. HTTP-client retries were disabled for GPT,
 DeepSeek, Kimi, and Opus~5. The original Opus~4.8 client allowed up to two
@@ -275,21 +239,20 @@ most 8,000 raw characters. When duplicate task records exist, the analysis keeps
 the latest parseable response, allowing a valid response to supersede an earlier
 error. A single offline normalization removed whitespace from JSON keys in one
 otherwise valid Opus~4.8 reply; this recovered one primary record without another
-model call. Other production-file repairs are documented in
+model call. Other record-level corrections are documented in
 Section~\ref{app:coin-city-limitations}.
 
-\subsubsection{Additive misleading-context execution}
-The misleading arm was generated after completion of the three frozen primary
-arms. Its builder verifies that every prompt equals its correct-context counterpart
-under exactly one sentence substitution and that all numeric content is unchanged.
-The cue is inverted for all 1,250 episode-prefix tasks: 625 strong-city tasks are
-described as weak and 625 weak-city tasks as strong. Each deployment used the same
-client and production configuration as in its own correct-context run. The
-original three-arm hashes remain unchanged; this stress test is additive rather
-than part of the initial freeze.
+\subsubsection{Misleading-context design}
+The cue-inversion module begins from the frozen semantic-selection tasks. Before
+any inversion call, its builder verifies that every prompt equals its
+correct-context counterpart under
+exactly one sentence substitution and that all numeric content is unchanged. The
+cue is inverted for all 1,250 episode-prefix tasks: 625 strong-city tasks are
+described as weak and 625 weak-city tasks as strong. Each deployment uses the
+same client and production configuration as its correct-context arm.
 
-\subsubsection{Additive arbitrary-symbol execution}
-The symbol builder generates 1,250 additional prompts from the same frozen
+\subsubsection{Arbitrary-symbol design}
+The symbol builder generates 1,250 matched prompts from the same frozen
 episodes and verifies that their complete sequence of numeric tokens is identical
 to the correct-context arm. The higher-response label is \texttt{KIV} in 125
 episodes and \texttt{ZOR} in 125; the target regime-by-label cells contain 62--63
@@ -297,12 +260,35 @@ episodes each. A prompt validator rejects national/local and strong/weak semanti
 descriptions. At \(k=0\), City C supplies no numerical cases, so its correct regime
 can be recovered only by decoding the label from City A and B's examples.
 
-We executed this control on DeepSeek-V4-Pro. To prevent a provider-resource change
-from contaminating arm contrasts, we collected all 1,250 symbol tasks and
-contemporaneously re-collected all 2,500 no-context and semantic-context tasks on
-the same reachable Azure resource, using the same deployment identifier, client,
-temperature, and output budget. These records occupy a separate additive namespace;
-no primary response file or frozen task was overwritten.
+For DeepSeek-V4-Pro, we collected all 1,250 symbol tasks and contemporaneously
+re-collected all 2,500 no-context and semantic-context tasks on the same reachable
+Azure resource, using one deployment identifier and configuration. The released
+15-model comparison combines that triplet with Qwen3-4B, Qwen3-8B,
+Qwen3-14B, Qwen3-32B, Qwen2.5-7B, Qwen2.5-14B, Qwen2.5-32B, Qwen2.5-72B,
+Llama~3.1-8B, Llama~3.1-70B, Kimi K3, Claude Opus~4.8, Claude Opus~5, and
+GPT-5.6 Sol.
+
+The eight Qwen and two Llama checkpoints received all 3,750 prompts through vLLM
+in bfloat16, with temperature-zero decoding, a 3,072-token model context, and a
+512-token output ceiling. Qwen uses the no-thinking chat template; Llama uses its
+native instruction template. Qwen2.5-14B uses two-way and Qwen3-32B and
+Qwen2.5-32B four-way tensor parallelism, while Qwen2.5-72B and Llama~3.1-70B use
+eight-way tensor parallelism.
+
+For Kimi K3, Claude Opus~5, and GPT-5.6 Sol, the comparison reuses each
+deployment's preserved no-context and semantic-context responses and adds only
+the 1,250 symbol prompts under the same model-specific production protocol.
+Claude Opus~4.8's symbol arm instead ran on a second Azure resource serving the
+same deployment and used a 1,024-token rather than 512-token ceiling; all 1,250
+responses returned valid JSON. We therefore treat its arm contrast as a
+cross-run robustness result and do not use it to rank providers.
+
+Every runner verifies the frozen task hash before generation and writes a
+timestamped manifest. Each released model has 1,250 unique response records in
+every arm; this count does not imply that every prediction parsed. No primary
+response file or frozen task is overwritten. Original outputs are preserved, and
+the final tables use matched complete cases after the no-call arithmetic reparse
+described in Section~\ref{app:coin-city-limitations}.
 
 \subsection{Estimands, Benchmarks, and Statistical Inference}
 \label{app:coin-city-analysis}
@@ -325,7 +311,7 @@ Within each deployment and prefix, the three primary-arm metrics use the common
 intersection of episodes with parseable responses in all three arms. Arm
 contrasts are paired by episode and prefix. The misleading-arm table uses its
 final unique parseable record for every task. The arbitrary-symbol analysis uses
-the corresponding common intersection of the three contemporaneous DeepSeek arms.
+each model's corresponding common intersection across its three matched arms.
 
 \subsubsection{Analyst-only benchmarks}
 The ABC OLS benchmark fits poll change on news through the origin using every
@@ -334,48 +320,32 @@ displayed City C rows and is undefined at \(k=0\). Both are reconstructed from
 the visible data by the analyst; neither the estimator nor its output appears in
 a model prompt.
 
-
-The label-conditioned analogical-regression baseline implements a stronger
-deterministic alternative. It fits separate through-origin slopes to City A and
-City B, uses City C's coverage label to select the reference assigned to the same
-response regime, and predicts with that slope. At $k>0$, it pools the selected
-reference rows with the visible City C rows before refitting. In the misleading
-arm, the inverted label selects the opposite reference. This is the minimal
-successful policy described in the Methods.
-
+The label-conditioned analogical regression implements the minimal structured
+inductive policy defined in Methods. It
+fits separate through-origin slopes to City A and City B, uses City C's coverage
+label to select the reference assigned to the same response regime, and predicts
+with that slope. At $k>0$, it pools the selected reference rows with the visible
+City C rows before refitting. In the misleading arm, the inverted label selects
+the opposite reference. The implementation uses only displayed rows; neither the
+estimator nor its output appears in a model prompt.
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
-\captionof{table}{\textbf{Label-conditioned analogical regression beside the six
-deployments.} MAE is in poll points; $\varepsilon$ is slope MAE. LLM columns give
-the range across deployments in the corresponding prompt arm.}
+\captionof{table}{Zero-shot behavior of the analogical policy and the six model
+deployments. At $k=0$, City C has no numerical cases. Model columns give the
+range across deployments; forecast MAE is in poll points.}
 \label{tab:coin-city-analogical}
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\resizebox{\linewidth}{!}{%
-\begin{tabular}{c rrr c rrr c}
+\small
+\begin{tabular}{l r r c c}
 \toprule
-& \multicolumn{3}{c}{Correct-label analogical OLS} & Correct-cue LLMs &
-\multicolumn{3}{c}{Inverted-label analogical OLS} & Wrong-cue LLMs \\
-\cmidrule(lr){2-4}\cmidrule(lr){6-8}
-$k$ & MAE & $\varepsilon$ & $\rho$ & MAE range & MAE & $\varepsilon$ & $\rho$ & MAE range \\
+Cue & Policy MAE & Policy $\rho$ & Model MAE range & Model $\rho$ range \\
 \midrule
-0 & 1.842 & .261 & .656 & 1.596--2.474 & 4.561 & .640 & -.667 & 4.204--4.361 \\
-1 & 1.640 & .230 & .702 & 1.586--3.300 & 3.722 & .523 & -.507 & 3.147--4.462 \\
-2 & 1.495 & .214 & .737 & 1.854--3.600 & 3.174 & .447 & -.351 & 2.593--3.935 \\
-3 & 1.430 & .204 & .756 & 1.773--3.047 & 2.797 & .391 & -.159 & 2.409--3.518 \\
-4 & 1.337 & .193 & .773 & 1.594--2.809 & 2.483 & .348 & -.002 & 2.100--3.043 \\
+Correct & 1.842 & .656 & 1.596--2.474 & [.52,\,.70] \\
+Inverted & 4.561 & $-.667$ & 4.204--4.361 & [$-.68$,\,$-.50$] \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{minipage}
 \end{center}
-
-At $k=0$, both analogical curves lie within the corresponding deployment range
-and reproduce the sign reversal in $\rho$. If a model matches this baseline, Coin
-City demonstrates competent structured analogy, not evidence beyond that strategy.
-If a model beats it, the result rules out this particular simple implementation
-but does not distinguish context-conditioned analogy from latent-dynamics inference.
 
 
 \subsubsection{Uncertainty and comparison families}
@@ -389,9 +359,10 @@ condition or model.
 The episodes are the resampling units. Intervals are pointwise descriptions of
 this fixed seeded synthetic evaluation: they are not simultaneous bands across
 prefixes, and no multiple-comparison correction is applied. Accordingly, the
-count of pairwise intervals excluding zero is an exploratory, unadjusted summary.
+number of pairwise intervals excluding zero is not used as an estimand; each
+interval supports only its displayed cell.
 
-\subsection{Complete Response-Inference Diagnostics}
+\subsection{Response-Inference Diagnostics}
 \label{app:coin-city-results}
 
 The tables below retain a common arm and prefix ordering. Within a deployment and
@@ -624,7 +595,7 @@ $k$ & Arm & $n$ & Forecast MAE & Slope MAE & $\rho(\hat g,g_C)$ \\
 
 
 
-\subsubsection{Misleading-cue stress test}
+\subsubsection{Misleading-cue results}
 
 \begin{center}
 \begin{minipage}{\linewidth}
@@ -633,7 +604,7 @@ $k$ & Arm & $n$ & Forecast MAE & Slope MAE & $\rho(\hat g,g_C)$ \\
 City C prefix. The prompt is byte-identical to the correct-context arm except that the
 City C sentence names the opposite response regime. Negative $\rho$ means the implied
 response is anti-correlated with the truth, i.e. the deployment has adopted the stated
-regime. All six deployments completed all 1,250 prompts in this arm.}
+regime. Each of the six deployments contributes all 1,250 prompts.}
 \label{tab:coin-city-wrong-context}
 \small
 \setlength{\tabcolsep}{4pt}
@@ -655,126 +626,214 @@ Claude Opus~5 & 4.25 & $-.62$ & 3.15 & $-.21$ & 2.59 & $.27$ & 2.41 & $.41$ & 2.
 \end{minipage}
 \end{center}
 
-\subsubsection{Arbitrary-symbol induction control}
+\subsubsection{Arbitrary-symbol induction results}
+\label{app:coin-city-symbol-context}
 
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
-\captionof{table}{\textbf{Episode-randomized arbitrary-symbol control for
-DeepSeek-V4-Pro.} All three arms were collected contemporaneously on the same
-deployment resource. MAE is forecast error in poll points; $\rho$ is the correlation
-between implied and true latent slopes; Acc. classifies the higher- versus
-lower-response regime at the midpoint 0.575. Each $\Delta$ is symbol minus no
-context, with a paired 95\% episode-bootstrap interval. At $k=0$, the City C label
-can be decoded only from City A/B examples.}
+\captionof{table}{\textbf{Fifteen-system episode-randomized arbitrary-symbol
+comparison at $k=0$.} Panel A reports forecast calibration; Panel B reports
+response-regime discrimination. All arms share the frozen numeric task content;
+Section~\ref{app:coin-city-execution} documents model-specific execution and the
+Opus~4.8 cross-resource deviation. MAE is in poll points;
+$\rho$ correlates implied and true latent slopes; Acc. classifies the response
+regime at slope 0.575. Each $\Delta$ is symbol minus no context, with a paired
+95\% episode-bootstrap interval. With no City C examples, its label can be decoded
+only from City A/B examples.}
 \label{tab:coin-city-symbol-context}
 \scriptsize
 \setlength{\tabcolsep}{2.2pt}
-\resizebox{\linewidth}{!}{%
-\begin{tabular}{cc rr rr rrr ccc}
-\toprule
-& & \multicolumn{2}{c}{No C context} & \multicolumn{2}{c}{Semantic context}
-& \multicolumn{3}{c}{Arbitrary symbol} & \multicolumn{3}{c}{Symbol $-$ no context} \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-9}\cmidrule(lr){10-12}
-$k$ & $n$ & MAE & $\rho$ & MAE & $\rho$ & MAE & $\rho$ & Acc.
-& $\Delta$MAE [CI] & $\Delta\rho$ [CI] & $\Delta$Acc. [CI] \\
-\midrule
-0 & 250 & 2.62 & 0.02 & 2.59 & 0.42 & 2.73 & 0.45 & 0.69 & 0.11 $[-0.22, 0.45]$ & 0.44 $[0.32, 0.56]$ & 0.17 $[0.10, 0.24]$ \\
-1 & 250 & 3.03 & 0.33 & 2.29 & 0.59 & 2.82 & 0.47 & 0.74 & -0.21 $[-0.55, 0.12]$ & 0.14 $[0.04, 0.25]$ & 0.09 $[0.03, 0.15]$ \\
-2 & 250 & 3.13 & 0.36 & 2.65 & 0.53 & 2.71 & 0.42 & 0.74 & -0.42 $[-0.82,-0.05]$ & 0.06 $[-0.05, 0.17]$ & 0.05 $[-0.00, 0.11]$ \\
-3 & 250 & 3.20 & 0.38 & 2.71 & 0.49 & 2.74 & 0.50 & 0.77 & -0.46 $[-0.79,-0.16]$ & 0.11 $[0.03, 0.20]$ & 0.12 $[0.07, 0.19]$ \\
-4 & 250 & 2.81 & 0.43 & 2.74 & 0.50 & 2.64 & 0.46 & 0.71 & -0.17 $[-0.45, 0.10]$ & 0.03 $[-0.05, 0.12]$ & 0.01 $[-0.05, 0.06]$ \\
-\bottomrule
-\end{tabular}}
+\input{tables/exp2_symbol_context_results}
 \end{minipage}
 \end{center}
 
-At $k=0$, where City C has no numerical examples, the arbitrary label raises
-latent-slope correlation from $.018$ without context to $.454$
-($\Delta\rho=.436$, 95\% CI $[.323,.558]$) and regime accuracy from $.520$ to
-$.692$ ($\Delta=.172$, 95\% CI $[.104,.240]$). The semantic arm reaches
-$\rho=.422$ and accuracy $.704$ in the same rerun. Thus DeepSeek can recover
-which label denotes which response regime from City A/B examples alone; a fixed
-semantic prior that national coverage implies larger effects cannot explain this
-discrimination.
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Matched open-weight scaling across target-city
+observations.} Symbol-minus-no-context effects are reported for Qwen2.5
+32B/72B and Llama~3.1 8B/70B at each City C prefix. Negative
+$\Delta$MAE favors the induced symbol mapping; positive $\Delta\rho$ and
+$\Delta$accuracy indicate better regime discrimination.}
+\label{tab:coin-city-symbol-scaling}
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\resizebox{\linewidth}{!}{\input{tables/exp2_symbol_context_scaling}}
+\end{minipage}
+\end{center}
 
-The control does not produce a detectable zero-shot MAE gain: symbol minus no
-context is $+.107$ poll points (95\% CI $[-.222,.452]$). This is not contradictory:
-the no-context arm can attain moderate absolute error by predicting a central slope
-while failing to distinguish the two regimes. With direct City C rows, the symbol
-arm lowers MAE at $k=2$ ($-.420$, 95\% CI $[-.817,-.047]$) and $k=3$ ($-.458$,
-95\% CI $[-.789,-.157]$); its $\rho$ remains $.418$--$.498$ across all prefixes.
-These results rule out the specific lexical-prior-only account for this deployment,
-but numerical analogy plus episode-local code induction remains a sufficient
-alternative explanation.
+At $k=0$, Qwen3 provides a within-family contrast.
+Symbol-minus-no-context $\Delta\rho$ is $.095$ $[-.060,.230]$ at 4B and $.023$
+$[-.128,.171]$ at 8B, but $.398$ $[.253,.541]$ at 14B and $.302$ $[.177,.433]$
+at 32B; the regime-accuracy contrasts follow the same pattern. The 4B and 8B
+intervals span zero, whereas the 14B and 32B intervals do not. The 32B point
+estimate sits below the 14B one, so this is a boundary among the tested Qwen3
+checkpoints rather than a monotone or universal parameter threshold. The smaller checkpoints are not wholesale task
+failures: their semantic-context slopes correlate $.370$ and $.286$ with truth,
+versus $-.011$ and $-.014$ without context.
+
+All four tested Qwen2.5 checkpoints discriminate under arbitrary labels
+($\Delta\rho=.264/.236/.372/.381$ at 7B/14B/32B/72B), reinforcing the family
+qualification. Their symbol-minus-no-context MAE changes are
+$+.338/+.105/+.529/+.924$: mapping discrimination does not ensure calibrated
+numerical use. Direct City C examples
+make the large-Qwen symbol advantage redundant; by $k=3$--4, the 32B and 72B
+$\Delta\rho$ and $\Delta$accuracy intervals span zero.
+
+Llama~3.1 provides a second within-family contrast: $\Delta\rho=.045$
+$[-.123,.250]$ at 8B and $.424$ $[.314,.543]$ at 70B. The 70B
+regime-accuracy contrast is $.092$ $[.036,.152]$, although its MAE rises by
+$.448$ $[.030,.886]$. In Qwen3 the mapping-recovery interval excludes zero only
+from 14B upward, and in Llama only at 70B. The positive Qwen2.5-7B and
+Qwen2.5-14B estimates, despite Qwen3-8B's interval spanning zero, indicate that
+the tested transition depends on model family rather than parameter count. Mapping recovery and numerical calibration remain
+separate outcomes.
+
+DeepSeek improves discrimination ($\Delta\rho=.436$ $[.323,.558]$) without a
+detectable zero-shot MAE change. Kimi, both Opus deployments, and GPT combine
+mapping recovery with lower forecast error: their $\Delta\rho$ values are
+$.633/.623/.591/.696$, while MAE falls by $.497/.584/.603/.774$ points.
+Cross-provider magnitudes remain descriptive because runtimes, reasoning settings,
+and output ceilings differ.
 
 \subsubsection{Paired cue effects and interpretation}
 
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
-\captionof{table}{Paired forecast-MAE difference between ABC plus City C context and ABC
-without City C context. Negative values favor context.}
-\label{tab:coin-city-paired}
+\captionof{table}{Paired forecast-MAE difference between the correct-context arm
+and the context-blind ABC OLS benchmark, which the analyst fits through the origin
+on every displayed A, B and available City C row. Negative values favour the
+deployment. Boldface marks intervals excluding zero.}
+\label{tab:coin-city-vs-ols}
 \small
-\begin{tabular}{l c r c}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l ccccc}
 \toprule
-Model & $k$ & Mean paired difference & 95\% bootstrap CI \\
+Model & $k{=}0$ & $k{=}1$ & $k{=}2$ & $k{=}3$ & $k{=}4$ \\
 \midrule
-Claude & 0 & -.834 & $[-1.086,-.597]$ \\
-       & 1 & -.292 & $[-.544,-.048]$ \\
-       & 2 &  .038 & $[-.155, .254]$ \\
-       & 3 & -.151 & $[-.352, .035]$ \\
-       & 4 & -.169 & $[-.343, .001]$ \\
-\midrule
-GPT-5.6 & 0 & -.922 & $[-1.151,-.686]$ \\
-        & 1 & -1.182 & $[-1.470,-.925]$ \\
-        & 2 & -.197 & $[-.331,-.067]$ \\
-        & 3 & -.193 & $[-.355,-.049]$ \\
-        & 4 & -.152 & $[-.285,-.029]$ \\
-\midrule
-DeepSeek-V4-Pro & 0 & -.366 & $[-.679,-.046]$ \\
-        & 1 & -.674 & $[-1.016,-.360]$ \\
-        & 2 & -.736 & $[-1.111,-.376]$ \\
-        & 3 & -.427 & $[-.744,-.116]$ \\
-        & 4 & -.230 & $[-.601, .091]$ \\
-\midrule
-Kimi K3 & 0 & -.662 & $[-.923,-.401]$ \\
-        & 1 & -.987 & $[-1.308,-.680]$ \\
-        & 2 & -.808 & $[-1.132,-.470]$ \\
-        & 3 & -.631 & $[-.910,-.359]$ \\
-        & 4 & -.117 & $[-.291, .065]$ \\
-\midrule
-Gemini 3.6 Flash & 0 & -.378 & $[-.689,-.052]$ \\
-                 & 1 & -.417 & $[-.682,-.139]$ \\
-                 & 2 & -.103 & $[-.337,.108]$ \\
-                 & 3 & -.045 & $[-.392,.303]$ \\
-                 & 4 & -.118 & $[-.378,.162]$ \\
-\midrule
-Claude Opus~5 & 0 & -.856 & $[-1.087,-.602]$ \\
-              & 1 & -.562 & $[-.733,-.410]$ \\
-              & 2 & -.620 & $[-.797,-.461]$ \\
-              & 3 & -.288 & $[-.443,-.139]$ \\
-              & 4 & -.168 & $[-.276,-.071]$ \\
+Claude Opus~4.8 & \textbf{$-.73$} & $-.18$ & $-.05$ & $-.01$ & $-.08$ \\
+GPT-5.6 & \textbf{$-.95$} & \textbf{$-.74$} & \textbf{$-.28$} & $-.21$ & \textbf{$-.24$} \\
+DeepSeek-V4-Pro & $-.07$ & $.13$ & \textbf{$.56$} & \textbf{$.81$} & \textbf{$.97$} \\
+Kimi K3 & \textbf{$-.66$} & $.06$ & $.18$ & $.02$ & $.01$ \\
+Gemini 3.6 Flash & \textbf{$-.37$} & \textbf{$.98$} & \textbf{$1.47$} & \textbf{$1.06$} & \textbf{$.96$} \\
+Claude Opus~5 & \textbf{$-.78$} & \textbf{$-.57$} & $-.07$ & $.09$ & \textbf{$.36$} \\
 \bottomrule
 \end{tabular}
 \end{minipage}
 \end{center}
 \endgroup
 
-The zero-shot matched-reference comparison shows that the target-city description
-controls how the A/B cases are used. All six $k=0$ bootstrap intervals exclude
-zero. The analogical-regression baseline shows that this result is fully
-consistent with direct label-conditioned reference selection and slope transfer.
+At $k=0$ every deployment matches or beats the context-blind benchmark, and five
+of the six intervals exclude zero: with no City C cases, the only way to separate
+City C from the pooled A/B fit is to use its description. The advantage does not
+persist once City C supplies its own rows. By $k=2$ DeepSeek-V4-Pro and Gemini 3.6
+Flash are significantly worse than the benchmark, Claude Opus~5 becomes so at
+$k=4$, and the remaining deployments are indistinguishable from it. The cue effect
+this experiment measures is therefore a zero-shot phenomenon, and a plain
+through-origin estimator remains competitive once direct target evidence
+accumulates.
+
+In the zero-shot matched-reference comparison, the target-city description changes
+the influence of the A/B cases on forecasts. All six $k=0$ bootstrap intervals
+exclude zero. A label-conditioned benchmark that selects a reference, estimates
+its slope, and transfers that estimate reproduces the aggregate pattern; the
+comparison does not identify the model's internal algorithm.
 More target rows do not monotonically reduce error: DeepSeek and Opus~5 drift by
 $0.34$ and $0.44$ points from $k=0$ to $k=4$, and Gemini's context advantage is
 significant only at $k\in\{0,1\}$. Short, noisy prefixes can temporarily mislead
 either arm.
 
+\subsection{Does the Forecast Track the Cue-Named Reference?}
+\label{app:coin-city-reference-selection}
+
+Two accounts explain the correct-versus-no-context contrast equally well. Under a
+lexical-prior account the model maps the City C coverage sentence straight to a
+remembered response magnitude and never reads City A or City B's numbers. Under a
+reference-selection account it uses the cue to choose a reference city, estimates
+that city's slope from its four displayed cases, and transfers the estimate. Both
+predict a regime-level correlation, because the cue and the latent regime coincide.
+
+The design separates them. A through-origin fit to four noisy reference cases has
+a within-regime standard deviation of $.332$ against a generator standard
+deviation of $.03$, so the matched reference's fitted slope correlates only $.656$
+with the true City C slope where the regime indicator correlates $.996$. That
+sampling error is the discriminating signal: a forecaster that is deterministic
+given the cue cannot reproduce it, whereas one that transfers a fitted reference
+slope inherits it. For every deployment, arm and prefix we therefore report
+\[
+  r\!\left(\widehat g_e,\;\widehat\beta^{\mathrm{ref}}_e \;\middle|\; R_e\right),
+\]
+the partial correlation between the forecast-implied slope and a reference city's
+through-origin OLS slope, controlling for the response regime $R_e$ that the City
+C label names. Arms with no City C label are scored against the true regime and
+report the regime-matched and regime-mismatched reference instead. Intervals are
+2,000-draw episode bootstraps with deterministic per-cell seeds, and the analysis
+makes no model call.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Partial correlation between the forecast-implied City C slope and
+each reference city's fitted slope at $k=0$, controlling for the regime the City C
+label names. ``Named'' is the reference the label points to, or the regime-matched
+reference in the two arms without a label. Boldface marks named-reference intervals
+excluding zero.}
+\label{tab:coin-city-reference-selection}
+\small
+\setlength{\tabcolsep}{4pt}
+\input{tables/exp2_reference_selection}
+\end{minipage}
+\end{center}
+
+The four arms make four different predictions and all four hold. With no reference
+cases displayed at all, the target-only arm loads on neither reference: eleven of
+its twelve intervals span zero. With both references displayed but no City C label,
+every deployment loads on the two references almost equally, the pooling signature
+of a model that cannot tell which reference applies. Adding the correct label
+concentrates the loading on the named reference and removes it from the other,
+every ``other'' interval spanning zero. Inverting the label moves the loading
+wholesale onto the reference that the false cue names, leaving the truth-matched
+reference near zero.
+
+The forecast therefore tracks the particular reference city the label names,
+including that city's sampling error, whether or not the label is correct. No
+prior attached to the words \emph{national} and \emph{local} reproduces this. It
+also explains why implied-slope correlations plateau near $.66$ rather than near
+$.996$: faithful transfer of a noisy reference estimate is capped at that
+reference's own $.656$ correlation with the truth. GPT-5.6 and Claude Opus~4.8
+slightly exceed the cap at $k=0$, which is what blending a reference estimate with
+a regime prior produces.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{The same partial correlation in the arbitrary-symbol arm at
+$k=0$, where \texttt{KIV} and \texttt{ZOR} carry no stated direction and their
+mapping reverses across episodes. The no-label columns repeat each model's pooling
+control. Boldface marks symbol named-reference intervals excluding zero.}
+\label{tab:coin-city-reference-selection-symbol}
+\small
+\setlength{\tabcolsep}{4pt}
+\input{tables/exp2_reference_selection_symbol}
+\end{minipage}
+\end{center}
+
+Applying the estimator to the arbitrary-symbol arm removes the lexical account
+entirely. Twelve of the fifteen released systems have a named-reference interval
+excluding zero, and the three that do not---Qwen3-4B, Qwen3-8B and
+Llama~3.1-8B---are exactly the three whose symbol-minus-no-context $\Delta\rho$
+intervals span zero in Table~\ref{tab:coin-city-symbol-context}. The two
+statistics are computed from different quantities and agree on all fifteen
+systems.
+
+\input{experiment2_mechanistic_probe_appendix}
+
 \subsection{Missingness, Scope, and Artifact Map}
 \label{app:coin-city-limitations}
 
-\subsubsection{Missing responses and file-level repairs}
+\subsubsection{Missingness and record recovery}
 Claude Opus~5 has two unparseable primary task cells: one correct-context response
 at \(k=1\) and one no-context response at \(k=4\). Both exhausted the output
 budget during extended thinking and returned no answer. GPT-5.6 has one
@@ -793,48 +852,68 @@ tasks. Concurrent writes in the Kimi collection produced 11 duplicate records an
 14 malformed intermediate lines. Construction of the analytic file retained the
 earliest response for each task and identified 11 absent task IDs; those 11 tasks
 were collected under the unchanged Kimi configuration. Thus 7,500 is the number
-of final unique analytic records for the misleading arm, not the number of
+of final unique analytic records for the misleading arm rather than the number of
 intermediate records or provider-level attempts.
 
-The arbitrary-symbol evaluation contains 1,250 symbol, 1,250 contemporaneous
-no-context, and 1,250 contemporaneous semantic-context DeepSeek records. All
-3,750 task IDs are unique, parseable, and matched to their task-file prompt
-hashes. This is a complete DeepSeek control, not a six-deployment replication.
+The expanded arbitrary-symbol evaluation contains fifteen response-record
+triplets, or 56,250 records. Within every model, each arm contains 1,250
+unique task IDs matched to the frozen task-file prompt hash. Original outputs are
+preserved. When a model placed an explicit arithmetic expression rather than a
+number in \texttt{predicted\_poll}, a no-call reparse accepts only numeric constants,
+parentheses, unary signs, and the four arithmetic operators, and requires
+the result to lie in the primary parser's 0--100 range. For Llama~3.1-8B, this
+reparse leaves 1,234/1,241/1,232 parseable no-context, semantic-context, and
+symbol records, respectively. Its matched complete-case $n$ is 242 at $k=0$ and
+ranges from 238 to 246 across the five prefixes. Qwen3-32B retains one
+unresolved symbol response, leaving 1,249 parseable symbol records; every other
+model parses all 1,250 in every arm, and every model except Llama~3.1-8B has
+$n=250$ at $k=0$. The final table reports these complete-case denominators, and unresolved
+outputs remain missing rather than being re-asked.
 
 \subsubsection{Interpretive scope}
-The experiment establishes context-conditioned response-regime assignment and
-integration of direct City C evidence in a controlled synthetic setting. It does
-not identify an explicit latent-dynamics representation. Label-conditioned
-analogical regression is sufficient: a forecaster can map the coverage label to
-the matching reference, estimate that reference's slope, and transfer it to City
-C. The misleading arm establishes causal dependence on the label, not which
-internal representation implements that dependence.
+The aggregate behavior is consistent with context-conditioned response-regime
+assignment and integration of direct City C evidence in this controlled synthetic
+setting. A label-conditioned analogical-regression benchmark---map the label to a
+reference, estimate that reference's slope, transfer it to City C, and revise
+with City C's own cases---is sufficient to reproduce the pattern but does not
+identify the model's internal algorithm. In the misleading arm, reversing only
+the City C label reverses forecast assignment while all numeric content remains
+fixed.
 
 The primary binary semantic cue is aligned by construction with the higher- or
 lower-response family and has a fixed meaning across episodes. The arbitrary-symbol
-control removes that fixed lexical meaning for one deployment by reversing the
-\texttt{KIV}/\texttt{ZOR} mapping across episodes; it therefore addresses whether
-the semantic-arm result can arise solely from a pre-existing
-national-greater-than-local prior. It does not establish that all six deployments
-induce new mappings, nor does it establish performance with ambiguous,
-continuous, or adversarial real-world cues. All prompts also tell models that
-within-city response is stable and explain the matched-pair structure.
+control removes that meaning by reversing the \texttt{KIV}/\texttt{ZOR} mapping
+across episodes; it therefore tests whether the semantic-arm result can arise
+solely from a pre-existing national-greater-than-local prior. The expanded
+15-model comparison shows detectable symbol-based discrimination for Qwen3-14B
+and Qwen3-32B, all four tested Qwen2.5 checkpoints, Llama~3.1-70B, and all five
+hosted systems.
+Intervals span zero for Qwen3-4B, Qwen3-8B, and Llama~3.1-8B. Within Qwen3 the
+mapping is recovered only from 14B upward, and within Llama only at 70B,
+providing within-family evidence of a capacity dependence; Qwen2.5-7B's positive
+result alongside Qwen3-8B's interval spanning zero, and Qwen3-32B's smaller
+point estimate than Qwen3-14B's, show that the transition is neither monotone in
+nor determined by parameter count alone.
+Because discrimination and forecast MAE can move in opposite directions, mapping
+induction is not equivalent to calibrated numerical use. Ambiguous, continuous,
+and adversarial cues remain untested. All prompts also tell models that within-city
+response is stable and explain the matched-pair structure.
 
 The query target is a latent conditional mean with no newly sampled observation
 noise. This isolates response recovery but is not equivalent to calibration on a
-future noisy poll. The six deployments also differ in provider, reasoning mode,
-output budget, and service tier; model-to-model comparisons are paired but are not
-configuration-matched capability rankings. The misleading-context arm was added
-after the primary three-arm freeze and should be interpreted as a stress test,
-not part of the pre-call primary freeze.
+future noisy poll. The six primary deployments differ in provider, reasoning mode,
+output budget, and service tier. The symbol module mixes local
+vLLM checkpoints with hosted calls and includes the documented cross-resource
+Opus~4.8 arm. Cross-model comparisons are therefore descriptive rather than
+configuration-matched capability rankings. The cue-inversion module is a
+separately frozen stress test over the same task identities and numeric inputs.
 
 Finally, the 250 episodes are one reproducible seeded synthetic population.
 Bootstrap intervals resample episodes and are pointwise; they do not incorporate
 generator-parameter uncertainty, provider drift, or a correction for the many
 model, arm, and prefix comparisons. Follow-up work should vary cue strength, add a
-semantic cue-only arm without A/B examples, replicate the arbitrary-symbol control
-across deployments, evaluate additional generated populations, and score predictive
-calibration against noisy held-out outcomes.
+semantic cue-only arm without A/B examples, evaluate additional generated
+populations, and score predictive calibration against noisy held-out outcomes.
 
 \subsubsection{Reproducibility and artifact map}
 The frozen data root is
@@ -865,7 +944,11 @@ relative to those roots unless a repository-level path is shown.
   \path{eval/run_coin_city_wrong_context.py} preserve configurations
   and response records under the data root. The symbol runner is
   \path{eval/run_coin_city_symbol_context.py}; its contemporaneous comparison arms
-  are under \path{responses/symbol_control_matched_20260813/}.
+  are under \path{responses/symbol_control_matched_20260813/}. The open-model runner
+  is \path{eval/run_coin_city_symbol_context_open_model.py}; the module-specific
+  Qwen and Llama responses, hosted symbol arms, launchers, and run manifests are under
+  \path{local_results/symbol_context_model_comparison_20260824/} relative to the
+  code root.
 
   \item[Primary analysis.]
   \path{analysis/analyze_coin_city_stable_relationship_multimodel.py} under the
@@ -873,9 +956,24 @@ relative to those roots unless a repository-level path is shown.
   the authority for the primary-arm metrics and paired contrasts.
 
   \item[Arbitrary-symbol analysis.]
-  \path{analysis/analyze_coin_city_symbol_context.py} produces
-  \path{analysis/symbol_context_results.json}; focused design checks are in
-  \path{tests/test_coin_city_symbol_context.py}.
+  \path{analysis/analyze_coin_city_symbol_context.py} supplies the common estimator;
+  \path{local_results/symbol_context_model_comparison_20260824/build_final_comparison.py}
+  writes the paper authority
+  \path{analysis/symbol_context_model_comparison_20260824.json}. Focused design
+  checks are in \path{tests/test_coin_city_symbol_context.py};
+  \path{paper/generate_coin_city_symbol_context_tables.py} generates both appendix
+  tables from the final comparison.
+
+  \item[Reference-selection analysis.]
+  \path{analysis/analyze_coin_city_reference_selection.py} under the code root
+  recomputes the partial correlations of
+  Section~\ref{app:coin-city-reference-selection} from the frozen responses and
+  writes \path{analysis/reference_selection_results.json} under the data root; it
+  makes no model call. Checks are in
+  \path{tests/test_coin_city_reference_selection.py}, including one that requires
+  the partial correlation and the symbol-arm $\Delta\rho$ contrast to name the same
+  systems. \path{paper/generate_coin_city_reference_selection_tables.py} writes
+  both appendix tables.
 
   \item[Misleading arm and paper outputs.]
   The repository-level script

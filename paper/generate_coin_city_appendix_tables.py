@@ -85,6 +85,37 @@ def paired_rows(curves: dict, label: str) -> str:
     return "\n".join(lines)
 
 
+MODEL_LABELS = (
+    ("claude-opus-4-8", "Claude Opus~4.8"),
+    ("gpt-5.6-sol", "GPT-5.6"),
+    ("DeepSeek-V4-Pro", "DeepSeek-V4-Pro"),
+    ("FW-Kimi-K3", "Kimi K3"),
+    ("gemini-3.6-flash", "Gemini 3.6 Flash"),
+    ("claude-opus-5", "Claude Opus~5"),
+)
+
+
+def ols_rows() -> str:
+    """Paired contrast between the correct-context arm and the ABC OLS benchmark.
+
+    The benchmark is the analyst's through-origin fit on every displayed A, B and
+    available C row; it is context-blind and never appears in a model prompt.
+    Negative values favour the model. Bold marks intervals excluding zero.
+    """
+    results = json.loads(RESULTS.read_text())
+    lines = []
+    for model, label in MODEL_LABELS:
+        curves = results["models"][model]["curves"]
+        cells = []
+        for k in range(5):
+            paired = curves[str(k)]["paired_forecast_mae"]["context_minus_abc_ols"]
+            low, high = paired["ci_95"]
+            text = f"${_dot(paired['mean'], 2)}$"
+            cells.append(_bold(text, low * high > 0))
+        lines.append(f"{label} & " + " & ".join(cells) + " \\\\")
+    return "\n".join(lines)
+
+
 def pairwise_rows(arm: str = "abc_context", k: int = 0, draws: int = 4000) -> str:
     """Paired model-vs-model contrasts on identical episodes.
 
@@ -125,7 +156,9 @@ def pairwise_rows(arm: str = "abc_context", k: int = 0, draws: int = 4000) -> st
             for task_id in ids
         }
 
-    order = sorted(figure.FIGURE_MODELS, key=lambda m: np.mean(list(errors[m].values())))
+    order = sorted(
+        figure.FIGURE_MODELS, key=lambda m: np.mean(list(errors[m].values()))
+    )
     lines, resolved = [], 0
     for a, b in itertools.combinations(order, 2):
         ids = sorted(set(errors[a]) & set(errors[b]))
@@ -181,6 +214,7 @@ def main() -> None:
     parser.add_argument("--label", default=None, help="row label in the paired table")
     parser.add_argument("--pairwise", action="store_true")
     parser.add_argument("--analogical", action="store_true")
+    parser.add_argument("--ols", action="store_true")
     args = parser.parse_args()
 
     if args.pairwise:
@@ -189,14 +223,17 @@ def main() -> None:
     if args.analogical:
         print(analogical_rows())
         return
+    if args.ols:
+        print(ols_rows())
+        return
 
     if not args.model:
-        raise SystemExit("--model is required unless --pairwise or --analogical is given")
+        raise SystemExit(
+            "--model is required unless --pairwise, --analogical or --ols is given"
+        )
     results = json.loads(RESULTS.read_text())
     if args.model not in results["models"]:
-        raise SystemExit(
-            f"{args.model} not in {sorted(results['models'])}"
-        )
+        raise SystemExit(f"{args.model} not in {sorted(results['models'])}")
     curves = results["models"][args.model]["curves"]
     parsed = results["models"][args.model]["parsed_counts"]
 
