@@ -405,7 +405,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         "input embeddings alone already reach $1.000$",
         "that control falls to $.555$",
         "follows the label at\n$k=0$ and the truth at $k=4$".replace("\n"," "),
-        "whose\nforecasts do not recover the mapping either".replace("\n"," "),
+        "only the larger\ncheckpoints do".replace("\n"," "),
         "$.333$ at $k=0$",
         r"Appendix~\ref{app:coin-city-reference-selection}",
         r"Appendix~\ref{app:coin-city-mechanistic-probe}",
@@ -426,7 +426,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     assert "figures/exp2_reference_selection.pdf" not in source
     appendix = compact("paper/experiment2_appendix.tex")
     assert "figures/exp2_reference_selection.pdf" in appendix
-    assert "cannot be reading a word it already knows" in source
+    assert "Llama~3.1-8B is the\nnegative control".replace("\n", " ") in source
     assert "A prior attached to the words" in appendix
 
     # The three structural claims the section is organised around.
@@ -439,7 +439,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     # Scope statements that must survive any future tightening of this section.
     for bound in (
         "measure how a stated assignment becomes a number",
-        "selection here is a two-way choice",
+        "selection is a two-way choice",
         "exact within-regime coefficient is never recovered",
         "the causal test on one",
     ):

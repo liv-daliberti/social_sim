@@ -45,10 +45,11 @@ RUNS = (
     ("Qwen2.5-32B", "qwen2_5_32b_symbol_probe_v2", "#0072B2", "s", True),
     ("Llama-3.1-8B", "llama3_1_8b_symbol_probe_v2", "#A8ADB4", "^", False),
 )
+# Short tick labels: the figure is set narrow enough to wrap beside the text.
 CONDITIONS = (
     ("abc_context", "true_target", "Correct\nlabel"),
-    ("abc_wrong_context", "true_target", "Inverted label,\ntrue regime"),
-    ("abc_wrong_context", "cue_target", "Inverted label,\nlabelled regime"),
+    ("abc_wrong_context", "true_target", "Inverted,\ntrue"),
+    ("abc_wrong_context", "cue_target", "Inverted,\nlabelled"),
 )
 EXPECTED_TEST_EPISODES = 88
 
@@ -58,9 +59,9 @@ plt.rcParams.update(
         "font.size": 9,
         "axes.titlesize": 9.5,
         "axes.labelsize": 9,
-        "xtick.labelsize": 8,
-        "ytick.labelsize": 8,
-        "legend.fontsize": 8,
+        "xtick.labelsize": 7,
+        "ytick.labelsize": 7.5,
+        "legend.fontsize": 7,
         "pdf.fonttype": 42,
         "ps.fonttype": 42,
     }
@@ -101,7 +102,8 @@ def main() -> None:
     loaded = [(label, load(directory), colour, marker, recovers)
               for label, directory, colour, marker, recovers in RUNS]
 
-    fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.6), sharey=True)
+    # Stacked rather than side by side, so the figure is narrow enough to wrap.
+    fig, axes = plt.subplots(2, 1, figsize=(2.95, 4.15), sharex=True, sharey=True)
     positions = range(len(CONDITIONS))
 
     for axis, depth in zip(axes, (0, 4)):
@@ -122,12 +124,13 @@ def main() -> None:
                 markerfacecolor=colour if rejects else "white",
                 linewidth=2.0 if rejects else 1.3,
                 linestyle="-" if rejects else (0, (3, 2)),
-                label=label if depth == 0 else None,
+                label=label if depth == 4 else None,
                 zorder=3 if rejects else 2,
             )
         axis.set_title(
             "No target cases ($k{=}0$)" if depth == 0 else "Four target cases ($k{=}4$)",
-            pad=6,
+            pad=4,
+            fontsize=8.5,
         )
         axis.set_xticks(list(positions))
         axis.set_xticklabels([name for _, _, name in CONDITIONS])
@@ -136,11 +139,17 @@ def main() -> None:
         axis.spines["top"].set_visible(False)
         axis.spines["right"].set_visible(False)
 
-    axes[0].set_ylabel(
-        "Held-out $R^2$" if TARGET == "slope" else "Held-out regime AUC"
+    for axis in axes:
+        axis.set_ylabel(
+            "Held-out $R^2$" if TARGET == "slope" else "Held-out regime AUC",
+            fontsize=8,
+        )
+    # Lower left of the k=4 panel is the only region no series passes through.
+    axes[1].legend(
+        loc="lower left", frameon=False, handlelength=1.6, borderpad=0.2,
+        labelspacing=0.25, ncol=1, fontsize=6.8,
     )
-    axes[0].legend(loc="lower left", frameon=False, handlelength=1.8)
-    fig.tight_layout(rect=(0, 0, 1, 0.99))
+    fig.tight_layout(pad=0.6, h_pad=1.2)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT, facecolor="white")
     print(f"Wrote {OUTPUT}")
