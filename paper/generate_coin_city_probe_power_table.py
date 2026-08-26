@@ -27,6 +27,7 @@ OUTPUT = ROOT / "paper" / "tables" / "exp2_probe_power_matched.tex"
 RUNS = (
     ("qwen3_14b_probe_v2", "Qwen3-14B, semantic", None),
     ("qwen3_14b_symbol_probe_v2", "Qwen3-14B, symbol", "Qwen3-14B"),
+    ("qwen3_8b_symbol_probe_v2", "Qwen3-8B, symbol", "Qwen3-8B"),
     ("qwen2_5_32b_symbol_probe_v2", "Qwen2.5-32B, symbol", "Qwen2.5-32B-Instruct"),
     ("llama3_1_8b_symbol_probe_v2", "Llama~3.1-8B, symbol", "Llama-3.1-8B-Instruct"),
 )

@@ -202,22 +202,31 @@ from $.321$ to $.747$, and the full-slope probe fits the cue-named relationship 
 $R^2=-.855$ while fitting the true one at $+.126$. Direct target evidence overrides
 the induced label in the representation as it does in the forecast.
 
-Two further checkpoints received the identical symbol protocol at the same 88
-sealed episodes: Qwen2.5-32B, which changes model generation, and Llama~3.1-8B,
-which changes vendor and architecture. Held-out regime AUC is $.778$ at $k=0$ for
-Qwen2.5-32B ($p<.001$, selected layer 50 of 64) and $.423$ for Llama~3.1-8B
-($p=.89$), whose four conditions all fail to reject. Mean-pooled input embeddings
-stay at chance in every symbol run ($.555$, $.550$, $.539$), so no symbol arm
-carries the mapping before computation.
+Three further checkpoints received the identical symbol protocol at the same 88
+sealed episodes: Qwen2.5-32B, which changes model generation; Llama~3.1-8B, which
+changes vendor and architecture; and Qwen3-8B, which holds family, tokenizer and
+architecture fixed and changes only scale. Held-out regime AUC at $k=0$ is $.778$
+for Qwen2.5-32B ($p<.001$, selected layer 50 of 64), $.566$ for Qwen3-8B
+($p=.15$) and $.423$ for Llama~3.1-8B ($p=.89$); neither null checkpoint rejects
+in any of its four $k=0$ conditions. Mean-pooled input embeddings stay at chance
+in every symbol run ($.555$, $.550$, $.534$, $.539$), so no symbol arm carries the
+mapping before computation.
 
-That split is the specificity test. Llama~3.1-8B is the checkpoint whose forecasts
-do not recover the mapping ($\Delta\rho=.045$, interval spanning zero), and it is
-also the checkpoint in which the mapping is not decodable; the two checkpoints
-whose forecasts recover it are the two in which it is. A probe that recovered
-structure wherever it was applied would not produce this pattern, and two positive
-replications alone could not have excluded that possibility. The sealed test is 88
-episodes per model, well above the 16 the roster began with but not a large
-sample, and the permutation nulls are computed rather than assumed.
+Decodability tracks behavioral recovery across all four checkpoints. The two whose
+forecasts recover the mapping are the two in which it decodes (Qwen3-14B,
+$\Delta\rho=.398$; Qwen2.5-32B, $.372$), and the two whose forecasts do not are
+the two in which it does not (Qwen3-8B, $.023$; Llama~3.1-8B, $.045$, both
+intervals spanning zero). Qwen3-8B carries the most weight of the four, because it
+shares family, tokenizer and architecture with Qwen3-14B and differs from it in
+scale alone: the split therefore cannot be a vendor or tokenization artifact of
+the probe. A probe that recovered structure wherever it was applied would not
+produce this pattern, and positive replications alone could not have excluded that
+possibility. Qwen3-8B does reject weakly at $k=4$ ($.610$, $p=.04$), where the
+displayed target cases carry the regime whatever the label does, but its
+mean-pooled input embeddings reach $.621$ at that depth, above the probe itself,
+so that rejection is not evidence of an induced representation either. The sealed test is 88 episodes per
+model, well above the 16 the roster began with but not a large sample, and the
+permutation nulls are computed rather than assumed.
 
 A 16-episode arbitrary-symbol pilot preceded this run under the identical protocol
 and returned $k=0$ regime AUC $.312$ with $p=.90$. Given the $[.203,.797]$ null at
@@ -333,6 +342,7 @@ derived from the frozen task manifest and checked by
 study name, sealed-test size and stability gate. The power-matched runs are
 \path{mechanistic_probe/qwen3_14b_probe_v2/},
 \path{mechanistic_probe/qwen3_14b_symbol_probe_v2/},
+\path{mechanistic_probe/qwen3_8b_symbol_probe_v2/},
 \path{mechanistic_probe/qwen2_5_32b_symbol_probe_v2/} (checkpoint
 \texttt{5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd}) and
 \path{mechanistic_probe/llama3_1_8b_symbol_probe_v2/} (checkpoint

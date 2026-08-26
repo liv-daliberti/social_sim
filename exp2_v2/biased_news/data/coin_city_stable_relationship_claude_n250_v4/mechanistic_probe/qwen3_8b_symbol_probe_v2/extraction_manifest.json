@@ -1,0 +1,69 @@
+{
+  "behavior_sha256": "33f7433cab29cff130dad5e088a91e3d10d36eebcc6b360c2a5ec60e1c0c7580",
+  "behavior_summary": {
+    "elapsed_seconds": 249.1533625125885,
+    "max_new_tokens": 160,
+    "parsed_count": 524,
+    "record_count": 528
+  },
+  "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+  "completed_at": "2026-08-26T16:40:49.167918+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "cuda": {
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "max_memory_allocated_bytes": 18236118528,
+        "name": "NVIDIA RTX A6000"
+      }
+    ]
+  },
+  "decode_seed": 20260824,
+  "device_map_request": "none",
+  "feature_summary": {
+    "elapsed_seconds": 249.76322436332703,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      1488,
+      37,
+      4096
+    ],
+    "hidden_size": 4096,
+    "layer_count_including_embedding": 37,
+    "mean_control_shape": [
+      1488,
+      2,
+      4096
+    ],
+    "record_count": 1488,
+    "token_count_max": 717,
+    "token_count_median": 649.0,
+    "token_count_min": 586,
+    "transformer_layer_count": 36
+  },
+  "features_sha256": "1db027f85fe08593df98a8f9900c4f9817f1e5c4692fc87101dc923edf8400ba",
+  "gpu_memory_gib": null,
+  "model": "Qwen/Qwen3-8B",
+  "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "model_commit_source": "read from the loaded checkpoint config",
+  "model_label": "Qwen3-8B",
+  "parameter_count": 8190735360,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {},
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "python": "3.10.20",
+    "safetensors": "0.8.0",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "complete",
+  "study": "qwen3_8b_symbol_probe_v2",
+  "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+  "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01"
+}
