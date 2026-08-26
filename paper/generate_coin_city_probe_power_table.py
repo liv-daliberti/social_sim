@@ -21,9 +21,23 @@ PROBE_ROOT = (
     / "mechanistic_probe"
 )
 OUTPUT = ROOT / "paper" / "tables" / "exp2_probe_power_matched.tex"
+# Each row is a run at the same 88-episode sealed test. The behavioural contrast
+# is carried alongside so the table shows decodability tracking behaviour rather
+# than leaving that to a cross-reference.
 RUNS = (
-    ("qwen3_14b_probe_v2", "Semantic cue"),
-    ("qwen3_14b_symbol_probe_v2", "Arbitrary symbol"),
+    ("qwen3_14b_probe_v2", "Qwen3-14B, semantic", None),
+    ("qwen3_14b_symbol_probe_v2", "Qwen3-14B, symbol", "Qwen3-14B"),
+    ("qwen2_5_32b_symbol_probe_v2", "Qwen2.5-32B, symbol", "Qwen2.5-32B-Instruct"),
+    ("llama3_1_8b_symbol_probe_v2", "Llama~3.1-8B, symbol", "Llama-3.1-8B-Instruct"),
+)
+COMPARISON = (
+    ROOT
+    / "exp2_v2"
+    / "biased_news"
+    / "data"
+    / "coin_city_stable_relationship_claude_n250_v4"
+    / "analysis"
+    / "symbol_context_model_comparison_20260824.json"
 )
 EXPECTED_TEST_EPISODES = 88
 CONDITIONS = ("k0:regime", "k4:regime", "k0:slope", "k4:slope")
@@ -67,9 +81,20 @@ def load(run: str) -> dict:
     return results
 
 
+def behavioural_delta(model: str | None) -> str:
+    """Symbol-minus-no-context slope correlation for the same checkpoint."""
+    if model is None:
+        return "---"
+    curves = json.loads(COMPARISON.read_text())["models"][model]["curves"]["0"]
+    metric = curves["paired_discrimination"]["symbol_minus_no_context_rho"]
+    low, high = metric["ci_95"]
+    text = f"${_dot(metric['difference'])}$"
+    return f"\\textbf{{{text}}}" if low * high > 0 else text
+
+
 def rows() -> str:
     lines = []
-    for index, (run, label) in enumerate(RUNS):
+    for index, (run, label, behaviour_key) in enumerate(RUNS):
         results = load(run)
         conditions = results["primary"]["conditions"]
         pooled = (
@@ -94,6 +119,7 @@ def rows() -> str:
                 str(condition["selected_layer"]),
                 math(embed) if embed is not None else "---",
                 _p(condition["permutation_null_on_correct_context_test"]["one_sided_p"]),
+                behavioural_delta(behaviour_key) if position == 0 else "",
             ]
             lead = label if position == 0 else ""
             lines.append(f"{lead} & {pretty} & " + " & ".join(cells) + r" \\")
@@ -103,9 +129,10 @@ def rows() -> str:
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     preamble = (
-        "\\begin{tabular}{l l rrrr r r r}\n"
+        "\\begin{tabular}{l l rrrr r r r r}\n"
         "\\toprule\n"
-        "Arm & Target & Correct & None & Wrong & Wrong/cue & Layer & Embed. & $p$ \\\\\n"
+        "Run & Target & Correct & None & Wrong & Wrong/cue & Layer & Embed. & $p$"
+        " & Behav. $\\Delta\\rho$ \\\\\n"
         "\\midrule"
     )
     OUTPUT.write_text(

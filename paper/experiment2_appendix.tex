@@ -894,6 +894,19 @@ providing within-family evidence of a capacity dependence; Qwen2.5-7B's positive
 result alongside Qwen3-8B's interval spanning zero, and Qwen3-32B's smaller
 point estimate than Qwen3-14B's, show that the transition is neither monotone in
 nor determined by parameter count alone.
+Four analyses bear on whether a model induces the arbitrary label-to-regime
+mapping, and they are computed from different quantities: the
+symbol-minus-no-context correlation contrast on forecasts; the partial correlation
+between the implied slope and the cue-named reference's own fitted slope
+(Section~\ref{app:coin-city-reference-selection}); held-out linear decoding of
+hidden states; and causal patching of those states
+(Section~\ref{app:coin-city-causal-patch}). Where more than one was run on a
+checkpoint they agree, including on Llama~3.1-8B, where all of them are null.
+Agreement among measures that could have disagreed is the reason to prefer the
+induction account over a lexical or pooling one. It does not extend the claim to
+the hosted deployments, whose internals are unavailable, and only one checkpoint
+carries the causal test.
+
 Because discrimination and forecast MAE can move in opposite directions, mapping
 induction is not equivalent to calibrated numerical use. Ambiguous, continuous,
 and adversarial cues remain untested. All prompts also tell models that within-city

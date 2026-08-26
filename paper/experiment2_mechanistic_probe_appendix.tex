@@ -135,7 +135,7 @@ to output sensitivity in the three larger screened checkpoints: inverted context
 raises $k=0$ forecast MAE by $1.66$, $1.96$, and $2.21$ points for 14B, 32B, and
 72B, respectively.
 
-\subsubsection{Power-Matched Semantic and Arbitrary-Symbol Replication}
+\subsubsection{Power-Matched and Cross-Model Arbitrary-Symbol Replication}
 \label{app:coin-city-probe-power}
 
 The six-checkpoint roster above seals 16 test episodes per arm. Its exact
@@ -187,6 +187,23 @@ City C cases the inverted-arm representation reverses: true-target regime AUC ri
 from $.321$ to $.747$, and the full-slope probe fits the cue-named relationship at
 $R^2=-.855$ while fitting the true one at $+.126$. Direct target evidence overrides
 the induced label in the representation as it does in the forecast.
+
+Two further checkpoints received the identical symbol protocol at the same 88
+sealed episodes: Qwen2.5-32B, which changes model generation, and Llama~3.1-8B,
+which changes vendor and architecture. Held-out regime AUC is $.778$ at $k=0$ for
+Qwen2.5-32B ($p<.001$, selected layer 50 of 64) and $.423$ for Llama~3.1-8B
+($p=.89$), whose four conditions all fail to reject. Mean-pooled input embeddings
+stay at chance in every symbol run ($.555$, $.550$, $.539$), so no symbol arm
+carries the mapping before computation.
+
+That split is the specificity test. Llama~3.1-8B is the checkpoint whose forecasts
+do not recover the mapping ($\Delta\rho=.045$, interval spanning zero), and it is
+also the checkpoint in which the mapping is not decodable; the two checkpoints
+whose forecasts recover it are the two in which it is. A probe that recovered
+structure wherever it was applied would not produce this pattern, and two positive
+replications alone could not have excluded that possibility. The sealed test is 88
+episodes per model, well above the 16 the roster began with but not a large
+sample, and the permutation nulls are computed rather than assumed.
 
 A 16-episode arbitrary-symbol pilot preceded this run under the identical protocol
 and returned $k=0$ regime AUC $.312$ with $p=.90$. Given the $[.203,.797]$ null at
@@ -299,13 +316,23 @@ and \path{analyze_symbol_relational_probe.py}; every count in that pipeline is
 derived from the frozen task manifest and checked by
 \path{tests/test_symbol_relational_scaling.py}.
 \path{paper/generate_coin_city_causal_patch_table.py} fails closed on the run's
-study name, sealed-test size and stability gate. The two power-matched Qwen3-14B runs are
-\path{mechanistic_probe/qwen3_14b_probe_v2/} and
-\path{mechanistic_probe/qwen3_14b_symbol_probe_v2/}, built by
+study name, sealed-test size and stability gate. The power-matched runs are
+\path{mechanistic_probe/qwen3_14b_probe_v2/},
+\path{mechanistic_probe/qwen3_14b_symbol_probe_v2/},
+\path{mechanistic_probe/qwen2_5_32b_symbol_probe_v2/} (checkpoint
+\texttt{5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd}) and
+\path{mechanistic_probe/llama3_1_8b_symbol_probe_v2/} (checkpoint
+\texttt{0e9e39f249a16976918f6564b8830bc894c89659}), built by
 \path{exp2_v2/biased_news/mechanistic_probe/build_probe_tasks.py} and
 \path{build_arbitrary_symbol_probe_tasks.py} with 62 and 31 episodes per factorial
 cell; \path{paper/generate_coin_city_probe_power_table.py} regenerates their table
-and fails closed on run status, sealed-test size and task hash. The diagnostic
+and fails closed on run status, sealed-test size and task hash. Each run's
+activation tensor is regenerable from its frozen task file and pinned checkpoint;
+the extraction manifests record the tensor hashes rather than the tensors.
+A cross-vendor replication at Llama~3.1-70B was attempted and not obtained: no
+partition available to us schedules four A6000 devices for longer than that
+checkpoint takes to load from shared storage, so the cross-vendor evidence here
+is the Llama~3.1-8B null rather than a positive. The diagnostic
 covers six checkpoints spanning Qwen and Llama at 16 sealed episodes per arm, plus
 the matched 88-episode semantic and arbitrary-symbol Qwen3-14B pair. For the semantic
 cue it is correlational and does not establish that the decoded direction

@@ -93,6 +93,25 @@ def atomic_savez(path: Path, **arrays: np.ndarray) -> None:
     temporary.replace(path)
 
 
+def verified_existing_behavior(path: Path, tasks: list[dict[str, Any]]) -> dict | None:
+    """Summary of an existing complete generation file, or None if unusable."""
+    if not path.exists():
+        return None
+    rows = [
+        json.loads(line)
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    expected = [row["sample_id"] for row in tasks if row["split"] == "test"]
+    if [row["sample_id"] for row in rows] != expected:
+        return None
+    return {
+        "status": "verified_existing",
+        "record_count": len(rows),
+        "parsed_count": sum(bool(row.get("parsed")) for row in rows),
+    }
+
+
 def verified_existing_features(path: Path, tasks: list[dict[str, Any]]) -> bool:
     if not path.exists():
         return False
@@ -107,6 +126,28 @@ def model_input_device(model):
     return model.get_input_embeddings().weight.device
 
 
+def load_feature_checkpoint(
+    path: Path, tasks: list[dict[str, Any]], layer_count: int, hidden_size: int
+):
+    """Return (last_token, mean_control, completed) from a partial run, if usable."""
+    if not path.exists():
+        return None
+    try:
+        with np.load(path, allow_pickle=False) as payload:
+            if payload["sample_ids"].astype(str).tolist() != [
+                row["sample_id"] for row in tasks
+            ]:
+                return None
+            last_token = payload["last_token"]
+            mean_control = payload["mean_control"]
+            completed = payload["completed"].astype(bool)
+    except Exception:
+        return None
+    if last_token.shape != (len(tasks), layer_count, hidden_size):
+        return None
+    return last_token, mean_control, completed
+
+
 def extract_features(
     *,
     model,
@@ -115,6 +156,7 @@ def extract_features(
     batch_size: int,
     max_input_tokens: int,
     output_path: Path,
+    checkpoint_every: int = 200,
 ) -> dict[str, Any]:
     import torch
 
@@ -132,19 +174,37 @@ def extract_features(
 
     layer_count = int(model.config.num_hidden_layers) + 1
     hidden_size = int(model.config.hidden_size)
-    last_token = np.empty(
-        (len(tasks), layer_count, hidden_size),
-        dtype=np.float16,
-    )
-    mean_control = np.empty(
-        (len(tasks), 2, hidden_size),
-        dtype=np.float16,
-    )
+    partial_path = output_path.with_name(output_path.name + ".partial.npz")
+    resumed = load_feature_checkpoint(partial_path, tasks, layer_count, hidden_size)
+    if resumed is None:
+        last_token = np.empty((len(tasks), layer_count, hidden_size), dtype=np.float16)
+        mean_control = np.empty((len(tasks), 2, hidden_size), dtype=np.float16)
+        completed_mask = np.zeros(len(tasks), dtype=bool)
+    else:
+        last_token, mean_control, completed_mask = resumed
+        print(
+            f"resuming feature extraction: {int(completed_mask.sum())}/{len(tasks)} "
+            "records already present",
+            flush=True,
+        )
+
+    def checkpoint() -> None:
+        atomic_savez(
+            partial_path,
+            last_token=last_token,
+            mean_control=mean_control,
+            completed=completed_mask,
+            sample_ids=np.asarray([row["sample_id"] for row in tasks]),
+        )
 
     order = np.argsort(token_counts, kind="stable")
     started = time.time()
+    since_checkpoint = 0
     for batch_start in range(0, len(order), batch_size):
         indices = order[batch_start : batch_start + batch_size].tolist()
+        indices = [index for index in indices if not completed_mask[index]]
+        if not indices:
+            continue
         encoded = tokenizer(
             [formatted[index] for index in indices],
             add_special_tokens=False,
@@ -180,14 +240,23 @@ def extract_features(
         del output, hidden_states, encoded
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
-        completed = min(batch_start + len(indices), len(order))
+        completed_mask[indices] = True
+        since_checkpoint += len(indices)
+        if since_checkpoint >= checkpoint_every:
+            checkpoint()
+            since_checkpoint = 0
         elapsed = time.time() - started
         print(
-            f"features {completed}/{len(order)} "
+            f"features {int(completed_mask.sum())}/{len(order)} "
             f"({elapsed:.1f}s, max_tokens={max(token_counts[i] for i in indices)})",
             flush=True,
         )
 
+    if not completed_mask.all():
+        checkpoint()
+        raise RuntimeError(
+            f"feature extraction incomplete: {int(completed_mask.sum())}/{len(tasks)}"
+        )
     atomic_savez(
         output_path,
         last_token=last_token,
@@ -196,6 +265,8 @@ def extract_features(
         sample_ids=np.asarray([row["sample_id"] for row in tasks]),
         token_counts=token_counts,
     )
+    if partial_path.exists():
+        partial_path.unlink()
     return {
         "record_count": len(tasks),
         "layer_count_including_embedding": layer_count,
@@ -224,11 +295,28 @@ def generate_behavior(
 
     test_tasks = [row for row in tasks if row["split"] == "test"]
     formatted = [formatted_prompt(tokenizer, row["prompt"]) for row in test_tasks]
+    partial_path = output_path.with_suffix(output_path.suffix + ".partial")
     records: list[dict[str, Any]] = []
+    if partial_path.exists():
+        records = [
+            json.loads(line)
+            for line in partial_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        print(
+            f"resuming generation: {len(records)}/{len(test_tasks)} already present",
+            flush=True,
+        )
+    done_ids = {row["sample_id"] for row in records}
+    pending = [
+        (task, text)
+        for task, text in zip(test_tasks, formatted)
+        if task["sample_id"] not in done_ids
+    ]
     started = time.time()
-    for batch_start in range(0, len(test_tasks), batch_size):
-        batch_tasks = test_tasks[batch_start : batch_start + batch_size]
-        batch_prompts = formatted[batch_start : batch_start + batch_size]
+    for batch_start in range(0, len(pending), batch_size):
+        batch_tasks = [item[0] for item in pending[batch_start : batch_start + batch_size]]
+        batch_prompts = [item[1] for item in pending[batch_start : batch_start + batch_size]]
         encoded = tokenizer(
             batch_prompts,
             add_special_tokens=False,
@@ -280,14 +368,26 @@ def generate_behavior(
             f"behavior {len(records)}/{len(test_tasks)}",
             flush=True,
         )
+        partial_path.write_text(
+            "".join(json.dumps(row, sort_keys=True) + "\n" for row in records),
+            encoding="utf-8",
+        )
         del encoded, sequences, generated
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
+    if len(records) != len(test_tasks):
+        raise RuntimeError(
+            f"generation incomplete: {len(records)}/{len(test_tasks)}"
+        )
+    order = {row["sample_id"]: index for index, row in enumerate(test_tasks)}
+    records.sort(key=lambda row: order[row["sample_id"]])
     content = "".join(json.dumps(row, sort_keys=True) + "\n" for row in records)
     temporary = output_path.with_suffix(output_path.suffix + ".tmp")
     temporary.write_text(content, encoding="utf-8")
     temporary.replace(output_path)
+    if partial_path.exists():
+        partial_path.unlink()
     return {
         "record_count": len(records),
         "parsed_count": sum(row["parsed"] for row in records),
@@ -332,6 +432,7 @@ def main() -> None:
         default=44,
         help="Per-GPU placement limit when --device-map is not 'none'.",
     )
+    parser.add_argument("--checkpoint-every", type=int, default=200)
     parser.add_argument("--skip-generation", action="store_true")
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
@@ -343,22 +444,36 @@ def main() -> None:
     import transformers
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    if not torch.cuda.is_available():
-        raise RuntimeError("a CUDA GPU is required for hidden-state extraction")
-    torch.manual_seed(DECODE_SEED)
-    torch.cuda.manual_seed_all(DECODE_SEED)
-    torch.backends.cuda.matmul.allow_tf32 = True
+    # The CUDA requirement belongs to the branch that loads weights; a run whose
+    # artifacts are already complete only records provenance and needs no GPU.
+    if torch.cuda.is_available():
+        torch.manual_seed(DECODE_SEED)
+        torch.cuda.manual_seed_all(DECODE_SEED)
+        torch.backends.cuda.matmul.allow_tf32 = True
 
     tasks, task_manifest = load_tasks(args.run_dir)
     features_path = args.run_dir / "hidden_states.npz"
     behavior_path = args.run_dir / "behavior_test.jsonl"
-    if not args.force and verified_existing_features(features_path, tasks):
+    existing_behavior = (
+        None if args.force else verified_existing_behavior(behavior_path, tasks)
+    )
+    behavior_ready = args.skip_generation or existing_behavior is not None
+    if (
+        not args.force
+        and behavior_ready
+        and verified_existing_features(features_path, tasks)
+    ):
+        # Both artifacts are already complete, so this run only records provenance.
         print(f"verified existing features: {features_path}", flush=True)
+        loaded_model = None
         feature_summary = {
             "status": "verified_existing",
             "record_count": len(tasks),
         }
+        behavior_summary = existing_behavior or {"status": "skipped"}
     else:
+        if not torch.cuda.is_available():
+            raise RuntimeError("a CUDA GPU is required for hidden-state extraction")
         tokenizer = AutoTokenizer.from_pretrained(
             args.model,
             local_files_only=True,
@@ -400,6 +515,7 @@ def main() -> None:
             batch_size=args.batch_size,
             max_input_tokens=args.max_input_tokens,
             output_path=features_path,
+            checkpoint_every=args.checkpoint_every,
         )
         if args.skip_generation:
             behavior_summary = {"status": "skipped"}
@@ -412,67 +528,80 @@ def main() -> None:
                 max_new_tokens=args.max_new_tokens,
                 output_path=behavior_path,
             )
-        model_commit = args.model_commit or getattr(model.config, "_commit_hash", None)
+        loaded_model = model
+    if loaded_model is None:
+        # Nothing was loaded because both artifacts were already verified, so the
+        # commit is the asserted one rather than one read back from weights.
+        model_commit = args.model_commit
+        commit_source = "asserted by --model-commit; no weights loaded this run"
+        resolved_device_map = {}
+        parameter_count = None
+    else:
+        model_commit = args.model_commit or getattr(
+            loaded_model.config, "_commit_hash", None
+        )
+        commit_source = "read from the loaded checkpoint config"
         resolved_device_map = {
             str(key): str(value)
-            for key, value in getattr(model, "hf_device_map", {}).items()
+            for key, value in getattr(loaded_model, "hf_device_map", {}).items()
         }
-        del model
+        del loaded_model
         torch.cuda.empty_cache()
 
-        manifest = {
-            "study": args.study or task_manifest["study"],
-            "status": "complete",
-            "model": args.model_id or args.model,
-            "model_label": args.model_label,
-            "model_commit": model_commit,
-            "device_map_request": args.device_map,
-            "gpu_memory_gib": (
-                None if args.device_map == "none" else args.gpu_memory_gib
-            ),
-            "resolved_device_map": resolved_device_map,
-            "parameter_count": parameter_count,
-            "decode_seed": DECODE_SEED,
-            "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
-            "primary_anchor": "final input token",
-            "control_pooling": ["mean embedding output", "mean final layer"],
-            "task_manifest_sha256": file_sha256(args.run_dir / "task_manifest.json"),
-            "tasks_sha256": file_sha256(args.run_dir / "tasks.jsonl"),
-            "features_sha256": file_sha256(features_path),
-            "behavior_sha256": (
-                None if args.skip_generation else file_sha256(behavior_path)
-            ),
-            "feature_summary": feature_summary,
-            "behavior_summary": behavior_summary,
-            "software": {
-                "python": platform.python_version(),
-                "numpy": np.__version__,
-                "torch": torch.__version__,
-                "transformers": transformers.__version__,
-                "accelerate": package_version("accelerate"),
-                "safetensors": package_version("safetensors"),
-            },
-            "cuda": {
-                "device_count": torch.cuda.device_count(),
-                "devices": [
-                    {
-                        "index": index,
-                        "name": torch.cuda.get_device_name(index),
-                        "max_memory_allocated_bytes": int(
-                            torch.cuda.max_memory_allocated(index)
-                        ),
-                    }
-                    for index in range(torch.cuda.device_count())
-                ],
-            },
-            "completed_at": datetime.now(timezone.utc).isoformat(),
-        }
-        manifest_path = args.run_dir / "extraction_manifest.json"
-        manifest_path.write_text(
-            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
-            encoding="utf-8",
-        )
-        print(json.dumps(manifest, indent=2, sort_keys=True), flush=True)
+    manifest = {
+        "study": args.study or task_manifest["study"],
+        "status": "complete",
+        "model": args.model_id or args.model,
+        "model_label": args.model_label,
+        "model_commit": model_commit,
+        "model_commit_source": commit_source,
+        "device_map_request": args.device_map,
+        "gpu_memory_gib": (
+            None if args.device_map == "none" else args.gpu_memory_gib
+        ),
+        "resolved_device_map": resolved_device_map,
+        "parameter_count": parameter_count,
+        "decode_seed": DECODE_SEED,
+        "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+        "primary_anchor": "final input token",
+        "control_pooling": ["mean embedding output", "mean final layer"],
+        "task_manifest_sha256": file_sha256(args.run_dir / "task_manifest.json"),
+        "tasks_sha256": file_sha256(args.run_dir / "tasks.jsonl"),
+        "features_sha256": file_sha256(features_path),
+        "behavior_sha256": (
+            None if args.skip_generation else file_sha256(behavior_path)
+        ),
+        "feature_summary": feature_summary,
+        "behavior_summary": behavior_summary,
+        "software": {
+            "python": platform.python_version(),
+            "numpy": np.__version__,
+            "torch": torch.__version__,
+            "transformers": transformers.__version__,
+            "accelerate": package_version("accelerate"),
+            "safetensors": package_version("safetensors"),
+        },
+        "cuda": {
+            "device_count": torch.cuda.device_count(),
+            "devices": [
+                {
+                    "index": index,
+                    "name": torch.cuda.get_device_name(index),
+                    "max_memory_allocated_bytes": int(
+                        torch.cuda.max_memory_allocated(index)
+                    ),
+                }
+                for index in range(torch.cuda.device_count())
+            ],
+        },
+        "completed_at": datetime.now(timezone.utc).isoformat(),
+    }
+    manifest_path = args.run_dir / "extraction_manifest.json"
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(manifest, indent=2, sort_keys=True), flush=True)
 
 
 if __name__ == "__main__":

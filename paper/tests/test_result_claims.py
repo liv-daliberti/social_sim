@@ -412,6 +412,10 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         r"Appendix~\ref{app:coin-city-reference-selection}",
         "largely lexical, and we treat it as such",
         "88 episodes",
+        "Qwen2.5-32B reaches $.778$",
+        "Llama~3.1-8B is null in all four conditions",
+        "Decodability tracks behavioral recovery rather than",
+        "Slope $R^2$ is $.016$ and does not reject",
         "The induced relationship causally controls the zero-shot forecast",
         "$347/347$ exact self-patch controls",
         "direct evidence displaces the induced label",
@@ -730,7 +734,8 @@ def test_experiment4_main_values_match_locked_test() -> None:
     close(scale_llama["models"]["base"]["brier"], 0.16417377306307376)
     close(scale_llama["models"]["base"]["draw_parse_coverage"], 1581 / 1590)
     close(
-        sum(scale_llama["models"][f"seed_{seed}"]["brier"] for seed in (42, 43, 44)) / 3,
+        sum(scale_llama["models"][f"seed_{seed}"]["brier"] for seed in (42, 43, 44))
+        / 3,
         0.12642974319706817,
     )
     llama_crowd = scale_llama["comparisons_brier"]["trained_seed_mean_minus_market"]
@@ -747,8 +752,9 @@ def test_experiment4_main_values_match_locked_test() -> None:
     source = compact("paper/experiment3_section.tex")
     for claim in (
         "a frozen scale extension uses 318 new markets",
-        "reports Qwen3-4B, Qwen3-8B, and Qwen3-14B and a separately registered, same-holdout Llama-3.1-8B point",
-        "Trained Qwen Brier falls from $.1366$ to $.1286$ to $.1270$ at 4B/8B/14B",
+        "reports Qwen3-1.7B, Qwen3-4B, Qwen3-8B, and Qwen3-14B as a connected curve",
+        "The post-hoc Qwen3-1.7B trained mean is $.1248$ (base $.2253$)",
+        "registered 4B/8B/14B trained means are $.1366$/$.1286$/$.1270$",
         "$-.00117$ $[-.00298,+.00016]$",
         "contemporaneous crowd (Brier $.12655$)",
         "$+.00040$ $[-.00028,+.00139]$",

@@ -86,11 +86,16 @@ inversion. That result is largely lexical, and we treat it as such: mean-pooled
 input embeddings alone reach AUC $1.000$, and the probe selects the first
 transformer block. Replacing the words with arbitrary labels and enlarging the
 sealed test to 88 episodes changes both. The embedding control collapses to
-$.555$, the selected layers move to blocks 26 and 40 of 40, and held-out regime
-AUC is $.678$ at $k=0$ ($p=.0016$)---close to the $.702$ the model's own forecasts
-express on the same episodes. Slope $R^2$ is $.016$ and does not reject its null.
-An induced response family is linearly represented after computation; the exact
-coefficient is not (Figure~\ref{fig:coin-city-mechanistic-main};
+$.555$, the selected layer moves from the first block to block 26 of 40, and
+held-out regime AUC is $.678$ at $k=0$ ($p=.0016$). Two further checkpoints at the
+same 88 episodes complete the pattern: Qwen2.5-32B reaches $.778$ ($p<.001$) at
+layer 50 of 64, while Llama~3.1-8B is null in all four conditions
+($p=.25$--$.89$)---and Llama~3.1-8B is exactly the checkpoint whose forecasts do
+not recover the mapping. Decodability tracks behavioral recovery rather than
+appearing wherever the probe is applied. Slope $R^2$ is $.016$ and does not reject
+its null, so an induced response family is linearly represented after computation
+while the exact coefficient is not
+(Figure~\ref{fig:coin-city-mechanistic-main};
 Appendix~\ref{app:coin-city-mechanistic-probe}).
 
 \textbf{The induced relationship causally controls the zero-shot forecast.}
