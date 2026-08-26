@@ -141,7 +141,7 @@ def main() -> None:
         print("omitted (run not complete): " + ", ".join(omitted))
 
     # Stacked rather than side by side, so the figure is narrow enough to wrap.
-    fig, axes = plt.subplots(2, 1, figsize=(2.95, 3.05), sharex=True, sharey=True)
+    fig, axes = plt.subplots(2, 1, figsize=(2.95, 3.30), sharex=True, sharey=True)
     positions = range(len(CONDITIONS))
 
     for axis, depth in zip(axes, (0, 4)):
@@ -183,12 +183,15 @@ def main() -> None:
             "Held-out $R^2$" if TARGET == "slope" else "Held-out regime AUC",
             fontsize=8,
         )
-    # Lower left of the k=4 panel is the only region no series passes through.
-    axes[1].legend(
-        loc="lower left", frameon=False, handlelength=1.6, borderpad=0.2,
-        labelspacing=0.25, ncol=1, fontsize=6.8,
+    # Below the panels rather than inside one: at five checkpoints an inset legend
+    # covers the region the abstaining series occupy.
+    handles, labels = axes[1].get_legend_handles_labels()
+    fig.legend(
+        handles, labels, loc="lower center", frameon=False, handlelength=1.5,
+        borderpad=0.0, labelspacing=0.3, columnspacing=1.0, handletextpad=0.5,
+        ncol=3, fontsize=6.8,
     )
-    fig.tight_layout(pad=0.4, h_pad=0.7)
+    fig.tight_layout(pad=0.4, h_pad=0.7, rect=(0, 0.105, 1, 1))
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT, facecolor="white")
     print(f"Wrote {OUTPUT}")
