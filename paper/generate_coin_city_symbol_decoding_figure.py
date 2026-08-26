@@ -37,6 +37,7 @@ PROBE_ROOT = (
     / "mechanistic_probe"
 )
 OUTPUT = ROOT / "paper" / "figures" / "exp2_symbol_decoding.pdf"
+TARGET = "regime"  # the induced mapping decodes as a response family, not a coefficient
 
 # label, run directory, colour, marker, whether the model recovers the mapping
 RUNS = (
@@ -79,15 +80,21 @@ def load(directory: str) -> dict:
     return results
 
 
-def series(results: dict, depth: int) -> list[float]:
-    selected = results["primary"]["conditions"][f"k{depth}:regime"]["selected_test"]
+def series(results: dict, depth: int) -> tuple[list[float], bool]:
+    """Held-out scores for one model-depth cell, and whether it rejects its null."""
+    condition = results["primary"]["conditions"][f"k{depth}:{TARGET}"]
+    selected = condition["selected_test"]
+    key = "roc_auc" if TARGET == "regime" else "r2"
     values = []
     for arm, target, _ in CONDITIONS:
         probe = selected.get(arm, {}).get("probe", {}).get(target)
-        if probe is None or probe.get("roc_auc") is None:
+        if probe is None or probe.get(key) is None:
             raise SystemExit(f"missing {arm}/{target} at k={depth}")
-        values.append(float(probe["roc_auc"]))
-    return values
+        values.append(float(probe[key]))
+    rejects = (
+        condition["permutation_null_on_correct_context_test"]["one_sided_p"] < 0.05
+    )
+    return values, rejects
 
 
 def main() -> None:
@@ -98,18 +105,25 @@ def main() -> None:
     positions = range(len(CONDITIONS))
 
     for axis, depth in zip(axes, (0, 4)):
-        axis.axhline(0.5, color="#888888", linewidth=0.7, linestyle=(0, (4, 3)), zorder=1)
-        for label, results, colour, marker, recovers in loaded:
+        reference = 0.5 if TARGET == "regime" else 0.0
+        axis.axhline(
+            reference, color="#888888", linewidth=0.7, linestyle=(0, (4, 3)), zorder=1
+        )
+        for label, results, colour, marker, _recovers in loaded:
+            values, rejects = series(results, depth)
+            # An open marker and a dashed line mark a cell that does not reject its
+            # held-out permutation null, so a shape there is not read as a result.
             axis.plot(
                 list(positions),
-                series(results, depth),
+                values,
                 color=colour,
                 marker=marker,
                 markersize=4.5,
-                linewidth=2.0 if recovers else 1.3,
-                linestyle="-" if recovers else (0, (3, 2)),
-                label=label,
-                zorder=3 if recovers else 2,
+                markerfacecolor=colour if rejects else "white",
+                linewidth=2.0 if rejects else 1.3,
+                linestyle="-" if rejects else (0, (3, 2)),
+                label=label if depth == 0 else None,
+                zorder=3 if rejects else 2,
             )
         axis.set_title(
             "No target cases ($k{=}0$)" if depth == 0 else "Four target cases ($k{=}4$)",
@@ -118,15 +132,14 @@ def main() -> None:
         axis.set_xticks(list(positions))
         axis.set_xticklabels([name for _, _, name in CONDITIONS])
         axis.set_xlim(-0.25, len(CONDITIONS) - 0.75)
-        axis.set_ylim(0.0, 1.0)
+        axis.set_ylim(-1.25, 0.55) if TARGET == "slope" else axis.set_ylim(0.0, 1.0)
         axis.spines["top"].set_visible(False)
         axis.spines["right"].set_visible(False)
 
-    axes[0].set_ylabel("Held-out regime AUC")
-    axes[0].text(
-        -0.18, 0.52, "chance", color="#888888", fontsize=7.5, va="bottom",
+    axes[0].set_ylabel(
+        "Held-out $R^2$" if TARGET == "slope" else "Held-out regime AUC"
     )
-    axes[1].legend(loc="lower left", frameon=False, handlelength=1.8)
+    axes[0].legend(loc="lower left", frameon=False, handlelength=1.8)
     fig.tight_layout(rect=(0, 0, 1, 0.99))
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT, facecolor="white")

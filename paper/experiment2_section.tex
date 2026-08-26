@@ -94,7 +94,7 @@ checkpoints do---a transition that differs by family rather than tracking
 parameter count. Hidden states carry the mapping weakly and only after
 computation: semantic-arm probes reach AUC $1.000$ but read the first transformer
 block, where input embeddings alone already reach $1.000$. Under arbitrary labels
-that control falls to $.555$, and what the probe decodes then follows the label at
+that control falls to $.555$, and the decoded regime then follows the label at
 $k=0$ and the truth at $k=4$
 (Figure~\ref{fig:coin-city-symbol-decoding})---except in Llama~3.1-8B, whose
 forecasts do not recover the mapping either. Patching those states at the two
@@ -107,7 +107,9 @@ nothing at $k=4$, so the induced mapping causes the zero-shot forecast
 \includegraphics[width=.86\linewidth]{figures/exp2_symbol_decoding.pdf}
 \caption{\textbf{Under arbitrary labels the decoded regime follows the cue when
 evidence is absent and the truth once it arrives.} Held-out regime AUC on 88
-sealed episodes, for probes fit only on correct-label development episodes. The
+sealed episodes, for probes fit only on correct-label development episodes. Open
+markers and a dashed line mark a cell that does not reject its held-out
+permutation null. The
 labels carry no stated direction and their mapping reverses across episodes, so a
 probe that tracks them cannot be reading a word it already knows. With no target
 cases the decoded regime follows whichever label the prompt carries; with four,
