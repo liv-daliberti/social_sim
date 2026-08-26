@@ -64,20 +64,49 @@ numerical calibration (Appendix Table~\ref{tab:coin-city-symbol-context}).
 
 \textbf{Forecasts track the cue-named reference, not a lexical prior.}
 The reference sentences state which regime responds more strongly, so the semantic
-contrast alone cannot exclude a prior on those words. Partialling out the regime
-separates them: at $k=0$ the implied slope tracks the cue-named reference's own
-noisy fitted slope at $.51$--$.86$ and the other at $.04$--$.10$, both load equally
-with no cue, and inversion moves the loading onto the reference the false cue names
-(Appendix~\ref{app:coin-city-reference-selection}).
+contrast alone cannot exclude a prior attached to those words. Partialling out the
+regime separates the accounts, because a fit to four noisy reference cases carries
+sampling error ($\mathrm{SD}=.332$ against a generator $.03$) that a
+cue-determined prior cannot reproduce. Four arms make four predictions and all
+four hold at $k=0$: with no reference cases displayed neither reference loads;
+with both displayed and no City C label the two load equally, the pooling
+signature; the correct label concentrates loading on the named reference
+($.51$--$.86$) and removes it from the other ($.04$--$.10$); and inversion moves
+the loading wholesale onto the reference the false cue names ($.61$--$.90$). This
+also explains why implied-slope correlations plateau near $.66$ rather than
+$.996$: faithful transfer of a noisy reference estimate is capped at that
+reference's own correlation with the truth. Under arbitrary symbols the same test
+marks twelve of fifteen systems, agreeing with the $\Delta\rho$ contrast on all
+fifteen (Appendix~\ref{app:coin-city-reference-selection}).
 
 \textbf{Hidden states carry the induced relationship, weakly.}
-Probes decode the cue-selected regime across six open checkpoints (AUC
-$.844$--$1.000$), but that is largely lexical: input embeddings alone reach
-$1.000$. Under arbitrary labels with 88 sealed episodes the embedding control falls
-to $.555$ while held-out AUC stays at $.678$ ($p=.0016$); slope $R^2$ is $.016$ and
-does not reject its null (Figure~\ref{fig:coin-city-mechanistic-main};
+Linear probes decode the cue-selected regime across six open checkpoints spanning
+Qwen and Llama (AUC $.844$--$1.000$), reversing onto the stated relationship under
+inversion. That result is largely lexical, and we treat it as such: mean-pooled
+input embeddings alone reach AUC $1.000$, and the probe selects the first
+transformer block. Replacing the words with arbitrary labels and enlarging the
+sealed test to 88 episodes changes both. The embedding control collapses to
+$.555$, the selected layers move to blocks 26 and 40 of 40, and held-out regime
+AUC is $.678$ at $k=0$ ($p=.0016$)---close to the $.702$ the model's own forecasts
+express on the same episodes. Slope $R^2$ is $.016$ and does not reject its null.
+An induced response family is linearly represented after computation; the exact
+coefficient is not (Figure~\ref{fig:coin-city-mechanistic-main};
 Appendix~\ref{app:coin-city-mechanistic-probe}).
 
+\textbf{The induced relationship causally controls the zero-shot forecast.}
+Decodability is not mediation, so we intervene. Under arbitrary labels an
+episode's correct and swapped prompts are byte-identical through the City C label,
+leaving exactly two differing token positions. Replacing the residual stream at
+those two positions with the opposite arm's states shifts Qwen3-14B's
+regime-aligned forecast by $.333$ at $k=0$ against a sign-flip null of
+$[-.177,.178]$ ($p<.0001$), with $347/347$ exact self-patch controls and all eight
+checks of a stability gate frozen before the result. With four City C cases every
+patch site is null ($p\ge.64$): direct evidence displaces the induced label
+causally, as it does behaviorally. This is one checkpoint under arbitrary labels
+(Appendix~\ref{app:coin-city-causal-patch}).
+
 The cue-reversal and evidence-accumulation contrasts test reference selection,
-response application, and revision. Experiment~3 tests transfer after
-episode-matched training.
+response application, and revision; the reference-selection and patching analyses
+show the selection is of a particular displayed reference and, in one checkpoint,
+that it causes the forecast. Experiment~3 tests transfer after episode-matched
+training.
