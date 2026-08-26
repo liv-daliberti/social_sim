@@ -419,6 +419,10 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     ):
         assert row in source, row
     assert "Forecast MAE [95\\% CI]" in source
+    # Both main-text figures must stay: the roster table and the four-arm pattern.
+    assert "figures/exp2_coin_city_results.pdf" in source
+    assert "figures/exp2_reference_selection.pdf" in source
+    assert "A prior attached to the words" in source
 
     # The three structural claims the section is organised around.
     for heading in (
@@ -757,6 +761,17 @@ def test_experiment4_main_values_match_locked_test() -> None:
     assert llama_ledger["status"] == "complete"
     assert llama_ledger["classification"] == "post_hoc_architecture_comparator"
 
+    ensemble = load_json(
+        "exp3_training_transfer/polymarket/reports/"
+        "exp4_hosted_ensemble_posthoc.summary.json"
+    )
+    available = ensemble["results"]["available_member_pool_all_tasks"]
+    close(available["brier"], 0.1273034985082547)
+    close(available["ensemble_minus_market"]["estimate"], 0.0007555566843553481)
+    close(available["ensemble_minus_market"]["ci95_low"], -0.0006369892656040217)
+    close(available["ensemble_minus_market"]["ci95_high"], 0.00220301543161291)
+    assert "do not beat" in ensemble["conclusion"]
+
     source = compact("paper/experiment3_section.tex")
     for claim in (
         "a frozen scale extension uses 318 new markets",
@@ -767,6 +782,8 @@ def test_experiment4_main_values_match_locked_test() -> None:
         "contemporaneous crowd (Brier $.12655$)",
         "$+.00040$ $[-.00028,+.00139]$",
         "post-hoc Llama minus crowd is $-.00012$ $[-.00046,+.00012]$",
+        "the disclosed Kimi repair are tied with users",
+        "Opus~5 are worse under fail-closed scoring",
     ):
         assert claim in source
     assert "train-only Platt" not in source
@@ -809,3 +826,7 @@ def test_experiment4_main_values_match_locked_test() -> None:
     assert "All 4,770 trained draws parse" in appendix
     assert "nine of the 1,590 base draws do not" in appendix
     assert "Trained minus base is $-.03774$ $[-.05860,-.01946]$" in appendix
+    assert "The repaired result parses all 1,590 draws and has" in appendix
+    assert "Brier $.12682$" in appendix
+    assert "Fail-closed Brier is $.15571$" in appendix
+    assert "pooling does not beat the contemporaneous users" in appendix

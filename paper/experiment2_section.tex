@@ -62,13 +62,30 @@ those sentences name the direction, the numbers above could come from a prior
 about news coverage alone. Partialling out the regime separates the accounts,
 because a fit to four noisy reference cases carries sampling error no
 cue-determined prior can reproduce. All four arms then behave as reference
-selection predicts at $k=0$: with no reference cases neither loads, with no cue
+selection predicts at $k=0$ (Figure~\ref{fig:coin-city-reference-selection}): with no reference cases neither loads, with no cue
 both load equally, the correct cue concentrates loading on the named reference
 ($.51$--$.86$) and strips it from the other ($.04$--$.10$), and inversion moves it
 wholesale onto the reference the false cue names ($.61$--$.90$). It also explains
 why implied-slope correlations plateau near $.66$ rather than $.996$: transferring
 a noisy estimate is capped at that estimate's own correlation with the truth
 (Appendix~\ref{app:coin-city-reference-selection}).
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\linewidth]{figures/exp2_reference_selection.pdf}
+\caption{\textbf{The cue selects one of the two displayed references.} Partial
+correlation between each deployment's forecast-implied City C slope and a
+reference city's own fitted slope at $k=0$, controlling for the response regime
+the City C sentence names; bars are 95\% episode-bootstrap intervals. Orange is
+the reference that sentence points to, gray the other. With no reference cases
+displayed neither loads; with both displayed and no cue they load equally, the
+signature of pooling; the correct cue concentrates loading on the reference it
+names; and an inverted cue moves that loading onto the reference it falsely names.
+A prior attached to the words \emph{national} and \emph{local} predicts no
+loading in any panel. Per-deployment values and the arbitrary-symbol version are in
+Appendix~\ref{app:coin-city-reference-selection}.}
+\label{fig:coin-city-reference-selection}
+\end{figure}
 
 \textbf{Induction of a novel mapping.} This mapping must be inferred from each
 episode's own examples. Twelve of fifteen systems recover it at $k=0$, all five
