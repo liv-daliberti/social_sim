@@ -404,8 +404,8 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         "rather than tracking\nparameter count".replace("\n", " "),
         "input embeddings alone already reach $1.000$",
         "that control falls to $.555$",
-        "$.778$ for Qwen2.5-32B",
-        "is null throughout",
+        "follows the label at\n$k=0$ and the truth at $k=4$".replace("\n"," "),
+        "whose\nforecasts do not recover the mapping either".replace("\n"," "),
         "$.333$ at $k=0$",
         r"Appendix~\ref{app:coin-city-reference-selection}",
         r"Appendix~\ref{app:coin-city-mechanistic-probe}",
@@ -422,6 +422,8 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     # Both main-text figures must stay: the roster table and the four-arm pattern.
     assert "figures/exp2_coin_city_results.pdf" in source
     assert "figures/exp2_reference_selection.pdf" in source
+    assert "figures/exp2_symbol_decoding.pdf" in source
+    assert "cannot be reading a word it already knows" in source
     assert "A prior attached to the words" in source
 
     # The three structural claims the section is organised around.
