@@ -68,21 +68,6 @@ on the named reference ($.51$--$.86$) and strips it from the other
 $.996$, since a transferred estimate inherits its source's noise
 (Appendix~\ref{app:coin-city-reference-selection}).
 
-\begin{wrapfigure}{r}{0.35\textwidth}
-\vspace{-1.0em}
-\centering
-\includegraphics[width=\linewidth]{figures/exp2_symbol_decoding.pdf}
-\vspace{-0.8em}
-\caption{\textbf{Under arbitrary labels the decoded regime follows the cue when
-evidence is absent and the truth once it arrives.} Held-out regime AUC on 88
-sealed episodes; probes fit only on correct-label development episodes. Open
-markers mark a cell that does not reject its permutation null. Llama~3.1-8B is the
-negative control: its forecasts do not recover the mapping and neither does its
-probe.}
-\label{fig:coin-city-symbol-decoding}
-\vspace{-1.0em}
-\end{wrapfigure}
-
 \textbf{Induction of a novel mapping.} This mapping must be inferred from each
 episode's own examples. Twelve of fifteen systems recover it at $k=0$, all five
 hosted ones among them, and within both Qwen3 and Llama only the larger
@@ -97,6 +82,18 @@ the induced mapping causes the zero-shot forecast
 (Appendix~\ref{app:coin-city-mechanistic-probe}).
 
 
+\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{-1.0em}
+\centering
+\includegraphics[width=\linewidth]{figures/exp2_symbol_decoding.pdf}
+\vspace{-0.8em}
+\caption{\textbf{The decoded regime follows the arbitrary cue when evidence is
+absent and the truth once it arrives.} Held-out regime AUC on 88 sealed episodes.
+Open markers do not reject their permutation null; Llama~3.1-8B is the negative
+control.}
+\label{fig:coin-city-symbol-decoding}
+\vspace{-1.0em}
+\end{wrapfigure}
 Context therefore selects which demonstrated relationship a model applies, that
 selection reaches a particular displayed reference rather than a remembered
 association, and target evidence overrides it. Three things bound the reading: the

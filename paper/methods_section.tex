@@ -11,9 +11,9 @@ seeds, then across episodes within seed.
 \subsection{Experiment 1: Evidence-Selective Updating}
 \label{sec:methods-exp1}
 
-We sample 100 unresolved binary markets in politics, government, elections,
-economics, and geopolitics. Each is open, 14--180 days from resolution, has at
-least \$1,000 in lifetime USD volume, and was unresolved at collection. We report three
+We sample 100 binary markets in politics, government, elections, economics, and
+geopolitics, each open at collection, 14--180 days from resolution, and with at
+least \$1,000 in lifetime USD volume. We report three
 hosted API systems \citep{openai2026gpt54,anthropic2026claude48,deepseek2026v4}
 and six scale-valid Qwen~2.5 or Llama-family open-weight models
 \citep{qwen2025qwen25,grattafiori2024llama}; Appendix~\ref{app:record-processing}
@@ -22,18 +22,16 @@ retains one mixed-scale deployment for compliance diagnostics.
 Agents return an event model, $P(H_1)$ (YES), $P(H_2)$ (NO), and headline forecast
 $\hat p=P(H_1)$. With search then disabled, they receive nine generated packets per
 market: three pro-$H_1$, three anti-$H_1$, and three topical but orthogonal, giving
-30,094 valid updates. The prompt carries one packet field, the snippet text;
-direction, target hypothesis, headline, mechanism, and rationale are withheld and
-read only at scoring (Appendix~\ref{app:exp1-withholding}).
+30,094 valid updates. The prompt carries one packet field, the snippet text; every other field is
+withheld and read only at scoring (Appendix~\ref{app:exp1-withholding}).
 
-We report two measures, and designate neither as primary, because they answer
-different questions. \textbf{Sensitivity} divides mean absolute directional by
-orthogonal movement, with D/O reporting both means in percentage points; it asks
-whether a model discriminates probative from topic-matched evidence.
-\textbf{Evidence--Hypothesis Consistency (EHC)} is directional correctness for
-stated $P(H_1)$ among updates of at least 3 points; it asks whether a model moves
-the right way. Appendix~\ref{app:exp1-alternatives} gives the lexical and human
-baselines that bound each. Color bands use sensitivity cutpoints $2.5,5,10$ and
+We report two measures and designate neither as primary. \textbf{Sensitivity}
+divides mean absolute directional by orthogonal movement, with D/O reporting both
+means in percentage points, and asks whether a model discriminates probative from
+topic-matched evidence. \textbf{Evidence--Hypothesis Consistency (EHC)} is
+directional correctness for stated $P(H_1)$ among updates of at least 3 points,
+and asks whether it moves the right way. Appendix~\ref{app:exp1-alternatives}
+gives the lexical and human baselines that bound each. Color bands use sensitivity cutpoints $2.5,5,10$ and
 EHC cutpoints $.90,.95,.98$. Intervals use 20,000 market-clustered resamples
 retaining all packets and repeated initial runs;
 Appendix~\ref{app:exp1-threshold-robustness} gives threshold and headline-field
@@ -72,31 +70,22 @@ We generate 250 independent episodes. For city $j$ in episode $i$,
   \qquad \epsilon_{ij}\sim\mathcal N(0,5^2),
   \label{eq:coin-city-dgp}
 \end{equation}
-where $x_{ij}$ is signed net news. Strong cities have
-$g_j\sim\mathcal N(0.90,0.03^2)$ and weak cities have
-$g_j\sim\mathcal N(0.25,0.03^2)$, with $0.03$ denoting the standard deviation in
-both regimes. City A and City B each provide four reference
-cases arranged as matched equal-and-opposite news pairs. A query asks for City C's
-ending poll after news $x\in\{-10,\ldots,-4,4,\ldots,10\}$, given
-$k\in\{0,1,2,3,4\}$ City C cases.
+where $x_{ij}$ is signed net news, and strong and weak cities draw
+$g_j\sim\mathcal N(0.90,0.03^2)$ and $g_j\sim\mathcal N(0.25,0.03^2)$. Each
+reference city provides four cases in matched equal-and-opposite news pairs. A
+query asks for City C's ending poll after news
+$x\in\{-10,\ldots,-4,4,\ldots,10\}$, given $k\in\{0,1,2,3,4\}$ City C cases.
 
-Four prompt arms vary the evidence available to the model: target cases alone;
-reference cases without City C context; references with the correct City C context;
-and references with the opposite context label. At $k=0$, the correct-context
-contrast tests whether the label selects a reference regime, and the opposite-label
-arm tests whether reversing the label reverses that selection. Increasing $k$ tests
-whether City C observations reduce the label's influence.
-An arbitrary-label arm replaces national/local with \texttt{KIV}/\texttt{ZOR};
-its higher-response mapping changes by episode and must be recovered from the
-reference cases. Together, these arms form three protocol-locked modules over the
-same episode bank: semantic selection and revision, cue inversion, and
-within-episode mapping induction. Each module uses a hash-locked task manifest
-before its model calls. A Qwen activation audit uses the correct, absent, and
-inverted prompts to test whether the selected regime and slope are linearly
-decodable under the same intervention.
-Figure~\ref{fig:coin-city-prompts} shows the shared task, reference cases, and
-information arms. Full design, prompt-arm, and execution details appear in
-Appendix~\ref{app:coin-city}.
+Five prompt arms vary the evidence available: target cases alone; reference cases
+without City C context; references with the correct City C context; references with
+the opposite context label; and an arbitrary-label arm replacing national/local
+with \texttt{KIV}/\texttt{ZOR}, whose higher-response mapping changes by episode
+and must be recovered from the reference cases. Every arm reuses the same episode
+bank under a task manifest hashed before its model calls
+(Figure~\ref{fig:coin-city-prompts}). An open-weight activation audit reuses the
+correct, absent and inverted prompts of both the semantic and arbitrary-label arms,
+and adds a causal patch of the label tokens. Full design, prompt-arm, and execution
+details appear in Appendix~\ref{app:coin-city}.
 
 Claude Opus~4.8, Claude Opus~5, GPT-5.6, DeepSeek-V4-Pro, Kimi K3, and Gemini 3.6
 Flash are evaluated on every frozen episode, evidence depth, and arm: 30,000
@@ -105,9 +94,9 @@ $p_0+g_Cx$. The forecast-implied response is
 $\hat g=(\hat p-p_0)/x$. We report its MAE and across-episode correlation with
 $g_C$.
 
-The deterministic analogical benchmark uses the cue to choose City A or B, fits
-that reference by through-origin OLS, and refits as City C cases arrive; its results
-appear in Appendix~\ref{app:coin-city-analysis}. Paired intervals use 2,000 episode
+A deterministic analogical benchmark uses the cue to choose City A or B, fits that
+reference by through-origin OLS, and refits as City C cases arrive
+(Appendix~\ref{app:coin-city-analysis}). Paired intervals use 2,000 episode
 bootstrap samples \citep{efron1979bootstrap}.
 
 \subsection{Experiment 3: Controlled Relationship Transfer}
@@ -115,6 +104,7 @@ bootstrap samples \citep{efron1979bootstrap}.
 
 \label{sec:methods-exp3-synthetic}
 
+\input{fig_exp3_transfer_grid}
 Training uses the direct, one-period relationship in
 Equation~\ref{eq:coin-city-dgp}. Each prompt shows two complete 14-case references,
 a target with $k$ observed cases, and a ten-outcome query. The episode-matched and
@@ -128,7 +118,6 @@ same evaluation prompts without training.
 Table~\ref{tab:exp3-training-policies}
 in Appendix~\ref{app:exp3-coin-structural} shows all four conditions on one episode.
 
-\input{fig_exp3_transfer_grid}
 
 Policies train only on Coin City under Structure~A, the direct mechanism
 $x_t\to y_{t+1}$. Figure~\ref{fig:exp3-transfer-grid} crosses this trained cell

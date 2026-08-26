@@ -39,12 +39,30 @@ PROBE_ROOT = (
 OUTPUT = ROOT / "paper" / "figures" / "exp2_symbol_decoding.pdf"
 TARGET = "regime"  # the induced mapping decodes as a response family, not a coefficient
 
-# label, run directory, colour, marker, whether the model recovers the mapping
+# Seven checkpoints is past what per-model colours can carry in a wrapped column,
+# so the encoding is the split the figure is about: solid warm lines for the
+# checkpoints whose forecasts recover the mapping, gray dashed for those that do
+# not. The behavioural verdict is read from the released comparison, not asserted.
 RUNS = (
-    ("Qwen3-14B", "qwen3_14b_symbol_probe_v2", "#D55E00", "o", True),
-    ("Qwen2.5-32B", "qwen2_5_32b_symbol_probe_v2", "#0072B2", "s", True),
-    ("Llama-3.1-8B", "llama3_1_8b_symbol_probe_v2", "#A8ADB4", "^", False),
+    ("Qwen3-4B", "qwen3_4b_symbol_probe_v2", "Qwen3-4B-Instruct-2507", "v"),
+    ("Qwen3-8B", "qwen3_8b_symbol_probe_v2", "Qwen3-8B", "^"),
+    ("Qwen3-14B", "qwen3_14b_symbol_probe_v2", "Qwen3-14B", "o"),
+    ("Qwen2.5-32B", "qwen2_5_32b_symbol_probe_v2", "Qwen2.5-32B-Instruct", "s"),
+    ("Qwen2.5-72B", "qwen2_5_72b_symbol_probe_v2", "Qwen2.5-72B-Instruct", "D"),
+    ("Llama-3.1-8B", "llama3_1_8b_symbol_probe_v2", "Llama-3.1-8B-Instruct", "<"),
+    ("Llama-3.1-70B", "llama3_1_70b_symbol_probe_v2", "Llama-3.1-70B-Instruct", ">"),
 )
+COMPARISON = (
+    ROOT
+    / "exp2_v2"
+    / "biased_news"
+    / "data"
+    / "coin_city_stable_relationship_claude_n250_v4"
+    / "analysis"
+    / "symbol_context_model_comparison_20260824.json"
+)
+RECOVERS_COLOURS = ("#D55E00", "#0072B2", "#009E73", "#6A3D9A")
+ABSTAINS_COLOUR = "#A8ADB4"
 # Short tick labels: the figure is set narrow enough to wrap beside the text.
 CONDITIONS = (
     ("abc_context", "true_target", "Correct\nlabel"),
@@ -66,6 +84,13 @@ plt.rcParams.update(
         "ps.fonttype": 42,
     }
 )
+
+
+def recovers(model_key: str) -> bool:
+    """Does this checkpoint's forecast recover the mapping behaviourally?"""
+    curves = json.loads(COMPARISON.read_text())["models"][model_key]["curves"]["0"]
+    low, _high = curves["paired_discrimination"]["symbol_minus_no_context_rho"]["ci_95"]
+    return low > 0
 
 
 def load(directory: str) -> dict:
@@ -99,11 +124,24 @@ def series(results: dict, depth: int) -> tuple[list[float], bool]:
 
 
 def main() -> None:
-    loaded = [(label, load(directory), colour, marker, recovers)
-              for label, directory, colour, marker, recovers in RUNS]
+    loaded, omitted = [], []
+    warm = iter(RECOVERS_COLOURS)
+    for label, directory, model_key, marker in RUNS:
+        if not (PROBE_ROOT / directory / "probe_results.json").exists():
+            omitted.append(label)
+            continue
+        does_recover = recovers(model_key)
+        colour = next(warm) if does_recover else ABSTAINS_COLOUR
+        loaded.append((label, load(directory), colour, marker, does_recover))
+    if not loaded:
+        raise SystemExit("no completed symbol probe runs")
+    # Draw the abstaining checkpoints first so the positives sit on top.
+    loaded.sort(key=lambda row: row[4])
+    if omitted:
+        print("omitted (run not complete): " + ", ".join(omitted))
 
     # Stacked rather than side by side, so the figure is narrow enough to wrap.
-    fig, axes = plt.subplots(2, 1, figsize=(2.95, 4.15), sharex=True, sharey=True)
+    fig, axes = plt.subplots(2, 1, figsize=(2.95, 3.05), sharex=True, sharey=True)
     positions = range(len(CONDITIONS))
 
     for axis, depth in zip(axes, (0, 4)):
@@ -111,7 +149,7 @@ def main() -> None:
         axis.axhline(
             reference, color="#888888", linewidth=0.7, linestyle=(0, (4, 3)), zorder=1
         )
-        for label, results, colour, marker, _recovers in loaded:
+        for label, results, colour, marker, does_recover in loaded:
             values, rejects = series(results, depth)
             # An open marker and a dashed line mark a cell that does not reject its
             # held-out permutation null, so a shape there is not read as a result.
@@ -122,8 +160,8 @@ def main() -> None:
                 marker=marker,
                 markersize=4.5,
                 markerfacecolor=colour if rejects else "white",
-                linewidth=2.0 if rejects else 1.3,
-                linestyle="-" if rejects else (0, (3, 2)),
+                linewidth=1.8 if does_recover else 1.2,
+                linestyle="-" if does_recover else (0, (3, 2)),
                 label=label if depth == 4 else None,
                 zorder=3 if rejects else 2,
             )
@@ -135,7 +173,8 @@ def main() -> None:
         axis.set_xticks(list(positions))
         axis.set_xticklabels([name for _, _, name in CONDITIONS])
         axis.set_xlim(-0.25, len(CONDITIONS) - 0.75)
-        axis.set_ylim(-1.25, 0.55) if TARGET == "slope" else axis.set_ylim(0.0, 1.0)
+        axis.set_ylim(-1.25, 0.55) if TARGET == "slope" else axis.set_ylim(0.0, 1.05)
+        axis.set_yticks([0.0, 0.5, 1.0] if TARGET == "regime" else [-1.0, -0.5, 0.0, 0.5])
         axis.spines["top"].set_visible(False)
         axis.spines["right"].set_visible(False)
 
@@ -149,7 +188,7 @@ def main() -> None:
         loc="lower left", frameon=False, handlelength=1.6, borderpad=0.2,
         labelspacing=0.25, ncol=1, fontsize=6.8,
     )
-    fig.tight_layout(pad=0.6, h_pad=1.2)
+    fig.tight_layout(pad=0.4, h_pad=0.7)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT, facecolor="white")
     print(f"Wrote {OUTPUT}")
