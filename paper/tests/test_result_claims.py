@@ -395,26 +395,31 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     # Numbers the section states, each traceable to a frozen authority.
     for claim in (
         "$0.37$ to $0.92$",
-        "2.59 to 1.85",
-        "$.52$--$.70$",
         "$0.12$--$0.23$",
-        "$4.20$--$4.36$",
-        "$1.52$--$1.76$",
         "matches or beats a context-blind OLS benchmark",
         "$.51$--$.86$",
         "$.61$--$.90$",
-        "twelve of fifteen systems recover it",
-        "only from 14B upward and within Llama only at 70B",
-        "not monotone in parameter count",
-        "mean-pooled input embeddings already reach $1.000$",
-        "embedding control falls to $.555$",
-        "$.778$ at block 50 of 64 for",
-        "is null in all four conditions",
+        "Twelve of fifteen systems recover it",
+        "within both Qwen3 and Llama only the larger",
+        "rather than tracking\nparameter count".replace("\n", " "),
+        "input embeddings alone already reach $1.000$",
+        "that control falls to $.555$",
+        "$.778$ for Qwen2.5-32B",
+        "is null throughout",
         "$.333$ at $k=0$",
         r"Appendix~\ref{app:coin-city-reference-selection}",
         r"Appendix~\ref{app:coin-city-mechanistic-probe}",
     ):
         assert claim in source, claim
+    # Per-deployment numbers belong in the figure table, not the prose.
+    for row in (
+        r"\micon{claude.png}~Opus~4.8 & 250 & 2.32",
+        r"\micon{openai.png}~GPT-5.6 & 250 & 3.60",
+        r"\micon{gemini.png}~3.6 Flash & 250 & 2.53",
+    ):
+        assert row in source, row
+    assert "Forecast MAE [95\\% CI]" in source
+
     # The three structural claims the section is organised around.
     for heading in (
         "Selection and revision",

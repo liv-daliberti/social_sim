@@ -2,79 +2,92 @@
 \label{sec:exp2}
 
 Experiment~2 asks which numerical relationship a model applies to a new target.
-Two reference cities demonstrate a strong and a weak response regime; a one-sentence
-cue assigns target City C to one of them; and City C's own cases accumulate from
-$k=0$ to $k=4$. Arms are matched on every displayed number, so a contrast isolates
-the cue alone. The reference sentences state which regime responds more strongly,
-so the semantic arms measure how a stated assignment becomes a number rather than
-whether the assignment can be learned. An arbitrary-label arm, whose
-\texttt{KIV}/\texttt{ZOR} mapping carries no stated direction and reverses across
-episodes, carries the induction claim. Full prompts, per-arm results and analysis
-details are in Appendix~\ref{app:coin-city}.
+Two reference cities demonstrate a strong and a weak response regime, a
+one-sentence cue assigns target City C to one of them, and City C's own cases
+accumulate from $k=0$ to $k=4$. Arms are matched on every displayed number, so a
+contrast isolates the cue. Because the reference sentences state which regime
+responds more strongly, the semantic arms measure how a stated assignment becomes
+a number; the induction claim rests on an arbitrary-label arm whose
+\texttt{KIV}/\texttt{ZOR} mapping reverses across episodes.
+Appendix~\ref{app:coin-city} gives prompts, results and analysis details.
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=.96\linewidth]{figures/exp2_coin_city_results.pdf}
+\includegraphics[width=\linewidth]{figures/exp2_coin_city_results.pdf}
+\vspace{3pt}
+\begin{minipage}{\linewidth}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l r rrrr rr}
+\toprule
+& & \multicolumn{4}{c}{Forecast MAE [95\% CI]} & \multicolumn{2}{c}{$\rho(\hat g,g_C)$} \\
+\cmidrule(lr){3-6}\cmidrule(lr){7-8}
+Model & Paired $n$ & Target only & No C context & $+$ C context &
+$+$ wrong C context & No context & $+$ context \\
+\midrule
+\micon{claude.png}~Opus~4.8 & 250 & 2.32 [2.20,\,2.46] & 2.65 [2.41,\,2.89] & \textbf{1.82} [1.64,\,2.02] & 4.20 [3.87,\,4.54] & $-.06$ & \textbf{.70} \\
+\micon{claude.png}~Opus~5 & 250 & 2.36 [2.12,\,2.59] & 2.62 [2.38,\,2.84] & \textbf{1.76} [1.57,\,1.99] & 4.25 [3.92,\,4.57] & $-.01$ & \textbf{.62} \\
+\micon{openai.png}~GPT-5.6 & 250 & 3.60 [3.28,\,3.94] & 2.52 [2.33,\,2.75] & \textbf{1.60} [1.42,\,1.77] & 4.23 [3.90,\,4.55] & $-.04$ & \textbf{.68} \\
+\micon{deepseek.png}~V4-Pro & 250 & \textbf{2.45} [2.27,\,2.61] & 2.84 [2.55,\,3.15] & 2.47 [2.19,\,2.77] & 4.36 [4.01,\,4.74] & $-.03$ & \textbf{.52} \\
+\micon{kimi.png}~K3 & 250 & 3.35 [3.04,\,3.67] & 2.55 [2.32,\,2.78] & \textbf{1.89} [1.66,\,2.13] & 4.31 [3.98,\,4.62] & $-.02$ & \textbf{.59} \\
+\micon{gemini.png}~3.6 Flash & 250 & 2.53 [2.35,\,2.73] & 2.55 [2.31,\,2.80] & \textbf{2.17} [1.89,\,2.48] & 4.29 [3.94,\,4.66] & $.08$ & \textbf{.56} \\
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
 \caption{\textbf{Context improves zero-shot forecasts and response-regime assignment
 across six deployments.} The plots show forecast MAE as City C observations
-accumulate. Panels add references, correct context, and misleading context in
-turn. Gray lines are deployments; purple identifies the deployment with lowest
-aggregate error; dashes are context-blind OLS benchmarks. Exact per-deployment
-results and paired contrasts are in Appendix~\ref{app:coin-city-results}.}
+accumulate. Panels successively add references, the correct target context, and
+a misleading context naming the opposite regime. Gray lines are deployments,
+purple is the best overall deployment, and dashed curves are context-blind OLS
+benchmarks. The table gives per-model MAE and latent-slope correlation at $k=0$,
+with 95\% bootstrap intervals over 2,000 episode resamples. Paired contrasts are
+in Appendix~\ref{app:coin-city-results}.}
 \label{fig:coin-city-results}
 \end{figure}
 
-\textbf{Selection and revision.} With no City C observations, the cue lowers
-forecast error for every deployment, by $0.37$ to $0.92$ poll points with all six
-bootstrap intervals excluding zero; the cross-model median falls from 2.59 to 1.85
-and forecast-implied responses correlate $.52$--$.70$ with City C's true
-responsiveness against $-.06$ to $.08$ without the cue. Every deployment also
-matches or beats a context-blind OLS benchmark fitted on all displayed rows
-(Appendix Table~\ref{tab:coin-city-vs-ols}).
-Naming the opposite regime reverses the assignment rather than degrading it:
-error rises to $4.20$--$4.36$, $1.52$--$1.76$ points above no context, and
-correlations invert to $-.50$--$-.68$. Both effects are transient. By $k=4$ the
+\textbf{Selection and revision.} The cue lowers zero-shot error for every
+deployment, by $0.37$ to $0.92$ poll points with all six paired intervals
+excluding zero, and every deployment matches or beats a context-blind OLS
+benchmark fitted on all displayed rows
+(Appendix Table~\ref{tab:coin-city-vs-ols}). Naming the opposite regime reverses
+the assignment rather than degrading it. Both effects are transient: by $k=4$ the
 cue advantage narrows to $0.12$--$0.23$ points and the wrong-label penalty to
-$-0.01$--$+0.38$, so target observations displace the cue once they disagree with it.
+$-0.01$--$+0.38$, so target observations displace the cue once they disagree.
 
-\textbf{The cue selects a displayed reference, not a prior on its words.} Because
-the reference sentences name the direction, a model could reach these numbers from
-a prior about news coverage alone. Partialling out the regime separates the
-accounts: a fit to four noisy reference cases carries sampling error
-($\mathrm{SD}=.332$ against a generator $.03$) that a cue-determined prior cannot
-reproduce. Four arms make four predictions and all four hold at $k=0$. With no
-reference cases displayed, neither reference loads. With both displayed and no
-cue, they load equally---the model pools. The correct cue concentrates loading on
-the named reference ($.51$--$.86$) and removes it from the other
-($.04$--$.10$), and inversion moves it wholesale onto the reference the false cue
-names ($.61$--$.90$). This also explains why implied-slope correlations plateau
-near $.66$ rather than $.996$: transferring a noisy reference estimate is capped
-at that reference's own correlation with the truth
+\textbf{The cue selects a displayed reference, not a prior on its words.} Since
+those sentences name the direction, the numbers above could come from a prior
+about news coverage alone. Partialling out the regime separates the accounts,
+because a fit to four noisy reference cases carries sampling error no
+cue-determined prior can reproduce. All four arms then behave as reference
+selection predicts at $k=0$: with no reference cases neither loads, with no cue
+both load equally, the correct cue concentrates loading on the named reference
+($.51$--$.86$) and strips it from the other ($.04$--$.10$), and inversion moves it
+wholesale onto the reference the false cue names ($.61$--$.90$). It also explains
+why implied-slope correlations plateau near $.66$ rather than $.996$: transferring
+a noisy estimate is capped at that estimate's own correlation with the truth
 (Appendix~\ref{app:coin-city-reference-selection}).
 
-\textbf{Induction of a novel mapping.} The arbitrary-label mapping must be
-inferred from the reference examples within each episode. At $k=0$, twelve of
-fifteen systems recover it, including all five hosted ones; within Qwen3 the
-recovery interval excludes zero only from 14B upward and within Llama only at 70B,
-so the transition differs by family and is not monotone in parameter count.
-Hidden states carry the induced mapping, weakly and only after computation.
-Probes on the semantic arm reach AUC $1.000$ but select the first transformer
-block, and mean-pooled input embeddings already reach $1.000$: that result is
-lexical. Under arbitrary labels the embedding control falls to $.555$ and held-out
-AUC is $.678$ at block 26 of 40 for Qwen3-14B and $.778$ at block 50 of 64 for
-Qwen2.5-32B, while Llama~3.1-8B---the checkpoint whose forecasts do not recover the
-mapping---is null in all four conditions. Patching those states at the two City C
-label tokens shifts Qwen3-14B's regime-aligned forecast by $.333$ at $k=0$
-($p<.0001$) and does nothing at $k=4$, so the induced mapping causes the zero-shot
-forecast and direct evidence displaces it
+\textbf{Induction of a novel mapping.} This mapping must be inferred from each
+episode's own examples. Twelve of fifteen systems recover it at $k=0$, all five
+hosted ones among them, and within both Qwen3 and Llama only the larger
+checkpoints do---a transition that differs by family rather than tracking
+parameter count. Hidden states carry the mapping weakly and only after
+computation: semantic-arm probes reach AUC $1.000$ but read the first transformer
+block, where input embeddings alone already reach $1.000$. Under arbitrary labels
+that control falls to $.555$ while mid-network AUC is $.678$ for Qwen3-14B and
+$.778$ for Qwen2.5-32B, and Llama~3.1-8B---whose forecasts do not recover the
+mapping---is null throughout. Patching those states at the two label tokens shifts
+Qwen3-14B's forecast by $.333$ at $k=0$ ($p<.0001$) and does nothing at $k=4$
 (Appendix~\ref{app:coin-city-mechanistic-probe}).
 
-Context therefore selects which of two demonstrated relationships a model applies,
-that selection reaches a particular displayed reference rather than a remembered
+Context therefore selects which demonstrated relationship a model applies, that
+selection reaches a particular displayed reference rather than a remembered
 association, and target evidence overrides it. Three things bound the reading. The
-regimes are far apart and the cue is binary, so selection here is a two-way choice
-rather than a graded one. The exact within-regime coefficient is never recovered:
-residual-slope decoding fails in every model--$k$ cell. And the mechanistic
-evidence covers three open checkpoints, with the causal test on one; the hosted
-deployments are behavioral throughout. Experiment~3 tests transfer after
-episode-matched training.
+cue is binary and the regimes far apart, so selection here is a two-way choice
+rather than a graded one. The exact within-regime coefficient is never recovered,
+failing in every model--$k$ cell. And the mechanistic evidence covers three open
+checkpoints with the causal test on one; the hosted deployments are behavioral
+throughout. Experiment~3 tests transfer after episode-matched training.
