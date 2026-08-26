@@ -193,6 +193,85 @@ and returned $k=0$ regime AUC $.312$ with $p=.90$. Given the $[.203,.797]$ null 
 that size, it was uninformative rather than contrary, and we report it here so the
 enlarged run is not mistaken for a replacement of an inconvenient result.
 
+\subsubsection{Causal Test: Patching the City C Label Representation}
+\label{app:coin-city-causal-patch}
+
+Decodability is not mediation. To test whether the representation the probe reads
+is the one the forecast uses, we intervene on it directly. Under arbitrary labels
+the prompt prefix through the City C label is byte-identical between an episode's
+correct and swapped arms, so the two runs differ in exactly two token positions.
+We replace the residual stream at those two positions with the states the opposite
+arm produces, in both directions, and regenerate the forecast greedily. The
+endpoint is the episode-level mean of the regime-aligned correct-into-swapped
+shift and the sign-reversed swapped-into-correct shift, tested one-sided against
+an episode sign-flip null.
+
+Three patch sites and two controls were frozen before any result. The primary site
+is a three-layer window centred on the development-selected relational layer;
+patching at the embedding output only, and at every causally effective layer, are
+the comparison sites; the unpatched arm and a self-patch that writes each state
+back over itself are the controls. Layer, window and ridge were selected on
+development episodes with the sealed test unread.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Causal effect of patching the two City C symbol
+subtokens, Qwen3-14B.} Shift is the regime-aligned symmetric patch mean; positive
+means the forecast moved toward the relationship the donor label names. The
+16-episode pilot and the 88-episode run selected their windows independently on
+their own development sets. The null interval is the 88-episode sign-flip null.}
+\label{tab:coin-city-causal-patch}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{\input{tables/exp2_causal_patch}}
+\end{minipage}
+\end{center}
+
+At $k=0$ the intervention moves the forecast: patching the selected window shifts
+the regime-aligned prediction by $.333$ against a null interval of
+$[-.177,.178]$ ($p<.0001$, 82 complete episodes), and patching the embedding
+alone gives $.319$. All eight checks of the frozen stability gate pass, including
+$347/347$ exact self-patch matches, so a cross-family replication is authorised.
+
+Two readings of the table matter more than the significance. First, the
+embedding-only and all-layer rows are identical, and necessarily so: the prefix
+through the City C label is the same in both arms, so overwriting the label
+embedding and letting the model recompute reproduces exactly what overwriting
+every layer produces. They are one intervention reported at two depths, not two
+converging results. What distinguishes the mid-window row is that it reaches the
+same magnitude while touching only three layers late in the network.
+
+Second, the effect is confined to $k=0$. With four City C cases every patch site
+returns a null ($p=.83$ and $p=.64$), so the induced label no longer controls the
+forecast once direct target evidence is available. That is the revision claim of
+Section~\ref{app:coin-city-results} in causal form, and it matches the
+representational result: at $k=4$ the inverted-arm probe recovers the true regime
+rather than the cue-assigned one.
+
+The 16-episode pilot returned $-.033$ at $p=.75$ for the same primary site. Two
+things separated it from this run, and both were reasons its null carried no
+information: its sign-flip null spanned $[-.387,.387]$, and its development set of
+64 episodes selected layers $33$--$35$ where the 160-episode set selects $19$--$21$
+at a higher cross-validation score ($.903$ against $.806$). We report the pilot
+rather than replace it.
+
+\paragraph{Recorded amendment.} The frozen primary test enumerates all $2^{n}$
+sign assignments, which is exact for 16 episodes and infeasible for 88
+($2^{88}\approx3\times10^{26}$). Enumeration is retained for $n\le20$; above it
+the same null is sampled with $200{,}000$ draws under the frozen seed, giving a
+Monte Carlo standard error of $.0005$ at $p=.05$. The estimand, endpoint and
+direction are unchanged. The amendment is recorded in
+\path{protocol_amendment.json} in the run directory; it was made while the
+analysis was still failing to construct the null, before any result existed, and
+the 16-episode numbers are identical under it.
+
+\paragraph{Scope.} This is one checkpoint under arbitrary labels. It shows that
+the label representation Qwen3-14B computes is causally responsible for its
+zero-shot regime assignment, and that direct evidence displaces it. It does not
+establish the same for the hosted deployments, for the semantic cue, or for other
+architectures; the gate's authorised cross-family replication is the next step.
+
 \subsubsection{Reproducibility and Scope}
 The checkpoints are pinned to commits
 \texttt{cdbee75f17c01a7cc42f958dc650907174af0554} (Qwen3-4B),
@@ -212,7 +291,15 @@ results are under
 \path{exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/mechanistic_probe/}.
 The analysis and asset generator are
 \path{exp2_v2/biased_news/mechanistic_probe/analyze_probe.py} and
-\path{paper/generate_coin_city_mechanistic_comparison.py}. The two power-matched Qwen3-14B runs are
+\path{paper/generate_coin_city_mechanistic_comparison.py}. The causal run is
+\path{mechanistic_probe/qwen3_14b_symbol_relational_v2/}, frozen by
+\path{freeze_symbol_relational_protocol.py} and executed by
+\path{extract_symbol_label_states.py}, \path{patch_symbol_label_activations.py}
+and \path{analyze_symbol_relational_probe.py}; every count in that pipeline is
+derived from the frozen task manifest and checked by
+\path{tests/test_symbol_relational_scaling.py}.
+\path{paper/generate_coin_city_causal_patch_table.py} fails closed on the run's
+study name, sealed-test size and stability gate. The two power-matched Qwen3-14B runs are
 \path{mechanistic_probe/qwen3_14b_probe_v2/} and
 \path{mechanistic_probe/qwen3_14b_symbol_probe_v2/}, built by
 \path{exp2_v2/biased_news/mechanistic_probe/build_probe_tasks.py} and
@@ -220,6 +307,8 @@ The analysis and asset generator are
 cell; \path{paper/generate_coin_city_probe_power_table.py} regenerates their table
 and fails closed on run status, sealed-test size and task hash. The diagnostic
 covers six checkpoints spanning Qwen and Llama at 16 sealed episodes per arm, plus
-the matched 88-episode semantic and arbitrary-symbol Qwen3-14B pair. It is
-correlational and does not establish that the decoded direction mediates the
-forecast; it complements the paired behavioral interventions above.
+the matched 88-episode semantic and arbitrary-symbol Qwen3-14B pair. For the semantic
+cue it is correlational and does not establish that the decoded direction
+mediates the forecast; under arbitrary labels
+Section~\ref{app:coin-city-causal-patch} supplies the missing intervention for
+one checkpoint. Both complement the paired behavioral interventions above.
