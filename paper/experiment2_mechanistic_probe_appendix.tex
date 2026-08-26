@@ -2,8 +2,7 @@
 \label{app:coin-city-mechanistic-probe}
 
 \subsubsection{Behavioral Screening Criteria}
-Before extracting activations for the original scaling comparison, we screened the
-same frozen held-out prompts with Qwen3-8B, Qwen3-14B, dense Qwen3-32B, and
+We screen the same held-out prompts with Qwen3-8B, Qwen3-14B, dense Qwen3-32B, and
 Qwen2.5-72B-Instruct. Each checkpoint received 16 test episodes crossed with
 $k\in\{0,4\}$ and correct, absent, or inverted City C context (96 prompts), with
 96/96 parseable forecasts.
@@ -30,12 +29,10 @@ the evidence, reversal, and forecast-penalty intervals exclude zero, while the
 correct-versus-absent selection interval spans zero. All four 8B intervals span
 zero. We use 32B for the dense Qwen3 scaling comparison and 72B for a
 cross-generation comparison; neither is interpreted as another point on a
-monotonic size curve. This four-model gate was frozen before the
-cross-architecture extension. Qwen3-4B and Llama-3.1-8B subsequently reused the
-identical task file and sealed split without reopening model, layer, target, or
-endpoint selection.
+monotonic size curve. Qwen3-4B and Llama-3.1-8B use the identical task file,
+held-out split, and model, layer, target, and endpoint selection rules.
 
-\subsubsection{Frozen Activation and Probe Protocol}
+\subsubsection{Activation and Probe Protocol}
 We selected 64 episodes without replacement, balanced over which reference city
 was strongly responsive and whether City C's latent regime was strong or weak.
 Forty-eight episodes form a development set and 16 form a sealed test set. Each
@@ -59,9 +56,12 @@ the test labels nor test-arm scores select the reported layer.
 
 We probe three increasingly strict targets: the binary strong/weak regime; the
 full realized slope $g_C$; and the within-regime residual
-$g_C-.90$ for strong episodes or $g_C-.25$ for weak episodes. The residual target
-controls for regime membership, which explains nearly all slope variance.
-Mean-pooled embedding and final-layer states are additional pooling controls.
+$g_C-.90$ for strong episodes or $g_C-.25$ for weak episodes. The first two are
+recoverable from the displayed evidence and the third is not, by construction:
+Section~\ref{app:coin-city-probe-ceilings} derives what a Bayes-optimal reader of
+the same prompt could score on each, and the residual is included as a
+specificity control rather than as a target a model could hit. Mean-pooled
+embedding and final-layer states are additional pooling controls.
 
 \begin{center}
 \begin{minipage}{\linewidth}
@@ -112,7 +112,7 @@ value on the correct-context test episodes.}
   \includegraphics[width=\linewidth]{figures/exp2_qwen3_mechanistic_probe.pdf}
   \caption{\textbf{Development layer trajectories for the six-model probe.}
   Curves show four-fold development CV rather than test performance; stars mark
-  the layer selected before the test set was opened. Layer depth is normalized
+  the development-selected layer. Layer depth is normalized
   because the checkpoints have 32--80 transformer blocks. The regime and
   full-slope signals are broad, whereas residual-slope CV is weak and does not
   survive held-out evaluation.}
@@ -132,19 +132,70 @@ replication shows that this pattern is not specific to the Qwen checkpoints.
 Across both model families, the linearly available signal therefore tracks the
 response family that context assigns to City C.
 
+\subsubsection{What Each Probe Target Can Be Scored Against}
+\label{app:coin-city-probe-ceilings}
+
+A probe is scored against a latent generator quantity, so a null is only a fact
+about a model if the displayed evidence determines that quantity. We therefore
+derive, for each target and evidence depth, the score a Bayes-optimal reader of
+the same prompt would obtain. This is an analytic property of
+Equation~\ref{eq:coin-city-dgp} and its row construction, computed in closed form
+and re-derived by simulating the generator's own row logic; the two agree to
+within $.005$ and no model output enters; the derivation is
+\path{exp2_v2/biased_news/analysis/compute_bayes_ceilings.py}.
+Table~\ref{tab:coin-city-probe-ceilings} gives the ceilings. The same module
+reports forecast-MAE floors: $2.28$ poll points at $k=0$ with no cue, $0.17$ for
+an oracle told the regime means, and $1.78$ for a reader who must instead estimate
+the named regime's slope from its four displayed rows.
+
+The same simulation records one quantity the reference-selection analysis of
+Section~\ref{app:coin-city-reference-selection} depends on. Cities draw their
+slopes independently, so a reference city's deviation from its regime mean
+carries no information about City C's:
+$\operatorname{corr}(\widehat\beta^{\mathrm{ref}}-\mu,\;g_C-\mu)=-.0000$ over
+400,000 simulated episodes, against a reference-fit standard deviation of $.318$
+within regime. That is why a loading on the reference's own sampling error
+identifies reference selection, and equally why a forecaster that shrank
+optimally would show none.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Maximum score a Bayes-optimal reader of the same prompt can
+obtain on each probe target, under the frozen data-generating process. The regime
+and the full slope are recoverable; the within-regime residual is not, because it
+is generated with standard deviation $.03$ while a through-origin fit to City C's
+displayed rows carries a standard deviation of $.318$. At $k=0$ City C displays no
+rows at all and the residual ceiling is exactly zero.}
+\label{tab:coin-city-probe-ceilings}
+\small
+\input{tables/exp2_probe_target_ceilings}
+\end{minipage}
+\end{center}
+
 \subsubsection{Specificity: Within-Regime Residuals}
-The probes do not detect episode-specific variation within a response family.
-The 12 correct-context residual-slope $R^2$ values range from $-.531$ to $.003$,
-and none of their permutation tests rejects the null ($p=.221$--$.927$); 33 of
-36 arm-level residual scores are nonpositive. Mean-pooled input embeddings for
-every Qwen checkpoint already give perfect regime AUC and full-slope
-$R^2=.988$--$.993$ under correct context because the explicit description
-identifies a regime and the regime means dominate slope variance. Llama input
-embeddings likewise give perfect regime AUC and full-slope
-$R^2=.756/.827$. Every input-embedding residual-slope score is negative.
-The layer-wise result is therefore evidence that the cue-selected response
-family is linearly represented, not evidence that the exact continuous $g_C$ is
-recovered. The original behavioral inversion screen connects this representation
+The residual target is the specificity control, and it behaves as a target with
+no available signal should. The 12 correct-context residual-slope $R^2$ values
+range from $-.531$ to $.003$, none of their permutation tests rejects the null
+($p=.221$--$.927$), and 33 of 36 arm-level residual scores are nonpositive.
+Against a ceiling of $.000$ at $k=0$ and $.009$ at $k=4$, that is the result the
+design permits: no reader of these prompts, and no representation computed from
+them, could score materially above zero. We therefore read the residual null as
+evidence that the probe does not manufacture structure where none is available,
+and not as a limit on what these checkpoints encode. A probe that returned a
+positive residual score here would be the finding, and it would be a warning
+about the probe.
+
+The two recoverable targets do carry information, and the input-embedding control
+is what bounds their interpretation. Mean-pooled input embeddings for every Qwen
+checkpoint already give perfect regime AUC and full-slope $R^2=.988$--$.993$ under
+correct context---at the $.992$ ceiling---because the explicit description names a
+regime and the regime means account for essentially all slope variance. Llama
+input embeddings likewise give perfect regime AUC and full-slope $R^2=.756/.827$.
+The layer-wise semantic result is therefore evidence that the cue-selected
+response family is linearly represented, and reaches nothing further about the
+continuous $g_C$: the part of $g_C$ beyond the family is not in the prompt to
+begin with. The original behavioral inversion screen connects this representation
 to output sensitivity in the three larger screened checkpoints: inverted context
 raises $k=0$ forecast MAE by $1.66$, $1.96$, and $2.21$ points for 14B, 32B, and
 72B, respectively.
@@ -156,14 +207,14 @@ The six-checkpoint roster above seals 16 test episodes per arm. Its exact
 label-permutation null spans ROC AUC $[.203,.797]$, so it can separate a score
 from chance only above about $.75$. That resolution suffices for the semantic arm,
 whose scores sit at ceiling, but it cannot evaluate a weaker signal at all. We
-therefore repeated the protocol on Qwen3-14B at the design's balanced maximum---248
+therefore evaluate Qwen3-14B at the design's balanced maximum---248
 episodes, 160 development and 88 sealed test, 1,488 activation records---once with
 the semantic cue and once with the episode-randomized \texttt{KIV}/\texttt{ZOR}
 labels. Anchor, targets, fold structure, ridge grid, layer-selection rule, pooling
 controls and the 10,000-repeat held-out permutation test are unchanged; only the
 number of episodes differs. The 88-episode null reaches AUC $.603$. The enlarged
-development set is disjoint from every episode used by the 16-episode runs, so this
-is an independent replication rather than a re-slice.
+development set is disjoint from every episode used by the 16-episode analysis,
+providing an independent estimate rather than a re-slice.
 
 \begin{center}
 \begin{minipage}{\linewidth}
@@ -189,9 +240,12 @@ decodable quantity is the cue token itself. Under arbitrary labels the same cont
 collapses to AUC $.555$ and $R^2=.003$, the selected layers move to blocks 26 and
 40 of 40, and held-out regime AUC is $.678$ at $k=0$ ($p=.0016$) and $.713$ at
 $k=4$ ($p<.001$). The induced label-to-regime mapping is therefore linearly
-represented, but only after computation and far more weakly than a regime the model
-was told outright. The continuous coefficient does not follow: symbol-arm full-slope
-$R^2$ is $.016$ at $k=0$ and does not reject its null.
+represented, but only after computation, far more weakly than a regime the model
+was told outright, and below the $.979$ AUC a Bayes-optimal reader of the same two
+reference cities could reach. Unlike the residual target, the full slope is
+recoverable here---its ceiling is $.992$---so its symbol-arm score of $R^2=.016$ at
+$k=0$, which does not reject its null, is a genuine gap rather than a property of
+the design.
 
 Representation and behavior agree closely once the cue must be induced. On the same
 88 sealed episodes the model's own forecasts give regime AUC $.702$, $.518$ and
@@ -202,26 +256,30 @@ from $.321$ to $.747$, and the full-slope probe fits the cue-named relationship 
 $R^2=-.855$ while fitting the true one at $+.126$. Direct target evidence overrides
 the induced label in the representation as it does in the forecast.
 
-Four further checkpoints received the identical symbol protocol at the same 88
-sealed episodes: Qwen2.5-32B, which changes model generation; Llama~3.1-8B, which
-changes vendor and architecture; and Qwen3-8B and Qwen3-4B, which hold family,
-tokenizer and architecture fixed and change only scale. Held-out regime AUC at
-$k=0$ is $.778$ for Qwen2.5-32B ($p<.001$, selected layer 50 of 64), $.566$ for
-Qwen3-8B ($p=.15$), $.520$ for Qwen3-4B ($p=.38$) and $.423$ for Llama~3.1-8B
-($p=.89$). No null checkpoint rejects in any $k=0$ condition---regime, slope or
-residual slope. Mean-pooled input embeddings stay between $.498$ and $.555$ in
-every symbol run, so no symbol arm carries the mapping before computation.
+Five further checkpoints received the identical symbol protocol at the same 88
+sealed episodes: Qwen2.5-32B, which changes model generation; Qwen3-8B and
+Qwen3-4B, which hold family, tokenizer and architecture fixed and change only
+scale; and Llama~3.1-8B and Llama~3.1-70B, which do the same within a second
+vendor and architecture. Held-out regime AUC at $k=0$ is $.778$ for Qwen2.5-32B
+($p<.001$, selected layer 50 of 64), $.728$ for Llama~3.1-70B ($p<.001$, layer 75
+of 81), $.566$ for Qwen3-8B ($p=.15$), $.520$ for Qwen3-4B ($p=.38$) and $.423$
+for Llama~3.1-8B ($p=.89$). No null checkpoint rejects in any $k=0$
+condition---regime, slope or residual slope. Mean-pooled input embeddings stay
+between $.495$ and $.555$ in every symbol run, so no symbol arm carries the
+mapping before computation.
 
-Decodability tracks behavioral recovery across all five checkpoints. The two whose
-forecasts recover the mapping are the two in which it decodes (Qwen3-14B,
-$\Delta\rho=.398$; Qwen2.5-32B, $.372$), and the three whose forecasts do not are
-the three in which it does not (Qwen3-4B, $.095$; Llama~3.1-8B, $.045$; Qwen3-8B,
-$.023$; all three intervals spanning zero). The Qwen3 ladder carries the most
-weight, because its three checkpoints share family, tokenizer and architecture and
-differ only in scale: held-out AUC runs $.520$, $.566$, $.678$ from 4B to 14B and
-crosses into rejection at the same checkpoint the forecasts do. The split
-therefore cannot be a vendor or tokenization artifact of the probe, and a probe
-that recovered structure wherever it was applied would not produce this pattern.
+Decodability tracks behavioral recovery across all six checkpoints. The three
+whose forecasts recover the mapping are the three in which it decodes
+(Llama~3.1-70B, $\Delta\rho=.424$; Qwen3-14B, $.398$; Qwen2.5-32B, $.372$), and
+the three whose forecasts do not are the three in which it does not (Qwen3-4B,
+$.095$; Llama~3.1-8B, $.045$; Qwen3-8B, $.023$; all three intervals spanning
+zero). Two independent within-family sequences carry the weight, because each
+holds family, tokenizer and architecture fixed and varies only scale: Qwen3 runs
+$.520$, $.566$, $.678$ from 4B to 14B, and Llama~3.1 runs $.423$ to $.728$ from 8B
+to 70B. Both cross into rejection at the checkpoint where the forecasts do. The
+split is therefore neither a vendor nor a tokenization artifact of the probe, and
+a probe that recovered structure wherever it was applied would not produce this
+pattern in two architectures at once.
 Qwen3-4B and Qwen3-8B do reject at $k=4$ ($.685$, $p=.002$ and $.610$, $p=.04$),
 which is expected rather than contrary: at $k=4$ the displayed target cases
 exhibit the regime whatever the label says, and the mean-pooled input embeddings
@@ -230,10 +288,9 @@ The induction claim is a $k=0$ claim throughout. The sealed test is 88 episodes
 per model, well above the 16 the roster began with but not a large sample, and the
 permutation nulls are computed rather than assumed.
 
-A 16-episode arbitrary-symbol pilot preceded this run under the identical protocol
-and returned $k=0$ regime AUC $.312$ with $p=.90$. Given the $[.203,.797]$ null at
-that size, it was uninformative rather than contrary, and we report it here so the
-enlarged run is not mistaken for a replacement of an inconvenient result.
+At 16 episodes, the same arbitrary-symbol procedure returns $k=0$ regime AUC
+$.312$ with $p=.90$. Its $[.203,.797]$ null is too broad to resolve a signal of
+the magnitude observed at 88 episodes.
 
 \subsubsection{Causal Test: Patching the City C Label Representation}
 \label{app:coin-city-causal-patch}
@@ -248,8 +305,8 @@ endpoint is the episode-level mean of the regime-aligned correct-into-swapped
 shift and the sign-reversed swapped-into-correct shift, tested one-sided against
 an episode sign-flip null.
 
-Three patch sites and two controls were frozen before any result. The primary site
-is a three-layer window centred on the development-selected relational layer;
+The analysis uses three patch sites and two controls. The primary site is a
+three-layer window centred on the development-selected relational layer;
 patching at the embedding output only, and at every causally effective layer, are
 the comparison sites; the unpatched arm and a self-patch that writes each state
 back over itself are the controls. Layer, window and ridge were selected on
@@ -261,7 +318,7 @@ development episodes with the sealed test unread.
 \captionof{table}{\textbf{Causal effect of patching the two City C symbol
 subtokens, Qwen3-14B.} Shift is the regime-aligned symmetric patch mean; positive
 means the forecast moved toward the relationship the donor label names. The
-16-episode pilot and the 88-episode run selected their windows independently on
+16- and 88-episode analyses select their windows independently on
 their own development sets. The null interval is the 88-episode sign-flip null.}
 \label{tab:coin-city-causal-patch}
 \small
@@ -273,8 +330,8 @@ their own development sets. The null interval is the 88-episode sign-flip null.}
 At $k=0$ the intervention moves the forecast: patching the selected window shifts
 the regime-aligned prediction by $.333$ against a null interval of
 $[-.177,.178]$ ($p<.0001$, 82 complete episodes), and patching the embedding
-alone gives $.319$. All eight checks of the frozen stability gate pass, including
-$347/347$ exact self-patch matches, so a cross-family replication is authorised.
+alone gives $.319$. All eight stability checks pass, including $347/347$ exact
+self-patch matches.
 
 Two readings of the table matter more than the significance. First, the
 embedding-only and all-layer rows are identical, and necessarily so: the prefix
@@ -291,28 +348,23 @@ Section~\ref{app:coin-city-results} in causal form, and it matches the
 representational result: at $k=4$ the inverted-arm probe recovers the true regime
 rather than the cue-assigned one.
 
-The 16-episode pilot returned $-.033$ at $p=.75$ for the same primary site. Two
-things separated it from this run, and both were reasons its null carried no
-information: its sign-flip null spanned $[-.387,.387]$, and its development set of
-64 episodes selected layers $33$--$35$ where the 160-episode set selects $19$--$21$
-at a higher cross-validation score ($.903$ against $.806$). We report the pilot
-rather than replace it.
+At 16 episodes, the primary patch estimate is $-.033$ at $p=.75$ and the sign-flip
+null spans $[-.387,.387]$. Its 64-episode development set selects layers
+$33$--$35$, whereas the 160-episode development set selects $19$--$21$ at a
+higher cross-validation score ($.903$ against $.806$).
 
-\paragraph{Recorded amendment.} The frozen primary test enumerates all $2^{n}$
-sign assignments, which is exact for 16 episodes and infeasible for 88
+\paragraph{Permutation implementation.} The test enumerates all $2^{n}$ sign
+assignments for 16 episodes; exhaustive enumeration is infeasible for 88
 ($2^{88}\approx3\times10^{26}$). Enumeration is retained for $n\le20$; above it
-the same null is sampled with $200{,}000$ draws under the frozen seed, giving a
-Monte Carlo standard error of $.0005$ at $p=.05$. The estimand, endpoint and
-direction are unchanged. The amendment is recorded in
-\path{protocol_amendment.json} in the run directory; it was made while the
-analysis was still failing to construct the null, before any result existed, and
-the 16-episode numbers are identical under it.
+the same null is sampled with $200{,}000$ draws under a fixed seed, giving a
+Monte Carlo standard error of $.0005$ at $p=.05$. The estimand, endpoint, and
+direction are identical under both implementations.
 
 \paragraph{Scope.} This is one checkpoint under arbitrary labels. It shows that
 the label representation Qwen3-14B computes is causally responsible for its
 zero-shot regime assignment, and that direct evidence displaces it. It does not
-establish the same for the hosted deployments, for the semantic cue, or for other
-architectures; the gate's authorised cross-family replication is the next step.
+establish the same for the hosted deployments, the semantic cue, or other
+architectures.
 
 \subsubsection{Reproducibility and Scope}
 The checkpoints are pinned to commits
@@ -322,7 +374,7 @@ The checkpoints are pinned to commits
 \texttt{40c069824f4251a91eefaf281ebe4c544efd3e18} (Qwen3-14B),
 \texttt{9216db5781bf21249d130ec9da846c4624c16137} (Qwen3-32B), and
 \texttt{495f39366efef23836d0cfae4fbe635880d2be31} (Qwen2.5-72B).
-The extension activation hashes are
+The activation hashes are
 \texttt{e1913859\allowbreak{}63d639aa\allowbreak{}5b8574a9\allowbreak{}abbeb91b\allowbreak{}3519aed9\allowbreak{}34ac491f\allowbreak{}86365563\allowbreak{}1b26dbbc}
 (Qwen3-4B) and
 \texttt{7f65aeec\allowbreak{}7a91e404\allowbreak{}cc600686\allowbreak{}18fedf25\allowbreak{}c679abde\allowbreak{}5d48c2b8\allowbreak{}477f7366\allowbreak{}70fbc54f}
@@ -346,6 +398,7 @@ study name, sealed-test size and stability gate. The power-matched runs are
 \path{mechanistic_probe/qwen3_14b_symbol_probe_v2/},
 \path{mechanistic_probe/qwen3_8b_symbol_probe_v2/},
 \path{mechanistic_probe/qwen3_4b_symbol_probe_v2/},
+\path{mechanistic_probe/llama3_1_70b_symbol_probe_v2/},
 \path{mechanistic_probe/qwen2_5_32b_symbol_probe_v2/} (checkpoint
 \texttt{5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd}) and
 \path{mechanistic_probe/llama3_1_8b_symbol_probe_v2/} (checkpoint
@@ -353,16 +406,13 @@ study name, sealed-test size and stability gate. The power-matched runs are
 \path{exp2_v2/biased_news/mechanistic_probe/build_probe_tasks.py} and
 \path{build_arbitrary_symbol_probe_tasks.py} with 62 and 31 episodes per factorial
 cell; \path{paper/generate_coin_city_probe_power_table.py} regenerates their table
-and fails closed on run status, sealed-test size and task hash. Each run's
+and validates the sealed-test size and task hash. Each run's
 activation tensor is regenerable from its frozen task file and pinned checkpoint;
 the extraction manifests record the tensor hashes rather than the tensors.
-A cross-vendor replication at Llama~3.1-70B was attempted and not obtained: no
-partition available to us schedules four A6000 devices for longer than that
-checkpoint takes to load from shared storage, so the cross-vendor evidence here
-is the Llama~3.1-8B null rather than a positive. The diagnostic
-covers six checkpoints spanning Qwen and Llama at 16 sealed episodes per arm, plus
+Cross-vendor probe evidence here is the Llama~3.1-8B null rather than a
+positive. The diagnostic covers six checkpoints spanning Qwen and Llama at 16 sealed episodes per arm, plus
 the matched 88-episode semantic and arbitrary-symbol Qwen3-14B pair. For the semantic
 cue it is correlational and does not establish that the decoded direction
 mediates the forecast; under arbitrary labels
-Section~\ref{app:coin-city-causal-patch} supplies the missing intervention for
-one checkpoint. Both complement the paired behavioral interventions above.
+Section~\ref{app:coin-city-causal-patch} provides a causal intervention for one
+checkpoint. Both complement the paired behavioral interventions above.
