@@ -1,0 +1,916 @@
+{
+  "label_states_sha256": "66084f10a31f54a6188ebcb7f675a720abc8798c2aeca84add138e6be651c8ab",
+  "patch_generations_sha256": "1e1f8f05592b0f2c98ed9389c30cc1e96155fbb7a806b43aa7c2bd4bc16aff5e",
+  "patching": {
+    "conditions": {
+      "cross_all_layers": {
+        "k0": {
+          "bootstrap_ci95": [
+            -0.15857043650793626,
+            0.6294827097505669
+          ],
+          "correct_into_swapped_mean": 0.23578514739229034,
+          "mean": 0.23578514739229034,
+          "n": 14,
+          "null_draws": 16384,
+          "null_mean": 3.469446951953614e-18,
+          "null_q025": -0.3873426870748298,
+          "null_q975": 0.38734268707482955,
+          "one_sided_p": 0.1480712890625,
+          "scheme": "exact episode-level sign flip",
+          "swapped_into_correct_mean": 0.23578514739229034
+        },
+        "k4": {
+          "bootstrap_ci95": [
+            -0.16531018518518537,
+            0.3998259259259259
+          ],
+          "correct_into_swapped_mean": 0.11455820105820096,
+          "mean": 0.11455820105820096,
+          "n": 15,
+          "null_draws": 32768,
+          "null_mean": 3.469446951953614e-18,
+          "null_q025": -0.2882936507936508,
+          "null_q975": 0.2882936507936508,
+          "one_sided_p": 0.22900390625,
+          "scheme": "exact episode-level sign flip",
+          "swapped_into_correct_mean": 0.11455820105820096
+        }
+      },
+      "cross_embedding_only": {
+        "k0": {
+          "bootstrap_ci95": [
+            -0.15857043650793626,
+            0.6294827097505669
+          ],
+          "correct_into_swapped_mean": 0.23578514739229034,
+          "mean": 0.23578514739229034,
+          "n": 14,
+          "null_draws": 16384,
+          "null_mean": 3.469446951953614e-18,
+          "null_q025": -0.3873426870748298,
+          "null_q975": 0.38734268707482955,
+          "one_sided_p": 0.1480712890625,
+          "scheme": "exact episode-level sign flip",
+          "swapped_into_correct_mean": 0.23578514739229034
+        },
+        "k4": {
+          "bootstrap_ci95": [
+            -0.16531018518518537,
+            0.3998259259259259
+          ],
+          "correct_into_swapped_mean": 0.11455820105820096,
+          "mean": 0.11455820105820096,
+          "n": 15,
+          "null_draws": 32768,
+          "null_mean": 3.469446951953614e-18,
+          "null_q025": -0.2882936507936508,
+          "null_q975": 0.2882936507936508,
+          "one_sided_p": 0.22900390625,
+          "scheme": "exact episode-level sign flip",
+          "swapped_into_correct_mean": 0.11455820105820096
+        }
+      },
+      "cross_selected_window": {
+        "k0": {
+          "bootstrap_ci95": [
+            -0.22797619047619047,
+            0.13829931972789122
+          ],
+          "correct_into_swapped_mean": -0.08319727891156457,
+          "mean": -0.03267006802721086,
+          "n": 14,
+          "null_draws": 16384,
+          "null_mean": 0.0,
+          "null_q025": -0.13471088435374148,
+          "null_q975": 0.13471088435374148,
+          "one_sided_p": 0.75,
+          "scheme": "exact episode-level sign flip",
+          "swapped_into_correct_mean": 0.017857142857142856
+        },
+        "k4": {
+          "bootstrap_ci95": [
+            -0.03400000000000006,
+            0.01428571428571428
+          ],
+          "correct_into_swapped_mean": 0.0,
+          "mean": -0.006571428571428593,
+          "n": 15,
+          "null_draws": 32768,
+          "null_mean": 0.0,
+          "null_q025": -0.016095238095238114,
+          "null_q975": 0.016095238095238114,
+          "one_sided_p": 0.75,
+          "scheme": "exact episode-level sign flip",
+          "swapped_into_correct_mean": -0.013142857142857185
+        }
+      }
+    },
+    "record_count": 320,
+    "self_patch_control": {
+      "exact_poll_match_count": 61,
+      "exact_poll_match_rate": 1.0,
+      "expected_pairs": 64,
+      "parsed_pairs": 61
+    }
+  },
+  "permutation_repeats": 10000,
+  "permutation_seed": 20260825,
+  "probe": {
+    "city_c": {
+      "regime": {
+        "correct_test_permutation": {
+          "null_mean": 0.4991703125,
+          "null_q025": 0.203125,
+          "null_q975": 0.796875,
+          "observed_score": 0.71875,
+          "one_sided_p": 0.07839216078392161,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.8056640625,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          },
+          "true_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 24,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "accuracy": 0.75,
+              "roc_auc": 0.71875,
+              "score_pearson": 0.374624052343914
+            },
+            "true_target": {
+              "accuracy": 0.75,
+              "roc_auc": 0.71875,
+              "score_pearson": 0.374624052343914
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "accuracy": 0.8125,
+              "roc_auc": 0.890625,
+              "score_pearson": 0.6534145671620646
+            },
+            "true_target": {
+              "accuracy": 0.1875,
+              "roc_auc": 0.109375,
+              "score_pearson": -0.6534145671620646
+            }
+          }
+        }
+      },
+      "residual_slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.00034999172341506127,
+          "null_q025": -0.016464369687802634,
+          "null_q975": 0.016407288388804134,
+          "observed_score": -0.012225957220746375,
+          "one_sided_p": 0.9159084091590841,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": -0.02508272067709494,
+        "embedding_control_correct_test": {
+          "true_target": {
+            "mae": 0.03485908490813033,
+            "pearson": -0.3607767559937043,
+            "r2": -0.012122671991180667,
+            "rmse": 0.04122610484633794
+          }
+        },
+        "selected_alpha": 100.0,
+        "selected_layer": 1,
+        "test": {
+          "abc_context": {
+            "true_target": {
+              "mae": 0.03486399845388442,
+              "pearson": -0.3637969249566499,
+              "r2": -0.012225957220746375,
+              "rmse": 0.04122820831620136
+            }
+          },
+          "abc_wrong_context": {
+            "true_target": {
+              "mae": 0.034198037366013984,
+              "pearson": 0.36287047237009185,
+              "r2": 0.011278813946375088,
+              "rmse": 0.040746719239016314
+            }
+          }
+        }
+      },
+      "slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.8193868281816243,
+          "null_q025": -1.7100066396760152,
+          "null_q975": 0.08335136889867134,
+          "observed_score": -0.17630620978898226,
+          "one_sided_p": 0.0851914808519148,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.24321246487791337,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "mae": 0.325,
+            "pearson": -1.3179408845758386e-17,
+            "r2": -0.00016082675048578743,
+            "rmse": 0.3250261332962629
+          },
+          "true_target": {
+            "mae": 0.32569602982709345,
+            "pearson": -0.045037287564207024,
+            "r2": -0.00018891468099968556,
+            "rmse": 0.3282940924055929
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 25,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "mae": 0.2716313076060558,
+              "pearson": 0.33374017964802655,
+              "r2": -0.222792937777883,
+              "rmse": 0.35938489680673685
+            },
+            "true_target": {
+              "mae": 0.2783539586059337,
+              "pearson": 0.354077341266849,
+              "r2": -0.17630620978898226,
+              "rmse": 0.3560264338397287
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "mae": 0.20403783402539333,
+              "pearson": 0.6616252043282637,
+              "r2": 0.4135634819517727,
+              "rmse": 0.24888221555355056
+            },
+            "true_target": {
+              "mae": 0.4921936764400413,
+              "pearson": -0.684309725224769,
+              "r2": -1.6507914922990579,
+              "rmse": 0.5344533865944842
+            }
+          }
+        }
+      }
+    },
+    "city_c_minus_matching_reference": {
+      "regime": {
+        "correct_test_permutation": {
+          "null_mean": 0.49864375,
+          "null_q025": 0.21875,
+          "null_q975": 0.796875,
+          "observed_score": 0.640625,
+          "one_sided_p": 0.18298170182981702,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.8291015625,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": null
+          },
+          "true_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": null
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 34,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "accuracy": 0.6875,
+              "roc_auc": 0.640625,
+              "score_pearson": 0.2755849274919419
+            },
+            "true_target": {
+              "accuracy": 0.6875,
+              "roc_auc": 0.640625,
+              "score_pearson": 0.2755849274919419
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "accuracy": 0.6875,
+              "roc_auc": 0.75,
+              "score_pearson": 0.40139656179215644
+            },
+            "true_target": {
+              "accuracy": 0.3125,
+              "roc_auc": 0.25,
+              "score_pearson": -0.40139656179215644
+            }
+          }
+        }
+      },
+      "residual_slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.00021775662650765675,
+          "null_q025": -0.010147586917728563,
+          "null_q975": 0.010005609985706222,
+          "observed_score": -0.00202622972247668,
+          "one_sided_p": 0.6242375762423757,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": -0.03373711269631108,
+        "embedding_control_correct_test": {
+          "true_target": {
+            "mae": 0.03452309716708763,
+            "pearson": null,
+            "r2": -2.1548881635524708e-05,
+            "rmse": 0.04097891033768294
+          }
+        },
+        "selected_alpha": 100.0,
+        "selected_layer": 1,
+        "test": {
+          "abc_context": {
+            "true_target": {
+              "mae": 0.03467850751172369,
+              "pearson": -0.09450855653187791,
+              "r2": -0.00202622972247668,
+              "rmse": 0.041019963706820255
+            }
+          },
+          "abc_wrong_context": {
+            "true_target": {
+              "mae": 0.03429278093233815,
+              "pearson": 0.5747332342268852,
+              "r2": 0.01054795065689007,
+              "rmse": 0.04076177645651678
+            }
+          }
+        }
+      },
+      "slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.2474949343646082,
+          "null_q025": -0.7434852901281663,
+          "null_q975": 0.2596575814240534,
+          "observed_score": -0.05424473504821781,
+          "one_sided_p": 0.22827717228277172,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.30308069919902425,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "mae": 0.325,
+            "pearson": null,
+            "r2": -0.00015655171097295195,
+            "rmse": 0.32502543865745576
+          },
+          "true_target": {
+            "mae": 0.32569602982709345,
+            "pearson": null,
+            "r2": -3.3580881364514426e-07,
+            "rmse": 0.3282631421284981
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 34,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "mae": 0.29094022927234864,
+              "pearson": 0.21483385531129165,
+              "r2": -0.036328004283204374,
+              "rmse": 0.33085063918997265
+            },
+            "true_target": {
+              "mae": 0.2976682794824348,
+              "pearson": 0.19303731621885406,
+              "r2": -0.05424473504821781,
+              "rmse": 0.33704878794667786
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "mae": 0.27051021491287414,
+              "pearson": 0.4250196472246418,
+              "r2": 0.1500929691192303,
+              "rmse": 0.2996188080491298
+            },
+            "true_target": {
+              "mae": 0.40419123177705674,
+              "pearson": -0.46713613080806937,
+              "r2": -0.8544854304446843,
+              "rmse": 0.4470270074866889
+            }
+          }
+        }
+      }
+    },
+    "city_c_minus_nonmatching_reference": {
+      "regime": {
+        "correct_test_permutation": {
+          "null_mean": 0.499496875,
+          "null_q025": 0.21875,
+          "null_q975": 0.796875,
+          "observed_score": 0.75,
+          "one_sided_p": 0.05269473052694731,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.7880859375,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          },
+          "true_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 24,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "accuracy": 0.75,
+              "roc_auc": 0.75,
+              "score_pearson": 0.381491959675707
+            },
+            "true_target": {
+              "accuracy": 0.75,
+              "roc_auc": 0.75,
+              "score_pearson": 0.381491959675707
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "accuracy": 0.75,
+              "roc_auc": 0.921875,
+              "score_pearson": 0.6946491079972731
+            },
+            "true_target": {
+              "accuracy": 0.25,
+              "roc_auc": 0.078125,
+              "score_pearson": -0.6946491079972731
+            }
+          }
+        }
+      },
+      "residual_slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.0003221772144541816,
+          "null_q025": -0.01578237300676057,
+          "null_q975": 0.015765252428642327,
+          "observed_score": -0.011616832628753793,
+          "one_sided_p": 0.9137086291370863,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": -0.02625923976325173,
+        "embedding_control_correct_test": {
+          "true_target": {
+            "mae": 0.03485908490813033,
+            "pearson": -0.3607767559937043,
+            "r2": -0.012122671991180667,
+            "rmse": 0.04122610484633794
+          }
+        },
+        "selected_alpha": 100.0,
+        "selected_layer": 1,
+        "test": {
+          "abc_context": {
+            "true_target": {
+              "mae": 0.03484816987113205,
+              "pearson": -0.36125157767349814,
+              "r2": -0.011616832628753793,
+              "rmse": 0.04121580155336801
+            }
+          },
+          "abc_wrong_context": {
+            "true_target": {
+              "mae": 0.03420060267034354,
+              "pearson": 0.3648228326777478,
+              "r2": 0.011125735994896524,
+              "rmse": 0.04074987340572742
+            }
+          }
+        }
+      },
+      "slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.383005090924996,
+          "null_q025": -0.9968030914546817,
+          "null_q975": 0.23866786408271382,
+          "observed_score": 0.06707097363758563,
+          "one_sided_p": 0.08039196080391961,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.21697543271289943,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "mae": 0.325,
+            "pearson": -1.3179408845758386e-17,
+            "r2": -0.00016082675048578743,
+            "rmse": 0.3250261332962629
+          },
+          "true_target": {
+            "mae": 0.32569602982709345,
+            "pearson": -0.045037287564207024,
+            "r2": -0.00018891468099968556,
+            "rmse": 0.3282940924055929
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 24,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "mae": 0.2537698586647313,
+              "pearson": 0.3512400486455127,
+              "r2": 0.04883686329285586,
+              "rmse": 0.31696467676176804
+            },
+            "true_target": {
+              "mae": 0.25587680531785645,
+              "pearson": 0.36362575563571775,
+              "r2": 0.06707097363758563,
+              "rmse": 0.3170635749735114
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "mae": 0.21013566554993485,
+              "pearson": 0.6995869113861718,
+              "r2": 0.4695422045121167,
+              "rmse": 0.23670573429557568
+            },
+            "true_target": {
+              "mae": 0.4873938607163265,
+              "pearson": -0.7292474328225315,
+              "r2": -1.5454911346201188,
+              "rmse": 0.5237304728606336
+            }
+          }
+        }
+      }
+    },
+    "matching_minus_nonmatching_reference": {
+      "regime": {
+        "correct_test_permutation": {
+          "null_mean": 0.49995625,
+          "null_q025": 0.21875,
+          "null_q975": 0.78125,
+          "observed_score": 0.609375,
+          "one_sided_p": 0.25107489251074894,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.763671875,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          },
+          "true_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 38,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "accuracy": 0.6875,
+              "roc_auc": 0.609375,
+              "score_pearson": 0.20807193634451082
+            },
+            "true_target": {
+              "accuracy": 0.6875,
+              "roc_auc": 0.609375,
+              "score_pearson": 0.20807193634451082
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "accuracy": 0.6875,
+              "roc_auc": 0.609375,
+              "score_pearson": 0.2080719363444892
+            },
+            "true_target": {
+              "accuracy": 0.3125,
+              "roc_auc": 0.390625,
+              "score_pearson": -0.2080719363444892
+            }
+          }
+        }
+      },
+      "residual_slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.0003078478025055255,
+          "null_q025": -0.01537139111460315,
+          "null_q975": 0.015404561663715302,
+          "observed_score": -0.01145006701368545,
+          "one_sided_p": 0.9155084491550844,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": -0.0273098435941157,
+        "embedding_control_correct_test": {
+          "true_target": {
+            "mae": 0.03485908490813033,
+            "pearson": -0.3607767559937043,
+            "r2": -0.012122671991180667,
+            "rmse": 0.04122610484633794
+          }
+        },
+        "selected_alpha": 100.0,
+        "selected_layer": 1,
+        "test": {
+          "abc_context": {
+            "true_target": {
+              "mae": 0.03484310926698497,
+              "pearson": -0.36407635693944906,
+              "r2": -0.01145006701368545,
+              "rmse": 0.04121240418908524
+            }
+          },
+          "abc_wrong_context": {
+            "true_target": {
+              "mae": 0.03420308506719029,
+              "pearson": 0.36407635693944906,
+              "r2": 0.01093458312251594,
+              "rmse": 0.040753811762320506
+            }
+          }
+        }
+      },
+      "slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.38106050021870286,
+          "null_q025": -0.9866983850707858,
+          "null_q975": 0.23085588039198648,
+          "observed_score": -0.1343022586347311,
+          "one_sided_p": 0.22277772222777723,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.1866911712376833,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "mae": 0.325,
+            "pearson": -1.3179408845758386e-17,
+            "r2": -0.00016082675048578743,
+            "rmse": 0.3250261332962629
+          },
+          "true_target": {
+            "mae": 0.32569602982709345,
+            "pearson": -0.045037287564207024,
+            "r2": -0.00018891468099968556,
+            "rmse": 0.3282940924055929
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 38,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "mae": 0.28895285025300305,
+              "pearson": 0.17930667937607186,
+              "r2": -0.1646620031579633,
+              "rmse": 0.3507383983591758
+            },
+            "true_target": {
+              "mae": 0.2896488800800965,
+              "pearson": 0.20095092119742322,
+              "r2": -0.1343022586347311,
+              "rmse": 0.3496120941116104
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "mae": 0.28895285025300305,
+              "pearson": 0.17930667937606365,
+              "r2": -0.16797865335095463,
+              "rmse": 0.3512374485447054
+            },
+            "true_target": {
+              "mae": 0.37031065998561274,
+              "pearson": -0.2009509211974091,
+              "r2": -0.6263894676846469,
+              "rmse": 0.41863383477379523
+            }
+          }
+        }
+      }
+    },
+    "matching_reference": {
+      "regime": {
+        "correct_test_permutation": {
+          "null_mean": 0.498575,
+          "null_q025": 0.2109375,
+          "null_q975": 0.78125,
+          "observed_score": 0.875,
+          "one_sided_p": 0.005599440055994401,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.6201171875,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          },
+          "true_target": {
+            "accuracy": 0.5,
+            "roc_auc": 0.5,
+            "score_pearson": 0.0
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 22,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "accuracy": 0.75,
+              "roc_auc": 0.875,
+              "score_pearson": 0.6048300791367007
+            },
+            "true_target": {
+              "accuracy": 0.75,
+              "roc_auc": 0.875,
+              "score_pearson": 0.6048300791367007
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "accuracy": 0.5,
+              "roc_auc": 0.5,
+              "score_pearson": 0.05596740436159641
+            },
+            "true_target": {
+              "accuracy": 0.5,
+              "roc_auc": 0.5,
+              "score_pearson": -0.05596740436159641
+            }
+          }
+        }
+      },
+      "residual_slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.0003197421533607726,
+          "null_q025": -0.015548155321791341,
+          "null_q975": 0.015554172194183216,
+          "observed_score": -0.011050733846678096,
+          "one_sided_p": 0.9057094290570943,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": -0.02722770520834894,
+        "embedding_control_correct_test": {
+          "true_target": {
+            "mae": 0.03485908490813033,
+            "pearson": -0.3607767559937043,
+            "r2": -0.012122671991180667,
+            "rmse": 0.04122610484633794
+          }
+        },
+        "selected_alpha": 100.0,
+        "selected_layer": 1,
+        "test": {
+          "abc_context": {
+            "true_target": {
+              "mae": 0.03483951231210902,
+              "pearson": -0.3475010925543118,
+              "r2": -0.011050733846678096,
+              "rmse": 0.04120426779899186
+            }
+          },
+          "abc_wrong_context": {
+            "true_target": {
+              "mae": 0.03419413055604366,
+              "pearson": 0.3799041213914472,
+              "r2": 0.011515351867750767,
+              "rmse": 0.040741844901880174
+            }
+          }
+        }
+      },
+      "slope": {
+        "correct_test_permutation": {
+          "null_mean": -0.17234984702480952,
+          "null_q025": -0.5754147018133372,
+          "null_q975": 0.22550792641245507,
+          "observed_score": 0.2561086323272471,
+          "one_sided_p": 0.012998700129987,
+          "repeats": 10000,
+          "scheme": "held-out target-label permutation with the development-selected layer, ridge strength, and fitted probe held fixed",
+          "seed": 20260825
+        },
+        "development_cv_score": 0.0065830223920347875,
+        "embedding_control_correct_test": {
+          "cue_target": {
+            "mae": 0.325,
+            "pearson": -1.3179408845758386e-17,
+            "r2": -0.00016082675048578743,
+            "rmse": 0.3250261332962629
+          },
+          "true_target": {
+            "mae": 0.32569602982709345,
+            "pearson": -0.045037287564207024,
+            "r2": -0.00018891468099968556,
+            "rmse": 0.3282940924055929
+          }
+        },
+        "selected_alpha": 0.003,
+        "selected_layer": 38,
+        "test": {
+          "abc_context": {
+            "cue_target": {
+              "mae": 0.2583752904500832,
+              "pearson": 0.5125262374050344,
+              "r2": 0.24779880404570165,
+              "rmse": 0.28187098347058137
+            },
+            "true_target": {
+              "mae": 0.2567636374569747,
+              "pearson": 0.521647416860553,
+              "r2": 0.2561086323272471,
+              "rmse": 0.28312408046461046
+            }
+          },
+          "abc_wrong_context": {
+            "cue_target": {
+              "mae": 0.3297744957942422,
+              "pearson": 0.045814213372599534,
+              "r2": -0.240242163782044,
+              "rmse": 0.3619400206518732
+            },
+            "true_target": {
+              "mae": 0.3329913480377815,
+              "pearson": -0.08710312848700903,
+              "r2": -0.3591767452731043,
+              "rmse": 0.3827013700856537
+            }
+          }
+        }
+      }
+    }
+  },
+  "protocol_sha256": "8a002702c134d5547aa6a15ae377abc02968de0d952b20bd66e43abdf15ee0c2",
+  "scope": "paper-external diagnostic; linear label-token decodability and causal residual-stream patching at a development-selected layer window",
+  "selection_sha256": "5ee440188bec806f432b7e128b82e8697c28763a5b4c22a7062140c0749543b7",
+  "stability_gate": {
+    "checks": {
+      "both_patch_directions_positive": false,
+      "primary_patch_complete_episode_count_at_least_14": true,
+      "primary_patch_exact_sign_flip_p_below_0_05": false,
+      "primary_patch_symmetric_mean_positive": false,
+      "primary_relational_permutation_p_below_0_05": false,
+      "primary_relational_regime_auc_above_chance": true,
+      "self_patch_exact_poll_match_rate_at_least_0_95": true,
+      "self_patch_parsed_pairs_at_least_58": true
+    },
+    "cross_family_replication": "not_authorized",
+    "passed": false
+  },
+  "status": "complete",
+  "study": "qwen3_14b_symbol_relational_v1",
+  "tasks_sha256": "6d4dd81bb031d7dc00320e97d2c1896a132c3deab54a6642b6b0105a954014a9"
+}

@@ -1,0 +1,49 @@
+{
+  "anchor_definition": "mean is computed downstream over both exact symbol subtokens; artifact preserves both subtoken states separately",
+  "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+  "completed_at": "2026-08-25T21:23:05.264461+00:00",
+  "cuda": {
+    "max_memory_allocated_bytes": 29988148736,
+    "name": "NVIDIA RTX A6000"
+  },
+  "feature_summary": {
+    "anchors": [
+      "city_a",
+      "city_b",
+      "city_c"
+    ],
+    "elapsed_seconds": 46.995142698287964,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      160,
+      41,
+      3,
+      2,
+      5120
+    ],
+    "hidden_size": 5120,
+    "layer_count_including_embedding": 41,
+    "record_count": 160,
+    "subtokens_per_anchor": 2,
+    "token_count_max": 601,
+    "token_count_median": 594.0,
+    "token_count_min": 592,
+    "transformer_layer_count": 40
+  },
+  "label_states_sha256": "66084f10a31f54a6188ebcb7f675a720abc8798c2aeca84add138e6be651c8ab",
+  "model": "Qwen/Qwen3-14B",
+  "model_commit": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+  "parameter_count": 14768307200,
+  "protocol_sha256": "8a002702c134d5547aa6a15ae377abc02968de0d952b20bd66e43abdf15ee0c2",
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "python": "3.10.20",
+    "safetensors": "0.8.0",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "complete",
+  "study": "qwen3_14b_symbol_relational_v1",
+  "tasks_sha256": "6d4dd81bb031d7dc00320e97d2c1896a132c3deab54a6642b6b0105a954014a9"
+}

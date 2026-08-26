@@ -65,3 +65,7 @@ paper/_archive/retired_iclr_mirror_*/
 *.fls
 *.synctex.gz
 paper/ICLR_submission_*.zip
+
+# Runtime locks held by probe allocations
+**/mechanistic_probe/**/.probe.lock
+**/mechanistic_probe/**/.relational_probe.lock

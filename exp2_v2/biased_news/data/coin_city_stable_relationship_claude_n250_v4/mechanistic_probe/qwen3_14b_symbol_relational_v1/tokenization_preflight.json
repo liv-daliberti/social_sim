@@ -1,0 +1,85 @@
+{
+  "balance": {
+    "development_episodes": 64,
+    "development_fold_cell_counts": {
+      "0:A:False:KIV": 2,
+      "0:A:False:ZOR": 2,
+      "0:A:True:KIV": 2,
+      "0:A:True:ZOR": 2,
+      "0:B:False:KIV": 2,
+      "0:B:False:ZOR": 2,
+      "0:B:True:KIV": 2,
+      "0:B:True:ZOR": 2,
+      "1:A:False:KIV": 2,
+      "1:A:False:ZOR": 2,
+      "1:A:True:KIV": 2,
+      "1:A:True:ZOR": 2,
+      "1:B:False:KIV": 2,
+      "1:B:False:ZOR": 2,
+      "1:B:True:KIV": 2,
+      "1:B:True:ZOR": 2,
+      "2:A:False:KIV": 2,
+      "2:A:False:ZOR": 2,
+      "2:A:True:KIV": 2,
+      "2:A:True:ZOR": 2,
+      "2:B:False:KIV": 2,
+      "2:B:False:ZOR": 2,
+      "2:B:True:KIV": 2,
+      "2:B:True:ZOR": 2,
+      "3:A:False:KIV": 2,
+      "3:A:False:ZOR": 2,
+      "3:A:True:KIV": 2,
+      "3:A:True:ZOR": 2,
+      "3:B:False:KIV": 2,
+      "3:B:False:ZOR": 2,
+      "3:B:True:KIV": 2,
+      "3:B:True:ZOR": 2
+    },
+    "episodes": 80,
+    "factorial_cell_counts": {
+      "dev:A:False:KIV": 8,
+      "dev:A:False:ZOR": 8,
+      "dev:A:True:KIV": 8,
+      "dev:A:True:ZOR": 8,
+      "dev:B:False:KIV": 8,
+      "dev:B:False:ZOR": 8,
+      "dev:B:True:KIV": 8,
+      "dev:B:True:ZOR": 8,
+      "test:A:False:KIV": 2,
+      "test:A:False:ZOR": 2,
+      "test:A:True:KIV": 2,
+      "test:A:True:ZOR": 2,
+      "test:B:False:KIV": 2,
+      "test:B:False:ZOR": 2,
+      "test:B:True:KIV": 2,
+      "test:B:True:ZOR": 2
+    },
+    "sealed_test_episodes": 16
+  },
+  "intervention": {
+    "differences_exactly_city_c_symbol_span": true,
+    "differing_token_count": 2,
+    "matched_correct_swapped_pairs_checked": 160,
+    "reference_labels_unchanged": true
+  },
+  "model": "Qwen/Qwen3-14B",
+  "model_commit": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+  "prefix": {
+    "distinct_label_token_id_pairs": [
+      [
+        730,
+        3090
+      ],
+      [
+        1863,
+        868
+      ]
+    ],
+    "episode_arm_prefix_pairs_checked": 160,
+    "k0_k4_identical_through_city_c_label": true,
+    "label_span_token_count": 2
+  },
+  "status": "passed_before_label_activation_extraction",
+  "study": "qwen3_14b_symbol_relational_v1",
+  "tokenizer_class": "Qwen2TokenizerFast"
+}
