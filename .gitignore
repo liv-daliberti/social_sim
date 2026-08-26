@@ -29,6 +29,9 @@ logs/
 wandb/
 reports/
 *.arrow
+# Activation tensors under mechanistic_probe are regenerable from the frozen
+# task files and the pinned checkpoint commits; only their hashes are tracked.
+**/mechanistic_probe/**/*.npz
 
 # GitHub publication boundary: large research payloads stay local and are
 # distributed through the data release, while manifests/results stay tracked.
@@ -48,6 +51,9 @@ exp1_prospective/_archive/interim_results/
 **/_archive/**/*.png
 **/_archive/**/*.webp
 **/_archive/**/*.zip
+# Local recovery copies of retired manuscript mirrors. Their committed history
+# remains available in Git; the copies exist only to make consolidation reversible.
+paper/_archive/retired_iclr_mirror_*/
 
 # NFS silly-rename turds
 .nfs*
