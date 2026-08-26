@@ -392,6 +392,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     assert r"\input{tables/exp2_symbol_context_scaling}" in appendix
 
     source = compact("paper/experiment2_section.tex")
+    # Numbers the section states, each traceable to a frozen authority.
     for claim in (
         "$0.37$ to $0.92$",
         "2.59 to 1.85",
@@ -399,33 +400,36 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         "$0.12$--$0.23$",
         "$4.20$--$4.36$",
         "$1.52$--$1.76$",
-        "Models infer a new relationship from demonstrations and apply it to a target",
-        "arbitrary-label mapping reverses across episodes and must be inferred",
-        "all four Qwen2.5 checkpoints, Llama~3.1-70B, and all five hosted systems recover it",
-        "Within Qwen3 the recovery interval excludes zero only from 14B upward",
-        "the transition differs by family and is not monotone in parameter count",
-        "erases a $k=0$ advantage over a context-blind OLS benchmark",
-        r"Appendix Table~\ref{tab:coin-city-vs-ols}",
-        "Forecasts track the cue-named reference, not a lexical prior",
-        "concentrates loading on the named reference",
-        "the loading wholesale onto the reference the false cue names",
+        "matches or beats a context-blind OLS benchmark",
+        "$.51$--$.86$",
+        "$.61$--$.90$",
+        "twelve of fifteen systems recover it",
+        "only from 14B upward and within Llama only at 70B",
+        "not monotone in parameter count",
+        "mean-pooled input embeddings already reach $1.000$",
+        "embedding control falls to $.555$",
+        "$.778$ at block 50 of 64 for",
+        "is null in all four conditions",
+        "$.333$ at $k=0$",
         r"Appendix~\ref{app:coin-city-reference-selection}",
-        "largely lexical, and we treat it as such",
-        "88 episodes",
-        "Qwen2.5-32B reaches $.778$",
-        "Llama~3.1-8B is null in all four conditions",
-        "Decodability tracks behavioral recovery rather than",
-        "Slope $R^2$ is $.016$ and does not reject",
-        "The induced relationship causally controls the zero-shot forecast",
-        "$347/347$ exact self-patch controls",
-        "direct evidence displaces the induced label",
-        "This is one checkpoint under arbitrary labels",
-        r"Appendix~\ref{app:coin-city-causal-patch}",
-        "Kimi, both Opus deployments, and GPT also lower forecast error",
-        "separating induction from",
-        "six open checkpoints",
+        r"Appendix~\ref{app:coin-city-mechanistic-probe}",
     ):
-        assert claim in source
+        assert claim in source, claim
+    # The three structural claims the section is organised around.
+    for heading in (
+        "Selection and revision",
+        "The cue selects a displayed reference, not a prior on its words",
+        "Induction of a novel mapping",
+    ):
+        assert heading in source, heading
+    # Scope statements that must survive any future tightening of this section.
+    for bound in (
+        "measure how a stated assignment becomes a number",
+        "selection here is a two-way choice",
+        "exact within-regime coefficient is never recovered",
+        "the causal test on one",
+    ):
+        assert bound in source, bound
     for stale_claim in (
         "all three Qwen2.5 checkpoints",
         "provide converging representational evidence",
@@ -433,10 +437,9 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         "compared with $-.07$ to $.08$ without context",
         "Novel cue induction varies across models and families",
         "smaller matched counterparts",
-        "matched Qwen3-4B, Qwen3-8B, and Llama~3.1-8B intervals span zero",
         "episode-specific within-regime residual",
     ):
-        assert stale_claim not in source
+        assert stale_claim not in source, stale_claim
     assert "Sufficiently large models" not in source
     assert "Episode-local cue induction is model-dependent" not in source
     assert "DeepSeek, but not Qwen3-4B" not in source

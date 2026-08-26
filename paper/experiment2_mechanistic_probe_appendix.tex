@@ -95,6 +95,20 @@ value on the correct-context test episodes.}
 
 \begin{figure}[ht]
   \centering
+  \includegraphics[width=.62\linewidth]{figures/exp2_qwen3_mechanistic_main.pdf}
+  \caption{\textbf{Semantic-arm slope decoding follows cue assignment.}
+  Each line is a sealed model--$k$ cell across the six open checkpoints of the
+  16-episode roster; purple is the median. Probes are fit on correct-context
+  development episodes. Under inversion, held-out $R^2$ collapses against the true
+  slope and recovers against the cue-assigned slope. The input-embedding control
+  below shows this signal is available before any computation, which is why the
+  arbitrary-label replication rather than this figure carries the
+  representational claim.}
+  \label{fig:coin-city-mechanistic-main}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
   \includegraphics[width=\linewidth]{figures/exp2_qwen3_mechanistic_probe.pdf}
   \caption{\textbf{Development layer trajectories for the six-model probe.}
   Curves show four-fold development CV rather than test performance; stars mark
