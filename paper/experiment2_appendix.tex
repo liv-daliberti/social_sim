@@ -11,17 +11,16 @@ observations revise that selection. The six primary deployments and symbol-contr
 comparisons reuse the same 250 seeded episodes, so prompt-arm differences are
 paired rather than comparisons between independently sampled tests.
 
-\subsection{Design, Data-Generating Process, and Freeze}
+\subsection{Design and Data-Generating Process}
 \label{app:coin-city-design}
 
 \subsubsection{Design summary}
-The frozen design identifier is
+The design identifier is
 \path{coin_city_stable_relationship_claude_n250_v4}. It contains 250 independent
 episodes generated from seeds 930000--930249, five target-city prefixes
-\(k\in\{0,1,2,3,4\}\), and three semantic-selection arms frozen before the initial
-model calls. Cue-inversion and arbitrary-symbol modules reuse those episode
-identities and numerical inputs; each has its own task manifest frozen before its
-calls (Section~\ref{app:coin-city-execution}). Every model received the same
+\(k\in\{0,1,2,3,4\}\), and three semantic-selection arms. Cue-inversion and
+arbitrary-symbol modules reuse those episode identities and numerical inputs; each
+has a hashed task manifest (Section~\ref{app:coin-city-execution}). Every model received the same
 episode records, queries, and arm-specific prompt text.
 
 \subsubsection{Balanced latent regimes}
@@ -55,7 +54,7 @@ from \(\{6,7,8,9,10\}\). The query shock is drawn from
 \(\{-10,\ldots,-4,4,\ldots,10\}\). Its scoring target is the latent conditional
 expectation \(p_0+g_Cx\), with no additional query-time observation noise.
 
-The prefix \(k\) exposes the first \(k\) City C rows in their frozen order.
+The prefix \(k\) exposes the first \(k\) City C rows in their stored order.
 Consequently, \(k=2\) completes the first matched pair and \(k=4\) completes both;
 \(k=1\) and \(k=3\) deliberately expose partial pairs. City A and B always
 contribute all four rows in the ABC arms.
@@ -63,14 +62,14 @@ contribute all four rows in the ABC arms.
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
-\captionof{table}{Frozen Coin City design and evaluation dimensions. Final analytic
+\captionof{table}{Coin City design and evaluation dimensions. Final analytic
 record counts retain one record per task cell; raw transport-level calls are
 discussed in Section~\ref{app:coin-city-limitations}.}
 \label{tab:coin-city-design}
 \small
 \begin{tabular}{p{0.31\linewidth} p{0.62\linewidth}}
 \toprule
-Quantity & Frozen value \\
+Quantity & Value \\
 \midrule
 Independent episodes & 250 \\
 Factorial cells & 63, 62, 62, 63 across the four A/B-by-C regimes \\
@@ -92,7 +91,7 @@ Reference cases per city & 4 (two matched pairs) \\
 \end{minipage}
 \end{center}
 
-\subsubsection{Freeze and preflight validation}
+\subsubsection{Preflight validation and task integrity}
 The GPT-5.6, DeepSeek-V4-Pro, Kimi K3, Gemini 3.6 Flash, and Claude Opus~5
 replications reuse the exact task files and prompt hashes created for the original
 Claude Opus~4.8 evaluation; no episode was regenerated. Before model calls, the
@@ -823,6 +822,25 @@ reference's own $.656$ correlation with the truth. GPT-5.6 and Claude Opus~4.8
 slightly exceed the cap at $k=0$, which is what blending a reference estimate with
 a regime prior produces.
 
+\paragraph{The estimator only detects an inefficiency.} The signal this analysis
+reads is noise the forecast did not have to import. Each city draws its slope
+independently, so a reference city's deviation from its regime mean is
+uncorrelated with City C's: simulating the generator gives
+$\operatorname{corr}(\widehat\beta^{\mathrm{ref}}-\mu,\;g_C-\mu)=-.0000$
+(Section~\ref{app:coin-city-probe-ceilings}). Within a regime the reference's
+fitted slope is therefore pure sampling error about a mean the regime already
+supplies, and the response-recovery-optimal policy is to read the cue, ignore the
+reference numbers, and predict the regime mean---which attains $\rho=.996$ against
+the $.656$ a faithful transfer is capped at. A forecaster that did this would show
+no loading on either reference and would be indistinguishable, under this
+estimator, from the lexical-prior account the section argues against. The
+estimator thus identifies reference selection only in forecasters that fail to
+shrink, and has least power on those closest to the shrinking policy: the two
+deployments above the transfer cap are the two with the highest slope
+correlation, one of which also has the lowest $k=0$ forecast error of the six. We read a
+positive loading as evidence for reference selection, and a null under this
+estimator as uninformative rather than as evidence for a prior.
+
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
@@ -846,6 +864,95 @@ statistics are computed from different quantities and agree on all fifteen
 systems.
 
 \input{experiment2_mechanistic_probe_appendix}
+
+\subsection{Robustness Across Generator Populations and Deployments}
+\label{app:coin-city-robustness}
+
+\subsubsection{Generator-population robustness}
+Fresh seeds 940000--940249 target strong/weak means of \(.75/.40\)
+with slope SD \(.10\), jointly narrowing the regime gap and widening
+within-regime dispersion. The realized target slopes are
+\(.752\pm.100\) and \(.404\pm.105\). Draws were neither truncated nor reordered:
+two reference pairs reverse their nominal latent ordering and remain in the
+analysis. Case noise, factorial balance, prompts, prefix set, local checkpoint
+settings, and episode-randomized symbol mapping are unchanged.
+
+All ten open checkpoints were run on the three matched arms, producing 37,500
+response records; 37,355 contain a numeric forecast, and unresolved formats remain
+missing. Table~\ref{tab:coin-city-generator-robustness} compares the
+\(k=0\) symbol-minus-no-context contrast across generator populations. Bold
+intervals exclude zero; negative \(\Delta\)MAE would favor symbol context.
+Because this population changes separation and dispersion together, it tests the
+joint perturbation rather than identifying either parameter's effect separately.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Arbitrary-symbol recovery on the original and harder generator
+populations. Intervals are 95\% episode-bootstrap intervals with 5,000 draws;
+\(n\) is the harder-population complete-case count.}
+\label{tab:coin-city-generator-robustness}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{\input{tables/exp2_generator_population_robustness}}
+\end{minipage}
+\end{center}
+
+Which Qwen3 checkpoints clear significance changes, but their ordering does not.
+Qwen3-8B moves from an original null to \(\Delta\rho=.231\) \([.074,.370]\) while
+Qwen3-14B falls to \(.155\) \([-.004,.303]\); Qwen3-4B remains null and Qwen3-32B
+remains positive. Regime accuracy in the symbol arm, which subtracts no baseline,
+orders the four identically in both populations---\(.512\), \(.516\), \(.660\),
+\(.656\) originally against \(.528\), \(.554\), \(.589\), \(.606\) here---so no
+pair reverses. What the harder population removes is separation: it compresses
+every score toward chance, turning a \(.14\) gap between 8B and 14B into \(.035\).
+The \(\Delta\rho\) contrast then subtracts a no-context baseline carrying a
+standard error of about \(.064\), and baselines of \(-.036\) for Qwen3-8B against
+\(+.025\) for Qwen3-14B suffice to place one interval above zero and the other
+\(.004\) below it, with the two overlapping by \(78\%\). We read this as a
+detection threshold that is no longer locatable to a checkpoint on the compressed
+population, not as a reversal.
+
+All four Qwen2.5 intervals remain positive, from \(.149\) \([.009,.279]\) at 7B to
+\(.336\) \([.204,.463]\) at 72B, and both Llama checkpoints keep their
+classification, 8B null in each population and 70B positive in each. Seven of ten
+intervals therefore exclude zero in each population and eight of ten checkpoints
+keep their classification, the Qwen3 8B/14B pair being the two that do not. Mapping
+recovery survives the substantially less separable population; the checkpoint at
+which it becomes detectable does not, and neither does a scale reading across
+families, since Qwen2.5-14B sits below Qwen2.5-7B in both. Part of the shrinkage
+is mechanical: the regime explains less of the slope here, capping \(\rho\) at
+\(.87\) against \(.996\). The observed \(\Delta\rho\) falls further than that alone
+predicts. Numerical use stays distinct:
+Qwen2.5-72B's discrimination improves while symbol context raises forecast MAE by
+\(1.012\) \([.717,1.316]\).
+
+
+\subsubsection{One independent hosted repeat}
+GPT-5.6 was replayed once on the 250 \(k=0\) prompts in each no-context,
+semantic-context, and arbitrary-symbol arm. The deployment, low reasoning effort,
+provider-native sampling, prompt hashes, parser, and one-attempt policy were
+unchanged; all 750 repeat responses parsed.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Independent GPT-5.6 \(k=0\) repeat. Paired intervals resample
+episodes; mean \(|\Delta\hat y|\) is the per-task absolute change in forecast.}
+\label{tab:coin-city-gpt-repeat}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{\input{tables/exp2_gpt56_repeat}}
+\end{minipage}
+\end{center}
+
+Per-task mean absolute forecast changes are \(.166\), \(.193\), and \(.167\)
+points across the three arms. The arbitrary-symbol-minus-no-context correlation
+effect is \(.696\) originally and \(.661\) on repeat; their difference is
+\(-.035\) \([-.075,.003]\). The corresponding forecast-MAE benefit is
+\(-.774\) originally and \(-.743\) on repeat, with difference \(+.031\)
+\([-.046,.104]\). This one repeat supports stability of the paired conclusions
+for this named snapshot, not a general estimate of provider or model variance.
 
 \subsection{Missingness, Scope, and Artifact Map}
 \label{app:coin-city-limitations}
@@ -905,24 +1012,41 @@ solely from a pre-existing national-greater-than-local prior. The expanded
 15-model comparison shows detectable symbol-based discrimination for Qwen3-14B
 and Qwen3-32B, all four tested Qwen2.5 checkpoints, Llama~3.1-70B, and all five
 hosted systems.
-Intervals span zero for Qwen3-4B, Qwen3-8B, and Llama~3.1-8B. Within Qwen3 the
-mapping is recovered only from 14B upward, and within Llama only at 70B,
-providing within-family evidence of a capacity dependence; Qwen2.5-7B's positive
+In this original population, intervals span zero for Qwen3-4B, Qwen3-8B, and
+Llama~3.1-8B. Within Qwen3 the mapping is recovered only from 14B upward, and
+within Llama only at 70B,
+providing within-family contrasts on the original population; Qwen2.5-7B's positive
 result alongside Qwen3-8B's interval spanning zero, and Qwen3-32B's smaller
 point estimate than Qwen3-14B's, show that the transition is neither monotone in
 nor determined by parameter count alone.
-Four analyses bear on whether a model induces the arbitrary label-to-regime
-mapping, and they are computed from different quantities: the
+Four quantitative analyses bear on whether a model induces the arbitrary
+label-to-regime mapping, and they are computed from different quantities: the
 symbol-minus-no-context correlation contrast on forecasts; the partial correlation
 between the implied slope and the cue-named reference's own fitted slope
 (Section~\ref{app:coin-city-reference-selection}); held-out linear decoding of
 hidden states; and causal patching of those states
 (Section~\ref{app:coin-city-causal-patch}). Where more than one was run on a
-checkpoint they agree, including on Llama~3.1-8B, where all of them are null.
+checkpoint they agree, including Llama~3.1-8B, where every analysis run is null.
 Agreement among measures that could have disagreed is the reason to prefer the
 induction account over a lexical or pooling one. It does not extend the claim to
 the hosted deployments, whose internals are unavailable, and only one checkpoint
-carries the causal test.
+carries the causal test. A fifth, descriptive audit asks what models themselves
+say in their one-sentence rationales.
+
+Deterministic lexical rules were developed on a hash-selected 50-episode subset and
+then applied without revision to the remaining
+200 episodes. Across all three comparison arms, 56,057 of 56,250 response records
+contain a rationale. At $k=0$ in the arbitrary-symbol arm, 2,992 of 3,000 held-out
+records contain one; the coder identifies a selected City A/B reference in 1,832,
+and every codable statement names the reference that actually shares City C's
+episode-local symbol. In the inverted semantic arm, all 1,200 held-out records
+contain a rationale: all 1,089 codable reference statements name the reference
+selected by the false cue, and all 1,186 codable national/local statements name
+the false regime. These outputs are behavioral self-reports, not privileged
+evidence of computation; in particular, the coder abstains whenever a statement
+does not make an unambiguous reference or regime claim. The conditional pattern
+also appears in the three checkpoints with null behavioral symbol contrasts, so
+it establishes declared cue interpretation rather than successful numerical use.
 
 Because discrimination and forecast MAE can move in opposite directions, mapping
 induction is not equivalent to calibrated numerical use. Ambiguous, continuous,
@@ -935,15 +1059,17 @@ future noisy poll. The six primary deployments differ in provider, reasoning mod
 output budget, and service tier. The symbol module mixes local
 vLLM checkpoints with hosted calls and includes the documented cross-resource
 Opus~4.8 arm. Cross-model comparisons are therefore descriptive rather than
-configuration-matched capability rankings. The cue-inversion module is a
-separately frozen stress test over the same task identities and numeric inputs.
+configuration-matched capability rankings. The cue-inversion module is a matched
+stress test over the same task identities and numeric inputs.
 
-Finally, the 250 episodes are one reproducible seeded synthetic population.
-Bootstrap intervals resample episodes and are pointwise; they do not incorporate
-generator-parameter uncertainty, provider drift, or a correction for the many
-model, arm, and prefix comparisons. Follow-up work should vary cue strength, add a
-semantic cue-only arm without A/B examples, evaluate additional generated
-populations, and score predictive calibration against noisy held-out outcomes.
+The primary and harder designs are two reproducible seeded populations in the
+same synthetic world. The second jointly narrows the regime gap and widens slope
+dispersion, but two settings do not characterize generator-parameter uncertainty
+or isolate those changes. Bootstrap intervals resample episodes within a
+population and are pointwise; they do not incorporate provider drift or correct
+for the many model, arm, and prefix comparisons. The evaluated populations also do
+not characterize factorial variation in generator parameters, ambiguous cues, or
+calibration against noisy held-out outcomes.
 
 \subsubsection{Reproducibility and artifact map}
 The frozen data root is
@@ -1005,10 +1131,33 @@ relative to those roots unless a repository-level path is shown.
   systems. \path{paper/generate_coin_city_reference_selection_tables.py} writes
   both appendix tables.
 
+  \item[Probe-target ceilings.]
+  \path{analysis/compute_bayes_ceilings.py} under the code root derives the
+  Bayes-optimal ceiling for each probe target in
+  Table~\ref{tab:coin-city-probe-ceilings} and the forecast-MAE floors drawn in
+  Figure~\ref{fig:coin-city-results}, importing the generator constants from
+  the engine module so they cannot drift, and writes
+  \path{analysis/bayes_ceilings.json} under the data root. It reads no
+  response file and makes no model call, and fails closed if its closed form and
+  its simulation of the generator's own row logic disagree. Checks are in
+  \path{tests/test_bayes_ceilings.py}.
+
   \item[Misleading arm and paper outputs.]
   The repository-level script
   \path{paper/generate_coin_city_split_figures.py} recomputes misleading-arm
   metrics from the final response files and scoring key.
   \path{paper/generate_coin_city_appendix_tables.py} generates the primary tables
   and pairwise contrasts.
+
+  \item[Generator and deployment robustness.]
+  \path{engine/coin_city_robustness_population.py} and
+  \path{eval/build_coin_city_robustness_population.py} build the fresh-seed
+  population; its design, responses, scheduler ledgers, and analysis are
+  under \path{data/coin_city_population_075_040_sd010_v1/}.
+  \path{analysis/analyze_coin_city_rationales.py} writes
+  \path{analysis/rationale_audit_v1.json} under the primary data root.
+  \path{eval/run_coin_city_gpt56_k0_repeat.py} and
+  \path{analysis/analyze_coin_city_gpt56_k0_repeat.py} isolate and score the
+  hosted repeat. \path{paper/generate_coin_city_robustness_tables.py} renders
+  both appendix tables from the saved analysis artifacts.
 \end{description}
