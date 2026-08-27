@@ -1,0 +1,42 @@
+\section{From plausible behavior to relational validity}
+\label{sec:related-work}
+
+\paragraph{Social agents and simulation validity.}
+Generative agents can sustain believable individual and collective behavior in
+interactive environments \citep{park2023generative}, and LMs can reproduce
+selected patterns from human-subject experiments or demographic samples
+\citep{aher2023simulate,argyle2023out}. Yet matching a marginal distribution is
+not the same as preserving the conditional structure of a population. Synthetic
+survey responses can resemble human averages while understating variation,
+changing under small prompt or model updates, and yielding different regression
+relationships \citep{bisbee2024synthetic}. This distinction motivates our unit of
+analysis. We do not ask whether an LM is a faithful proxy for a person or
+population. We ask whether its \emph{forecast changes for the right structural
+reason} under paired interventions.
+
+\paragraph{Judgmental forecasting.}
+Strong human forecasters combine base rates, decomposition, diverse evidence,
+and repeated revision \citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting}.
+Forecasting benchmarks increasingly evaluate LMs on time-indexed or
+leakage-controlled questions \citep{zou2022forecasting,karger2025forecastbench};
+retrieval and ensembling bring some systems near crowd accuracy
+\citep{halawi2024approaching,schoenegger2024wisdom}. These results establish what
+probabilities models produce. Our focus is the relationship behind the update:
+whether evidence is treated as probative, which contextual analogue is selected,
+and whether that choice survives a change in domain or mechanism.
+
+\paragraph{Induction and behavioral evidence.}
+Transformers can infer unseen functions from input--output examples, conditional
+on their training distribution \citep{garg2022what,chan2022data}; LMs also
+solve some abstract analogy tasks \citep{webb2023emergent,yasunaga2024large}.
+Our selection tests differ in what the target supplies: it displays no examples of
+its own, so the relationship must be carried from a demonstrated analogue under a
+qualitative cue, and an arbitrary-label variant reverses that cue's mapping across
+episodes.
+World-model accounts emphasize representations of environmental state or
+dynamics \citep{ha2018world,lecun2022path,li2023emergent}, while shortcut learning
+warns that predictive success can fail under structural shift
+\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. We connect
+these literatures through paired behavioral tests. Each intervention has a
+predicted change or invariance, and later stages remove explanations based on
+familiar semantics, answer distributions, or surface domain.

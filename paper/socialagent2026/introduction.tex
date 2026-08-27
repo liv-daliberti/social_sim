@@ -1,0 +1,89 @@
+\section{Introduction}
+\label{sec:introduction}
+
+A forecast of a social event is a compact theory of how a world works. News of a
+policy proposal, an endorsement, or an economic shock matters only through a
+relationship: which actors can respond, which institutions transmit the effect,
+and whether the local setting amplifies or dampens it. The same observation can
+therefore support different predictions in different contexts. A national story
+may move opinion in a media environment organized around national politics and
+barely register where local issues dominate. Forecasting requires selecting the
+relationship that applies before extrapolating from the evidence.
+
+This requirement matters as language models (LMs) become components of social
+agents. LMs already populate interactive worlds, emulate experimental
+participants, and generate synthetic public opinion
+\citep{park2023generative,aher2023simulate,argyle2023out}. Their outputs can look
+plausible in aggregate while missing the conditional relationships that a social
+scientist or policy designer actually wishes to study
+\citep{bisbee2024synthetic}. A system that reproduces an average response but
+reacts to the wrong cue, or carries a relationship into a setting where it should
+change, is a fragile social model.
+
+Forecasting offers a demanding test of this problem. Competitive accuracy alone
+does not reveal the process behind a probability. The same number can be produced
+by a base rate, a retrieved precedent, a market price, a lexical shortcut, or a
+relationship inferred from the current context. Generated rationales do not
+resolve the ambiguity because explanations need not track model behavior
+\citep{jacovi2020towards,turpin2023language}. We therefore ask a process question:
+\emph{when an LM forecasts a social outcome, does it behave as if it selects,
+revises, and transfers predictive structure?}
+
+We use \emph{predictive structure} for relationships among evidence, context, and
+outcomes, and \emph{contextual structural induction} for three behavioral
+operations: selecting a relationship from context and sparse examples, revising
+that selection as local evidence accumulates, and applying it to a new case
+\citep{tenenbaum2006theory,griffiths2010probabilistic,lake2017building}.
+The definition is deliberately behavioral. It presumes neither an explicit
+causal graph nor a general internal world model.
+
+\begin{figure}[t]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  node distance=0.26cm,
+  stage/.style={rounded corners=2.5pt, minimum width=2.72cm,
+    minimum height=1.16cm, align=center, draw=storyblue, fill=storyblue!8,
+    text=storyink, font=\sffamily\small, inner sep=3pt},
+  laststage/.style={stage, draw=storygreen, fill=storygreen!9},
+  arrow/.style={-{Stealth[length=4pt,width=3pt]}, line width=.7pt,
+    draw=storymute}
+]
+\node[stage] (relevance) {\textbf{Relevance}\\Does this evidence bear\\on the outcome?};
+\node[stage, right=of relevance] (selection) {\textbf{Selection}\\Which response\\relationship applies?};
+\node[stage, right=of selection] (revision) {\textbf{Revision}\\Do local observations\\change that choice?};
+\node[stage, right=of revision] (transfer) {\textbf{Transfer}\\Does the relationship\\survive a shift?};
+\node[laststage, right=of transfer] (grounding) {\textbf{Grounding}\\Does training help on\\sealed real events?};
+\draw[arrow] (relevance) -- (selection);
+\draw[arrow] (selection) -- (revision);
+\draw[arrow] (revision) -- (transfer);
+\draw[arrow] (transfer) -- (grounding);
+\end{tikzpicture}%
+}
+\caption{\textbf{The paper follows an intervention ladder rather than an
+accuracy leaderboard.} Each stage asks a stronger question about the relationship
+behind a forecast. Real markets establish selective evidence use; controlled
+social worlds isolate selection and revision; distribution-preserving controls
+test transfer; sealed historical markets provide external grounding.}
+\label{fig:evidence-ladder}
+\end{figure}
+
+The experiments follow this ladder (Figure~\ref{fig:evidence-ladder}). On
+unresolved real markets, we first ask whether models separate outcome-bearing
+evidence from topical chatter and update in the implied direction. We then build
+Coin City, a controlled public-opinion world in which media context selects one
+of two displayed response relationships. Reversing that context should reverse
+the forecast; adding target-city observations should weaken it. Arbitrary labels
+whose meaning changes every episode test whether models infer a local convention
+rather than rely on familiar words. Representation analysis and activation
+patching ask whether the same distinction is present inside open checkpoints.
+Finally, two training studies ask whether relationship use transfers across
+surface and mechanism shifts and whether proper-score training improves forecasts
+on sealed historical events.
+
+The resulting claim is narrower than the claim that LMs have world models and
+more useful for evaluating social agents. Across these settings, forecasts behave
+as if they use context-dependent relationships, but the behavior is not universal
+across families or scales. The contribution is therefore both empirical and
+methodological: aggregate realism should be supplemented with interventions that
+change the relationship while holding easier cues fixed.

@@ -1,8 +1,8 @@
 \begin{abstract}
-A forecast commits to a structured view of the world: which evidence matters, how it
-connects to an outcome, and when that relationship should change. This paper evaluates how
-language models (LM) revise that commitment in real markets and controlled
-tasks\footnote{%
+Forecasting requires structure: deciding which evidence bears on an outcome,
+which relationship applies, and when observations should revise it. We ask
+whether language models (LMs) forecast by selecting, revising, and transferring
+such relationships across real markets and controlled tasks\footnote{%
   \micon{huggingface.png}\;%
   \href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
   {Study dataset and artifacts}\quad
@@ -10,18 +10,15 @@ tasks\footnote{%
   \href{https://github.com/anonymous-review/forecasting-study-code}%
   {Code repository}. Links anonymized for review.%
 }.
-Across 30,094 market updates, models move $1.9$--$24\times$ farther for
-outcome-bearing evidence than for topic-matched controls. In Coin City, a
-qualitative cue selects a response regime: reversing the mapping reverses
-forecasts, while observations progressively override the cue. Hidden-state probes
-across Qwen and Llama recover the cue-selected response family but not
-within-family coefficient variation.
-Sufficiently large models also recover arbitrary mappings that change by episode,
-at family-specific scales. Episode-matched training transfers structure under
-joint domain-and-mechanism shift; proper-score training improves base checkpoints
-on sealed markets. The operative relationship can be intervened on, decoded from
-hidden states, revised, and transferred. These capabilities demonstrate LM
-inductive reasoning.
+Across these settings, models update selectively, use context to choose among
+competing predictive relationships, revise those choices as evidence accumulates,
+and infer mappings whose meanings change across episodes. Internal representations
+track these behavioral distinctions, and a targeted intervention can alter a
+forecast. Training aligned with episode structure improves transfer, while
+proper-score training improves forecasts on sealed markets. These effects vary
+across model families and scale and do not establish superiority to forecasting
+crowds. Together, the results support a view of LM forecasting as
+context-dependent structural induction.
 \end{abstract}
 \section{Introduction}
 \label{sec:introduction}
@@ -30,36 +27,54 @@ inductive reasoning.
 \centering
 \includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{figures/teaser_revised.pdf}
 \vspace{-0.6cm}
-\caption{ \textbf{LM forecasts are not solely na\"\i ve or frequentists.}
+\caption{ \textbf{A descriptive probe motivates relationship selection.}
 \small
-After two heads in a carnival coin game, LMs forecast another head more often
-when the coin may be rigged. Mean forecasts are $.644$, $.681$, and $.712$ for
-GPT-5.4, Claude Opus~4.8, and DeepSeek V4-Pro, respectively, over 8
-temperature-$0.7$ calls each (Appendix~\ref{app:carnival-coin-probe}).}
+After two heads from an unfamiliar carnival coin, mean next-head forecasts are
+$.644$, $.681$, and $.712$ for GPT-5.4, Claude Opus~4.8, and DeepSeek V4-Pro,
+respectively, over 8 temperature-$0.7$ calls each. This single condition
+illustrates, but does not identify, the relationship being applied
+(Appendix~\ref{app:carnival-coin-probe}).}
 \vspace{-0.5cm}
 \label{fig:world-knowledge-evidence}
 \end{wrapfigure}
 
-Language models (LMs) achieve forecasting accuracy near a human crowd; ensembles
+Language models (LMs) approach crowd forecasting accuracy, and ensembles
 match it on some question sets \citep{halawi2024approaching,schoenegger2024wisdom}.
 Results on Metaculus, Polymarket, and Kalshi
-\citep{lu2025evaluating,cao2026auditable,zhang2026prediction} raise the question:
-\emph{why are LMs competitive forecasters?} Accuracy alone cannot distinguish a
-base rate, retrieved case, market signal, or predictive relationship. These
-strategies can agree on familiar questions but diverge when context changes.
+\citep{lu2025evaluating,cao2026auditable,zhang2026prediction} therefore raise a
+process question: \emph{why are LMs competitive forecasters?} The same probability
+can come from a base rate, a retrieved case, a market signal, or a predictive
+relationship. Pointwise accuracy cannot distinguish these strategies, especially
+when they agree on familiar questions but diverge after a change in context.
 
-Figure~\ref{fig:world-knowledge-evidence} illustrates the distinction. After two
-heads, the next-flip probability stays at $0.5$ for a known-fair coin but rises
-when the carnival setting makes persistent bias plausible. Context, not changed
-observations, selects the past--future relationship. \textbf{Judgmental
-forecasting} performs this operation routinely, combining base rates, sparse
-observations, qualitative evidence, and domain knowledge to estimate future
-events \citep{mellers2014psychological,tetlock2016superforecasting}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates the distinction. For a
+known-fair coin, the first two flips do not change the next-flip probability from
+$0.5$; for a coin of unknown bias, the same observations can be informative.
+Asked about an unfamiliar carnival coin, three systems answer near $0.68$, away
+from the fixed fair-coin reference. The probe has only one condition and motivates
+rather than identifies the relationship being applied
+(Appendix~\ref{app:carnival-coin-probe}). The question it exposes is central to
+\textbf{judgmental forecasting}, which combines base rates, sparse observations,
+qualitative evidence, and domain knowledge to estimate future events
+\citep{mellers2014psychological,tetlock2016superforecasting}.
 
 
-In this paper, we ask whether LM forecasts exhibit behavioral signatures of this process, which we refer to as \emph{inductive reasoning}: the selection of a predictive relationship from context and sparse observations, the revision of that selection as evidence accumulates, and the application of the relationship to a new case \citep{tenenbaum2006theory,tenenbaum2011mind,griffiths2010probabilistic,lake2015human,lake2017building}. We use \emph{world structure} to denote the predictive relationships among variables. Both definitions are behavioral and presume neither an explicit graph nor a particular internal representation.
+We ask whether LM forecasts exhibit behavioral signatures of this process, which
+we call \emph{inductive reasoning}: selecting a predictive relationship from
+context and sparse observations, revising that selection as evidence accumulates,
+and applying the relationship to a new case
+\citep{tenenbaum2006theory,griffiths2010probabilistic,lake2017building}.
+We use \emph{world structure} for the predictive relationships among variables.
+These are behavioral definitions; they presume neither an explicit graph nor a
+particular internal representation.
 
-Pointwise accuracy cannot identify this process, and generated explanations need not reflect it \citep{jacovi2020towards,turpin2023language}. We, therefore, intervene on forecasts and measure the resulting change under contrasts with predicted directions \citep{ribeiro2020beyond,elazar2021measuring}: varying evidence direction while holding topic fixed, reversing a context--regime assignment while holding all numerical inputs fixed, adding observations that conflict with a contextual cue, and preserving the distribution of training answers while breaking their episode-level correspondence.
+Generated explanations need not reveal this process
+\citep{jacovi2020towards,turpin2023language}. We therefore use paired interventions
+with predicted changes or invariances \citep{ribeiro2020beyond,elazar2021measuring}:
+vary evidence direction within a topic, reverse a context--regime assignment while
+holding numerical inputs fixed, add observations that conflict with a cue, and
+preserve the distribution of training answers while breaking their episode-level
+correspondence.
 
 \subsection{Empirical Progression}
 \label{sec:forecasting-as-inductive}
@@ -68,26 +83,33 @@ The four experiments form a progression organized by three questions:
 \begin{itemize}[nosep,leftmargin=*]
   \item \textbf{Do LMs react selectively to evidence?
   (\hyperref[sec:exp1]{Experiment~1}).}
-  Across 30,094 updates on unresolved real questions, nine models move
-  $1.9$--$24\times$ farther for directional evidence than for topically matched
-  controls, and follow packet sign at $.89$--$.99$, where a market-held-out lexical
-  classifier reaches $.69$ and human readers $.76$. Packets withhold their polarity,
-  so the sign result is not surface matching, though the arms differ in wording and
-  the relationships involved are ones models already hold.
+  Across 30,094 updates on unresolved real questions, nine models follow the
+  withheld packet direction at $.89$--$.99$, versus $.69$ for a market-held-out
+  lexical classifier. Seven reviewers reach $.76$ on a smaller categorical
+  materials task, not a matched model comparison. Because packet polarity is not
+  shown, recovery requires relating the snippet to the market outcome; wording
+  nevertheless carries partial signal. Selectivity has two components:
+  models return
+  the prior unchanged on $1.1$--$71.4\%$ of topically matched controls against
+  $0.0$--$1.4\%$ of directional packets, and move $1.9$--$7.5\times$ farther on
+  directional packets when they move at all. Their product is the unconditional
+  $1.9$--$24.2\times$ ratio. The arms differ in wording, and the relationships
+  involved are ones models already hold.
   \item \textbf{Can an LM select a relationship based on context?
   (\hyperref[sec:exp2]{Experiment~2}).}
-  A cue selects one of two response regimes: reversing it reverses forecasts,
-  and target observations weaken its effect. When arbitrary cue meanings reverse
-  across episodes, twelve of fifteen systems recover the new mapping, every hosted
-  one among them, and within Qwen3 and Llama only the larger checkpoints do. On
-  sealed episodes, linear probes of five open checkpoints decode the cue-selected
-  regime exactly where forecasts recover the mapping, and patching that
-  representation moves Qwen3-14B's zero-shot forecast.
+  A cue selects one of two displayed response regimes: reversing it reverses
+  forecasts, and target observations weaken its effect. When arbitrary cue meanings
+  change across episodes, twelve of fifteen systems recover the episode-specific
+  mapping, including all hosted systems tested. On sealed episodes, linear probes
+  across seven open checkpoints decode the induced mapping exactly where forecasts
+  recover it, and patching Qwen3-14B's representation moves its zero-shot forecast.
   \item \textbf{Are finetuned LMs able to transfer contextual relationships?
   (\hyperref[sec:exp3]{Experiments~3} and~\hyperref[sec:exp4]{4}).}
   Under joint domain-and-mechanism shift, Qwen3-8B episode-matched response MAE is
   $.25$ $[.06,.47]$ lower than the population-prior control, with the same direction
-  at 4B. On a new 318-market holdout, trained Brier falls from $.1366$ to
-  $.1286$ to $.1270$ across Qwen3-4B, 8B, and 14B; the 14B score differs from
-  the contemporaneous Polymarket crowd by $+.0004$ $[-.0003,+.0014]$.
+  at 4B. On a separate 318-market holdout, proper-score training improves every
+  mean Brier relative to every tested Qwen and Llama base checkpoint, but the
+  trained Qwen series is nonmonotonic
+  across 1.7B--14B. The 14B score differs from the contemporaneous Polymarket crowd
+  by $+.0004$ $[-.0003,+.0014]$.
 \end{itemize}
