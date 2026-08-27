@@ -107,6 +107,9 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
         REVIEWER_09_CODE=os.environ.get(
             "STAGE3_ANNOTATION_REVIEWER_09_CODE", ""
         ),
+        REVIEWER_10_CODE=os.environ.get(
+            "STAGE3_ANNOTATION_REVIEWER_10_CODE", ""
+        ),
         PRODUCTION=os.environ.get("STAGE3_ANNOTATION_PRODUCTION", "0") == "1",
         ENABLE_PRACTICE=os.environ.get(
             "STAGE3_ANNOTATION_ENABLE_PRACTICE", "1"
@@ -129,9 +132,8 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
     if len(items) != 18:
         raise RuntimeError(f"expected 18 public items, found {len(items)}")
     assignments = load_json(Path(app.config["ASSIGNMENTS"]))
-    registered_ids = {
-        str(row["reviewer_id"]) for row in assignments["assignments"]
-    }
+    assignment_rows = list(assignments["assignments"])
+    registered_ids = {str(row["reviewer_id"]) for row in assignment_rows}
     try:
         configured_codes = json.loads(app.config["REVIEWER_CODES_JSON"] or "{}")
     except json.JSONDecodeError as exc:
@@ -145,6 +147,7 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
     for reviewer_id, config_key in (
         ("annotator_08", "REVIEWER_08_CODE"),
         ("annotator_09", "REVIEWER_09_CODE"),
+        ("annotator_10", "REVIEWER_10_CODE"),
     ):
         additional_code = str(app.config[config_key] or "").strip()
         if not additional_code:
@@ -155,9 +158,23 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
                 f"{reviewer_id} has conflicting codes in the reviewer-code settings"
             )
         configured_codes[reviewer_id] = additional_code
+        if reviewer_id not in registered_ids:
+            seed = str(assignments.get("seed") or "")
+            if not seed:
+                raise RuntimeError("assignment manifest must include a seed")
+            item_ids = sorted(
+                items,
+                key=lambda item_id: hashlib.sha256(
+                    f"{seed}|order|{reviewer_id}|{item_id}".encode("utf-8")
+                ).hexdigest(),
+            )
+            assignment_rows.append(
+                {"reviewer_id": reviewer_id, "item_ids_in_order": item_ids}
+            )
+            registered_ids.add(reviewer_id)
     if configured_codes and set(configured_codes) != registered_ids:
         raise RuntimeError(
-            "STAGE3_ANNOTATION_REVIEWER_CODES must contain exactly the frozen "
+            "STAGE3_ANNOTATION_REVIEWER_CODES must contain exactly the configured "
             f"reviewer IDs: {', '.join(sorted(registered_ids))}"
         )
     if configured_codes and (
@@ -175,7 +192,7 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
             raise RuntimeError("practice access must be disabled in production")
 
     reviewers: dict[str, dict[str, Any]] = {}
-    for row in assignments["assignments"]:
+    for row in assignment_rows:
         reviewer_id = str(row["reviewer_id"])
         reviewers[reviewer_id] = {
             "reviewer_id": reviewer_id,

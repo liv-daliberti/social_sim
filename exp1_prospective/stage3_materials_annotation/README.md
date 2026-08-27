@@ -92,6 +92,12 @@ redeploying. This preserves every existing login and database row. A fresh
 nine-reviewer deployment may instead put all nine codes in the JSON setting and
 leave both separate settings empty.
 
+To open a tenth, post-freeze survey without changing the nine-reviewer paper
+analysis, set `STAGE3_ANNOTATION_REVIEWER_10_CODE` to the private `annotator_10`
+code and redeploy. The application derives a stable 18-item order from the frozen
+assignment seed. Keep the resulting responses separate from the frozen paper
+export.
+
 Render generates the Flask session secret and database connection. Do not put
 any of these secret values in Git. Give each reviewer only the public survey URL
 and their own code.

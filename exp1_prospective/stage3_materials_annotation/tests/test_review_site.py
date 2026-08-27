@@ -146,6 +146,7 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
     }
     reviewer_08_code = "review-code-08-private"
     reviewer_09_code = "review-code-09-private"
+    reviewer_10_code = "review-code-10-private"
     app = create_app(
         {
             "TESTING": True,
@@ -157,6 +158,7 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
             "REVIEWER_CODES_JSON": json.dumps(codes),
             "REVIEWER_08_CODE": reviewer_08_code,
             "REVIEWER_09_CODE": reviewer_09_code,
+            "REVIEWER_10_CODE": reviewer_10_code,
             "DATABASE": tmp_path / "reviews.sqlite3",
             "PUBLIC_ITEMS": ROOT / "generated_v8/public_items.jsonl",
             "ASSIGNMENTS": ROOT / "generated_v8/assignments.json",
@@ -182,6 +184,14 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
     client = app.test_client()
     response = post_with_csrf(client, "/", {"access_code": reviewer_09_code})
     assert response.status_code == 302
+
+    client = app.test_client()
+    response = post_with_csrf(client, "/", {"access_code": reviewer_10_code})
+    assert response.status_code == 302
+
+    status = app.test_client().get("/admin/status?token=test-admin").get_json()
+    assert status["expected_reviewers"] == 10
+    assert status["expected_ratings"] == 180
 
 
 def test_health_is_private_and_admin_status_is_token_gated(tmp_path):
