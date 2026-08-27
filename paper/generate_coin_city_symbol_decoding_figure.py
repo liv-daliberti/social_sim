@@ -141,7 +141,9 @@ def main() -> None:
         print("omitted (run not complete): " + ", ".join(omitted))
 
     # Stacked rather than side by side, so the figure is narrow enough to wrap.
-    fig, axes = plt.subplots(2, 1, figsize=(2.95, 3.30), sharex=True, sharey=True)
+    # Tall and narrow: the three conditions are categorical, so horizontal space
+    # between them carries no information, while vertical space separates series.
+    fig, axes = plt.subplots(2, 1, figsize=(2.55, 3.58), sharex=True, sharey=True)
     positions = range(len(CONDITIONS))
 
     for axis, depth in zip(axes, (0, 4)):
@@ -172,7 +174,7 @@ def main() -> None:
         )
         axis.set_xticks(list(positions))
         axis.set_xticklabels([name for _, _, name in CONDITIONS])
-        axis.set_xlim(-0.25, len(CONDITIONS) - 0.75)
+        axis.set_xlim(-0.18, len(CONDITIONS) - 0.82)
         axis.set_ylim(-1.25, 0.55) if TARGET == "slope" else axis.set_ylim(0.0, 1.05)
         axis.set_yticks([0.0, 0.5, 1.0] if TARGET == "regime" else [-1.0, -0.5, 0.0, 0.5])
         axis.spines["top"].set_visible(False)
@@ -189,9 +191,9 @@ def main() -> None:
     fig.legend(
         handles, labels, loc="lower center", frameon=False, handlelength=1.5,
         borderpad=0.0, labelspacing=0.3, columnspacing=1.0, handletextpad=0.5,
-        ncol=3, fontsize=6.8,
+        ncol=2, fontsize=6.8,
     )
-    fig.tight_layout(pad=0.4, h_pad=0.7, rect=(0, 0.105, 1, 1))
+    fig.tight_layout(pad=0.4, h_pad=0.7, rect=(0, 0.185, 1, 1))
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT, facecolor="white")
     print(f"Wrote {OUTPUT}")
