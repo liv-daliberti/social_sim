@@ -283,16 +283,24 @@ positive on both, while the probe runs $.423$ to $.728$ across them. Because the
 null and the positive share an architecture and a tokenizer, the split is not an
 artifact of either.
 
-The Qwen3 sequence---$.520$, $.566$, $.678$ from 4B to 14B---cannot carry the same
-weight, and we do not rest on it. Its behavioral boundary is the one that moves:
-on the harder population Qwen3-8B becomes positive and Qwen3-14B loses
-significance, so the checkpoint at which decoding and forecasts cross is a
-property of the episode population and not of the family. Had the probe been run
-on that population's episodes, two of its seven cells would plausibly have
-disagreed rather than none. The seven-for-seven agreement is therefore evidence
-that the probe reads what the forecasts express on the episodes both were measured
-on; it is not evidence for a scale threshold, and Section~\ref{app:coin-city-robustness}
-should be read alongside it. The positives span three model generations and two
+The Qwen3 sequence---$.520$, $.566$, $.678$ from 4B to 14B---is consistent with
+this but does not add independent weight, because the population that would test
+it is the one on which its behavioral boundary moves. That movement is smaller
+than the $\Delta\rho$ column alone suggests. Symbol-arm regime accuracy orders the
+four Qwen3 checkpoints identically in both populations, $.512$, $.516$, $.660$,
+$.656$ originally against $.528$, $.554$, $.589$, $.606$ on the harder one: no
+pair reverses, and what changes is that the harder population compresses every
+score toward chance, so a threshold that fell in a clear gap now falls inside a
+compressed continuum. The $\Delta\rho$ contrast then subtracts a no-context
+baseline whose standard error is about $.064$, and baselines of $-.036$ for
+Qwen3-8B and $+.025$ for Qwen3-14B are enough to put one interval above zero and
+the other $.004$ below it, with the two intervals overlapping by $78\%$. We
+therefore read the harder population as showing that the ordering replicates while
+the significance threshold is not locatable to a checkpoint, rather than as a
+reversal. Section~\ref{app:coin-city-robustness} should be read alongside the
+seven-for-seven agreement, which is evidence that the probe reads what the
+forecasts express on the episodes both were measured on and not evidence for a
+scale law. The positives span three model generations and two
 vendors, and every positive shows the same shape: the decoded regime follows the
 cue at $k=0$ and the truth at $k=4$.
 Qwen3-4B and Qwen3-8B do reject at $k=4$ ($.685$, $p=.002$ and $.610$, $p=.04$),
