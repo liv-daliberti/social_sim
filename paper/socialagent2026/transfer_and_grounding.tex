@@ -1,0 +1,96 @@
+\section{Can relationship use survive a change of world?}
+\label{sec:transfer}
+
+\input{../fig_exp3_transfer_grid}
+
+Coin City establishes relationship selection within a prompt. The transfer
+study tests whether training makes that operation portable. Improvements in
+response format, answer marginals, or generic campaign--poll knowledge do not
+require matching a particular episode's evidence to its outcome. The transfer
+study isolates that match.
+
+\subsection{Transfer under domain and mechanism shift}
+\label{sec:exp3}
+
+Training occurs only in Coin City under the direct, one-period relationship
+\(x_t\rightarrow y_{t+1}\). Every prompt contains two complete reference cases, a
+partially observed target, a pathway description, and a multi-outcome query. The
+\emph{episode-matched} arm pairs prompt \(i\) with its own answer key. The
+\emph{population-prior} control uses byte-identical prompts and the same multiset
+of answer keys, but applies a fixed within-evidence-depth derangement. Thus both
+arms see the same inputs and answer distribution; only the prompt--outcome
+correspondence is removed from the control.
+
+Evaluation crosses two changes. Coin Harbor replaces the campaign-poll surface
+domain. A mediated, persistent mechanism replaces the direct response. Their
+factorial combination yields in-distribution, domain-shift, mechanism-shift, and
+joint-shift cells, none of which names a graph to the model. The primary
+comparison is population-prior minus episode-matched response MAE in the joint
+cell. Training uses three seeds per arm, and evaluation averages five stochastic
+draws on 1,440 shared tasks before a paired seed-first bootstrap
+(Appendix~\ref{app:exp3-complete-training-setup}).
+
+\begingroup
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+\input{../fig_exp3_results_grid}
+\endgroup
+
+\paragraph{Finding: episode matching adds a distinct transfer gain.}
+For Qwen3-8B under joint shift, response MAE is \(5.72\) for the untrained base,
+\(4.71\) after population-prior training, and \(4.46\) after episode-matched
+training. The matched advantage over the distribution control is
+\(.251\,[.058,.470]\). It has the lower point estimate in all four cells, although
+the structure-only interval crosses zero. Qwen3-4B replicates the joint-cell
+contrast. Removing or reversing the pathway description also degrades the matched
+model. Transferred forecasts therefore remain responsive to relational language.
+
+The control clarifies the size of the structural contribution. Episode matching
+accounts for about one fifth of Qwen3-8B's fail-closed improvement over base in
+the joint cell; shared format and population learning account for the rest.
+Llama-3.1-8B does not reproduce the factorial pattern and has effects opposite
+the hypothesis in two cells. Contextual relationship use transfers in the two tested
+Qwen sizes; the tested Llama model provides no evidence of transfer. Family and
+size are confounded here: only one Llama size was trained, and it is the bottom of
+a family whose arbitrary-cue threshold Section~\ref{sec:exp2} places far above
+Qwen's, at 70B against 7--14B. Whether transfer carries a similarly
+family-dependent threshold is untested.
+
+\subsection{External grounding: sealed historical markets}
+\label{sec:exp4}
+
+A separate study evaluates outcome-based training beyond the synthetic world. Resolved political, governmental, macroeconomic, and geopolitical markets
+are censored before resolution. Prompts contain only the question, rules, cutoff,
+and genuine pre-cutoff prices; outcomes and post-cutoff fields are withheld.
+Calendar splits prevent event and normalized question families from crossing
+training, development, and test. Qwen3 and Llama checkpoints receive rank-32 LoRA
+training with reward \(1-(\hat p-y)^2\), the complement of Brier loss. A
+318-market holdout is disjoint from training, development, and the earlier
+1,024-market test, and every endpoint is evaluated with five stochastic draws
+(Appendix~\ref{app:exp3b-protocol}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{exp4_qwen_scale_results.pdf}
+\caption{\textbf{Outcome-based training improves the tested bases, but does not
+produce a monotonic scaling law or establish crowd superiority.} The left panel
+connects checkpoints only within the Qwen and Llama families; small points are
+training seeds. Hosted deployments in the right panel are categorical references.
+Panels use different Brier scales.}
+\label{fig:sealed-market-grounding}
+\end{figure}
+
+Proper-score training lowers mean Brier relative to every tested base checkpoint.
+This improvement on sealed events anchors the training gain outside generated
+worlds. The experiment identifies neither monotonic scaling nor crowd
+superiority. The trained Qwen series is
+nonmonotonic from 1.7B to 14B, two Llama sizes do not identify a family curve,
+and the 14B Qwen and 8B Llama intervals relative to contemporaneous Polymarket
+both cross zero. Hosted systems are categorical reference points, not members of
+the local scaling curve.
+
+The controlled factorial separates episode-level relationship learning from
+shared format and answer-distribution gains. The historical study measures
+training effects on real, sealed events. Relationship use and external accuracy
+are separate claims.

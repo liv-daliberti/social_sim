@@ -1,0 +1,89 @@
+\section{Implications for forecasting and model evaluation}
+\label{sec:discussion}
+
+Consider a forecaster asked to predict public reaction to a policy announcement
+in an unfamiliar jurisdiction. A defensible probability requires a chain of
+choices. The forecaster must distinguish outcome-relevant news from
+topic-matched chatter, choose the comparison population or institution that
+supplies the response pattern, and revise that choice when direct local evidence
+arrives. A new convention must be learned from the current case, not imported
+from a familiar word. Under domain or mechanism shift, training must preserve
+the relationship, not the answer distribution alone.
+
+Each study tests one part of that chain. The prospective markets test selective
+updating in the wild. Coin City makes the chosen analogue observable and puts
+context in conflict with local evidence. Arbitrary labels remove stable semantics;
+activation patching tests one internal link; and the transfer control breaks the
+episode-level correspondence without changing the answer distribution. The
+sealed-market study then returns to real outcomes. Together, the studies trace
+relationship selection from updating through transfer while treating external
+accuracy as a separate requirement.
+
+A realistic trajectory or familiar marginal distribution does not establish
+the correct conditional relationships. Forecasting exposes the difference
+because every probability commits to how evidence, context, and outcomes
+connect. The relevant test is whether that probability changes when the
+relationship changes.
+
+These contrasts extend beyond forecasting. A persuasion study holds a message
+fixed while changing who delivers it; a coordination study preserves payoffs
+while changing what participants know about one another; and a policy analysis
+preserves surface language while changing the institutional pathway. Local
+observations test correction of a misleading contextual cue, arbitrary labels
+separate local induction from word association, and distribution-preserving
+derangements separate relationship learning from output style or marginal
+frequencies. These are local behavioral tests, not evidence that a model is a
+human proxy.
+
+Parameter count and headline accuracy are insufficient model-selection
+criteria. Arbitrary-cue recovery changes across populations and families;
+the controlled transfer effect replicates at two Qwen sizes but not in the one
+Llama size trained, whose family threshold sits much higher; and
+sealed-market performance is nonmonotonic. Validation should therefore be local
+to the population, mechanism, and contrast that matter for the intended use.
+
+\section{Limitations}
+\label{sec:limitations}
+
+The evidence supports behavioral use of relationships, not a general internal
+world model. In the real-market study, directional and orthogonal packets differ
+in wording; the design cannot separate wording effects from relationships
+acquired during pretraining. Coin City isolates a choice between two
+well-separated regimes in one stylized public-opinion world. Its harder
+population changes separation and dispersion together, preventing attribution
+of mapping failures to either factor. Exact within-regime coefficient recovery,
+unreliable cues, new variables, longer horizons, and interactive multi-agent
+dynamics remain open.
+
+The mechanistic results cover seven open checkpoints; causal patching covers one
+checkpoint and one token-level intervention.
+Training comparisons use three seeds; the episode-matched transfer pattern is
+Qwen-specific in the tested roster. Hosted and open models use different
+inference stacks, and pretraining exposure cannot be audited. Historical-market
+training lowers base error, but the study does not establish superiority to a
+crowd or identify a universal scaling law.
+
+\section{Ethics, artifacts, and conclusion}
+\label{sec:conclusion}
+
+The studies use public market metadata and prices, model outputs, synthetic
+worlds, and an unpaid adult review of synthetic materials. The review collected
+no identifying or sensitive information and did not constitute human-subjects
+research under institutional guidelines. Counterfactual news packets were used
+offline and were never posted to markets or used for trading. The paper reports
+aggregate model behavior, not a deployment or trading recommendation.
+
+An anonymized artifact contains prompts, frozen manifests, saved generations,
+analysis code, and figure builders.\footnote{%
+\href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
+{Study data and artifacts}; \href{https://github.com/anonymous-review/forecasting-study-code}%
+{code repository}. Links anonymized for review.}
+The supplementary material records censoring, estimators, missingness,
+hyperparameters, and fail-closed checks.
+
+Across real markets and controlled tasks, LM forecasts select
+context-dependent predictive relationships and revise them as direct evidence
+arrives. Transfer succeeds in two tested Qwen sizes and fails to replicate in the
+tested Llama model; real-market crowd comparisons remain inconclusive.
+Forecasting systems should be evaluated for accuracy and for whether their
+predictions change for the right reason.
