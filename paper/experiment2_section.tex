@@ -94,7 +94,13 @@ checkpoint's zero-shot forecast
 
 
 Together, the paired interventions show a displayed relationship being selected,
-reversed, and then overridden by target evidence.
+reversed, and then overridden by target evidence. The deterministic
+pick-a-reference-then-fit policy is the hypothesis here rather than a rival: it
+matches or beats most deployments at $k=0$, and the contribution is evidence that
+deployments implement it---inverting the cue inverts the forecast, the implied
+slope carries the named reference's own sampling error, and the selected regime is
+decodable and causally necessary. City C displays no rows at $k=0$, so this is not
+in-context fitting on the target.
 The cue is binary and the regimes well separated; within-regime variation is too
 small to test exact coefficient recovery; and causal patching covers one of seven
 open checkpoints, with hosted deployments tested only behaviorally.
