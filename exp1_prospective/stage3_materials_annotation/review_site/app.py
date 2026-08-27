@@ -158,20 +158,28 @@ def create_app(test_config: dict[str, Any] | None = None) -> Flask:
                 f"{reviewer_id} has conflicting codes in the reviewer-code settings"
             )
         configured_codes[reviewer_id] = additional_code
-        if reviewer_id not in registered_ids:
-            seed = str(assignments.get("seed") or "")
-            if not seed:
-                raise RuntimeError("assignment manifest must include a seed")
-            item_ids = sorted(
-                items,
-                key=lambda item_id: hashlib.sha256(
-                    f"{seed}|order|{reviewer_id}|{item_id}".encode("utf-8")
-                ).hexdigest(),
-            )
-            assignment_rows.append(
-                {"reviewer_id": reviewer_id, "item_ids_in_order": item_ids}
-            )
-            registered_ids.add(reviewer_id)
+
+    extension_ids = set(configured_codes) - registered_ids
+    unexpected_extension_ids = extension_ids - {"annotator_10"}
+    if unexpected_extension_ids:
+        raise RuntimeError(
+            "reviewer codes contain unexpected reviewer IDs: "
+            + ", ".join(sorted(unexpected_extension_ids))
+        )
+    for reviewer_id in sorted(extension_ids):
+        seed = str(assignments.get("seed") or "")
+        if not seed:
+            raise RuntimeError("assignment manifest must include a seed")
+        item_ids = sorted(
+            items,
+            key=lambda item_id: hashlib.sha256(
+                f"{seed}|order|{reviewer_id}|{item_id}".encode("utf-8")
+            ).hexdigest(),
+        )
+        assignment_rows.append(
+            {"reviewer_id": reviewer_id, "item_ids_in_order": item_ids}
+        )
+        registered_ids.add(reviewer_id)
     if configured_codes and set(configured_codes) != registered_ids:
         raise RuntimeError(
             "STAGE3_ANNOTATION_REVIEWER_CODES must contain exactly the configured "
