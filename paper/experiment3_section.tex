@@ -1,91 +1,78 @@
-\subsection{Experiment 3: Domain and Structural Transfer in Coin City}
+\subsection{Experiment 3: Relationship Transfer under Domain and Mechanism Shift}
 \label{sec:exp3}
 
-Experiment~3 asks whether training on Coin City's direct response transfers to a
-new surface domain, an unseen mediated mechanism, or both
-(Figure~\ref{fig:exp3-transfer-grid}). The model never sees equations, parameters,
-mediator names, or structure labels; complete reference systems and qualitative
-descriptions provide the available pathway evidence
-(Appendix~\ref{app:exp3-coin-structural}).
+Experiment~3 trains reference use on Coin City's direct response, then shifts the
+surface domain, the response mechanism, or both
+(Figure~\ref{fig:exp3-transfer-grid}). Models receive references and pathway
+descriptions, but no equations or structure labels. The primary endpoint compares
+Qwen3-8B at round 300 under five-draw stochastic decoding across six trained runs
+and the base on 1,440 shared tasks; comparators appear in Appendix~\ref{app:exp3}.
 
-We report the registered round-300 Qwen3-4B endpoint under greedy and five-draw
-stochastic decoding. All nine trained runs and the untrained base use the same
-1,440-task evaluation. At the analysis freeze, the Qwen3-8B and Llama-3.1-8B
-confirmatory grids were incomplete, so no cross-model estimate is reported.
+\textbf{Primary transfer contrast.}
+Joint-shift response MAE is $5.72$ for the untrained base, $4.71$ for population-prior
+training, and $4.46$ for episode-matched training; the paired prior-minus-matched
+difference is $.251$ $[.058,.470]$ (Figure~\ref{fig:exp3-transfer-results}).
+Matched training has the lower point estimate of the two trained arms in every
+cell, with intervals excluding zero except under structure-only shift. It reduces
+base error by $1.26$ points, or $0.80$ on parsed draws alone; structure-only is
+also the one cell where it does not beat base ($2.30$ base against $2.33$
+matched). Qwen3-4B replicates the joint-cell contrast. Llama-3.1-8B does not: its
+factorial runs against the hypothesis in the two cells whose response mechanism
+was seen during training, both intervals excluding zero, so the transfer claim
+rests on the two Qwen models (Appendix~\ref{app:exp3-coin-qwen-results}); conservative
+three-seed intervals appear in Appendix~\ref{app:exp3-coin-cluster-sensitivity}.
 
 \input{fig_exp3_results_grid}
 
-\textbf{Episode-specific reward improves the hardest transfer forecast.}
-Under five-draw stochastic decoding, joint new-domain/new-structure MAE is $6.15$
-for the untrained base, $6.76$ for structureless training, $4.81$ for
-population-prior training, and $4.49$ for causal training. The paired
-prior-minus-causal difference is $.319$ $[.134,.489]$
-(Figure~\ref{fig:exp3-transfer-results}). Causal training has the lowest point
-estimate in all four cells, and all four intervals exclude zero. Draws are
-averaged within task before the seed-first bootstrap.
+The trained arms have identical prompts and answer-key multisets; only the
+prompt--key pairing differs. Thus $.251$ isolates learning how each episode's
+evidence maps to outcomes. It is $20\%$ of the $1.26$-point gain over base (31\%
+on parsed draws); shared format and population-distribution learning account for
+the rest. Episode-matched relationship use is therefore separable, but not the
+dominant training effect.
 
-Greedy decoding agrees directionally. Its joint-cell MAEs are $6.09$, $6.69$,
-$4.77$, and $4.59$, respectively, with a prior-minus-causal difference of $.174$
-$[.039,.316]$. Causal training again has the lowest point estimate in all four
-cells; the interval excludes zero for the in-distribution and joint-transfer
-cells, but not for the domain-only or structure-only cells. The complete greedy
-grid appears in Appendix~\ref{app:exp3-coin-qwen4b}.
+\textbf{Pathway-description ablation.}
+In the joint cell, correct, absent, and misleading hints yield matched MAE of
+$4.46$, $4.57$, and $4.77$. Removing the hint raises error by $.117$
+$[.010,.230]$ and reversing it by $.309$ $[.206,.411]$, showing that pathway
+descriptions still affect transferred forecasts.
 
-\textbf{Lower error does not coincide with recovery of the unseen dynamics.}
-In the joint cell, correct, absent, and misleading hints yield stochastic
-causal MAE of $4.49$, $4.64$, and $4.81$, so qualitative-hint separation remains
-small. The greedy values are $4.59$, $4.68$, and $4.86$. A nearest-pathway
-response-shape diagnostic classifies 0.0\% of stochastic causal draws and 2.5\%
-of greedy causal forecasts as Structure~B, compared with 87.3\% and 81.7\% for
-the corresponding, less accurate base forecasts. Thus,
-episode-aligned reward improves intervention forecasts, including under joint
-transfer, but the result remains compatible with conservative response shrinkage
-rather than reconstruction of the persistent mediator.
-
-A complementary 48-endpoint study evaluates four held-out blocks spanning unseen
-topologies, nonlinearities, mixed mechanism compositions, and parameter
-extrapolation (Appendix~\ref{app:exp3-expanded-structural-ood}). Its full
-Qwen3-4B, Qwen3-8B, and Llama-3.1-8B factorial is heterogeneous: causal training
-beats the matched population-prior arm in both Qwen3-4B repeated-draw cells and
-the hidden Llama cell, loses in the disclosed Qwen3-8B cell, and is unresolved
-elsewhere. Yet it beats the untrained base under repeated sampling in all six
-model-by-disclosure cells. Showing the mechanism does not reliably change the
-causal-over-prior contrast. Coin City remains the main analysis because it
-directly extends Experiment~2.
-
-\subsection{Experiment 4: Transfer to Held-Out Historical Markets}
+\subsection{Experiment 4: Historical-Market Training and Held-Out Evaluation}
 \label{sec:exp4}
 
-Experiment~4 tests transfer on resolved events. Training, development, and sealed
-test sets share no event families or normalized question templates. The test
-contains 1,024 markets, and all 4,096 base and trained forecasts parse.
+Experiment~4 evaluates outcome-based training on resolved events outside its
+training set. The scale analysis uses 318 markets disjoint in task, event, series,
+and template family from training, development, and the 1,024-market appendix
+evaluation. Figure~\ref{fig:exp4-scale-results} connects Qwen3 at 1.7B, 4B,
+8B, and 14B and Llama at 3B and 8B within family on a shared parameter axis; a
+categorical panel gives noncomparable frontier references. Local points use
+five-draw non-thinking stochastic decoding (Appendix~\ref{app:exp4}).
 
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
-\captionof{table}{\textbf{Historical-market training improves sealed-test
-accuracy.} The test contains 1,024 markets. Lower is better; negative differences
-favor the trained model.}
-\label{tab:exp4-endpoint-results}
-\scriptsize
-\setlength{\tabcolsep}{3.5pt}
-\resizebox{\linewidth}{!}{\input{tables/exp3b_endpoint_results}}
+\includegraphics[width=\linewidth]{figures/exp4_qwen_scale_results.pdf}
+\captionof{figure}{\textbf{Local scaling and hosted frontier references.}
+Left: open/filled points are base/trained means; small points are seeds.
+Right: bars are clustered 95\% intervals relative to contemporaneous Polymarket.
+The panels use different axes and Brier scales.}
+\label{fig:exp4-scale-results}
 \end{minipage}
 \end{center}
 
-\textbf{Every training seed improves on the untrained model.}
-Mean Brier score falls from $.1316$ to $.1159$, a difference of $-.0157$
-$[-.0253,-.0067]$; log loss falls from $.5114$ to $.3960$. Exact event or
-question-template repetition across splits cannot explain the gain.
+\textbf{Scale profile.}
+Qwen3 trained means are $.1248$/$.1366$/$.1286$/$.1270$ at
+1.7B/4B/8B/14B, versus bases $.2253$/$.1522$/$.1369$/$.1281$.
+Llama trained means are $.1367$ at 3B and $.1264$ at 8B. DeepSeek and Kimi are
+numerically tied with users ($.12660$ and $.12682$ versus $.12655$); Anthropic
+Opus~4.8 is numerically worse ($.12927$), and OpenAI GPT-5.6 is worse under
+fail-closed scoring ($.13335$). API points provide context, not a scaling curve.
 
-\textbf{The trained model is statistically indistinguishable from the market.}
-Training closes 88\% of the base-to-market Brier gap. Its difference from the
-contemporaneous market is $.0022$ $[-.0026,.0072]$ and from train-only logistic
-recalibration is $.0036$ $[-.0013,.0087]$. Both intervals include zero.
-
-\textbf{Training improves directional consistency; its effect on selectivity is unresolved.}
-On fixed initial forecasts, training raises directional consistency by $.0101$
-$[.0004,.0207]$. The sensitivity difference, with interval $[-.07,.48]$, is
-unresolved. The historical study shows accuracy transfer relative to the untrained
-checkpoint. It does not show performance beyond market prices or a general change
-in evidence selectivity.
+\textbf{What the scale comparison establishes.}
+At 14B, trained-minus-base is $-.00117$ $[-.00298,+.00016]$ and trained
+minus the contemporaneous crowd (Brier $.12655$) is $+.00040$
+$[-.00028,+.00139]$; Llama-8B minus crowd is $-.00012$
+$[-.00046,+.00012]$. All intervals cross zero. Qwen error is nonmonotone because
+1.7B outperforms 4B--14B, while two Llama checkpoints cannot identify a family
+curve. The results establish neither crowd superiority nor a universal scaling
+law.

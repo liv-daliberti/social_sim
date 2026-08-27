@@ -79,9 +79,10 @@ parameter count alone does not explain the transition
 (Appendix~\ref{app:coin-city-robustness}). Semantic probes reach AUC $1.000$, but
 input embeddings alone already reach $1.000$; under arbitrary labels that control
 falls to $.555$, and the decoded regime follows the label at $k=0$ and the truth
-at $k=4$ (Figure~\ref{fig:coin-city-symbol-decoding}). Across seven checkpoints,
-decoding and forecasts cross into significance together, and do so independently
-within Qwen3 and within Llama~3.1. Patching
+at $k=4$ (Figure~\ref{fig:coin-city-symbol-decoding}). Decoding and forecasts agree for all seven
+probed checkpoints on this population. Only the Llama~3.1 contrast also holds on
+the harder one, since the Qwen3 pair swaps sides there, so the agreement bounds
+what the probe reads on these episodes rather than fixing a scale threshold. Patching
 those states shifts Qwen3-14B's forecast by $.333$ at $k=0$ ($p<.0001$) but not at
 $k=4$, causally linking the induced mapping to the zero-shot forecast
 (Appendix~\ref{app:coin-city-mechanistic-probe}).
