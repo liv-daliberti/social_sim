@@ -1,0 +1,204 @@
+\section{Experiments 3--4: Shared Training Configuration and Runtime}
+\label{app:exp3-complete-training-setup}
+
+Tables~\ref{tab:exp3-oat-common}--\ref{tab:exp3-runtime} record the effective
+OAT/Dr.~GRPO~\citep{liu2024oat} arguments for the reported Coin City and Polymarket studies, including framework defaults omitted from the command line.
+Execution manifests hash the data, trainer, launcher, evaluator, prompt
+renderer, and each cell's environment.
+
+\paragraph{Step accounting.}
+A ``step'' in the figures and earlier tables is one rollout-and-update round rather than one
+AdamW call.  Each full run consumes 16 prompts per round and samples eight responses
+per prompt (128 trajectories).  With one learner GPU, per-device microbatch one, one
+PPO epoch, and gradient accumulation 16, OAT performs eight AdamW parameter updates per
+round. Thus 4,800 prompt presentations give 300 reported rounds and 2,400 AdamW
+updates. The command line supplied a .03 warmup ratio, but OAT selected
+Transformers' \texttt{constant} scheduler, which does not use the warmup argument.
+The effective learning rate was therefore $10^{-6}$ from the first optimizer
+update. We use ``round'' below to avoid counting the eight within-round parameter
+steps as independent data exposures.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Shared Dr.~GRPO implementation parameters.} These
+values apply to the Coin City and Polymarket studies; the study-specific
+tables below record exceptions.}
+\label{tab:exp3-oat-common}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{.29\linewidth}p{.66\linewidth}}
+\toprule
+\textbf{Quantity} & \textbf{Effective value} \\
+\midrule
+Trainable parameters & Frozen base model; LoRA rank 32, $\alpha=64$, dropout 0,
+no bias; targets \texttt{q\_proj}, \texttt{k\_proj}, \texttt{v\_proj},
+\texttt{o\_proj}, \texttt{down\_proj}, \texttt{up\_proj}, and
+\texttt{gate\_proj}; no quantization. \\
+Algorithm & OAT Dr.~GRPO (\texttt{critic\_type=drgrpo}); eight-response group
+advantage $r_i-\bar r$ with no group-standard-deviation division; policy loss is
+token-summed with the generation limit as a fixed normalizer (no response-length
+normalization). \\
+Policy objective & PPO ratio clipping 0.2; truncated importance-sampling cap 2.0;
+one PPO epoch; KL coefficient $\beta=0$; no critic/value model; reward whitening,
+advantage whitening, and REINFORCE mode all off. \\
+Optimizer & PyTorch AdamW \citep{loshchilov2019decoupled} (substituted for
+DeepSpeed fused/CPU Adam); learning rate
+$10^{-6}$; $\beta_1=.9$, $\beta_2=.95$; weight decay 0; maximum gradient norm 1.0. \\
+Schedule & Constant $10^{-6}$ learning rate from the first optimizer update; the
+supplied .03 warmup ratio is ignored by Transformers' \texttt{constant} scheduler;
+one prompt epoch; 4,800 prompt presentations $=$ 300 rollout-and-update rounds
+$=$ 2,400 AdamW steps. \\
+Batching & 16 prompts per round; 8 sampled responses per prompt; 128 trajectories;
+training microbatch 1; gradient accumulation 16; one learner GPU. \\
+Training sampling & Temperature 1.3; top-$p=1$; top-$k=-1$; one independently
+sampled completion at a time, repeated eight times per prompt. \\
+Truncation and stopping & Model EOS only (no external stop string); a completion
+ending at the length limit receives reward zero.  Missing or invalid required JSON
+also receives reward zero. \\
+Precision and memory & bfloat16; FlashAttention~2; gradient checkpointing;
+DeepSpeed ZeRO-2 \citep{rajbhandari2020zero}; reference-model offload; vLLM prefix
+caching \citep{kwon2023vllm}; dropout disabled. \\
+Seeds and shuffling & Training seeds 42, 43, and 44.  Each dataset is deterministically
+shuffled once, then OAT shuffles prompt batches independently under the training seed. \\
+Checkpointing and logging & Evaluation includes step zero and the final round;
+intermediate evaluation at the setting-specific frequency; one final LoRA adapter retained; metrics
+logged each round; Weights \& Biases disabled. \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+
+\subsection{Coin City A-to-B Factorial}
+\label{app:exp3-coin-structural-hparams}
+
+Table~\ref{tab:exp3-coin-structural-hparams} records the shared configuration
+for Experiment~3. The main analysis uses five-draw stochastic
+round-300 evaluations from the three Qwen3-8B episode-matched and three
+population-prior seeds. The appendix reports the Qwen3-4B stochastic
+replication, its three-seed structureless diagnostic, and the Llama-8B
+architecture comparator. The
+table supplements the shared optimizer details in Table~\ref{tab:exp3-oat-common}; where the two tables differ, this
+setting-specific table governs. The execution manifest stores the environment;
+the protocol archive hashes the preflight manifest, data files,
+generator, prompt renderer, scorer, and trainer entry point.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Evaluated configuration for Coin City
+hidden-structure transfer.}}
+\label{tab:exp3-coin-structural-hparams}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{.29\linewidth}p{.66\linewidth}}
+\toprule
+\textbf{Quantity} & \textbf{Effective value} \\
+\midrule
+Model roster & \texttt{Qwen/Qwen3-4B-Instruct-2507},
+\texttt{Qwen/Qwen3-8B}, and \texttt{meta-llama/Llama-3.1-8B-Instruct}. \\
+Chat formatting & Qwen3-4B uses the explicit ChatML wrapper; Qwen3-8B and
+Llama-3.1-8B use their tokenizer templates, with Qwen thinking disabled. All
+include an assistant-generation prefix. \\
+Evaluated grid & 3 models $\times$ 2 reward arms
+(episode-matched reward, stored under the legacy artifact key \texttt{causal}, and \texttt{population\_prior}) $\times$ 3 seeds
+($42,43,44$) $=18$ full training runs. \\
+Diagnostics & Qwen3-4B \texttt{structureless} at the same three seeds, plus one
+untrained endpoint for each model. These six diagnostics are excluded from the primary
+episode-matched-versus-prior estimand. \\
+Training data & Coin City and Structure~A only; 4,800 prompts, balanced across
+$k\in\{0,2,4,8\}$ and weak/strong target match. Two reference trajectories of
+length 14 and one target trajectory of maximum length 8. \\
+Comparator target construction & Episode-matched reward uses the episode truth.
+Population-prior reward targets are a fixed no-self-match derangement within
+each $k$; its target-vector multiset is exactly identical to episode-matched training.
+Prompt strings are byte-identical across these two arms. \\
+Held-out data & $2$ domains $\times2$ target structures $\times3$ hint arms
+$\times4$ evidence depths $\times30$ episode seeds $=1,440$ rows. The complete
+held-out dataset is byte-identical across all training arms. \\
+Mechanism ranges & Evaluation $g\in[.22,.92]$; Structure~B
+$\rho\in[.48,.74]$, $\phi\in[.18,.42]$, and $\lambda\in[.68,.94]$.
+Training reference gains are $[.18,.46]$ and $[.68,.98]$. \\
+Domain ranges & Coin City: baseline 50, support $[0,100]$, noise 1.6, driver
+pool $\{-12,-8,-4,0,4,8,12\}$. Coin Harbor: baseline 180, support $[40,320]$,
+noise 4.5, driver pool $\{-24,-16,-8,0,8,16,24\}$. \\
+Interventions & Five shocks at horizons one and three; Coin City
+$\{-12,-6,0,6,12\}$, Coin Harbor $\{-24,-12,0,12,24\}$. Ten joint forecasts
+produce eight nonzero-minus-zero response contrasts. \\
+Reward & $.4\,r_{\rm level}+.6\,r_{\rm response}$. Each component averages
+$\max(0,1-|e|/S)$; level tolerance is 10\% of the domain's observable range
+(10 Coin City points; 28 Coin Harbor units), and response tolerance is half one
+shock unit (3 and 6, respectively). Invalid or length-truncated output receives
+zero online reward. \\
+Output contract & Exactly one JSON object with sole key
+\texttt{forecasts} and exactly ten finite JSON numbers. The same strict parser
+is used online and offline; no prose, extra/duplicate key, Boolean, non-finite
+value, or wrong-length list is accepted. \\
+Structured decoding & Syntax-only XGrammar GBNF in training, online evaluation,
+endpoint evaluation, and base evaluation. It fixes object shape and arity only;
+numeric values and their relationship to targets remain unconstrained. \\
+Optimization & Frozen base plus LoRA rank 32, $\alpha=64$; OAT Dr.~GRPO;
+PyTorch AdamW learning rate $10^{-6}$ with an effective constant schedule and no
+warmup; $\beta=0$; one PPO epoch; gradient norm 1; ZeRO-2 and reference offload. \\
+Batch and update accounting & 16 prompts per round; eight rollouts per prompt;
+128 trajectories; microbatch 1; gradient accumulation 16; 4,800 presentations
+$=$ 300 rollout-and-update rounds $=$ 2,400 AdamW steps. \\
+Training generation & Temperature 1.3, top-$p=1$, top-$k=-1$, model EOS only;
+192 new-token limit; prompt limit 2,304; total model context 3,072; vLLM prefix
+caching enabled. \\
+Precision / memory & BF16, FlashAttention~2, gradient checkpointing, dropout
+off, no quantization; vLLM GPU fraction .38; expandable-segments CUDA allocator. \\
+Online evaluation & All 1,440 rows at temperature 0, one draw, top-$p=1$,
+192-token limit, batch 120, at step zero and every 50 rounds including round 300. \\
+Reported endpoint evaluation & Five draws per prompt at temperature .7 and
+top-$p=.95$; trained decode seed is training seed $+20{,}260{,}818$ and the
+base seed is 20,260,819. Temperature-zero checkpoints are retained only as
+online monitoring artifacts and are not reported as endpoints. \\
+Offline scoring & Level MAE, response MAE, response error normalized by the
+blind 50/50 pathway mixture, response correlation, strict parse coverage, and
+nearest behavioral pathway. A parse failure receives the full domain range as
+both level and response error. \\
+Variance and estimands & Five-draw outputs first average within episode.
+Hierarchical intervals resample three training seeds, then paired episodes.
+Primary: prior-minus-episode-matched response MAE for correct-hint Structure~B in Coin
+Harbor, equal over $k$. Domain, structure, joint, hint, and hint-by-$k$ contrasts
+form the factorial analysis. \\
+Preflight validation & A 10-round run for every model and evaluated arm must
+save an adapter, produce the full temperature-zero monitoring and five-draw
+stochastic evaluation sets, achieve
+at least .95 strict parse rate under each decoder, and exhibit nonconstant finite
+reward. The 17-check data preflight must also pass before estimating the factorial. \\
+Compute & Training and trained-checkpoint evaluation use two NVIDIA A6000 48-GB
+GPUs (one actor, one learner), 8 CPU cores, and 56--100 GB allocated host memory.
+Untrained base evaluation uses one A6000, 8 CPU cores, and 24 GB host memory.
+All runs load models from the same pinned local cache. \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Runtime environment for the reported training runs.}
+Package versions come from the job execution environment.}
+\label{tab:exp3-runtime}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{.29\linewidth}p{.66\linewidth}}
+\toprule
+\textbf{Component} & \textbf{Version / configuration} \\
+\midrule
+Python / CUDA build & Python 3.10.20; PyTorch 2.6.0 built for CUDA 12.4. \\
+Training stack & OAT 0.2.4 at Git revision
+\texttt{869706620a35ec5304fa80a0\allowbreak{}c74f0c566cc2bc57}; DeepSpeed 0.16.8; PEFT 0.15.2. \\
+Generation stack & Transformers 4.51.3; vLLM 0.8.4; FlashAttention 2.7.4.post1. \\
+Data stack & Datasets 2.16.1; Accelerate 1.14.0. \\
+Allocator / logging & \texttt{PYTORCH\_CUDA\_ALLOC\_CONF=expandable\_segments:True};
+Weights \& Biases disabled; stdout/stderr and per-round metrics retained with each
+run. \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}

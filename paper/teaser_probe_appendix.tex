@@ -1,0 +1,76 @@
+\section{Descriptive Coin-Flip Forecast Elicitation}
+\label{app:carnival-coin-probe}
+
+This appendix reports the forecasts used to position the model markers in
+Figure~\ref{fig:world-knowledge-evidence}; it is not one of the four experiments.
+We queried GPT-5.4, Claude Opus~4.8, and DeepSeek V4-Pro eight times each
+($24$ calls total) at temperature $0.7$ and a 600-token output ceiling. All
+responses parsed. The figure places each model's logo at its eight-sample mean;
+the green $\approx .68$ annotation rounds the pooled mean of $.679$.
+
+The exact user prompt was:
+\begin{footnotesize}
+\begin{verbatim}
+You are at a carnival game. A coin you have never seen before is flipped
+twice in front of you, and it comes up heads both times. These two flips
+are everything you know about this coin.
+
+What is the probability that the next flip comes up heads?
+
+Think about it intuitively, the way you actually would in the
+moment -- do NOT use any formula, rule, or calculation, and do not
+work out any numbers in your reasoning. Just reason in plain words
+about what you'd expect and why. Then END your reply with your gut
+answer as a JSON object on its own line:
+{"rationale": "one short sentence, no math",
+ "p_heads": <number between 0 and 1>}
+\end{verbatim}
+\end{footnotesize}
+
+\begin{center}
+\begin{minipage}{0.78\linewidth}
+\centering
+\captionof{table}{Forecasts underlying the three model markers in
+Figure~\ref{fig:world-knowledge-evidence}. Each row summarizes eight independent
+temperature-$0.7$ calls.}
+\label{tab:carnival-coin-probe}
+\small
+\begin{tabular}{lccc}
+\toprule
+Model & Mean & Median & Range \\
+\midrule
+GPT-5.4 & $.644$ & $.670$ & $[.60,.67]$ \\
+Claude Opus~4.8 & $.681$ & $.675$ & $[.65,.75]$ \\
+DeepSeek V4-Pro & $.712$ & $.750$ & $[.60,.75]$ \\
+\midrule
+Pooled ($n=24$) & $.679$ & $.670$ & $[.60,.75]$ \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\paragraph{What this probe does and does not separate.}
+It has one condition. The $0.5$ and $1.0$ endpoints in
+Figure~\ref{fig:world-knowledge-evidence} are reference policies rather than
+measurements: no fair-coin arm and no no-carnival arm were collected, so the
+probe cannot attribute the departure from $0.5$ to the carnival framing. It also
+does not separate a prior about carnival coins from ordinary sequential updating
+on an unknown bias. Laplace's rule of succession gives $3/4$ after two heads from
+a coin with an unknown bias, using no world knowledge at all, and the observed
+$.679$ sits below that rather than above it. Finally, the instruction not to use
+any formula or calculation discourages explicitly deriving either the $0.5$ or
+$0.75$ reference policy, changing the elicitation mode and complicating comparison
+to both. We report the probe as a descriptive
+illustration of the distinction the paper draws, not as evidence for it; the
+four experiments carry the argument. \path{eval/run_coin_probe.py} implements
+three further arms---a stipulated fair coin, an unfamiliar coin with no carnival,
+and the carnival prompt without the no-calculation instruction---which would
+supply the missing contrast.
+
+The prompt, temperature, output limit, parsed probabilities, rationales, and raw
+completions are stored in
+\path{exp2_simulated_worlds/biased_news/data/coin_probe/coin_probe_2026-06-30.jsonl};
+the collection and parsing code is
+\path{exp2_simulated_worlds/biased_news/eval/run_coin_probe.py}. The prompt names
+neither a fair nor a rigged coin. It requests qualitative reasoning while retaining
+a numeric forecast for the plotted quantity.

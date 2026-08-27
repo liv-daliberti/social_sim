@@ -1,0 +1,28 @@
+\section{Forecasting, induction, and model validity}
+\label{sec:related-work}
+
+\paragraph{Judgmental forecasting.}
+Strong human forecasters combine base rates, decomposition, diverse evidence,
+and repeated revision \citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting}.
+Forecasting benchmarks increasingly evaluate LMs on time-indexed or
+leakage-controlled questions \citep{zou2022forecasting,karger2025forecastbench};
+retrieval and ensembling bring selected systems near crowd accuracy
+\citep{halawi2024approaching,schoenegger2024wisdom}. These results show what
+probabilities models produce, but not what drives them. Our focus is the
+relationship behind the update:
+whether evidence is treated as probative, which contextual analogue is selected,
+and whether that choice survives a change in domain or mechanism.
+
+\paragraph{Induction and behavioral evidence.}
+Transformers infer unseen functions from input--output examples within their
+training distribution \citep{garg2022what,chan2022data}; LMs also solve
+selected abstract analogy tasks \citep{webb2023emergent,yasunaga2024large}. Our
+selection tests ask a different question. The target displays no examples of
+its own, so a relationship must be carried from a demonstrated analogue under a
+qualitative cue, and an arbitrary-label variant reverses the cue's mapping across
+episodes. World-model accounts emphasize representations of environmental state
+or dynamics \citep{ha2018world,lecun2022path,li2023emergent}; shortcut-learning
+results document failures under structural shift
+\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. We infer process
+from predicted changes and invariances in paired behavioral tests, not from
+accuracy alone.

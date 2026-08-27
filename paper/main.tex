@@ -1,0 +1,87 @@
+\documentclass{article}
+\PassOptionsToPackage{table}{xcolor}
+
+\usepackage{iclr2027_conference,times}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,backgrounds,positioning,shapes.geometric,calc,decorations.pathmorphing,fadings}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage[compatibility=false]{caption}
+\usepackage{subcaption}
+\usepackage{flafter}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+% Four-band Exp 1 heatmap. Pastel fills keep black text legible; printed values
+% remain the primary encoding.
+\definecolor{heatred}{HTML}{F4CCCC}
+\definecolor{heatorange}{HTML}{FCE5CD}
+\definecolor{heatyellow}{HTML}{FFF2CC}
+\definecolor{heatgreen}{HTML}{D9EAD3}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=[rgb]{0.10,0.25,0.55},
+  citecolor=[rgb]{0.10,0.25,0.55},
+  urlcolor=[rgb]{0.10,0.25,0.55}
+}
+
+\graphicspath{{figures/}{icons/}}
+\newcommand{\micon}[1]{%
+  \IfFileExists{icons/#1}{%
+    \raisebox{-0.25\height}{\includegraphics[height=1em]{icons/#1}}%
+  }{}%
+}
+
+\title{Forecasting by Structure:\\
+Inductive Reasoning in Language Models}
+% Keep the submission source itself anonymous: supplementary source archives are
+% covered by ICLR's double-blind policy, even though the style hides this field.
+\author{Anonymous authors \\
+Paper under double-blind review}
+
+% \iclrfinalcopy % Uncomment only for the camera-ready version.
+
+
+% The ICLR style sets \flushbottom, so LaTeX stretches page glue to justify the
+% bottom edge. Left alone, most of that slack lands in \textfloatsep and opens a
+% large gap between a top float and the text under it. Removing the stretch
+% component (keeping the shrink) pins the float-to-text distance and pushes the
+% slack into the section skips instead, which absorb it far less visibly.
+\setlength{\textfloatsep}{16pt plus 0pt minus 4pt}
+\setlength{\intextsep}{12pt plus 0pt minus 3pt}
+\setlength{\floatsep}{12pt plus 0pt minus 3pt}
+
+\begin{document}
+\maketitle
+
+\input{frontmatter}
+\input{related_work}
+\input{methods_section}
+\input{results_section}
+\input{conclusion}
+\input{submission_statements}
+\input{acknowledgements}
+
+\clearpage
+\bibliographystyle{iclr2027_conference}
+\bibliography{references}
+
+\clearpage
+\appendix
+\raggedbottom
+% Keep appendix lists visually aligned with the text block rather than using the
+% article class's comparatively deep default margins.
+\setlist[itemize,1]{leftmargin=1.35em,labelsep=.45em}
+\setlist[enumerate,1]{leftmargin=1.55em,labelsep=.45em}
+\input{appendix_guide}
+\clearpage
+\input{teaser_probe_appendix}
+\input{experiment1_appendix}
+\input{experiment2_appendix}
+\input{experiment3_appendix}
+
+\end{document}

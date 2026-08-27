@@ -1,0 +1,80 @@
+\subsection{Experiment 3: Relationship Transfer under Domain and Mechanism Shift}
+\label{sec:exp3}
+
+Experiment~3 trains models to use episode-matched references in Coin City's direct
+response setting, then shifts the surface domain, the response mechanism, or both
+(Figure~\ref{fig:exp3-transfer-grid}). Models receive references and pathway
+descriptions, but no equations or structure labels. The primary endpoint compares
+Qwen3-8B at round 300 under five-draw stochastic decoding across six trained runs
+and the base on 1,440 shared tasks; comparators appear in Appendix~\ref{app:exp3}.
+
+\textbf{Primary transfer contrast.}
+Joint-shift response MAE is $5.72$ for the untrained base, $4.71$ for population-prior
+training, and $4.46$ for episode-matched training; the paired prior-minus-matched
+difference is $.251$ $[.058,.470]$ (Figure~\ref{fig:exp3-transfer-results}).
+Episode-matched training has the lower point estimate of the two trained arms in
+every cell, with intervals excluding zero except under structure-only shift. Under fail-closed scoring, it reduces
+base error by $1.26$ points, or $0.80$ on parsed draws alone; structure-only is
+also the one cell where it does not beat base ($2.30$ base against $2.33$
+matched). Qwen3-4B replicates the joint-cell contrast. Llama-3.1-8B does not: its
+factorial runs against the hypothesis in the two cells whose response mechanism
+was seen during training, both intervals excluding zero, so the transfer claim
+rests on the two Qwen models; only one Llama size was trained, and Experiment~2
+places that family's arbitrary-cue threshold at 70B against Qwen's 7--14B, so
+family and size are confounded (Appendix~\ref{app:exp3-coin-qwen-results}); conservative
+three-seed intervals appear in Appendix~\ref{app:exp3-coin-cluster-sensitivity}.
+
+\input{fig_exp3_results_grid}
+
+The trained arms have identical prompts and answer-key multisets; only the
+prompt--key pairing differs. The $.251$ contrast therefore isolates the benefit of
+learning how each episode's evidence maps to outcomes. It is $20\%$ of the
+$1.26$-point gain over base (31\% on parsed draws); shared format and
+population-distribution learning account for the rest. Episode-matched relationship
+use is separable, but it is not the dominant training effect.
+
+\textbf{Pathway-description ablation.}
+In the joint cell, correct, absent, and misleading hints yield matched MAE of
+$4.46$, $4.57$, and $4.77$. Removing the hint raises error by $.117$
+$[.010,.230]$ and reversing it by $.309$ $[.206,.411]$, showing that pathway
+descriptions still affect transferred forecasts.
+
+\subsection{Experiment 4: Historical-Market Training and Held-Out Evaluation}
+\label{sec:exp4}
+
+Experiment~4 evaluates outcome-based training on resolved events outside its
+training set. The scale analysis uses 318 markets disjoint in task, event, series,
+and template family from training, development, and the 1,024-market appendix
+evaluation. Figure~\ref{fig:exp4-scale-results} connects Qwen3 at 1.7B, 4B,
+8B, and 14B and Llama at 3B and 8B within family on a shared parameter axis; a
+categorical panel gives noncomparable frontier references. Local points use
+five-draw non-thinking stochastic decoding (Appendix~\ref{app:exp4}).
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figures/exp4_qwen_scale_results.pdf}
+\captionof{figure}{\textbf{Local scaling and hosted frontier references.}
+Left: open/filled points are base/trained means; small points are seeds.
+Right: bars are clustered 95\% intervals relative to contemporaneous Polymarket.
+The panels use different axes and Brier scales.}
+\label{fig:exp4-scale-results}
+\end{minipage}
+\end{center}
+
+\textbf{Scale profile.}
+Qwen3 trained means are $.1248$/$.1366$/$.1286$/$.1270$ at
+1.7B/4B/8B/14B, versus bases $.2253$/$.1522$/$.1369$/$.1281$.
+Llama trained means are $.1367$ at 3B and $.1264$ at 8B. DeepSeek and Kimi are
+numerically tied with the crowd ($.12660$ and $.12682$ versus $.12655$); Anthropic
+Opus~4.8 is numerically worse ($.12927$), and OpenAI GPT-5.6 is worse under
+fail-closed scoring ($.13335$). API points provide context, not a scaling curve.
+
+\textbf{Scale-comparison limits.}
+At 14B, trained-minus-base is $-.00117$ $[-.00298,+.00016]$ and trained
+minus the contemporaneous crowd (Brier $.12655$) is $+.00040$
+$[-.00028,+.00139]$; Llama-8B minus crowd is $-.00012$
+$[-.00046,+.00012]$. All three intervals cross zero. Qwen error is nonmonotone because
+1.7B outperforms 4B--14B, while two Llama checkpoints cannot identify a family
+curve. The results establish neither crowd superiority nor a universal scaling
+law.

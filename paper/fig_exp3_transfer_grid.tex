@@ -1,0 +1,138 @@
+% Compact inline orientation graphic for the Experiment 3 transfer design: a 2x2
+% grid crossing generative mechanism (rows) with surface domain (columns).
+%
+% Row cards carry the mechanism detail: a two-node vs three-node graph with the
+% mediator drawn hollow (it is never named to the model) and a persistence loop,
+% plus the six-period impulse response on labelled axes. Bar heights are the
+% normalised responses to a unit shock under worlds.transition at the midpoint of
+% each sampling band (direct: gain .57; mediated: gain .57, rho .61, phi .30,
+% lambda .81), i.e. A = (1, 0, 0, 0, 0, 0) and B = (.81, .74, .52, .34, .21, .13).
+%
+% Geometry note: cards have fixed dimensions and every label is a single line
+% with no text width, so nothing can rewrap into a neighbour.
+% Callers may set \transfergridlines to match the paragraph they anchor this
+% to; wrapfig cannot wrap a section heading, so the count must not overrun it.
+\providecommand{\transfergridlines}{13}
+\begin{wrapfigure}[\transfergridlines]{r}{0.48\textwidth}
+\vspace{-0.8em}
+\centering
+\definecolor{miniCityFill}{HTML}{E8F2FB}
+\definecolor{miniCityEdge}{HTML}{4F7EA8}
+\definecolor{miniHarborEdge}{HTML}{3F8E82}
+\definecolor{miniTestFill}{HTML}{E7F4EA}
+\definecolor{miniTestEdge}{HTML}{6FA97F}
+\definecolor{miniTestChip}{HTML}{5E9470}
+% Coin discs reuse Figure 1's yellow pair exactly -- the fill and stroke of its
+% NAIVE box -- rather than the saturated gold used before. Figure 1's other warm
+% pair (#FFE6CC on #D79B00, its FREQUENTIST box) is the orange one and is not
+% used here. The glyph inside each disc still carries its domain colour.
+\definecolor{miniCoinFill}{HTML}{FFF2CC}
+\definecolor{miniCoinRim}{HTML}{D6B656}
+\definecolor{miniMute}{HTML}{8A93A3}
+\definecolor{miniInk}{HTML}{3F4550}
+\definecolor{miniBar}{HTML}{7C93AD}
+% Coin City: a skyline stamped into a coin.
+\newcommand{\coincity}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[miniCoinFill] (0,0) circle (.37);
+    \draw[miniCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[miniCityEdge] (-.23,-.18) rectangle (-.10,.04);
+    \fill[miniCityEdge] (-.07,-.18) rectangle (.07,.16);
+    \fill[miniCityEdge] (.10,-.18) rectangle (.24,.09);
+    \draw[miniCityEdge,line width=.65pt] (-.27,-.19)--(.27,-.19);
+  \end{scope}}
+% Coin Harbor: a small vessel and waves stamped into a coin.
+\newcommand{\coinharbor}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[miniCoinFill] (0,0) circle (.37);
+    \draw[miniCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[miniHarborEdge] (-.24,-.05)--(.24,-.05)--(.15,-.18)--(-.15,-.18)--cycle;
+    \draw[miniHarborEdge,line width=.7pt]
+      (-.01,-.05)--(-.01,.15)--(.15,.02)--(-.01,.02);
+    \draw[miniHarborEdge,line width=.55pt]
+      (-.26,-.24)..controls(-.18,-.19)and(-.10,-.29)..(-.02,-.24)
+      ..controls(.06,-.19)and(.14,-.29)..(.26,-.24);
+  \end{scope}}
+% Impulse response on labelled axes: response (Delta y) against period (t).
+\newcommand{\impulse}[3]{% #1 = axis corner x, #2 = baseline y, #3 = bar heights
+  \draw[-{Stealth[length=2.6pt,width=2.2pt]},draw=miniInk!65,line width=.5pt]
+    (#1,#2) -- (#1,#2+0.40);
+  \draw[-{Stealth[length=2.6pt,width=2.2pt]},draw=miniInk!65,line width=.5pt]
+    (#1,#2) -- (#1+0.72,#2);
+  \node[anchor=south,font=\sffamily\scriptsize,text=miniInk,inner sep=1pt]
+    at (#1,#2+0.40) {$\Delta y$};
+  \node[anchor=west,font=\sffamily\scriptsize,text=miniInk,inner sep=1.5pt]
+    at (#1+0.72,#2) {$t$};
+  \foreach \i/\h in {#3}{%
+    \fill[miniBar] (#1+0.055+\i*0.105,#2) rectangle (#1+0.055+\i*0.105+0.070,#2+\h);}}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  cell/.style={rounded corners=3pt, minimum width=1.95cm, minimum height=1.25cm,
+    line width=.6pt, inner sep=0pt},
+  traincell/.style={cell, draw=miniCityEdge, fill=miniCityFill},
+  heldcell/.style={cell, draw=miniTestEdge, fill=miniTestFill,
+    dash pattern=on 1.9pt off 1.5pt},
+  rowcard/.style={rounded corners=3pt, minimum width=2.60cm,
+    minimum height=1.25cm, inner sep=0pt, draw=miniMute!30, fill=black!3,
+    line width=.5pt},
+  dname/.style={anchor=south, font=\sffamily\bfseries\scriptsize},
+  rname/.style={anchor=center, font=\sffamily\scriptsize, text=miniInk},
+  note/.style={anchor=center, font=\sffamily\scriptsize, text=miniInk},
+  gnode/.style={circle, draw=miniInk!75, fill=white, line width=.5pt,
+    inner sep=0pt, minimum size=0.26cm, font=\sffamily\tiny, text=miniInk},
+  hidden/.style={gnode, draw=miniMute, fill=miniMute!14,
+    dash pattern=on 1.1pt off .9pt},
+  garrow/.style={-{Stealth[length=2.4pt,width=2pt]}, draw=miniInk!70,
+    line width=.45pt, shorten >=.4pt, shorten <=.4pt},
+  chip/.style={anchor=center, rounded corners=1.6pt, draw=none, text=white,
+    inner xsep=3pt, inner ysep=1.1pt, font=\sffamily\bfseries\tiny},
+]
+% ---- domain marks and names ----------------------------------------------
+\coincity{0.975}{2.56}
+\coinharbor{3.075}{2.56}
+\node[dname, text=miniCityEdge]   at (0.975,1.80) {COIN CITY};
+\node[dname, text=miniHarborEdge] at (3.075,1.80) {COIN HARBOR};
+
+% ---- Structure A: direct, one period -------------------------------------
+\node[rowcard] at (-1.50,1.00) {};
+\node[rname] at (-1.50,1.45) {\textbf{Structure A} direct};
+\node[gnode] (ax) at (-2.51,0.82) {$x$};
+\node[gnode] (ay) at (-2.07,0.82) {$y$};
+\draw[garrow] (ax) -- (ay);
+\impulse{-1.22}{0.62}{0/0.360, 1/0.000, 2/0.000, 3/0.000, 4/0.000, 5/0.000}
+
+% ---- Structure B: mediated, persistent -----------------------------------
+\node[rowcard] at (-1.50,-0.42) {};
+\node[rname] at (-1.50,0.03) {\textbf{Structure B} mediated};
+\node[gnode]  (bx) at (-2.51,-0.60) {$x$};
+\node[hidden] (bm) at (-2.07,-0.60) {$m$};
+\node[gnode]  (by) at (-1.63,-0.60) {$y$};
+\draw[garrow] (bx) -- (bm);
+\draw[garrow] (bm) -- (by);
+\draw[garrow] (bm) to[out=118,in=62,looseness=4.5] (bm);
+\impulse{-1.22}{-0.80}{0/0.292, 1/0.265, 2/0.188, 3/0.123, 4/0.077, 5/0.048}
+
+% ---- the four evaluation cells -------------------------------------------
+\node[traincell] at (0.975,1.00) {};
+\node[heldcell]  at (3.075,1.00) {};
+\node[heldcell]  at (0.975,-0.42) {};
+\node[heldcell]  at (3.075,-0.42) {};
+
+\node[chip, fill=miniCityEdge] at (0.975,1.26) {TRAINED};
+\node[chip, fill=miniTestChip] at (3.075,1.26) {TEST};
+\node[chip, fill=miniTestChip] at (0.975,-0.16) {TEST};
+\node[chip, fill=miniTestChip] at (3.075,-0.16) {TEST};
+
+\node[note] at (0.975,0.80) {in-distribution};
+\node[note] at (3.075,0.80) {domain shift};
+\node[note] at (0.975,-0.62) {structure shift};
+\node[note] at (3.075,-0.62) {joint shift};
+\end{tikzpicture}%
+}
+\vspace{-0.3em}
+\caption{\footnotesize\textbf{Transfer grid.} Training uses the shaded cell;
+all four are evaluated. Columns vary domain; rows vary response mechanism.}
+\label{fig:exp3-transfer-grid}
+\vspace{-0.9em}
+\end{wrapfigure}

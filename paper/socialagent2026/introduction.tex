@@ -1,0 +1,88 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\begin{wrapfigure}{r}{0.42\textwidth}
+\vspace{-1.1em}
+\centering
+\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_revised.pdf}
+\vspace{-0.45cm}
+\caption{\textbf{A descriptive probe.} Three forecasts after two heads from
+an unfamiliar coin illustrate why two observations do not identify the operative
+relationship
+(Appendix~\ref{app:carnival-coin-probe}).}
+\vspace{-0.45cm}
+\label{fig:world-knowledge-evidence}
+\end{wrapfigure}
+
+A forecast is a compact theory of how a world works. News of a
+policy proposal, an endorsement, or an economic shock matters only through a
+relationship: which actors can respond, which institutions transmit the effect,
+and whether the local setting amplifies or dampens it. The same observation
+therefore supports different predictions in different contexts. National
+political news carries more predictive weight in a media environment organized
+around national politics than where local issues dominate. Forecasting requires selecting the
+relationship that applies before extrapolating from the evidence.
+Figure~\ref{fig:world-knowledge-evidence} illustrates the identification
+problem: identical observations support different forecasts under different
+assumptions about the generator.
+
+LMs now approach crowd accuracy, a practical performance floor; ensembles
+match it on selected question sets \citep{halawi2024approaching,schoenegger2024wisdom}. This makes the
+process behind a probability increasingly important. High average scores can
+coexist with reactions to the wrong cue or the transfer of a relationship into a
+setting where it no longer applies.
+
+But accuracy alone does not resolve this problem. The same probability can come
+from a base rate, a retrieved precedent, a market price, a lexical shortcut, or a
+relationship inferred from the current context. Generated rationales do not
+resolve the ambiguity because explanations need not track model behavior
+\citep{jacovi2020towards,turpin2023language}. We therefore ask a process question:
+\emph{when an LM forecasts an outcome, does it behave as if it selects,
+revises, and transfers predictive structure?} The problem is central to
+\textbf{judgmental forecasting}, which combines base rates, sparse observations,
+qualitative evidence, and domain knowledge to estimate future events
+\citep{mellers2014psychological,tetlock2016superforecasting}.
+
+We call this behavioral process \emph{inductive reasoning}: selecting a predictive
+relationship from context and sparse examples, revising that selection as local
+evidence accumulates, and applying it to a new case
+\citep{tenenbaum2006theory,griffiths2010probabilistic,lake2017building}. We use
+\emph{world structure} for the predictive relationships among evidence, context,
+and outcomes. These definitions presume neither an explicit causal graph nor a
+general internal world model.
+
+\subsection{Empirical Progression}
+\label{sec:forecasting-as-inductive}
+
+We ask three questions:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Do LMs react selectively to evidence?
+  (\hyperref[sec:exp1]{Experiment~1}).}
+  Across unresolved markets, every tested deployment distinguishes
+  outcome-bearing packets from topical controls and moves in the withheld
+  direction at high rates. A lexical baseline is directionally weaker than every
+  deployment, establishing relevance-sensitive updating.
+
+  \item \textbf{Can an LM select a relationship based on context?
+  (\hyperref[sec:exp2]{Experiment~2}).}
+  In Coin City, a controlled task, models forecast a target city's polls from
+  response regimes displayed in two reference cities. Changing only the
+  contextual cue changes which regime forecasts follow; direct target
+  observations then weaken the cue.
+  Episode-randomized labels test induction of a local convention, and open-model
+  decoding and activation patching connect that distinction to behavior in the
+  tested checkpoints.
+
+  \item \textbf{Can finetuning transfer contextual relationships?
+  (\hyperref[sec:exp3]{Experiments~3} and~\hyperref[sec:exp4]{4}).}
+  Episode-matched training improves joint-shift transfer at two model scales.
+  Separately, outcome-based training improves the tested bases on held-out
+  historical markets. Scaling is
+  nonmonotonic; several trained checkpoints reach the crowd-level floor.
+\end{itemize}
+
+Our contribution is a behavioral account of relationship use.
+Across these settings, forecasts select, revise, and transfer context-dependent
+relationships. Evaluation
+should pair aggregate realism with contrasts that change the relationship while
+holding easier cues fixed.

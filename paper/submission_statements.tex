@@ -1,0 +1,27 @@
+\subsection*{AI use statement}
+
+Language models produced the forecasts and experimental responses analyzed in this
+work and assisted with software and manuscript preparation. The authors verified
+numerical claims against saved experimental records and executable analyses, checked
+citations against original sources, reviewed the code, and take responsibility for
+the submission and its artifacts.
+
+\subsection*{Ethics statement}
+
+The reported analyses use public market metadata and price histories, model
+outputs, synthetic worlds, and an unpaid adult review of synthetic materials. The
+review collected no identifying or sensitive information. Under our institutional
+guidelines, it does not constitute human-subjects research; consequently, no IRB
+review was sought. Counterfactual evidence packets were evaluated offline and were
+not posted to markets or used for trading. We report aggregate model behavior
+rather than recommend deployment.
+
+\subsection*{Reproducibility statement}
+Appendices~A--G specify the prompts, data-generating processes, sample construction,
+censoring, estimators, deployment settings, missingness, hyperparameters, baselines,
+and fail-closed checks. Builders, manifests, checksums, and saved generations support
+each result. Experiment~3 reports round-300, five-draw results for three seeds per
+reward arm at Qwen3-8B, Qwen3-4B, and Llama-3.1-8B under a common stochastic decoder.
+Experiment~4 evaluates Qwen and Llama checkpoints on family-disjoint historical
+markets and reports hosted deployments as categorical references. Held-out data are
+absent from training and model selection.

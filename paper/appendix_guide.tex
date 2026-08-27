@@ -1,0 +1,65 @@
+\section*{Appendices}
+\pdfbookmark[1]{Appendices}{appendix-guide}
+
+The supplement is organized by experiment. A descriptive coin-flip elicitation
+precedes the Experiment~1 evidence-response details. Experiment~2 documents
+contextual relationship selection and revision, including a linear-probe
+representation analysis; Experiments~3--4 document controlled and historical
+transfer. Shared training details and the artifact map close the appendix.
+
+% Every entry below is derived from its \label: \ref* supplies the number,
+% \nameref* the heading text, and \pageref* the page. Nothing here is typed by
+% hand, so the guide cannot drift out of sync with the appendix headings the way
+% a hard-coded list does. Adding or reordering an appendix section only requires
+% adding its label to the list.
+\begingroup
+\hypersetup{hidelinks}
+\small
+\setlength{\parskip}{0pt}
+\makeatletter
+\newcommand{\appendixguidechapter}[1]{%
+  \par\addvspace{0.45\baselineskip}%
+  \noindent\hyperref[#1]{\textbf{\makebox[2.8em][l]{\ref*{#1}}\nameref*{#1}}}%
+  \nobreak\hfill\nobreak
+  \hyperref[#1]{\textbf{\pageref*{#1}}}\par
+}
+\newcommand{\appendixguidesection}[1]{%
+  \@dottedtocline{2}{1.3em}{3.4em}%
+    {\hyperref[#1]{\numberline{\ref*{#1}}\nameref*{#1}}}%
+    {\hyperref[#1]{\pageref*{#1}}}%
+}
+\makeatother
+
+
+\appendixguidechapter{app:carnival-coin-probe}
+
+\appendixguidechapter{app:exp1}
+\appendixguidesection{app:exp1-sample}
+\appendixguidesection{app:exp1-protocol}
+\appendixguidesection{app:metrics}
+\appendixguidesection{app:extended-results}
+\appendixguidesection{app:exp1-limitations}
+\appendixguidesection{app:fig-code}
+
+\appendixguidechapter{app:coin-city}
+\appendixguidesection{app:coin-city-design}
+\appendixguidesection{app:coin-city-arms}
+\appendixguidesection{app:coin-city-execution}
+\appendixguidesection{app:coin-city-analysis}
+\appendixguidesection{app:coin-city-results}
+\appendixguidesection{app:coin-city-mechanistic-probe}
+\appendixguidesection{app:coin-city-limitations}
+
+\appendixguidechapter{app:exp3}
+\appendixguidesection{app:exp3-coin-structural}
+
+\appendixguidechapter{app:exp4}
+\appendixguidesection{app:exp3b-results}
+\appendixguidesection{app:exp3b-update}
+
+\appendixguidechapter{app:exp3-complete-training-setup}
+\appendixguidesection{app:exp3-coin-structural-hparams}
+
+\appendixguidechapter{app:exp3-repro}
+
+\endgroup

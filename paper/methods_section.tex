@@ -1,0 +1,177 @@
+\section{Methods}
+\label{sec:methods}
+
+We pair controlled simulations with prospective and historical Polymarket questions
+\citep{gentzel2019case,polymarket2026docs}. Simulations isolate information sources;
+the market studies test evidence use on open questions and accuracy on held-out,
+resolved events. Contrasts are paired by question or episode. For trained models,
+uncertainty is propagated first across seeds and then across episodes within seed.
+
+
+\subsection{Experiment 1: Evidence-Selective Updating}
+\label{sec:methods-exp1}
+
+We sample 100 binary markets in politics, government, elections, economics, technology, and
+geopolitics, each open at collection, 14--180 days from resolution, and with at
+least \$1,000 in lifetime USD volume. We report three
+hosted API systems \citep{openai2026gpt54,anthropic2026claude48,deepseek2026v4}
+and six scale-valid Qwen~2.5 or Llama-family open-weight models
+\citep{qwen2025qwen25,grattafiori2024llama}; Appendix~\ref{app:record-processing}
+retains one mixed-scale deployment for compliance diagnostics.
+
+Agents return an event model and $P(H_1)$ (YES), $P(H_2)$ (NO), with headline
+forecast $\hat p=P(H_1)$. With search then disabled, they receive nine generated
+packets per market---three pro-$H_1$, three anti-$H_1$, three topical but
+orthogonal---giving 30,094 valid updates. The prompt carries one packet field, the
+snippet text; every other field is withheld and read only at scoring
+(Appendix~\ref{app:exp1-withholding}).
+
+We report three measures. \textbf{Abstention} is the share of orthogonal
+updates returning the displayed prior unchanged; \textbf{sensitivity} divides mean
+absolute directional by orthogonal movement among updates that moved at all. Both
+ask whether a model discriminates probative from topic-matched evidence. \textbf{Evidence--Hypothesis Consistency
+(EHC)} is directional correctness for stated $P(H_1)$ among updates of at least 3
+points and asks whether the forecast moves the predicted way. Appendix~\ref{app:exp1-alternatives}
+gives lexical and human comparisons for packet-direction recovery and alternative
+selectivity estimands. Figure color bands use
+sensitivity cutpoints $2.5,4,6$ and EHC cutpoints $.90,.95,.98$. Intervals use
+20,000 market-clustered resamples retaining all packets and repeated initial runs
+(Appendix~\ref{app:exp1-threshold-robustness}). Eight reviewers judged 18
+balanced packets against the frozen direction key, matching it on 75.0\%;
+Appendix~\ref{app:exp1-limitations} gives the tally, the disclosed
+post-inspection exclusion, and item-level judgments.
+
+
+\begin{figure}[!ht]
+\centering
+% The exported figure carries ~14.5pt of blank canvas below its last box;
+% trim most of it so the caption sits closer than the export padding allows.
+\includegraphics[width=\linewidth,trim=0 10pt 0 0,clip]{figures/exp2_coin_city_prompt_arms.pdf}
+\caption{\textbf{Coin City prompt and information arms.} Every arm receives the
+instructions and query shown. The illustrated episode ($k=4$) additionally provides
+City A/B references and City C's qualitative context. The no-context and
+opposite-context arms change only the City C sentence.}
+\label{fig:coin-city-prompts}
+\end{figure}
+
+\subsection{Experiment 2: Context-Guided Relationship Selection}
+\label{sec:methods-stage2}
+
+\label{sec:methods-coin-city}
+
+Each Coin City episode describes three cities with stable but unobserved poll
+responses to news. City A and City B provide reference cases; City C provides up to
+four observations and a one-sentence description naming a response regime. The
+reference descriptions state which regime responds more strongly, but no prompt
+states a coefficient.
+
+We generate 250 independent episodes. For city $j$ in episode $i$,
+\begin{equation}
+  \Delta p_{ij}=g_jx_{ij}+\epsilon_{ij},
+  \qquad \epsilon_{ij}\sim\mathcal N(0,5^2),
+  \label{eq:coin-city-dgp}
+\end{equation}
+where $x_{ij}$ is signed net news, and strong and weak cities draw
+$g_j\sim\mathcal N(0.90,0.03^2)$ and $g_j\sim\mathcal N(0.25,0.03^2)$. Each
+reference city provides four cases in matched equal-and-opposite news pairs. A
+query asks for City C's ending poll after news
+$x\in\{-10,\ldots,-4,4,\ldots,10\}$, given $k\in\{0,1,2,3,4\}$ City C cases.
+
+Five prompt arms vary the evidence available: target cases alone; reference cases
+without City C context; references with the correct City C context; references with
+the opposite context label; and an arbitrary-label arm replacing national/local
+with \texttt{KIV}/\texttt{ZOR}, whose higher-response mapping changes by episode
+and must be recovered from the reference cases. Paired arms share the same episode
+and query values; the correct- and opposite-context prompts differ only in City C's
+context sentence. Every arm reuses an episode bank under a manifest hashed before model calls
+(Figure~\ref{fig:coin-city-prompts}). An open-weight activation audit reuses the
+semantic and arbitrary-label arms' correct, absent, and inverted prompts and patches
+the label tokens. Appendix~\ref{app:coin-city} gives full design and execution
+details.
+
+Claude Opus~4.8, Claude Opus~5, GPT-5.6, DeepSeek-V4-Pro, Kimi K3, and Gemini 3.6
+Flash are evaluated on every frozen episode, evidence depth, and four semantic arms:
+30,000 attempts in total. The arbitrary-label analysis extends the roster to 15
+systems at $k=0$ and evaluates open-weight scale families. Forecast MAE is measured against the noise-free expectation
+$p_0+g_Cx$; the forecast-implied response $\hat g=(\hat p-p_0)/x$ is reported as
+MAE and as across-episode correlation with $g_C$.
+
+A deterministic analogical benchmark uses the cue to choose City A or B, fits that
+reference by through-origin OLS, and refits as City C cases arrive
+(Appendix~\ref{app:coin-city-analysis}). Paired intervals use 2,000 episode
+bootstrap samples \citep{efron1979bootstrap}.
+
+\subsection{Experiment 3: Controlled Relationship Transfer}
+\label{sec:methods-stage3}
+
+\label{sec:methods-exp3-synthetic}
+
+\input{fig_exp3_transfer_grid}
+Training uses the direct, one-period relationship in
+Equation~\ref{eq:coin-city-dgp}. Each prompt shows two complete 14-case references,
+a target with $k$ observed cases, and a ten-outcome query. The episode-matched and
+population-prior arms use byte-identical prompts and the same multiset of answer
+keys. Matched training pairs episode $i$ with its own key $\mathbf y^\star_i$;
+the control uses a fixed within-$k$ derangement $\mathbf y^\star_{\pi_k(i)}$.
+This preserves the answer distribution while breaking the prompt--target link.
+Neither arm supplies graph labels. A structureless diagnostic scrambles the
+displayed drivers and rewards a flat response; the untrained base receives the
+same evaluation prompts without training.
+Table~\ref{tab:exp3-training-policies}
+in Appendix~\ref{app:exp3-coin-structural} shows all four conditions on one episode.
+
+
+Policies train only on Coin City under Structure~A, the direct mechanism
+$x_t\to y_{t+1}$. Figure~\ref{fig:exp3-transfer-grid} crosses this trained cell
+with a new surface domain (Coin Harbor), the mediated Structure~B
+($x_t\to m_{t+1}\to y_{t+1}$), and both shifts together.
+
+Evaluation crosses domain, mechanism, pathway hint, and
+$k\in\{0,2,4,8\}$, yielding $1{,}440$ paired prompts; each training run contains
+4,800 Coin City/Structure~A prompts. The primary estimand is population-prior
+minus episode-matched response MAE under joint shift and the correct hint. We use
+three Qwen3-8B seeds per arm at round 300 and average five stochastic draws within
+task before a paired seed-first bootstrap. The Qwen3-4B scale replication,
+structureless control, Llama-8B comparator, prompts, and parameters appear in
+Appendix~\ref{app:exp3-coin-structural}.
+
+\begin{figure}[b]
+\centering
+\includegraphics[width=\linewidth]{figures/exp1_protocol_four_panels.pdf}
+\caption{\textbf{Prospective evidence-intervention protocol.} An agent forecasts an
+unresolved question, then receives one generated evidence packet with search off.
+The packet's intended direction is never shown to the agent; it is read only when
+the update is scored.
+Directional correctness asks whether the update follows a pro- or anti-$H_1$
+packet. Selectivity compares movement under directional and orthogonal packets.
+The output contract requires $\hat p=P(H_1)$, so agreement between those fields is
+partly schema compliance.}
+\label{fig:exp1-pipeline}
+\end{figure}
+
+\subsection{Experiment 4: Historical-Market Training and Sealed Evaluation}
+\label{sec:methods-exp4-polymarket}
+
+Resolved political, governmental, macroeconomic, and geopolitical markets are cut
+off 30 days before their earliest archived terminal timestamp. Prompts retain only
+the question, rules, cutoff, and genuine pre-cutoff prices. Outcomes and post-cutoff
+fields are withheld. Calendar splits contain 1,736 training, 512 development, and
+1,024 test markets, with no event or normalized question family shared across
+splits.
+
+We train Qwen3 and Llama checkpoints \citep{qwen2025qwen3,grattafiori2024llama} with
+rank-32 LoRA \citep{hu2022lora} and Dr.~GRPO
+\citep{liu2025understanding} for 300 rollout-and-update rounds (4,800 prompt
+presentations) at each of three seeds. Reward is the proper score
+$1-(\hat p-y)^2$ \citep{brier1950verification}; training alone supplies
+gradients. Development selects no endpoint, and test data are absent from
+training.
+
+The scale comparison evaluates three-seed Qwen3 checkpoints at 1.7B, 4B, 8B, and
+14B parameters and Llama checkpoints at 3B and 8B on a 318-market holdout disjoint
+from all training, development, and test families. Every base and trained endpoint is
+scored from five non-thinking stochastic draws. Brier intervals resample connected
+event/template families \citep{brier1950verification,good1952rational}. A Qwen3-4B
+evidence-updating evaluation also applies the Experiment~1 packets to the base and
+final adapters. Appendix~\ref{app:exp3b-protocol} gives the censoring, checksums,
+optimization, held-out evaluation, scale comparison, and revision-analysis details.

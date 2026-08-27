@@ -1,0 +1,73 @@
+\documentclass{article}
+\PassOptionsToPackage{table}{xcolor}
+
+% Official NeurIPS 2026 double-blind workshop mode.
+\usepackage[dblblindworkshop]{neurips_2026}
+\workshoptitle{SocialAgent: Second Workshop on Large Language Models for Social Reasoning and Simulation}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage[compatibility=false]{caption}
+\usepackage{subcaption}
+\usepackage{flafter}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+
+\definecolor{storyblue}{HTML}{4F7EA8}
+\definecolor{storygreen}{HTML}{5E9470}
+\definecolor{storygold}{HTML}{D6B656}
+\definecolor{storyink}{HTML}{3F4550}
+\definecolor{storymute}{HTML}{8A93A3}
+\definecolor{heatred}{HTML}{F4CCCC}
+\definecolor{heatorange}{HTML}{FCE5CD}
+\definecolor{heatyellow}{HTML}{FFF2CC}
+\definecolor{heatgreen}{HTML}{D9EAD3}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=[rgb]{0.10,0.25,0.55},
+  citecolor=[rgb]{0.10,0.25,0.55},
+  urlcolor=[rgb]{0.10,0.25,0.55}
+}
+
+\graphicspath{{../figures/}{../icons/}}
+\newcommand{\micon}[1]{%
+  \IfFileExists{../icons/#1}{%
+    \raisebox{-0.25\height}{\includegraphics[height=1em]{../icons/#1}}%
+  }{}%
+}
+\title{Same Evidence, Different Futures:\\
+Inductive Reasoning in Language Model Forecasting}
+\author{Anonymous Author(s)}
+
+\begin{document}
+\maketitle
+
+\input{abstract}
+\input{introduction}
+\input{related_work}
+\input{evidence_ladder}
+\input{transfer_and_grounding}
+\input{discussion}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{../references}
+
+\clearpage
+\appendix
+\raggedbottom
+\setlist[itemize,1]{leftmargin=1.35em,labelsep=.45em}
+\setlist[enumerate,1]{leftmargin=1.55em,labelsep=.45em}
+\input{appendix}
+
+\end{document}

@@ -1,5 +1,15 @@
 # Stage 3 materials annotation
 
+## Nine-reviewer paper freeze (2026-08-27)
+
+Nine volunteers completed all 18 items. The disclosed response-pattern rule
+excluded one reviewer, leaving eight quality-eligible reviewers: 108/144 exact
+direction judgments (75.0%), 124/144 usable-premise judgments (86.1%), and a
+17/18 panel-majority match with the registered key. The all-nine sensitivity
+tally is 115/162 (71.0%). Raw response exports and private keys remain ignored
+and are not published. `annotator_10` is post-freeze and must not be added to
+these paper results.
+
 This directory contains a small human-annotation study of the synthetic evidence
 used in Experiment 1, Stage 3. The unit of analysis is the evidence packet, not
 the annotator.
