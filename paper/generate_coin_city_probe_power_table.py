@@ -30,6 +30,7 @@ RUNS = (
     ("qwen3_8b_symbol_probe_v2", "Qwen3-8B, symbol", "Qwen3-8B"),
     ("qwen3_4b_symbol_probe_v2", "Qwen3-4B, symbol", "Qwen3-4B-Instruct-2507"),
     ("qwen2_5_32b_symbol_probe_v2", "Qwen2.5-32B, symbol", "Qwen2.5-32B-Instruct"),
+    ("qwen2_5_72b_symbol_probe_v2", "Qwen2.5-72B, symbol", "Qwen2.5-72B-Instruct"),
     ("llama3_1_8b_symbol_probe_v2", "Llama~3.1-8B, symbol", "Llama-3.1-8B-Instruct"),
     ("llama3_1_70b_symbol_probe_v2", "Llama~3.1-70B, symbol", "Llama-3.1-70B-Instruct"),
 )

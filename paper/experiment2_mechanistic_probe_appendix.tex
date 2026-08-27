@@ -256,30 +256,34 @@ from $.321$ to $.747$, and the full-slope probe fits the cue-named relationship 
 $R^2=-.855$ while fitting the true one at $+.126$. Direct target evidence overrides
 the induced label in the representation as it does in the forecast.
 
-Five further checkpoints received the identical symbol protocol at the same 88
-sealed episodes: Qwen2.5-32B, which changes model generation; Qwen3-8B and
-Qwen3-4B, which hold family, tokenizer and architecture fixed and change only
-scale; and Llama~3.1-8B and Llama~3.1-70B, which do the same within a second
-vendor and architecture. Held-out regime AUC at $k=0$ is $.778$ for Qwen2.5-32B
-($p<.001$, selected layer 50 of 64), $.728$ for Llama~3.1-70B ($p<.001$, layer 75
-of 81), $.566$ for Qwen3-8B ($p=.15$), $.520$ for Qwen3-4B ($p=.38$) and $.423$
-for Llama~3.1-8B ($p=.89$). No null checkpoint rejects in any $k=0$
+Six further checkpoints received the identical symbol protocol at the same 88
+sealed episodes: Qwen2.5-32B and Qwen2.5-72B, which change model generation;
+Qwen3-8B and Qwen3-4B, which hold family, tokenizer and architecture fixed and
+change only scale; and Llama~3.1-8B and Llama~3.1-70B, which do the same within a
+second vendor and architecture. Held-out regime AUC at $k=0$ is $.778$ for
+Qwen2.5-32B ($p<.001$, selected layer 50 of 64), $.728$ for Llama~3.1-70B
+($p<.001$, layer 75 of 81), $.662$ for Qwen2.5-72B ($p=.003$, layer 63 of 80),
+$.566$ for Qwen3-8B ($p=.15$), $.520$ for Qwen3-4B ($p=.38$) and $.423$ for
+Llama~3.1-8B ($p=.89$). No null checkpoint rejects in any $k=0$
 condition---regime, slope or residual slope. Mean-pooled input embeddings stay
-between $.495$ and $.555$ in every symbol run, so no symbol arm carries the
+between $.495$ and $.556$ in every symbol run, so no symbol arm carries the
 mapping before computation.
 
-Decodability tracks behavioral recovery across all six checkpoints. The three
-whose forecasts recover the mapping are the three in which it decodes
-(Llama~3.1-70B, $\Delta\rho=.424$; Qwen3-14B, $.398$; Qwen2.5-32B, $.372$), and
-the three whose forecasts do not are the three in which it does not (Qwen3-4B,
-$.095$; Llama~3.1-8B, $.045$; Qwen3-8B, $.023$; all three intervals spanning
-zero). Two independent within-family sequences carry the weight, because each
-holds family, tokenizer and architecture fixed and varies only scale: Qwen3 runs
-$.520$, $.566$, $.678$ from 4B to 14B, and Llama~3.1 runs $.423$ to $.728$ from 8B
-to 70B. Both cross into rejection at the checkpoint where the forecasts do. The
-split is therefore neither a vendor nor a tokenization artifact of the probe, and
-a probe that recovered structure wherever it was applied would not produce this
-pattern in two architectures at once.
+Decodability tracks behavioral recovery across all seven checkpoints, four
+positive and three null. The four whose forecasts recover the mapping are the four
+in which it decodes (Llama~3.1-70B, $\Delta\rho=.424$; Qwen3-14B, $.398$;
+Qwen2.5-72B, $.381$; Qwen2.5-32B, $.372$), and the three whose forecasts do not
+are the three in which it does not (Qwen3-4B, $.095$; Llama~3.1-8B, $.045$;
+Qwen3-8B, $.023$; all three intervals spanning zero). Two independent
+within-family sequences carry the weight, because each holds family, tokenizer and
+architecture fixed and varies only scale: Qwen3 runs $.520$, $.566$, $.678$ from
+4B to 14B, and Llama~3.1 runs $.423$ to $.728$ from 8B to 70B. Both cross into
+rejection at the checkpoint where the forecasts do. The split is therefore neither
+a vendor nor a tokenization artifact of the probe, and a probe that recovered
+structure wherever it was applied would not produce this pattern in two
+architectures at once. The positives span three model generations and two
+vendors, and every positive shows the same shape: the decoded regime follows the
+cue at $k=0$ and the truth at $k=4$.
 Qwen3-4B and Qwen3-8B do reject at $k=4$ ($.685$, $p=.002$ and $.610$, $p=.04$),
 which is expected rather than contrary: at $k=4$ the displayed target cases
 exhibit the regime whatever the label says, and the mean-pooled input embeddings
@@ -399,6 +403,7 @@ study name, sealed-test size and stability gate. The power-matched runs are
 \path{mechanistic_probe/qwen3_8b_symbol_probe_v2/},
 \path{mechanistic_probe/qwen3_4b_symbol_probe_v2/},
 \path{mechanistic_probe/llama3_1_70b_symbol_probe_v2/},
+\path{mechanistic_probe/qwen2_5_72b_symbol_probe_v2/},
 \path{mechanistic_probe/qwen2_5_32b_symbol_probe_v2/} (checkpoint
 \texttt{5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd}) and
 \path{mechanistic_probe/llama3_1_8b_symbol_probe_v2/} (checkpoint
