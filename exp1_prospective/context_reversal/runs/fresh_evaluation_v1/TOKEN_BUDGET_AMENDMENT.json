@@ -1,0 +1,144 @@
+{
+  "status": "recorded",
+  "created_at": "2026-09-22T17:14:52.038180+00:00",
+  "amended_freeze": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1_amended/local_freeze_max_tokens_15360.json",
+    "sha256": "6b054c349ebbc880f51666384a0d37b3fb3a9fd09cbc18cf6b27cafc50ed2695"
+  },
+  "source_freeze": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+    "sha256": "941402255c608932a6bf236f84df631da313446f3288e6d2f930555afadc841d"
+  },
+  "amendment": {
+    "kind": "output_token_budget",
+    "applies_to_modes": [
+      "enabled"
+    ],
+    "supersedes": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+      "sha256": "941402255c608932a6bf236f84df631da313446f3288e6d2f930555afadc841d"
+    },
+    "previous_max_tokens": 8192,
+    "max_tokens": 15360,
+    "disabled_arm_retained_under_original_freeze": true,
+    "disabled_arm_responses": [
+      "responses/fresh_evaluation_v1/disabled_shard00.jsonl",
+      "responses/fresh_evaluation_v1/disabled_shard01.jsonl",
+      "responses/fresh_evaluation_v1/disabled_shard02.jsonl",
+      "responses/fresh_evaluation_v1/disabled_shard03.jsonl",
+      "responses/fresh_evaluation_v1/disabled_shard04.jsonl",
+      "responses/fresh_evaluation_v1/disabled_shard05.jsonl",
+      "responses/fresh_evaluation_v1/disabled_shard06.jsonl",
+      "responses/fresh_evaluation_v1/disabled_shard07.jsonl"
+    ],
+    "superseded_enabled_responses": "responses/fresh_evaluation_v1/_superseded_max_tokens_8192_20260922",
+    "unchanged": [
+      "materials",
+      "plans",
+      "prompts",
+      "scoring",
+      "per_request_seeds",
+      "temperature",
+      "top_p",
+      "max_model_len",
+      "batch_size",
+      "tensor_parallel_size",
+      "dtype",
+      "model_snapshot"
+    ],
+    "evidence": {
+      "enabled_arm": {
+        "records": 848,
+        "conditions": {
+          "baseline": 848
+        },
+        "finish_reason": {
+          "stop": 589,
+          "length": 163,
+          "null": 96
+        },
+        "truncated": 163,
+        "truncated_fraction": 0.1922,
+        "output_tokens_completed": {
+          "n": 589,
+          "min": 1835,
+          "p50": 5052,
+          "p90": 7604,
+          "p99": 8121,
+          "max": 8189
+        },
+        "truncation_by_domain": {
+          "bounded_feedback": {
+            "truncated": 37,
+            "records": 101,
+            "fraction": 0.3663
+          },
+          "broker_allocation": {
+            "truncated": 5,
+            "records": 106,
+            "fraction": 0.0472
+          },
+          "calibration": {
+            "truncated": 14,
+            "records": 96,
+            "fraction": 0.1458
+          },
+          "directed_routes": {
+            "truncated": 21,
+            "records": 101,
+            "fraction": 0.2079
+          },
+          "evidence_dependence": {
+            "truncated": 32,
+            "records": 106,
+            "fraction": 0.3019
+          },
+          "procedural_gates": {
+            "truncated": 7,
+            "records": 113,
+            "fraction": 0.0619
+          },
+          "quorums": {
+            "truncated": 1,
+            "records": 114,
+            "fraction": 0.0088
+          },
+          "time_windows": {
+            "truncated": 46,
+            "records": 111,
+            "fraction": 0.4144
+          }
+        }
+      },
+      "disabled_arm": {
+        "records": 3840,
+        "finish_reason": {
+          "stop": 3840
+        },
+        "truncated": 0,
+        "output_tokens": {
+          "n": 3840,
+          "min": 9,
+          "p50": 14,
+          "p90": 15,
+          "p99": 18,
+          "max": 31
+        }
+      },
+      "max_prompt_tokens_observed": 617,
+      "inspected_fields_only": [
+        "finish_reason",
+        "output_token_count",
+        "prompt_token_count",
+        "condition",
+        "domain"
+      ],
+      "outcome_fields_inspected_before_amendment": []
+    },
+    "context_headroom_tokens": 15767
+  },
+  "amendment_code": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/amend_token_budget.py",
+    "sha256": "eed2b0663ced7d8c19361031983a940e30c7dfd48efc0efecdce638f50897095"
+  }
+}
