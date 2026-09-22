@@ -1,0 +1,288 @@
+{
+  "audit_status": "passed",
+  "model_key": "qwen3_32b",
+  "audit_method": "Independent stdlib provenance/scoring, NumPy family bootstrap, local tokenizer chat reconstruction; no inference.",
+  "files": {
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/direction_plan.jsonl": "478b2e76395fbec66aed89aca5ca43d9ed8fce77e0fe2d3472768bb2bf882ea3",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/probability_plan.jsonl": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_plan.jsonl": "cf6d5e30b5e3bd3ebd42be5348019c485f2f50f62d5a8b2ae07000ac5cbfb4a4",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/direction_qwen3_32b.jsonl": "fc0db066326b858036317d62c348943969a773714ce8e2d709efafd13a3d5d24",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen3_32b.jsonl": "e7b85a15b35c404e2415f7020ff7928439aa740c61d9483bde57a8a2e98230b1",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_qwen3_32b/summary.json": "3bd671cb3f6c1918d555a9d3a5aaa3876811b36eaf53f6da7d3951f65e447b1c"
+  },
+  "checks": {
+    "80 unique units and20 families": 1,
+    "20 units per context": 1,
+    "repeat0 only": 1,
+    "240 direction responses": 1,
+    "complete manifest": 1,
+    "frozen direction input hash": 1,
+    "frozen parent hash": 1,
+    "run signature": 1,
+    "frozen runner hash": 1,
+    "frozen helper hash": 2,
+    "prespecified decode": 4,
+    "vllm version": 1,
+    "summary input provenance": 3,
+    "summary response provenance": 1,
+    "summary numeric provenance": 1,
+    "parent exact source repeat0": 80,
+    "parent unit hash": 80,
+    "exact original scenario": 80,
+    "original scenario and forecast-placeholder boundary": 240,
+    "exact original news text": 240,
+    "frozen prompt hash": 240,
+    "no numeric forecast display or elicitation": 240,
+    "unique direction cell": 240,
+    "correct direction stage/model/status": 240,
+    "exact enum JSON": 240,
+    "raw parsed agreement": 240,
+    "response metadata": 240,
+    "exact direction prompt and hash": 240,
+    "response provenance": 240,
+    "request seed": 240,
+    "no numerical response or prior field": 240,
+    "all planned cells covered": 1,
+    "320 original repeat0 numeric responses": 1,
+    "unique numeric cell": 320,
+    "numeric full source-plan input hash": 320,
+    "exact numeric raw JSON and parsed agreement": 320,
+    "numeric range": 320,
+    "numeric parent metadata": 320,
+    "numeric exact parent prompt/hash": 320,
+    "numeric own prior": 240,
+    "summary target and labels": 12,
+    "summary complete cell denominator": 12,
+    "summary cell accuracy": 11,
+    "masked new news unscored": 1,
+    "summary aggregate signed": 1,
+    "summary aggregate paired": 1,
+    "summary aggregate broken": 1,
+    "summary aggregate controls": 1,
+    "pooled cross-tab": 4,
+    "per-cell cross-tab": 44,
+    "endpoint-split cross-tab": 8,
+    "endpoint split denominator": 2,
+    "endpoint flags": 5,
+    "cross-tab complete denominator": 1,
+    "coverage totals": 1,
+    "independent family bootstrap CI": 1,
+    "tokenizer template hash": 1,
+    "independent chat prompt hash": 240,
+    "independent token count": 240
+  },
+  "checks_passed": 6130,
+  "coverage": {
+    "families": 20,
+    "units": 80,
+    "planned": 240,
+    "present": 240,
+    "valid": 240,
+    "missing": 0
+  },
+  "scores": {
+    "signed_correct": 28,
+    "signed_planned": 40,
+    "paired_correct": 9,
+    "paired_planned": 20,
+    "broken_unchanged_correct": 2,
+    "broken_planned": 20,
+    "controls_unchanged_correct": 150,
+    "controls_planned": 160
+  },
+  "cell_scores": {
+    "positive:new_news": {
+      "expected": "increase",
+      "correct": 13,
+      "planned": 20,
+      "labels": {
+        "increase": 13,
+        "decrease": 7
+      }
+    },
+    "positive:no_news": {
+      "expected": "unchanged",
+      "correct": 19,
+      "planned": 20,
+      "labels": {
+        "unchanged": 19,
+        "increase": 1
+      }
+    },
+    "positive:repeated_news": {
+      "expected": "unchanged",
+      "correct": 18,
+      "planned": 20,
+      "labels": {
+        "unchanged": 18,
+        "increase": 1,
+        "decrease": 1
+      }
+    },
+    "negative:new_news": {
+      "expected": "decrease",
+      "correct": 15,
+      "planned": 20,
+      "labels": {
+        "decrease": 15,
+        "increase": 5
+      }
+    },
+    "negative:no_news": {
+      "expected": "unchanged",
+      "correct": 19,
+      "planned": 20,
+      "labels": {
+        "unchanged": 19,
+        "decrease": 1
+      }
+    },
+    "negative:repeated_news": {
+      "expected": "unchanged",
+      "correct": 17,
+      "planned": 20,
+      "labels": {
+        "unchanged": 17,
+        "decrease": 1,
+        "increase": 2
+      }
+    },
+    "broken:new_news": {
+      "expected": "unchanged",
+      "correct": 2,
+      "planned": 20,
+      "labels": {
+        "decrease": 11,
+        "increase": 6,
+        "unclear": 1,
+        "unchanged": 2
+      }
+    },
+    "broken:no_news": {
+      "expected": "unchanged",
+      "correct": 19,
+      "planned": 20,
+      "labels": {
+        "unchanged": 19,
+        "decrease": 1
+      }
+    },
+    "broken:repeated_news": {
+      "expected": "unchanged",
+      "correct": 18,
+      "planned": 20,
+      "labels": {
+        "unchanged": 18,
+        "increase": 1,
+        "decrease": 1
+      }
+    },
+    "masked:new_news": {
+      "expected": null,
+      "correct": null,
+      "planned": 20,
+      "labels": {
+        "decrease": 9,
+        "increase": 10,
+        "unclear": 1
+      }
+    },
+    "masked:no_news": {
+      "expected": "unchanged",
+      "correct": 20,
+      "planned": 20,
+      "labels": {
+        "unchanged": 20
+      }
+    },
+    "masked:repeated_news": {
+      "expected": "unchanged",
+      "correct": 20,
+      "planned": 20,
+      "labels": {
+        "unchanged": 20
+      }
+    }
+  },
+  "signed_new_news_cross_tab": {
+    "both_correct": 23,
+    "classification_incorrect_numeric_correct": 2,
+    "both_incorrect": 10,
+    "classification_correct_numeric_incorrect": 5
+  },
+  "endpoint_flags_new_news": {
+    "baseline_at_zero": 20,
+    "baseline_at_one": 1,
+    "update_at_zero": 10,
+    "update_at_one": 2,
+    "expected_direction_blocked_by_baseline_endpoint": 4
+  },
+  "signed_ci95": [
+    0.575,
+    0.825
+  ],
+  "unclear_total": 2,
+  "endpoint_split": {
+    "blocked": {
+      "n_planned": 4,
+      "both_correct": 0,
+      "classification_correct_numeric_incorrect": 4,
+      "classification_incorrect_numeric_correct": 0,
+      "both_incorrect": 0
+    },
+    "unblocked": {
+      "n_planned": 36,
+      "both_correct": 23,
+      "classification_correct_numeric_incorrect": 1,
+      "classification_incorrect_numeric_correct": 2,
+      "both_incorrect": 10
+    }
+  },
+  "classification_only_rows": [
+    {
+      "trial_id": "dev_18:positive:r0",
+      "context_id": "positive",
+      "baseline": 0.0,
+      "updated": 0.0,
+      "raw_update_pp": 0.0,
+      "classification": "increase",
+      "endpoint_blocked": false
+    },
+    {
+      "trial_id": "dev_03:negative:r0",
+      "context_id": "negative",
+      "baseline": 0.0,
+      "updated": 0.5,
+      "raw_update_pp": 50.0,
+      "classification": "decrease",
+      "endpoint_blocked": true
+    },
+    {
+      "trial_id": "dev_06:negative:r0",
+      "context_id": "negative",
+      "baseline": 0.0,
+      "updated": 0.3,
+      "raw_update_pp": 30.0,
+      "classification": "decrease",
+      "endpoint_blocked": true
+    },
+    {
+      "trial_id": "dev_15:negative:r0",
+      "context_id": "negative",
+      "baseline": 0.0,
+      "updated": 0.5,
+      "raw_update_pp": 50.0,
+      "classification": "decrease",
+      "endpoint_blocked": true
+    },
+    {
+      "trial_id": "dev_17:negative:r0",
+      "context_id": "negative",
+      "baseline": 0.0,
+      "updated": 0.0,
+      "raw_update_pp": 0.0,
+      "classification": "decrease",
+      "endpoint_blocked": true
+    }
+  ]
+}

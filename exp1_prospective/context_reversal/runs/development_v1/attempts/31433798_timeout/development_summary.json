@@ -1,0 +1,3456 @@
+{
+  "analysis_status": "development_unvalidated_descriptive_only",
+  "caveat": "Authored, unvalidated development materials. These are exploratory descriptive diagnostics, not confirmatory evidence or population estimates. All three prescribed models are included in fixed order; results must not be used to select a model.",
+  "design_sha256": "cf6d5e30b5e3bd3ebd42be5348019c485f2f50f62d5a8b2ae07000ac5cbfb4a4",
+  "material_status": "authored_development_unvalidated",
+  "models": {
+    "llama3_1_70b_instruct": {
+      "baseline_probability_percent": {
+        "broken": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            27.5,
+            45.833333333333336
+          ],
+          "ci95": [
+            25.833333333333332,
+            48.333333333333336
+          ],
+          "denominator": 60,
+          "estimate": 36.666666666666664,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "masked": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            41.9,
+            52.96666666666667
+          ],
+          "ci95": [
+            40.833333333333336,
+            54.03333333333333
+          ],
+          "denominator": 60,
+          "estimate": 47.733333333333334,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "negative": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            32.5,
+            52.723000000000006
+          ],
+          "ci95": [
+            30.2045,
+            54.362083333333324
+          ],
+          "denominator": 60,
+          "estimate": 42.68,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "positive": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            30.372916666666665,
+            47.46041666666667
+          ],
+          "ci95": [
+            28.333333333333332,
+            49.584374999999994
+          ],
+          "denominator": 60,
+          "estimate": 38.958333333333336,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        }
+      },
+      "bootstrap": {
+        "draws": 2000,
+        "preserves": [
+          "contexts",
+          "repeats",
+          "update_arms",
+          "baseline_pairs"
+        ],
+        "seed": 20260921,
+        "unit": "family_id"
+      },
+      "broken_raw_new_news": {
+        "mean_absolute_pp": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            5.416666666666667,
+            16.5
+          ],
+          "ci95": [
+            4.75,
+            17.75208333333332
+          ],
+          "denominator": 60,
+          "estimate": 10.5,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "signed_mean_pp": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            -4.3374999999999995,
+            8.5
+          ],
+          "ci95": [
+            -5.835416666666666,
+            9.335416666666656
+          ],
+          "denominator": 60,
+          "estimate": 2.3333333333333335,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        }
+      },
+      "broken_stability": {
+        "drift_adjusted": {
+          "absolute_movement_bounded": false,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "complete_planned_observations",
+          "signed_mean_equivalent": false,
+          "status": "criterion_not_met"
+        },
+        "raw_new_news": {
+          "absolute_movement_bounded": false,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "complete_planned_observations",
+          "signed_mean_equivalent": false,
+          "status": "criterion_not_met"
+        }
+      },
+      "control_updates": {
+        "broken": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "masked": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "negative": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.2500000000000002
+              ],
+              "ci95": [
+                0.0,
+                0.2500000000000002
+              ],
+              "denominator": 60,
+              "estimate": 0.08333333333333341,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.2500000000000002
+              ],
+              "ci95": [
+                0.0,
+                0.2500000000000002
+              ],
+              "denominator": 60,
+              "estimate": 0.08333333333333341,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "positive": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        }
+      },
+      "coverage": {
+        "by_context_condition": {
+          "broken": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          },
+          "masked": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          },
+          "negative": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          },
+          "positive": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          }
+        },
+        "totals": {
+          "expected": 960,
+          "invalid_present": 0,
+          "missing_record": 0,
+          "present": 960,
+          "reason:ok": 960,
+          "valid": 960
+        }
+      },
+      "drift_adjusted": {
+        "by_context": {
+          "broken": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                5.416666666666667,
+                16.5
+              ],
+              "ci95": [
+                4.75,
+                17.75208333333332
+              ],
+              "denominator": 60,
+              "estimate": 10.5,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -4.3374999999999995,
+                8.5
+              ],
+              "ci95": [
+                -5.835416666666666,
+                9.335416666666656
+              ],
+              "denominator": 60,
+              "estimate": 2.3333333333333335,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "masked": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                12.482916666666666,
+                21.40083333333333
+              ],
+              "ci95": [
+                11.849791666666667,
+                22.40041666666666
+              ],
+              "denominator": 60,
+              "estimate": 16.708333333333332,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -3.73375,
+                11.075416666666666
+              ],
+              "ci95": [
+                -5.192291666666667,
+                12.901249999999994
+              ],
+              "denominator": 60,
+              "estimate": 3.875000000000001,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "negative": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                15.146833333333333,
+                28.12275
+              ],
+              "ci95": [
+                14.096666666666666,
+                29.30954166666666
+              ],
+              "denominator": 60,
+              "estimate": 21.171666666666667,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -12.879999999999999,
+                5.709749999999999
+              ],
+              "ci95": [
+                -14.428,
+                7.700208333333332
+              ],
+              "denominator": 60,
+              "estimate": -3.4383333333333335,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "positive": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                20.583333333333332,
+                30.583333333333332
+              ],
+              "ci95": [
+                19.791666666666668,
+                31.459374999999994
+              ],
+              "denominator": 60,
+              "estimate": 25.375,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                5.247916666666667,
+                23.458333333333332
+              ],
+              "ci95": [
+                2.665625,
+                24.791666666666668
+              ],
+              "denominator": 60,
+              "estimate": 14.708333333333334,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "definition": "100 * (new_news_probability - no_news_probability)",
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.35,
+              0.7166666666666667
+            ],
+            "ci95": [
+              0.31666666666666665,
+              0.75
+            ],
+            "denominator": 60,
+            "estimate": 0.5333333333333333,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 28,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 32
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.55,
+              0.7583333333333333
+            ],
+            "ci95": [
+              0.5333333333333333,
+              0.775
+            ],
+            "denominator": 120,
+            "estimate": 0.65,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 42,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 120,
+            "n_planned": 120,
+            "n_success": 78
+          },
+          "positive": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.6,
+              0.9
+            ],
+            "ci95": [
+              0.5833333333333334,
+              0.9166666666666666
+            ],
+            "denominator": 60,
+            "estimate": 0.7666666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 14,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 46
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.2,
+              0.55
+            ],
+            "ci95": [
+              0.16666666666666666,
+              0.5666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 0.36666666666666664,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 38,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 22
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              8.275333333333334,
+              28.642333333333333
+            ],
+            "ci95": [
+              6.733250000000001,
+              31.163833333333333
+            ],
+            "denominator": 60,
+            "estimate": 18.146666666666665,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        }
+      },
+      "primary": {
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.35,
+              0.7166666666666667
+            ],
+            "ci95": [
+              0.31666666666666665,
+              0.75
+            ],
+            "denominator": 60,
+            "estimate": 0.5333333333333333,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 28,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 32
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.55,
+              0.7583333333333333
+            ],
+            "ci95": [
+              0.5333333333333333,
+              0.775
+            ],
+            "denominator": 120,
+            "estimate": 0.65,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 42,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 120,
+            "n_planned": 120,
+            "n_success": 78
+          },
+          "positive": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.6,
+              0.9
+            ],
+            "ci95": [
+              0.5833333333333334,
+              0.9166666666666666
+            ],
+            "denominator": 60,
+            "estimate": 0.7666666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 14,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 46
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.2,
+              0.55
+            ],
+            "ci95": [
+              0.16666666666666666,
+              0.5666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 0.36666666666666664,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 38,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 22
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              8.275333333333334,
+              28.642333333333333
+            ],
+            "ci95": [
+              6.733250000000001,
+              31.163833333333333
+            ],
+            "denominator": 60,
+            "estimate": 18.146666666666665,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        }
+      },
+      "repeated_minus_no_news": {
+        "broken": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        },
+        "masked": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        },
+        "negative": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.2500000000000002
+            ],
+            "ci95": [
+              0.0,
+              0.2500000000000002
+            ],
+            "denominator": 60,
+            "estimate": 0.08333333333333341,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.2500000000000002
+            ],
+            "ci95": [
+              0.0,
+              0.2500000000000002
+            ],
+            "denominator": 60,
+            "estimate": 0.08333333333333341,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        },
+        "positive": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        }
+      }
+    },
+    "qwen2_5_72b_instruct": {
+      "baseline_probability_percent": {
+        "broken": {
+          "bootstrap_draws_defined": 0,
+          "bootstrap_draws_requested": 2000,
+          "ci90": null,
+          "ci95": null,
+          "denominator": 0,
+          "estimate": null,
+          "interval_status": "insufficient_observed_families",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 0,
+          "n_missing": 60,
+          "n_observed": 0,
+          "n_planned": 60
+        },
+        "masked": {
+          "bootstrap_draws_defined": 0,
+          "bootstrap_draws_requested": 2000,
+          "ci90": null,
+          "ci95": null,
+          "denominator": 0,
+          "estimate": null,
+          "interval_status": "insufficient_observed_families",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 0,
+          "n_missing": 60,
+          "n_observed": 0,
+          "n_planned": 60
+        },
+        "negative": {
+          "bootstrap_draws_defined": 0,
+          "bootstrap_draws_requested": 2000,
+          "ci90": null,
+          "ci95": null,
+          "denominator": 0,
+          "estimate": null,
+          "interval_status": "insufficient_observed_families",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 0,
+          "n_missing": 60,
+          "n_observed": 0,
+          "n_planned": 60
+        },
+        "positive": {
+          "bootstrap_draws_defined": 0,
+          "bootstrap_draws_requested": 2000,
+          "ci90": null,
+          "ci95": null,
+          "denominator": 0,
+          "estimate": null,
+          "interval_status": "insufficient_observed_families",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 0,
+          "n_missing": 60,
+          "n_observed": 0,
+          "n_planned": 60
+        }
+      },
+      "bootstrap": {
+        "draws": 2000,
+        "preserves": [
+          "contexts",
+          "repeats",
+          "update_arms",
+          "baseline_pairs"
+        ],
+        "seed": 20260921,
+        "unit": "family_id"
+      },
+      "broken_raw_new_news": {
+        "mean_absolute_pp": {
+          "bootstrap_draws_defined": 0,
+          "bootstrap_draws_requested": 2000,
+          "ci90": null,
+          "ci95": null,
+          "denominator": 0,
+          "estimate": null,
+          "interval_status": "insufficient_observed_families",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 0,
+          "n_missing": 60,
+          "n_observed": 0,
+          "n_planned": 60
+        },
+        "signed_mean_pp": {
+          "bootstrap_draws_defined": 0,
+          "bootstrap_draws_requested": 2000,
+          "ci90": null,
+          "ci95": null,
+          "denominator": 0,
+          "estimate": null,
+          "interval_status": "insufficient_observed_families",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 0,
+          "n_missing": 60,
+          "n_observed": 0,
+          "n_planned": 60
+        }
+      },
+      "broken_stability": {
+        "drift_adjusted": {
+          "absolute_movement_bounded": null,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "missing_planned_observations",
+          "signed_mean_equivalent": null,
+          "status": "indeterminate"
+        },
+        "raw_new_news": {
+          "absolute_movement_bounded": null,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "missing_planned_observations",
+          "signed_mean_equivalent": null,
+          "status": "indeterminate"
+        }
+      },
+      "control_updates": {
+        "broken": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          }
+        },
+        "masked": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          }
+        },
+        "negative": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          }
+        },
+        "positive": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          }
+        }
+      },
+      "coverage": {
+        "by_context_condition": {
+          "broken": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            }
+          },
+          "masked": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            }
+          },
+          "negative": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            }
+          },
+          "positive": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 60,
+              "present": 0,
+              "reason:missing_record": 60,
+              "valid": 0
+            }
+          }
+        },
+        "totals": {
+          "expected": 960,
+          "invalid_present": 0,
+          "missing_record": 960,
+          "present": 0,
+          "reason:missing_record": 960,
+          "valid": 0
+        }
+      },
+      "drift_adjusted": {
+        "by_context": {
+          "broken": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          },
+          "masked": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          },
+          "negative": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          },
+          "positive": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 60,
+              "n_observed": 0,
+              "n_planned": 60
+            }
+          }
+        },
+        "definition": "100 * (new_news_probability - no_news_probability)",
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 60,
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60,
+            "n_success": 0
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 120,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 120,
+            "n_families_observed": 0,
+            "n_missing": 120,
+            "n_observed": 0,
+            "n_planned": 120,
+            "n_success": 0
+          },
+          "positive": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 60,
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60,
+            "n_success": 0
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 60,
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60,
+            "n_success": 0
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          }
+        }
+      },
+      "primary": {
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 60,
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60,
+            "n_success": 0
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 120,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 120,
+            "n_families_observed": 0,
+            "n_missing": 120,
+            "n_observed": 0,
+            "n_planned": 120,
+            "n_success": 0
+          },
+          "positive": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 60,
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60,
+            "n_success": 0
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 60,
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60,
+            "n_success": 0
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          }
+        }
+      },
+      "repeated_minus_no_news": {
+        "broken": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          }
+        },
+        "masked": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          }
+        },
+        "negative": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          }
+        },
+        "positive": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 0,
+            "bootstrap_draws_requested": 2000,
+            "ci90": null,
+            "ci95": null,
+            "denominator": 0,
+            "estimate": null,
+            "interval_status": "insufficient_observed_families",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 0,
+            "n_missing": 60,
+            "n_observed": 0,
+            "n_planned": 60
+          }
+        }
+      }
+    },
+    "qwen3_32b": {
+      "baseline_probability_percent": {
+        "broken": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            23.983333333333334,
+            42.13999999999999
+          ],
+          "ci95": [
+            22.5,
+            43.78333333333333
+          ],
+          "denominator": 60,
+          "estimate": 33.15,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "masked": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            40.0,
+            49.26249999999999
+          ],
+          "ci95": [
+            39.166666666666664,
+            50.083333333333336
+          ],
+          "denominator": 60,
+          "estimate": 44.75,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "negative": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            35.49666666666667,
+            52.285
+          ],
+          "ci95": [
+            33.75,
+            53.95041666666667
+          ],
+          "denominator": 60,
+          "estimate": 44.18333333333333,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "positive": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            25.75,
+            45.0875
+          ],
+          "ci95": [
+            23.833333333333332,
+            46.66874999999999
+          ],
+          "denominator": 60,
+          "estimate": 35.5,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        }
+      },
+      "bootstrap": {
+        "draws": 2000,
+        "preserves": [
+          "contexts",
+          "repeats",
+          "update_arms",
+          "baseline_pairs"
+        ],
+        "seed": 20260921,
+        "unit": "family_id"
+      },
+      "broken_raw_new_news": {
+        "mean_absolute_pp": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            9.583333333333334,
+            16.85
+          ],
+          "ci95": [
+            8.766250000000001,
+            17.51708333333333
+          ],
+          "denominator": 60,
+          "estimate": 13.1,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        },
+        "signed_mean_pp": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            -0.35000000000000026,
+            10.083333333333334
+          ],
+          "ci95": [
+            -1.2,
+            11.083333333333334
+          ],
+          "denominator": 60,
+          "estimate": 4.9,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 20,
+          "n_missing": 0,
+          "n_observed": 60,
+          "n_planned": 60
+        }
+      },
+      "broken_stability": {
+        "drift_adjusted": {
+          "absolute_movement_bounded": false,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "complete_planned_observations",
+          "signed_mean_equivalent": false,
+          "status": "criterion_not_met"
+        },
+        "raw_new_news": {
+          "absolute_movement_bounded": false,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "complete_planned_observations",
+          "signed_mean_equivalent": false,
+          "status": "criterion_not_met"
+        }
+      },
+      "control_updates": {
+        "broken": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.2500000000000002
+              ],
+              "ci95": [
+                0.0,
+                0.2500000000000002
+              ],
+              "denominator": 60,
+              "estimate": 0.08333333333333341,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.2500000000000002
+              ],
+              "ci95": [
+                0.0,
+                0.2500000000000002
+              ],
+              "denominator": 60,
+              "estimate": 0.08333333333333341,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "masked": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "negative": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                4.333333333333333
+              ],
+              "ci95": [
+                0.0,
+                4.666666666666667
+              ],
+              "denominator": 60,
+              "estimate": 1.6666666666666667,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                4.333333333333333
+              ],
+              "ci95": [
+                0.0,
+                4.666666666666667
+              ],
+              "denominator": 60,
+              "estimate": 1.6666666666666667,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "positive": {
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 60,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.6666666666666672
+              ],
+              "ci95": [
+                0.0,
+                0.8333333333333337
+              ],
+              "denominator": 60,
+              "estimate": 0.3333333333333334,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.6666666666666672
+              ],
+              "ci95": [
+                0.0,
+                0.8333333333333337
+              ],
+              "denominator": 60,
+              "estimate": 0.3333333333333334,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        }
+      },
+      "coverage": {
+        "by_context_condition": {
+          "broken": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          },
+          "masked": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          },
+          "negative": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          },
+          "positive": {
+            "baseline": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "new_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "no_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            },
+            "repeated_news": {
+              "expected": 60,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 60,
+              "reason:ok": 60,
+              "valid": 60
+            }
+          }
+        },
+        "totals": {
+          "expected": 960,
+          "invalid_present": 0,
+          "missing_record": 0,
+          "present": 960,
+          "reason:ok": 960,
+          "valid": 960
+        }
+      },
+      "drift_adjusted": {
+        "by_context": {
+          "broken": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                9.583333333333334,
+                16.85
+              ],
+              "ci95": [
+                8.766250000000001,
+                17.51708333333333
+              ],
+              "denominator": 60,
+              "estimate": 13.1,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -0.35000000000000026,
+                10.083333333333334
+              ],
+              "ci95": [
+                -1.2,
+                11.083333333333334
+              ],
+              "denominator": 60,
+              "estimate": 4.9,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "masked": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                13.416666666666666,
+                19.166666666666668
+              ],
+              "ci95": [
+                12.833333333333334,
+                19.666666666666668
+              ],
+              "denominator": 60,
+              "estimate": 16.333333333333332,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -4.666666666666667,
+                8.587499999999997
+              ],
+              "ci95": [
+                -5.666666666666667,
+                9.75
+              ],
+              "denominator": 60,
+              "estimate": 1.9999999999999996,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "negative": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                16.55,
+                23.483333333333334
+              ],
+              "ci95": [
+                15.898333333333333,
+                24.501666666666658
+              ],
+              "denominator": 60,
+              "estimate": 19.733333333333334,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -9.316666666666666,
+                6.105833333333328
+              ],
+              "ci95": [
+                -10.450833333333332,
+                7.75
+              ],
+              "denominator": 60,
+              "estimate": -2.066666666666667,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          },
+          "positive": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                20.75,
+                30.504166666666663
+              ],
+              "ci95": [
+                20.08125,
+                31.66874999999999
+              ],
+              "denominator": 60,
+              "estimate": 25.333333333333332,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                10.416666666666666,
+                26.333333333333332
+              ],
+              "ci95": [
+                8.833333333333334,
+                27.916666666666668
+              ],
+              "denominator": 60,
+              "estimate": 18.5,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 60,
+              "n_planned": 60
+            }
+          }
+        },
+        "definition": "100 * (new_news_probability - no_news_probability)",
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.4,
+              0.7333333333333333
+            ],
+            "ci95": [
+              0.36666666666666664,
+              0.7666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 0.5666666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 26,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 34
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.5666666666666667,
+              0.7166666666666667
+            ],
+            "ci95": [
+              0.5583333333333333,
+              0.7333333333333333
+            ],
+            "denominator": 120,
+            "estimate": 0.6416666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 43,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 120,
+            "n_planned": 120,
+            "n_success": 77
+          },
+          "positive": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.5666666666666667,
+              0.85
+            ],
+            "ci95": [
+              0.55,
+              0.8666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 0.7166666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 17,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 43
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.18333333333333332,
+              0.45
+            ],
+            "ci95": [
+              0.15,
+              0.48333333333333334
+            ],
+            "denominator": 60,
+            "estimate": 0.31666666666666665,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 41,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 19
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              11.165,
+              29.583333333333332
+            ],
+            "ci95": [
+              9.749583333333334,
+              31.4
+            ],
+            "denominator": 60,
+            "estimate": 20.566666666666666,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        }
+      },
+      "primary": {
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.4,
+              0.7333333333333333
+            ],
+            "ci95": [
+              0.36666666666666664,
+              0.7666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 0.5666666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 26,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 34
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.5666666666666667,
+              0.7166666666666667
+            ],
+            "ci95": [
+              0.5583333333333333,
+              0.7333333333333333
+            ],
+            "denominator": 120,
+            "estimate": 0.6416666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 43,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 120,
+            "n_planned": 120,
+            "n_success": 77
+          },
+          "positive": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.5666666666666667,
+              0.85
+            ],
+            "ci95": [
+              0.55,
+              0.8666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 0.7166666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 17,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 43
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.18333333333333332,
+              0.45
+            ],
+            "ci95": [
+              0.15,
+              0.48333333333333334
+            ],
+            "denominator": 60,
+            "estimate": 0.31666666666666665,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 41,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60,
+            "n_success": 19
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              11.165,
+              29.583333333333332
+            ],
+            "ci95": [
+              9.749583333333334,
+              31.4
+            ],
+            "denominator": 60,
+            "estimate": 20.566666666666666,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        }
+      },
+      "repeated_minus_no_news": {
+        "broken": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.2500000000000002
+            ],
+            "ci95": [
+              0.0,
+              0.2500000000000002
+            ],
+            "denominator": 60,
+            "estimate": 0.08333333333333341,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.2500000000000002
+            ],
+            "ci95": [
+              0.0,
+              0.2500000000000002
+            ],
+            "denominator": 60,
+            "estimate": 0.08333333333333341,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        },
+        "masked": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.0
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "denominator": 60,
+            "estimate": 0.0,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        },
+        "negative": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              4.333333333333333
+            ],
+            "ci95": [
+              0.0,
+              4.666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 1.6666666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              4.333333333333333
+            ],
+            "ci95": [
+              0.0,
+              4.666666666666667
+            ],
+            "denominator": 60,
+            "estimate": 1.6666666666666667,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        },
+        "positive": {
+          "mean_absolute_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.6666666666666672
+            ],
+            "ci95": [
+              0.0,
+              0.8333333333333337
+            ],
+            "denominator": 60,
+            "estimate": 0.3333333333333334,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          },
+          "signed_mean_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.0,
+              0.6666666666666672
+            ],
+            "ci95": [
+              0.0,
+              0.8333333333333337
+            ],
+            "denominator": 60,
+            "estimate": 0.3333333333333334,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 60,
+            "n_planned": 60
+          }
+        }
+      }
+    }
+  },
+  "n_families": 20,
+  "n_planned_response_records_per_model": 960,
+  "n_planned_units_per_model": 240,
+  "prescribed_models": [
+    "qwen2_5_72b_instruct",
+    "llama3_1_70b_instruct",
+    "qwen3_32b"
+  ],
+  "run_completion": {
+    "completion_manifest": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/completion.json",
+    "coverage_totals": {
+      "expected": 2880,
+      "models_with_coverage": 3,
+      "valid": 1920
+    },
+    "models": {
+      "llama3_1_70b_instruct": {
+        "coverage": {
+          "expected": 960,
+          "invalid_present": 0,
+          "missing_record": 0,
+          "present": 960,
+          "reason:ok": 960,
+          "valid": 960
+        },
+        "job_id": "31433799",
+        "manifest_complete": true,
+        "plan_complete": true,
+        "scheduler_state": "COMPLETED"
+      },
+      "qwen2_5_72b_instruct": {
+        "coverage": {
+          "expected": 960,
+          "invalid_present": 0,
+          "missing_record": 960,
+          "present": 0,
+          "reason:missing_record": 960,
+          "valid": 0
+        },
+        "job_id": "31433798",
+        "manifest_complete": false,
+        "plan_complete": false,
+        "scheduler_state": "TIMEOUT"
+      },
+      "qwen3_32b": {
+        "coverage": {
+          "expected": 960,
+          "invalid_present": 0,
+          "missing_record": 0,
+          "present": 960,
+          "reason:ok": 960,
+          "valid": 960
+        },
+        "job_id": "31433855",
+        "manifest_complete": true,
+        "plan_complete": true,
+        "scheduler_state": "COMPLETED"
+      }
+    },
+    "plan_complete": false
+  },
+  "schema_version": "context_reversal_development_aggregate_v1",
+  "source_summaries": {
+    "llama3_1_70b_instruct": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/llama3_1_70b_instruct/summary.json",
+      "sha256": "425dc7d8f2d4cbba2fe968bc71aac456a1e7ba22129bf6f78aa3f37bed58da07"
+    },
+    "qwen2_5_72b_instruct": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/qwen2_5_72b_instruct/summary.json",
+      "sha256": "8357a4ce5a2ad77d3d21a2980aee3849d0953e44f4627934828d2dc2ee97af71"
+    },
+    "qwen3_32b": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/qwen3_32b/summary.json",
+      "sha256": "05ca2698801b79f5ac8182411bcda5a16c65428ee5b4ddf49511b44decfc05a2"
+    }
+  }
+}

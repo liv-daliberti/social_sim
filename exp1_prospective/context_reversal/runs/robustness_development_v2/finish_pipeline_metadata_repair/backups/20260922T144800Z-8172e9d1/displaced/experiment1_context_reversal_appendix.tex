@@ -1,0 +1,226 @@
+\subsection{Exploratory context-reversal development pilot}
+\label{app:exp1-context-reversal}
+
+The original packet design leaves a relevance shortcut: a word-only classifier
+separates directional from orthogonal packets with $.989$ accuracy. We therefore
+ran a development pilot in which the news is identical within each family and
+only its relationship to the forecast outcome changes. These are 20
+assistant-authored fictional families, without independent human editing or
+validation; the pilot develops a measurement instrument rather than providing
+confirmatory evidence about real-world forecasting. The families span five reused
+mechanism classes, not 20 distinct mechanisms.
+
+\paragraph{Design and execution.}
+Each family supplies a question, resolution rule, background, prior information,
+and three relational contexts. Identical news is intended to favor the outcome,
+oppose it, or have no bearing on it when the connecting relationship is broken.
+A fourth condition omits the relationship description; it has no prespecified
+sign or null expectation. Instructions ask models to condition on the supplied
+fictional premises, with no web retrieval. Condition labels and private
+annotations are excluded from prompts.
+
+For each context, the model first gives a separate baseline probability. Three
+independent branches then receive the same baseline and context with either
+new news, a no-news message, or a verbatim repeat of information already present
+at baseline. The repeated-information control is not a second presentation of
+the genuinely new evidence. All branches use the same instructions about novelty,
+and no branch sees another branch's answer. This separates contextual changes
+from news-induced revision.
+
+Qwen2.5-72B-Instruct, Llama-3.1-70B-Instruct, and Qwen3-32B ran from locally cached
+checkpoints with three repeats, temperature $0.7$, top-$p=1$, and a 128-token
+output limit; Qwen3 thinking was disabled. Syntax-constrained JSON required a
+probability in $[0,1]$ without specifying its value or direction. Each model
+produced 240 baselines and 720 updates: all 960 records were valid, for 2,880
+records in total. Infrastructure retries replaced no valid responses.
+
+\paragraph{Analysis and results.}
+Directional accuracy uses all 120 planned positive/negative trials per model;
+paired reversal requires both signs to be correct in each of 60 planned pairs.
+Zero movement, invalid responses, and missing responses count as failures; there
+is no minimum-movement filter. Broken-link movement uses 60 trials per model.
+Intervals use 2,000 whole-family bootstrap draws, preserving contexts, branches,
+and repeats. Thus 60 repeated pairs do not represent 60 independent families.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Exploratory context reversal on independently unvalidated
+materials. Brackets give descriptive 95\% family-bootstrap intervals. Sign
+accuracy and paired reversal include every planned trial; broken-link movement
+is the mean absolute change in percentage points.}
+\label{tab:exp1-context-reversal}
+\small
+\input{tables/exp1_context_reversal}
+\end{minipage}
+\end{center}
+
+Table~\ref{tab:exp1-context-reversal} shows only 30.0--36.7\% paired reversal.
+The prespecified broken-link stability criterion requires the signed-mean 90\%
+interval strictly within $\pm2$ percentage points and the upper endpoint of the
+95\% interval for mean absolute movement below 2 points. All three models fail:
+mean absolute movement is 10.5--13.3 points. All 240 no-news branches per model
+exactly reproduce their priors, making raw and drift-adjusted results identical.
+Mean absolute movement after repeated information, pooled across contexts, is
+$.375$, $.021$, and $.521$ points for Qwen2.5-72B, Llama-3.1-70B, and Qwen3-32B,
+respectively. Under this prompting protocol, ordinary re-elicitation drift does
+not explain the much larger broken-link response to news.
+
+\paragraph{Exploratory frontier extension.}
+After inspecting the completed local pilot, we added GPT-5.6 Sol
+(\texttt{gpt-5.6-sol}) on all 20 original families and all four contexts, using
+only repeat zero. The 80-unit plan was frozen before its API responses were
+collected; no family, label, or prompt was revised. The Responses API used low
+reasoning effort, a 2,048-token output limit, strict JSON-schema output, no tools,
+and no supplied temperature or seed. All 320 calls returned valid probabilities.
+This is a post-local-results development extension, not a prespecified fourth
+member of the original local roster. Local models used different decoding and
+output constraints, so the comparison concerns these deployments rather than an
+isolated effect of model identity.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Matched single-repeat development comparison on the same 20
+families. Each model contributes 40 directional trials, 20 reversal pairs, and
+20 broken-link trials, with 320/320 valid records. Brackets are descriptive 95\%
+family-bootstrap intervals; inference settings differ between deployments.}
+\label{tab:exp1-context-reversal-frontier}
+\small
+\input{tables/exp1_context_reversal_frontier}
+\end{minipage}
+\end{center}
+
+GPT-5.6 obtains 37/40 correct directions and 17/20 successful reversal pairs
+(Table~\ref{tab:exp1-context-reversal-frontier}). Broken-link absolute movement
+averages 0.5 points; its signed-mean 90\% interval is $[-1.5,0.0]$ and its upper
+95\% absolute-movement bound is 1.5, meeting the original 2-point stability
+criterion on this development set. Nineteen broken-link trials have zero change;
+one changes by $-10$ points. All 80 no-news and all 80 repeated-news branches
+exactly reproduce their own baselines. None of the 40 directional baselines
+mechanically blocks the expected sign. The three failed directional updates
+remain in the denominator, including the ambiguous reservoir family. These
+results support testing relational relevance in a fresh validated cohort, while
+the local failures show that performance is not uniform across deployments.
+
+\paragraph{Exploratory direction-only companion.}
+After inspecting the probability results, we elicited standalone direction
+classifications from the same three local checkpoints, retaining all 20
+families and four contexts at repeat zero. Each model separately classified 240
+scenario--message combinations: new news, no news, and repeated information for
+each context. No numerical prior was shown or forecast elicited. Constrained
+JSON selected increase, decrease, unchanged, or unclear, with temperature $0.7$,
+top-$p=1$, and 128 output tokens; Qwen3 thinking remained disabled. All 720
+planned outputs were valid. Scored denominators retain every planned trial;
+unclear, invalid, and missing outputs fail determinate targets. Masked new-news
+judgments have no target and remain descriptive. The completed human materials
+review covers the original 18 evidence packets; its documented scope is unchanged.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Exploratory standalone direction judgments on the unchanged
+development families. Entries are correct/planned counts. Paired reversal
+requires both signed contexts to be correct. Broken-link news and the 160
+no-news/repeated-news controls target unchanged. Each model has 240/240 valid
+outputs; unclear is valid syntax but fails a determinate target.}
+\label{tab:exp1-context-direction}
+\small
+\input{tables/exp1_context_direction}
+\end{minipage}
+\end{center}
+
+Direction-only paired reversal is 6/20, 11/20, and 9/20 for Qwen2.5, Llama,
+and Qwen3, respectively (Table~\ref{tab:exp1-context-direction}), compared with
+5/20, 7/20, and 6/20 in their original repeat-zero probability responses.
+For both Llama and Qwen3, four of five signed classification-only successes
+occur where the original numerical prior mechanically blocked the required
+update: a positive target starting at 1 or a negative target starting at 0.
+On unblocked trials, Llama scores 27/34 categorically versus 26/34 numerically;
+Qwen3 scores 24/36 versus 25/36. Qwen2.5 has no blocked endpoints and scores
+25/40 in both tasks. The positive net gains for Llama and Qwen3 are therefore
+concentrated in endpoint cases. Their separate elicitations and single repeat
+do not isolate the cause of those differences. All three models continue to
+miss many paired reversals and usually fail to classify broken-link news as
+unchanged, despite largely correct no-news and repeated-information controls.
+The original probability outcomes and interval-based stability criterion remain
+the primary numeric analysis.
+
+\paragraph{Exploratory Qwen3 reasoning follow-up.}
+The same Qwen3-32B checkpoint ran with thinking enabled and disabled on all
+20 families and four contexts at repeat zero. Each arm elicited 80
+context-specific priors and three separately generated update branches per
+prior, for 320 planned responses. Updates received only their own arm's prior.
+Both modes used unconstrained decoding, identical request seeds, temperature
+$0.7$, top-$p=1$, a 4,096-token output limit, and an 8,192-token context limit.
+The original constrained, 128-token non-thinking deployment remains a separate
+reference. After observing non-thinking outputs, a recorded parsing amendment
+permitted exactly one optional Markdown fence around otherwise strict final
+probability JSON. This post-output rule applied symmetrically to both modes;
+original format compliance is separately reported. Every received raw
+answer was preserved and reparsed without regeneration. Format recovery
+generated only previously unattempted update branches whose baselines became
+parseable. Truncation, unfinished reasoning, and other remaining failures were
+retained; the parser never extracted a probability from unfinished reasoning.
+All planned trials remain in scored denominators, with the original sign,
+paired-reversal, and broken-link stability criteria.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Exploratory Qwen3 reasoning follow-up on the same 20 families.
+Correct-sign and paired-reversal entries retain all planned trials. The two
+unconstrained arms use the symmetric format amendment; the original constrained
+arm is a descriptive reference. Broken-link mean absolute movement is observed
+only, with its missing trial shown explicitly.}
+\label{tab:exp1-context-reasoning}
+\small
+\resizebox{\linewidth}{!}{\input{tables/exp1_context_reasoning}}
+\end{minipage}
+\end{center}
+
+All 320 records per arm are present. The disabled arm has 320 valid probabilities
+after recovery: 103 previously rejected fenced answers were reparsed, and 198
+previously blocked update branches were generated for the first time. Before
+that amendment, its strict-format record counts were 19 valid, 103 parse
+failures, and 198 blocked branches. The enabled arm retains 300 valid records,
+five truncated baselines, and their 15 blocked updates; format recovery changes
+none of these outcomes. Four truncated baselines belong to the radio family
+(\texttt{dev\_16}), and one to the positive carton-transfer context
+(\texttt{dev\_06}). These failures remain in all planned binary denominators.
+
+Thinking enabled obtains 30/40 correct signs and 12/20 paired reversals, compared
+with 25/40 and 6/20 for matched unconstrained thinking disabled
+(Table~\ref{tab:exp1-context-reasoning}). Using 2,000 paired whole-family
+bootstrap draws, the enabled-minus-disabled contrast is $+12.5$ percentage
+points for signs (descriptive 95\% interval $[-2.5,27.5]$) and $+30.0$ points
+for paired reversal ($[5.0,55.0]$). Each paired binary contrast retains all
+20 families, including failures. Direction-blocking baseline endpoints occur
+in 5/40 valid disabled baselines and 1/37 valid enabled baselines; three enabled
+directional baselines are missing.
+
+Broken-link absolute movement averages 14.05 points for disabled thinking
+(20/20 observed) and 7.63 for enabled thinking (19/20 observed). On their
+19 common complete pairs, the respective means are 14.74 and 7.63 points,
+giving an enabled-minus-disabled contrast of $-7.11$ points
+($[-16.32,1.32]$). The missing radio-family measurement is never replaced
+by zero. The original stability criterion is not met by disabled thinking
+and is indeterminate for enabled thinking because a planned measurement is
+missing. Enabled outputs contain nonempty reasoning in all 305 received
+completions, with 300 closing the reasoning segment and five exhausting the
+token limit. Mean output length is 966.4 tokens per received enabled completion
+versus 12.5 for disabled thinking. These results describe the matched deployment
+change on this development sample; uncertainty, changed baseline judgments,
+and remaining failures limit conclusions about the mechanism of improvement.
+
+\paragraph{Interpretive limits.}
+Baseline probabilities at the relevant endpoint mechanically prevent a correct
+signed update in 0/120 Qwen2.5-72B, 19/120 Llama, and 12/120 Qwen3 trials; these
+remain failures. Material ambiguities also remain: the carton-transfer family
+(\texttt{dev\_06}) does not specify where cartons leaving the buffer go, and the
+reservoir family (\texttt{dev\_07}) does not explicitly say that outgoing water
+bypasses the turbines. The resin-conveyor (\texttt{dev\_10}) and silt-pump
+(\texttt{dev\_18}) families likewise leave outlet destinations unspecified. No family was excluded or relabeled after observing
+responses. The development results do not establish reliable relational relevance
+judgments on independently validated or real-world materials. Any material revision requires a new development version; a fresh,
+independently validated and frozen cohort is needed for confirmation.

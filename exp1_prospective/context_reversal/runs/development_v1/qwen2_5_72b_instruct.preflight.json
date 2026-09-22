@@ -1,0 +1,65 @@
+{
+  "config": {
+    "decode": {
+      "chat_template_mode": "auto",
+      "guided_backend": "outlines:no-fallback",
+      "guided_regex": "\\{\"probability\": (?:0(?:\\.[0-9]{1,6})?|1(?:\\.0{1,6})?)\\}",
+      "max_tokens": 128,
+      "n": 1,
+      "per_request_seed": "SHA256(canonical JSON [base_seed, trial_id, stage, condition]) first 64 bits modulo 2**31-1",
+      "seed": 20260921,
+      "temperature": 0.7,
+      "top_p": 1.0
+    },
+    "engine": {
+      "batch_size": 32,
+      "disable_custom_all_reduce": true,
+      "dtype": "bfloat16",
+      "enable_prefix_caching": true,
+      "enforce_eager": false,
+      "gpu_memory_utilization": 0.9,
+      "guided_decoding_backend": "outlines:no-fallback",
+      "max_model_len": 4096,
+      "tensor_parallel_size": 4,
+      "vllm_use_v1": false
+    },
+    "input_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_plan.jsonl",
+    "input_sha256": "cf6d5e30b5e3bd3ebd42be5348019c485f2f50f62d5a8b2ae07000ac5cbfb4a4",
+    "local_model": {
+      "metadata_sha256": {
+        "config.json": "14ca217334fe0fd10148413592d68c99eeb33431ed89c1afa130fee560be2a29",
+        "generation_config.json": "ea35dfb6fc5051b01114f9b995820d55dab01ed33ee490f6378b442af82c09f9",
+        "model.safetensors.index.json": "6c1d85cad4513d35273d05a4c7206c04b4c8aea0ebd35ef2b26cb88ec56dfe66",
+        "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+      },
+      "model_type": "qwen2",
+      "path": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen2.5-72B-Instruct/snapshots/495f39366efef23836d0cfae4fbe635880d2be31",
+      "snapshot_revision": "495f39366efef23836d0cfae4fbe635880d2be31",
+      "weight_bytes": 145412519312,
+      "weight_shards": 37
+    },
+    "model_key": "qwen2_5_72b_instruct",
+    "runner_sha256": "d76d65f94e34939a62898821fdd5a27db34abebe8ff20f8dd877da85eb7e0ec8",
+    "schema_version": 1,
+    "software": {
+      "outlines": "0.1.11",
+      "python": "3.10.20",
+      "torch": "2.6.0",
+      "transformers": "4.51.3",
+      "vllm": "0.8.4"
+    },
+    "unit_count": 240
+  },
+  "contexts": {
+    "broken": 60,
+    "masked": 60,
+    "negative": 60,
+    "positive": 60
+  },
+  "existing_records": 0,
+  "expected_records": 960,
+  "families": 20,
+  "run_signature": "388bc0c26f7bedde1abb8cdff0865272a0f85bc92ebf79558505b53494422703",
+  "status": "dry_run_valid"
+}

@@ -1,0 +1,50 @@
+{
+  "run_id": "local_diagnostics_v1",
+  "created_at": "2026-09-22T01:51:10.501561+00:00",
+  "status": "submitted",
+  "user_authorization": "Direction-only companion and local Qwen3-32B reasoning experiment; no repeat material review or frontier inference.",
+  "source_plan": "exp1_prospective/context_reversal/runs/frontier_gpt56_pilot_v1/plan.jsonl",
+  "source_plan_sha256": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b",
+  "probability_plan": "exp1_prospective/context_reversal/runs/local_diagnostics_v1/probability_plan.jsonl",
+  "probability_plan_sha256": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b",
+  "family_count": 20,
+  "context_count": 4,
+  "repeats": 1,
+  "material_changes": false,
+  "new_human_review_requested": false,
+  "frontier_api_calls": 0,
+  "direction_models": [
+    "qwen2_5_72b_instruct",
+    "llama3_1_70b_instruct",
+    "qwen3_32b"
+  ],
+  "direction_calls_per_model": 240,
+  "probability_arms": [
+    "qwen3_32b_unconstrained_nonthinking",
+    "qwen3_32b_thinking"
+  ],
+  "probability_calls_per_arm": 320,
+  "total_planned_generations": 1360,
+  "analysis_scope": "Exploratory follow-up on unchanged development families, preserving all primary pilot results.",
+  "review_provenance": "REVIEW_PROVENANCE.md",
+  "reasoning_configuration": {
+    "thinking_modes": [
+      "enabled",
+      "disabled"
+    ],
+    "temperature": 0.7,
+    "top_p": 1.0,
+    "max_output_tokens": 4096,
+    "max_model_len": 8192,
+    "batch_size": 16,
+    "grammar": "none in both modes",
+    "empty_reasoning_with_valid_final": "valid probability, separately flagged"
+  },
+  "direction_design_sha256": "478b2e76395fbec66aed89aca5ca43d9ed8fce77e0fe2d3472768bb2bf882ea3",
+  "job_ids": {
+    "qwen72": "31443323",
+    "llama70": "31443324",
+    "qwen32": "31443404"
+  },
+  "finalizer_job_id": "31443326"
+}

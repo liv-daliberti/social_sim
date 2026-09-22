@@ -1,0 +1,46 @@
+{
+  "status": "complete",
+  "plan_complete": true,
+  "analysis_status": "development_unvalidated_descriptive_only",
+  "completed_at": "2026-09-22T01:27:42.863631+00:00",
+  "requested_model": "gpt-5.6-sol",
+  "returned_models": [
+    "gpt-5.6-sol"
+  ],
+  "expected_records": 320,
+  "valid_records": 320,
+  "attempted_calls": 320,
+  "estimated_cost_usd": 0.7121279999999998,
+  "cost_note": "Token-price estimate, not a billing invoice.",
+  "usage_totals": {
+    "input_tokens": 101072,
+    "output_tokens": 15392,
+    "reasoning_tokens": 9976,
+    "total_tokens": 116464
+  },
+  "source_provenance": {
+    "design": {
+      "path": "exp1_prospective/context_reversal/runs/frontier_gpt56_pilot_v1/plan.jsonl",
+      "sha256": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b"
+    },
+    "responses": [
+      {
+        "path": "exp1_prospective/context_reversal/responses/frontier_gpt56_pilot_v1/gpt_5_6_frontier.jsonl",
+        "sha256": "eda98732ec765d385461da5501582b68012b14ba1b4d4353f9c07c1325a5e181"
+      }
+    ]
+  },
+  "response_manifest_sha256": "bcf826ab6b5a9b665adfd75c9ac985985797bf0d3fdc1084954a7fec813bd928",
+  "summary": "../../results/frontier_gpt56_pilot_v1/summary.md",
+  "interpretation": "Post-local-results exploratory extension on unchanged, independently unvalidated development materials; deployment settings differ.",
+  "independent_audit": "../../results/frontier_gpt56_pilot_v1/independent_audit.json",
+  "validation": "../../results/frontier_gpt56_pilot_v1/validation.md",
+  "manuscript_update": {
+    "source": "paper/ICLR/main.tex",
+    "pdf": "paper/ICLR/main.pdf",
+    "pdf_sha256": "dadf62a4e4d05db102123a6ddfcc87ebf4ec334c0994e03885cdeb42ffbbf3d7",
+    "main_text_pages": 9,
+    "total_pdf_pages": 73,
+    "new_paper_test_failures": 0
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "all_original_families_retained": true,
+  "artifacts": {
+    "direction_plan.jsonl": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/robustness_development_v2/direction_plan.jsonl",
+      "sha256": "cda62f5b8c6bc7cf91abd5d4c6eee8e471c93abf9154320f96fe83c66a07edd0"
+    },
+    "families.jsonl": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/robustness_development_v2/families.jsonl",
+      "sha256": "610d1b153be2a560d9bc052d554e8ed2a0df36d889a0804c942b486a91737469"
+    },
+    "probability_plan.jsonl": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/robustness_development_v2/probability_plan.jsonl",
+      "sha256": "0b72680063c482e3f3f786c4783073094af4d65b11e153f496dfec188e520992"
+    },
+    "repair_log.jsonl": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/robustness_development_v2/repair_log.jsonl",
+      "sha256": "a3d5496347cec75896c36caa783bc932237982533036ae6f9bfc9d05d7b6471d"
+    }
+  },
+  "code_sha256": {
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/design.py": "9da648c542e5b6bef59ff9a60e7bdafd6561e357a7539e6d73abd372d9f72d68",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/direction_design.py": "c2b6a50809c886b4cd33a919be17727c341a2270a0492a8e34f53f5b68dafeae",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/materials.py": "4333058b82162c7441ae0a95f25360ea153b51f6923d49ec2758e4c826957f6b",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/robustness/__init__.py": "f59f366aa6907c493566a5fa408dedb772e1ed78735207f3ad0d4469b91a173d",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/robustness/compile_design.py": "80d7e9700bf11231d7940d7022b0d9a38b503c34b093c3565bedcccc8149d282",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/robustness/flow_specs.py": "b3fc819918a3b9ddecb7b88deecb0f321800666e7c12be0918f4dfe926a303d6",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/robustness/materials.py": "1bfb13d9232c2359d7775148ea42ee618a79c1ebd6878de5adb61b8fa3379fb3",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/robustness/nonflow_specs.py": "ea6acb3cb839d2a6c791a9a929d535073affbcc37e371cc4481c763e6343d590",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/run_local.py": "d76d65f94e34939a62898821fdd5a27db34abebe8ff20f8dd877da85eb7e0ec8"
+  },
+  "context_balance": "All three relation roles and actors appear once in every schedule; context changes entity assignment only. Role order rotates by parent, and the evidence actor occupies every position across contexts.",
+  "contexts": [
+    "positive",
+    "negative",
+    "broken",
+    "masked"
+  ],
+  "created_at": "2026-09-22T02:53:12.491813+00:00",
+  "development_only": true,
+  "direction_calls_per_model": 960,
+  "direction_units": 320,
+  "fixed_base_paraphrase_fields": [
+    "question",
+    "resolution",
+    "prior_information",
+    "evidence",
+    "repeat_news"
+  ],
+  "model_outputs_used_to_select_families": false,
+  "n_material_rows": 80,
+  "n_original_sampling_families": 20,
+  "name_only_policy": "Explicit simultaneous whole-phrase one-to-one map, exactly reversible on every visible field.",
+  "new_human_review_requested": false,
+  "paraphrase_scope": [
+    "background",
+    "mechanism",
+    "relation_schedule"
+  ],
+  "parent_materials": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_families.jsonl",
+    "sha256": "c43c042a2125831cd51127f767866af9b0f2b1a7d86108bfafbaf24c8fcbdbcd"
+  },
+  "probability_calls_per_model": 1280,
+  "probability_units": 320,
+  "protocol": "exp1_context_reversal_robustness_development_v2",
+  "repeats_per_variant": 1,
+  "resample": "Same visible text as repaired_base; distinct trial IDs produce distinct existing per-request seeds.",
+  "sampling_unit": "parent_family_id; all contexts, variants, and message arms stay grouped within 20 parents",
+  "variants": [
+    "repaired_base",
+    "name_only",
+    "paraphrase",
+    "resample"
+  ]
+}

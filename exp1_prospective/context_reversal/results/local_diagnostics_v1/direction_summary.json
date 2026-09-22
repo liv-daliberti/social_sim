@@ -1,0 +1,387 @@
+{
+  "schema_version": "local_direction_cross_model_summary_v1",
+  "status": "complete_direction_companion",
+  "purpose": "Exploratory direction-only companion to the existing probability experiment; original primary outcomes are unchanged.",
+  "scope": {
+    "families": 20,
+    "contexts": 4,
+    "repeat": 0,
+    "message_conditions": [
+      "new_news",
+      "no_news",
+      "repeated_news"
+    ],
+    "models": 3,
+    "expected_direction_outputs": 720,
+    "valid_direction_outputs": 720,
+    "missing_direction_outputs": 0
+  },
+  "scoring": {
+    "signed": "New news: positive requires increase and negative requires decrease; unchanged, unclear, invalid, or missing fail.",
+    "paired": "Both positive and negative direction targets must be correct within the same family.",
+    "broken": "New-news direction label must be unchanged.",
+    "controls": "No-news and repeated-news direction labels must be unchanged in all four contexts.",
+    "masked": "Masked new news has no expected target and is unscored; its two controls are scored unchanged.",
+    "numeric": "Comparators use the original numeric run repeat0. Signs and pairs use strict raw updated-minus-baseline probability signs. Exact-zero numeric control/broken counts are descriptive companion diagnostics, separate from the original interval-based stability criterion.",
+    "endpoint_blocked": "A positive target with numeric baseline1, or a negative target with numeric baseline0. These bounds make the expected numeric update direction unavailable."
+  },
+  "models": {
+    "qwen2_5_72b_instruct": {
+      "label": "Qwen2.5-72B",
+      "direction": {
+        "signed_correct": 25,
+        "signed_planned": 40,
+        "paired_correct": 6,
+        "paired_planned": 20,
+        "broken_unchanged_correct": 6,
+        "broken_planned": 20,
+        "controls_unchanged_correct": 150,
+        "controls_planned": 160
+      },
+      "direction_positive_correct": 12,
+      "direction_negative_correct": 13,
+      "original_repeat0_numeric": {
+        "signed_correct": 25,
+        "positive_correct": 15,
+        "negative_correct": 10,
+        "paired_correct": 5,
+        "broken_exact_zero": 5,
+        "controls_exact_zero": 156,
+        "signed_planned": 40,
+        "paired_planned": 20,
+        "broken_planned": 20,
+        "controls_planned": 160
+      },
+      "signed_cross_tab": {
+        "both_correct": 22,
+        "classification_correct_numeric_incorrect": 3,
+        "classification_incorrect_numeric_correct": 3,
+        "both_incorrect": 12
+      },
+      "endpoint_split": {
+        "blocked": {
+          "n_planned": 0,
+          "both_correct": 0,
+          "classification_correct_numeric_incorrect": 0,
+          "classification_incorrect_numeric_correct": 0,
+          "both_incorrect": 0
+        },
+        "unblocked": {
+          "n_planned": 40,
+          "both_correct": 22,
+          "classification_correct_numeric_incorrect": 3,
+          "classification_incorrect_numeric_correct": 3,
+          "both_incorrect": 12
+        }
+      },
+      "classification_only_rows": [
+        {
+          "trial_id": "dev_03:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.3,
+          "updated": 0.7,
+          "raw_update_pp": 40.0,
+          "classification": "decrease",
+          "endpoint_blocked": false
+        },
+        {
+          "trial_id": "dev_05:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.45,
+          "updated": 0.55,
+          "raw_update_pp": 10.000000000000004,
+          "classification": "decrease",
+          "endpoint_blocked": false
+        },
+        {
+          "trial_id": "dev_17:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.3,
+          "updated": 0.4,
+          "raw_update_pp": 10.000000000000004,
+          "classification": "decrease",
+          "endpoint_blocked": false
+        }
+      ],
+      "unclear_total": 0,
+      "valid_direction_outputs": 240,
+      "planned_direction_outputs": 240,
+      "direction_signed_ci95": [
+        0.5,
+        0.75
+      ],
+      "provenance": {
+        "summary": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_qwen2_5_72b_instruct/summary.json",
+          "sha256": "17230882d937eff8761a9312ee04cd02b1d178a0266ac94357ec2c5e7586e07e"
+        },
+        "independent_audit": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_qwen2_5_72b_instruct/independent_audit.json",
+          "sha256": "aac8853ac2339f8893440bb8b8bbd685141220609a30271d50c455e730de83f3"
+        },
+        "original_probability_responses": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen2_5_72b_instruct_retry_eager.jsonl",
+          "sha256": "92a2bd44b97d2b9d3d2e290923fa727113432ec087cb16807fc80a846ec3474f"
+        }
+      }
+    },
+    "llama3_1_70b_instruct": {
+      "label": "Llama3.1-70B",
+      "direction": {
+        "signed_correct": 31,
+        "signed_planned": 40,
+        "paired_correct": 11,
+        "paired_planned": 20,
+        "broken_unchanged_correct": 7,
+        "broken_planned": 20,
+        "controls_unchanged_correct": 155,
+        "controls_planned": 160
+      },
+      "direction_positive_correct": 17,
+      "direction_negative_correct": 14,
+      "original_repeat0_numeric": {
+        "signed_correct": 26,
+        "positive_correct": 15,
+        "negative_correct": 11,
+        "paired_correct": 7,
+        "broken_exact_zero": 11,
+        "controls_exact_zero": 160,
+        "signed_planned": 40,
+        "paired_planned": 20,
+        "broken_planned": 20,
+        "controls_planned": 160
+      },
+      "signed_cross_tab": {
+        "both_correct": 26,
+        "classification_correct_numeric_incorrect": 5,
+        "classification_incorrect_numeric_correct": 0,
+        "both_incorrect": 9
+      },
+      "endpoint_split": {
+        "blocked": {
+          "n_planned": 6,
+          "both_correct": 0,
+          "classification_correct_numeric_incorrect": 4,
+          "classification_incorrect_numeric_correct": 0,
+          "both_incorrect": 2
+        },
+        "unblocked": {
+          "n_planned": 34,
+          "both_correct": 26,
+          "classification_correct_numeric_incorrect": 1,
+          "classification_incorrect_numeric_correct": 0,
+          "both_incorrect": 7
+        }
+      },
+      "classification_only_rows": [
+        {
+          "trial_id": "dev_02:positive:r0",
+          "context_id": "positive",
+          "baseline": 0.0,
+          "updated": 0.0,
+          "raw_update_pp": 0.0,
+          "classification": "increase",
+          "endpoint_blocked": false
+        },
+        {
+          "trial_id": "dev_16:positive:r0",
+          "context_id": "positive",
+          "baseline": 1.0,
+          "updated": 0.5,
+          "raw_update_pp": -50.0,
+          "classification": "increase",
+          "endpoint_blocked": true
+        },
+        {
+          "trial_id": "dev_17:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.0,
+          "updated": 0.0,
+          "raw_update_pp": 0.0,
+          "classification": "decrease",
+          "endpoint_blocked": true
+        },
+        {
+          "trial_id": "dev_19:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.0,
+          "updated": 0.0,
+          "raw_update_pp": 0.0,
+          "classification": "decrease",
+          "endpoint_blocked": true
+        },
+        {
+          "trial_id": "dev_20:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.0,
+          "updated": 0.0,
+          "raw_update_pp": 0.0,
+          "classification": "decrease",
+          "endpoint_blocked": true
+        }
+      ],
+      "unclear_total": 1,
+      "valid_direction_outputs": 240,
+      "planned_direction_outputs": 240,
+      "direction_signed_ci95": [
+        0.675,
+        0.875
+      ],
+      "provenance": {
+        "summary": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_llama3_1_70b_instruct/summary.json",
+          "sha256": "7cabea59ce93f0c0dc906e1c190ed27f2493d496ee4f65c59f76c41e2660147a"
+        },
+        "independent_audit": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_llama3_1_70b_instruct/independent_audit.json",
+          "sha256": "289f27cc78b00e6f8c4e3a874eb92717e98363a99dd210e279482a8077cad52c"
+        },
+        "original_probability_responses": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/llama3_1_70b_instruct.jsonl",
+          "sha256": "d55acde2a68fde97943ca6d6e3aa213357ab02048c5d91f5479b84e932159b66"
+        }
+      }
+    },
+    "qwen3_32b": {
+      "label": "Qwen3-32B (nonthinking)",
+      "direction": {
+        "signed_correct": 28,
+        "signed_planned": 40,
+        "paired_correct": 9,
+        "paired_planned": 20,
+        "broken_unchanged_correct": 2,
+        "broken_planned": 20,
+        "controls_unchanged_correct": 150,
+        "controls_planned": 160
+      },
+      "direction_positive_correct": 13,
+      "direction_negative_correct": 15,
+      "original_repeat0_numeric": {
+        "signed_correct": 25,
+        "positive_correct": 14,
+        "negative_correct": 11,
+        "paired_correct": 6,
+        "broken_exact_zero": 8,
+        "controls_exact_zero": 157,
+        "signed_planned": 40,
+        "paired_planned": 20,
+        "broken_planned": 20,
+        "controls_planned": 160
+      },
+      "signed_cross_tab": {
+        "both_correct": 23,
+        "classification_correct_numeric_incorrect": 5,
+        "classification_incorrect_numeric_correct": 2,
+        "both_incorrect": 10
+      },
+      "endpoint_split": {
+        "blocked": {
+          "n_planned": 4,
+          "both_correct": 0,
+          "classification_correct_numeric_incorrect": 4,
+          "classification_incorrect_numeric_correct": 0,
+          "both_incorrect": 0
+        },
+        "unblocked": {
+          "n_planned": 36,
+          "both_correct": 23,
+          "classification_correct_numeric_incorrect": 1,
+          "classification_incorrect_numeric_correct": 2,
+          "both_incorrect": 10
+        }
+      },
+      "classification_only_rows": [
+        {
+          "trial_id": "dev_18:positive:r0",
+          "context_id": "positive",
+          "baseline": 0.0,
+          "updated": 0.0,
+          "raw_update_pp": 0.0,
+          "classification": "increase",
+          "endpoint_blocked": false
+        },
+        {
+          "trial_id": "dev_03:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.0,
+          "updated": 0.5,
+          "raw_update_pp": 50.0,
+          "classification": "decrease",
+          "endpoint_blocked": true
+        },
+        {
+          "trial_id": "dev_06:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.0,
+          "updated": 0.3,
+          "raw_update_pp": 30.0,
+          "classification": "decrease",
+          "endpoint_blocked": true
+        },
+        {
+          "trial_id": "dev_15:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.0,
+          "updated": 0.5,
+          "raw_update_pp": 50.0,
+          "classification": "decrease",
+          "endpoint_blocked": true
+        },
+        {
+          "trial_id": "dev_17:negative:r0",
+          "context_id": "negative",
+          "baseline": 0.0,
+          "updated": 0.0,
+          "raw_update_pp": 0.0,
+          "classification": "decrease",
+          "endpoint_blocked": true
+        }
+      ],
+      "unclear_total": 2,
+      "valid_direction_outputs": 240,
+      "planned_direction_outputs": 240,
+      "direction_signed_ci95": [
+        0.575,
+        0.825
+      ],
+      "provenance": {
+        "summary": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_qwen3_32b/summary.json",
+          "sha256": "3bd671cb3f6c1918d555a9d3a5aaa3876811b36eaf53f6da7d3951f65e447b1c"
+        },
+        "independent_audit": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_qwen3_32b/independent_audit.json",
+          "sha256": "96ed53fe13df7da82861d06988751f134aa3a4359f04169dc96b7e7ce27c27f5"
+        },
+        "original_probability_responses": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen3_32b.jsonl",
+          "sha256": "e7b85a15b35c404e2415f7020ff7928439aa740c61d9483bde57a8a2e98230b1"
+        }
+      }
+    }
+  },
+  "interpretation": [
+    "Llama direction signs improve31/40 versus26/40 numeric; Qwen3 improves28/40 versus25/40; Qwen72 is25/40 in both tasks.",
+    "Llama and Qwen3 each have5 classification-correct/numeric-incorrect cases;4/5 occur at direction-blocking endpoints and1/5 are unblocked.",
+    "On unblocked signed trials, Llama classification is27/34 versus26/34 numeric, Qwen3 is24/36 versus25/36 numeric, and Qwen72 is25/40 in both tasks.",
+    "The observed positive net gains are concentrated in baseline-endpoint cases. Independent task elicitation and a single repeat do not isolate a causal mechanism.",
+    "Qwen72 has3 classification-only successes and3 numeric-only successes, all unblocked. Llama has0 numeric-only successes and Qwen3 has2, both unblocked.",
+    "All5 classification-only successes in each of Llama and Qwen3 have numeric baselines at0 or1. The one unblocked case per model is a positive target starting at0, where an upward update remains possible.",
+    "Direction-only forecasts still miss9 to14 of20 paired reversals and13 to18 of20 broken-link unchanged targets across models; endpoint relief does not account for all task failures.",
+    "These descriptive development comparisons retain all planned denominators and do not replace the original probability protocol."
+  ],
+  "provenance": {
+    "direction_plan": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/direction_plan.jsonl",
+      "sha256": "478b2e76395fbec66aed89aca5ca43d9ed8fce77e0fe2d3472768bb2bf882ea3"
+    },
+    "single_repeat_parent_plan": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/probability_plan.jsonl",
+      "sha256": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b"
+    },
+    "original_numeric_full_plan": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_plan.jsonl",
+      "sha256": "cf6d5e30b5e3bd3ebd42be5348019c485f2f50f62d5a8b2ae07000ac5cbfb4a4"
+    }
+  }
+}

@@ -1,0 +1,113 @@
+\paragraph{Controlled robustness development on the original families.}
+A separately versioned development run retains all 20 original parent families,
+including previous successes and failures. Each family has a repaired base,
+consistent entity renaming, a paraphrase, and a resample with identical visible
+text but different request IDs and seeds. Explicit transfer destinations repair
+underspecified routes; signed and broken contexts share the same inventory of
+positive, negative, and side-channel roles, with actor assignments changed and
+row order counterbalanced. These revisions do not replace the original results.
+Repair changes the supplied premises and can change elicited priors, so an
+old-versus-repaired contrast is not a causal estimate of clarification.
+
+All four versions retain positive, negative, broken, and masked contexts.
+Each numerical context receives its own baseline and three independent branches:
+new news, no news, and information already present at baseline. The separate
+categorical task presents no numerical prior. The three original local
+checkpoints use constrained JSON, temperature $0.7$, top-$p=1$, and a 128-token
+output limit; Qwen3 thinking is disabled. Each model has all 1,280 numerical and
+960 categorical records. Valid outputs are Qwen2.5-72B: 1280/1,280 numeric and 960/960 categorical; Llama-3.1-70B: 1280/1,280 numeric and 960/960 categorical; Qwen3-32B: 1280/1,280 numeric and 960/960 categorical.
+Invalid responses remain scored failures, and magnitude estimates use observed
+measurements with missingness shown explicitly. The independent audit verifies
+execution, provenance, and scoring; it is not independent human validation of
+these revised materials.
+
+Table~\ref{tab:exp1-robustness-v2-performance} reports every model and version.
+Zero numerical movement fails a signed target. Paired reversal requires both
+signed contexts to be correct; categorical unclear fails a determinate target.
+All intervals are descriptive, using 2,000 whole-parent-family bootstrap draws
+(seed 20260921), carrying contexts, branches, and versions together. There are
+20 sampling families; the four versions do not create 80 independent families.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Controlled robustness development. Binary entries are
+correct/planned counts: 40 signed trials, 20 reversal pairs, and 20 broken-link
+judgments per version. Broken movement is mean absolute numerical revision in
+percentage points, with its descriptive 95\% family-bootstrap interval.}
+\label{tab:exp1-robustness-v2-performance}
+\small
+\resizebox{\linewidth}{!}{\input{tables/exp1_context_robustness_v2_performance}}
+\end{minipage}
+\end{center}
+
+For Qwen2.5-72B, Llama-3.1-70B, and Qwen3-32B, respectively,
+repaired-base numerical paired reversal is 8/20, 8/20, 7/20, and broken-link
+mean absolute movement is 15.50, 6.46, 10.00 points. The corresponding
+interval-based stability statuses are not met, not met, not met.
+
+The numerical broken-link stability diagnostic retains the original criterion:
+the signed-mean 90\% interval must lie strictly within $\pm2$ points and the
+upper 95\% bound on mean absolute movement must be below 2 points, with all
+planned measurements observed. Detailed statuses are retained in the source
+summaries; a small point estimate alone does not establish stability.
+
+\paragraph{Editing and stochastic variation.}
+Let $\Delta p_v$ be a version's new-news update relative to its own context's
+baseline. Table~\ref{tab:exp1-robustness-v2-edits} separates mean absolute
+baseline discrepancy $D_0$ from mean absolute update discrepancy
+$D_\Delta=|\Delta p_v-\Delta p_{\mathrm{base}}|$, each averaged across the
+80 planned family--context pairs. The within-2-point count describes individual paired observations.
+The excess column averages
+$E_\Delta=|\Delta p_v-\Delta p_{\mathrm{base}}|
+-|\Delta p_{\mathrm{resample}}-\Delta p_{\mathrm{base}}|$
+on common observed measurements. The same-text resample is a stochastic
+reference at the same temperature; its excess is zero by construction.
+Renaming and paraphrase discrepancies must therefore be read alongside this
+reference. A single resample does not isolate a causal effect of editing,
+and an interval including zero does not establish equivalence or invariance.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Each edited version or same-text resample compared with repaired
+base. Numerical discrepancies are in percentage points; brackets give 95\%
+parent-family-bootstrap intervals for excess over resampling. Agreement uses
+80 planned categorical pairs, including masked new news. Joint correctness uses
+60 determinate pairs, excluding masked new news. Stable wrong answers count as
+agreement but fail joint correctness. Missing/invalid binary pairs remain failures;
+magnitudes are observed only.}
+\label{tab:exp1-robustness-v2-edits}
+\small
+\resizebox{\linewidth}{!}{\input{tables/exp1_context_robustness_v2_edits}}
+\end{minipage}
+\end{center}
+
+\paragraph{Controls and lexical checks.}
+No-news and repeated-information controls remain separate
+(Table~\ref{tab:exp1-robustness-v2-controls}); the repeated information was already
+present at baseline and is not a second presentation of genuinely new evidence.
+Each control has 80 planned contexts per model and version. Their performance
+does not substitute for directional or broken-link performance.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Separate no-news and repeated-information controls. Within-2-point
+and categorical unchanged entries use all 80 planned contexts. Mean absolute
+numerical movement is in percentage points; any missing magnitude measurements
+are shown explicitly. Full descriptive family-bootstrap intervals are retained
+in the source summaries.}
+\label{tab:exp1-robustness-v2-controls}
+\small
+\resizebox{\linewidth}{!}{\input{tables/exp1_context_robustness_v2_controls}}
+\end{minipage}
+\end{center}
+
+Whole-parent-family-held-out news-unigram, full-text unigram, full-text bigram,
+and character-ngram baselines obtain directional accuracies of 33.3\%, 33.3\%, 33.3\%, 32.5\%,
+and balanced relevance accuracies of 50.0\%, 50.0\%, 50.0\%, 47.8\%, respectively. The chance
+references are $1/3$ and $1/2$. These measurements concern the tested lexical
+baselines; they do not establish that all shortcuts are removed. The revised
+materials and all three checkpoints remain development evidence. No independent
+fresh-cohort result is asserted here.

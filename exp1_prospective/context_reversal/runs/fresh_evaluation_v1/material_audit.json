@@ -1,0 +1,73 @@
+{
+  "plan": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/candidate_v5/probability_plan.jsonl",
+    "sha256": "ea957ccba5dffd78060416fceeba3b504d304f2b30a3982df55205783268400d"
+  },
+  "instances": 80,
+  "mechanism_classes": 8,
+  "variants": 4,
+  "exact_word_and_punctuation_inventories_equal": true,
+  "all_exact_oracle_signs_verified": true,
+  "shared_outcome_wrapper": true,
+  "not_80_independent_mechanisms": true,
+  "balance": {
+    "local": {
+      "n": 80,
+      "negated_question": {
+        "false": 40,
+        "true": 40
+      },
+      "falling_news": {
+        "false": 40,
+        "true": 40
+      },
+      "strata": {
+        "calibration": 10,
+        "time_windows": 10,
+        "quorums": 10,
+        "procedural_gates": 10,
+        "broker_allocation": 10,
+        "directed_routes": 10,
+        "bounded_feedback": 10,
+        "evidence_dependence": 10
+      }
+    },
+    "frontier": {
+      "n": 24,
+      "negated_question": {
+        "false": 12,
+        "true": 12
+      },
+      "falling_news": {
+        "false": 12,
+        "true": 12
+      },
+      "strata": {
+        "calibration": 3,
+        "time_windows": 3,
+        "quorums": 3,
+        "procedural_gates": 3,
+        "broker_allocation": 3,
+        "directed_routes": 3,
+        "bounded_feedback": 3,
+        "evidence_dependence": 3
+      }
+    }
+  },
+  "lexical": {
+    "news_words": {
+      "direction_accuracy": 0.3333333333333333,
+      "relevance_balanced_accuracy": 0.5
+    },
+    "full_words": {
+      "direction_accuracy": 0.3333333333333333,
+      "relevance_balanced_accuracy": 0.5
+    },
+    "full_bigrams": {
+      "direction_accuracy": 0.3333333333333333,
+      "relevance_balanced_accuracy": 0.5
+    }
+  },
+  "cross_validation": "5-fold GroupKFold with all contexts and wording variants of a parent instance together; vectorizer fit on training fold only",
+  "interpretation": "News-only and bag-of-words shortcut removed by exact within-family inventories; does not rule out all lexical/structural heuristics or establish ecological validity."
+}

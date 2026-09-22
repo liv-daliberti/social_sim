@@ -1,0 +1,19 @@
+{
+  "job_id": "31444035",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--dependency=afterany:31443326",
+    "--job-name=crdiag-comparison",
+    "--output",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/local_diagnostics_v1/comparison_%j.out",
+    "--error",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/local_diagnostics_v1/comparison_%j.err",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/report_reasoning_diagnostics.sbatch",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/submission.json",
+    "a5c1e4b4ba8ea2ce7bcbc15272ed5b5e24b6b63e3e0470173027744d766a94dc"
+  ],
+  "comparison_code_sha256": "a5c1e4b4ba8ea2ce7bcbc15272ed5b5e24b6b63e3e0470173027744d766a94dc",
+  "definitions_preserved_from_original_comparison": true,
+  "recorded_at": "2026-09-22T02:36:35.741200+00:00"
+}

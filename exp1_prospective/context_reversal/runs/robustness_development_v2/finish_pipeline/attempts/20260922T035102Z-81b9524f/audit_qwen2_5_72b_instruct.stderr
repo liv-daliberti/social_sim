@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/n/fs/similarity/social_sim/.runtime/oat_conda/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/n/fs/similarity/social_sim/.runtime/oat_conda/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/audit_robustness_results.py", line 322, in <module>
+    raise SystemExit(main())
+  File "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/audit_robustness_results.py", line 316, in main
+    result = audit(args.run_dir.resolve(), args.model_key)
+  File "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/audit_robustness_results.py", line 93, in audit
+    require(sha(canonical(tokenizer.chat_template)) == manifest['tokenizer_chat_template_sha256'], 'tokenizer_template_hash')
+KeyError: 'tokenizer_chat_template_sha256'
