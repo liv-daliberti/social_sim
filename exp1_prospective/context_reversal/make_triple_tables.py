@@ -9,6 +9,7 @@ from exp1_prospective.context_reversal import run_local as common
 
 HERE = Path(__file__).resolve().parent
 REPORT = HERE / 'results/fresh_evaluation_v1/triple_analysis.json'
+ACCOUNTING = HERE / 'results/fresh_evaluation_v1/unconditional_accounting.json'
 TABLES = HERE.parents[1] / 'paper/tables'
 SUMMARY = HERE / 'results/fresh_evaluation_v1/triple_analysis.md'
 LABELS = {'no_change': 'Predict no change', 'evidence_direction': 'Follow the evidence direction',
@@ -104,6 +105,33 @@ System & Exactly zero & Within 2\\,pp & Inert & Relevant \\\\
                      f"{a['triple_sign_complete_case']}/{a['triples_complete']} | "
                      f"{a['item_sign_correct']}/{a['items_planned']} | {a['item_exact_correct']}/{a['items_planned']} | "
                      f"{e['mean_pp']:.3f} | {a['inert']['exact_zero']}/{a['inert']['n']} |")
+    acc = json.loads(ACCOUNTING.read_text())
+    cols = ['ok', 'model_refusal', 'model_unparseable', 'model_framing',
+            'instrument_truncation', 'instrument_harness_kill', 'cascade_blocked', 'not_attempted', 'pending']
+    live = [a for a in acc['arms'] if any(a['categories'].get(c) for c in cols)]
+    rows = '\n'.join(
+        f"{a['arm']} & {a['planned_records']} & " + ' & '.join(str(a['categories'].get(c, 0)) for c in cols[:-1])
+        + (f" & {a['categories'].get('pending', 0)}" if any(x['in_progress'] for x in live) else '') + ' \\\\'
+        for a in live)
+    pending_col = ' & Pending' if any(a['in_progress'] for a in live) else ''
+    spec = 'l' + 'c' * (9 if any(a['in_progress'] for a in live) else 8)
+    written.append(latex(TABLES / 'exp1_context_accounting.tex', f"""\\begin{{tabular}}{{{spec}}}
+\\toprule
+& & & \\multicolumn{{3}}{{c}}{{Model failure}} & \\multicolumn{{2}}{{c}}{{Instrument failure}} & \\multicolumn{{2}}{{c}}{{Cascade}} \\\\
+\\cmidrule(lr){{4-6}} \\cmidrule(lr){{7-8}} \\cmidrule(lr){{9-10}}
+System & Planned & Valid & Refused & Unparseable & Frame & Truncated & Killed & Blocked & Unsent{pending_col} \\\\
+\\midrule
+{rows}
+\\bottomrule
+\\end{{tabular}}"""))
+
+    lines += ["\n## Unconditional accounting\n", acc['rule'], "",
+              "| System | Planned | Valid | Model failure | Instrument failure | Cascade | Pending |",
+              "|---|---:|---:|---:|---:|---:|---:|"]
+    for a in live:
+        att = a['by_attribution']
+        lines.append(f"| {a['arm']} | {a['planned_records']} | {a['categories'].get('ok', 0)} | "
+                     f"{att.get('model', 0)} | {att.get('instrument', 0)} | {att.get('cascade', 0)} | {att.get('pending', 0)} |")
     lines.append("\nUnconditional denominators count refusals, truncations and blocked updates as failures. "
                  "Exact agreement is to four decimals, the granularity the oracles are stated at.\n")
     common.atomic_write(SUMMARY, '\n'.join(lines))

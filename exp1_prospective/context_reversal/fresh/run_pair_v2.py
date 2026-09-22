@@ -12,9 +12,9 @@ from pathlib import Path
 from .. import run_local as c
 from .freeze import check_artifact
 
-STOP_AFTER_SECONDS = 2700
+STOP_AFTER_SECONDS = 2100
 WALLTIME = '01:00:00'
-MAX_CONTINUATIONS = 11
+MAX_CONTINUATIONS = 23
 
 
 def main():

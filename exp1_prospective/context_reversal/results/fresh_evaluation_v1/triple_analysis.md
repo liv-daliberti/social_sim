@@ -25,4 +25,15 @@ A predictor that reads only the evidence text, the prior and the named entity is
 | Claude Opus 5 | 17/48 | 17/17 | 78/144 | 54/144 | 0.013 | 29/29 |
 | Qwen3-32B thinking off | 29/320 | 29/320 | 519/960 | 1/960 | 28.220 | 185/320 |
 
+## Unconditional accounting
+
+Every planned call appears in the denominator. Model failures, instrument failures and failures cascading from a failed baseline are reported separately and none is dropped.
+
+| System | Planned | Valid | Model failure | Instrument failure | Cascade | Pending |
+|---|---:|---:|---:|---:|---:|---:|
+| GPT-5.6 Sol | 576 | 576 | 0 | 0 | 0 | 0 |
+| Claude Opus 5 | 576 | 339 | 84 | 0 | 153 | 0 |
+| Qwen3-32B thinking off | 3840 | 3840 | 0 | 0 | 0 | 0 |
+| Qwen3-32B thinking on | 3840 | 0 | 0 | 0 | 0 | 3840 |
+
 Unconditional denominators count refusals, truncations and blocked updates as failures. Exact agreement is to four decimals, the granularity the oracles are stated at.

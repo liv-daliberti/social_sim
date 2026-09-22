@@ -53,3 +53,43 @@ def test_report_is_reproducible_and_hash_bound():
     assert report['plan']['sha256'] == t.common.file_sha256(Path(report['plan']['path']))
     assert report['impossibility_bound']['max_triple_accuracy'] == '0'
     assert report['exact_tolerance'] == t.EXACT
+
+
+class TestAccounting:
+    """Every planned call is in the denominator, and nothing is silently dropped."""
+
+    @pytest.fixture(scope='class')
+    def report(self):
+        from exp1_prospective.context_reversal import analyze_accounting as a
+        return json.loads((a.OUT / 'unconditional_accounting.json').read_text())
+
+    def test_categories_sum_to_the_planned_total(self, report):
+        for arm in report['arms']:
+            assert sum(arm['categories'].values()) == arm['planned_records'], arm['arm']
+
+    def test_every_category_is_attributed(self, report):
+        for arm in report['arms']:
+            for category in arm['categories']:
+                assert category in report['taxonomy'], category
+
+    def test_a_live_run_attributes_nothing(self, report):
+        for arm in report['arms']:
+            if arm['in_progress']:
+                assert arm['by_attribution'].get('instrument', 0) == 0, arm['arm']
+
+    def test_inflight_placeholders_are_not_counted_as_kills(self, tmp_path):
+        from exp1_prospective.context_reversal import analyze_accounting as a
+        live = tmp_path / 'x.jsonl'
+        live.write_text('')
+        (tmp_path / 'x.jsonl.manifest.json').write_text(json.dumps({'status': 'running'}))
+        assert a.run_in_progress([str(live)]) is True
+        (tmp_path / 'x.jsonl.manifest.json').write_text(json.dumps({'status': 'complete'}))
+        assert a.run_in_progress([str(live)]) is False
+
+    def test_a_killed_request_is_an_instrument_failure_not_a_model_one(self):
+        from exp1_prospective.context_reversal import analyze_accounting as a
+        assert a.classify({'status': 'generation_error', 'failure_kind': 'interrupted_unknown'}) == 'instrument_harness_kill'
+        assert a.classify({'status': 'generation_error', 'failure_kind': 'truncated'}) == 'instrument_truncation'
+        assert a.classify({'status': 'generation_error', 'response_status': 'refusal'}) == 'model_refusal'
+        assert a.TAXONOMY['instrument_harness_kill'][0] == 'instrument'
+        assert a.TAXONOMY['model_refusal'][0] == 'model'
