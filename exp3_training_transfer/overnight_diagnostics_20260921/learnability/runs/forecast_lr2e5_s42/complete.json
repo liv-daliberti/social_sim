@@ -1,0 +1,52 @@
+{
+  "config": {
+    "batch_size": 16,
+    "comparison": "same 4800 prompt presentations; SFT 300 updates vs RL 2400 updates and eight sampled completions per prompt",
+    "data": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/learnability/forecast_train.jsonl",
+    "data_sha256": "87d4315fe4526c1ac3d433a3981c75edff669457689a9fb810b6a470dab9ea5e",
+    "epochs": 1,
+    "learning_rate": 2e-05,
+    "lora_alpha": 64,
+    "lora_rank": 32,
+    "loss": "completion_only_per_sequence_mean",
+    "max_grad_norm": 1.0,
+    "max_length": 3072,
+    "model": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+    "name": "forecast_lr2e5",
+    "scheduler": "constant",
+    "seed": 42,
+    "source_dataset": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structure_selection/data/causal/train",
+    "source_files": {
+      "dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+      "train/cache-1c80317fa3b1799d.arrow": "c4d9a3dd78d631971b8430e5d8f5c835080eb6fed382b8562072b81fdb8482a1",
+      "train/cache-493cd01609de8895.arrow": "c5405ebadb935d2f3e948fe76747f8735b1b2b7bc1efd25ab730b9304e3a3dbb",
+      "train/cache-852010116895cea8.arrow": "cbc663d363e31ed09a36f1dd59e46f85f9d3b880cc5f0827dba706079895fca9",
+      "train/data-00000-of-00001.arrow": "14387651794e2d28dd03d83cc61f27f9738e85eeff7e103d394b9bfd47fefcca",
+      "train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+      "train/state.json": "2dddcbe41f969d80b646a40483f7908b4c33822cc58f22d0e51d3ccef5fe9865"
+    },
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "down_proj",
+      "up_proj",
+      "gate_proj"
+    ],
+    "template": "auto_no_think",
+    "unique_prompts": 4800
+  },
+  "config_sha256": "4bebe185c2f9e7cdd23320f10e3830c06e3e36917dcdb95ffbeddd21469fabf4",
+  "code_sha256": "fdbeeb9ffe3d44b936bc08baf42dc8121e7f6e18b3b584db85b9d4b5926c8d61",
+  "data_sha256": "87d4315fe4526c1ac3d433a3981c75edff669457689a9fb810b6a470dab9ea5e",
+  "examples": 4800,
+  "maximum_tokens": 1081,
+  "completion_tokens": 325272,
+  "torch_version": "2.6.0+cu124",
+  "job_id": "31445996",
+  "steps": 300,
+  "prompt_presentations": 4800,
+  "wall_seconds": 2388.551726956852,
+  "adapter_sha256": "4d25116b9a61635741c939e269dc994f8acdd05365f5d9f575d2961e2254b772"
+}

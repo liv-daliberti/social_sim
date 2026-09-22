@@ -1,0 +1,387 @@
+{
+  "model_key": "qwen3_8b_population_prior_s44",
+  "model": "Qwen/Qwen3-8B",
+  "n": 768,
+  "cells": [
+    {
+      "domain": "coin_city",
+      "label_kind": "arbitrary",
+      "interface": "oracle_both_patterns",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.20833333333333334,
+      "accuracy_pair_bootstrap_ci95": [
+        0.10416666666666667,
+        0.3125
+      ],
+      "forecast_mae": 36.759565744875,
+      "response_mae": 4.549799503802084,
+      "response_mae_pair_bootstrap_ci95": [
+        3.121941921522786,
+        6.058706871441406
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": -0.1873588295954003,
+      "cue_change_calibration_ci95": [
+        -1.1008669071376362,
+        0.6634996002424564
+      ],
+      "cue_change_mae": 4.415242293333333,
+      "cue_direction_accuracy": 0.2916666666666667
+    },
+    {
+      "domain": "coin_city",
+      "label_kind": "arbitrary",
+      "interface": "oracle_selected_pattern",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.5,
+      "accuracy_pair_bootstrap_ci95": [
+        0.5,
+        0.5
+      ],
+      "forecast_mae": 1.0822086416666667,
+      "response_mae": 1.3149319427083332,
+      "response_mae_pair_bootstrap_ci95": [
+        1.1860276046875,
+        1.4571472029947914
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.13982044843503819,
+      "cue_change_calibration_ci95": [
+        0.021947501191190762,
+        0.2609083254199878
+      ],
+      "cue_change_mae": 1.6948894999999997,
+      "cue_direction_accuracy": 0.625
+    },
+    {
+      "domain": "coin_city",
+      "label_kind": "arbitrary",
+      "interface": "original",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.5208333333333334,
+      "accuracy_pair_bootstrap_ci95": [
+        0.4375,
+        0.6041666666666666
+      ],
+      "forecast_mae": 1.0078198,
+      "response_mae": 1.0678591770833332,
+      "response_mae_pair_bootstrap_ci95": [
+        0.8841616893229164,
+        1.2763600196614584
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.04735327301682953,
+      "cue_change_calibration_ci95": [
+        -0.005096500269553557,
+        0.11204160897145078
+      ],
+      "cue_change_mae": 1.5580135625,
+      "cue_direction_accuracy": 0.5833333333333334
+    },
+    {
+      "domain": "coin_city",
+      "label_kind": "arbitrary",
+      "interface": "selection_only",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 1.0,
+      "accuracy_pair_bootstrap_ci95": [
+        1.0,
+        1.0
+      ],
+      "both_cues_correct_rate": 1.0
+    },
+    {
+      "domain": "coin_city",
+      "label_kind": "semantic",
+      "interface": "oracle_both_patterns",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.2916666666666667,
+      "accuracy_pair_bootstrap_ci95": [
+        0.1875,
+        0.3963541666666638
+      ],
+      "forecast_mae": 16.67216805289583,
+      "response_mae": 3.6628351104947914,
+      "response_mae_pair_bootstrap_ci95": [
+        2.466645688469401,
+        4.997752588018879
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 1.7787151169209825,
+      "cue_change_calibration_ci95": [
+        0.7099854649035569,
+        2.906733998419319
+      ],
+      "cue_change_mae": 5.962800267864583,
+      "cue_direction_accuracy": 0.625
+    },
+    {
+      "domain": "coin_city",
+      "label_kind": "semantic",
+      "interface": "oracle_selected_pattern",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.5208333333333334,
+      "accuracy_pair_bootstrap_ci95": [
+        0.5,
+        0.5625
+      ],
+      "forecast_mae": 1.0172485114583336,
+      "response_mae": 1.2576339674479164,
+      "response_mae_pair_bootstrap_ci95": [
+        1.0799918572591145,
+        1.4540644724609368
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.0704255793181997,
+      "cue_change_calibration_ci95": [
+        -0.033576138248623856,
+        0.15730376229367937
+      ],
+      "cue_change_mae": 1.5264070208333334,
+      "cue_direction_accuracy": 0.625
+    },
+    {
+      "domain": "coin_city",
+      "label_kind": "semantic",
+      "interface": "original",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.4375,
+      "accuracy_pair_bootstrap_ci95": [
+        0.375,
+        0.5
+      ],
+      "forecast_mae": 0.8467140125000002,
+      "response_mae": 0.9636481197916668,
+      "response_mae_pair_bootstrap_ci95": [
+        0.7846567880208336,
+        1.1748245200520837
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": -0.0021526193305390746,
+      "cue_change_calibration_ci95": [
+        -0.04028780667450777,
+        0.035966249033085165
+      ],
+      "cue_change_mae": 1.50761384375,
+      "cue_direction_accuracy": 0.4583333333333333
+    },
+    {
+      "domain": "coin_city",
+      "label_kind": "semantic",
+      "interface": "selection_only",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 1.0,
+      "accuracy_pair_bootstrap_ci95": [
+        1.0,
+        1.0
+      ],
+      "both_cues_correct_rate": 1.0
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "arbitrary",
+      "interface": "oracle_both_patterns",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.5833333333333334,
+      "accuracy_pair_bootstrap_ci95": [
+        0.4791666666666667,
+        0.6875
+      ],
+      "forecast_mae": 101.69691642916666,
+      "response_mae": 8.822630822916667,
+      "response_mae_pair_bootstrap_ci95": [
+        6.246719218098958,
+        12.044158863281247
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.2362652245111665,
+      "cue_change_calibration_ci95": [
+        -0.7735670928144533,
+        1.1269386490035904
+      ],
+      "cue_change_mae": 10.859417875,
+      "cue_direction_accuracy": 0.375
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "arbitrary",
+      "interface": "oracle_selected_pattern",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.3541666666666667,
+      "accuracy_pair_bootstrap_ci95": [
+        0.25,
+        0.4375
+      ],
+      "forecast_mae": 39.5547724375,
+      "response_mae": 8.309280609375,
+      "response_mae_pair_bootstrap_ci95": [
+        5.755230795052083,
+        12.80784276184896
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": -0.69887758563049,
+      "cue_change_calibration_ci95": [
+        -1.4402866513251793,
+        -0.12295783943145254
+      ],
+      "cue_change_mae": 12.311313770833335,
+      "cue_direction_accuracy": 0.3333333333333333
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "arbitrary",
+      "interface": "original",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.5208333333333334,
+      "accuracy_pair_bootstrap_ci95": [
+        0.5,
+        0.5625
+      ],
+      "forecast_mae": 2.6804406958333327,
+      "response_mae": 2.9450538645833326,
+      "response_mae_pair_bootstrap_ci95": [
+        2.59754178658854,
+        3.311070787630208
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.028912979289006668,
+      "cue_change_calibration_ci95": [
+        -0.0698126656728531,
+        0.12603099750383862
+      ],
+      "cue_change_mae": 3.294295166666666,
+      "cue_direction_accuracy": 0.5
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "arbitrary",
+      "interface": "selection_only",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 1.0,
+      "accuracy_pair_bootstrap_ci95": [
+        1.0,
+        1.0
+      ],
+      "both_cues_correct_rate": 1.0
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "semantic",
+      "interface": "oracle_both_patterns",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.4583333333333333,
+      "accuracy_pair_bootstrap_ci95": [
+        0.3541666666666667,
+        0.5416666666666666
+      ],
+      "forecast_mae": 124.21286632958333,
+      "response_mae": 8.7405755515625,
+      "response_mae_pair_bootstrap_ci95": [
+        5.437065070677083,
+        12.861954344361978
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.7879447297129646,
+      "cue_change_calibration_ci95": [
+        -0.3812557521914169,
+        2.8674454269158094
+      ],
+      "cue_change_mae": 10.362974103125,
+      "cue_direction_accuracy": 0.20833333333333334
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "semantic",
+      "interface": "oracle_selected_pattern",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.3333333333333333,
+      "accuracy_pair_bootstrap_ci95": [
+        0.22916666666666666,
+        0.4166666666666667
+      ],
+      "forecast_mae": 32.04774612916666,
+      "response_mae": 6.798023958333332,
+      "response_mae_pair_bootstrap_ci95": [
+        5.6358067350260415,
+        8.049377766536455
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.41533297600800445,
+      "cue_change_calibration_ci95": [
+        -0.7160973594375851,
+        1.9672796198055393
+      ],
+      "cue_change_mae": 10.070668541666668,
+      "cue_direction_accuracy": 0.4166666666666667
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "semantic",
+      "interface": "original",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 0.5,
+      "accuracy_pair_bootstrap_ci95": [
+        0.5,
+        0.5
+      ],
+      "forecast_mae": 2.726924633333334,
+      "response_mae": 2.882771223958333,
+      "response_mae_pair_bootstrap_ci95": [
+        2.3591069579427084,
+        3.4375614088541675
+      ],
+      "valid_cue_pairs": 24,
+      "cue_change_calibration": 0.04518563688789043,
+      "cue_change_calibration_ci95": [
+        -0.0717378840360754,
+        0.16345949428960632
+      ],
+      "cue_change_mae": 3.4524041979166675,
+      "cue_direction_accuracy": 0.5
+    },
+    {
+      "domain": "coin_harbor",
+      "label_kind": "semantic",
+      "interface": "selection_only",
+      "n": 48,
+      "n_pairs": 24,
+      "parse_rate": 1.0,
+      "accuracy": 1.0,
+      "accuracy_pair_bootstrap_ci95": [
+        1.0,
+        1.0
+      ],
+      "both_cues_correct_rate": 1.0
+    }
+  ]
+}

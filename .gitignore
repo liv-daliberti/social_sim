@@ -24,6 +24,7 @@ logs/
 # local venv / runtime scratch
 .runtime/
 .vizchk/
+.venv*/
 
 # heavy training artifacts (regenerable; not for deploy)
 wandb/
@@ -32,6 +33,9 @@ reports/
 # Activation tensors under mechanistic_probe are regenerable from the frozen
 # task files and the pinned checkpoint commits; only their hashes are tracked.
 **/mechanistic_probe/**/*.npz
+# Mechanistic-transfer hidden states are multi-gigabyte, reproducible run
+# products. Keep lightweight manifests and summaries eligible for review.
+**/mechanistic_transfer/runs/**/*.npy
 
 # GitHub publication boundary: large research payloads stay local and are
 # distributed through the data release, while manifests/results stay tracked.
@@ -69,3 +73,15 @@ paper/ICLR_submission_*.zip
 # Runtime locks held by probe allocations
 **/mechanistic_probe/**/.probe.lock
 **/mechanistic_probe/**/.relational_probe.lock
+
+# Context-reversal raw inference stays local; small design/manifests/summaries remain reviewable.
+exp1_prospective/context_reversal/responses/
+
+# Supervised-pilot LoRA adapters and optimizer resume states are multi-gigabyte
+# training products, reproducible from the frozen prompts and the pinned base
+# checkpoint. Their train.jsonl logs, manifests and analyses stay tracked.
+exp3_training_transfer/overnight_diagnostics_20260921/learnability/runs/**/resume.pt
+exp3_training_transfer/overnight_diagnostics_20260921/learnability/runs/**/adapter/
+# Publish-transaction backups keep before/after copies of the built manuscript.
+# The PDFs duplicate paper/main.pdf; the transaction record and .tex/tables stay.
+exp1_prospective/context_reversal/runs/**/backups/**/*.pdf

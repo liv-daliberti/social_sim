@@ -1,0 +1,45 @@
+diff --git a/exp3_training_transfer/mechanism_family/run_mechanism_rl.py b/exp3_training_transfer/mechanism_family/run_mechanism_rl.py
+index fdb77ce..dc1c291 100644
+--- a/exp3_training_transfer/mechanism_family/run_mechanism_rl.py
++++ b/exp3_training_transfer/mechanism_family/run_mechanism_rl.py
+@@ -295,6 +295,13 @@ class BiasedNewsArgs(PPOArgs):
+     # Synthetic C3 uses syntax-only GBNF guidance. Keep ``none`` available
+     # because the Polymarket extension intentionally shares this trainer.
+     structured_output: Literal["none", "forecast_array"] = "none"
++    # Execution-only vLLM compatibility switch. Some multi-GPU A6000
++    # allocations fail during custom-all-reduce initialization; in that case
++    # use vLLM's supported NCCL fallback without changing the training recipe.
++    disable_custom_all_reduce: bool = False
++    # Tensor-parallel NCCL workers can stall while capturing CUDA graphs on the
++    # cluster's A100 stack. Eager execution skips that initialization path.
++    enforce_eager: bool = False
+ 
+ 
+ # ----------------------------------------------------------------------------- #
+@@ -310,6 +317,10 @@ class BiasedNewsActor(PPOActor):
+         )
+ 
+     def init(self, actor_id, save_path):
++        if self.args.disable_custom_all_reduce:
++            self.vllm_args["disable_custom_all_reduce"] = True
++        if self.args.enforce_eager:
++            self.vllm_args["enforce_eager"] = True
+         if self.args.structured_output == "forecast_array":
+             # vLLM V1 requires the per-request backend to match the engine-level
+             # backend. Selecting xgrammar explicitly also disables auto fallback.
+@@ -424,6 +435,15 @@ class BiasedNewsActor(PPOActor):
+ # ----------------------------------------------------------------------------- #
+ class BiasedNewsLearner(PPOLearner):
+     def _init(self, args: BiasedNewsArgs, actors: List[ActorBase]) -> None:
++        # Launchpad reconstructs learner nodes in fresh Python processes. The
++        # module-level optimizer swap above is not reliably preserved by that
++        # serialization boundary, so apply it again inside every learner rank
++        # before OAT creates its DeepSpeedStrategy. This keeps the LoRA-only
++        # optimizer on torch AdamW and avoids a fragile fused_adam CUDA JIT.
++        import oat.utils.deepspeed as learner_oat_ds
++
++        learner_oat_ds.FusedAdam = torch.optim.AdamW
++        learner_oat_ds.DeepSpeedCPUAdam = torch.optim.AdamW
+         super()._init(args, actors)
+         self.args = args
+         self.args.max_queries = np.inf
