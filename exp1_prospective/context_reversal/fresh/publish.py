@@ -13,7 +13,8 @@ REPO=ROOT.parents[1]
 STATE=ROOT/'runs/fresh_evaluation_v1/publication'
 APPENDIX='experiment1_fresh_context_appendix.tex'
 TABLES=tuple('tables/exp1_fresh_'+x+'.tex' for x in ('performance','controls','reasoning','edits','frontier','mechanisms'))
-TARGETS=('main.tex','evidence_ladder.tex','appendix_guide.tex',APPENDIX,*TABLES,'main.pdf')
+# The manuscript is two hand-edited sources: main.tex (body) and appendix.tex.
+TARGETS=('main.tex','appendix.tex',APPENDIX,*TABLES,'main.pdf')
 
 
 def verify_code(config):
@@ -63,14 +64,17 @@ def stage_paper(config,draft,directory=None):
         destination=stage/name;destination.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(Path(config['paper_dir'])/name,destination)
         if digest(destination)!=sha:raise ValueError('Source changed while staging: '+name)
     for relative in (APPENDIX,*TABLES):shutil.copy2(draft/Path(relative).name,stage/relative)
-    main=stage/'main.tex';text=main.read_text();anchor=r'\input{experiment1_context_reversal_appendix}'
-    if text.count(anchor)!=1 or r'\input{experiment1_fresh_context_appendix}' in text:raise ValueError('Unexpected appendix inclusion state')
-    main.write_text(text.replace(anchor,anchor+'\n'+r'\input{experiment1_fresh_context_appendix}'))
-    guide=stage/'appendix_guide.tex';text=guide.read_text();anchor=r'\appendixguidesection{app:exp1-context-reversal}'
+    # Both appendix edits land in the one consolidated appendix source.
+    appendix=stage/'appendix.tex';text=appendix.read_text()
+    marker=r'%%% FRESH-CONTEXT-APPENDIX %%%'
+    if text.count(marker)!=1 or r'\input{experiment1_fresh_context_appendix}' in text:raise ValueError('Unexpected appendix inclusion state')
+    text=text.replace(marker,marker+'\n'+r'\input{experiment1_fresh_context_appendix}')
+    anchor=r'\appendixguidesection{app:exp1-context-reversal}'
     if text.count(anchor)!=1 or 'app:exp1-fresh-factorial' in text:raise ValueError('Unexpected appendix guide state')
-    guide.write_text(text.replace(anchor,anchor+'\n'+r'\appendixguidesection{app:exp1-fresh-factorial}'))
-    ladder=stage/'evidence_ladder.tex';text=ladder.read_text();start=text.index(r'\noindent\textbf{Takeaway.}');end=text.index(r'\subsection{Exp.~2:',start)
-    data={name:load(check_artifact(spec)) for name,spec in manifest['inputs'].items()};ladder.write_text(text[:start]+takeaway(data)+text[end:])
+    appendix.write_text(text.replace(anchor,anchor+'\n'+r'\appendixguidesection{app:exp1-fresh-factorial}'))
+    # The evidence ladder is inlined in the body; its Exp. 1 takeaway is the first.
+    main=stage/'main.tex';text=main.read_text();start=text.index(r'\noindent\textbf{Takeaway.}');end=text.index(r'\subsection{Exp.~2:',start)
+    data={name:load(check_artifact(spec)) for name,spec in manifest['inputs'].items()};main.write_text(text[:start]+takeaway(data)+text[end:])
     assert_snapshot(Path(config['paper_dir']),config['paper_snapshot']);return stage
 
 

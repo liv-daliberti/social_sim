@@ -85,3 +85,6 @@ exp3_training_transfer/overnight_diagnostics_20260921/learnability/runs/**/adapt
 # Publish-transaction backups keep before/after copies of the built manuscript.
 # The PDFs duplicate paper/main.pdf; the transaction record and .tex/tables stay.
 exp1_prospective/context_reversal/runs/**/backups/**/*.pdf
+
+# Ledger mutex files are process-local, not accounting records.
+exp1_prospective/context_reversal/runs/**/ledger.json.lock
