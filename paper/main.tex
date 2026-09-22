@@ -1,27 +1,20 @@
 \documentclass{article}
 \PassOptionsToPackage{table}{xcolor}
 
-\IfFileExists{iclr2026_conference.sty}{
-  \usepackage{iclr2026_conference,times}
-}{
-  \usepackage{times}
-  \usepackage[round]{natbib}
-}
+\usepackage{iclr2027_conference,times}
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{amsmath,amsfonts,amssymb}
+\usepackage{microtype}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,backgrounds,positioning,shapes.geometric}
+\usetikzlibrary{arrows.meta,backgrounds,positioning,shapes.geometric,calc,decorations.pathmorphing,fadings}
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
 \usepackage[compatibility=false]{caption}
 \usepackage{subcaption}
 \usepackage{flafter}
-\IfFileExists{wrapfig.sty}{\usepackage{wrapfig}}{
-  \newenvironment{wrapfigure}[2]{\begin{figure}[ht]\begin{minipage}{##2}}{\end{minipage}\end{figure}}
-  \newenvironment{wraptable}[2]{\begin{table}[ht]\begin{minipage}{##2}}{\end{minipage}\end{table}}
-}
+\usepackage{wrapfig}
 \usepackage{xcolor}
 % Four-band Exp 1 heatmap. Pastel fills keep black text legible; printed values
 % remain the primary encoding.
@@ -30,18 +23,12 @@
 \definecolor{heatyellow}{HTML}{FFF2CC}
 \definecolor{heatgreen}{HTML}{D9EAD3}
 
-% Keep section blocks compact while preserving the ICLR heading typography.
-\makeatletter
-\renewcommand\section{\@startsection{section}{1}{\z@}%
-  {-1.5ex plus -.3ex minus -.1ex}{.8ex plus .15ex}%
-  {\large\sc\raggedright}}
-\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
-  {-1.25ex plus -.3ex minus -.1ex}{.5ex plus .1ex}%
-  {\normalsize\sc\raggedright}}
-\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
-  {-1.0ex plus -.2ex minus -.1ex}{.35ex plus .1ex}%
-  {\normalsize\sc\raggedright}}
-\makeatother
+\hypersetup{
+  colorlinks=true,
+  linkcolor=[rgb]{0.10,0.25,0.55},
+  citecolor=[rgb]{0.10,0.25,0.55},
+  urlcolor=[rgb]{0.10,0.25,0.55}
+}
 
 \graphicspath{{figures/}{icons/}}
 \newcommand{\micon}[1]{%
@@ -50,25 +37,13 @@
   }{}%
 }
 
-\title{Do Language Models Exhibit Inductive\\
-Reasoning in Judgemental Forecasting Tasks?}
-\author{
-Liv d'Aliberti \\
-Department of Computer Science \\
-Princeton University \\
-\texttt{od2961@princeton.edu}
-\and
-Lillio Mok \\
-Toyota Research Institute
-\and
-Kate Sieck \\
-Toyota Research Institute
-\and
-Manoel Horta Ribeiro \\
-Department of Computer Science \\
-Princeton University \\
-\texttt{manoel@cs.princeton.edu}
-}
+\title{Can language models forecast inductively?}
+% Keep the submission source itself anonymous: supplementary source archives are
+% covered by ICLR's double-blind policy, even though the style hides this field.
+\author{Anonymous authors \\
+Paper under double-blind review}
+
+% \iclrfinalcopy % Uncomment only for the camera-ready version.
 
 
 % The ICLR style sets \flushbottom, so LaTeX stretches page glue to justify the
@@ -83,23 +58,35 @@ Princeton University \\
 \begin{document}
 \maketitle
 
+% Share the current replication estimates with the introduction.
+\input{tables/exp3_rebuilt_data}
 \input{frontmatter}
+\input{inductive_forecasting}
+\input{evidence_ladder}
+\input{transfer_and_grounding}
 \input{related_work}
-\input{methods_section}
-\input{results_section}
 \input{limitations}
 \input{conclusion}
+\input{submission_statements}
 \input{acknowledgements}
 
-\IfFileExists{ICLR/iclr2026_conference.bib}{
-  \bibliographystyle{ICLR/iclr2026_conference}
-  \bibliography{ICLR/iclr2026_conference}
-}{}
+\clearpage
+\bibliographystyle{iclr2027_conference}
+\bibliography{references}
 
 \clearpage
 \appendix
+\raggedbottom
+% Keep appendix lists visually aligned with the text block rather than using the
+% article class's comparatively deep default margins.
+\setlist[itemize,1]{leftmargin=1.35em,labelsep=.45em}
+\setlist[enumerate,1]{leftmargin=1.55em,labelsep=.45em}
+\newcommand{\includeContextReversalPilot}{1}
 \input{appendix_guide}
+\clearpage
+\input{teaser_probe_appendix}
 \input{experiment1_appendix}
+\input{experiment1_context_reversal_appendix}
 \input{experiment2_appendix}
 \input{experiment3_appendix}
 

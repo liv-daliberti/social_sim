@@ -1,0 +1,114 @@
+\section{Can relationship use survive a change of world?}
+\label{sec:transfer}
+
+Finetuning may teach evidence use or merely typical answers. We test whether
+training transfers relationships to new worlds and improves unseen-event forecasts.
+
+\subsection{Exp.~3: what training transfers, and what it does not}
+\label{sec:exp3}
+
+\input{tables/exp3_rebuilt_data}
+\newcommand{\transfergridlines}{15}
+\input{fig_exp3_transfer_grid}
+
+\textbf{Why matching matters.}
+The parent experiment compares byte-identical prompts, identical target-answer
+multisets, and equal training budgets, changing only case--answer pairing.
+Figure~\ref{fig:exp3-transfer-grid} crosses a domain change---campaign news and
+candidate support become shipping bulletins and cargo flow---with a change
+from direct to persistent responses (App.~\ref{app:exp3-complete-training-setup}).
+
+\noindent\textbf{Finding: domain transfer is stronger than structural transfer.}
+Training generalizes across the surface change. Across both arms and
+\eEightG{} seeds, Qwen3-8B reduces domain-shift response error by
+\eEightDomainBaseGain{} points \eEightDomainBaseGainCi{}, with every seed agreeing.
+The matched arm reaches \eEightDomainMatched{} versus the base's
+\eEightDomainBase{}.
+Because unparsed draws take the full
+range penalty, we report base contrasts twice: the joint-cell gain is
+\eEightJointBaseGain{} \eEightJointBaseGainCi{} fail-closed and
+\eEightJointBaseGainParsed{} \eEightJointBaseGainParsedCi{} on parsed draws.
+
+\input{fig_exp3_results_grid}
+
+The finer contrast between episode-matched and shuffled-pair training does not
+survive replication. Estimated at three seeds and extended to eight under a
+pre-registered amendment, the Qwen3-8B joint-shift contrast falls from
+\ePubEightJointEst{} \ePubEightJointCi{} to \eEightJointEst{} \eEightJointCi{};
+all four of Qwen3-4B's cells excluded zero at three seeds and all span it at
+eight. A wrapper crossover retains a similar three-seed mean ($.251$ versus $.255$;
+App.~\ref{app:exp3-eight-seed}). One cell survives every test: Qwen3-8B in distribution,
+\eEightIdEst{} \eEightIdCi{}, \eEightIdSign{} seeds, clearing the conservative
+$t$ \eEightIdTci{}, a wild cluster bootstrap ($p=\eEightIdWild{}$) and an exact
+sign test ($p=\eEightIdSignP{}$). It does not replicate on Qwen3-4B, and
+Llama-3.1-8B's estimate has the opposite sign.
+
+\noindent\textbf{Response-form selection is learnable, but transfer is limited.}
+The original structure-shift row is a control: training contains only the direct
+response, and every trained checkpoint emits zero delayed response. We therefore
+rebuilt the task with both forms in training: two references have identical
+horizon-1 responses but differ in persistence, and a cue names which the target
+follows. Three-seed Qwen3-8B RL learns marginal persistence without reliable cue
+following (App.~\ref{app:exp3-structure-selection}).
+
+In a fixed component diagnostic crossing both domains and semantic or arbitrary
+labels, all eight checkpoints identify the named reference perfectly.
+Supplying exact response patterns does not rescue the 8B forecasts; an untrained
+32B model shows partial numerical ability but often omits the resting baseline
+(App.~\ref{app:exp3-components}). An exploratory, single-seed supervised pilot on the same
+4,800 training prompts yields $97.9\%$ forecast structure accuracy in Coin City/semantic,
+versus $50.0\%$ for matched RL. It falls to $39.6\%$
+with arbitrary labels and $45.8\%$/$50.0\%$ in Coin Harbor with semantic/arbitrary
+labels. The lower-rate supervised recipe reaches only $58.3\%$ in distribution.
+Learning rate and update budget differ, limiting this to in-domain learnability
+under one recipe, not a general SFT advantage or transferable induction (App.~\ref{app:exp3-learnability}).
+
+\noindent\textbf{Composition accuracy and evidence use are distinct.}
+On the mechanism-family benchmark, episode-matched Qwen3-4B training beats a
+\emph{fixed population-prior} control on held-out compositions: response-MAE
+advantages are \eMechDiscEst{} \eMechDiscCi{} with the mechanism described and
+\eMechUndiscEst{} \eMechUndiscCi{} with it inferred, both clearing all four
+estimators at \eMechG{} seeds. A coherent gain intervention with two retained checkpoint seeds shows better
+tracking than the prior
+on seen mechanisms, but has no clear advantage on held-out mechanisms
+(App.~\ref{app:exp3-evidence-use}). The accuracy benefit therefore does not yet
+establish transferred episode-specific evidence use; a distribution-matched
+shuffled-target comparison remains unresolved.
+
+\begin{figure}[!b]
+\centering
+\includegraphics[width=\linewidth]{exp4_qwen_scale_results.pdf}
+\caption{\textbf{Training improves the tested bases, but scale alone does not
+guarantee a better trained forecaster.} Across Qwen3 checkpoints from 1.7B to
+32B, several trained models reach crowd-level performance, while the gain narrows
+at the strongest base. Local model size is shown on a log parameter axis; hosted
+systems at right are reference points. The Llama replication is in App.
+Figure~\ref{fig:exp4-llama-scale-results}.}
+\label{fig:sealed-market-grounding}
+\label{fig:exp4-scale-results}
+\end{figure}
+
+\subsection{Exp.~4: external grounding in unseen historical markets}
+\label{sec:exp4}
+
+Historical markets test external forecasting accuracy without labeled mechanisms. We train on resolved markets using only
+information available before each outcome, then evaluate 318 unseen questions
+from different event families. Lower Brier scores mean less squared error
+between forecast probabilities and realized outcomes
+(App.~\ref{app:exp3b-protocol}).
+
+Training lowers
+error at every tested size, but the Qwen base-relative gap shrinks from 1.7B to
+32B without steady improvement in trained accuracy (Fig.~\ref{fig:sealed-market-grounding}). At 32B, trained mean Brier is \(.1265\)
+versus \(.1266\) for the base, the smallest observed gain; the trained-minus-base
+interval \([-.00045,.00029]\) includes zero. A Llama 3B/8B
+replication shows the same qualitative convergence pattern
+(App. Figure~\ref{fig:exp4-llama-scale-results}). Several trained checkpoints
+reach contemporaneous Polymarket performance. Hosted systems provide context,
+not additional points on the local scaling curve.
+
+\noindent\textbf{What Exp.~4 establishes.}
+Outcome-based training improves mean forecasting accuracy on held-out event
+families, with uncertain gains at the strongest Qwen base. This comparison is
+trained versus base; without a shuffled-outcome control, it does not isolate the
+contribution of learning episode-specific relationships. It complements the controlled transfer tests with external predictive validity.

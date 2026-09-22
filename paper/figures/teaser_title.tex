@@ -1,0 +1,16 @@
+\documentclass{minimal}
+\usepackage[paperwidth=353.04pt,paperheight=42pt,margin=0pt,noheadfoot]{geometry}
+\usepackage{fontspec,tikz}
+\pagestyle{empty}
+\newfontfamily\teaserfont[Path=./]{teaser_ibm_plex_medium.ttf}
+\begin{document}
+\begin{tikzpicture}[remember picture,overlay,x=1pt,y=1pt]
+\begin{scope}[shift={(current page.south west)}]
+  \fill[white] (0,0) rectangle (353.04,42);
+  \node[anchor=center,inner sep=0] at (176.52,21)
+    {\teaserfont\fontsize{16.5pt}{16.5pt}\selectfont
+     \addfontfeatures{LetterSpace=3.8}FORECASTING WITH A WORLD STRUCTURE};
+\end{scope}
+\end{tikzpicture}
+\null
+\end{document}

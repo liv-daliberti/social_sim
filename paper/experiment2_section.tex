@@ -41,20 +41,9 @@ as City C observations accumulate. Gray lines are deployments, purple the best
 overall, and dashed lines OLS references. The table reports $k=0$ MAE and slope
 correlation with 95\% intervals (Appendix~\ref{app:coin-city-results}).}
 \label{fig:coin-city-results}
+\vspace{10pt}
 \end{figure}
 
-\begin{wrapfigure}{r}{0.35\textwidth}
-\vspace{-1.0em}
-\centering
-\includegraphics[width=\linewidth]{figures/exp2_symbol_decoding.pdf}
-\vspace{-0.8em}
-\caption{\textbf{The decoded regime follows the arbitrary cue, then the truth once
-evidence arrives.} Held-out regime AUC, 88 sealed episodes. Open markers do not
-reject their permutation null; gray marks checkpoints whose forecasts do not
-recover the mapping.}
-\label{fig:coin-city-symbol-decoding}
-\vspace{-1.0em}
-\end{wrapfigure}
 \textbf{Selection and revision.} The cue lowers zero-shot error for every
 deployment, by $0.37$ to $0.92$ poll points with all six paired intervals
 excluding zero, and at $k=0$ every deployment matches or beats a context-blind
@@ -74,6 +63,18 @@ correct cue loads the named reference ($.51$--$.86$) but not the other
 ($.61$--$.90$). Inherited source noise also caps implied-slope correlations near
 $.66$, rather than $.996$ (Appendix~\ref{app:coin-city-reference-selection}).
 
+\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{0pt}
+\centering
+\includegraphics[width=\linewidth]{figures/exp2_symbol_decoding.pdf}
+\vspace{-0.8em}
+\caption{\textbf{The decoded regime follows the arbitrary cue, then the truth once
+evidence arrives.} Held-out regime AUC, 88 sealed episodes. Open markers do not
+reject their permutation null; gray marks checkpoints whose forecasts do not
+recover the mapping.}
+\label{fig:coin-city-symbol-decoding}
+\vspace{-1.0em}
+\end{wrapfigure}
 \textbf{Induction of a novel mapping.} On the original population, twelve of fifteen
 systems recover it at $k=0$, including all five hosted systems. A harder
 population compresses scores toward chance without reordering checkpoints, moving

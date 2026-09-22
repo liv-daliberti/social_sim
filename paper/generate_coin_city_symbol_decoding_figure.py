@@ -61,7 +61,7 @@ COMPARISON = (
     / "analysis"
     / "symbol_context_model_comparison_20260824.json"
 )
-RECOVERS_COLOURS = ("#D55E00", "#0072B2", "#009E73", "#6A3D9A")
+RECOVERS_COLOURS = ("#0072B2", "#D55E00", "#009E73", "#6A3D9A")
 ABSTAINS_COLOUR = "#A8ADB4"
 # Short tick labels: the figure is set narrow enough to wrap beside the text.
 CONDITIONS = (
@@ -140,60 +140,48 @@ def main() -> None:
     if omitted:
         print("omitted (run not complete): " + ", ".join(omitted))
 
-    # Stacked rather than side by side, so the figure is narrow enough to wrap.
-    # Tall and narrow: the three conditions are categorical, so horizontal space
-    # between them carries no information, while vertical space separates series.
-    fig, axes = plt.subplots(2, 1, figsize=(2.55, 3.58), sharex=True, sharey=True)
-    positions = range(len(CONDITIONS))
+    # Two groups, not seven lines. Every positive traces the same path and every
+    # null hugs chance, so per-model curves were redundant ink and forced a legend
+    # that ate a quarter of the panel. Per-checkpoint values and permutation
+    # p-values live in the power-matched appendix table instead.
+    fig, axes = plt.subplots(2, 1, figsize=(2.55, 2.90), sharex=True, sharey=True)
+    positions = list(range(len(CONDITIONS)))
 
     for axis, depth in zip(axes, (0, 4)):
-        reference = 0.5 if TARGET == "regime" else 0.0
-        axis.axhline(
-            reference, color="#888888", linewidth=0.7, linestyle=(0, (4, 3)), zorder=1
-        )
-        for label, results, colour, marker, does_recover in loaded:
-            values, rejects = series(results, depth)
-            # An open marker and a dashed line mark a cell that does not reject its
-            # held-out permutation null, so a shape there is not read as a result.
-            axis.plot(
-                list(positions),
-                values,
-                color=colour,
-                marker=marker,
-                markersize=4.5,
-                markerfacecolor=colour if rejects else "white",
-                linewidth=1.8 if does_recover else 1.2,
-                linestyle="-" if does_recover else (0, (3, 2)),
-                label=label if depth == 4 else None,
-                zorder=3 if rejects else 2,
-            )
+        axis.axhline(0.5, color="#888888", linewidth=0.7, linestyle=(0, (4, 3)), zorder=1)
+        for does_recover, colour, label in (
+            (True, RECOVERS_COLOURS[0], "Qwen + Llama, 14–72B: recover"),
+            (False, ABSTAINS_COLOUR, "Qwen + Llama, 4–8B: do not"),
+        ):
+            group = [series(res, depth)[0] for _, res, _, _, rec in loaded if rec is does_recover]
+            if not group:
+                continue
+            lo = [min(v[i] for v in group) for i in positions]
+            hi = [max(v[i] for v in group) for i in positions]
+            mid = [sorted(v[i] for v in group)[len(group) // 2] for i in positions]
+            axis.fill_between(positions, lo, hi, color=colour, alpha=0.22,
+                              linewidth=0, zorder=2)
+            axis.plot(positions, mid, color=colour, linewidth=2.0,
+                      linestyle="-" if does_recover else (0, (3, 2)),
+                      label=f"{label} ($n{{=}}{len(group)}$)" if depth == 4 else None,
+                      zorder=3)
         axis.set_title(
             "No target cases ($k{=}0$)" if depth == 0 else "Four target cases ($k{=}4$)",
-            pad=4,
-            fontsize=8.5,
+            pad=4, fontsize=8.5,
         )
-        axis.set_xticks(list(positions))
+        axis.set_xticks(positions)
         axis.set_xticklabels([name for _, _, name in CONDITIONS])
-        axis.set_xlim(-0.18, len(CONDITIONS) - 0.82)
-        axis.set_ylim(-1.25, 0.55) if TARGET == "slope" else axis.set_ylim(0.0, 1.05)
-        axis.set_yticks([0.0, 0.5, 1.0] if TARGET == "regime" else [-1.0, -0.5, 0.0, 0.5])
+        axis.set_xlim(-0.15, len(CONDITIONS) - 0.85)
+        axis.set_ylim(0.0, 1.05)
+        axis.set_yticks([0.0, 0.5, 1.0])
+        axis.set_ylabel("Held-out regime AUC", fontsize=8)
         axis.spines["top"].set_visible(False)
         axis.spines["right"].set_visible(False)
 
-    for axis in axes:
-        axis.set_ylabel(
-            "Held-out $R^2$" if TARGET == "slope" else "Held-out regime AUC",
-            fontsize=8,
-        )
-    # Below the panels rather than inside one: at five checkpoints an inset legend
-    # covers the region the abstaining series occupy.
     handles, labels = axes[1].get_legend_handles_labels()
-    fig.legend(
-        handles, labels, loc="lower center", frameon=False, handlelength=1.5,
-        borderpad=0.0, labelspacing=0.3, columnspacing=1.0, handletextpad=0.5,
-        ncol=2, fontsize=6.8,
-    )
-    fig.tight_layout(pad=0.4, h_pad=0.7, rect=(0, 0.185, 1, 1))
+    fig.legend(handles, labels, loc="lower center", frameon=False, handlelength=1.6,
+               borderpad=0.0, columnspacing=1.1, handletextpad=0.5, ncol=1, fontsize=7)
+    fig.tight_layout(pad=0.4, h_pad=0.7, rect=(0, 0.115, 1, 1))
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUTPUT, facecolor="white")
     print(f"Wrote {OUTPUT}")

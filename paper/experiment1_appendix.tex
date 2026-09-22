@@ -1,37 +1,38 @@
 % ============================================================
-%  APPENDIX A — EXPERIMENT 1 FULL DETAILS
+%  APPENDIX — EXPERIMENT 1 FULL DETAILS
 %  Place after the main body, e.g. \appendix\section{...}
 % ============================================================
 
-\section{Experiment 1: Prospective Forecast Updating}
+\section{Experiment 1: prospective forecast updating}
 \label{app:exp1}
 
-Experiment~1 measures whether forecast revisions follow evidence direction and
-whether directional packets produce larger changes than orthogonal packets.
+Experiment~1 tests whether
+forecast revisions follow evidence direction and whether directional packets
+produce larger changes than orthogonal packets.
 All reported counts refer to parseable records in the frozen consistency report
 unless stated otherwise.
 
 The main comparison reports the nine deployments with scale-valid archived
-revisions. This appendix retains Qwen~2.5-7B for directional-compliance auditing
+revisions. This appendix retains Qwen~2.5-7B for directional-compliance diagnostics
 and documents why its magnitude-based statistics are excluded.
 
-\subsection{Study Design, Sample, and Agent Roster}
+\subsection{Study design, sample, and agent roster}
 \label{app:exp1-sample}
 
-\paragraph{Design at a glance.}
+\noindent\textbf{Protocol summary.}
 Experiment~1 crosses ten forecasting agents with a frozen set of unresolved binary
 Polymarket questions.  The study has four stages: (1)~freeze the market sample;
 (2)~obtain one or more initial forecasts from each agent; (3)~generate nine synthetic
 evidence packets for each of the 100 core markets (three pro-$H_1$, three
-anti-$H_1$, and three causally orthogonal); and (4)~ask the same agent to revise each
+anti-$H_1$, and three outcome-orthogonal); and (4)~ask the same agent to revise each
 parseable initial forecast after receiving one packet at a time.  The unit of analysis is an \emph{agent $\times$ market $\times$ initial run
 $\times$ counterfactual packet} update.  Requested repeat
-counts were five initial runs for frontier agents and three for local agents; realized
+counts were five initial runs for hosted agents and three for local agents; realized
 valid counts are uneven because of provider failures, parsing failures, and targeted
 top-ups.  Section~\ref{app:metrics} specifies how those records are normalized and
 aggregated.
 
-\subsubsection{Sampling Frame and Market Selection}
+\subsubsection{Sampling frame and market selection}
 \label{app:market-selection}
 
 The primary sampling frame is a Polymarket API snapshot taken on June~9, 2026.
@@ -53,15 +54,18 @@ the 100-market core using a cosine-similarity threshold of 0.25 and a maximum of
 state-election, 7 Russia--Ukraine, 5 Brazil, 5 U.S.-midterm, 3 macroeconomic,
 and 2 China--Taiwan markets.
 
-Counterfactual generation and Stage~3 updating use this 100-market core for every
-model. Llama~3.1-70B has 99 analyzable markets because one market has no parseable
-initial forecast.
+Counterfactual generation and Stage~3 updating target this 100-market core for
+every model, but per-model coverage of it is not uniform. Llama~3.1-70B has 99
+analyzable markets because one market has no parseable initial forecast, and
+Claude Opus~4.8 has usable updates on all three packet arms in 73 markets;
+Section~\ref{app:exp1-alternatives} reports the coverage table and the resulting
+robustness checks.
 
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
 \captionof{table}{Representative markets from the frozen 100-market core.
-Snapshot mid is the stored YES midpoint on June~9, 2026, not an eventual
+Snapshot mid is the stored YES midpoint on June~9, 2026 rather than an eventual
 outcome.}
 \label{tab:markets}
 \footnotesize
@@ -80,10 +84,10 @@ Will a new Gemini flagship be released by June~30, 2026? & AI/technology & 0.89 
 \end{minipage}
 \end{center}
 
-\subsubsection{Agent Roster and Execution Modes}
+\subsubsection{Agent roster and execution modes}
 \label{app:agent-roster}
 
-The roster comprises three hosted frontier systems and seven open-weight local systems
+The roster comprises three hosted API systems and seven open-weight local systems
 (Table~\ref{tab:agent-roster}).  The hosted models ran through Azure AI~Foundry and used
 its native search-supported Responses workflow \citep{microsoft2026foundry}.  Local
 models were served by Ollama \citep{ollama2026} on cluster GPUs; their research turn was supplied by Tavily search.  All agents received the same substantive three-step contract: build an event
@@ -94,7 +98,7 @@ search orchestration and model runtimes were not identical.
 \begin{minipage}{\linewidth}
 \centering
 \captionof{table}{Experiment~1 agent roster and requested initial-forecast repeats.  Requested
-$k$ is the collection target, not an analysis denominator; exact realized coverage
+$k$ is the collection target rather than an analysis denominator; exact realized coverage
 appears in Table~\ref{tab:model-summary}.}
 \label{tab:agent-roster}
 \small
@@ -126,20 +130,20 @@ initial-forecast parser converted those values, but the frozen Stage~3 data reta
 mixed-scale Qwen~2.5-7B subset documented in
 Section~\ref{app:record-processing}.
 
-\subsection{Forecast, Intervention, and Validation Protocol}
+\subsection{Forecast, intervention, and validation protocol}
 \label{app:exp1-protocol}
 
-\subsubsection{Initial Forecast Elicitation}
+\subsubsection{Initial forecast elicitation}
 \label{app:prompts}
 
-\paragraph{Design rationale.}
+\noindent\textbf{Design rationale.}
 The elicitation asks each agent to restate the resolution criterion, construct
 explicit YES and NO hypotheses, identify a status-quo trajectory, research
 current evidence, and map its final YES probability to the posterior assigned to
 $H_1$. Question restatement and status-quo anchoring follow prior
 forecasting-prompt evidence \citep{halawi2024approaching,wilson2025automated}.
 
-\paragraph{Executed three-turn sequence.}
+\noindent\textbf{Executed three-turn sequence.}
 Every frozen initial forecast followed the same substantive sequence, with
 provider-specific tool plumbing:
 
@@ -150,7 +154,7 @@ provider-specific tool plumbing:
         $H_1$ (YES) and $H_2$ (NO); and described the status-quo outcome.
   \item \textbf{Current-evidence research.}  The agent gathered evidence for and
         against each hypothesis, checked whether the required chain of events was
-        plausible within the remaining time, and revised its assessment.  Frontier
+        plausible within the remaining time, and revised its assessment.  Hosted
         systems used Azure Foundry's native search workflow; local systems generated
         queries that were executed through Tavily and received the returned evidence
         in context.
@@ -199,7 +203,7 @@ metric tests whether the returned fields obey that invariant after an interventi
 The substantive prompt contract was common, but prompts were not byte-identical across
 runtimes because the hosted and local search interfaces require different orchestration.
 
-\subsubsection{Counterfactual Packet Construction and Audit}
+\subsubsection{Counterfactual packet construction and validation}
 \label{app:cf-taxonomy}
 
 For each of the 100 core markets, GPT-5.4 generated nine synthetic evidence packets:
@@ -251,15 +255,15 @@ BACKDROP    & orthogonal & Contextual economic, logistical, or social informatio
 \end{minipage}
 \end{center}
 
-\paragraph{Packet-level integrity checks.}
+\noindent\textbf{Packet-level integrity checks.}
 The frozen packet file contains 900/900 parseable records: 100 markets multiplied by
 nine packets, with exactly 300 pro-$H_1$, 300 anti-$H_1$, and 300 orthogonal records.
 Every packet has a nonempty headline, and the logs contain zero search calls.  All 900
 generator-assigned plausibility ratings equal 4/5. That field documents the
 generator's compliance claim but provides neither variation nor independent
 validation; the separate human materials review is reported below.
-These checks establish structural completeness, not that directional strength or
-difficulty is perfectly matched across packets.
+These checks verify structural completeness; they do not establish that directional
+strength or difficulty is perfectly matched across packets.
 
 As an illustration, for the Hormuz market the pro-$H_1$ headline
 \textit{Oman says Iran agrees daily protected windows for commercial Hormuz transits}
@@ -267,32 +271,47 @@ elicited the largest single update reported in the viewer: Claude Opus~4.8 revis
 from 10\% to 45\% (\(\Delta\hat p=+35\)~pp).  The orthogonal IMO
 incident-reporting item produced negligible movement.
 
-\subsubsection{Stage~3 Update and Pairing}
+\subsubsection{Stage~3 update and pairing}
 \label{app:update-protocol}
 
 Each packet was presented separately with the agent's own parseable initial structured
-forecast.  The agent was instructed to accept that single synthetic development as true
-for the exercise, identify whether it was already implicit in its background view, and
-return the same structured forecast with revised $H_1$, $H_2$, and YES probabilities
-plus a one-sentence \texttt{novelty\_assessment}.  Search was disabled, and agents were instructed to treat the intervention as
-true without online verification.
+forecast.  The agent was told to reason only from that forecast and the packet and to
+return the same structured forecast with revised $H_1$, $H_2$, and YES probabilities.
+Search was disabled.
+
+\noindent\textbf{One deployment received an extra instruction.}
+The Stage~3 template was not common across the roster.  GPT-5.4 alone was run with the
+runner's \texttt{novelty} option, which appends a rule asking for a
+\texttt{novelty\_assessment}: \emph{a single sentence stating whether this evidence was
+likely already reflected in your initial forecast as background knowledge (suggesting a
+small update) or is genuinely new and surprising (warranting a larger revision)}.
+The frozen records show the asymmetry exactly: 3{,}838 of 3{,}921 GPT-5.4 updates carry
+the field and no other deployment carries it in any record.  The instruction tells a
+model to modulate revision size by perceived novelty, which is close to the construct
+Section~\ref{app:exp1-alternatives} estimates, and GPT-5.4 is the deployment that
+behaves differently on exactly that dimension: it returns the prior unchanged on
+$8.4\%$ of orthogonal packets against $71.4\%$ and $44.4\%$ for the other two hosted
+systems, writing a small revision where they abstain.  We cannot separate that
+difference from the prompt difference, so GPT-5.4's abstention rate is not comparable to
+the rest of the roster and we do not read the hosted ordering on abstention as a model
+difference.  Its conditional magnitude, directional correctness, and AUC use the same
+scoring as every other deployment.
 
 For an agent--market cell with \(k\) parseable initial runs, the intended crossed design
 contains \(9k\) update records.  Each update is conditionally independent in prompt
 context: it contains one initial run and one packet, never another packet or another
-agent's answer.  The novelty prompt was intended to discourage large revisions for
-background information; novelty itself is not used as a reported endpoint and should
-not be viewed as a validated correction.
+agent's answer.  The novelty field is not a reported endpoint and should not be
+viewed as a validated correction.
 
 Provider interruptions, parse failures, and subsequent top-ups make realized cells
 uneven.  We therefore report exact valid record and market denominators by model in
 Table~\ref{tab:model-summary} rather than treating requested \(k\) or the theoretical
 \(9k\) as observed sample sizes.
 
-\subsection{Estimands, Record Processing, and Aggregation}
+\subsection{Estimands, record processing, and aggregation}
 \label{app:metrics}
 
-\subsubsection{Record Construction, Deduplication, and Missingness}
+\subsubsection{Record construction, deduplication, and missingness}
 \label{app:record-processing}
 
 The frozen analysis artifact is
@@ -313,7 +332,7 @@ For Qwen~2.5-7B, 207 of 8,636 deduplicated records store
 metrics remain usable, but its absolute revision magnitudes and sensitivity
 ratio are scale-contaminated and are omitted from the paper tables.
 
-\subsubsection{Consistency Estimands}
+\subsubsection{Consistency estimands}
 \label{app:metric-definitions}
 
 For update record \(i\), let \(d_i\in\{+1,-1\}\) denote the intended direction
@@ -321,7 +340,7 @@ For update record \(i\), let \(d_i\in\{+1,-1\}\) denote the intended direction
 intended sign and are excluded from EHC and HFC.  The 3~pp movement threshold excludes
 cases in which a model effectively leaves the forecast unchanged.
 
-\paragraph{Evidence--Hypothesis Consistency (EHC).}
+\noindent\textbf{Evidence--hypothesis consistency (EHC).}
 Let \(\Delta p(H_1)_i=p(H_1)_i^{\mathrm{post}}-\hat p_i^{\mathrm{initial}}\).
 For directional records with \(|\Delta p(H_1)_i|\geq0.03\),
 \begin{equation}
@@ -331,7 +350,7 @@ For directional records with \(|\Delta p(H_1)_i|\geq0.03\),
 EHC asks whether the updated hypothesis field moves in the direction implied by the
 packet; it does not score the size of that movement.
 
-\paragraph{Hypothesis--Forecast Consistency (HFC).}
+\noindent\textbf{Hypothesis--forecast consistency (HFC).}
 Let \(\Delta\hat p_i=\hat p_i^{\mathrm{post}}-\hat p_i^{\mathrm{initial}}\).
 For directional records with \(|\Delta\hat p_i|\geq0.03\),
 \begin{equation}
@@ -342,7 +361,7 @@ HFC asks the same directional question of the headline YES probability. Because
 the output contract requires this probability to equal $P(H_1)$, we retain HFC in
 the appendix as a compliance diagnostic rather than as a separate main-text result.
 
-\paragraph{Internal Coherence Score (ICS).}
+\noindent\textbf{Internal coherence score (ICS).}
 ICS is defined whenever both updated fields parse and is unconditional on movement:
 \begin{equation}
   \mathrm{ICS}_i=\mathbf{1}\!\left[
@@ -351,7 +370,7 @@ ICS is defined whenever both updated fields parse and is unconditional on moveme
 \end{equation}
 The inequality is strict: a discrepancy of exactly 2~pp does not pass.
 
-\paragraph{Directional sensitivity.}
+\noindent\textbf{Directional sensitivity.}
 Packet selectivity is summarized by
 \begin{equation}
   \mathrm{Sensitivity}=
@@ -364,7 +383,7 @@ packets; larger values indicate preferential response to directional packets. Th
 ratio is descriptive.  It cancels a uniform multiplicative scale within a model, but
 does not repair mixed scales across records, hence the Qwen~2.5-7B caveat above.
 
-\subsubsection{Aggregation and Uncertainty}
+\subsubsection{Aggregation and uncertainty}
 \label{app:aggregation}
 
 For EHC, HFC, and ICS, the evaluator first pools eligible records within each
@@ -373,15 +392,17 @@ unweighted mean of those market rates, so a market with more successful repeat r
 does not receive greater weight.  Reported standard errors are the sample standard
 deviation of market-level rates divided by the square root of the number of markets.
 
-Revision magnitudes and sensitivity use the deduplicated update records pooled
-within model and direction. Their standard errors are record-level summaries and
-do not model dependence among repeated initial runs or the nine packets from one
-market; they should be read descriptively.
+Revision magnitudes and sensitivity retain the record-pooled point estimands.
+Uncertainty uses 20,000 percentile cluster-bootstrap draws over represented markets.
+All nine packets and every repeated initial-run update from a selected market remain
+together, and sensitivity is recomputed from pooled directional and orthogonal
+movement within each draw. This accounts for dependence among records from the same
+market while preserving the published estimand.
 
-\subsubsection{Output Compliance and Threshold Robustness}
+\subsubsection{Output compliance and threshold robustness}
 \label{app:exp1-threshold-robustness}
 
-\paragraph{The two output fields are structurally coupled.}
+\noindent\textbf{Output-field coupling.}
 The final-output schema explicitly instructs the agent that
 $\hat p=P(H_1)$, and the Stage~3 prompt requests the same structure after
 updating. EHC and HFC are therefore not independent tests of an inferred
@@ -394,7 +415,7 @@ therefore do not treat EHC--HFC parity as independent evidence for a latent
 representation or for spontaneous propagation between separately elicited
 quantities.
 
-\paragraph{Unconditional estimand.}
+\noindent\textbf{Unconditional estimand.}
 For threshold $t$, Table~\ref{tab:exp1-threshold-robustness} retains a valid
 directional update when $|\Delta|\geq t$ and reports the fraction for which
 $d_i\Delta_i>0$. At $t=0$, every valid pro- and anti-$H_1$ update enters the
@@ -424,20 +445,20 @@ published 3-pp EHC or HFC denominator. Rates are macro-averaged across markets.}
 \end{minipage}
 \end{center}
 
-\paragraph{Result.}
+\noindent\textbf{Threshold-sweep results.}
 The threshold sweep preserves the qualitative conclusion but narrows its
-wording. Frontier-model unconditional correctness is 97.3--98.4\%; at the
+wording. Hosted-model unconditional correctness is 97.3--98.4\%; at the
 published 3-pp threshold it is 97.7--99.0\%. The 3-pp rule excludes 6.9\% of
 GPT-5.4, 12.6--12.7\% of DeepSeek V4-Pro, and 18.1\% of Claude Opus~4.8
 directional updates. Thus, the near-1.0 EHC/HFC values do not result from
 discarding a majority of cases, and the conclusion is stable across 0, 1, 3,
-and 5~pp. The precise statement is nonetheless \emph{99\% directionally correct
-among updates of at least 3~pp}, not \emph{99\% coherent updating}. Small local
+and 5~pp. The precise statement is \emph{99\% directionally correct among updates
+of at least 3~pp}. It is not \emph{99\% coherent updating}. Small local
 models have fewer sub-3-pp updates (0.6--2.9\%) but lower unconditional
 correctness (88.1--96.4\%), so their errors are not hidden primarily by the
 movement filter.
 
-\paragraph{Normalisation and reproducibility.}
+\noindent\textbf{Normalisation and reproducibility.}
 Before recomputing deltas, the analysis independently normalises the initial
 headline probability, updated headline probability, and updated $H_1$
 posterior from the documented $[0,1]$ or $[0,100]$ formats. This matters for
@@ -448,37 +469,40 @@ standard errors, input-file SHA-256 hashes, and full-precision estimates are in
 \path{exp1_prospective/data/results/threshold_robustness.json}. The table is
 regenerated by
 \path{exp1_prospective/agent/evaluate_threshold_robustness.py}; neither script
-nor table uses outcomes or post-hoc item filtering.
+nor table filters items using realized outcomes.
 
-\subsection{Extended Results}
+\subsection{Extended results}
 \label{app:extended-results}
 
-\subsubsection{Analysis Coverage}
+\subsubsection{Analysis coverage}
 Table~\ref{tab:model-summary} gives the exact Stage~3 record and market counts.
-All models use the same 100-market core; Llama~3.1-70B has 99 analyzable markets
-because one market has no parseable initial forecast.
+The market column counts markets with at least one valid update. Coverage of all
+three packet arms is not uniform across models: Llama~3.1-70B has 99 analyzable
+markets because one market has no parseable initial forecast, and Claude Opus~4.8
+has all three arms in 73 of 100. Section~\ref{app:exp1-alternatives} gives the
+per-arm coverage and assesses whether missingness is arm-selective.
 
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
 \captionof{table}{Valid Stage~3 update records and represented core markets by
-agent.}
+agent.  Hosted systems first; open-weight rows in descending parameter count.}
 \label{tab:model-summary}
 \small
 \begin{tabular}{llrr}
 \toprule
 \textbf{Model} & \textbf{Type} & \textbf{Records} & \textbf{Markets} \\
 \midrule
-Claude Opus~4.8 & Frontier  & 3{,}125 & 100 \\
-GPT-5.4         & Frontier  & 3{,}913 & 100 \\
-DeepSeek V4-Pro & Frontier  & 4{,}395 & 100 \\
+Claude Opus~4.8 & Hosted  & 3{,}125 & 100 \\
+GPT-5.4         & Hosted  & 3{,}913 & 100 \\
+DeepSeek V4-Pro & Hosted  & 4{,}395 & 100 \\
+Qwen~2.5-72B    & Local 72B & 2{,}692 & 100 \\
 Llama~3.3-70B   & Local 70B & 2{,}682 & 100 \\
 Llama~3.1-70B   & Local 70B & 2{,}490 &  99 \\
-Qwen~2.5-72B    & Local 72B & 2{,}692 & 100 \\
 Qwen~2.5-32B    & Local 32B & 2{,}693 & 100 \\
 Qwen~2.5-14B    & Local 14B & 2{,}700 & 100 \\
-Qwen~2.5-7B     & Local 7B  & 8{,}636 & 100 \\
 Llama~3.1-8B    & Local 8B  & 5{,}404 & 100 \\
+Qwen~2.5-7B     & Local 7B  & 8{,}636 & 100 \\
 \midrule
 \textbf{Total}  &           & \textbf{38{,}730} & \\
 \bottomrule
@@ -486,11 +510,65 @@ Llama~3.1-8B    & Local 8B  & 5{,}404 & 100 \\
 \end{minipage}
 \end{center}
 
-\subsubsection{Revision Magnitudes and Packet Selectivity}
+\subsubsection{Prospective settlement audit}
+\label{app:exp1-outcome-followup}
+
+The frozen-cohort evaluation includes a dated settlement audit that leaves the
+directional-updating estimand unchanged. On August~24, 2026, we queried the public
+Polymarket market endpoint for the exact 100 frozen IDs. We admitted a label only
+when the market was closed and the YES/NO token prices were exactly
+\([1,0]\) or \([0,1]\).  This strict rule yielded 60 scoreable markets
+(21 YES and 39 NO). One additional closed market had an invalid \(0.5/0.5\)
+settlement and 39 remained unresolved at the audit cutoff; all 40 were excluded.
+
+For each agent--market cell, the forecast is the median of its parseable repeated
+initial YES probabilities, matching the maintained Experiment~1 viewer.  The crowd
+benchmark is the YES price stored in the frozen June~9 selection record.  We report
+threshold accuracy (YES iff \(p>0.5\)), Brier score, and natural-log loss.  Proper-score
+contrasts are paired agent-minus-market differences; negative values favor the
+agent.  Percentile intervals use 20,000 market-level bootstrap resamples.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Descriptive accuracy on the first 60 strictly settled markets.
+A/M denotes agent/June~9 market on the same rows; Correct is the number of
+thresholded calls matching the outcome.  Lower Brier and log loss are better, and
+each \(\Delta\) is agent minus market.  Llama~3.1-70B lacks a parseable initial
+forecast for one settled market, so its paired denominator is 59.}
+\label{tab:exp1-resolved-outcomes}
+\scriptsize
+\resizebox{\linewidth}{!}{%
+\input{tables/exp1_resolved_outcomes}
+}
+\end{minipage}
+\end{center}
+
+The raw correct-call counts are close for the hosted agents and crowd:
+Claude Opus~4.8 gets 41/60 correct, GPT-5.4 and DeepSeek V4-Pro each get
+40/60, and the June~9 market side gets 39/60.  GPT-5.4 has the lowest Brier
+score (\(.225\) versus \(.246\) for the market), a paired difference of
+\(-.021\;[-.074,.030]\); its log-loss difference is
+\(-.037\;[-.178,.103]\).  Qwen~2.5-7B has the lowest log loss (\(.651\)
+versus \(.700\)), but gets 38/60 thresholded calls correct.  No agent's paired
+Brier or log-loss interval excludes zero.
+
+This audit describes the outcome-ready slice of the frozen cohort. Settlement by
+the audit date censors the cohort toward shorter-horizon and early-resolving
+questions, so the 60 are not a random subset of the frozen 100.  Moreover, the
+benchmark is the June~9 snapshot whereas agent forecasts were collected from
+June~10 through June~17; later-running agents may have had additional public
+information.  The result therefore does not establish superiority to the crowd.
+It documents the prospective check; the directional-update estimates do not, by
+themselves, imply a detectable accuracy advantage.
+
+\subsubsection{Revision magnitudes and packet selectivity}
 Table~\ref{tab:anchoring} reports mean absolute forecast revision
 \(\overline{|\Delta\hat p|}\) by packet direction.  For the nine models whose updates
-are consistently stored on 0--1, frontier systems show a clear separation between
-directional and orthogonal packets, while local systems show weaker separation.
+are consistently stored on 0--1, hosted-system sensitivity is $8.2$--$24.0\times$,
+compared with $1.9$--$6.4\times$ for local systems. These are the unconditional
+ratios; Table~\ref{tab:exp1-abstention} separates the abstention and magnitude
+factors behind them, and the main text reports those two rather than the product.
 
 Qwen~2.5-7B has mixed 0--1 and 0--100 stored updates
 (Section~\ref{app:record-processing}); we therefore omit its absolute magnitudes
@@ -500,6 +578,7 @@ and sensitivity ratio rather than present them as comparable estimates.
 \begin{minipage}{\linewidth}
 \centering
 \captionof{table}{Mean absolute forecast revision by counterfactual direction.
+Hosted systems first; open-weight rows in descending parameter count.
 Sensitivity is mean directional divided by mean orthogonal movement; \(n\) is the
 valid Stage~3 record count. Values are percentage points for models with
 consistently stored 0--1 updates.}
@@ -510,35 +589,36 @@ consistently stored 0--1 updates.}
 \textbf{Model} & \textbf{Type} & pro-$H_1$ & anti-$H_1$ & orthogonal
   & \textbf{Sensitivity} & $n$ \\
 \midrule
-Claude Opus~4.8 & Frontier  & 12.7\,pp & 9.6\,pp  & 0.5\,pp & $24.0\times$ & 3{,}125 \\
-DeepSeek V4-Pro & Frontier  & 13.9\,pp & 11.4\,pp & 1.4\,pp & $8.9\times$  & 4{,}395 \\
-GPT-5.4         & Frontier  & 10.6\,pp & 8.5\,pp  & 1.2\,pp & $8.2\times$  & 3{,}913 \\
+Claude Opus~4.8 & Hosted  & 12.7\,pp & 9.6\,pp  & 0.5\,pp & $24.0\times$ & 3{,}125 \\
+DeepSeek V4-Pro & Hosted  & 13.9\,pp & 11.4\,pp & 1.4\,pp & $8.9\times$  & 4{,}395 \\
+GPT-5.4         & Hosted  & 10.6\,pp & 8.5\,pp  & 1.2\,pp & $8.2\times$  & 3{,}913 \\
 \midrule
+Qwen~2.5-72B    & Local 72B & 15.0\,pp & 10.2\,pp & 3.0\,pp & $4.2\times$  & 2{,}692 \\
 Llama~3.3-70B   & Local 70B & 14.8\,pp & 14.3\,pp & 2.3\,pp & $6.4\times$  & 2{,}682 \\
 Llama~3.1-70B   & Local 70B & 14.8\,pp & 15.5\,pp & 3.3\,pp & $4.6\times$  & 2{,}490 \\
-Qwen~2.5-72B    & Local 72B & 15.0\,pp & 10.2\,pp & 3.0\,pp & $4.2\times$  & 2{,}692 \\
 Qwen~2.5-32B    & Local 32B & 15.0\,pp & 10.3\,pp & 4.0\,pp & $3.2\times$  & 2{,}693 \\
 Qwen~2.5-14B    & Local 14B & 14.8\,pp &  8.6\,pp & 4.1\,pp & $2.9\times$  & 2{,}700 \\
-Qwen~2.5-7B     & Local 7B  & --- & --- & --- & --- & 8{,}636 \\
 Llama~3.1-8B    & Local 8B  & 11.1\,pp & 12.0\,pp & 5.9\,pp & $1.9\times$ & 5{,}404 \\
+Qwen~2.5-7B     & Local 7B  & --- & --- & --- & --- & 8{,}636 \\
 \bottomrule
 \end{tabular}
 \end{minipage}
 \end{center}
 Qwen~2.5-7B magnitude cells are omitted because 207 deduplicated updates are
 stored above 1.5, mixing probability scales within the row.
-Table~\ref{tab:anchoring} establishes the magnitude contrast; Figure~\ref{fig:causal-coherent} then places directional consistency and packet selectivity on a common visual scale.
+Table~\ref{tab:anchoring} documents the magnitude contrast; Figure~\ref{fig:causal-coherent} then places directional consistency and packet selectivity on a common visual scale.
 
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
 \includegraphics[width=\linewidth]{figures/exp1_ehc_sensitivity_combined.pdf}
-\captionof{figure}{\textbf{Directional consistency and packet selectivity generally rise with
-model scale.} \emph{Left:} EHC rises from $87$--$90\%$ for 7--8B local models to
-roughly $98$--$99\%$ for frontier systems. \emph{Right:} sensitivity reaches
-$1.9$--$6.4\times$ for local models and $8.2$--$24.0\times$ for frontier systems;
+\captionof{figure}{\textbf{Directional consistency and packet selectivity by
+deployment.} \emph{Left:} EHC is $87$--$90\%$ for 7--8B local models and
+$98$--$99\%$ for hosted systems. \emph{Right:} sensitivity is
+$1.9$--$6.4\times$ for local models and $8.2$--$24.0\times$ for hosted systems;
 Qwen~2.5-7B is omitted from this panel because its archived absolute revisions mix
-0--1 and 0--100 scales and therefore do not yield a comparable ratio.}
+0--1 and 0--100 scales and therefore do not yield a comparable ratio. The panel
+plots the unconditional ratio, which Table~\ref{tab:exp1-abstention} decomposes.}
 \label{fig:causal-coherent}
 \end{minipage}
 \end{center}
@@ -548,106 +628,393 @@ Qwen~2.5-7B is omitted from this panel because its archived absolute revisions m
 
 
 
-\subsection{Study Limitations}
+\subsection{Study limitations}
 \label{app:exp1-limitations}
 
 
-\subsubsection{Sampling and Outcome Scope}
-The sample is a filtered slice of liquid, medium-horizon Polymarket questions,
-not a probability sample of forecasting tasks. Topic exclusions, the
+\subsubsection{Sampling and outcome scope}
+The sample is a filtered slice of liquid, medium-horizon Polymarket questions
+rather than a probability sample of forecasting tasks. Topic exclusions, the
 0.10--0.90 price window, the 14--180 day horizon, event deduplication, and the
-diversity cap shape its difficulty distribution. Experiment~1 evaluates
-conditional updating on unresolved questions; Experiment~4 separately evaluates
-accuracy on resolved historical markets.
+diversity cap shape its difficulty distribution.  The primary Experiment~1
+estimand evaluates conditional updating on questions that were unresolved at
+collection.  The settlement audit in
+Section~\ref{app:exp1-outcome-followup} is naturally censored to the first 60
+strict settlements and is descriptive.  Experiment~4 separately evaluates
+accuracy on a locked sample of resolved historical markets with synchronized
+forecast cutoffs and market-price baselines.
 
-\subsubsection{Counterfactual Construct Validity}
-The intervention audit establishes structural completeness, but not equal
-difficulty. A single generator created all packets from a canonical initial
-event model, and its automated plausibility score was uniformly 4/5. Direct
-headlines can also permit a semantic sign classifier to pass without following
-the intended causal path. The reported result therefore establishes
-direction- and relevance-sensitive updating under semantically direct packets;
-it does not establish mechanism-conditioned causal composition by itself.
+\subsubsection{What the update prompt withholds}
+\label{app:exp1-withholding}
+The Stage~3 template fills in one packet field, \texttt{evidence\_text}. The packet
+record also holds the intended \texttt{direction}, \texttt{target\_hypothesis},
+\texttt{expected\_hypothesis\_shift}, \texttt{slot\_type}, \texttt{evidence\_headline},
+\texttt{mechanism\_targeted}, and a free-text \texttt{rationale}. None of these
+reaches the agent; all are read only when the update is scored. The agent sees its
+own prior forecast, the snippet, and the fixed instruction.
 
-\subsubsection{Human Materials Validation}
-We froze an initial seven-reviewer human materials protocol before registered
-collection. It samples one report from each of 18 distinct markets, balanced
-across six pro-YES, six anti-YES, and six orthogonal packets. Two later roster
-extensions, made after initial responses were inspected, added independently
-ordered assignments for R8 and R9 without changing the items or any earlier
-assignment; the resulting
-nine-reviewer analysis is a sensitivity extension. Each reviewer rates all 18
-items. Before the synthetic report, every item shows the market question,
+We checked this two ways. Over the 12{,}728 frozen records that kept their prompt
+string, spanning all three hosted systems, the evidence block is identical to the
+packet's \texttt{evidence\_text} and contains no private packet field. Prompt
+persistence was a per-runner logging choice, so this covers a subset of records by
+logging coverage rather than by outcome; the runners that stored nothing use the
+same one-field template. Turning to the snippets, none of the 900 names $H_1$,
+$H_2$, the market, or its resolution. Twenty-two (2.4\%, 10 pro-$H_1$ and 12
+anti-$H_1$) use any likelihood wording---\emph{odds}, \emph{chance of},
+\emph{more}/\emph{less likely}, \emph{probability}, \emph{likelihood}---and each
+time it describes something in the world, a simulation percentage or a betting
+line, not the market's resolution. The sign is not stated; it must be inferred from the relation between the
+reported event and the market outcome. Reproduced by
+\path{exp1_prospective/agent/audit_packet_polarity.py}.
+
+\subsubsection{Alternative explanations for the selectivity gap}
+\label{app:exp1-alternatives}
+Here we state the competing accounts of the movement gap and what we find for each.
+All checks come from \path{exp1_prospective/agent/audit_selectivity_robustness.py},
+\path{audit_orthogonal_abstention.py}, \path{audit_lexical_sign_baseline.py}, and
+\path{audit_group_contrast.py}.
+
+\textbf{Where the numbers come from.} The checks read the frozen June~17 report,
+which enumerates every scored run, so they use exactly the data behind the
+published numbers. The enumeration matches the report's own per-arm counts for
+seven of the nine models; Claude Opus~4.8 and GPT-5.4 carry 14 and 4 extra runs in
+markets absent from the per-market join, 18 of 38{,}730. Reproduced sensitivity
+ratios agree with the published ones to within $0.2$. Three checks need packet
+text and so join runs to the June~10 packet set; 346 runs (1.1\%) do not join
+because they come from a June~7--8 pilot against a superseded 63-packet
+generation, and they are dropped from those three checks only.
+
+\textbf{Attrition is much higher for the hosted systems.} Claude Opus~4.8 made
+9{,}313 calls and yielded 3{,}232 usable updates, losing 3{,}656 to broken pipes,
+914 to HTTP~401s after a key expired mid-run, and 1{,}481 to unparseable
+responses. Of those, 1{,}461 come from one malfunctioning June~15 retry pass that
+failed at 91\%; the main June~10 collection parsed at 99.3\%, so the published
+compliance figures are not survivorship. DeepSeek~V4-Pro made 6{,}338 calls for
+4{,}598 usable updates, losing 1{,}629 to HTTP~401s; GPT-5.4 made 4{,}269 for
+4{,}057. The six local models lose almost nothing---four record no failed calls,
+the other two lose 8 and 15 responses to parsing. Content-based exclusion is
+confined to 28 GPT-5.4 calls across 2 markets. Recorded failures are predominantly
+transport or parsing failures; the coverage check below assesses arm and market
+imbalance, not content-specific selection. Separately, two
+update streams were corrupted by concurrent writes and repaired in August~2026,
+after the freeze; the original bytes and unrecoverable fragments sit in
+\path{exp1_prospective/data/_recovery_audit/}. Nothing in this section reads those
+files.
+
+\textbf{The generator saw one agent's world model.} All packets were built from a
+single canonical initial forecast, and it is DeepSeek~V4-Pro's: its June~10 YES
+probability matches the stored generation prior on 100 of 100 markets, where no
+other agent matches on more than 28. For the other eight models the evidence came
+from a different system's event model. The seed model gains nothing by it---among
+hosted systems it is second on sensitivity ($8.9\times$ against Claude's
+$24.0\times$), third on AUC ($.967$), and last on EHC ($.977$)---but its estimates
+are the least independent in the roster.
+
+\textbf{Coverage is uneven across arms.} Table~\ref{tab:exp1-arm-coverage} gives
+per-arm market coverage. Seven models cover 99 or 100 markets on every arm. Claude
+Opus~4.8 covers 82 on the orthogonal arm and 77 on the directional arms, 73 in
+common, so its pooled ratio divides means taken over slightly different market
+sets. Restricting to its 73 common markets gives $23.7\times$ against $24.2\times$
+pooled. As a proxy check, every other model has similar sensitivity on the markets
+Claude covers and those it misses ($8.4$ vs.\
+$7.6$ for GPT-5.4, $9.7$ vs.\ $7.2$ for DeepSeek~V4-Pro, $4.3$ vs.\ $4.2$ for
+Qwen~2.5-72B, $1.9$ vs.\ $2.1$ for Llama~3.1-8B).
+
+\textbf{The ratio has an unstable denominator.} Claude's orthogonal mean is
+$0.5$~pp, so its $24\times$ comes from a small divisor rather than unusually large
+directional movement, and its market-clustered interval is correspondingly wide,
+$[17.3,36.9]$. Table~\ref{tab:exp1-selectivity-robustness} reports three
+statistics that avoid that division. The difference of means is $5.6$--$12.3$~pp
+and does not order the models the way the ratio does. The within-market
+probability that a directional packet moves the forecast more than an orthogonal
+one runs from $.791$ for Llama~3.1-8B to $.994$ for GPT-5.4, putting GPT-5.4 above
+Claude Opus~4.8 and reversing the ratio ranking. Every model moves further on
+directional packets in every market it covers.
+
+\textbf{The denominator is mostly zeros.} That instability has a specific cause,
+and naming it replaces the ratio with two statistics that are easier to read. A
+revision of exactly zero---the model reproduces the probability shown to it---enters
+the mean like any other record, so the ratio silently mixes how often a
+deployment declines to move with how far it moves when it does. Writing $A$ for
+the share of runs with $\Delta\hat p=0$ and $M$ for the mean absolute revision
+among the rest, $\overline{|\Delta\hat p|}=(1-A)M$, and the ratio factors exactly:
+\begin{equation}
+  \mathrm{Sensitivity}
+  =\underbrace{\frac{M_{\mathrm{dir}}}{M_{\mathrm{orth}}}}_{\text{magnitude}}
+  \times\underbrace{\frac{1-A_{\mathrm{dir}}}{1-A_{\mathrm{orth}}}}_{\text{abstention}}.
+  \label{eq:sensitivity-decomposition}
+\end{equation}
+Table~\ref{tab:exp1-abstention} gives both factors. Directional abstention is
+$0.0$--$1.4\%$ for every deployment, so the second factor is governed entirely by
+the orthogonal arm, where abstention runs from $1.1\%$ for Llama~3.1-8B to
+$71.4\%$ $[63.8,78.5]$ for Claude Opus~4.8. Claude's $24\times$ is therefore
+$7.0\times$ $[5.5,9.1]$ in magnitude multiplied by $3.48$ in abstention;
+DeepSeek~V4-Pro's $8.9\times$ is $4.9\times$ times $1.79$; GPT-5.4's $8.2\times$
+is $7.5\times$ times $1.09$, because GPT-5.4 writes a small revision where the
+other two hosted systems return the prior unchanged. Across the roster the
+published $1.9$--$24.2\times$ becomes $1.9$--$7.5\times$ once the zeros are
+separated out, and the ordering changes: GPT-5.4 rather than Claude Opus~4.8 is
+highest, and Llama~3.3-70B at $5.7\times$ sits above DeepSeek~V4-Pro at
+$4.9\times$.
+
+We report both factors rather than the product. Declining to revise at all is an
+appropriate response to an outcome-irrelevant premise, so the abstention rate is
+a selectivity measure in its own right and a better-behaved one: it is a bounded
+proportion, it is paired within model across arms, and it needs no division by a
+small number. It is also the more fragile of the two. An exact copy of a
+displayed prior is a discrete act adjacent to formatting, and the update prompt
+does instruct the agent to leave unaffected fields unchanged, so we do not read a
+high rate as evidence about internal computation. The no-information condition
+described in Section~\ref{app:exp1-limitations} is what would separate declining
+to revise from copying the anchor, and it was not run. Reproduced by
+\path{exp1_prospective/agent/audit_orthogonal_abstention.py}.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Decomposition of the sensitivity ratio into magnitude and
+abstention factors (Equation~\ref{eq:sensitivity-decomposition}). \emph{Orthogonal
+abstention} is the share of orthogonal runs with $\Delta\hat p$ exactly zero; the
+directional-arm rate is $0.0$--$1.4\%$ throughout. The two \emph{given a move}
+columns condition on a nonzero revision, and their ratio is the magnitude factor.
+Brackets are 95\% market-clustered percentile intervals from 20,000 draws, the
+scheme used for the published movement intervals. Qwen~2.5-7B is omitted for
+mixed probability scales.}
+\label{tab:exp1-abstention}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\input{tables/exp1_abstention_decomposition}
+}
+\end{minipage}
+\end{center}
+
+\textbf{The deployment contrast depends on the statistic.} Comparing the three
+hosted systems against the six scale-valid open-weight models by market-clustered
+bootstrap (20{,}000 replicates, macro-averaged within group so a model with more
+runs does not dominate), the statistics disagree. On the ratio the
+difference is $+9.8$ $[7.2,14.2]$, group means $13.7\times$ and $3.9\times$, and
+the per-model ranges do not overlap. On AUC it is $+.070$ $[.062,.079]$, which
+excludes zero, but the ranges do overlap: Llama~3.3-70B at $.989$ and
+Llama~3.1-70B at $.978$ both beat DeepSeek~V4-Pro at $.967$. On raw movement there
+is no difference at all, $+0.8$ $[-0.0,1.7]$~pp around means of $10.1$ and $9.3$.
+
+The decomposition explains why the ratio is the one statistic that separates the
+groups completely. Both of its factors favour the hosted systems on average and
+neither separates them on its own: orthogonal abstention differs by $+.286$
+$[.244,.329]$ around group means of $.413$ and $.126$, with four open-weight
+deployments at or above GPT-5.4's $8.4\%$; the magnitude factor differs by
+$+3.10$ $[2.31,4.08]$ around $6.5\times$ and $3.4\times$, with Llama~3.3-70B
+above DeepSeek~V4-Pro. Multiplying two partially separating factors yields a
+product whose ranges happen not to overlap, so we do not report that non-overlap
+as a finding. The two classes move about equally far on directional evidence; the
+hosted systems more often decline to move at all on controls, and move somewhat
+less far when they do. We state the deployment result that way rather than as a
+general selectivity ordering. Group contrasts come from
+\path{exp1_prospective/agent/audit_group_contrast.py}.
+
+\textbf{The arms differ in wording.} By construction directional packets take the
+DATA, DECISION, and STRUCTURAL slots and orthogonal packets take PROCEDURAL,
+PERSONNEL, and BACKDROP, and the text differs accordingly: directional snippets
+average $96.8$ words and $7.1$ digits, orthogonal ones $85.7$ and $3.7$. Movement
+could track density rather than content. Two checks argue otherwise. Within the
+directional arm, where length cannot indicate sign, Spearman correlation between
+word count and $|\Delta\hat p|$ is $-.06$ to $.00$ and between digit count and
+$|\Delta\hat p|$ is $.01$ to $.10$. And the arms' word counts almost fully overlap
+(orthogonal 66--114, directional 66--121); restricting to that band keeps 889 of
+900 packets and moves every sensitivity estimate by at most $0.1$
+(Table~\ref{tab:exp1-selectivity-robustness}, last column). The arms are not
+matched on surface form. These checks show that word and digit counts do not
+explain the effect; other surface differences remain. Directional correctness is
+not explained by length, since length cannot say which way to move.
+
+\textbf{A shallow classifier might be enough.} We tested it. Multinomial naive
+Bayes and L2-regularised logistic regression were fit on the 900 packet texts with
+five-fold cross-validation grouped by market, so no market appears on both sides
+of a fold. Telling directional from orthogonal packets is nearly free: naive Bayes
+reaches $.989$ against a $.667$ majority rate. That follows from the slot-type
+plan rather than revealing anything---the most distinctive orthogonal tokens are
+\emph{appointed}, \emph{appointment}, \emph{oversee}, and \emph{accreditation},
+which name the roles the generator was told to write. So a model could route on
+that marking without weighing content, and the sensitivity ratio alone cannot rule
+it out. Matching the control arm on evidence type would need a different packet
+design; the checks above bound only the length part of the problem.
+
+Recovering the \emph{sign} is another matter. On pro-$H_1$ versus anti-$H_1$ the
+same classifiers reach $.688$ and $.675$ against $.500$ chance, and prepending the
+market question does not help ($.665$ and $.680$): these bag-of-words models do
+not combine question polarity with event valence. The tokens it keys on carry no
+consistent sign---\emph{vessel}, \emph{venue}, \emph{signature} for pro-$H_1$,
+\emph{table}, \emph{materials}, \emph{findings} for anti-$H_1$. Against this $.69$ lexical baseline, the human panel reaches $.762$ on its
+smaller categorical task and the hosted agents $.973$--$.984$ on probability
+revision. These are not matched performance comparisons. The agent--classifier gap
+is evidence against this bag-of-words account, not proof that no surface heuristic
+can recover sign; unlike the arm contrast, it stays within pro- versus anti-$H_1$
+packets.
+
+\textbf{Does the stated reasoning track the packet?} If movement were routed on
+surface marking, a model's written rationale would not need to bear any particular
+relation to what it does with the forecast. We tested two versions of this
+(\path{exp1_prospective/agent/audit_mechanism_tracking.py}).
+
+The first asks whether a rationale identifies the specific mechanism its packet was
+built to target, ranking the true \texttt{mechanism\_targeted} against the other
+eight from the same market so that question, actors, and domain vocabulary are held
+fixed. Rationales rank it first on $.278$--$.430$ of records against $1/9$ chance,
+but the snippet alone scores $.516$, so most of that is echo of the text the model
+just read. Removing every token the snippet supplied leaves $.128$--$.195$ under
+matched query length, still above chance---but the generator's own rationale for
+the packet, scored the same way, lands at $.119$, essentially chance, because it
+paraphrases the mechanism rather than restating it. With the reference writer at
+chance the metric has no usable dynamic range, and we draw no conclusion from it.
+
+Models often declare orthogonal packets irrelevant: explicit non-relevance wording appears in
+$4.9$--$61.9\%$ of orthogonal rationales against $0.1$--$2.8\%$ of directional
+ones. What matters is whether saying it predicts doing it. Within the orthogonal
+arm, records whose rationale declares irrelevance move less than those that do not,
+and the market-clustered gap excludes zero for eight of the nine scale-valid
+deployments: $0.88$~pp $[0.56,1.22]$ for Claude Opus~4.8, $1.70$
+$[1.45,1.96]$ for DeepSeek~V4-Pro, $2.73$ $[2.28,3.19]$ for Qwen~2.5-72B, down to
+$0.36$ $[0.21,0.54]$ for GPT-5.4, whose unflagged orthogonal movement is already
+$1.3$~pp. The exception is Llama~3.1-8B at $0.26$ $[-0.64,1.06]$, where no coupling is
+detectable; it is also the weakest deployment on sensitivity and directional
+correctness, though we do not test whether the two are related. Qwen~2.5-7B is
+omitted for mixed probability scales.
+
+For eight of nine deployments, then, the revision a model makes is not independent
+of the relevance it states, and the one deployment where that link is undetectable
+is the weakest on every other measure. Two limits: the flag is a hand-built
+lexicon, so it captures what a rationale declares rather than what the model
+understood; and consistent self-description is compatible with surface routing, so
+this does not show relevance was derived from the mechanism.
+
+\textbf{One deployment was prompted differently.} GPT-5.4, and only GPT-5.4,
+received the \texttt{novelty\_assessment} rule at Stage~3
+(Section~\ref{app:update-protocol}).  Because that rule speaks directly to revision
+size, its abstention rate is not comparable to the other deployments'. The
+within-GPT contrast uses one template, but the extra instruction could interact
+with packet arm, so its contrast should not be attributed to model differences
+alone.
+
+\textbf{Two remaining caveats.} A single generator wrote all packets and scored its
+own work at a uniform 4/5 for plausibility, so automated validation establishes
+structural completeness but not equal difficulty or independent content validity.
+And the local models ran through Ollama at the default tag for each name, with the
+served weight precision not recorded per run; rows ordered by parameter count also
+vary in quantization and inference stack, so we do not attribute the open-weight
+ordering to parameter count alone.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Per-arm market coverage in the frozen June~17 report. Markets
+counts entries in the model's per-market block, which for three Qwen rows
+includes 20 carrying no scored update; the arm columns count markets with at
+least one.}
+\label{tab:exp1-arm-coverage}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{Markets} & \textbf{pro-$H_1$/anti-$H_1$} & \textbf{orthogonal} & \textbf{all three} \\
+\midrule
+Claude Opus~4.8 & 100 & 77 & 82 & 73 \\
+GPT-5.4         & 100 & 99 & 99 & 99 \\
+DeepSeek V4-Pro & 100 & 100 & 100 & 100 \\
+\midrule
+Qwen~2.5-72B    & 120 & 100 & 100 & 100 \\
+Llama~3.3-70B   & 100 & 100 & 100 & 100 \\
+Llama~3.1-70B   & 100 & 99 & 99 & 99 \\
+Qwen~2.5-32B    & 120 & 100 & 100 & 100 \\
+Qwen~2.5-14B    & 120 & 100 & 100 & 100 \\
+Llama~3.1-8B    & 100 & 100 & 100 & 100 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Selectivity under statistics that do not divide by the orthogonal
+mean. \emph{Sens.} is the frozen ratio; \emph{Diff.} is mean directional minus mean
+orthogonal absolute revision; \emph{AUC} is the within-market probability that a
+directional packet moves the forecast more than an orthogonal one, averaged over
+markets; \emph{Markets} counts markets where mean directional movement exceeds
+mean orthogonal movement; \emph{Length-m.} recomputes the ratio on the 66--114-word
+band the arms share. Qwen~2.5-7B is omitted for mixed probability scales.}
+\label{tab:exp1-selectivity-robustness}
+\small
+\input{tables/exp1_selectivity_robustness}
+\end{minipage}
+\end{center}
+
+\subsubsection{Human materials review}
+\label{app:exp1-human-review}
+Nine adult reviewers submitted the 18-item materials protocol. It samples one
+report from each of 18 distinct markets, balanced across six pro-YES, six
+anti-YES, and six orthogonal packets. One reviewer met the disclosed
+response-pattern exclusion below, leaving eight quality-eligible reviewers.
+We treat the study as descriptive materials evidence. Before the synthetic
+report, every item shows the market question,
 resolution criteria, and matching summary from the frozen June~10 initial
 forecast. The consent screen and every item instruct reviewers to treat
-June~10, 2026 as the current date, use no later information, and not search the
-web or consult an AI assistant. Intended directions, source IDs, generator
+June~10, 2026 as the current date and use no external information or assistance.
+Intended directions, source IDs, generator
 metadata, and model responses remain hidden.
 
 Reviewers record the report's conditional direction, confidence, clarity,
-real-world plausibility, and usability as an explicit hypothetical premise. The
-frozen seven-reviewer item gate allowed one dissent: at least six reviewers had
-to select the registered direction and mark the premise usable, median
-confidence and clarity had to be at least 4/5, and median plausibility at least
-3/5. The nine-reviewer extension uses the corresponding eight-of-nine rule. The
-packet-level gate requires at least 15 of 18 items to pass and Fleiss'
-$\kappa\geq .70$ for conditional direction. Ambiguous judgments remain in every
-denominator.
+real-world plausibility, and usability as an explicit hypothetical premise.
+We report exact agreement with the frozen direction and Cohen's $\kappa$
+between the panel-majority labels and the frozen key. Reviewer-level Cohen's
+$\kappa$, the component ratings, and every item-level judgment appear below.
+Ambiguous judgments remain in every denominator.
 
-A pilot review conducted before registered collection removed three non-gating
-questions---semantic directness, source verification, and optional free
-text---and added the frozen June~10 background summary to every item. Practice
-responses are stored separately and cannot enter the registered analysis.
+Practice responses are stored separately and excluded from the analysis.
 
-In the frozen August~23 UTC analysis, eight reviewers had completed all 18 items.
-The post-collection response-pattern rule described below excludes R2, leaving seven
-completed, quality-eligible reviewers (R1, R3--R7, and R9). R8 had consented but
-submitted no ratings, so the final nine-reviewer gate is not yet available.
-Table~\ref{tab:stage3-human} reports the completed-reviewer analysis.
-Exact-direction agreement is 96/126 (76.2\%); every included reviewer
-exceeds a conservative $1/3$ directional-guessing baseline in a one-sided exact
-binomial comparison (all unadjusted $p<.05$). We use $1/3$ rather than the form's
-four-option $1/4$ baseline because the registered answer takes one of three
-non-ambiguous directions. The task requires reviewers to integrate unfamiliar
-market-specific background with a stipulated synthetic report and distinguish
-directional, null, and ambiguous updates.
+The analyzed sample contains eight quality-eligible reviewers (R1 and R3--R9),
+exceeding the six-reviewer target for this descriptive materials check.
+Table~\ref{tab:stage3-human} includes every eligible reviewer.
 
-\paragraph{The completed-reviewer analysis does not meet the gate.} Applying the full
-gate---including premise usability---to the seven quality-eligible completed
-reviewers retains 5 of 18 items. Considering direction alone, eight items draw at
-most one dissent and five are unanimous. Fleiss' $\kappa$ for conditional direction is $.480$ over the four
-response options ($.530$ if \emph{ambiguous} is folded into the null category), and
-mean pairwise Cohen's $\kappa$ is $.484$ (range $.092$ to $.838$). These values
-remain below the packet-level thresholds of 15 retained items and
-$\kappa\geq.70$. Because the roster is incomplete, this analysis is not a final gate decision
-and does not certify individual packets. The majority reviewer label matches the registered direction
-on 16 of 18 items ($\kappa=.842$), and per-class exact agreement is 29/42 for
-pro-$H_1$, 33/42 for anti-$H_1$, and 34/42 for orthogonal packets.
+Exact-direction agreement is 108/144 (75.0\%). The panel-majority label matches
+the frozen direction on 17 of 18 items (94.4\%; Cohen's $\kappa=.919$): all six
+anti-$H_1$ items, all six orthogonal items, and five of six pro-$H_1$ items.
+Across individual judgments, exact agreement is 35/48 for pro-$H_1$, 37/48 for
+anti-$H_1$, and 36/48 for orthogonal packets. Reviewers marked the premise usable
+on 124/144 judgments (86.1\%). The corresponding all-reviewer sensitivity is
+reported below. These descriptive results indicate that readers usually recovered
+the intended conditional direction and could use the reports as stipulated premises.
+They also bound how legible that direction is: 75.0\% exact agreement and mean
+pairwise Cohen's $\kappa=.47$ indicate substantial but imperfect recovery across
+the four response labels. The panel is not a matched baseline for the agents---reviewers
+emit a categorical label on 18 items, agents emit a revised probability against
+their own prior on all 900---so we read it as evidence that sign had to be
+inferred, not as a human--model comparison.
 \begin{center}
 \begin{minipage}{\linewidth}
 \centering
 \small
-\captionof{table}{\textbf{Stage~3 human materials judgments for seven completed reviewers.}
-Direction is exact agreement with the registered conditional direction and
+\captionof{table}{\textbf{Stage~3 human materials judgments for eight quality-eligible reviewers.}
+Direction is exact agreement with the frozen conditional direction and
 $\kappa$ is Cohen's $\kappa$ against that key over the four response options.
 Confidence, clarity, and plausibility (C/C/P) are reviewer-level medians on 1--5
 scales. The pooled row is descriptive because reviewers rated the same items; the
 majority row takes the modal label per item, resolving ties to \emph{ambiguous}.}
 \label{tab:stage3-human}
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
-Reviewer & Direction agreement & $\kappa$ vs. key & $p$ vs. $1/3$ & Premise usable & C/C/P \\
+Reviewer & Direction agreement & $\kappa$ vs. key & Premise usable & C/C/P \\
 \midrule
-R1 & 12/18 (66.7\%) & .54 & .0039 & 10/18 & 4/4/4 \\
-R3 & 12/18 (66.7\%) & .51 & .0039 & 13/18 & 4/4/3 \\
-R4 & 18/18 (100.0\%) & 1.00 & $<.0001$ & 18/18 & 5/5/5 \\
-R5 & 10/18 (55.6\%) & .38 & .0433 & 18/18 & 4/4/4 \\
-R6 & 13/18 (72.2\%) & .61 & .0009 & 12/18 & 4/4/5 \\
-R7 & 15/18 (83.3\%) & .76 & $<.0001$ & 17/18 & 5/4/3 \\
-R9 & 16/18 (88.9\%) & .84 & $<.0001$ & 18/18 & 5/5/5 \\
+R1 & 12/18 (66.7\%) & .54 & 10/18 & 4/4/4 \\
+R3 & 12/18 (66.7\%) & .51 & 13/18 & 4/4/3 \\
+R4 & 18/18 (100.0\%) & 1.00 & 18/18 & 5/5/5 \\
+R5 & 10/18 (55.6\%) & .38 & 18/18 & 4/4/4 \\
+R6 & 13/18 (72.2\%) & .61 & 12/18 & 4/4/5 \\
+R7 & 15/18 (83.3\%) & .76 & 17/18 & 5/4/3 \\
+R8 & 12/18 (66.7\%) & .55 & 18/18 & 4/5/4 \\
+R9 & 16/18 (88.9\%) & .84 & 18/18 & 5/5/5 \\
 \midrule
-Pooled & 96/126 (76.2\%) & --- & --- & 106/126 & --- \\
-Majority label & 16/18 (88.9\%) & .84 & --- & --- & --- \\
+Pooled & 108/144 (75.0\%) & --- & 124/144 & --- \\
+Majority label & 17/18 (94.4\%) & .92 & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{minipage}
@@ -658,48 +1025,34 @@ Majority label & 16/18 (88.9\%) & .84 & --- & --- & --- \\
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}
-\captionof{table}{\textbf{Item-level Stage~3 materials audit for seven completed reviewers.}
-Key is the registered conditional direction; Majority is the modal panel response,
-with ties assigned to \emph{ambiguous}. Agree and Usable give counts out of seven;
+\captionof{table}{\textbf{Item-level Stage~3 judgments for eight quality-eligible reviewers.}
+Key is the frozen conditional direction; Majority is the modal panel response,
+with ties assigned to \emph{ambiguous}. Agree and Usable give counts out of eight;
 C/L/P gives median direction confidence, clarity, and plausibility on 1--5 scales.
-The seven-reviewer diagnostic requires at least 6/7 registered-direction judgments, at
-least 6/7 usable-premise judgments, median confidence and clarity of at least 4,
-and median plausibility of at least 3. Failure codes identify the unmet criterion:
-D (direction), C (confidence), L (clarity), P (plausibility), or U (premise
-usability). Item numbers follow the frozen public packet order.}
+Item numbers follow the frozen public packet order.}
 \label{tab:stage3-items}
 \input{tables/exp1_stage3_item_validation}
 \end{minipage}
 \end{center}
 
 
-After inspecting the first four completed submissions, we excluded one completed
-reviewer (R2) for task misunderstanding: the reviewer selected \emph{more
-likely} on 17 of 18 balanced items, including all six registered negative items
-and five of six registered null items. This is a disclosed post-collection
-deviation from the frozen no-exclusion rule. We applied the resulting quality
-rule uniformly: exclude any completed reviewer who selects one direction on at
-least 17 of 18 items. Raw responses are retained, and no item is removed or
-relabeled. As a sensitivity tally, retaining R2 gives 103/144 (71.5\%) exact
-agreement across all eight completed reviewers.
-
-A post-task debrief occurred after R2 had seen their score and response pattern.
-R2 reported interpreting the task as asking whether reports supported YES,
-difficulty with English and market-specific terms, use of a dictionary and an
-AI assistant despite the instruction, and reduced attention. We accepted no
-re-rating and treat the debrief as context; the exclusion uses only the uniform
-response-pattern rule.
+The response-pattern quality rule excludes any reviewer who selects one direction
+on at least 17 of 18 balanced items. R2 met this rule by selecting \emph{more
+likely} on 17 of 18 balanced items, including all six frozen negative items
+and five of six frozen null items. Raw responses are retained, and no item is
+removed or relabeled. Retaining R2 gives 115/162 (71.0\%) exact agreement across
+all nine reviewers.
 
 
-The task requests no identifying or sensitive information. Under the authors'
-institutional guidelines, this materials-review activity does not constitute
-human-subjects research; consequently, no IRB review was sought.
+The task requests no identifying or sensitive information. It was conducted as
+an internal materials review under the authors' institutional guidance; no IRB
+protocol was opened.
 
 Figure~\ref{fig:exp1-review-interface} records the reviewer-facing workflow. The
 capture script at
 \path{exp1_prospective/stage3_materials_annotation/capture_review_screenshots.py}
 loads the frozen item packet against an empty temporary annotation database.
-Later reviewer assignments changed access codes and item order only.
+Item order was independently randomized by reviewer.
 
 
 \begin{figure}[p]
@@ -718,48 +1071,46 @@ Later reviewer assignments changed access codes and item order only.
 code before seeing the information-and-consent screen. Each item repeats the
 June~10 temporal frame, presents the question and pre-report background, labels
 the fictional evidence as a synthetic report, and collects conditional
-direction, confidence, clarity, plausibility, and premise usability. Later
-reviewer assignments changed access codes and item order only. Intended
-direction and private packet metadata are hidden.}
+direction, confidence, clarity, plausibility, and premise usability. Item order
+was independently randomized by reviewer. Intended direction and private packet
+metadata are hidden.}
 \label{fig:exp1-review-interface}
 \end{figure}
 
-Orthogonal packets are a useful causal-irrelevance control, but are not equivalent to
-receiving no new text.  A literal no-information update condition would separate
+Orthogonal packets are a useful outcome-relevance control, but are not equivalent
+to receiving no new text. A literal no-information update condition would separate
 generic prompt-induced revision from response to topically adjacent content.  The very
-small frontier orthogonal revisions (0.5--1.4~pp) are reassuring but do not replace
+small hosted-system orthogonal revisions (0.5--1.4~pp) do not substitute for
 that control.
 
-\subsubsection{Prompt, Retrieval, and Runtime Confounding}
-Agents shared a substantive task contract, not byte-identical execution. Hosted
+\subsubsection{Prompt, retrieval, and runtime confounding}
+Agents shared a substantive task contract, while execution was not byte-identical. Hosted
 models used Azure Foundry search, while local models used Tavily results in an
-Ollama workflow; temperatures and provider behavior also differ. Frontier--local
+Ollama workflow; temperatures and provider behavior also differ. Hosted--local
 gaps therefore combine model capability with retrieval and runtime differences.
 
-\subsubsection{Scale, Missingness, and Dependence}
+\subsubsection{Scale, missingness, and dependence}
 Realized repeat counts are uneven because failures and top-ups differ by provider.
-Equal-weight market aggregation prevents high-coverage markets from dominating EHC,
-HFC, and ICS, but record-level revision summaries still treat repeated runs and packets
-as independent.  Clustered or hierarchical uncertainty would be preferable.  The
-mixed-scale Qwen~2.5-7B updates described in
-Section~\ref{app:record-processing} additionally invalidate a clean magnitude
-comparison for that row; a future frozen rerun should normalize every structured field
-before deltas are written.
+Equal-weight market aggregation prevents high-coverage markets from dominating
+EHC, HFC, and ICS. Movement and sensitivity intervals use 20,000
+market-clustered bootstrap draws that retain every packet and repeated initial-run
+update from each selected market. The mixed-scale Qwen~2.5-7B row described in
+Section~\ref{app:record-processing} remains an appendix compliance diagnostic and is
+excluded from the main magnitude comparison.
 
-\subsubsection{Premise Acceptance at Stage~3}
-Search is intentionally unavailable during updating, and agents are told to accept the
-synthetic headline as true.  This isolates conditional updating but does not test source
-verification or epistemic refusal.  A search-enabled condition might appropriately
-decline to update on an unverifiable report, lowering EHC/HFC without implying less
-inductive reasoning. The human materials review above uses the same conditional
-premise instruction and therefore assesses comprehension and usability, not
-source credibility. Both premise-acceptance and source-verification conditions
-are needed to distinguish these behaviors.
+\subsubsection{Premise acceptance at Stage~3}
+Search is intentionally unavailable during updating, and agents are told to
+accept the synthetic headline as true. This design measures conditional premise
+use rather than source verification or epistemic refusal. The human materials review
+uses the same instruction and therefore assesses comprehension and premise
+usability. These results do not establish whether a model should trust or verify
+the synthetic report.
 
-\subsection{Reproducibility and Artifact Map}
+\subsection{Reproducibility and artifact map}
 \label{app:fig-code}
 
-The paper treats the June~17 report as the frozen numerical authority.  The relevant
+The paper treats the June~17 model-update report and the August~23 final
+materials-review summary as the frozen numerical authorities. The relevant
 artifacts are:
 
 \begin{itemize}
@@ -779,11 +1130,21 @@ artifacts are:
         update records in \path{exp1_prospective/data/updated_forecasts/}.
   \item \textbf{Evaluation:}
         \path{exp1_prospective/agent/evaluate_consistency.py} and
-        \path{exp1_prospective/data/results/consistency_report_2026-06-17.json}.
+        \path{exp1_prospective/data/results/consistency_report_2026-06-17.json};
+        \path{exp1_prospective/agent/evaluate_clustered_uncertainty.py}
+        reconstructs the 20,000-draw market-clustered intervals in
+        \path{exp1_prospective/data/results/clustered_movement_uncertainty.json};
+        \path{exp1_prospective/agent/audit_orthogonal_abstention.py} writes the
+        abstention/magnitude decomposition of Table~\ref{tab:exp1-abstention} to
+        \path{exp1_prospective/data/results/orthogonal_abstention.json} and its
+        table source, under the same resampling scheme.
   \item \textbf{Human materials review:}
-        the frozen protocol, blinded packet, browser application, tests, and
-        analysis script in
-        \path{exp1_prospective/stage3_materials_annotation/}.
+        the frozen protocol, blinded packet, browser application, and tests in
+        \path{exp1_prospective/stage3_materials_annotation/};
+        \path{make_final_summary.py} reconstructs
+        \path{data/exports/final_summary_current.json}, while
+        \path{data/exports/agreement_current.json} is the paper-facing agreement
+        export.
   \item \textbf{Figures:}
         \path{paper/generate_figures.py} writes the direction-selective panel;
         \path{paper/generate_paper_figures.py} writes the combined

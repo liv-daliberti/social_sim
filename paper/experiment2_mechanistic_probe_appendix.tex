@@ -1,7 +1,7 @@
-\subsection{Linear-Probe Analysis of Cue-Conditioned Representations}
+\subsection{Linear-probe analysis of cue-conditioned representations}
 \label{app:coin-city-mechanistic-probe}
 
-\subsubsection{Behavioral Screening Criteria}
+\subsubsection{Behavioral screening criteria}
 We screen the same held-out prompts with Qwen3-8B, Qwen3-14B, dense Qwen3-32B, and
 Qwen2.5-72B-Instruct. Each checkpoint received 16 test episodes crossed with
 $k\in\{0,4\}$ and correct, absent, or inverted City C context (96 prompts), with
@@ -32,7 +32,7 @@ cross-generation comparison; neither is interpreted as another point on a
 monotonic size curve. Qwen3-4B and Llama-3.1-8B use the identical task file,
 held-out split, and model, layer, target, and endpoint selection rules.
 
-\subsubsection{Activation and Probe Protocol}
+\subsubsection{Activation and probe protocol}
 We selected 64 episodes without replacement, balanced over which reference city
 was strongly responsive and whether City C's latent regime was strong or weak.
 Forty-eight episodes form a development set and 16 form a sealed test set. Each
@@ -119,7 +119,7 @@ value on the correct-context test episodes.}
   \label{fig:coin-city-mechanistic-probe}
 \end{figure}
 
-\subsubsection{Regime and Full-Slope Decodability}
+\subsubsection{Regime and full-slope decodability}
 Across the six checkpoints and two evidence depths, correct-context regime AUC
 is $.844$--$1.000$ and full-slope $R^2$ is $.627$--$.975$
 (Table~\ref{tab:coin-city-mechanistic-summary}). This information is not a
@@ -132,7 +132,7 @@ replication shows that this pattern is not specific to the Qwen checkpoints.
 Across both model families, the linearly available signal therefore tracks the
 response family that context assigns to City C.
 
-\subsubsection{What Each Probe Target Can Be Scored Against}
+\subsubsection{What each probe target can be scored against}
 \label{app:coin-city-probe-ceilings}
 
 A probe is scored against a latent generator quantity, so a null is only a fact
@@ -173,7 +173,7 @@ rows at all and the residual ceiling is exactly zero.}
 \end{minipage}
 \end{center}
 
-\subsubsection{Specificity: Within-Regime Residuals}
+\subsubsection{Specificity: within-regime residuals}
 The residual target is the specificity control, and it behaves as a target with
 no available signal should. The 12 correct-context residual-slope $R^2$ values
 range from $-.531$ to $.003$, none of their permutation tests rejects the null
@@ -200,7 +200,7 @@ to output sensitivity in the three larger screened checkpoints: inverted context
 raises $k=0$ forecast MAE by $1.66$, $1.96$, and $2.21$ points for 14B, 32B, and
 72B, respectively.
 
-\subsubsection{Power-Matched and Cross-Model Arbitrary-Symbol Replication}
+\subsubsection{Power-matched and cross-model arbitrary-symbol replication}
 \label{app:coin-city-probe-power}
 
 The six-checkpoint roster above seals 16 test episodes per arm. Its exact
@@ -286,18 +286,17 @@ artifact of either.
 The Qwen3 sequence---$.520$, $.566$, $.678$ from 4B to 14B---is consistent with
 this but does not add independent weight, because the population that would test
 it is the one on which its behavioral boundary moves. That movement is smaller
-than the $\Delta\rho$ column alone suggests. Symbol-arm regime accuracy orders the
-four Qwen3 checkpoints identically in both populations, $.512$, $.516$, $.660$,
-$.656$ originally against $.528$, $.554$, $.589$, $.606$ on the harder one: no
-pair reverses, and what changes is that the harder population compresses every
-score toward chance, so a threshold that fell in a clear gap now falls inside a
-compressed continuum. The $\Delta\rho$ contrast then subtracts a no-context
+than the $\Delta\rho$ column alone suggests. Symbol-arm regime accuracy is
+$.512$, $.516$, $.660$, $.656$ originally against $.528$, $.554$, $.589$, $.606$
+on the harder population. The larger pair remains above the smaller pair, but
+14B and 32B exchange order and the between-group separation shrinks. The
+$\Delta\rho$ contrast then subtracts a no-context
 baseline whose standard error is about $.064$, and baselines of $-.036$ for
 Qwen3-8B and $+.025$ for Qwen3-14B are enough to put one interval above zero and
 the other $.004$ below it, with the two intervals overlapping by $78\%$. We
-therefore read the harder population as showing that the ordering replicates while
-the significance threshold is not locatable to a checkpoint, rather than as a
-reversal. Section~\ref{app:coin-city-robustness} should be read alongside the
+therefore read the harder population as preserving the broad size-group contrast
+without locating the significance threshold at a particular checkpoint.
+Section~\ref{app:coin-city-robustness} should be read alongside the
 seven-for-seven agreement, which is evidence that the probe reads what the
 forecasts express on the episodes both were measured on and not evidence for a
 scale law. The positives span three model generations and two
@@ -315,13 +314,13 @@ At 16 episodes, the same arbitrary-symbol procedure returns $k=0$ regime AUC
 $.312$ with $p=.90$. Its $[.203,.797]$ null is too broad to resolve a signal of
 the magnitude observed at 88 episodes.
 
-\subsubsection{Causal Test: Patching the City C Label Representation}
+\subsubsection{Causal test: patching the City C label representation}
 \label{app:coin-city-causal-patch}
 
 Decodability is not mediation. To test whether the representation the probe reads
-is the one the forecast uses, we intervene on it directly. Under arbitrary labels
-the prompt prefix through the City C label is byte-identical between an episode's
-correct and swapped arms, so the two runs differ in exactly two token positions.
+is the one the forecast uses, we intervene on it directly. Under arbitrary labels, an episode's correct and swapped prompts are
+positionally aligned through the City C label and differ at exactly two label-token
+positions.
 We replace the residual stream at those two positions with the states the opposite
 arm produces, in both directions, and regenerate the forecast greedily. The
 endpoint is the episode-level mean of the regime-aligned correct-into-swapped
@@ -357,10 +356,9 @@ alone gives $.319$. All eight stability checks pass, including $347/347$ exact
 self-patch matches.
 
 Two readings of the table matter more than the significance. First, the
-embedding-only and all-layer rows are identical, and necessarily so: the prefix
-through the City C label is the same in both arms, so overwriting the label
-embedding and letting the model recompute reproduces exactly what overwriting
-every layer produces. They are one intervention reported at two depths, not two
+embedding-only and all-layer rows are identical, and necessarily so: the two
+prefixes differ only at the patched label positions, so overwriting their embeddings
+and letting the model recompute reproduces what overwriting every later state does. They are one intervention reported at two depths, not two
 converging results. What distinguishes the mid-window row is that it reaches the
 same magnitude while touching only three layers late in the network.
 
@@ -376,20 +374,20 @@ null spans $[-.387,.387]$. Its 64-episode development set selects layers
 $33$--$35$, whereas the 160-episode development set selects $19$--$21$ at a
 higher cross-validation score ($.903$ against $.806$).
 
-\paragraph{Permutation implementation.} The test enumerates all $2^{n}$ sign
+\noindent\textbf{Permutation implementation.} The test enumerates all $2^{n}$ sign
 assignments for 16 episodes; exhaustive enumeration is infeasible for 88
 ($2^{88}\approx3\times10^{26}$). Enumeration is retained for $n\le20$; above it
 the same null is sampled with $200{,}000$ draws under a fixed seed, giving a
 Monte Carlo standard error of $.0005$ at $p=.05$. The estimand, endpoint, and
 direction are identical under both implementations.
 
-\paragraph{Scope.} This is one checkpoint under arbitrary labels. It shows that
+\noindent\textbf{Scope.} This is one checkpoint under arbitrary labels. It shows that
 the label representation Qwen3-14B computes is causally responsible for its
 zero-shot regime assignment, and that direct evidence displaces it. It does not
 establish the same for the hosted deployments, the semantic cue, or other
 architectures.
 
-\subsubsection{Reproducibility and Scope}
+\subsubsection{Reproducibility and scope}
 The checkpoints are pinned to commits
 \texttt{cdbee75f17c01a7cc42f958dc650907174af0554} (Qwen3-4B),
 \texttt{b968826d9c46dd6066d109eabc6255188de91218} (Qwen3-8B),

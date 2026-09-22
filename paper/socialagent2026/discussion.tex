@@ -1,89 +1,98 @@
-\section{Implications for forecasting and model evaluation}
+\section{Discussion: why inductive reasoning matters}
 \label{sec:discussion}
 
-Consider a forecaster asked to predict public reaction to a policy announcement
-in an unfamiliar jurisdiction. A defensible probability requires a chain of
-choices. The forecaster must distinguish outcome-relevant news from
-topic-matched chatter, choose the comparison population or institution that
-supplies the response pattern, and revise that choice when direct local evidence
-arrives. A new convention must be learned from the current case, not imported
-from a familiar word. Under domain or mechanism shift, training must preserve
-the relationship, not the answer distribution alone.
+Forecasting is our testbed for inductive reasoning, not the boundary of the
+claim. It makes otherwise hidden choices observable: which evidence matters,
+which population offers the relevant comparison, when local behavior should
+override context, and whether a relationship survives a new world. Each choice
+implies a different numerical forecast. The same ability matters whenever a
+social agent must generalize from sparse evidence rather than repeat a familiar
+pattern.
 
-Each study tests one part of that chain. The prospective markets test selective
-updating in the wild. Coin City makes the chosen analogue observable and puts
-context in conflict with local evidence. Arbitrary labels remove stable semantics;
-activation patching tests one internal link; and the transfer control breaks the
-episode-level correspondence without changing the answer distribution. The
-sealed-market study then returns to real outcomes. Together, the studies trace
-relationship selection from updating through transfer while treating external
-accuracy as a separate requirement.
+In practice, a forecast is rarely the last question. Users need to know which
+evidence should change a decision, whether the conclusion survives in a different
+population, and what observation should trigger revision. A model that reaches
+the right number through a topical cue or a familiar base rate may still be
+unable to support those judgments. Average
+accuracy can hide that weakness precisely because most evaluation cases resemble
+the past. It becomes costly when a decision concerns a new group, an unusual
+institution, or a policy that changes the usual pathway.
 
-A realistic trajectory or familiar marginal distribution does not establish
-the correct conditional relationships. Forecasting exposes the difference
-because every probability commits to how evidence, context, and outcomes
-connect. The relevant test is whether that probability changes when the
-relationship changes.
+We designed the experiments around alternatives left open by the preceding
+study. The market study tests whether forecasts ignore topical chatter and follow
+evidence up or down, but leaves open a verbal shortcut. Coin City makes the hidden
+comparison visible; conflicting local cases test revision, arbitrary labels
+remove familiar semantics, and an intervention connects the induced
+representation to behavior. Transfer to a new domain and response pathway then
+tests whether the result is specific to one prompt, while historical markets test
+accuracy outside training. No single step is sufficient; together, these
+successively stronger contrasts narrow the explanations for success.
 
-These contrasts extend beyond forecasting. A persuasion study holds a message
-fixed while changing who delivers it; a coordination study preserves payoffs
-while changing what participants know about one another; and a policy analysis
-preserves surface language while changing the institutional pathway. Local
-observations test correction of a misleading contextual cue, arbitrary labels
-separate local induction from word association, and distribution-preserving
-derangements separate relationship learning from output style or marginal
-frequencies. These are local behavioral tests, not evidence that a model is a
-human proxy.
+These distinctions extend beyond forecasting. A persuasion model should respond to
+both a message and who delivers it. A coordination model should distinguish
+shared payoffs from what participants know about one another. A policy model
+should distinguish similar language from the institutional pathway through which
+an effect occurs. In synthetic populations, these paired changes can reveal
+whether conditional relationships survive even when aggregate averages look
+human-like
+\citep{park2023generative,aher2023simulate,argyle2023out,bisbee2024synthetic}.
+For social agents in particular, the relationship is often the object of
+interest: who knows what, which group treats a message as credible, or which
+institution transmits an action into an outcome. Matching a population average
+while missing those dependencies can produce a convincing static simulation and
+a misleading response to intervention.
 
-Parameter count and headline accuracy are insufficient model-selection
-criteria. Arbitrary-cue recovery changes across populations and families;
-the controlled transfer effect replicates at two Qwen sizes but not in the one
-Llama size trained, whose family threshold sits much higher; and
-sealed-market performance is nonmonotonic. Validation should therefore be local
-to the population, mechanism, and contrast that matter for the intended use.
+For evaluation, this implies measuring both outcomes and reasons for change. Hold
+surface content fixed while changing the relevant analogue;
+provide local evidence that contradicts context; replace meaningful cues with a
+new convention; and test the relationship again after the setting changes.
+Headline accuracy and parameter count cannot substitute for these checks because
+the relevant capability depends on the population, pathway, and decision at hand.
 
-\section{Limitations}
+\section{Limitations: what these studies do and do not establish}
 \label{sec:limitations}
 
-The evidence supports behavioral use of relationships, not a general internal
-world model. In the real-market study, directional and orthogonal packets differ
-in wording; the design cannot separate wording effects from relationships
-acquired during pretraining. Coin City isolates a choice between two
-well-separated regimes in one stylized public-opinion world. Its harder
-population changes separation and dispersion together, preventing attribution
-of mapping failures to either factor. Exact within-regime coefficient recovery,
-unreliable cues, new variables, longer horizons, and interactive multi-agent
-dynamics remain open.
+The evidence supports a specific claim: models use context-dependent predictive
+relationships in these tasks. It does not establish human-like understanding or
+a general internal world model. The market packets are controlled pieces of
+text, Coin City offers two simple response patterns, and the transfer study spans
+two constructed worlds. Real settings contain strategic interaction,
+unreliable cues, changing variables, and feedback over longer horizons.
 
-The mechanistic results cover seven open checkpoints; causal patching covers one
-checkpoint and one token-level intervention.
-Training comparisons use three seeds; the episode-matched transfer pattern is
-Qwen-specific in the tested roster. Hosted and open models use different
-inference stacks, and pretraining exposure cannot be audited. Historical-market
-training lowers base error, but the study does not establish superiority to a
-crowd or identify a universal scaling law.
+The internal result is narrower still. Decoding identifies a representation
+associated with the selected convention, and one intervention shows that this
+representation affects one checkpoint's forecast. That is stronger than a
+correlation alone, but not a claim about every model or every form of reasoning.
+Likewise, the historical study covers one market cohort and training recipe.
+Additional architectures, later cohorts, interactive settings, and deliberately
+misleading evidence would test how far the pattern extends.
+
+Performance is heterogeneous. Smaller checkpoints often struggle when the
+KIV/ZOR meaning must be induced anew, and historical-market gains narrow at the
+strongest Qwen base. Because the scale comparison uses one training recipe across
+model sizes, its nonmonotonic shape should not be read as a law of capacity:
+larger models may need different learning rates, schedules, or amounts of data.
+The sequence is useful partly because it shows where performance changes rather
+than collapsing inductive reasoning into one yes-or-no score.
 
 \section{Ethics, artifacts, and conclusion}
 \label{sec:conclusion}
 
-The studies use public market metadata and prices, model outputs, synthetic
-worlds, and an unpaid adult review of synthetic materials. The review collected
-no identifying or sensitive information and did not constitute human-subjects
-research under institutional guidelines. Counterfactual news packets were used
-offline and were never posted to markets or used for trading. The paper reports
-aggregate model behavior, not a deployment or trading recommendation.
+The studies use public market data, model outputs, synthetic worlds, and an unpaid
+adult review of synthetic materials. No identifying or sensitive information was
+collected. Counterfactual packets were evaluated offline, never posted to markets,
+and never used for trading. We report aggregate behavior rather than recommend a
+deployment or trading strategy.
 
-An anonymized artifact contains prompts, frozen manifests, saved generations,
-analysis code, and figure builders.\footnote{%
-\href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
-{Study data and artifacts}; \href{https://github.com/anonymous-review/forecasting-study-code}%
-{code repository}. Links anonymized for review.}
-The supplementary material records censoring, estimators, missingness,
-hyperparameters, and fail-closed checks.
+An anonymized artifact contains prompts, fixed datasets, saved model responses,
+analysis code, and figure builders.
+The appendix records the implementation and statistical details omitted from the
+main narrative.
 
-Across real markets and controlled tasks, LM forecasts select
-context-dependent predictive relationships and revise them as direct evidence
-arrives. Transfer succeeds in two tested Qwen sizes and fails to replicate in the
-tested Llama model; real-market crowd comparisons remain inconclusive.
-Forecasting systems should be evaluated for accuracy and for whether their
-predictions change for the right reason.
+Forecast accuracy is a starting point, not a sufficient test of inductive
+reasoning. Stronger tests ask whether a model notices relevant evidence, moves in
+the implied direction, chooses and revises comparisons, infers new conventions,
+and preserves relationships under change. The larger tested models pass these
+contrasts, subject to the limits above. For social agents, these experiments test
+both real-world accuracy and relationship-sensitive updating without presuming a
+general theory of the world.

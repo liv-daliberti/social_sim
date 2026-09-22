@@ -1,0 +1,13 @@
+% Retired Qwen3-4B-only main-table presentation, 2026-08-24.
+% Source: reports/exp3b_locked_test_j30505540.summary.json.
+\begin{tabular}{lrrrr}
+\toprule
+Forecaster & Rounds & Brier $\downarrow$ & $\Delta$ base & Log loss $\downarrow$ \\
+\midrule
+Untrained Qwen3-4B       & 0   & .1316 & ---    & .5114 \\
+Trained, seed 42         & 300 & .1142 & -.0174 & .3780 \\
+Trained, seed 43         & 300 & .1140 & -.0176 & .3772 \\
+Trained, seed 44         & 300 & .1194 & -.0122 & .4330 \\
+Trained mean             & 300 & .1159 & -.0157 & .3960 \\
+\bottomrule
+\end{tabular}

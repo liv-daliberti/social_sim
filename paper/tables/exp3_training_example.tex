@@ -15,7 +15,7 @@
 Panel~A is the prompt for episode \texttt{train:1:k2}, abridged from the rendered
 text. Panel~B is the prompt--key pairing used during training, drawn for four episodes
 at one evidence depth: $P_i$ is episode $i$'s prompt and $\mathbf y^\star_i$ its
-ten-answer key. Causal and population-prior training use byte-identical prompts
+ten-answer key. Episode-matched and population-prior training use byte-identical prompts
 and the same multiset of keys; only the pairing differs. The control shifts
 cyclically across all 1,200 episodes at a depth, so its key is a real key drawn
 from the same distribution but never this prompt's, and no reward can be earned by
@@ -75,11 +75,11 @@ horizon $\in\{1,3\}$; return \texttt{\{"forecasts":[A,\dots,J]\}} \\
   ptitle/.style={anchor=south, font=\scriptsize\bfseries, text=wireInk},
   pnote/.style={anchor=north, font=\tiny\itshape, text=wireMute},
 ]
-\node[ptitle] at (1.55,0.12) {Causal};
+\node[ptitle] at (1.55,0.12) {Episode-matched};
 \node[ptitle] at (6.65,0.12) {Population prior};
 \node[ptitle] at (11.72,0.12) {Structureless};
 
-% --- Causal: each prompt keeps its own key --------------------------------
+% --- Episode-matched: each prompt keeps its own key --------------------------------
 \foreach \r/\y in {1/-0.30, 2/-0.66, 3/-1.02, 4/-1.38}{
   \node[pchip] (cp\r) at (0.50,\y) {$P_\r$};
   \node[kchip] (ck\r) at (2.60,\y) {$\mathbf y^\star_\r$};

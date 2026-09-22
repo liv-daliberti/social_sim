@@ -1,46 +1,34 @@
-\section{Related Work}
-\label{related_work}
+\section{Related work: why accuracy is not enough}
+\label{sec:related-work}
 
-\textbf{Judgmental and language-model forecasting.}
-Judgmental forecasting distinguishes accuracy from process. Strong forecasters use
-base rates, decompose questions, seek diverse evidence, and update often, whereas
-unaided expert judgment and manual adjustments can remain miscalibrated or biased
-\citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting,lawrence2006judgmental}.
-Autocast and ForecastBench provide time-indexed, leakage-controlled evaluations of
-language models \citep{zou2022forecasting,karger2025forecastbench}. Retrieval,
-aggregation, and ensembling bring some systems close to crowd accuracy
-\citep{lewis2020retrieval,halawi2024approaching,schoenegger2024wisdom}, while
-tournament entries report mixed real-world performance
-\citep{schoenegger2023prediction}. These studies establish forecasting
-performance; we test whether that performance reflects the selection, revision,
-and transfer of predictive relationships.
+\noindent\textbf{Judgmental forecasting.}
+Strong human forecasters combine base rates, decomposition, diverse evidence,
+and repeated revision
+\citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting}.
+LM benchmarks increasingly use time-indexed or leakage-controlled questions, and
+retrieval or ensembling can bring systems near crowd accuracy
+\citep{zou2022forecasting,karger2025forecastbench,halawi2024approaching,schoenegger2024wisdom}.
+These results establish what probabilities models can produce. They do not tell
+us what would make those probabilities change.
 
-\textbf{Induction, in-context inference, and analogy.}
-Inductive inference selects predictive relationships from prior knowledge, context,
-and sparse observations, then revises them as evidence accumulates
-\citep{tenenbaum2006theory,griffiths2010probabilistic}. Transformers infer unseen
-functions from input--output examples, with success depending on the training
-distribution \citep{garg2022what,chan2022data}; language models also solve some
-abstract analogy tasks or benefit from analogical prompting
-\citep{webb2023emergent,yasunaga2024large}. Coin City tests the same sequence---select
-the cue-matched reference, estimate its relationship, apply it to a new case---which a
-deterministic analogical regression instantiates. It differs from in-context
-function fitting in what the target supplies: at $k=0$ City C has no rows, so
-there is nothing to regress on, and the relationship has to be taken from another
-city under a linguistic cue. The arbitrary-label arm additionally reverses the
-label-to-regime mapping across episodes, so no fixed prior over the label words
-suffices.
+\noindent\textbf{Induction and relational reasoning.}
+Transformers can infer functions from examples, and work on analogy and world
+models asks whether learned representations capture relations or dynamics
+\citep{garg2022what,chan2022data,webb2023emergent,yasunaga2024large,ha2018world,lecun2022path,li2023emergent}.
+At the same time, shortcut research shows that surface success can fail under
+structural change
+\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. A forecast can
+therefore be right for the wrong reason: two models may report the same number
+while relying on different populations, evidence, or pathways.
 
-
-\textbf{World structure and behavioral evidence.}
-World models encode environmental dynamics, while sequence models can encode task
-state and support predictions about agents
-\citep{ha2018world,lecun2022path,li2023emergent,andreas2022agent}. Yet shortcut-based
-success can fail under task or structural shift
-\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. Causal formalisms and
-graph benchmarks specify structure explicitly
-\citep{pearl2009causality,peters2017elements,jin2023cladder}. We instead test reuse of
-predictive relationships without a graph label, using interventions with predicted
-invariances or directional changes \citep{ribeiro2020beyond,elazar2021measuring}
-rather than relying on potentially unfaithful rationales
-\citep{jacovi2020towards,turpin2023language}.
+\noindent\textbf{Social agents and conditional validity.}
+Generative agents can reproduce plausible individual and collective behavior
+\citep{park2023generative,aher2023simulate,argyle2023out}, yet matching a
+population average is not the same as preserving the relationships within that
+population \citep{bisbee2024synthetic}. For systems intended to inform decisions,
+we care about both the \emph{probability reported} and the \emph{relationship
+that makes the evidence predictive}. Our experiments therefore move through
+increasingly stringent tests: relevance and direction, contextual relationship
+selection, revision from local evidence, induction of a novel convention, and
+transfer across worlds. Each step rules out a weaker account of the same
+forecast without assuming a general internal world model.

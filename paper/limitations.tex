@@ -1,39 +1,25 @@
-\section{Limitations}
+\section{Limitations: what these studies do and do not establish}
 \label{sec:limitations}
 
-\textbf{Behavior does not identify internal computation.}
-Experiment~1 is compatible with semantic polarity classification followed by a
-learned update size. A label-conditioned analogical regression matches Coin City.
-In Experiment~3, lower forecast error coexists with near-chance mechanism labels.
-The experiments establish specific input--output behavior but remain compatible
-with several internal algorithms and representations.
+These controlled tasks demonstrate context-dependent predictive relationships,
+not human-like understanding or a general world model. Real settings contain
+strategic interaction, unreliable cues, changing variables, and longer feedback
+horizons absent from our market packets and constructed domains.
 
-\textbf{The evaluated environments remain limited.}
-The prospective evidence packets are generated and usually state their direction;
-the seven-reviewer packet ratings fall short of the registered agreement thresholds,
-and the nine-reviewer extension remains incomplete. Experiment~2 uses two
-well-separated linear response regimes and a cue that is correct or inverted; its
-arbitrary-symbol control covers one deployment. Experiment~3 trains on one direct
-Coin City family and evaluates one held-out mediated family in two surface domains.
-Its hints are correct, absent, or misleading, but remain categorical descriptions
-from a fixed template. The appendix composition study adds unseen nonlinear and
-temporal compositions and parameter extrapolation, but every world comes from a
-finite catalog and shared prompt format. We do not test graded cue reliability,
-ambiguous mechanisms, or new sets of variables.
+The internal intervention concerns one checkpoint and one convention; the
+historical study covers one market cohort and training recipe. Additional
+architectures, later cohorts, interactive settings, and misleading evidence
+would test generality.
 
-\textbf{The Coin City model comparison remains incomplete.}
-The Coin City result covers Qwen3-4B at the registered round-300 checkpoint under
-both greedy and five-draw stochastic decoding, but its Qwen3-8B and Llama-3.1-8B
-endpoints were incomplete when this analysis was finalized. The separate
-broad-composition study includes all three models and finds heterogeneous
-causal-versus-prior effects rather than a roster-wide advantage. Both studies use
-one LoRA/Dr.~GRPO recipe and three seeds per arm, and five draws do not
-characterize the full output distribution.
-
-\textbf{The market studies have separate validity constraints.}
-The unresolved-market interventions cannot be scored against outcomes, and their
-evidence packets are hypothetical. Historical markets use one 30-day cutoff and
-selected binary domains. Pretraining exposure cannot be audited, archived text
-does not include edit histories, and the update analysis fixes the initial
-forecast. Historical training improves on the base model but is not statistically distinguishable
-from contemporaneous market prices.
+Performance is heterogeneous. Smaller checkpoints often struggle to induce the
+KIV/ZOR meaning. The episode-matching advantage under joint domain and mechanism
+shift does not survive the eight-seed replication; the benefit for compositions
+of familiar mechanisms is checkpoint-specific and uses a fixed prior, not a
+distribution-matched shuffled-target control. Structure diagnostics use no target
+observations; the supervised pilot has one seed and differs from RL in update
+budget and, at the successful setting, learning rate. Semantic cue-to-pattern
+learning could explain its in-domain success. The gain intervention uses only
+two retained checkpoint seeds and does not establish held-out evidence use.
+Historical-market gains narrow at the strongest Qwen base. The nonmonotonic
+scale comparison uses one recipe; larger models may require different
+optimization or data budgets.

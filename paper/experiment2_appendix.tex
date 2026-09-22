@@ -2,7 +2,7 @@
 % EXPERIMENT 2 -- COIN CITY FULL DETAILS
 % ============================================================
 
-\section{Experiment 2: Contextual Relationship Selection and Revision in Coin City}
+\section{Experiment 2: contextual relationship selection and revision in Coin City}
 \label{app:coin-city}
 
 Experiment~2 tests whether context
@@ -11,7 +11,7 @@ observations revise that selection. The six primary deployments and symbol-contr
 comparisons reuse the same 250 seeded episodes, so prompt-arm differences are
 paired rather than comparisons between independently sampled tests.
 
-\subsection{Design and Data-Generating Process}
+\subsection{Design and data-generating process}
 \label{app:coin-city-design}
 
 \subsubsection{Design summary}
@@ -101,7 +101,7 @@ factorial balance, prompt contracts and hashes, correct cue-to-regime mapping,
 visible matched pairs, and benchmark reconstruction. No model response or
 performance statistic was used by this preflight validator.
 
-\subsection{Prompt Arms and Information Available}
+\subsection{Prompt arms and information available}
 \label{app:coin-city-arms}
 
 \subsubsection{Shared task instructions}
@@ -179,7 +179,7 @@ reverses across episodes, and the reference-selection analysis of
 Section~\ref{app:coin-city-reference-selection}, which shows that the forecast
 tracks the named reference city's own sampling error rather than any fixed prior.
 
-\subsection{Model Execution and Response Processing}
+\subsection{Model execution and response processing}
 \label{app:coin-city-execution}
 
 \subsubsection{Deployment configurations}
@@ -289,7 +289,7 @@ response file or frozen task is overwritten. Original outputs are preserved, and
 the final tables use matched complete cases after the no-call arithmetic reparse
 described in Section~\ref{app:coin-city-limitations}.
 
-\subsection{Estimands, Benchmarks, and Statistical Inference}
+\subsection{Estimands, benchmarks, and statistical inference}
 \label{app:coin-city-analysis}
 
 \subsubsection{Forecast and latent-response estimands}
@@ -361,7 +361,7 @@ prefixes, and no multiple-comparison correction is applied. Accordingly, the
 number of pairwise intervals excluding zero is not used as an estimand; each
 interval supports only its displayed cell.
 
-\subsection{Response-Inference Diagnostics}
+\subsection{Response-inference diagnostics}
 \label{app:coin-city-results}
 
 The tables below retain a common arm and prefix ordering. Within a deployment and
@@ -744,7 +744,7 @@ $0.34$ and $0.44$ points from $k=0$ to $k=4$, and Gemini's context advantage is
 significant only at $k\in\{0,1\}$. Short, noisy prefixes can temporarily mislead
 either arm.
 
-\subsection{Does the Forecast Track the Cue-Named Reference?}
+\subsection{Does the forecast track the cue-named reference?}
 \label{app:coin-city-reference-selection}
 
 Two accounts explain the correct-versus-no-context contrast equally well. Under a
@@ -822,7 +822,7 @@ reference's own $.656$ correlation with the truth. GPT-5.6 and Claude Opus~4.8
 slightly exceed the cap at $k=0$, which is what blending a reference estimate with
 a regime prior produces.
 
-\paragraph{The estimator only detects an inefficiency.} The signal this analysis
+\noindent\textbf{The estimator only detects an inefficiency.} The signal this analysis
 reads is noise the forecast did not have to import. Each city draws its slope
 independently, so a reference city's deviation from its regime mean is
 uncorrelated with City C's: simulating the generator gives
@@ -865,7 +865,7 @@ systems.
 
 \input{experiment2_mechanistic_probe_appendix}
 
-\subsection{Robustness Across Generator Populations and Deployments}
+\subsection{Robustness across generator populations and deployments}
 \label{app:coin-city-robustness}
 
 \subsubsection{Generator-population robustness}
@@ -898,20 +898,21 @@ populations. Intervals are 95\% episode-bootstrap intervals with 5,000 draws;
 \end{minipage}
 \end{center}
 
-Which Qwen3 checkpoints clear significance changes, but their ordering does not.
+Which Qwen3 checkpoints clear significance changes, while the larger pair retains
+higher symbol-arm regime accuracy than the smaller pair.
 Qwen3-8B moves from an original null to \(\Delta\rho=.231\) \([.074,.370]\) while
 Qwen3-14B falls to \(.155\) \([-.004,.303]\); Qwen3-4B remains null and Qwen3-32B
 remains positive. Regime accuracy in the symbol arm, which subtracts no baseline,
-orders the four identically in both populations---\(.512\), \(.516\), \(.660\),
-\(.656\) originally against \(.528\), \(.554\), \(.589\), \(.606\) here---so no
-pair reverses. What the harder population removes is separation: it compresses
-every score toward chance, turning a \(.14\) gap between 8B and 14B into \(.035\).
+is \(.512\), \(.516\), \(.660\), \(.656\) originally against \(.528\),
+\(.554\), \(.589\), \(.606\) here. The 14B and 32B checkpoints exchange order,
+and the smaller models improve slightly, but the gap between 8B and 14B shrinks
+from \(.144\) to \(.035\).
 The \(\Delta\rho\) contrast then subtracts a no-context baseline carrying a
 standard error of about \(.064\), and baselines of \(-.036\) for Qwen3-8B against
 \(+.025\) for Qwen3-14B suffice to place one interval above zero and the other
 \(.004\) below it, with the two overlapping by \(78\%\). We read this as a
 detection threshold that is no longer locatable to a checkpoint on the compressed
-population, not as a reversal.
+population; it does not support a fixed scale threshold.
 
 All four Qwen2.5 intervals remain positive, from \(.149\) \([.009,.279]\) at 7B to
 \(.336\) \([.204,.463]\) at 72B, and both Llama checkpoints keep their
@@ -954,7 +955,7 @@ effect is \(.696\) originally and \(.661\) on repeat; their difference is
 \([-.046,.104]\). This one repeat supports stability of the paired conclusions
 for this named snapshot, not a general estimate of provider or model variance.
 
-\subsection{Missingness, Scope, and Artifact Map}
+\subsection{Missingness, scope, and artifact map}
 \label{app:coin-city-limitations}
 
 \subsubsection{Missingness and record recovery}

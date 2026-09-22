@@ -1,115 +1,105 @@
 \begin{abstract}
-Forecasting requires structure: deciding which evidence bears on an outcome,
-which relationship applies, and when observations should revise it. We ask
-whether language models (LMs) forecast by selecting, revising, and transferring
-such relationships across real markets and controlled tasks\footnote{%
+Judgmental forecasting requires inferring predictive relationships from sparse
+observations and contextual knowledge. We ask whether language models recover
+and use these relationships. Across prediction markets and synthetic worlds,
+models selectively update forecasts, infer relationships from context, and
+revise them as direct evidence accumulates. Larger tested models infer arbitrary
+conventions; intervening on one model's internal representation changes its
+forecast. Training improves forecasts across domains, but an eight-seed
+replication weakens structural-transfer claims. A supervised pilot learns
+response-form selection in distribution where the tested RL recipe fails,
+without transferring to a new domain or arbitrary labels. Accuracy gains on
+compositions of familiar mechanisms exceed a fixed prior, but a gain intervention
+does not establish transferred evidence use. Historical-market training lowers
+mean error on unseen event families. These findings support context-sensitive
+inductive forecasting while distinguishing in-domain learnability, transfer,
+and episode-specific evidence use.\footnotemark
+\end{abstract}
+\footnotetext{%
   \micon{huggingface.png}\;%
   \href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
-  {Study dataset and artifacts}\quad
+  {\textbf{Study dataset and artifacts}}\qquad
   \micon{gh_logo.png}\;%
   \href{https://github.com/anonymous-review/forecasting-study-code}%
-  {Code repository}. Links anonymized for review.%
-}.
-Across these settings, models update selectively, use context to choose among
-competing predictive relationships, revise those choices as evidence accumulates,
-and infer mappings whose meanings change across episodes. Internal representations
-track these behavioral distinctions, and a targeted intervention can alter a
-forecast. Training aligned with episode structure improves transfer, while
-proper-score training improves forecasts on sealed markets. These effects vary
-across model families and scale and do not establish superiority to forecasting
-crowds. Together, the results support a view of LM forecasting as
-context-dependent structural induction.
-\end{abstract}
+  {\textbf{Code repository}}\quad
+  \textit{Links anonymized for review.}}
+
 \section{Introduction}
 \label{sec:introduction}
-\begin{wrapfigure}{r}{0.52\textwidth}
-\vspace{-2.0em}
+
+\setlength{\columnsep}{6pt}
+\begin{wrapfigure}{r}{0.44\textwidth}
+\vspace{-1.2em}
 \centering
-\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{figures/teaser_revised.pdf}
-\vspace{-0.6cm}
-\caption{ \textbf{A descriptive probe motivates relationship selection.}
-\small
-After two heads from an unfamiliar carnival coin, mean next-head forecasts are
-$.644$, $.681$, and $.712$ for GPT-5.4, Claude Opus~4.8, and DeepSeek V4-Pro,
-respectively, over 8 temperature-$0.7$ calls each. This single condition
-illustrates, but does not identify, the relationship being applied
-(Appendix~\ref{app:carnival-coin-probe}).}
-\vspace{-0.5cm}
+\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_revised.pdf}
+\vspace{-0.45cm}
+\caption{\textbf{Motivation.} Judgmental forecasts combine observations with
+contextual knowledge about the process that generated them. Frontier models,
+asked to forecast this question, average $P(H)\approx0.68$ (see
+App.~\ref{app:carnival-coin-probe}).}
+\vspace{0pt}
 \label{fig:world-knowledge-evidence}
 \end{wrapfigure}
 
-Language models (LMs) approach crowd forecasting accuracy, and ensembles
-match it on some question sets \citep{halawi2024approaching,schoenegger2024wisdom}.
-Results on Metaculus, Polymarket, and Kalshi
-\citep{lu2025evaluating,cao2026auditable,zhang2026prediction} therefore raise a
-process question: \emph{why are LMs competitive forecasters?} The same probability
-can come from a base rate, a retrieved case, a market signal, or a predictive
-relationship. Pointwise accuracy cannot distinguish these strategies, especially
-when they agree on familiar questions but diverge after a change in context.
+Judgmental forecasting is a demanding form of reasoning central to decisions
+about political, social, and economic futures. Unlike settings with abundant
+historical data for statistical extrapolation, judgmental forecasting requires
+integrating sparse, noisy evidence with contextual knowledge to form calibrated
+beliefs about future outcomes
+\citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
+This creates an inductive challenge: forecasters must
+infer from limited observations the relationships that govern how evidence
+impacts outcomes, and use those relationships to anticipate how events may
+unfold
+\citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates this identification problem
+in a low-stakes setting. A researcher observes a carnival coin-flipping machine
+and, after seeing two heads, must estimate the probability that the next flip
+will be heads. A judgmental forecast may incorporate contextual knowledge (e.g.,
+whether the game is rigged) to infer the process generating the observed
+outcomes.
 
-Figure~\ref{fig:world-knowledge-evidence} illustrates the distinction. For a
-known-fair coin, the first two flips do not change the next-flip probability from
-$0.5$; for a coin of unknown bias, the same observations can be informative.
-Asked about an unfamiliar carnival coin, three systems answer near $0.68$, away
-from the fixed fair-coin reference. The probe has only one condition and motivates
-rather than identifies the relationship being applied
-(Appendix~\ref{app:carnival-coin-probe}). The question it exposes is central to
-\textbf{judgmental forecasting}, which combines base rates, sparse observations,
-qualitative evidence, and domain knowledge to estimate future events
-\citep{mellers2014psychological,tetlock2016superforecasting}.
+Language models (LMs) now approach crowd accuracy in judgmental forecasting
+\citep{halawi2024approaching,schoenegger2024wisdom}, but accurate predictions need
+not imply recovery of the underlying task structure. Models recover latent
+structure in some settings \citep{li2023emergent}, yet can predict accurately
+using relationships that fail to generalize in others \citep{vafa2025foundation}.
+This distinction matters when decision-makers ask how and whether a forecast
+should change under alternative evidence or events. Answering such questions
+requires predictive relationships that generalize across changes in context.
 
+\noindent
+\textbf{Present work.}
+We study whether LMs exhibit inductive reasoning in forecasting tasks through a
+series of progressively more stringent behavioral tests spanning both real-world
+prediction markets and controlled synthetic environments. First, we evaluate
+whether LMs respond selectively to new evidence, distinguishing
+outcome-relevant information from topically related but orthogonal information
+(\hyperref[sec:exp1]{Exp.~1}). Second, we test whether LMs infer predictive
+relationships from described context before statistical evidence accumulates. We
+construct synthetic forecasting problems in which the numerical observations are
+identical across conditions and only the described setting varies, isolating the
+contribution of background knowledge to the LM's forecast
+(\hyperref[sec:exp2]{Exp.~2}). Finally, we test whether relationships learned
+during fine-tuning transfer to new settings. We fine-tune LMs with reinforcement
+learning from verifiable rewards (RLVR) on both synthetic tasks and historical
+prediction market data, diagnose component failures with a supervised pilot,
+and evaluate on held-out structures and domains
+(\hyperref[sec:exp3]{Exp.~3}, \hyperref[sec:exp4]{Exp.~4}).
 
-We ask whether LM forecasts exhibit behavioral signatures of this process, which
-we call \emph{inductive reasoning}: selecting a predictive relationship from
-context and sparse observations, revising that selection as evidence accumulates,
-and applying the relationship to a new case
-\citep{tenenbaum2006theory,griffiths2010probabilistic,lake2017building}.
-We use \emph{world structure} for the predictive relationships among variables.
-These are behavioral definitions; they presume neither an explicit graph nor a
-particular internal representation.
-
-Generated explanations need not reveal this process
-\citep{jacovi2020towards,turpin2023language}. We therefore use paired interventions
-with predicted changes or invariances \citep{ribeiro2020beyond,elazar2021measuring}:
-vary evidence direction within a topic, reverse a context--regime assignment while
-holding numerical inputs fixed, add observations that conflict with a cue, and
-preserve the distribution of training answers while breaking their episode-level
-correspondence.
-
-\subsection{Empirical Progression}
-\label{sec:forecasting-as-inductive}
-
-The four experiments form a progression organized by three questions:
-\begin{itemize}[nosep,leftmargin=*]
-  \item \textbf{Do LMs react selectively to evidence?
-  (\hyperref[sec:exp1]{Experiment~1}).}
-  Across 30,094 updates on unresolved real questions, nine models follow the
-  withheld packet direction at $.89$--$.99$, versus $.69$ for a market-held-out
-  lexical classifier. Seven reviewers reach $.76$ on a smaller categorical
-  materials task, not a matched model comparison. Because packet polarity is not
-  shown, recovery requires relating the snippet to the market outcome; wording
-  nevertheless carries partial signal. Selectivity has two components:
-  models return
-  the prior unchanged on $1.1$--$71.4\%$ of topically matched controls against
-  $0.0$--$1.4\%$ of directional packets, and move $1.9$--$7.5\times$ farther on
-  directional packets when they move at all. Their product is the unconditional
-  $1.9$--$24.2\times$ ratio. The arms differ in wording, and the relationships
-  involved are ones models already hold.
-  \item \textbf{Can an LM select a relationship based on context?
-  (\hyperref[sec:exp2]{Experiment~2}).}
-  A cue selects one of two displayed response regimes: reversing it reverses
-  forecasts, and target observations weaken its effect. When arbitrary cue meanings
-  change across episodes, twelve of fifteen systems recover the episode-specific
-  mapping, including all hosted systems tested. On sealed episodes, linear probes
-  across seven open checkpoints decode the induced mapping exactly where forecasts
-  recover it, and patching Qwen3-14B's representation moves its zero-shot forecast.
-  \item \textbf{Are finetuned LMs able to transfer contextual relationships?
-  (\hyperref[sec:exp3]{Experiments~3} and~\hyperref[sec:exp4]{4}).}
-  Under joint domain-and-mechanism shift, Qwen3-8B episode-matched response MAE is
-  $.25$ $[.06,.47]$ lower than the population-prior control, with the same direction
-  at 4B. On a separate 318-market holdout, proper-score training improves every
-  mean Brier relative to every tested Qwen and Llama base checkpoint, but the
-  trained Qwen series is nonmonotonic
-  across 1.7B--14B. The 14B score differs from the contemporaneous Polymarket crowd
-  by $+.0004$ $[-.0003,+.0014]$.
-\end{itemize}
+\noindent\textbf{Results.}
+All nine systems move $1.9$--$7.5\times$ farther for outcome-relevant than topical
+evidence, conditional on updating (\hyperref[sec:exp1]{Exp.~1}). In Coin City,
+forecasts track context-selected relationships ($r=.52$--$.70$) and revise them
+as direct evidence arrives; larger models infer episode-local conventions, with
+a causal intervention linking the induced representation to Qwen3-14B's forecast
+(\hyperref[sec:exp2]{Exp.~2}). Training transfers across domains, but its
+advantage over an answer-matched shuffled control under joint domain and structure
+shift is uncertain at eight seeds (Qwen3-8B:
+$\eEightJointEst{}$, 95\% CI $\eEightJointCi{}$). A supervised pilot learns response-form selection in distribution but fails
+under domain or label changes. A separate composition benchmark improves
+accuracy over a fixed prior, without clear evidence of transferred gain tracking
+(\hyperref[sec:exp3]{Exp.~3}). On 318 held-out markets, training lowers mean
+error for every tested base and several checkpoints reach crowd performance,
+although the Qwen3-32B improvement is uncertain
+(\hyperref[sec:exp4]{Exp.~4}).

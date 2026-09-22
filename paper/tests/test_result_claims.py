@@ -109,17 +109,87 @@ def test_experiment1_headline_values_match_clustered_artifacts() -> None:
     assert round(100 * min(omitted), 1) == 6.9
     assert round(100 * max(omitted), 1) == 18.1
 
+    # The table reports selectivity as two separable components rather than the
+    # single unconditional ratio, so guard the decomposition and its identity.
+    selectivity = load_json("exp1_prospective/data/results/orthogonal_abstention.json")[
+        "per_model"
+    ]
+    group = load_json("exp1_prospective/data/results/group_contrast.json")["per_model"]
+    assert set(selectivity) == set(group) == set(models)
+    for model in models:
+        entry = selectivity[model]
+        close(
+            entry["sensitivity_given_move"]["estimate"]
+            * entry["abstention_factor"]["estimate"],
+            entry["sensitivity"]["estimate"],
+            tolerance=1e-9,
+        )
+        # "every market-clustered 95% interval excluding one"
+        assert entry["sensitivity_given_move"]["ci_lower"] > 1
+        close(
+            group[model]["sens_move"],
+            entry["sensitivity_given_move"]["estimate"],
+            tolerance=5e-5,
+        )
+    # The frozen and re-enumerated lineages disagree for the models whose
+    # aggregate carries runs the enumeration misses; selectivity_robustness.json
+    # owns that reconciliation, so pin each lineage to the value it records
+    # rather than asserting the two agree.
+    robust = load_json("exp1_prospective/data/results/selectivity_robustness.json")[
+        "per_model"
+    ]
+    for model in models:
+        assert (
+            round(selectivity[model]["sensitivity"]["estimate"], 2)
+            == robust[model]["reproduced_sensitivity_ratio"]
+        ), model
+        assert (
+            round(clustered[model]["sensitivity_ratio"]["estimate"], 3)
+            == robust[model]["frozen_sensitivity_ratio"]
+        ), model
+
+    def spread(values, digits):
+        return round(min(values), digits), round(max(values), digits)
+
+    held = [selectivity[model]["orth_abstention"]["estimate"] for model in models]
+    held_directional = [
+        selectivity[model]["dir_abstention"]["estimate"] for model in models
+    ]
+    moved = [
+        selectivity[model]["sensitivity_given_move"]["estimate"] for model in models
+    ]
+    ratio = [selectivity[model]["sensitivity"]["estimate"] for model in models]
+    within_market = [group[model]["auc"] for model in models]
+    assert spread([100 * value for value in held], 1) == (1.1, 71.4)
+    assert spread([100 * value for value in held_directional], 1) == (0.0, 1.4)
+    assert spread(moved, 1) == (1.9, 7.5)
+    assert spread(ratio, 1) == (1.9, 24.2)
+    assert spread(within_market, 3) == (0.791, 0.994)
+
     source = compact("paper/experiment1_section.tex")
     for claim in (
         "30,094 valid update records",
-        "$1.95$ $[1.84,2.06]$",
-        "$24.04$ $[17.21,36.32]$",
-        "conditional EHC ranges from .887 to .990",
+        "$1.1$--$71.4\\%$ of topic-matched controls",
+        "$0.0$--$1.4\\%$ of directional packets",
+        "$1.9$--$7.5\\times$ farther",
+        "every market-clustered 95\\% interval excluding one",
+        "$.791$ to $.994$",
+        "EHC runs from .887 to .990",
         "97.3--98.4\\%",
-        "6.9--18.1\\%",
     ):
-        assert claim in source
-    assert "$1.9$--$24\\times$ farther" in compact("paper/frontmatter.tex")
+        assert claim in source, claim
+    # The per-model table cells are the movement-conditional ratios.
+    for model, cell in (("claude-opus-4-8", "7.0"), ("llama3.1:8b", "1.9")):
+        assert round(selectivity[model]["sensitivity_given_move"]["estimate"], 1) == float(cell)
+        assert f"${cell}\\times$" in source
+    front = compact("paper/frontmatter.tex")
+    assert "$1.9$--$7.5\\times$ farther on" in front
+    assert "unconditional $1.9$--$24.2\\times$ ratio" in front
+    # The threshold-sweep omission rates moved to the appendix.
+    assert (
+        "6.9\\% of GPT-5.4, 12.6--12.7\\% of DeepSeek V4-Pro, and 18.1\\% of Claude Opus~4.8"
+        in compact("paper/experiment1_appendix.tex")
+    )
 
 
 def test_experiment1_human_review_values_match_frozen_export() -> None:
@@ -131,18 +201,18 @@ def test_experiment1_human_review_values_match_frozen_export() -> None:
     assert final["analysis_status"] == "complete"
     assert final["collection"] == {
         "closed": True,
-        "completed_reviewer_count": 8,
-        "included_reviewer_count": 7,
+        "completed_reviewer_count": 9,
+        "included_reviewer_count": 8,
         "excluded_reviewer_count": 1,
         "minimum_included_reviewers": 6,
         "descriptive_target_met": True,
     }
     assert final["excluded_reviewers"] == ["annotator_02"]
-    assert len(final["included_completed_reviewers"]) == 7
-    assert final["pooled_included"]["direction_correct_n"] == 96
-    assert final["pooled_included"]["direction_denom"] == 126
-    assert final["all_completed_sensitivity"]["direction_correct_n"] == 103
-    assert final["all_completed_sensitivity"]["direction_denom"] == 144
+    assert len(final["included_completed_reviewers"]) == 8
+    assert final["pooled_included"]["direction_correct_n"] == 108
+    assert final["pooled_included"]["direction_denom"] == 144
+    assert final["all_completed_sensitivity"]["direction_correct_n"] == 115
+    assert final["all_completed_sensitivity"]["direction_denom"] == 162
     excluded = final["reviewers"]["annotator_02"]
     assert excluded["quality_excluded"] is True
     assert excluded["direction_correct_n"] == 7
@@ -158,15 +228,15 @@ def test_experiment1_human_review_values_match_frozen_export() -> None:
         "agreement_current.json"
     )
     human = agreement["human_key"]
-    assert agreement["n_reviewers"] == 7
-    assert human["pooled_correct"] == 96
-    assert human["pooled_denom"] == 126
-    close(human["majority_exact"], 16 / 18)
-    close(human["majority_kappa"], 0.8421052631578947)
+    assert agreement["n_reviewers"] == 8
+    assert human["pooled_correct"] == 108
+    assert human["pooled_denom"] == 144
+    close(human["majority_exact"], 17 / 18)
+    close(human["majority_kappa"], 0.9189189189189189)
     classes = human["by_packet_class"]
-    assert classes["pro_H1"]["reviewer_correct"] == 29
-    assert classes["anti_H1"]["reviewer_correct"] == 33
-    assert classes["orthogonal"]["reviewer_correct"] == 34
+    assert classes["pro_H1"]["reviewer_correct"] == 35
+    assert classes["anti_H1"]["reviewer_correct"] == 37
+    assert classes["orthogonal"]["reviewer_correct"] == 36
 
     # One-sided exact binomial tests against three-option directional guessing.
     for row in human["per_reviewer"].values():
@@ -179,17 +249,17 @@ def test_experiment1_human_review_values_match_frozen_export() -> None:
 
     source = compact("paper/methods_section.tex")
     for claim in (
-        "96/126 judgments (76.2\\%)",
-        "16/18 items (88.9\\%; Cohen's $\\kappa=.84$)",
-        "eight completers; one disclosed post-inspection response-pattern exclusion",
+        "Eight reviewers judged 18 balanced packets against the frozen direction key",
+        "matching it on 75.0\\%",
+        "the disclosed post-inspection exclusion",
     ):
-        assert claim in source
+        assert claim in source, claim
     appendix = compact("paper/experiment1_appendix.tex")
     for claim in (
-        "Eight adult reviewers completed the 18-item materials protocol",
-        "leaving seven quality-eligible reviewers",
-        "29/42 for pro-$H_1$, 33/42 for anti-$H_1$, and 34/42",
-        "retaining R2 gives 103/144 (71.5\\%) exact agreement",
+        "Nine adult reviewers submitted the 18-item materials protocol",
+        "leaving eight quality-eligible reviewers",
+        "35/48 for pro-$H_1$, 37/48 for anti-$H_1$, and 36/48",
+        "115/162 (71.0\\%) exact agreement",
     ):
         assert claim in appendix
 
@@ -390,6 +460,8 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     appendix = compact("paper/experiment2_appendix.tex")
     assert r"\input{tables/exp2_symbol_context_results}" in appendix
     assert r"\input{tables/exp2_symbol_context_scaling}" in appendix
+    assert r"\input{tables/exp2_generator_population_robustness}" in appendix
+    assert r"\input{tables/exp2_gpt56_repeat}" in appendix
 
     source = compact("paper/experiment2_section.tex")
     # Numbers the section states, each traceable to a frozen authority.
@@ -399,16 +471,16 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         "matches or beats a context-blind OLS benchmark",
         "$.51$--$.86$",
         "$.61$--$.90$",
-        "Twelve of fifteen systems recover it",
-        "within both Qwen3 and Llama only the larger",
-        "rather than tracking\nparameter count".replace("\n", " "),
+        "On the original population, twelve of fifteen systems recover it",
+        "harder population preserves several effects",
+        "parameter count alone does not explain the transition",
         "input embeddings alone already reach $1.000$",
         "that control falls to $.555$",
         "follows the label at\n$k=0$ and the truth at $k=4$".replace("\n"," "),
-        "only the larger\ncheckpoints do".replace("\n"," "),
         "$.333$ at $k=0$",
         r"Appendix~\ref{app:coin-city-reference-selection}",
         r"Appendix~\ref{app:coin-city-mechanistic-probe}",
+        r"Appendix~\ref{app:coin-city-robustness}",
     ):
         assert claim in source, claim
     # Per-deployment numbers belong in the figure table, not the prose.
@@ -426,7 +498,8 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     assert "figures/exp2_reference_selection.pdf" not in source
     appendix = compact("paper/experiment2_appendix.tex")
     assert "figures/exp2_reference_selection.pdf" in appendix
-    assert "Llama~3.1-8B is the\nnegative control".replace("\n", " ") in source
+    assert "including Llama~3.1-8B, where every analysis run is null" in appendix
+    assert "Llama~3.1-8B remains null" in appendix
     assert "A prior attached to the words" in appendix
 
     # The three structural claims the section is organised around.
@@ -438,10 +511,10 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         assert heading in source, heading
     # Scope statements that must survive any future tightening of this section.
     for bound in (
-        "measure how a stated assignment becomes a number",
-        "selection is a two-way choice",
-        "exact within-regime coefficient is never recovered",
-        "the causal test on one",
+        "The cue is binary and the regimes well separated",
+        "too small to test exact coefficient recovery",
+        "causal patching covers one of seven open checkpoints",
+        "hosted deployments tested only behaviorally",
     ):
         assert bound in source, bound
     for stale_claim in (
@@ -461,7 +534,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
 
     front = compact("paper/frontmatter.tex")
     assert "target observations weaken its effect" in front
-    assert "Sufficiently large models also recover arbitrary mappings" in front
+    assert "infer mappings whose meanings change across episodes" in front
     assert "Ten of 13 systems recover" not in front
     assert "Sufficiently large open-weight and hosted models" not in front
     assert "family-specific rather than a universal size threshold" not in front
@@ -470,14 +543,15 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     conclusion = compact("paper/conclusion.tex")
     assert "arbitrary-label control" not in conclusion
     for claim in (
-        "central result is behavioral, not a claim of an explicit world model",
-        "forecasts behave as if selecting a context-dependent regime",
-        "decode the cue-selected response family but not within-regime coefficient variation",
+        "The evidence supports behavioral relationship use, not a general internal world model",
+        "the evidence forms a progression",
+        "context selects and revises episode-local relationships",
+        "that final step establishes transfer rather than the relationship used",
     ):
         assert claim in conclusion
 
 
-def test_experiment3_main_values_match_registered_analysis() -> None:
+def test_experiment3_main_values_match_analysis() -> None:
     protocol = load_json(
         "exp3_training_transfer/coin_city_structural/protocol/"
         "coin_city_structural_manifest.json"
@@ -495,15 +569,15 @@ def test_experiment3_main_values_match_registered_analysis() -> None:
     ):
         assert protocol["checks"][check] is True
 
-    registered = load_json(
+    analysis_report = load_json(
         "exp3_training_transfer/coin_city_structural/reports/registered_results.json"
     )
-    assert registered["validated_jobs"] == 24
-    assert registered["validated_tasks_per_job"] == 1_440
-    assert registered["row_draws"] == 207_360
+    assert analysis_report["validated_jobs"] == 24
+    assert analysis_report["validated_tasks_per_job"] == 1_440
+    assert analysis_report["row_draws"] == 207_360
     score_files = [
         path if path.is_absolute() else ROOT / path
-        for path in map(Path, registered["score_files"])
+        for path in map(Path, analysis_report["score_files"])
     ]
     stochastic_files = [path for path in score_files if "stochastic_n5" in path.name]
     greedy_files = [path for path in score_files if "stochastic_n5" not in path.name]
@@ -522,7 +596,7 @@ def test_experiment3_main_values_match_registered_analysis() -> None:
     assert stochastic_parsed == 172_732
     assert min(endpoint_rates) >= 0.99819
 
-    result = registered["registered_estimates"]
+    result = analysis_report["registered_estimates"]
     qwen8 = next(
         row
         for row in result["primary"]
@@ -558,6 +632,48 @@ def test_experiment3_main_values_match_registered_analysis() -> None:
     )
     assert qwen4["population_prior_minus_causal"]["ci95_low"] > 0
 
+    qwen14_roots = {
+        ("causal", 42): "scale_causal_qwen3_14b_s42_20260826_025010_j30880155",
+        ("causal", 43): "scale_causal_qwen3_14b_s43_recovery2_20260828_204430_j30948628",
+        ("causal", 44): "scale_causal_qwen3_14b_s44_20260826_183443_j30880157",
+        ("population_prior", 42): "scale_population_prior_qwen3_14b_s42_20260826_183724_j30880158",
+        ("population_prior", 43): "scale_population_prior_qwen3_14b_s43_20260826_183724_j30880159",
+        ("population_prior", 44): "scale_population_prior_qwen3_14b_s44_20260826_204654_j30880160",
+    }
+
+    def qwen14_primary_mean(arm: str, seed: int) -> float:
+        path = ROOT / (
+            "exp3_training_transfer/coin_city_structural/reports/"
+            f"{qwen14_roots[arm, seed]}/stochastic_n5.scores.jsonl"
+        )
+        rows = [json.loads(line) for line in path.read_text().splitlines()]
+        values = [
+            float(row["response_mae"])
+            for row in rows
+            if row["domain"] == "coin_harbor"
+            and row["target_structure"] == "mediated_b"
+            and row["cue"] == "correct"
+        ]
+        assert len(values) == 600
+        return statistics.mean(values)
+
+    qwen14_seed_contrasts = [
+        qwen14_primary_mean("population_prior", seed)
+        - qwen14_primary_mean("causal", seed)
+        for seed in (42, 43, 44)
+    ]
+    qwen14_contrast = statistics.mean(qwen14_seed_contrasts)
+    close(qwen14_contrast, 0.11980725666666665)
+    family_contrast = statistics.mean(
+        (
+            qwen4["population_prior_minus_causal"]["estimate"],
+            qwen8["population_prior_minus_causal"]["estimate"],
+            qwen14_contrast,
+        )
+    )
+    close(family_contrast, 0.23005305722222227)
+    assert sum(value > 0 for value in qwen14_seed_contrasts) == 2
+
     llama = next(
         row
         for row in result["primary"]
@@ -582,45 +698,109 @@ def test_experiment3_main_values_match_registered_analysis() -> None:
     close(llama_override["estimate"], -0.6210503149999999)
     close(llama_override["ci95_high"], -0.3228456566250002)
 
+    # The main text quotes the base-relative gain both with and without the
+    # parse penalty; both must follow from the saved cell means.
+    base_gain = (
+        qwen8["mean_response_mae"]["base"] - qwen8["mean_response_mae"]["causal"]
+    )
+    assert round(base_gain, 2) == 1.26
+    matched_share = contrast["estimate"] / base_gain
+    assert round(100 * matched_share) == 20
+
     source = compact("paper/experiment3_section.tex")
     for claim in (
         "response MAE is $5.72$ for the untrained base, $4.71$ for population-prior training, and $4.46$",
         "$.251$ $[.058,.470]$",
-        "$1.26$ points (22\\%)",
+        "$1.26$ points, or $0.80$ on parsed draws alone",
+        "$20\\%$ of the $1.26$-point gain",
         "only the prompt--key pairing differs",
-        "learning how each episode's evidence maps to outcomes",
+        "episode-specific evidence--outcome mapping",
+        "training-side induction claim",
+        "$.319$ $[.134,.489]$, $.251$ $[.058,.470]$, and $.120$ $[-.027,.261]$",
+        "$.230$ $[.128,.333]$",
+        "eight of nine size--seed estimates",
+        "11 of 12 size--cell estimates",
+        "rather than scale invariance",
         "$4.46$, $4.57$, and $4.77$",
         "$.117$ $[.010,.230]$",
         "$.309$ $[.206,.411]$",
     ):
-        assert claim in source
-    assert (
-        "episode-matched response MAE is $.25$ $[.06,.47]$ lower than the population-prior control"
-        in compact("paper/frontmatter.tex")
+        assert claim in source, claim
+    # The structure-only cell is the one where training does not beat the base;
+    # the main text must keep naming it rather than claiming a clean sweep.
+    structure_only = next(
+        row
+        for row in result["transfer_cells"]
+        if row["model"] == "qwen3_8b"
+        and row["domain"] == "coin_city"
+        and row["target_structure"] == "mediated_b"
     )
+    assert structure_only["ci95_low"] < 0 < structure_only["ci95_high"]
+    assert "($2.30$ base against $2.33$ matched)" in source
+    assert "lower point estimate of the two trained arms" in source
+    front = compact("paper/frontmatter.tex")
+    assert "correct episode-level mapping" in front
+    assert "all three tested Qwen3 sizes (4B, 8B, and 14B)" in front
     methods = compact("paper/methods_section.tex")
     assert (
         "The episode-matched and population-prior arms use byte-identical prompts and the "
         "same multiset of answer keys." in methods
     )
+    assert "making the contrast a training analogue of Experiment~2" in methods
+    assert "transfers beyond the domain and mechanism" in methods
     setup = compact("paper/experiment3_training_setup_appendix.tex")
     assert "($42,43,44$) $=18$ full training runs." in setup
     assert "$=12$ full training runs." not in setup
     appendix = compact("paper/experiment3_appendix.tex")
     for claim in (
         "all 24 endpoints and 172,800 stochastic rows",
-        "172,732 parse under the strict contract (99.96\\%)",
+        "172,732 parse (99.96\\%)",
         "at least 99.82\\% coverage",
-        "The prior-minus-episode-matched training contrast is positive, $.420$",
+        "prior-minus-episode-matched training contrast is positive, $.420$",
         "$[-.115,.958]$",
         "absent-minus-correct MAE is $.219$ $[.123,.313]$",
         "misleading-minus-correct is $.210$ $[.092,.320]$",
         "$-.621$ $[-.957,-.323]$",
     ):
-        assert claim in appendix
+        assert claim in appendix, claim
+
+    # Llama's factorial runs against the hypothesis in its Structure-A cells.
+    # The appendix must report all four rather than the joint cell alone.
+    llama_cells = {
+        (row["domain"], row["target_structure"]): row
+        for row in result["transfer_cells"]
+        if row["model"] == "llama3_1_8b"
+    }
+    against = [
+        cell for cell in llama_cells.values() if cell["ci95_high"] < 0
+    ]
+    assert len(against) == 2
+    assert all(cell["target_structure"] == "direct_a" for cell in against)
+    for claim in (
+        "$-.351$ $[-.680,-.130]$",
+        "$-.167$ $[-.862,.306]$",
+        "$-.581$ $[-.868,-.243]$",
+        "only three of the twelve",
+    ):
+        assert claim in appendix, claim
+
+    # Temperature-zero checkpoints are monitoring diagnostics, not paper endpoints.
+    assert (
+        "temperature-zero checkpoints serve only as online training monitors"
+        in appendix
+    )
+    assert "greedy decoding" not in appendix.lower()
+    # The three-cluster bootstrap sensitivity must stay disclosed.
+    for claim in (
+        "Sensitivity of the intervals to three training seeds",
+        "$.251$ $[-.259,.762]$",
+        "$.319$ $[-.120,.758]$",
+        "Nine of the twelve",
+    ):
+        assert claim in appendix, claim
 
 
-def test_experiment4_main_values_match_locked_test() -> None:
+def test_experiment4_main_values_match_heldout_evaluation() -> None:
     manifest = load_json(
         "exp3_training_transfer/polymarket/data/exp3b_registered/manifest.json"
     )
@@ -741,6 +921,28 @@ def test_experiment4_main_values_match_locked_test() -> None:
     close(crowd_contrast["ci95_low"], -0.00027547354297484427)
     close(crowd_contrast["ci95_high"], 0.0013911306120218579)
 
+    qwen32 = load_json(
+        "exp3_training_transfer/polymarket/reports/"
+        "exp4_scale_qwen3_32b_stochastic_j30913533.summary.json"
+    )
+    assert qwen32["model"] == "Qwen/Qwen3-32B"
+    assert qwen32["model_key"] == "qwen3_32b"
+    assert qwen32["holdout"]["n"] == 318
+    close(qwen32["models"]["base"]["brier"], 0.126592910345912)
+    close(
+        sum(qwen32["models"][f"seed_{seed}"]["brier"] for seed in (42, 43, 44))
+        / 3,
+        0.1265183279454927,
+    )
+    qwen32_base = qwen32["comparisons_brier"]["trained_seed_mean_minus_base"]
+    close(qwen32_base["estimate"], -0.00007458240041928731)
+    close(qwen32_base["ci95_low"], -0.00045125965079365147)
+    close(qwen32_base["ci95_high"], 0.0002891352089407185)
+    qwen32_crowd = qwen32["comparisons_brier"]["trained_seed_mean_minus_market"]
+    close(qwen32_crowd["estimate"], -0.000029613878406706672)
+    close(qwen32_crowd["ci95_low"], -0.00009404889927310381)
+    close(qwen32_crowd["ci95_high"], 0.000023584238683130192)
+
     scale_llama = load_json(
         "exp3_training_transfer/polymarket/reports/"
         "exp4_scale_llama3_1_8b_stochastic_j30889436.summary.json"
@@ -771,31 +973,37 @@ def test_experiment4_main_values_match_locked_test() -> None:
         "exp4_hosted_ensemble_posthoc.summary.json"
     )
     available = ensemble["results"]["available_member_pool_all_tasks"]
-    close(available["brier"], 0.1273034985082547)
-    close(available["ensemble_minus_market"]["estimate"], 0.0007555566843553481)
-    close(available["ensemble_minus_market"]["ci95_low"], -0.0006369892656040217)
-    close(available["ensemble_minus_market"]["ci95_high"], 0.00220301543161291)
+    close(available["brier"], 0.1272244734449249)
+    close(available["ensemble_minus_market"]["estimate"], 0.0006765316210255076)
+    close(available["ensemble_minus_market"]["ci95_low"], -0.00044147920282186894)
+    close(available["ensemble_minus_market"]["ci95_high"], 0.001821431894290121)
     assert "do not beat" in ensemble["conclusion"]
 
     source = compact("paper/experiment3_section.tex")
     for claim in (
-        "a frozen scale extension uses 318 new markets",
-        "reports Qwen3-1.7B, Qwen3-4B, Qwen3-8B, and Qwen3-14B as a connected curve",
-        "The post-hoc Qwen3-1.7B trained mean is $.1248$ (base $.2253$)",
-        "registered 4B/8B/14B trained means are $.1366$/$.1286$/$.1270$",
-        "$-.00117$ $[-.00298,+.00016]$",
-        "contemporaneous crowd (Brier $.12655$)",
-        "$+.00040$ $[-.00028,+.00139]$",
-        "post-hoc Llama minus crowd is $-.00012$ $[-.00046,+.00012]$",
-        "the disclosed Kimi repair are tied with users",
-        "Opus~5 are worse under fail-closed scoring",
+        "318 markets",
+        "$.1248/.2253$",
+        "$.1366/.1522$",
+        "$.1286/.1369$",
+        "$.1270/.1281$",
+        "$.1265/.1266$",
+        "Llama replication shows the same qualitative trend",
+        "Experiment~4 is the real-world transfer step",
+        "it does not identify which relationship produces any gain",
+        "Brier scores alone cannot show that they recover the same relationships",
+        "$-.00007$ $[-.00045,+.00029]$",
+        "(Brier $.12655$)",
+        "$-.00003$ $[-.00009,+.00002]$",
     ):
-        assert claim in source
+        assert claim in source, claim
+    # Scope limits that must survive any rewrite of this subsection.
+    for bound in ("neither crowd superiority", "both intervals cross zero"):
+        assert bound in source, bound
     assert "train-only Platt" not in source
     assert "14B-minus-8B" not in source
     assert "same-release" not in source
     assert (
-        "On a new 318-market holdout, trained Brier falls from $.1366$ to $.1286$ to $.1270$"
+        "The trained Qwen series is nonmonotonic across 1.7B--32B"
         in compact("paper/frontmatter.tex")
     )
     assert (
@@ -820,18 +1028,25 @@ def test_experiment4_main_values_match_locked_test() -> None:
         "base-relative improvement rather than superiority to market-based forecasts"
         in appendix
     )
-    assert "Qwen3-4B Evidence-Updating Evaluation" in appendix
+    assert "Qwen3-4B evidence-updating evaluation" in appendix
     assert r"$+.0101$ with 95\% interval $[+.0004,+.0207]$" in appendix
     assert "temperature-zero JSON decoding" not in source
-    assert "temperature-zero result predates the new-holdout stochastic" in appendix
+    # The 1,024-market endpoint must stay identified as the separate, earlier
+    # temperature-zero test rather than merging into the 318-market holdout.
+    assert "1,024-market" in appendix
+    assert r"\label{tab:exp4-endpoint-results}" in appendix
     assert r"\input{tables/exp3b_qwen3_8b_endpoint_results}" in appendix
     assert r"\input{tables/exp4_qwen_scale_results}" in appendix
-    assert "same-release 14B-minus-8B trained contrast" in appendix
-    assert "later Instruct-2507 revision" in appendix
+    assert (
+        r"\includegraphics[width=\linewidth]{figures/exp4_llama_scale_results.pdf}"
+        in appendix
+    )
+    assert r"\label{fig:exp4-llama-scale-results}" in appendix
+    assert "$-.00164$ $[-.00332,-.00024]$" in appendix
+    assert "Qwen3-4B-Instruct-2507" in appendix
     assert "All 4,770 trained draws parse" in appendix
     assert "nine of the 1,590 base draws do not" in appendix
     assert "Trained minus base is $-.03774$ $[-.05860,-.01946]$" in appendix
-    assert "The repaired result parses all 1,590 draws and has" in appendix
-    assert "Brier $.12682$" in appendix
-    assert "Fail-closed Brier is $.15571$" in appendix
-    assert "pooling does not beat the contemporaneous users" in appendix
+    # Kimi's disclosed repair must keep its draw accounting and its Brier.
+    assert "all 1,590 final draws parse" in appendix
+    assert "$.12682$, differing from the crowd by $+.00027$" in appendix

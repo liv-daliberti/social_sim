@@ -1,0 +1,30 @@
+\begin{abstract}
+Judgmental forecasting requires integrating sparse evidence with knowledge about
+the actors, institutions, and processes that shape how events unfold. The same
+observation can imply different futures depending on these underlying
+relationships. Here, we investigate whether language models (LMs) recover those
+relationships or rely on surface regularities. Across a battery of experiments
+spanning real-world prediction markets and controlled synthetic environments, we
+test whether models update their beliefs coherently, recover latent predictive
+relationships, and transfer what they learn to new settings. Our results provide
+evidence for each of these capabilities. Models selectively update their
+forecasts in response to causally relevant evidence, use contextual information
+to infer predictive relationships when observations are sparse, and revise these
+inferences as direct evidence accumulates. Training on families of predictive
+relationships further improves forecasting on unseen structures, although
+transfer is incomplete in more challenging settings. Together, these experiments
+provide behavioral evidence that LMs can forecast inductively: their predictions
+respond to evidence and context in ways that reflect underlying predictive
+structure, and some of this behavior transfers beyond the settings in which it
+was learned.\footnotemark
+\end{abstract}
+\footnotetext{%
+  \micon{huggingface.png}\;%
+  \href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
+  {\textbf{Study dataset and artifacts}}\qquad
+  \micon{gh_logo.png}\;%
+  \href{https://github.com/anonymous-review/forecasting-study-code}%
+  {\textbf{Code repository}}\quad
+  \textit{Links anonymized for review.}}
+\vspace{-0.55em}
+\enlargethispage{2\baselineskip}

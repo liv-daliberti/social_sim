@@ -1,0 +1,58 @@
+\section{What does it mean to forecast inductively?}
+\label{sec:inductive-forecasting}
+
+Forecasting is a useful testbed for inductive reasoning because it makes
+otherwise hidden choices observable. A forecaster must decide which evidence
+matters, which population provides the relevant comparison, how strongly that
+evidence should affect an outcome, and when direct observations should override
+an existing belief. Each of these choices implies a different numerical
+forecast. An accurate prediction alone does not tell us whether the forecaster
+made those choices for the right reasons.
+
+This distinction matters because a forecast is rarely the last question. We often
+want to know what evidence should change the prediction, whether the same
+evidence should matter differently in another population, and what new
+observation should trigger revision. A model that reaches the right number
+through a familiar base rate, a topical cue, or some other surface regularity may
+still fail under exactly these changes. Average accuracy can therefore conceal an
+important weakness: two models can give the same forecast while relying on very
+different relationships between evidence and outcomes.
+
+We use \emph{inductive forecasting} to describe the stronger behavior we care
+about here. An inductive forecaster should not only identify whether evidence is
+relevant, but also infer the relationship that determines how that evidence
+should affect the outcome. When context changes which comparison is appropriate,
+the forecast should change with it. When direct evidence becomes available, that
+evidence should be able to revise the earlier contextual inference. And when the
+same underlying relationship appears in an unfamiliar setting, the forecaster
+should be able to use it without depending on the original surface form.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{exp1_protocol_four_panels.pdf}
+\caption{\textbf{When should a forecast change?} An agent forecasts an
+unresolved question, then receives one fictional update with search off. Some
+updates support the outcome, some oppose it, and some concern the same topic but
+do not bear on the outcome. The labels remain hidden; we ask whether the model
+moves when the news matters and whether it moves the right way.}
+\label{fig:exp1-pipeline}
+\end{figure}
+
+These requirements extend beyond forecasting. A persuasion model should respond
+not only to a message, but to who delivers it. A coordination model should
+distinguish shared incentives from what participants know about one another. A
+policy model should distinguish similar language from the institutional pathway
+through which an intervention takes effect. In each case, the conditional
+relationship is often the object of interest: who trusts whom, which population
+responds to which signal, or which mechanism connects an action to an outcome.
+Matching an average outcome while missing these dependencies can produce a
+convincing static prediction and a misleading response when the setting changes
+\citep{park2023generative,aher2023simulate,argyle2023out,bisbee2024synthetic}.
+
+This suggests a stronger way to evaluate forecasting systems. Rather than asking
+only whether a model reaches the correct number, we can ask whether its forecast
+changes when the relevant evidence, comparison, or relationship changes. We
+therefore proceed through increasingly demanding tests: first whether models
+distinguish relevant evidence from topical information, then whether they infer
+how strongly evidence should matter from context, and finally whether those
+relationships can be revised and carried into new settings.

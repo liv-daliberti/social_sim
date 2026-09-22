@@ -1,0 +1,203 @@
+\subsubsection{Component diagnosis with paired cue flips}
+\label{app:exp3-components}
+
+The preceding RL pilot motivates a fixed, exploratory decomposition, frozen
+before these inference outputs. We sample 96 fresh latent episodes, 24 in each
+of the two domain $\times$ two label cells. Each episode is presented with both
+cue assignments under four interfaces, giving 768 prompts per checkpoint:
+(i) identify the named reference without forecasting; (ii) forecast with exact
+unit-shock response coefficients at horizons 1 and 3 supplied for both
+references; (iii) forecast with the selected reference and its coefficients
+supplied; and (iv) the original forecasting task. The coefficients are latent
+simulator summaries, not the requested ten forecasts; this assistance tests
+whether a supplied relationship is usable, not whether exact coefficients are
+recoverable from fourteen noisy observations. We use $k=0$ target observations
+so numerical evidence is identical across the original-task cue flips. This
+diagnostic does not test integration with target observations at $k>0$.
+
+The fixed roster comprises Qwen3-8B base, its matched and fixed-prior RL
+checkpoints at seeds 42--44, and an untrained Qwen3-32B feasibility comparison.
+All 6,144 greedy generations parse. Selection-only accuracy is $100\%$ for
+every checkpoint in every domain/label cell. Table~\ref{tab:exp3-components}
+reports the frozen scores, including every assistance condition. At 8B,
+supplying patterns does not reduce average response error in any domain/label
+cell for the base or either trained arm. This locates a failure beyond merely
+identifying the reference named by the cue; it does not uniquely separate
+numerical application from sensitivity to the assisted prompt format.
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/exp3_components}
+\caption{\textbf{Reference naming succeeds while forecasting remains difficult.}
+Name is selection-only accuracy; Original, Both, and Selected are response MAE
+for the three forecast interfaces. Trained rows average all three seeds, not
+selected endpoints. Each checkpoint contributes 24 paired episodes per cell.
+Domain scales differ, so compare interfaces within a domain.}
+\label{tab:exp3-components}
+\end{table}
+
+Forecast structure accuracy assigns each predicted eight-coordinate response
+vector to the closer of the episode's direct and mediated simulator templates
+in MAE; ties count as incorrect. The paired cue-change calibration is
+\[
+\alpha=\frac{1}{N}\sum_{i=1}^N
+\frac{(\widehat r_{i,M}-\widehat r_{i,D})^\top(r_{i,M}-r_{i,D})}
+     {\lVert r_{i,M}-r_{i,D}\rVert_2^2},
+\]
+where $r$ subtracts the zero-shock forecast separately within each horizon,
+and $M,D$ index the mediated and direct cue assignments. Zero denotes
+invariance to the cue; one denotes the simulator's change along this direction,
+but need not imply a correct full response vector. This differs from the
+preceding persistence-ratio index, whose selecting reference is approximately
+$.65$. Matched RL's mean $\alpha$ is $.000$, $.017$, $.136$, and $.008$ for
+City semantic, City arbitrary, Harbor semantic, and Harbor arbitrary,
+respectively. The corresponding fixed-prior means are $-.008$, $.027$,
+$.085$, and $.035$; these three-seed descriptions are not a new confirmatory
+comparison between training arms.
+
+\paragraph{Stronger-model feasibility and output semantics.}
+The frozen scorer clips forecasts to the valid domain range before computing
+responses. Inspection revealed that Qwen3-32B often returns deviations from rest
+instead of absolute levels; clipping those values distorts the response vector,
+especially in Harbor, whose lower bound is 40. We therefore report a separately
+labelled \emph{post hoc} raw-output audit (Table~\ref{tab:exp3-baseline-audit}),
+without replacing the frozen scores or counting offset-corrected answers as
+correct forecasts. With the selected pattern supplied in City/semantic, raw
+response MAE is $.384$ versus $4.794$ on the original interface. Complete
+relative vectors are accurate to $.01$ in $52.1\%$ of cases, but $95.8\%$ omit
+the resting level. This shows partial conditional numerical ability, not a
+solution of the original task. The 8B assistance failures remain predominantly
+response-pattern errors after a common-offset correction.
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/exp3_baseline_audit}
+\caption{\textbf{Post hoc Qwen3-32B audit of incorrectly offset answers.}
+The first three numeric columns are unclipped response MAE. Exact means all
+eight relative response coordinates are within $.01$ of truth; Omit rest means
+both zero-shock predictions are near zero. These last two columns concern the
+selected-pattern interface only. They do not measure correct absolute forecasts.}
+\label{tab:exp3-baseline-audit}
+\end{table}
+
+\subsubsection{Supervised learnability and its transfer boundary}
+\label{app:exp3-learnability}
+
+We train two fixed forecast-SFT recipes from the same Qwen3-8B base on the
+original 4,800 balanced Coin City/semantic prompts, with simulator-correct
+absolute forecasts as targets. Both use seed 42, one epoch, effective batch 16,
+300 optimizer updates, completion-only token cross entropy, LoRA rank 32 and
+alpha 64 on all seven projection modules, AdamW $(.9,.95)$, no weight decay,
+constant learning rate, and gradient norm cap 1.0. Rates are $10^{-6}$ (the RL
+rate) and $2\times10^{-5}$ (an optimization-feasibility condition). Neither
+Harbor nor arbitrary labels appear in training. Final endpoints alone are
+evaluated, on the unchanged 768-prompt component diagnostic.
+
+This matches distinct prompts and prompt presentations, not computation or
+optimizer updates: RL samples eight completions per prompt and uses about
+2,400 updates. The higher-rate SFT recipe also changes learning rate. Both
+supervised outcomes are reported in Table~\ref{tab:exp3-learnability}; the
+seed-42 RL checkpoint is the primary diagnostic comparison. The other two
+matched RL seeds yield City/semantic structure accuracies $52.1\%$ and
+$50.0\%$, with response MAE $1.029$ and $1.053$.
+
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\input{tables/exp3_learnability}
+\caption{\textbf{A supervised recipe learns in-domain structure selection but
+fails to transfer.} All trained recipes here use seed 42. Structure accuracy
+is derived from forecasts, not reference naming. All outputs parse. Intervals
+resample the 24 paired episodes within each cell (2,000 draws); they do not
+capture training-seed uncertainty. Both fixed SFT learning rates are retained.}
+\label{tab:exp3-learnability}
+\end{table}
+
+At the higher rate, City/semantic structure accuracy is $47/48$ ($97.9\%$),
+response MAE is $.658$, and forecast-level MAE is $.527$. Calibration
+$\alpha=1.413$ indicates overshoot despite accurate choice of response form.
+The lower-rate recipe reaches only $58.3\%$ structure accuracy. Higher-rate
+SFT does not recover structure selection under arbitrary labels or in Harbor;
+its Harbor response errors increase substantially. Original-task SFT response
+scores are unchanged when clipping is removed, and an additive-offset audit
+does not remove the transfer failure. Reference naming remains perfect.
+Thus the successful recipe establishes in-domain learnability, while a
+semantic cue-to-pattern association remains a possible explanation. It does
+not establish transferable induction from reference trajectories or an isolated
+effect of SFT versus RL.
+
+\paragraph{Adaptive decision disclosure.}
+The initially specified numerical launch gate was not met. Before any SFT
+training, a documented outcome-informed amendment used the stronger model's
+conditional numerical ability and absolute-level errors to justify running the
+two already prepared, unchanged recipes. This is an exploratory learnability
+pilot, not a passed preregistered gate or a confirmatory method comparison.
+There was no SFT endpoint selection. Separate reference-identification
+supervision was unnecessary given the perfect selection-only results.
+
+\subsubsection{Mechanism-family evidence use under coherent gain changes}
+\label{app:exp3-evidence-use}
+
+The mechanism-family accuracy comparison uses a fixed population-prior training
+control. It is distinct from the parent Coin City shuffled-pair control and
+does not preserve the matched arm's exact target-vector distribution. To test
+whether the accuracy gain depends on displayed episode-specific relationships,
+we freeze a fresh gain-intervention set before inference: 16 pairs in each of
+12 mechanisms, comprising 128 pairs from eight seen mechanisms and 64 from
+four held-out compositions or parameter-extrapolation mechanisms. Both
+mechanism-disclosure conditions use the same episodes, with $k=9$ target
+observations.
+
+Within each pair the target gain changes from the 20th to the 80th percentile
+of that world's native uniform support. Inputs, exact noise draws, calibration
+trajectories, baseline, and mechanism are fixed; affected target observations,
+terminal states, and future outcomes are regenerated coherently. The disclosed
+description provides the same gain range on both sides, never the actual gain.
+This tests a gain change, not a change of mechanism identity. Native supports
+are retained, including the narrow, noisy extrapolation world.
+
+The primary metric is response-change MAE: subtract the zero-shock forecast
+within each horizon, take the high-minus-low change of the resulting eight
+responses, and compare with the simulator's change. This removes purely
+additive level tracking. Greedy inference evaluates Qwen3-4B-Instruct-2507
+base and all retained final matched/fixed-prior adapters, seeds 45 and 46;
+weights for seeds 42--44 are unavailable. All pairs parse. The two-seed mean
+contrasts and bootstrap intervals in Table~\ref{tab:exp3-gain-evidence} resample
+paired training seeds and world-stratified episodes (2,000 draws). With only
+two training seeds these are exploratory intervals, not seed-generalized
+confirmation. Individual seed results are retained in the released analysis.
+
+\begin{table}[htbp]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{tables/exp3_gain_evidence}
+\caption{\textbf{Better gain tracking on seen mechanisms does not establish
+transferred evidence use.} Entries are response-change MAE (lower is better);
+trained entries average seeds 45 and 46. No change is an invariant predictor.
+Positive prior-minus-matched contrasts favor matched training. Both held-out
+intervals include zero, and matched held-out errors exceed the no-change baseline.}
+\label{tab:exp3-gain-evidence}
+\end{table}
+
+Matched training improves on the prior for seen mechanisms by $.195$
+(disclosed) and $.386$ (undisclosed), but held-out contrasts are $-.019$ and
+$.007$. Held-out matched tracking slopes are $.102$ and $.233$ (ideal 1),
+and its errors exceed the $.826$ no-change baseline in both conditions.
+The previously reported ordinary forecast-accuracy advantage therefore remains
+a narrower result than transferred evidence use. These interventions neither
+show a complete absence of sensitivity nor establish robust tracking of
+held-out episode-specific gains.
+
+\paragraph{Control status and reproducibility.}
+No completed distribution-matched shuffled-target training comparison is
+reported for the mechanism-family benchmark. The separately frozen design
+preserves identical prompts and the exact joint target-vector multiset within
+compatible world/evidence-depth groups, changing only episode assignments,
+with five seeds in each disclosure condition. Only completed diagnostics enter the tables and claims here. Their artifacts,
+manifests, raw
+outputs, and the outcome-informed SFT amendment reside under
+\path{exp3_training_transfer/overnight_diagnostics_20260921/}, in
+\path{structure/}, \path{learnability/}, and \path{evidence_use/}.
+\path{paper/generate_exp3_diagnostic_tables.py} renders these four tables from
+completed summaries and records source hashes in
+\path{paper/tables/exp3_diagnostics_sources.json}.

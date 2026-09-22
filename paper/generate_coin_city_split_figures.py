@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import textwrap
 from pathlib import Path
 
@@ -30,9 +29,8 @@ DESIGN = RUN / "design"
 RESPONSES = RUN / "responses"
 
 ARMS = ("baseline", "abc_no_context", "abc_context")
-# Additive misleading-cue arm. It is not part of the frozen three-arm contract,
-# so panel (d) renders only the deployments whose wrong-context file is complete
-# and every other panel is computed exactly as before.
+# Cue-inversion module. All six registered deployments are complete;
+# generation fails closed if any endpoint is missing or has drifted.
 WRONG_ARM = "abc_wrong_context"
 WRONG_ARM_EXPECTED_RECORDS = 1_250
 MODELS = (
@@ -92,7 +90,6 @@ ARM_TITLE_COLORS = {
 CITY_C_OLS_COLOR = "#E69F00"
 BEST_LLM_COLOR = "#6A3D9A"
 INDIVIDUAL_LLM_COLOR = "#A8ADB4"
-ANALOGICAL_OLS_COLOR = "#333333"
 
 ARM_LABELS = {
     "baseline": "Target only",
@@ -140,19 +137,31 @@ def load_latest_responses(model: str) -> dict[str, dict[str, dict]]:
     return result
 
 
-def load_wrong_context_responses(model: str) -> dict[str, dict] | None:
-    """Misleading-arm responses, or None until that deployment's run is complete."""
+def load_wrong_context_responses(model: str) -> dict[str, dict]:
+    """Load one complete misleading-arm endpoint, failing closed on drift."""
     path = RESPONSES / f"responses_{model}_{WRONG_ARM}.jsonl"
     if not path.exists():
-        return None
+        raise RuntimeError(f"missing misleading-arm endpoint for {model}: {path}")
     rows = read_jsonl(path)
-    if len(rows) < WRONG_ARM_EXPECTED_RECORDS:
-        return None
+    if len(rows) != WRONG_ARM_EXPECTED_RECORDS:
+        raise RuntimeError(
+            f"incomplete misleading-arm endpoint for {model}: "
+            f"{len(rows)}/{WRONG_ARM_EXPECTED_RECORDS} records"
+        )
     latest: dict[str, dict] = {}
     for row in rows:
         old = latest.get(row["task_id"])
         if old is None or row.get("predicted_poll") is not None:
             latest[row["task_id"]] = row
+    if len(latest) != WRONG_ARM_EXPECTED_RECORDS:
+        raise RuntimeError(
+            f"misleading-arm endpoint for {model} has {len(latest)} unique tasks; "
+            f"expected {WRONG_ARM_EXPECTED_RECORDS}"
+        )
+    if any(row.get("predicted_poll") is None for row in latest.values()):
+        raise RuntimeError(
+            f"misleading-arm endpoint for {model} contains unparsed tasks"
+        )
     return latest
 
 
@@ -209,8 +218,7 @@ def compute_analogical_regression_metrics(
             )
             predictions = np.asarray(
                 [
-                    episode["query_starting_poll"]
-                    + episode["query_net_news"] * slope
+                    episode["query_starting_poll"] + episode["query_net_news"] * slope
                     for episode, slope in zip(episodes.values(), slopes)
                 ],
                 dtype=float,
@@ -256,9 +264,7 @@ def compute_metrics() -> dict:
         metrics: dict[str, dict] = {}
         for k in range(5):
             task_ids = {
-                task_id
-                for task_id, row in scores.items()
-                if int(row["c_cases"]) == k
+                task_id for task_id, row in scores.items() if int(row["c_cases"]) == k
             }
             common = sorted(
                 task_id
@@ -275,35 +281,31 @@ def compute_metrics() -> dict:
             arm_mae: dict[str, float] = {}
             arm_rho: dict[str, float] = {}
             wrong = load_wrong_context_responses(model)
-            if wrong is not None:
-                wrong_ids = [
-                    task_id
-                    for task_id in common
-                    if wrong.get(task_id, {}).get("predicted_poll") is not None
-                ]
-                wrong_truths = np.asarray(
-                    [scores[task_id]["gold_expected_poll"] for task_id in wrong_ids],
-                    dtype=float,
+            wrong_ids = list(common)
+            wrong_truths = np.asarray(
+                [scores[task_id]["gold_expected_poll"] for task_id in wrong_ids],
+                dtype=float,
+            )
+            wrong_predictions = np.asarray(
+                [wrong[task_id]["predicted_poll"] for task_id in wrong_ids],
+                dtype=float,
+            )
+            arm_mae[WRONG_ARM] = float(
+                np.mean(np.abs(wrong_predictions - wrong_truths))
+            )
+            wrong_implied = [
+                (
+                    prediction
+                    - episodes[scores[task_id]["episode"]]["query_starting_poll"]
                 )
-                wrong_predictions = np.asarray(
-                    [wrong[task_id]["predicted_poll"] for task_id in wrong_ids],
-                    dtype=float,
-                )
-                arm_mae[WRONG_ARM] = float(
-                    np.mean(np.abs(wrong_predictions - wrong_truths))
-                )
-                wrong_implied = [
-                    (prediction - episodes[scores[task_id]["episode"]]["query_starting_poll"])
-                    / episodes[scores[task_id]["episode"]]["query_net_news"]
-                    for task_id, prediction in zip(wrong_ids, wrong_predictions)
-                ]
-                wrong_target = [
-                    episodes[scores[task_id]["episode"]]["target_slope"]
-                    for task_id in wrong_ids
-                ]
-                arm_rho[WRONG_ARM] = float(
-                    np.corrcoef(wrong_implied, wrong_target)[0, 1]
-                )
+                / episodes[scores[task_id]["episode"]]["query_net_news"]
+                for task_id, prediction in zip(wrong_ids, wrong_predictions)
+            ]
+            wrong_target = [
+                episodes[scores[task_id]["episode"]]["target_slope"]
+                for task_id in wrong_ids
+            ]
+            arm_rho[WRONG_ARM] = float(np.corrcoef(wrong_implied, wrong_target)[0, 1])
             for arm in ARMS:
                 predictions = np.asarray(
                     [responses[arm][task_id]["predicted_poll"] for task_id in common],
@@ -348,9 +350,16 @@ def compute_metrics() -> dict:
                 )
                 baseline_implied = np.asarray(
                     [
-                        (prediction - episodes[scores[task_id]["episode"]]["query_starting_poll"])
+                        (
+                            prediction
+                            - episodes[scores[task_id]["episode"]][
+                                "query_starting_poll"
+                            ]
+                        )
                         / episodes[scores[task_id]["episode"]]["query_net_news"]
-                        for task_id, prediction in zip(baseline_ids, baseline_predictions)
+                        for task_id, prediction in zip(
+                            baseline_ids, baseline_predictions
+                        )
                     ],
                     dtype=float,
                 )
@@ -367,7 +376,9 @@ def compute_metrics() -> dict:
                     else float("nan")
                 )
                 baseline_stats[baseline_name] = {
-                    "mae": float(np.mean(np.abs(baseline_predictions - baseline_truths))),
+                    "mae": float(
+                        np.mean(np.abs(baseline_predictions - baseline_truths))
+                    ),
                     "rho": baseline_rho,
                 }
 
@@ -465,20 +476,15 @@ def compute_metrics() -> dict:
 
 def save_figure(fig: plt.Figure, stem: Path) -> None:
     paper_figures = ROOT / "paper" / "figures"
-    iclr_figures = ROOT / "paper" / "ICLR" / "figures"
-    if stem.parent in {paper_figures, iclr_figures}:
+    if stem.parent == paper_figures:
         output_stem = paper_figures / stem.name
-        mirror_stem = iclr_figures / stem.name
         for suffix, kwargs in (
             (".pdf", {"facecolor": "white"}),
             (".png", {"dpi": 220, "facecolor": "white"}),
         ):
             path = output_stem.with_suffix(suffix)
-            mirror = mirror_stem.with_suffix(suffix)
             path.parent.mkdir(parents=True, exist_ok=True)
-            mirror.parent.mkdir(parents=True, exist_ok=True)
             fig.savefig(path, **kwargs)
-            shutil.copyfile(path, mirror)
     else:
         stem.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(stem.with_suffix(".pdf"), facecolor="white")
@@ -657,7 +663,7 @@ def make_prompt_figure(output_dir: Path) -> None:
         ax.set_axis_off()
 
     shared = (
-        "Each row is a separate polling case, not a time series. Positive net news "
+        "Each row is a separate polling case rather than a time series. Positive net news "
         "favors the candidate and negative net news harms the candidate. Poll change "
         "is the ending poll minus the starting poll. Within a city, typical "
         "responsiveness to net news is stable across cases, although individual end "
@@ -733,7 +739,9 @@ def make_prompt_figure(output_dir: Path) -> None:
             True,
         ),
     ]
-    for index, (title, context, bold_phrase, rows, highlight) in enumerate(context_specs):
+    for index, (title, context, bold_phrase, rows, highlight) in enumerate(
+        context_specs
+    ):
         add_city_card(
             ax,
             x=0.009 + 0.337 * index,
@@ -754,9 +762,7 @@ def make_prompt_figure(output_dir: Path) -> None:
 def make_results_figure(output_dir: Path, metrics: dict) -> None:
     x = np.arange(5, dtype=float)
     wrong_models = [
-        model
-        for model in FIGURE_MODELS
-        if WRONG_ARM in metrics[model]["0"]["mae"]
+        model for model in FIGURE_MODELS if WRONG_ARM in metrics[model]["0"]["mae"]
     ]
     panels = list(ARMS) + ([WRONG_ARM] if wrong_models else [])
     fig, axes = plt.subplots(
@@ -771,7 +777,7 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
         left=0.075 if len(panels) == 3 else 0.058,
         right=0.995,
         bottom=0.165,
-        top=0.775,
+        top=0.84,
         wspace=0.14,
     )
     reference_metrics = metrics["DeepSeek-V4-Pro"]
@@ -789,7 +795,11 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
             FIGURE_MODELS,
             key=lambda model: float(
                 np.mean(
-                    [metrics[model][str(k)]["mae"][arm] for arm in ARMS for k in range(5)]
+                    [
+                        metrics[model][str(k)]["mae"][arm]
+                        for arm in ARMS
+                        for k in range(5)
+                    ]
                 )
             ),
         )
@@ -832,24 +842,6 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
                 zorder=3,
             )
 
-        if arm in ("abc_context", WRONG_ARM):
-            label = "correct" if arm == "abc_context" else "inverted"
-            ax.plot(
-                x,
-                [
-                    reference_metrics[str(k)]["analogical_regression"][label][
-                        "forecast_mae"
-                    ]
-                    for k in range(5)
-                ],
-                color=ANALOGICAL_OLS_COLOR,
-                linestyle="--",
-                marker="P",
-                markersize=4.6,
-                linewidth=1.8,
-                zorder=5,
-            )
-
         ax.set_title(
             f"({chr(ord('a') + column_index)}) {ARM_PANEL_LABELS[arm]}",
             loc="left",
@@ -859,11 +851,12 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
         )
         if column_index == 0:
             ax.set_ylabel("MAE (poll points)")
-        ax.set_xlabel("Observed City C cases ($k$)")
         ax.set_xticks(x)
         ax.grid(axis="y", color="#D9DCE0", linewidth=0.65)
         ax.spines[["top", "right"]].set_visible(False)
         ax.tick_params(length=3)
+
+    fig.supxlabel("Observed City C cases ($k$)", x=0.53, y=0.02, fontsize=8.5)
 
     mae_values = [
         metrics[model][str(k)]["mae"][arm]
@@ -876,13 +869,8 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
         for prefix, _, _, _ in reference_styles
         for k in range(5)
     )
-    mae_values.extend(
-        reference_metrics[str(k)]["analogical_regression"][label]["forecast_mae"]
-        for label in ("correct", "inverted")
-        for k in range(5)
-    )
     axes[0].set_ylim(
-        min(1.4, float(np.nanmin(mae_values)) - 0.15),
+        max(0.0, float(np.nanmin(mae_values)) - 0.25),
         float(np.nanmax(mae_values)) + 0.2,
     )
 
@@ -917,23 +905,11 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
         )
         for _, color, marker, label in reference_styles
     )
-    handles.append(
-        Line2D(
-            [0],
-            [0],
-            color=ANALOGICAL_OLS_COLOR,
-            linestyle="--",
-            marker="P",
-            linewidth=1.8,
-            markersize=4.6,
-            label="Label-conditioned analogical OLS",
-        )
-    )
     fig.legend(
         handles=handles,
         loc="upper center",
         bbox_to_anchor=(0.54, 0.995),
-        ncol=5,
+        ncol=4,
         frameon=False,
         columnspacing=0.95,
         handlelength=1.8,

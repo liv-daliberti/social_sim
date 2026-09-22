@@ -10,8 +10,11 @@
 %
 % Geometry note: cards have fixed dimensions and every label is a single line
 % with no text width, so nothing can rewrap into a neighbour.
-\begin{wrapfigure}{r}{0.40\textwidth}
-\vspace{-0.7em}
+% Callers may set \transfergridlines to match the paragraph they anchor this
+% to; wrapfig cannot wrap a section heading, so the count must not overrun it.
+\providecommand{\transfergridlines}{13}
+\begin{wrapfigure}[\transfergridlines]{r}{0.48\textwidth}
+\vspace{-0.8em}
 \centering
 \definecolor{miniCityFill}{HTML}{E8F2FB}
 \definecolor{miniCityEdge}{HTML}{4F7EA8}
@@ -128,10 +131,8 @@
 \end{tikzpicture}%
 }
 \vspace{-0.3em}
-\caption{\footnotesize\textbf{Transfer grid.} Training uses the shaded cell only; all
-four are evaluated. Bars are each mechanism's response $\Delta y$ over the
-periods $t$ following one shock: A returns to baseline at once, B builds through
-the unobserved mediator $m$ and persists.}
+\caption{\textbf{Transfer grid.} Training uses shading;
+all four are evaluated. Columns vary domain; rows vary response mechanism.}
 \label{fig:exp3-transfer-grid}
-\vspace{-0.5em}
+\vspace{0.1em}
 \end{wrapfigure}

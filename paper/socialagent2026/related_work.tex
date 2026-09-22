@@ -1,42 +1,34 @@
-\section{From plausible behavior to relational validity}
+\section{Related work: why accuracy is not enough}
 \label{sec:related-work}
 
-\paragraph{Social agents and simulation validity.}
-Generative agents can sustain believable individual and collective behavior in
-interactive environments \citep{park2023generative}, and LMs can reproduce
-selected patterns from human-subject experiments or demographic samples
-\citep{aher2023simulate,argyle2023out}. Yet matching a marginal distribution is
-not the same as preserving the conditional structure of a population. Synthetic
-survey responses can resemble human averages while understating variation,
-changing under small prompt or model updates, and yielding different regression
-relationships \citep{bisbee2024synthetic}. This distinction motivates our unit of
-analysis. We do not ask whether an LM is a faithful proxy for a person or
-population. We ask whether its \emph{forecast changes for the right structural
-reason} under paired interventions.
-
-\paragraph{Judgmental forecasting.}
+\noindent\textbf{Judgmental forecasting.}
 Strong human forecasters combine base rates, decomposition, diverse evidence,
-and repeated revision \citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting}.
-Forecasting benchmarks increasingly evaluate LMs on time-indexed or
-leakage-controlled questions \citep{zou2022forecasting,karger2025forecastbench};
-retrieval and ensembling bring some systems near crowd accuracy
-\citep{halawi2024approaching,schoenegger2024wisdom}. These results establish what
-probabilities models produce. Our focus is the relationship behind the update:
-whether evidence is treated as probative, which contextual analogue is selected,
-and whether that choice survives a change in domain or mechanism.
+and repeated revision
+\citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting}.
+LM benchmarks increasingly use time-indexed or leakage-controlled questions, and
+retrieval or ensembling can bring systems near crowd accuracy
+\citep{zou2022forecasting,karger2025forecastbench,halawi2024approaching,schoenegger2024wisdom}.
+These results establish what probabilities models can produce. They do not tell
+us what would make those probabilities change.
 
-\paragraph{Induction and behavioral evidence.}
-Transformers can infer unseen functions from input--output examples, conditional
-on their training distribution \citep{garg2022what,chan2022data}; LMs also
-solve some abstract analogy tasks \citep{webb2023emergent,yasunaga2024large}.
-Our selection tests differ in what the target supplies: it displays no examples of
-its own, so the relationship must be carried from a demonstrated analogue under a
-qualitative cue, and an arbitrary-label variant reverses that cue's mapping across
-episodes.
-World-model accounts emphasize representations of environmental state or
-dynamics \citep{ha2018world,lecun2022path,li2023emergent}, while shortcut learning
-warns that predictive success can fail under structural shift
-\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. We connect
-these literatures through paired behavioral tests. Each intervention has a
-predicted change or invariance, and later stages remove explanations based on
-familiar semantics, answer distributions, or surface domain.
+\noindent\textbf{Induction and relational reasoning.}
+Transformers can infer functions from examples, and work on analogy and world
+models asks whether learned representations capture relations or dynamics
+\citep{garg2022what,chan2022data,webb2023emergent,yasunaga2024large,ha2018world,lecun2022path,li2023emergent}.
+At the same time, shortcut research shows that surface success can fail under
+structural change
+\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. A forecast can
+therefore be right for the wrong reason: two models may report the same number
+while relying on different populations, evidence, or pathways.
+
+\noindent\textbf{Social agents and conditional validity.}
+Generative agents can reproduce plausible individual and collective behavior
+\citep{park2023generative,aher2023simulate,argyle2023out}, yet matching a
+population average is not the same as preserving the relationships within that
+population \citep{bisbee2024synthetic}. For systems intended to inform decisions,
+we care about both the \emph{probability reported} and the \emph{relationship
+that makes the evidence predictive}. Our experiments therefore move through
+increasingly stringent tests: relevance and direction, contextual relationship
+selection, revision from local evidence, induction of a novel convention, and
+transfer across worlds. Each step rules out a weaker account of the same
+forecast without assuming a general internal world model.
