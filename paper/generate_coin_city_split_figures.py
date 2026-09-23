@@ -33,6 +33,13 @@ ARMS = ("baseline", "abc_no_context", "abc_context")
 # generation fails closed if any endpoint is missing or has drifted.
 WRONG_ARM = "abc_wrong_context"
 WRONG_ARM_EXPECTED_RECORDS = 1_250
+# Arbitrary-symbol arm. Unlike the misleading arm this is not required of every
+# deployment: a model missing it is dropped from this series alone and still
+# appears on the other four. A partially collected endpoint is treated as
+# missing rather than plotted thin, so a series is always the full 250 episodes
+# per depth or absent.
+SYMBOL_ARM = "abc_symbol_context"
+SYMBOL_ARM_EXPECTED_RECORDS = 1_250
 MODELS = (
     "claude-opus-4-8",
     "gpt-5.6-sol",
@@ -80,12 +87,14 @@ ARM_PANEL_LABELS = {
     "abc_no_context": "A/B/C, no C context",
     "abc_context": "A/B/C + C context",
     "abc_wrong_context": "A/B/C + wrong C context",
+    "abc_symbol_context": "A/B/C + arbitrary label",
 }
 ARM_TITLE_COLORS = {
     "baseline": "#D89000",
     "abc_no_context": "#168F72",
     "abc_context": "#2C7FB8",
     "abc_wrong_context": "#B5405F",
+    "abc_symbol_context": "#7A5195",
 }
 CITY_C_OLS_COLOR = "#E69F00"
 BEST_LLM_COLOR = "#6A3D9A"
@@ -163,6 +172,55 @@ def load_wrong_context_responses(model: str) -> dict[str, dict]:
             f"misleading-arm endpoint for {model} contains unparsed tasks"
         )
     return latest
+
+
+# The symbol arm is split across two trees. DeepSeek ran with the original
+# additive arms and sits with them; the other hosted deployments ran later, in
+# the model-comparison campaign, and sit under its results root.
+SYMBOL_RESPONSE_ROOTS = (
+    RESPONSES,
+    ROOT
+    / "exp2_v2"
+    / "biased_news"
+    / "local_results"
+    / "symbol_context_model_comparison_20260824"
+    / "hosted",
+)
+
+
+def load_symbol_responses(model: str) -> tuple[dict[str, dict], int] | None:
+    """Load one complete arbitrary-symbol endpoint, or None if it is not there.
+
+    Returns the parsed rows and the number of planned tasks the deployment
+    failed to answer. None means missing or still collecting; a partially
+    written endpoint is absent rather than thin. Duplicate task ids still raise,
+    because that is drift rather than absence.
+    """
+    for root in SYMBOL_RESPONSE_ROOTS:
+        path = root / f"responses_{model}_{SYMBOL_ARM}.jsonl"
+        if path.exists():
+            break
+    else:
+        return None
+    rows = read_jsonl(path)
+    if len(rows) != SYMBOL_ARM_EXPECTED_RECORDS:
+        return None
+    latest: dict[str, dict] = {}
+    for row in rows:
+        old = latest.get(row["task_id"])
+        if old is None or row.get("predicted_poll") is not None:
+            latest[row["task_id"]] = row
+    if len(latest) != SYMBOL_ARM_EXPECTED_RECORDS:
+        raise RuntimeError(
+            f"symbol endpoint for {model} has {len(latest)} unique tasks; "
+            f"expected {SYMBOL_ARM_EXPECTED_RECORDS}"
+        )
+    parsed = {
+        task_id: row
+        for task_id, row in latest.items()
+        if row.get("predicted_poll") is not None
+    }
+    return parsed, len(latest) - len(parsed)
 
 
 def _fit_through_origin(rows: list[dict]) -> float:
@@ -306,6 +364,41 @@ def compute_metrics() -> dict:
                 for task_id in wrong_ids
             ]
             arm_rho[WRONG_ARM] = float(np.corrcoef(wrong_implied, wrong_target)[0, 1])
+            loaded_symbol = load_symbol_responses(model)
+            if loaded_symbol is not None:
+                symbol, symbol_unanswered = loaded_symbol
+                # A deployment that declined a task cannot contribute it, so the
+                # series is computed on what it answered and the shortfall is
+                # carried alongside rather than hidden in the mean.
+                symbol_ids = [task_id for task_id in common if task_id in symbol]
+                symbol_truths = np.asarray(
+                    [scores[task_id]["gold_expected_poll"] for task_id in symbol_ids],
+                    dtype=float,
+                )
+                symbol_predictions = np.asarray(
+                    [symbol[task_id]["predicted_poll"] for task_id in symbol_ids],
+                    dtype=float,
+                )
+                arm_mae[SYMBOL_ARM] = float(
+                    np.mean(np.abs(symbol_predictions - symbol_truths))
+                )
+                symbol_implied = [
+                    (
+                        prediction
+                        - episodes[scores[task_id]["episode"]]["query_starting_poll"]
+                    )
+                    / episodes[scores[task_id]["episode"]]["query_net_news"]
+                    for task_id, prediction in zip(symbol_ids, symbol_predictions)
+                ]
+                symbol_target = [
+                    episodes[scores[task_id]["episode"]]["target_slope"]
+                    for task_id in symbol_ids
+                ]
+                arm_rho[SYMBOL_ARM] = float(
+                    np.corrcoef(symbol_implied, symbol_target)[0, 1]
+                )
+                arm_mae[SYMBOL_ARM + "_n"] = float(len(symbol_ids))
+                arm_mae[SYMBOL_ARM + "_unanswered"] = float(symbol_unanswered)
             for arm in ARMS:
                 predictions = np.asarray(
                     [responses[arm][task_id]["predicted_poll"] for task_id in common],
@@ -764,17 +857,26 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
     wrong_models = [
         model for model in FIGURE_MODELS if WRONG_ARM in metrics[model]["0"]["mae"]
     ]
-    panels = list(ARMS) + ([WRONG_ARM] if wrong_models else [])
+    # A deployment appears in the symbol panel only with a complete endpoint, so
+    # the panel grows as deployments finish rather than showing partial series.
+    symbol_models = [
+        model for model in FIGURE_MODELS if SYMBOL_ARM in metrics[model]["0"]["mae"]
+    ]
+    panels = (
+        list(ARMS)
+        + ([WRONG_ARM] if wrong_models else [])
+        + ([SYMBOL_ARM] if symbol_models else [])
+    )
     fig, axes = plt.subplots(
         1,
         len(panels),
-        figsize=(7.2 if len(panels) == 3 else 9.4, 2.95),
+        figsize=(7.2 + 2.2 * (len(panels) - 3), 2.95),
         facecolor="white",
         sharex=True,
         sharey=True,
     )
     fig.subplots_adjust(
-        left=0.075 if len(panels) == 3 else 0.058,
+        left=0.075 if len(panels) == 3 else 0.058 - 0.006 * (len(panels) - 4),
         right=0.995,
         bottom=0.165,
         top=0.84,
@@ -785,6 +887,13 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
         ("target_ols", CITY_C_OLS_COLOR, "D", "City C OLS"),
         ("abc_ols", ABC_COLOR, "X", "A/B/C OLS"),
     )
+
+    def _panel_models(arm: str) -> list[str]:
+        if arm == WRONG_ARM:
+            return wrong_models
+        if arm == SYMBOL_ARM:
+            return symbol_models
+        return list(FIGURE_MODELS)
 
     def model_curve(model: str, arm: str) -> list[float]:
         return [metrics[model][str(k)]["mae"][arm] for k in range(5)]
@@ -808,7 +917,7 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
 
     for column_index, arm in enumerate(panels):
         ax = axes[column_index]
-        panel_models = wrong_models if arm == WRONG_ARM else list(FIGURE_MODELS)
+        panel_models = _panel_models(arm)
 
         for model in panel_models:
             ax.plot(
@@ -861,7 +970,7 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
     mae_values = [
         metrics[model][str(k)]["mae"][arm]
         for arm in panels
-        for model in (wrong_models if arm == WRONG_ARM else FIGURE_MODELS)
+        for model in _panel_models(arm)
         for k in range(5)
     ]
     mae_values.extend(
