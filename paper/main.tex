@@ -259,20 +259,58 @@ forecast.
 \label{sec:exp1}
 
 \noindent\textbf{Design.}
-We ask nine systems to forecast 100 unresolved binary Polymarket questions
-with web search, then revise each forecast after one fictional news update with
-search disabled (Fig.~\ref{fig:exp1-pipeline}). Updates support YES, support NO,
-or concern the same topic without bearing on the outcome; these labels are hidden
-from the model. This yields 30,094 valid updates
+We evaluate the forecasting capabilities of nine models on 100 unresolved binary
+Polymarket questions with web search. Then, we ask the models to revise their
+forecast after a fictional news update with search disabled
+(Fig.~\ref{fig:exp1-pipeline}). Unbeknownst to the models, we construct these
+updates to support the outcome, oppose it, or cover the same topic without
+directly influencing the outcome. Because models could potentially distinguish
+directional from orthogonal evidence using superficial textual cues, we
+additionally evaluate a word-only, bag-of-words classifier that receives only the
+text of the news update. We also construct matched forecasting scenarios in which
+the same evidence should produce opposed outcomes; for example, intense rainfall
+could increase the probability of a good harvest in a dry region but decrease it
+in a region prone to flooding. To remove the shortcut by construction rather than
+by measurement, we then froze a cohort of 80 finite-rule instances in which the
+evidence text, the prior, and the named actor are identical across three stated
+relations, and the three correct posteriors are distinct and exactly computable
 (App.~\ref{app:exp1}).
 
-\noindent\textbf{Finding: models track the intended packet direction.}
-Every system leaves its forecast unchanged more often for topical controls.
-Conditional on moving, models move $1.9$--$7.5\times$ farther for directional
-than topical updates. For revisions of at least three percentage points,
-directional consistency ranges from $.887$ to $.990$, versus $.688$ for a
-word-only classifier evaluated on held-out markets. Human validation and
-uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
+\noindent\textbf{Finding: models selectively update in the direction implied by the evidence.}
+Across the nine models considered, and 30,094 valid forecast revisions, we find
+that pro-outcome evidence increases forecasts, anti-outcome evidence decreases
+them, and topically related but orthogonal evidence produces little change
+(Fig.~\ref{fig:exp1-updating}a). Conditional on changing their forecast, we find
+that models move their probability $1.9$--$7.5\times$ farther for updates intended
+to influence the prediction (Fig.~\ref{fig:exp1-updating}b). Uncertainty estimates
+and robustness analyses are reported in
+App.~\ref{app:exp1-threshold-robustness}; independent human review covers the
+original evidence packets, not the frozen cohort.
+
+\noindent\textbf{Finding: lexical cues alone do not explain model performance.}
+We find that bag-of-words classifiers can almost perfectly distinguish directional
+from orthogonal evidence ($.989$ accuracy), confirming that superficial cues could
+explain models' selectivity. Yet, the same classifiers are much less successful at
+distinguishing whether directional evidence supports or opposes the outcome
+($.688$ accuracy), and models are considerably more directionally consistent
+($.887$--$.990$). The frozen cohort settles the question by construction rather
+than by comparison: because the evidence, the prior, and the named actor are
+identical within a matched triple, any predictor that ignores the stated relation
+answers identically across the triple, so it can win at most one of three items
+and no complete triple at all. Four such predictors, including one permitted to
+choose the best constant revision while knowing every correct answer, score
+exactly $320/960$ items and $0/320$ triples. GPT-5.6 reverses $48/48$ triples and
+matches the exact posterior on $144/144$ items
+(App.~\ref{app:exp1-fresh-factorial}).
+
+\noindent\textbf{Finding: the capability depends on inference-time reasoning.}
+Holding weights and prompts fixed, Qwen3-32B wins $29/320$ triples with reasoning
+disabled and $297/320$ with it enabled, and matches the exact posterior on $1/960$
+against $811/960$ items. Because both arms see identical items, the gap cannot be
+attributed to item difficulty or to the answer leaking from the prompt. Counting
+every planned call, Claude Opus~5 declined $84$ of $576$, which blocked a further
+$153$ dependent updates, and retains $17/48$ triples once those are scored as
+failures (App.~\ref{app:exp1-fresh-factorial}).
 
 \begin{figure}[!b]
 \centering
@@ -832,7 +870,7 @@ Supplying exact response patterns does not rescue the 8B forecasts; an untrained
 (App.~\ref{app:exp3-components}). An exploratory supervised pilot on 4,800
 prompts yields $97.9$--$100.0\%$ structure accuracy in Coin City/semantic at
 four seeds versus $50.0\%$ for matched RL, falling to chance under arbitrary
-labels or in Coin Harbor at every seed. Trained natively it reaches $100.0\%$ in Harbor/semantic yet
+labels or in Coin Harbor. Trained natively it reaches $100.0\%$ in Harbor/semantic yet
 stays at chance under arbitrary labels: the barrier is the label mapping, not
 the domain. Rate and budget differ, limiting this to in-domain learnability,
 not a general SFT advantage or transferable induction (App.~\ref{app:exp3-learnability}).
