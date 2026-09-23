@@ -969,6 +969,31 @@ mixed probability scales.}
 \end{minipage}
 \end{center}
 
+\textbf{Abstention and movement disagree about which deployments are selective.}
+The abstention rate is not interchangeable with leaving an orthogonal premise
+alone, which is why it appears here rather than beside the ratio in the main
+text. The quantity that answers the plain question -- how far does a deployment
+move on a premise that cannot bear on the outcome -- is mean absolute orthogonal
+movement, unconditional on moving, and it orders the deployments differently.
+That mean is $0.46$~pp for Claude Opus~4.8, $1.16$ for GPT-5.4, $1.43$ for
+DeepSeek~V4-Pro, $2.29$ for Llama~3.3-70B, $2.98$ for Qwen~2.5-72B, $3.29$ for
+Llama~3.1-70B, $3.97$ for Qwen~2.5-32B, $4.07$ for Qwen~2.5-14B, and $5.92$ for
+Llama~3.1-8B.
+
+The two orderings conflict in three places, and the conflicts are large. GPT-5.4
+abstains on $8.4\%$ of orthogonal runs, seventh of nine, while moving less than
+every deployment except Opus. DeepSeek~V4-Pro abstains more than five times as
+often at $44.4\%$, yet moves further on average, $1.43$ against $1.16$~pp.
+Qwen~2.5-14B ranks third on abstention at $26.1\%$ and eighth on movement at
+$4.07$~pp. A deployment that emits round numbers scores high on an exact-zero
+criterion; one that perturbs a final digit scores near zero even when it barely
+moves, so part of the spread reflects output granularity rather than selectivity.
+Reading the abstention column as a selectivity ranking would therefore invert the
+ordering for three of nine deployments. We report it because declining to revise
+is a meaningful response in its own right and because it is a factor in
+Equation~\ref{eq:sensitivity-decomposition}, not as a measure of how far a
+deployment leaves an irrelevant premise alone.
+
 \textbf{The deployment contrast depends on the statistic.} Comparing the three
 hosted systems against the six scale-valid open-weight models by market-clustered
 bootstrap (20{,}000 replicates, macro-averaged within group so a model with more
@@ -2955,6 +2980,15 @@ establish the same for the hosted deployments, the semantic cue, or other
 architectures.
 
 \subsubsection{Reproducibility and scope}
+
+\noindent\textbf{Design scope.} The cue is binary and the regimes well
+separated, so these results establish selection between two displayed
+references rather than graded sensitivity to a continuous cue. The per-episode
+evidence is too small to test exact coefficient recovery: the claim is which
+reference the forecast follows, not that the model reproduces its slope. Causal
+patching covers one of seven open checkpoints, and the hosted deployments are
+tested only behaviorally, since their internals are unavailable.
+
 The checkpoints are pinned to commits
 \texttt{cdbee75f17c01a7cc42f958dc650907174af0554} (Qwen3-4B),
 \texttt{b968826d9c46dd6066d109eabc6255188de91218} (Qwen3-8B),
@@ -3862,7 +3896,7 @@ All 6,144 greedy generations parse. Selection-only accuracy is $100\%$ for
 every checkpoint in every domain/label cell. Table~\ref{tab:exp3-components}
 reports the frozen scores, including every assistance condition. At 8B,
 supplying patterns does not reduce average response error in any domain/label
-cell for the base or either trained arm. This locates a failure beyond merely
+cell for the base or either trained arm. This locates a failure beyond
 identifying the reference named by the cue; it does not uniquely separate
 numerical application from sensitivity to the assisted prompt format.
 
@@ -3901,7 +3935,7 @@ The frozen scorer clips forecasts to the valid domain range before computing
 responses. Inspection revealed that Qwen3-32B often returns deviations from rest
 instead of absolute levels; clipping those values distorts the response vector,
 especially in Harbor, whose lower bound is 40. We therefore report a separately
-labelled \emph{post hoc} raw-output audit (Table~\ref{tab:exp3-baseline-audit}),
+labeled \emph{post hoc} raw-output audit (Table~\ref{tab:exp3-baseline-audit}),
 without replacing the frozen scores or counting offset-corrected answers as
 correct forecasts. With the selected pattern supplied in City/semantic, raw
 response MAE is $.384$ versus $4.794$ on the original interface. Complete
@@ -3926,7 +3960,7 @@ selected-pattern interface only. They do not measure correct absolute forecasts.
 
 We train two fixed forecast-SFT recipes from the same Qwen3-8B base on the
 original 4,800 balanced Coin City/semantic prompts, with simulator-correct
-absolute forecasts as targets. Both use seed 42, one epoch, effective batch 16,
+absolute forecasts as targets. Both use one epoch, effective batch 16,
 300 optimizer updates, completion-only token cross entropy, LoRA rank 32 and
 alpha 64 on all seven projection modules, AdamW $(.9,.95)$, no weight decay,
 constant learning rate, and gradient norm cap 1.0. Rates are $10^{-6}$ (the RL
@@ -3947,7 +3981,9 @@ $50.0\%$, with response MAE $1.029$ and $1.053$.
 \setlength{\tabcolsep}{4pt}
 \input{tables/exp3_learnability}
 \caption{\textbf{A supervised recipe learns in-domain structure selection but
-fails to transfer.} All trained recipes here use seed 42. Structure accuracy
+fails to transfer.} All trained recipes in this table use seed 42; the
+successful recipe's three seed replications are in
+Table~\ref{tab:exp3-learnability-seeds}. Structure accuracy
 is derived from forecasts, not reference naming. All outputs parse. Intervals
 resample the 24 paired episodes within each cell (2,000 draws); they do not
 capture training-seed uncertainty. Both fixed SFT learning rates are retained.}
@@ -3967,9 +4003,35 @@ establishes in-domain learnability, while a semantic cue-to-pattern
 association remains a possible explanation. It does not establish transferable
 induction from reference trajectories or an isolated effect of SFT versus RL.
 
+\paragraph{Seed replication of the successful recipe.}
+The $2\times10^{-5}$ result above was obtained at one seed. Before evaluating
+them, we froze three replications at seeds 43--45 that change the training seed
+and nothing else---identical data, optimizer, schedule, LoRA configuration and
+300-update budget---and did not extend the $1\times10^{-6}$ arm, which had not
+learned the task. All three replicate the in-distribution result at $100.0\%$
+City/semantic structure accuracy, against $97.9\%$ at seed 42, and lower
+response MAE ($.277$--$.314$ versus $.658$). The transfer cells remain at
+chance at every seed: City/arbitrary spans $39.6$--$50.0\%$, Harbor/semantic
+$45.8$--$52.1\%$ and Harbor/arbitrary $47.9$--$50.0\%$. All outputs parse and
+reference naming is $100\%$ in all sixteen cells of all four checkpoints.
+In-distribution learnability under this recipe is therefore seed-robust, and so
+is its failure to transfer; the caveat that remains is the comparison to RL,
+which still differs in update budget and learning rate.
+
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\input{tables/exp3_learnability_seeds}
+\caption{\textbf{The supervised in-distribution result is seed-robust, and so
+is its transfer failure.} The $2\times10^{-5}$ recipe at four training seeds,
+evaluated on the unchanged 768-prompt component diagnostic. Only the seed
+differs. Response MAE and Name are the City/semantic cell.}
+\label{tab:exp3-learnability-seeds}
+\end{table}
+
 \paragraph{The boundary is arbitrary labels, not surface domain.}
 Transfer failure alone cannot say whether the untrained cells are unreachable
-by this recipe or merely unreached from City/semantic training. We therefore
+by this recipe or only unreached from City/semantic training. We therefore
 trained the identical recipe natively in each of the three cells held out
 above---City/arbitrary, Harbor/semantic and Harbor/arbitrary---at three seeds
 each, changing only the training cell. Each model is evaluated on its own

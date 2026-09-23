@@ -1,0 +1,79 @@
+{
+  "schema_version": "ladder_calibration_v1",
+  "development_only": true,
+  "plan": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/ladder_dev_v1/probability_plan.jsonl",
+    "sha256": "35847ac9b834543785ff891c156c05605dc8718aa7b47e28f4cb1f4bcb5ed97a"
+  },
+  "responses": [
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/ladder_dev_v1/shard00.jsonl",
+      "sha256": "228fb9d3b439f9136117d953002eaa418cbb69daf74ef196050c802a3da3feb0"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/ladder_dev_v1/shard01.jsonl",
+      "sha256": "e1d6bdd6ea45676d111e2e00981dbd9006bb40dd8ae86dd06ebc3ed53dc2bd73"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/ladder_dev_v1/shard02.jsonl",
+      "sha256": "b89b92730c14e57d3fe1144ef4aea188e00dfb767fc07a8ccf9bf2f93f715e1f"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/ladder_dev_v1/shard03.jsonl",
+      "sha256": "8258b5a62cbbd5b3cd8a39379fc308e41fd4be570f14468709e498a03243ad1f"
+    }
+  ],
+  "exact_tolerance": 0.0001,
+  "rungs": [
+    {
+      "rung": "L0_direct",
+      "depth": 0,
+      "triples": 16,
+      "triples_won": 16,
+      "items": 48,
+      "valid": 48,
+      "sign_correct": 48,
+      "exact_correct": 44,
+      "posterior_error_mean_pp": 0.011250113201556725,
+      "posterior_error_median_pp": 0.0
+    },
+    {
+      "rung": "L1_permit",
+      "depth": 1,
+      "triples": 16,
+      "triples_won": 15,
+      "items": 48,
+      "valid": 48,
+      "sign_correct": 46,
+      "exact_correct": 44,
+      "posterior_error_mean_pp": 0.006601141374104613,
+      "posterior_error_median_pp": 0.0
+    },
+    {
+      "rung": "L2_office",
+      "depth": 2,
+      "triples": 16,
+      "triples_won": 16,
+      "items": 48,
+      "valid": 48,
+      "sign_correct": 48,
+      "exact_correct": 45,
+      "posterior_error_mean_pp": 0.049998603561875764,
+      "posterior_error_median_pp": 0.0
+    },
+    {
+      "rung": "L3_office_distractor",
+      "depth": 3,
+      "triples": 16,
+      "triples_won": 14,
+      "items": 48,
+      "valid": 48,
+      "sign_correct": 46,
+      "exact_correct": 41,
+      "posterior_error_mean_pp": 0.32044948212051305,
+      "posterior_error_median_pp": 1.1102230246251565e-14
+    }
+  ],
+  "created_at": "2026-09-23T18:42:20.336706+00:00",
+  "code_sha256": "8674413b55d7db38781ca253060789a109c27c31838b039a8b4eda715f4b5f55"
+}

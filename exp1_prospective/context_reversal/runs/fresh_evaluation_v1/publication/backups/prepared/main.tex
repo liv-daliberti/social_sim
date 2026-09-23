@@ -205,12 +205,10 @@ should be able to use it without depending on the original surface form.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{exp1_protocol_four_panels.pdf}
+\includegraphics[width=.90\linewidth]{exp1_protocol_four_panels.pdf}
 \caption{\textbf{When should a forecast change?} An agent forecasts an
-unresolved question, then receives one fictional update with search off. Some
-updates support the outcome, some oppose it, and some concern the same topic but
-do not bear on the outcome. The labels remain hidden; we ask whether the model
-moves when the news matters and whether it moves the right way.}
+unresolved question, then receives one fictional update with search off. We ask
+whether it moves when the news matters, and whether it moves the right way.}
 \label{fig:exp1-pipeline}
 \end{figure}
 
@@ -259,26 +257,46 @@ forecast.
 \label{sec:exp1}
 
 \noindent\textbf{Design.}
-We ask nine systems to forecast 100 unresolved binary Polymarket questions
-with web search, then revise each forecast after one fictional news update with
-search disabled (Fig.~\ref{fig:exp1-pipeline}). Updates support YES, support NO,
-or concern the same topic without bearing on the outcome; these labels are hidden
-from the model. This yields 30,094 valid updates
-(App.~\ref{app:exp1}).
+We ask nine models to forecast 100 unresolved binary Polymarket questions with
+web search, then to revise each forecast after one fictional news update with
+search disabled (Fig.~\ref{fig:exp1-pipeline}). Updates support the outcome,
+oppose it, or stay on topic without bearing on it; these labels are hidden from
+the model. To remove lexical shortcuts by construction rather than by
+measurement, we also froze 80 finite-rule instances whose evidence, prior and
+named actor are identical across three stated relations, with three distinct,
+exactly computable posteriors (App.~\ref{app:exp1}).
 
-\noindent\textbf{Finding: models track the intended packet direction.}
-Every system leaves its forecast unchanged more often for topical controls.
-Conditional on moving, models move $1.9$--$7.5\times$ farther for directional
-than topical updates. For revisions of at least three percentage points,
-directional consistency ranges from $.887$ to $.990$, versus $.688$ for a
-word-only classifier evaluated on held-out markets. Human validation and
-uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
+\noindent\textbf{Finding: models update in the implied direction.}
+Across 30,094 valid revisions, pro-outcome evidence raises forecasts,
+anti-outcome evidence lowers them, and orthogonal topical evidence changes
+little (Fig.~\ref{fig:exp1-updating}a). Conditional on moving, models move
+$1.9$--$7.5\times$ farther for directional updates
+(Fig.~\ref{fig:exp1-updating}b). Uncertainty and robustness analyses are in
+App.~\ref{app:exp1-threshold-robustness}; independent human review covers the
+original packets, not the frozen cohort.
+
+\noindent\textbf{Finding: lexical cues do not explain the result.}
+Bag-of-words classifiers separate directional from orthogonal evidence almost
+perfectly ($.989$) but are far worse at telling support from opposition
+($.688$), where models reach $.887$--$.990$. In the frozen cohort a predictor
+ignoring the stated relation answers identically within a triple, so it can win
+no triple at all: four such predictors, one allowed the best constant revision
+while knowing every answer, score exactly $320/960$ items and $0/320$ triples,
+while GPT-5.6 reverses $48/48$ triples and matches the exact posterior on
+$144/144$ items (App.~\ref{app:exp1-fresh-factorial}).
+
+\noindent\textbf{Finding: it depends on inference-time reasoning.}
+Holding weights and prompts fixed, Qwen3-32B wins $29/320$ triples with reasoning
+disabled and $297/320$ with it enabled ($1/960$ against $811/960$ items), and
+both arms see identical items, so the gap is not difficulty or leakage. Counting every planned call, Claude Opus~5 declined
+$84$ of $576$, blocking $153$ dependent updates, and retains $17/48$ triples once
+those count as failures (App.~\ref{app:exp1-fresh-factorial}).
 
 \begin{figure}[!b]
 \centering
 \begin{subfigure}[c]{0.525\textwidth}
 \centering
-\includegraphics[width=.92\linewidth]{exp1_direction_selective_updating.pdf}
+\includegraphics[width=.84\linewidth]{exp1_direction_selective_updating.pdf}
 \caption{}
 \label{fig:exp1-bars}
 \end{subfigure}\hspace{0.01\textwidth}
@@ -286,22 +304,22 @@ uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
 \centering
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}rccc@{}}
+\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}rcc@{}}
 \toprule
-\textbf{Model} & \textbf{Size} & \textbf{Abst.} & \textbf{Sens.}$\uparrow$ & \textbf{EHC$_{\geq3}$}$\uparrow$ \\
+\textbf{Model} & \textbf{Size} & \textbf{Sens.}$\uparrow$ & \textbf{EHC$_{\geq3}$}$\uparrow$ \\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Hosted API (parameters undisclosed)}}\\
-\micon{claude.png}~Opus~4.8 & --- & 71.4\% & \cellcolor{heatgreen}$7.0\times$ & \cellcolor{heatgreen}.990 \\
-\micon{openai.png}~GPT-5.4 & --- & 8.4\% & \cellcolor{heatgreen}$7.5\times$ & \cellcolor{heatgreen}.987 \\
-\micon{deepseek.png}~V4-Pro & --- & 44.4\% & \cellcolor{heatyellow}$4.9\times$ & \cellcolor{heatyellow}.977 \\
+\multicolumn{4}{@{}l}{\emph{Hosted API (parameters undisclosed)}}\\
+\micon{claude.png}~Opus~4.8 & --- & \cellcolor{heatgreen}$7.0\times$ & \cellcolor{heatgreen}.990 \\
+\micon{openai.png}~GPT-5.4 & --- & \cellcolor{heatgreen}$7.5\times$ & \cellcolor{heatgreen}.987 \\
+\micon{deepseek.png}~V4-Pro & --- & \cellcolor{heatyellow}$4.9\times$ & \cellcolor{heatyellow}.977 \\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Open-weight, descending parameters} $\downarrow$}\\
-\micon{qwen.pdf}~2.5-72B & 72B & 24.2\% & \cellcolor{heatorange}$3.2\times$ & \cellcolor{heatyellow}.963 \\
-\micon{llamma.pdf}~3.3-70B & 70B & 10.7\% & \cellcolor{heatyellow}$5.7\times$ & \cellcolor{heatyellow}.965 \\
-\micon{llamma.pdf}~3.1-70B & 70B & 2.5\% & \cellcolor{heatyellow}$4.5\times$ & \cellcolor{heatyellow}.961 \\
-\micon{qwen.pdf}~2.5-32B & 32B & 11.1\% & \cellcolor{heatorange}$2.8\times$ & \cellcolor{heatyellow}.964 \\
-\micon{qwen.pdf}~2.5-14B & 14B & 26.1\% & \cellcolor{heatred}$2.2\times$ & \cellcolor{heatorange}.943 \\
-\micon{llamma.pdf}~3.1-8B & 8B & 1.1\% & \cellcolor{heatred}$1.9\times$ & \cellcolor{heatred}.887 \\
+\multicolumn{4}{@{}l}{\emph{Open-weight, descending parameters} $\downarrow$}\\
+\micon{qwen.pdf}~2.5-72B & 72B & \cellcolor{heatorange}$3.2\times$ & \cellcolor{heatyellow}.963 \\
+\micon{llamma.pdf}~3.3-70B & 70B & \cellcolor{heatyellow}$5.7\times$ & \cellcolor{heatyellow}.965 \\
+\micon{llamma.pdf}~3.1-70B & 70B & \cellcolor{heatyellow}$4.5\times$ & \cellcolor{heatyellow}.961 \\
+\micon{qwen.pdf}~2.5-32B & 32B & \cellcolor{heatorange}$2.8\times$ & \cellcolor{heatyellow}.964 \\
+\micon{qwen.pdf}~2.5-14B & 14B & \cellcolor{heatred}$2.2\times$ & \cellcolor{heatorange}.943 \\
+\micon{llamma.pdf}~3.1-8B & 8B & \cellcolor{heatred}$1.9\times$ & \cellcolor{heatred}.887 \\
 \bottomrule
 \end{tabular*}
 \caption{}
@@ -310,10 +328,11 @@ uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
 \end{subfigure}
 \caption{\textbf{Models move much more for evidence than for topical
 chatter, and usually move in the implied direction.} \textbf{(a)} Average
-revision after supporting, contrary, and topical updates. \textbf{(b)} The
-table summarizes how often models leave topical updates alone, how much farther
-they move for directional evidence conditional on moving (Sens.), and how often
-a move of at least three percentage points has the right sign (EHC$_{\geq3}$). Intervals and robustness checks are in
+revision after supporting, contrary, and topical updates. \textbf{(b)} How much
+farther models move for directional evidence, conditional on moving (Sens.), and
+how often a move of at least three points has the right sign (EHC$_{\geq3}$).
+Abstention is decomposed separately in Table~\ref{tab:exp1-abstention}, which
+disagrees with movement about which deployments are selective; intervals are in
 App.~\ref{app:exp1-threshold-robustness}.}
 \label{fig:exp1-updating}
 \end{figure}
@@ -384,7 +403,7 @@ forecasts increasingly rely on direct local evidence.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{exp2_coin_city_results.pdf}
+\includegraphics[width=.90\linewidth]{exp2_coin_city_results.pdf}
 \vspace{3pt}
 \begin{minipage}{\linewidth}
 \centering
@@ -437,7 +456,7 @@ relationship, with the threshold varying by model family
 \begin{figure}[!t]
 \centering
 \begin{minipage}[c]{0.46\linewidth}
-\includegraphics[width=\linewidth]{exp2_symbol_decoding.pdf}
+\includegraphics[width=.90\linewidth]{exp2_symbol_decoding.pdf}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.50\linewidth}
 \caption{\textbf{Larger models infer an episode-local convention, then yield
@@ -473,7 +492,7 @@ but gives way once direct observations reveal City C's own response relationship
 \begin{figure}[!t]
 \vspace{-0.4em}
 \centering
-\includegraphics[width=\linewidth]{exp2_causal_patch.pdf}
+\includegraphics[width=.90\linewidth]{exp2_causal_patch.pdf}
 \vspace{-0.7em}
 \caption{\textbf{Changing the induced convention changes the forecast when
 evidence is sparse.} In the illustrated pair, swapping the internal
@@ -500,7 +519,7 @@ of this behavior training carries into new domains and response structures.
 \section{Can relationship use survive a change of world?}
 \label{sec:transfer}
 
-Finetuning may teach evidence use or merely typical answers. We test whether
+Finetuning may teach evidence use or only typical answers. We test whether
 training transfers relationships to new worlds and improves unseen-event forecasts.
 
 \subsection{Exp.~3: what training transfers, and what it does not}
@@ -516,7 +535,7 @@ training transfers relationships to new worlds and improves unseen-event forecas
 %
 % Row cards carry the mechanism detail: a two-node vs three-node graph with the
 % mediator drawn hollow (it is never named to the model) and a persistence loop,
-% plus the six-period impulse response on labelled axes. Bar heights are the
+% plus the six-period impulse response on labeled axes. Bar heights are the
 % normalised responses to a unit shock under worlds.transition at the midpoint of
 % each sampling band (direct: gain .57; mediated: gain .57, rho .61, phi .30,
 % lambda .81), i.e. A = (1, 0, 0, 0, 0, 0) and B = (.81, .74, .52, .34, .21, .13).
@@ -566,7 +585,7 @@ training transfers relationships to new worlds and improves unseen-event forecas
       (-.26,-.24)..controls(-.18,-.19)and(-.10,-.29)..(-.02,-.24)
       ..controls(.06,-.19)and(.14,-.29)..(.26,-.24);
   \end{scope}}
-% Impulse response on labelled axes: response (Delta y) against period (t).
+% Impulse response on labeled axes: response (Delta y) against period (t).
 \newcommand{\impulse}[3]{% #1 = axis corner x, #2 = baseline y, #3 = bar heights
   \draw[-{Stealth[length=2.6pt,width=2.2pt]},draw=miniInk!65,line width=.5pt]
     (#1,#2) -- (#1,#2+0.40);
@@ -792,10 +811,10 @@ range penalty, we report base contrasts twice: the joint-cell gain is
 stochastic decoding, eight training seeds.} Bars show task-averaged response MAE
 over four evidence depths; trained arms average eight seeds. Each cell prints the
 paired seed-first prior-minus-matched contrast, bold when its 95\% interval
-excludes zero. At three seeds three of the four contrasts excluded zero; at eight
-only the in-distribution cell does. The structure-shift row is a control rather than
-a transfer test: training contains no structural variation, so the trained policy
-emits no delayed response anywhere (Section~\ref{sec:exp3}).}
+excludes zero; at eight seeds only the in-distribution cell does. The
+structure-shift row is a control, not a transfer test: training contains no
+structural variation, so the trained policy emits no delayed response anywhere
+(Section~\ref{sec:exp3}).}
 \label{fig:exp3-transfer-results}
 \vspace{10pt}
 \end{figure}
@@ -827,10 +846,10 @@ In a fixed component diagnostic crossing both domains and semantic or arbitrary
 labels, all eight checkpoints identify the named reference perfectly.
 Supplying exact response patterns does not rescue the 8B forecasts; an untrained
 32B model shows partial numerical ability but often omits the resting baseline
-(App.~\ref{app:exp3-components}). An exploratory single-seed supervised pilot on
-4,800 prompts yields $97.9\%$ structure accuracy in Coin City/semantic versus
-$50.0\%$ for matched RL, falling to $39.6\%$--$50.0\%$ under arbitrary labels
-or in Coin Harbor. Trained natively it reaches $100.0\%$ in Harbor/semantic yet
+(App.~\ref{app:exp3-components}). An exploratory supervised pilot on 4,800
+prompts yields $97.9$--$100.0\%$ structure accuracy in Coin City/semantic at
+four seeds versus $50.0\%$ for matched RL, falling to chance under arbitrary
+labels or in Coin Harbor. Trained natively it reaches $100.0\%$ in Harbor/semantic yet
 stays at chance under arbitrary labels: the barrier is the label mapping, not
 the domain. Rate and budget differ, limiting this to in-domain learnability,
 not a general SFT advantage or transferable induction (App.~\ref{app:exp3-learnability}).
@@ -852,7 +871,7 @@ where the manipulation bites; held-out gain tracking stays unestablished
 
 \begin{figure}[!b]
 \centering
-\includegraphics[width=\linewidth]{exp4_qwen_scale_results.pdf}
+\includegraphics[width=.90\linewidth]{exp4_qwen_scale_results.pdf}
 \caption{\textbf{Training improves the tested bases, but scale alone does not
 guarantee a better trained forecaster.} Across Qwen3 checkpoints from 1.7B to
 32B, several trained models reach crowd-level performance, while the gain narrows
@@ -951,8 +970,8 @@ KIV/ZOR meaning. The episode-matching advantage under joint domain and mechanism
 shift does not survive the eight-seed replication; the benefit for compositions
 of familiar mechanisms is checkpoint-specific and survives a
 distribution-matched shuffled-target control only under stochastic decoding. Structure diagnostics use no target
-observations; the supervised pilot has one seed and differs from RL in update
-budget and, at the successful setting, learning rate. Semantic cue-to-pattern
+observations; the supervised pilot replicates at four seeds but differs from
+RL in update budget and, at that setting, learning rate. Semantic cue-to-pattern
 learning could explain its in-domain success; native training places its
 boundary at labels, not domain. The five-seed gain intervention establishes
 evidence use on seen but not held-out mechanisms.
@@ -1007,7 +1026,7 @@ and fail-closed checks. Builders, manifests, checksums, and saved generations su
 each result. Experiment~3 reports the original three-seed Qwen3-8B, Qwen3-4B,
 and Llama-3.1-8B roster, eight-seed Qwen extensions, a five-seed mechanism-family
 study with its five-seed shuffled-target control, a three-seed structure-selection pilot, and exploratory component,
-single-seed and native-cell supervised, and five-seed gain-intervention diagnostics. Parent-roster endpoints use
+four-seed and native-cell supervised, and five-seed gain-intervention diagnostics. Parent-roster endpoints use
 round 300 and five draws under a common stochastic decoder. The appendix
 discloses the pilot's interim look at training monitors and the outcome-informed
 supervised-launch amendment.
