@@ -1,6 +1,6 @@
 # Triple-level analysis of the frozen context-reversal cohort
 
-Generated 2026-09-22T18:06:26.681774+00:00 from `probability_plan.jsonl` (sha256 `0be8994b7b6edfc4`). Offline; no model was called.
+Generated 2026-09-23T14:28:24.522432+00:00 from `probability_plan.jsonl` (sha256 `0be8994b7b6edfc4`). Offline; no model was called.
 
 ## Design
 
@@ -24,6 +24,7 @@ A predictor that reads only the evidence text, the prior and the named entity is
 | GPT-5.6 Sol | 48/48 | 48/48 | 144/144 | 144/144 | 0.000 | 48/48 |
 | Claude Opus 5 | 17/48 | 17/17 | 78/144 | 54/144 | 0.013 | 29/29 |
 | Qwen3-32B thinking off | 29/320 | 29/320 | 519/960 | 1/960 | 28.220 | 185/320 |
+| Qwen3-32B thinking on | 297/320 | 297/310 | 937/960 | 811/960 | 0.129 | 312/316 |
 
 ## Unconditional accounting
 
@@ -34,6 +35,6 @@ Every planned call appears in the denominator. Model failures, instrument failur
 | GPT-5.6 Sol | 576 | 576 | 0 | 0 | 0 | 0 |
 | Claude Opus 5 | 576 | 339 | 84 | 0 | 153 | 0 |
 | Qwen3-32B thinking off | 3840 | 3840 | 0 | 0 | 0 | 0 |
-| Qwen3-32B thinking on | 3840 | 0 | 0 | 0 | 0 | 3840 |
+| Qwen3-32B thinking on | 3840 | 3803 | 5 | 5 | 27 | 0 |
 
 Unconditional denominators count refusals, truncations and blocked updates as failures. Exact agreement is to four decimals, the granularity the oracles are stated at.

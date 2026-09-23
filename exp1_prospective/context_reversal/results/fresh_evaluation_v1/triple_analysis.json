@@ -4445,133 +4445,1273 @@
       "sources": [
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard00.jsonl",
-          "sha256": "470c40f0c1dc720593222efea2d7dd0d007196626354eaf01aca9b0bc4da6f40"
+          "sha256": "08ea6b05465327fb6dbf5abfd6a9562dcbebf3705f69fe163186263233b2efa8"
         },
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard01.jsonl",
-          "sha256": "64935c78226894e843e8e6f96ec0aa202be7e2ef4e1fdd1dbf0b87f8592658d3"
+          "sha256": "8de2e20fd6faa90d4c2e150bcc30d549f5153df6b6721bf997fbb13a753e2847"
         },
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard02.jsonl",
-          "sha256": "c9949da4f74b4d27a52cefda868deed75990b38455d0d644058a1182881d47a6"
+          "sha256": "816deec13cf4fafd6758889cf8443f82d394b661c669cc54e0afeeb34da8b8b2"
         },
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard03.jsonl",
-          "sha256": "3eaa8ae1bfa128ad371ea736fc90161a9a09b1012804f6a800e827b6f8a44cf7"
+          "sha256": "dccf0e6a46e7a22b24b742d123e133125b42f4a418b252cdeb8f478380ab25c4"
         },
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard04.jsonl",
-          "sha256": "cb3f77eaaf5bfd755cbcc54583cfd2a286f7c33d0678f87eadf88052da993edf"
+          "sha256": "b39bb62667f4232ac078ea6d99c9bd0ccfc8ee49ffe3fb27119c19002366ddb2"
         },
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard05.jsonl",
-          "sha256": "7b09423539cd8c4216c0a761b698e4b487234dbb6a0357f2e7df6fbaf6f8c115"
+          "sha256": "deeb535e7f6a66cbbadb6ba97205a792e238034c1f2d3b83c894759d673d7a3a"
         },
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard06.jsonl",
-          "sha256": "e7255573d356506fc3e59ad2b736d09a8cf78850a5b65fd07aa07ccda28c4e23"
+          "sha256": "d65f673deeba95a975d7687506c87007b5f8843e91692e4a617b0d812fa3701e"
         },
         {
           "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard07.jsonl",
-          "sha256": "d28e8723b8ce3a17e6dd75d4749035dbf83970ae35003fe5873ef0169aeafc2d"
+          "sha256": "e4f9660597f929a62ee626c3850506a6afd4b4d7d3a02f3a7953e798b7cacf6e"
         }
       ],
-      "triples_planned": 44,
-      "triples_complete": 0,
-      "triple_sign_unconditional": 0,
-      "triple_exact_unconditional": 0,
-      "triple_sign_complete_case": 0,
-      "items_valid": 0,
-      "items_planned": 132,
-      "item_sign_correct": 0,
-      "item_exact_correct": 0,
+      "triples_planned": 320,
+      "triples_complete": 310,
+      "triple_sign_unconditional": 297,
+      "triple_exact_unconditional": 216,
+      "triple_sign_complete_case": 297,
+      "items_valid": 950,
+      "items_planned": 960,
+      "item_sign_correct": 937,
+      "item_exact_correct": 811,
       "errors": [
         {
           "metric": "baseline absolute error",
-          "n": 0
+          "n": 950,
+          "mean_pp": 0.06901659978608923,
+          "median_pp": 0.0007100591715936133,
+          "p90_pp": 0.014532894037622146,
+          "max_pp": 12.664443981674312
         },
         {
           "metric": "update absolute error",
-          "n": 0
+          "n": 950,
+          "mean_pp": 0.128903962025425,
+          "median_pp": 0.0013407948509791545,
+          "p90_pp": 0.02934771191483998,
+          "max_pp": 14.653504091826974
         },
         {
           "metric": "revision-size error",
-          "n": 0
+          "n": 950,
+          "mean_pp": 0.16963064399105704,
+          "median_pp": 0.0,
+          "p90_pp": 0.03569092567844434,
+          "max_pp": 14.638971197789353
         }
       ],
       "inert": {
-        "n": 0,
-        "exact_zero": 0,
-        "within_stability": 0,
+        "n": 316,
+        "exact_zero": 312,
+        "within_stability": 314,
         "movement": {
           "metric": "inert absolute movement",
-          "n": 0
+          "n": 316,
+          "mean_pp": 0.06047468354430378,
+          "median_pp": 0.0,
+          "p90_pp": 0.0,
+          "max_pp": 12.660000000000004
         }
       },
       "relevant_movement": {
         "metric": "relevant absolute movement",
-        "n": 0
+        "n": 634,
+        "mean_pp": 3.631604446547671,
+        "median_pp": 3.1200000000000006,
+        "p90_pp": 6.939999999999996,
+        "max_pp": 17.34
       },
       "triple_rows": [
         {
           "key": [
-            "fresh018",
+            "fresh001",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh001",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh001",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh001",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh002",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh002",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh002",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh002",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh003",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh003",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh003",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh003",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh004",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh004",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh004",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh004",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh005",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh005",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh005",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh005",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh006",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh006",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh006",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh006",
+            "resample"
+          ],
+          "complete": false,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh007",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh007",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh007",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh007",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh008",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh008",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh008",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh008",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh009",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh009",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh009",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh009",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh010",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh010",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh010",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh010",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh011",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh011",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh011",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh011",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh012",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh012",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh012",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh012",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh013",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh013",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh013",
             "paraphrase"
           ],
           "complete": false,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh013",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh014",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh014",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh014",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh014",
+            "resample"
+          ],
+          "complete": false,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh015",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh015",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh015",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh015",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh016",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh016",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh016",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh016",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh017",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh017",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh017",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh017",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh018",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh018",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh018",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh018",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh019",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh019",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh019",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh019",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh020",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh020",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh020",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh020",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh021",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh021",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh021",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh021",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh022",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh022",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh022",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh022",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh023",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh023",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh023",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh023",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh024",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh024",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh024",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh024",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh025",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh025",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh025",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh025",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh026",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh026",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh026",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh026",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh027",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh027",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh027",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh027",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh028",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh028",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh028",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh028",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh029",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh029",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh029",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh029",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh030",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh030",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
@@ -4581,157 +5721,857 @@
           "complete": false,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh030",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh031",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh031",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh031",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh031",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh032",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh032",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh032",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh032",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh033",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh033",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh033",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh033",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh034",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh034",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh034",
             "paraphrase"
           ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh034",
+            "resample"
+          ],
           "complete": false,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh035",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh035",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh035",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh035",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh036",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh036",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh036",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh036",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh037",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh037",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh037",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh037",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh038",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh038",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh038",
             "paraphrase"
           ],
-          "complete": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh038",
+            "resample"
+          ],
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
         },
         {
           "key": [
             "fresh039",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh039",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh039",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh039",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh040",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh040",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh040",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh040",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh041",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh041",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh041",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh041",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh042",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh042",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh042",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh042",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh043",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh043",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh043",
             "paraphrase"
           ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh043",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh044",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh044",
+            "names"
+          ],
           "complete": false,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh044",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh044",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh045",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh045",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh045",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh045",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh046",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh046",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh046",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh046",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh047",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh047",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh047",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh047",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh048",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh048",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh048",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh048",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh049",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh049",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh049",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh049",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh050",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh050",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh050",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh050",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh051",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh051",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh051",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh051",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
@@ -4741,47 +6581,137 @@
           "complete": false,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh052",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh052",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh052",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh053",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh053",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh053",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh053",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh054",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh054",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh054",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh054",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh055",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh055",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
         },
         {
           "key": [
@@ -4791,171 +6721,1021 @@
           "complete": false,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh055",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh056",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh056",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh056",
+            "paraphrase"
+          ],
+          "complete": false,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh056",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh057",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh057",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh057",
             "paraphrase"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh057",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh058",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh058",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh058",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh058",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh059",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh059",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh059",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh059",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh060",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
-          "exact_all_correct": false,
-          "items_valid": 0
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh060",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh060",
             "paraphrase"
           ],
-          "complete": false,
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh060",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh061",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh061",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh061",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh061",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh062",
             "base"
           ],
-          "complete": false,
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh062",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh062",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh062",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh063",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh063",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh063",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh063",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh064",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh064",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh064",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh064",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh065",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh065",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh065",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh065",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh066",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh066",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh066",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh066",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh067",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh067",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh067",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh067",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh068",
             "base"
           ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh068",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh068",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh068",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh069",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh069",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh069",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh069",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh070",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh070",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh070",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh070",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh071",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh071",
+            "names"
+          ],
           "complete": false,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 2
+        },
+        {
+          "key": [
+            "fresh071",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh071",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh072",
             "base"
           ],
-          "complete": false,
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh072",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh072",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh072",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh073",
+            "base"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh073",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh073",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh073",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh074",
             "base"
           ],
-          "complete": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh074",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh074",
+            "paraphrase"
+          ],
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh074",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": false,
+          "exact_all_correct": false,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh075",
             "base"
           ],
-          "complete": false,
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh075",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh075",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh075",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh076",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh076",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh076",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh076",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh077",
             "base"
           ],
-          "complete": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh077",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh077",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh077",
+            "resample"
+          ],
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
         },
         {
           "key": [
             "fresh078",
             "base"
           ],
-          "complete": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh078",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh078",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh078",
+            "resample"
+          ],
+          "complete": true,
           "sign_all_correct": false,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
         },
         {
           "key": [
             "fresh079",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh079",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh079",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh079",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": false,
+          "items_valid": 3
         },
         {
           "key": [
             "fresh080",
             "base"
           ],
-          "complete": false,
-          "sign_all_correct": false,
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh080",
+            "names"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
           "exact_all_correct": false,
-          "items_valid": 0
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh080",
+            "paraphrase"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
+        },
+        {
+          "key": [
+            "fresh080",
+            "resample"
+          ],
+          "complete": true,
+          "sign_all_correct": true,
+          "exact_all_correct": true,
+          "items_valid": 3
         }
       ]
     }
   ],
-  "created_at": "2026-09-22T18:06:26.681774+00:00",
+  "created_at": "2026-09-23T14:28:24.522432+00:00",
   "code_sha256": "7430aad739feac571a3e1dd6bfc2d91f802eaa7b26775b5c0e6abe9a5fad6d0e"
 }
