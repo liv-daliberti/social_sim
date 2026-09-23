@@ -38,16 +38,20 @@ REF_FILL = "#D5E8D4"        # draw.io green, the two reference cities
 REF_EDGE = "#82B366"
 HINT_FILL = "#E1D5E7"       # draw.io purple, the hint
 HINT_EDGE = "#9673A6"
-MONO = {"family": "monospace", "fontsize": 6.6}
+MONO = {"family": "monospace", "fontsize": 6.2}
 TAG_INK = "#5A7D3F"
 HIGHLIGHT = "#FFE9A8"
 
-HEADER = "Start    News   Change     End"
-CITY_C = ("   57.8      +8     +9.4    67.2",)
-CITY_A = ("   45.4      -8     -6.5    38.9",
-          "   45.4      +8    +12.2    57.6")
-CITY_B = ("   35.0     -10     -5.6    29.4",
-          "   35.0     +10     +9.3    44.3")
+def _row(start, news, change, end):
+    return f"{start:>10}{news:>11}{change:>12}{end:>11}"
+
+
+HEADER = _row("Start", "News", "Change", "End")
+CITY_C = (_row("57.8", "+8", "+9.4", "67.2"),)
+CITY_A = (_row("45.4", "-8", "-6.5", "38.9"),
+          _row("45.4", "+8", "+12.2", "57.6"))
+CITY_B = (_row("35.0", "-10", "-5.6", "29.4"),
+          _row("35.0", "+10", "+9.3", "44.3"))
 
 
 def box(ax, x, y, w, h, fill, edge):
@@ -60,7 +64,7 @@ def box(ax, x, y, w, h, fill, edge):
     )
 
 
-TABLE_W = 2.62
+TABLE_W = 8.82
 RULE = "#6B7280"
 
 
@@ -110,65 +114,62 @@ def table(ax, x, y_top, name, rows, tag, LINE, PAD):
 
 
 def build(output_dir: Path) -> Path:
-    fig, ax = plt.subplots(figsize=(6.6, 3.30), facecolor="white")
+    fig, ax = plt.subplots(figsize=(3.3, 4.36), facecolor="white")
     ax.set_xlim(0, 10)
-    ax.set_ylim(0.84, 8.31)
+    ax.set_ylim(1.42, 13.70)
     ax.axis("off")
 
-    left, width = 0.08, 9.84
-    LINE, PAD = 0.34, 0.20
-    top = 8.16
+    left, width = 0.30, 9.40
+    LINE, PAD = 0.40, 0.22
+    top = 13.58
 
     # The question, first.
-    height = PAD * 2 + LINE * 1.9
+    height = PAD * 2 + LINE * 4.0
     box(ax, left, top - height, width, height, QUESTION_FILL, QUESTION_EDGE)
     ax.text(left + PAD, top - PAD,
-            "Prompt:  City C has a starting poll of 53.9 and has net news of +5.\n"
-            "What do you predict the poll will be at the end of the week?",
-            ha="left", va="top", fontsize=7.6, color=INK, fontweight="bold", linespacing=1.5)
-    top -= height + 0.34
+            "Prompt:  City C has a starting poll\n"
+            "of 53.9 and has net news of +5.\n"
+            "What do you predict the poll will be\n"
+            "at the end of the week?",
+            ha="left", va="top", fontsize=6.9, color=INK,
+            fontweight="bold", linespacing=1.5)
+    top -= height + 0.30
 
-    # City C, one case, as an example of how a case reads.
-    height = PAD * 2 + LINE * 4.25
-    box(ax, left, top - height, width, height, C_FILL, C_EDGE)
-    table(ax, left, top - PAD, "CITY C  ·  the city being forecast",
-          CITY_C, None, LINE, PAD)
-    top -= height + 0.34
-
-    # The two reference cities, side by side.
-    half = (width - 0.24) / 2
-    height = PAD * 2 + LINE * 5.45
-    references = (("CITY A", CITY_A, "national news"), ("CITY B", CITY_B, "local news"))
-    for offset, (name, rows, tag) in enumerate(references):
-        x = left + offset * (half + 0.24)
-        box(ax, x, top - height, half, height, REF_FILL, REF_EDGE)
-        table(ax, x, top - PAD, name, rows, tag, LINE, PAD)
-    top -= height + 0.34
+    cards = (
+        ("CITY C  \u00b7  being forecast", CITY_C, None, C_FILL, C_EDGE),
+        ("CITY A", CITY_A, "national news", REF_FILL, REF_EDGE),
+        ("CITY B", CITY_B, "local news", REF_FILL, REF_EDGE),
+    )
+    for name, rows, tag, fill, edge in cards:
+        height = PAD * 2 + LINE * (len(rows) + 2.9)
+        box(ax, left, top - height, width, height, fill, edge)
+        table(ax, left, top - PAD, name, rows, tag, LINE, PAD)
+        top -= height + 0.30
 
     # The hint.
-    height = PAD * 2 + LINE * 1.9
+    height = PAD * 2 + LINE * 4.0
     box(ax, left, top - height, width, height, HINT_FILL, HINT_EDGE)
     ax.text(left + PAD, top - PAD, "HINT", ha="left", va="top",
-            fontsize=7.2, fontweight="bold", color=HINT_EDGE)
-    body = left + PAD + 0.92
-    ax.text(body, top - PAD,
-            "City C residents generally encounter campaign developments through",
-            ha="left", va="top", fontsize=7.2, color=INK)
-    # The phrase that does the work is highlighted: it is the only part of the
-    # hint that changes between conditions.
-    second = top - PAD - LINE * 1.05
-    phrase = ax.text(body, second, "national news coverage", ha="left", va="top",
-                     fontsize=7.2, color=INK, fontweight="bold", zorder=3)
+            fontsize=6.9, fontweight="bold", color=HINT_EDGE)
+    ax.text(left + PAD, top - PAD - LINE * 1.02,
+            "City C residents generally encounter",
+            ha="left", va="top", fontsize=6.9, color=INK)
+    third = top - PAD - LINE * 2.02
+    ax.text(left + PAD, third, "campaign developments through",
+            ha="left", va="top", fontsize=6.9, color=INK)
+    phrase = ax.text(left + PAD, third - LINE, "national news coverage",
+                     ha="left", va="top", fontsize=6.9, color=INK,
+                     fontweight="bold", zorder=3)
     span = measure(ax, phrase)
     ax.add_patch(
         FancyBboxPatch(
-            (body - 0.05, second - LINE * 0.60), span + 0.10, LINE * 0.64,
+            (left + PAD - 0.03, third - LINE - LINE * 0.60), span + 0.07, LINE * 0.64,
             boxstyle="round,pad=0,rounding_size=0.04",
             facecolor=HIGHLIGHT, edgecolor="none", zorder=1.5, mutation_aspect=0.5,
         )
     )
-    ax.text(body + span + 0.015, second, ".", ha="left", va="top",
-            fontsize=7.2, color=INK)
+    ax.text(left + PAD + span + 0.02, third - LINE, ".", ha="left", va="top",
+            fontsize=6.9, color=INK)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "exp2_coin_city_prompt_stack.pdf"
