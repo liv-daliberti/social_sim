@@ -47,7 +47,7 @@ def test_figure1_probe_means_recompute_from_raw_calls() -> None:
         assert len(values) == 8
         close(statistics.mean(values), mean)
 
-    source = compact("paper/frontmatter.tex")
+    source = compact("paper/main.tex")
     assert "$.644$, $.681$, and $.712$" in source
 
 
@@ -182,13 +182,13 @@ def test_experiment1_headline_values_match_clustered_artifacts() -> None:
     for model, cell in (("claude-opus-4-8", "7.0"), ("llama3.1:8b", "1.9")):
         assert round(selectivity[model]["sensitivity_given_move"]["estimate"], 1) == float(cell)
         assert f"${cell}\\times$" in source
-    front = compact("paper/frontmatter.tex")
+    front = compact("paper/main.tex")
     assert "$1.9$--$7.5\\times$ farther on" in front
     assert "unconditional $1.9$--$24.2\\times$ ratio" in front
     # The threshold-sweep omission rates moved to the appendix.
     assert (
         "6.9\\% of GPT-5.4, 12.6--12.7\\% of DeepSeek V4-Pro, and 18.1\\% of Claude Opus~4.8"
-        in compact("paper/experiment1_appendix.tex")
+        in compact("paper/appendix.tex")
     )
 
 
@@ -254,7 +254,7 @@ def test_experiment1_human_review_values_match_frozen_export() -> None:
         "the disclosed post-inspection exclusion",
     ):
         assert claim in source, claim
-    appendix = compact("paper/experiment1_appendix.tex")
+    appendix = compact("paper/appendix.tex")
     for claim in (
         "Nine adult reviewers submitted the 18-item materials protocol",
         "leaving eight quality-eligible reviewers",
@@ -457,7 +457,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         "Llama~3.1 70B",
     ):
         assert model in scaling_table
-    appendix = compact("paper/experiment2_appendix.tex")
+    appendix = compact("paper/appendix.tex")
     assert r"\input{tables/exp2_symbol_context_results}" in appendix
     assert r"\input{tables/exp2_symbol_context_scaling}" in appendix
     assert r"\input{tables/exp2_generator_population_robustness}" in appendix
@@ -496,7 +496,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     assert "figures/exp2_symbol_decoding.pdf" in source
     # The reference-selection figure lives with its tables in the appendix.
     assert "figures/exp2_reference_selection.pdf" not in source
-    appendix = compact("paper/experiment2_appendix.tex")
+    appendix = compact("paper/appendix.tex")
     assert "figures/exp2_reference_selection.pdf" in appendix
     assert "including Llama~3.1-8B, where every analysis run is null" in appendix
     assert "Llama~3.1-8B remains null" in appendix
@@ -532,7 +532,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     assert "DeepSeek, but not Qwen3-4B" not in source
     assert "establish reference selection" not in source
 
-    front = compact("paper/frontmatter.tex")
+    front = compact("paper/main.tex")
     assert "target observations weaken its effect" in front
     assert "infer mappings whose meanings change across episodes" in front
     assert "Ten of 13 systems recover" not in front
@@ -738,7 +738,7 @@ def test_experiment3_main_values_match_analysis() -> None:
     assert structure_only["ci95_low"] < 0 < structure_only["ci95_high"]
     assert "($2.30$ base against $2.33$ matched)" in source
     assert "lower point estimate of the two trained arms" in source
-    front = compact("paper/frontmatter.tex")
+    front = compact("paper/main.tex")
     assert "correct episode-level mapping" in front
     assert "all three tested Qwen3 sizes (4B, 8B, and 14B)" in front
     methods = compact("paper/methods_section.tex")
@@ -748,10 +748,10 @@ def test_experiment3_main_values_match_analysis() -> None:
     )
     assert "making the contrast a training analogue of Experiment~2" in methods
     assert "transfers beyond the domain and mechanism" in methods
-    setup = compact("paper/experiment3_training_setup_appendix.tex")
+    setup = compact("paper/appendix.tex")
     assert "($42,43,44$) $=18$ full training runs." in setup
     assert "$=12$ full training runs." not in setup
-    appendix = compact("paper/experiment3_appendix.tex")
+    appendix = compact("paper/appendix.tex")
     for claim in (
         "all 24 endpoints and 172,800 stochastic rows",
         "172,732 parse (99.96\\%)",
@@ -1004,7 +1004,7 @@ def test_experiment4_main_values_match_heldout_evaluation() -> None:
     assert "same-release" not in source
     assert (
         "The trained Qwen series is nonmonotonic across 1.7B--32B"
-        in compact("paper/frontmatter.tex")
+        in compact("paper/main.tex")
     )
     assert (
         r"\includegraphics[width=\linewidth]{figures/exp4_qwen_scale_results.pdf}"
@@ -1019,7 +1019,7 @@ def test_experiment4_main_values_match_heldout_evaluation() -> None:
     )
     assert "for 300 rollout-and-update rounds (4,800 prompt presentations)" in methods
     assert "for 300 updates" not in methods
-    appendix = compact("paper/experiment3_appendix.tex")
+    appendix = compact("paper/appendix.tex")
     assert "latest pre-cutoff market price obtains Brier $.11369$" in appendix
     assert "training split obtains $.11232$" in appendix
     assert r"\input{tables/exp3b_model_roster_results}" in appendix

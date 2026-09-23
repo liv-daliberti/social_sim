@@ -30,7 +30,7 @@ def write(name, columns, header, rows):
 def main():
     comparison = read('learnability/component_comparison.json')
     receipt = read('structure/completion_receipt.json')
-    evidence = read('evidence_use/analysis/summary.json')
+    evidence = read('evidence_use/analysis_ext/summary.json')
     audit = read('structure/baseline_omission_audit.json')
     assert not comparison['pending'] and len(receipt['models']) == 8
     assert evidence['complete'] and evidence['gain_complete']
@@ -84,17 +84,47 @@ def main():
     for disclosure in ('disclosed','undisclosed'):
         for group, label in [('train','Seen'),('test','Held out')]:
             vals = []
-            for arm in ('base','causal_family','population_prior'):
+            slopes = []
+            for arm in ('base','causal_family','shuffled_target'):
                 subset = [r for r in evidence['gain_summary'] if (r['disclosure'],r['group'],r['arm']) == (disclosure,group,arm)]
-                assert len(subset) == (1 if arm == 'base' else 2)
+                assert len(subset) == (1 if arm == 'base' else 5)
                 vals.append(f"{mean(r['change_mae'] for r in subset):.3f}")
-            contrast, = [r for r in evidence['paired_contrasts'] if (r['disclosure'],r['group'],r['contrast']) == (disclosure,group,'population_prior_minus_causal_family_change_mae')]
-            assert contrast['training_seeds'] == [45,46]
+                slopes.append(mean(r['tracking_slope'] for r in subset))
+            contrast, = [r for r in evidence['paired_contrasts'] if (r['disclosure'],r['group'],r['contrast']) == (disclosure,group,'shuffled_target_minus_causal_family_change_mae')]
+            assert contrast['training_seeds'] == [42,43,44,45,46]
             lo, hi = contrast['ci95']
             rows.append([disclosure.title(),label] + vals +
-                        [f"{subset[0]['no_change_mae']:.3f}",f"{contrast['estimate']:.3f}",f'[{lo:.3f}, {hi:.3f}]'])
-    write('exp3_gain_evidence.tex','llrrrrrr',
-          r'Disclosure & Mechanisms & Base & Matched & Prior & No change & Prior$-$matched & 95\% interval', rows)
+                        [f"{subset[0]['no_change_mae']:.3f}",
+                         f'{slopes[1]:.3f}', f'{slopes[2]:.3f}',
+                         f"{contrast['estimate']:+.3f}",f'[{lo:+.3f}, {hi:+.3f}]'])
+    write('exp3_gain_evidence.tex','llrrrrrrrr',
+          r'Disclosure & Mechanisms & Base & Matched & Shuffled & No change & '
+          r'Slope M & Slope S & Shuffled$-$matched & 95\% interval', rows)
+    # Native-cell SFT: each cell trained in its own domain/label condition.
+    native_root = ROOT / 'native_cells'
+    NATIVE = [('coin_city','arbitrary'), ('coin_harbor','semantic'), ('coin_harbor','arbitrary')]
+    rows = []
+    for domain, labels in NATIVE:
+        seeds = []
+        for seed in (42,43,44):
+            name = f'native_{domain}_{labels}_s{seed}'
+            raw = (native_root / f'runs/{name}/component_results/qwen3_8b_{name}.summary.json').read_bytes()
+            SOURCES[f'native_cells/runs/{name}/summary'] = hashlib.sha256(raw).hexdigest()
+            cells = json.loads(raw)['cells']
+            own = {c['interface']: c for c in cells
+                   if (c['domain'], c['label_kind']) == (domain, labels)}
+            assert own['original']['n_pairs'] == 24 and own['original']['parse_rate'] == 1
+            seeds.append((own['original'], own['selection_only']))
+        assert len(seeds) == 3
+        acc = mean(o['accuracy'] for o, _ in seeds)
+        mae = mean(o['response_mae'] for o, _ in seeds)
+        sel = mean(s_['accuracy'] for _, s_ in seeds)
+        lo = min(o['accuracy'] for o, _ in seeds); hi = max(o['accuracy'] for o, _ in seeds)
+        rows.append([domain.removeprefix('coin_').title(), labels,
+                     f'{100*acc:.1f}', f'[{100*lo:.1f}, {100*hi:.1f}]',
+                     f'{mae:.3f}', f'{100*sel:.1f}'])
+    write('exp3_native_cells.tex', 'llrrrr',
+          r'Domain & Labels & Structure (\%) & Seed range & Resp. MAE & Name (\%)', rows)
     (PAPER / 'tables/exp3_diagnostics_sources.json').write_text(json.dumps({
         'generator':'paper/generate_exp3_diagnostic_tables.py', 'artifact_root':str(ROOT.relative_to(PAPER.parent)),
         'source_sha256':SOURCES, 'scope':'Completed exploratory inference and single-seed SFT only; excludes unfinished shuffled training.'},indent=2)+'\n')

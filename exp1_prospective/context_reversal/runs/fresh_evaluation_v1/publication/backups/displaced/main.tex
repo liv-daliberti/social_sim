@@ -319,14 +319,15 @@ App.~\ref{app:exp1-threshold-robustness}.}
 \end{figure}
 
 \noindent\textbf{Takeaway.}
-Lexical cues identify original-packet relevance ($.989$ accuracy). A frozen
-follow-up uses identical news across relational contexts in 80 finite-rule
-instances spanning eight mechanism classes. Qwen3-32B reverses both directions
-in 14/80 pairs without thinking and 77/80 with thinking; GPT-5.6 reaches 24/24 on a fixed subset, with 0.0-point broken-link movement (base wording; all planned failures count). 
-Wording, control drift, and failure analyses appear in App.~\ref{app:exp1-fresh-factorial}.
-This formally checked diagnostic has no new human validation and does not
-establish natural-news coverage. Experiment~2 tests contextual relationship
-selection under a controlled generative process.
+Lexical cues identify original-packet relevance ($.989$ accuracy). On 20
+unvalidated context-reversal families, GPT-5.6 reverses both directions in
+85\% of pairs, with 0.5-point broken-link movement; the original constrained
+local deployments reach 25--35\% and 9.75--13.25 points in the matched
+single-repeat comparison. A matched Qwen3 follow-up reaches 60\% paired
+reversal with thinking enabled (App.~\ref{app:exp1-context-reversal}). This
+exploratory extension uses different inference settings and requires independent
+material validation. Experiment~2
+tests contextual relationship selection under a controlled generative process.
 
 \subsection{Exp.~2: can models infer how strongly evidence should matter?}
 \label{sec:exp2}

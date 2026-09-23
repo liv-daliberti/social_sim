@@ -81,7 +81,7 @@ def test_page_one_keeps_anonymous_artifact_links() -> None:
 
 def test_exp3_moves_the_cross_scale_qwen_synthesis_to_the_appendix() -> None:
     transfer = flat(read("transfer_and_grounding.tex"))
-    appendix = flat(read("../experiment3_appendix.tex"))
+    appendix = flat(read("experiment3_appendix.tex"))
     for required in (
         "Qwen3-family summary",
         "$.319$ $[.134,.489]$",
@@ -221,17 +221,17 @@ def test_all_ten_figure_assemblies_remain_in_the_main_body() -> None:
     assert "exp2_causal_patch.pdf" in evidence
     # The transfer grid stays a compact half-page wrap in Section 4. It is
     # declared after the subsection heading so wrapfig cannot absorb the heading.
-    assert r"\input{../fig_exp3_transfer_grid}" not in evidence
-    assert r"\input{../fig_exp3_transfer_grid}" in transfer
+    assert r"\input{fig_exp3_transfer_grid}" not in evidence
+    assert r"\input{fig_exp3_transfer_grid}" in transfer
     subsection = transfer.index(
         r"\subsection{Exp.~3: transfer under domain and mechanism shift}"
     )
-    transfer_grid_input = transfer.index(r"\input{../fig_exp3_transfer_grid}")
+    transfer_grid_input = transfer.index(r"\input{fig_exp3_transfer_grid}")
     opening = transfer.index(r"\textbf{Why matching matters.}")
     assert subsection < transfer_grid_input < opening
     assert r"\newcommand{\transfergridlines}{15}" in transfer
     assert r"\renewenvironment{wrapfigure}[3][]" not in transfer
-    transfer_grid = (PAPER / "fig_exp3_transfer_grid.tex").read_text(
+    transfer_grid = (WORKSHOP / "fig_exp3_transfer_grid.tex").read_text(
         encoding="utf-8"
     )
     # The count is a parameter now: the ICLR build keeps 13 via providecommand.
@@ -481,7 +481,7 @@ def test_figure_ten_is_at_the_bottom_of_page_seven() -> None:
 def test_qwen32_and_separate_llama_scale_results_flow_to_workshop() -> None:
     transfer = flat(read("transfer_and_grounding.tex"))
     appendix = read("appendix.tex")
-    shared_appendix = (PAPER / "experiment3_appendix.tex").read_text(
+    shared_appendix = (WORKSHOP / "experiment3_appendix.tex").read_text(
         encoding="utf-8"
     )
 
@@ -492,7 +492,7 @@ def test_qwen32_and_separate_llama_scale_results_flow_to_workshop() -> None:
     assert "base and trained Brier are both" not in transfer
     assert "Llama 3B/8B replication shows the same qualitative" in transfer
     assert "log parameter axis" in transfer
-    assert r"\input{../experiment3_appendix}" in appendix
+    assert r"\input{experiment3_appendix}" in appendix
     assert "figures/exp4_llama_scale_results.pdf" in shared_appendix
     assert r"\label{fig:exp4-llama-scale-results}" in shared_appendix
 
@@ -509,7 +509,7 @@ def test_coin_harbor_is_defined_against_coin_city() -> None:
 def test_llama_70b_capacity_result_flows_to_workshop() -> None:
     transfer = " ".join(read("transfer_and_grounding.tex").split())
     appendix = read("appendix.tex")
-    shared_appendix = (PAPER / "experiment3_appendix.tex").read_text(
+    shared_appendix = (WORKSHOP / "experiment3_appendix.tex").read_text(
         encoding="utf-8"
     )
 
@@ -517,7 +517,7 @@ def test_llama_70b_capacity_result_flows_to_workshop() -> None:
     assert "spans Llama-3.1-8B and Llama-3.1-70B" not in transfer
     assert "larger model also learns the task" not in transfer
     assert "post-registration" not in transfer
-    assert r"\input{../experiment3_appendix}" in appendix
+    assert r"\input{experiment3_appendix}" in appendix
     assert "Additional Llama-3.1-70B scale check" in shared_appendix
     assert "post-registration" not in shared_appendix
     assert r"\label{fig:exp4-scale-results}" in transfer
@@ -541,12 +541,12 @@ def test_main_content_is_exactly_nine_pages_before_references() -> None:
 
 def test_appendix_opens_with_the_iclr_organization_guide() -> None:
     appendix = read("appendix.tex")
-    guide = appendix.index(r"\input{../appendix_guide}")
+    guide = appendix.index(r"\input{appendix_guide}")
     page_break = appendix.index(r"\clearpage", guide)
-    first_appendix = appendix.index(r"\input{../teaser_probe_appendix}")
+    first_appendix = appendix.index(r"\input{teaser_probe_appendix}")
     assert guide < page_break < first_appendix
 
-    guide_source = (PAPER / "appendix_guide.tex").read_text(encoding="utf-8")
+    guide_source = (WORKSHOP / "appendix_guide.tex").read_text(encoding="utf-8")
     assert r"\section*{Appendices}" in guide_source
     assert r"\appendixguidechapter{app:carnival-coin-probe}" in guide_source
     assert r"\appendixguidechapter{app:exp1}" in guide_source

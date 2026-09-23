@@ -23,18 +23,30 @@ must write to `paper/` directly.
 
 ## What to edit
 
-- `main.tex` owns the ICLR style, anonymity, and section order.
-- `main.tex` lists the active prose inputs, including `frontmatter.tex`,
-  `evidence_ladder.tex`, and `transfer_and_grounding.tex`. Some older
-  `experiment*_section.tex` wrappers are not inputs to the current manuscript.
-- `experiment*_appendix.tex` and `appendix_guide.tex` contain supplementary
-  material.
-- `tables/` contains checked-in analysis outputs. A generated table should name
-  its generator in its first comment.
+The manuscript is two hand-edited LaTeX sources, so it can be worked on directly
+in Overleaf:
+
+- `main.tex` owns the ICLR style, anonymity, and the whole main body.
+- `appendix.tex` owns every appendix section, in reading order.
+- `tables/` contains checked-in analysis outputs, pulled in by `\input`. A
+  generated table should name its generator in its first comment; edit the
+  generator, never the table or a copy of it in `appendix.tex`.
 - `figures/` contains compiled manuscript figures plus source material needed by
   the maintained figure generators.
 - `make_submission_zip.sh` is the submission-boundary check, not a general
   backup script.
+
+Everything else a build touches is generated or third-party. `%= BEGIN/END =%`
+banners inside both files record which retired fragment each span came from;
+those fragments are kept for provenance in
+`_archive/consolidated_fragments_2026-09-22/` and nothing reads them. The older
+`experiment*_section.tex`, `methods_section.tex`, and `results_section.tex`
+wrappers were already not inputs to the manuscript and remain unused.
+
+`appendix.tex` carries a `%%% FRESH-CONTEXT-APPENDIX %%%` marker. The guarded
+publication pipeline in `exp1_prospective/context_reversal/fresh/publish.py`
+inserts an `\input` below it in an isolated staged copy; keep the marker
+verbatim.
 
 The maintained generators are:
 

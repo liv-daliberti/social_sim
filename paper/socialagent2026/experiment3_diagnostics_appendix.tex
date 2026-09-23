@@ -188,16 +188,102 @@ a narrower result than transferred evidence use. These interventions neither
 show a complete absence of sensitivity nor establish robust tracking of
 held-out episode-specific gains.
 
+\subsubsection{Distribution-matched shuffled-target control}
+\label{app:exp3-shuffled-control}
+
+The accuracy comparison above uses a fixed population-prior control, which does
+not preserve the matched arm's exact target-vector distribution. We therefore
+ran a separately frozen shuffled-target control. It holds the prompts, the
+training budget and the exact joint target-vector multiset fixed within
+compatible world/evidence-depth groups, changing only which compatible episode
+receives which target vector, so the two arms differ in the episode-to-target
+pairing and in nothing else. Qwen3-4B-Instruct-2507 trains for 300 rounds in
+each of \eShufG{} seeds per disclosure condition. The matched arm is rerun on
+the same A5000 hardware and actor-memory allocation, so both arms share
+hardware; endpoints use a frozen fresh held-out set of 720 tasks per seed under
+greedy and five-draw stochastic decoding. The pre-registered primary estimand
+is the stochastic shuffled-minus-matched response MAE. All 40 endpoint/decode
+cells completed and every response parsed.
+
+\begin{table}[htbp]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{tables/exp3_shuffled_control}
+\caption{\textbf{Matched training retains a smaller advantage over a
+distribution-matched shuffled-target control.} Entries are shuffled-minus-matched
+response MAE at \eShufG{} training seeds; positive favors matched training.
+The hierarchical interval resamples seeds and trajectories; Webb $p$ is a
+two-sided wild cluster bootstrap. The stochastic inferred-mechanism cell is the
+pre-registered primary endpoint and the only cell clearing every estimator.}
+\label{tab:exp3-shuffled-control}
+\end{table}
+
+Matched training retains an advantage on the primary endpoint in both
+disclosure conditions. With the mechanism inferred it is
+\eShufUndiscStochEst{} (\eShufUndiscStochSign{} seeds positive, Student-$t$
+\eShufUndiscStochTci{}, hierarchical \eShufUndiscStochCi{}, wild cluster
+$p=\eShufUndiscStochWild{}$, exact sign test $p=\eShufUndiscStochSignP{}$),
+the only cell that clears every estimator. With the mechanism described the
+point estimate is larger, \eShufDiscStochEst{} \eShufDiscStochCi{}, but rests
+on \eShufDiscStochSign{} seeds, one of which reverses sign, and does not clear
+the cluster-robust test ($p=\eShufDiscStochWild{}$). Greedy decoding is
+directionally consistent in both conditions---\eShufDiscGreedyEst{} described
+and \eShufUndiscGreedyEst{} inferred---but neither cell clears the
+cluster-robust test.
+
+\begin{table}[htbp]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{tables/exp3_shuffled_control_level}
+\caption{\textbf{The matched advantage does not appear in level error.}
+Shuffled-minus-matched level MAE, same runs and estimators as
+Table~\ref{tab:exp3-shuffled-control}. The inferred-mechanism cells show no
+matched benefit. This contrast was not pre-registered and is descriptive.}
+\label{tab:exp3-shuffled-control-level}
+\end{table}
+
+The benefit is concentrated in response error, which is what the manipulation
+predicts. Because donors are drawn from the same compatibility group, the
+shuffle changes an episode's target \emph{level} almost not at all while
+changing its response \emph{shape} almost entirely: averaged over all 4,800
+episodes, the recipient-donor level difference is $.0086$--$.0093$ against a
+shape difference of $.892$--$.908$, a ratio of $96$--$104$ across both
+disclosure conditions and all five seeds, with a within-group level standard
+deviation of $.0076$. Both arms therefore receive essentially correct level
+information and only the matched arm receives the correct episode-specific
+relationship, so a level-error advantage is not expected. Its absence when the
+mechanism is inferred (\eShufUndiscStochLevelEst{} \eShufUndiscStochLevelCi{},
+$p=\eShufUndiscStochLevelWild{}$ stochastic; \eShufUndiscGreedyLevelEst{}
+\eShufUndiscGreedyLevelCi{} greedy) is a manipulation check rather than a
+negative result, and it argues against the benefit being generic improvement,
+which would raise both metrics.
+
+We report this as supporting rather than decisive, for three reasons. The
+level contrast was not pre-registered. Level MAE is computed on the raw
+forecast vector, so it partly contains the response component and is roughly
+twice its magnitude, diluting any response-driven gain. And the pattern is not
+uniform: the described condition does show positive level contrasts
+(\eShufDiscGreedyLevelEst{} greedy, \eShufDiscStochLevelEst{} stochastic). The
+asymmetry above is a property of the frozen builder, not of any prediction;
+\path{measure_level_shape_asymmetry.py} recomputes it from the training targets
+alone and records it in \path{level_shape_asymmetry.json}. None of this speaks
+to held-out mechanisms, where gain tracking remains unestablished
+(App.~\ref{app:exp3-evidence-use}). These estimates use the same-hardware
+comparator; a supplementary historical-hardware comparison reusing the earlier
+A6000 matched seeds 45--46 is retained in the released results and supports no
+claim here.
+
 \paragraph{Control status and reproducibility.}
-No completed distribution-matched shuffled-target training comparison is
-reported for the mechanism-family benchmark. The separately frozen design
-preserves identical prompts and the exact joint target-vector multiset within
-compatible world/evidence-depth groups, changing only episode assignments,
-with five seeds in each disclosure condition. Only completed diagnostics enter the tables and claims here. Their artifacts,
+Only completed diagnostics enter the tables and claims here. Their artifacts,
 manifests, raw
 outputs, and the outcome-informed SFT amendment reside under
 \path{exp3_training_transfer/overnight_diagnostics_20260921/}, in
-\path{structure/}, \path{learnability/}, and \path{evidence_use/}.
-\path{paper/generate_exp3_diagnostic_tables.py} renders these four tables from
-completed summaries and records source hashes in
-\path{paper/tables/exp3_diagnostics_sources.json}.
+\path{structure/}, \path{learnability/}, \path{evidence_use/}, and
+\path{shuffled_control/}.
+\path{paper/generate_exp3_diagnostic_tables.py} renders the four diagnostic
+tables from completed summaries and records source hashes in
+\path{paper/tables/exp3_diagnostics_sources.json};
+\path{paper/generate_exp3_shuffled_control_tables.py} renders the two control
+tables and records hashes, the design freeze and the analysis-code hash in
+\path{paper/tables/exp3_shuffled_control_sources.json}. Both refuse to emit a
+partial roster.

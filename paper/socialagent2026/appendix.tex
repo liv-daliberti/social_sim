@@ -5,9 +5,13 @@
 \makeatletter
 \def\input@path{{../}}
 \makeatother
-\input{../appendix_guide}
+% These appendix sections used to be shared with the ICLR tree by path. That
+% manuscript is now two consolidated sources (paper/main.tex, paper/appendix.tex),
+% so the workshop keeps its own copies here. \input@path still reaches ../ for
+% tables/ and figures/, which remain shared.
+\input{appendix_guide}
 \clearpage
-\input{../teaser_probe_appendix}
-\input{../experiment1_appendix}
-\input{../experiment2_appendix}
-\input{../experiment3_appendix}
+\input{teaser_probe_appendix}
+\input{experiment1_appendix}
+\input{experiment2_appendix}
+\input{experiment3_appendix}

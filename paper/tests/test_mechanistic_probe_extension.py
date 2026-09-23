@@ -113,7 +113,7 @@ def test_six_model_mechanistic_roster_and_claims() -> None:
 
     appendix = " ".join(
         (
-            generator.ROOT / "paper/experiment2_mechanistic_probe_appendix.tex"
+            generator.ROOT / "paper/appendix.tex"
         ).read_text().split()
     )
     for claim in (
