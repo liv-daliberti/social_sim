@@ -286,22 +286,22 @@ uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
 \centering
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}rccc@{}}
+\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}rcc@{}}
 \toprule
-\textbf{Model} & \textbf{Size} & \textbf{Abst.} & \textbf{Sens.}$\uparrow$ & \textbf{EHC$_{\geq3}$}$\uparrow$ \\
+\textbf{Model} & \textbf{Size} & \textbf{Sens.}$\uparrow$ & \textbf{EHC$_{\geq3}$}$\uparrow$ \\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Hosted API (parameters undisclosed)}}\\
-\micon{claude.png}~Opus~4.8 & --- & 71.4\% & \cellcolor{heatgreen}$7.0\times$ & \cellcolor{heatgreen}.990 \\
-\micon{openai.png}~GPT-5.4 & --- & 8.4\% & \cellcolor{heatgreen}$7.5\times$ & \cellcolor{heatgreen}.987 \\
-\micon{deepseek.png}~V4-Pro & --- & 44.4\% & \cellcolor{heatyellow}$4.9\times$ & \cellcolor{heatyellow}.977 \\
+\multicolumn{4}{@{}l}{\emph{Hosted API (parameters undisclosed)}}\\
+\micon{claude.png}~Opus~4.8 & --- & \cellcolor{heatgreen}$7.0\times$ & \cellcolor{heatgreen}.990 \\
+\micon{openai.png}~GPT-5.4 & --- & \cellcolor{heatgreen}$7.5\times$ & \cellcolor{heatgreen}.987 \\
+\micon{deepseek.png}~V4-Pro & --- & \cellcolor{heatyellow}$4.9\times$ & \cellcolor{heatyellow}.977 \\
 \midrule
-\multicolumn{5}{@{}l}{\emph{Open-weight, descending parameters} $\downarrow$}\\
-\micon{qwen.pdf}~2.5-72B & 72B & 24.2\% & \cellcolor{heatorange}$3.2\times$ & \cellcolor{heatyellow}.963 \\
-\micon{llamma.pdf}~3.3-70B & 70B & 10.7\% & \cellcolor{heatyellow}$5.7\times$ & \cellcolor{heatyellow}.965 \\
-\micon{llamma.pdf}~3.1-70B & 70B & 2.5\% & \cellcolor{heatyellow}$4.5\times$ & \cellcolor{heatyellow}.961 \\
-\micon{qwen.pdf}~2.5-32B & 32B & 11.1\% & \cellcolor{heatorange}$2.8\times$ & \cellcolor{heatyellow}.964 \\
-\micon{qwen.pdf}~2.5-14B & 14B & 26.1\% & \cellcolor{heatred}$2.2\times$ & \cellcolor{heatorange}.943 \\
-\micon{llamma.pdf}~3.1-8B & 8B & 1.1\% & \cellcolor{heatred}$1.9\times$ & \cellcolor{heatred}.887 \\
+\multicolumn{4}{@{}l}{\emph{Open-weight, descending parameters} $\downarrow$}\\
+\micon{qwen.pdf}~2.5-72B & 72B & \cellcolor{heatorange}$3.2\times$ & \cellcolor{heatyellow}.963 \\
+\micon{llamma.pdf}~3.3-70B & 70B & \cellcolor{heatyellow}$5.7\times$ & \cellcolor{heatyellow}.965 \\
+\micon{llamma.pdf}~3.1-70B & 70B & \cellcolor{heatyellow}$4.5\times$ & \cellcolor{heatyellow}.961 \\
+\micon{qwen.pdf}~2.5-32B & 32B & \cellcolor{heatorange}$2.8\times$ & \cellcolor{heatyellow}.964 \\
+\micon{qwen.pdf}~2.5-14B & 14B & \cellcolor{heatred}$2.2\times$ & \cellcolor{heatorange}.943 \\
+\micon{llamma.pdf}~3.1-8B & 8B & \cellcolor{heatred}$1.9\times$ & \cellcolor{heatred}.887 \\
 \bottomrule
 \end{tabular*}
 \caption{}
@@ -311,10 +311,12 @@ uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
 \caption{\textbf{Models move much more for evidence than for topical
 chatter, and usually move in the implied direction.} \textbf{(a)} Average
 revision after supporting, contrary, and topical updates. \textbf{(b)} The
-table summarizes how often models leave topical updates alone, how much farther
-they move for directional evidence conditional on moving (Sens.), and how often
+table summarizes how much farther models move for directional evidence than for
+topical updates, conditional on moving (Sens.), and how often
 a move of at least three percentage points has the right sign (EHC$_{\geq3}$). Intervals and robustness checks are in
-App.~\ref{app:exp1-threshold-robustness}.}
+App.~\ref{app:exp1-threshold-robustness}. How often a model leaves a topical
+premise exactly unchanged is reported separately in Table~\ref{tab:exp1-abstention};
+it disagrees with movement about which deployments are selective.}
 \label{fig:exp1-updating}
 \end{figure}
 
@@ -827,10 +829,10 @@ In a fixed component diagnostic crossing both domains and semantic or arbitrary
 labels, all eight checkpoints identify the named reference perfectly.
 Supplying exact response patterns does not rescue the 8B forecasts; an untrained
 32B model shows partial numerical ability but often omits the resting baseline
-(App.~\ref{app:exp3-components}). An exploratory single-seed supervised pilot on
-4,800 prompts yields $97.9\%$ structure accuracy in Coin City/semantic versus
-$50.0\%$ for matched RL, falling to $39.6\%$--$50.0\%$ under arbitrary labels
-or in Coin Harbor. Trained natively it reaches $100.0\%$ in Harbor/semantic yet
+(App.~\ref{app:exp3-components}). An exploratory supervised pilot on 4,800
+prompts yields $97.9$--$100.0\%$ structure accuracy in Coin City/semantic at
+four seeds versus $50.0\%$ for matched RL, falling to chance under arbitrary
+labels or in Coin Harbor at every seed. Trained natively it reaches $100.0\%$ in Harbor/semantic yet
 stays at chance under arbitrary labels: the barrier is the label mapping, not
 the domain. Rate and budget differ, limiting this to in-domain learnability,
 not a general SFT advantage or transferable induction (App.~\ref{app:exp3-learnability}).
@@ -951,8 +953,8 @@ KIV/ZOR meaning. The episode-matching advantage under joint domain and mechanism
 shift does not survive the eight-seed replication; the benefit for compositions
 of familiar mechanisms is checkpoint-specific and survives a
 distribution-matched shuffled-target control only under stochastic decoding. Structure diagnostics use no target
-observations; the supervised pilot has one seed and differs from RL in update
-budget and, at the successful setting, learning rate. Semantic cue-to-pattern
+observations; the supervised pilot replicates at four seeds but differs from
+RL in update budget and, at that setting, learning rate. Semantic cue-to-pattern
 learning could explain its in-domain success; native training places its
 boundary at labels, not domain. The five-seed gain intervention establishes
 evidence use on seen but not held-out mechanisms.
@@ -1007,7 +1009,7 @@ and fail-closed checks. Builders, manifests, checksums, and saved generations su
 each result. Experiment~3 reports the original three-seed Qwen3-8B, Qwen3-4B,
 and Llama-3.1-8B roster, eight-seed Qwen extensions, a five-seed mechanism-family
 study with its five-seed shuffled-target control, a three-seed structure-selection pilot, and exploratory component,
-single-seed and native-cell supervised, and five-seed gain-intervention diagnostics. Parent-roster endpoints use
+four-seed and native-cell supervised, and five-seed gain-intervention diagnostics. Parent-roster endpoints use
 round 300 and five draws under a common stochastic decoder. The appendix
 discloses the pilot's interim look at training monitors and the outcome-informed
 supervised-launch amendment.
