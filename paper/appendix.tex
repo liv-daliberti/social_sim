@@ -3816,6 +3816,59 @@ bootstrap with a fixed cell-specific bootstrap seed.}
 \end{minipage}
 \end{center}
 
+Three further outputs of the same three-seed analysis were generated but never
+reported. They are included here for completeness, on the original roster and
+with the same estimator; none of them bears on the eight-seed transfer claim of
+Section~\ref{app:exp3-eight-seed}.
+
+\input{tables/exp3_coin_structural_summary}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Qwen3-4B across all four transfer cells, original
+three-seed roster.} Table~\ref{tab:exp3-coin-complete-roster} reports the joint
+cell alone; the other three cells and the structureless diagnostic appear only
+here. Entries are response MAE under the correct hint, averaged over five draws
+per task, lower is better.}
+\label{tab:exp3-coin-qwen4b-cells}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_qwen3_4b_stochastic}}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Hint-condition contrasts by evidence depth, original
+three-seed roster.} A correct hint names the generating structure, an absent
+hint omits it, and a misleading hint names the wrong one. Positive contrasts are
+error increases relative to the correct hint. The Qwen3-8B rows are the original
+three-seed estimates; its eight-seed transfer result is separate and appears in
+Table~\ref{tab:exp3-eight-seed}.}
+\label{tab:exp3-coin-cues}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_structural_cues}}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Per-cell diagnostics by model, domain and structure,
+original three-seed roster.} $\Delta_{\rm matched}$ is population-prior minus
+episode-matched, positive favoring episode-matched training. The structureless
+column is a diagnostic arm that scrambles the displayed drivers and is available
+for Qwen3-4B only.}
+\label{tab:exp3-coin-diagnostics}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_structural_diagnostics}}
+\end{minipage}
+\end{center}
+
 
 \subsubsection{Later eight-seed precision extension}
 \label{app:exp3-eight-seed}

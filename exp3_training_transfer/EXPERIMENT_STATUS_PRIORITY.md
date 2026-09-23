@@ -1,133 +1,136 @@
-# Experiment 3/4 execution status and scientific priorities
+# Experiment 3/4 status and review handoff
 
-Last verified: **2026-08-20 11:06 ET**. Refresh with the monitors at the end of
-this file before acting on job-level details.
+Last scientifically audited: **2026-09-23 16:30 ET**. The prior audit was
+2026-08-24; a month of drift between those two dates is how the Qwen3-14B
+rendering below went unnoticed, so re-audit this file whenever a campaign
+changes state. Scheduler state changes
+more quickly than this document; use the read-only monitors below for job-level
+status. The superseded August 20 snapshot is preserved under
+`_archive/status_snapshots/`.
 
-This ledger is operational. The manuscript reports completed designs and results;
-it does not narrate scheduler repairs, queue transitions, or partial training
-curves.
+## Durable status
 
-## Portfolio status
+| Campaign | Scientific status | Paper status |
+|---|---|---|
+| Structural-OOD mechanism grid | Complete: exact 42-training/6-base roster | Full aggregate and four tables generated |
+| Coin City structural/domain transfer | Complete: 24 exact-roster endpoints after six canaries and a gate | Stochastic Qwen3-8B main result; stochastic Qwen3-4B/Llama-8B appendix comparators |
+| Coin City Qwen3-14B scale extension | **Blocked, not complete.** Five of six trainings completed 2026-08-26. Causal seed 43 (`30880156`) hit its 30h walltime; its rerun `30920615` produced no scores; a third run `30948628` produced scores but under a modified `train.sh`. Retrain `31481143` submitted 2026-09-23 under the registered script with a 2-day allocation. | **Nothing rendered.** Do not render until the retrain lands and a ledger naming the real jobs is committed. |
+| Historical Polymarket Qwen3-4B | Complete: three training seeds plus sealed test | Appendix scale comparator and secondary update analysis |
+| Polymarket Qwen3-8B/Llama-8B extension | Complete: six replacement trainings and two locked tests | Qwen3-8B main result; Llama-8B appendix comparator |
 
-| Campaign | Complete | Running | Pending | Total |
-|---|---:|---:|---:|---:|
-| Structural-OOD mechanism grid | 30 | 8 | 10 | 48 |
-| Polymarket 8B extension | 0 | 0 | 8 | 8 |
-| Coin City A-to-B extension | 0 | 0 | 31 | 31 |
-| **Scientific jobs** | **30** | **8** | **49** | **87** |
+The structural aggregate
+`mechanism_family/reports/c3_mechanism_full_aggregate.json` records 207,360
+endpoint rows (414,720 analysis rows including overall duplicates), the exact
+ledger, all 96 score-file hashes, and all three analysis-code hashes. The August
+23 review audit verified all 100 recorded hashes.
 
-Dependent paper renderers and the terminal verifier are excluded from these
-scientific-job totals.
+The Coin City renderer validates 18 confirmatory, three diagnostic, and three
+base endpoints; temperature-zero monitoring and five-draw files must contain
+the identical 1,440-task universe. The manuscript reports only the five-draw
+stochastic endpoints. Its canonical result is
+`coin_city_structural/reports/registered_results.json` (207,360 scored draws).
+The full renderer now resolves training jobs' registered round-300 greedy files
+from their runtime directories and rejects missing or ambiguous endpoints.
 
-## Priority 0 — Results complete and usable in the paper
+The post-original Qwen3-14B Coin City extension is frozen under protocol
+`coin_city_qwen3_14b_scale_v1`. Canary `30872875` and advance `30872876`
+completed successfully. Canary greedy and stochastic parse rates were both
+100%; base endpoint `30879415` also completed with full parse coverage. Six
+never-started A100 submissions (`30879409`--`30879414`) were superseded before
+training. Their replacements (`30880155`--`30880160`) request two A6000s each
+under `allcs`/`cs` and are eligible, waiting on scheduler priority. Finalizer
+`30880231` remains gated on all six trainings.
 
-1. **Qwen3-4B structural-OOD primary factorial.** All 12 matched cells are
-   complete: causal-family and population-prior rewards, shown and hidden
-   mechanism descriptions, and seeds 42/43/44. The locked hierarchical analysis
-   reports repeated-draw prior-minus-causal MAE of 0.323 [0.259, 0.422] when the
-   mechanism is shown and 0.340 [0.311, 0.369] when hidden. Greedy intervals
-   include zero.
-2. **Qwen3-4B structureless diagnostics.** All six cells are complete: both
-   disclosures and all three seeds. Repeated-draw structureless-minus-causal MAE
-   is 0.641 [0.551, 0.774] with structure shown and 0.677 [0.569, 0.856] when
-   hidden. The hidden comparison was added to the paper on August 20.
-3. **Structural-OOD untrained endpoints.** All six model-by-disclosure endpoints
-   are complete for Qwen3-4B, Qwen3-8B, and Llama-3.1-8B. These are descriptive
-   references, not scale or architecture estimates.
-4. **Historical Polymarket Qwen3-4B triplet.** Training lowers sealed-test Brier
-   score from 0.1316 to 0.1159, a difference of -0.0157
-   [-0.0253, -0.0067]. Its difference from contemporaneous market prices is
-   unresolved: 0.0022 [-0.0026, 0.0072].
-5. **Experiments 1 and 2.** The ten-model prospective update study and six-model
-   Coin City inference study are complete and included in the manuscript. Their
-   shortcut-compatible interpretations remain explicit.
+## Open items as of 2026-09-23
 
-## Priority 1 — Finish the structural-OOD model roster
+**Qwen3-14B Coin City extension: blocked, and the registration record is not
+trustworthy as it stands.** Three separate problems, all of which must be fixed
+before anything is rendered:
 
-This is the highest-value running work because it unlocks the prespecified Qwen
-scale comparison, the approximately matched Qwen/Llama comparison, and the full
-disclosure interaction.
+1. The registered `train_script_sha256` no longer matches `train.sh`. The
+   working-tree script gained periodic checkpointing on 2026-08-28 so a
+   timed-out training could be recovered. The change is benign -- defaults
+   reproduce the registered invocation, and the recovered run trained from
+   scratch (`resume_dir` empty) to the registered `step 301` -- but it is
+   uncommitted, and only causal seed 43 ran under it.
+2. The ledger names `30920615` for causal seed 43. That job produced no scores.
+   The scores live under `30948628`, which the ledger does not name.
+3. The ledger `runs/coin_city_qwen3_14b_scale_full_20260825T134340Z.json` is
+   untracked and its mtime is 2026-08-27, two days after the timestamp in its
+   own filename. It was edited after registration with no version history.
 
-### Running
+Rendering through these would mean accepting a drifted script, substituting an
+unregistered job, and trusting a hand-edited record -- not a checksum waiver.
+The fix in progress instead: job `31481143`, submitted 2026-09-23, retrains
+causal seed 43 from `train_registered_s43.sh`, which is byte-identical to the
+committed registered script, with a 2-day allocation because the failure was
+walltime and walltime is an `sbatch` parameter rather than part of the script.
+When it lands, write a ledger naming the real jobs and **commit it** before
+rendering.
 
-| Job | Cell | Progress at 11:06 ET |
-|---:|---|---:|
-| 30730355 | shown / Llama-8B / causal / seed 43 | 173/300 |
-| 30730356 | shown / Llama-8B / causal / seed 44 | 174/300 |
-| 30730357 | shown / Llama-8B / population prior / seed 42 | 150/300 |
-| 30730358 | shown / Llama-8B / population prior / seed 43 | 145/300 |
-| 30730359 | shown / Llama-8B / population prior / seed 44 | 144/300 |
-| 30730360 | hidden / Qwen3-8B / causal / seed 42 | 124/300 |
-| 30730361 | hidden / Qwen3-8B / causal / seed 43 | 46/300 |
-| 30730362 | hidden / Qwen3-8B / causal / seed 44 | 3/300 |
+**Newer runs are outside the canonical result.** `reports/registered_results.json`
+is dated 2026-08-23 and validates 24 jobs. It does not include the 2026-09-20/21
+`sel_causal_qwen3_8b` s42-44, `sel_population_prior_qwen3_8b` s42-44,
+`selbase_qwen3_8b`, or `causal`/`population_prior` `llama3_1_8b` s45-46 runs.
+Whether the `sel_` arm belongs in the manuscript is undecided and needs an
+author call.
 
-All eight logs were advancing at the verified time. The recurring node-local
-vLLM usage-statistics `ENOSPC` message is nonfatal; completed jobs have written
-adapters and locked endpoint summaries to the shared filesystem.
+**Seven-seed contrasts are computing, deliberately unpublished.** The seed 47/48
+trainings are still running with a finalizer queued behind them.
+`freeze_extension.json` states that seven-seed estimates are reported alongside,
+never in place of, the frozen five-seed roster, so whether the appendix gains a
+sentence remains an author decision.
 
-### Pending within the roster
+**Paper wiring, resolved 2026-09-23.** Four three-seed outputs had been generated
+but never included: `exp3_coin_structural_summary`, `exp3_coin_structural_cues`,
+`exp3_coin_structural_diagnostics`, and `exp3_coin_qwen3_4b_stochastic`. All four
+now appear in the three-seed subsection of the appendix. Four others are
+superseded and should stay unwired: `exp3_coin_qwen3_4b_cue_by_k` and
+`exp3_coin_qwen3_8b_cue_by_k` duplicate `exp3_coin_structural_cues` per model;
+`exp3_coin_qwen3_8b_stochastic` is superseded by the eight-seed data file used in
+the main text; and `exp3_coin_qwen3_4b_stochastic_data` only defines `\cciPeak`
+for a Qwen3-4B figure that does not exist, and would collide with the Qwen3-8B
+definition if included.
 
-1. **Critical paired-cell repair:** job 30788373, shown Qwen3-8B causal seed 42.
-   It is scientifically identical to the source cell that stalled during NCCL
-   initialization and is waiting for an eligible A6000 allocation.
-2. Hidden Qwen3-8B population-prior seeds 42/43/44: jobs 30730363--30730365.
-3. All six hidden Llama-8B cells: jobs 30730366--30730371.
+## Scheduler lineage and paper handoff
 
-No new model-level claim enters the paper until the relevant causal/prior
-three-seed pair is complete and its locked evaluation passes.
+The original Polymarket 8B jobs failed before scientific training because actor
+workers lacked the shared mechanism-family directory on `PYTHONPATH`. Their
+scientifically identical replacement roster and failure marker are recorded in
+`polymarket/runs/exp3b_model_extension_20260824T012515Z.json`.
 
-## Priority 2 — Polymarket 8B extension
+All replacement jobs completed successfully. Qwen3-8B improves from .12867 to
+.11642 Brier (trained-minus-base $-.01225$ $[-.01948,-.00602]$); Llama-8B
+improves from .15203 to .11502 ($-.03701$ $[-.05376,-.02258]$). Both
+trained-minus-market intervals span zero. Both trained means have higher error
+than the train-only Platt market baseline.
 
-Six scheduler-ready training jobs remain pending for Qwen3-8B and Llama-3.1-8B
-at seeds 42/43/44 (30730372--30730377). Two locked-test jobs
-(30730390--30730391) depend on their model's three adapters. This extension tests
-whether the Qwen3-4B historical gain replicates with Qwen scale and across an
-approximately matched Qwen/Llama comparison. No extension result is currently in
-the paper.
+The old Coin City paper job `30788375` failed before rendering because its
+submission-time hash pin predated the single-manuscript cleanup; terminal job
+`30788376` therefore cannot run. This was a handoff failure, not an endpoint or
+analysis failure. The repaired renderer has since validated the complete roster
+and generated the canonical result and tables directly. Combined finalizer
+`30856298` completed mechanism aggregation but failed in the paper renderer
+because its raw-row validator rejected the 12 registered, penalized parse
+failures in the untrained Llama endpoint. The locked summaries and scientific
+jobs were unaffected. The validator now accepts `null` only under the registered
+loss-one policy, recomputes coverage and Brier from raw rows, and writes both
+tables into the sole physical manuscript at `paper/`.
 
-## Priority 3 — Coin City A-to-B extension
-
-All 31 jobs are dependency-gated behind the current structural and Polymarket
-work:
-
-1. Six seed-42 model-by-arm canaries.
-2. One fail-closed canary gate.
-3. Eighteen confirmatory runs: 3 models x 2 rewards x 3 seeds.
-4. Three Qwen3-4B structureless diagnostics.
-5. Three untrained endpoints.
-
-The extension trains only on Coin City's direct response relation and evaluates an
-unseen persistent-mediator mechanism in both Coin City and Coin Harbor, with
-correct, absent, and misleading qualitative hints. The appendix records the
-registered protocol but explicitly labels it as having no result in the present
-paper.
-
-## Priority 4 — Final analysis and paper freeze
-
-1. Render the full structural and Polymarket roster only after every matched cell
-   and locked endpoint is complete.
-2. Release Coin City only if every canary satisfies the frozen adapter, parse,
-   reward-variance, and length-limit gates.
-3. Run the Coin City renderer after all 31 scientific jobs finish.
-4. Run the terminal paper verifier against exact ledger and artifact hashes.
-5. Rebuild both manuscript variants and audit every numerical sentence against
-   machine-readable results.
-
-## Authoritative monitors
-
-Structural-OOD and Polymarket roster:
+## Read-only checks
 
 ```bash
 python exp3_training_transfer/monitor_campaign.py \
   --mechanism-ledger exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T215355Z_walltime30h_20260818T211828Z_runtimefix_20260819T172806Z.json \
-  --polymarket-extension-ledger exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z_walltime30h_20260818T211828Z.json \
-  --handoff exp3_training_transfer/runs/runtime_recovery_20260819T172806Z.json
+  --polymarket-extension-ledger exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260824T012515Z.json
+
+python exp3_training_transfer/coin_city_structural/monitor.py \
+  --ledger exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json
 ```
 
-Coin City:
+Repository review and manuscript reconstruction remain:
 
 ```bash
-python exp3_training_transfer/coin_city_structural/monitor.py \
-  --ledger exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json \
-  --handoff exp3_training_transfer/runs/paper_verifier_20260819T172807Z.json
+make review
+make paper
 ```
