@@ -67,7 +67,7 @@ ABSTAINS_COLOUR = "#A8ADB4"
 CONDITIONS = (
     ("abc_context", "true_target", "Correct\nlabel"),
     ("abc_wrong_context", "true_target", "Inverted,\ntrue"),
-    ("abc_wrong_context", "cue_target", "Inverted,\nlabelled"),
+    ("abc_wrong_context", "cue_target", "Inverted,\nlabeled"),
 )
 EXPECTED_TEST_EPISODES = 88
 
@@ -174,9 +174,10 @@ def main() -> None:
         axis.set_xlim(-0.15, len(CONDITIONS) - 0.85)
         axis.set_ylim(0.0, 1.05)
         axis.set_yticks([0.0, 0.5, 1.0])
-        axis.set_ylabel("Held-out regime AUC", fontsize=8)
         axis.spines["top"].set_visible(False)
         axis.spines["right"].set_visible(False)
+
+    fig.supylabel("Held-out regime AUC", fontsize=8, x=0.035)
 
     handles, labels = axes[1].get_legend_handles_labels()
     fig.legend(handles, labels, loc="lower center", frameon=False, handlelength=1.6,
