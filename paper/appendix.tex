@@ -1719,6 +1719,66 @@ independently validated and frozen cohort is needed for confirmation.
 %%% FRESH-CONTEXT-APPENDIX %%%
 \input{experiment1_fresh_context_appendix}
 
+\subsection{Exploratory probe: is the saturation a property of the items?}
+\label{app:exp1-ladder}
+
+The frozen cohort separates reasoning from no reasoning and little else at the
+top: two frontier deployments answer every item they leave intact to four
+decimals. That ceiling admits two readings. The items may be too easy, in which
+case harder ones would restore discrimination, or the design family may itself
+be saturating, in which case they would not. We ran a development probe to tell
+these apart before committing to a second frozen cohort. It is unscreened,
+unfrozen, and carries no human validation; nothing here supports a claim about
+model capability, and it is reported because its outcome changed what we built.
+
+\paragraph{What was varied.} The relation in this cohort is an actor-to-channel
+binding that the prompt states outright. We held the arithmetic fixed --- the
+same mechanisms, the same outcome wrapper, the same exact oracles --- and varied
+only how far that binding sits from the surface: stated directly; bound through
+permits; bound through permits and offices; and that, plus inert relations naming
+each actor beside a channel it does not operate. The inert relations take the
+cyclic successor of an actor's own channel, which is a derangement, so no actor
+is named beside the channel it runs and each channel still appears exactly once.
+Every rung keeps the properties the triple analysis depends on: within a triple
+the evidence text, the prior, and the named actor are identical, the three
+correct posteriors are distinct, and the word and punctuation inventories are
+identical across the three contexts, so the added layers give a bag-of-words
+reader nothing. Sixteen parent instances per rung, two per mechanism class.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Development calibration of binding depth. Qwen3-32B with
+thinking enabled, $384/384$ records and no failures. Triples require all three
+relations correct. Error is mean absolute distance from the exact posterior.
+Sixteen triples per rung does not support inference about small differences; the
+relevant observation is the absence of a large one.}
+\label{tab:exp1-ladder}
+\small
+\input{tables/exp1_ladder_calibration}
+\end{minipage}
+\end{center}
+
+\paragraph{The probe came back negative.} Table~\ref{tab:exp1-ladder} shows the
+direct rung reproducing the frozen cohort, which uses that form and which this
+deployment wins at $297/320$, so the instrument measures what it should. Moving
+the binding two inferential steps from the surface and adding the inert relations
+costs two triples of sixteen, which at this sample size is noise. Mean posterior
+error rises from $0.011$ to $0.320$~pp, a thirtyfold increase that remains far
+below any threshold an evaluation could use.
+
+We therefore did not build a second frozen cohort on this axis. The probe also
+suggests why the ceiling is difficult to move from inside this design. Exact
+oracles require the scenario to be fully specified, and full specification is
+what makes the task tractable for a deployment that can already enumerate;
+indirection then lengthens what must be read without adding anything that must be
+reasoned about. A discriminating axis would have to introduce something that
+survives full specification, or abandon exact oracles --- and the oracles are what
+license the bound of Table~\ref{tab:exp1-fresh-bound}, which is the strongest
+claim this experiment makes. We report the ceiling rather than weaken the bound
+to move it. Materials, runner, and scorer are under
+\path{exp1_prospective/context_reversal/ladder}.
+
 %============================================================================
 % BEGIN experiment2_appendix.tex
 %============================================================================
@@ -2980,6 +3040,15 @@ establish the same for the hosted deployments, the semantic cue, or other
 architectures.
 
 \subsubsection{Reproducibility and scope}
+
+\noindent\textbf{Design scope.} The cue is binary and the regimes well
+separated, so these results establish selection between two displayed
+references rather than graded sensitivity to a continuous cue. The per-episode
+evidence is too small to test exact coefficient recovery: the claim is which
+reference the forecast follows, not that the model reproduces its slope. Causal
+patching covers one of seven open checkpoints, and the hosted deployments are
+tested only behaviorally, since their internals are unavailable.
+
 The checkpoints are pinned to commits
 \texttt{cdbee75f17c01a7cc42f958dc650907174af0554} (Qwen3-4B),
 \texttt{b968826d9c46dd6066d109eabc6255188de91218} (Qwen3-8B),
@@ -3887,7 +3956,7 @@ All 6,144 greedy generations parse. Selection-only accuracy is $100\%$ for
 every checkpoint in every domain/label cell. Table~\ref{tab:exp3-components}
 reports the frozen scores, including every assistance condition. At 8B,
 supplying patterns does not reduce average response error in any domain/label
-cell for the base or either trained arm. This locates a failure beyond merely
+cell for the base or either trained arm. This locates a failure beyond
 identifying the reference named by the cue; it does not uniquely separate
 numerical application from sensitivity to the assisted prompt format.
 
@@ -3926,7 +3995,7 @@ The frozen scorer clips forecasts to the valid domain range before computing
 responses. Inspection revealed that Qwen3-32B often returns deviations from rest
 instead of absolute levels; clipping those values distorts the response vector,
 especially in Harbor, whose lower bound is 40. We therefore report a separately
-labelled \emph{post hoc} raw-output audit (Table~\ref{tab:exp3-baseline-audit}),
+labeled \emph{post hoc} raw-output audit (Table~\ref{tab:exp3-baseline-audit}),
 without replacing the frozen scores or counting offset-corrected answers as
 correct forecasts. With the selected pattern supplied in City/semantic, raw
 response MAE is $.384$ versus $4.794$ on the original interface. Complete
@@ -4022,7 +4091,7 @@ differs. Response MAE and Name are the City/semantic cell.}
 
 \paragraph{The boundary is arbitrary labels, not surface domain.}
 Transfer failure alone cannot say whether the untrained cells are unreachable
-by this recipe or merely unreached from City/semantic training. We therefore
+by this recipe or only unreached from City/semantic training. We therefore
 trained the identical recipe natively in each of the three cells held out
 above---City/arbitrary, Harbor/semantic and Harbor/arbitrary---at three seeds
 each, changing only the training cell. Each model is evaluated on its own

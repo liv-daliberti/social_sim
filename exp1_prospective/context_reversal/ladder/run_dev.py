@@ -2,10 +2,11 @@
 """Development calibration for the difficulty ladder. Unfrozen by design.
 
 This is a development set, not an evaluation: there is no screening, no freeze
-and no authorization ledger, and nothing it produces may enter the manuscript.
-Its only question is whether accuracy falls as the actor-to-channel binding moves
-away from the surface, which is what decides whether a frozen ladder cohort is
-worth building.
+and no authorization ledger. Its only question is whether accuracy falls as the
+actor-to-channel binding moves away from the surface, which is what decides
+whether a frozen ladder cohort is worth building. It did not, so the outcome is
+reported in App. app:exp1-ladder as an exploratory probe, labelled there as
+development material that supports no claim about model capability.
 
 Chat rendering and completion parsing are imported from the frozen runner rather
 than restated, so a calibration result cannot diverge from how the cohort is

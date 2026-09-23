@@ -4,7 +4,8 @@
 Same measures as the frozen cohort -- whole triples, item direction, exact
 agreement with the oracle -- computed per rung so the rungs are comparable to
 each other and to the cohort's L0-equivalent result. Denominators are
-unconditional. Development material: no result here belongs in the manuscript.
+unconditional. Development material: the negative outcome is reported in
+App. app:exp1-ladder as an exploratory probe, and supports no capability claim.
 """
 from __future__ import annotations
 
