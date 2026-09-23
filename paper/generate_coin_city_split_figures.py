@@ -89,13 +89,13 @@ ARM_PANEL_LABELS = {
     "abc_wrong_context": "A/B/C + wrong C context",
     "abc_symbol_context": "A/B/C + C context (KIV/ZOR)",
 }
-ARM_TITLE_COLORS = {
-    "baseline": "#D89000",
-    "abc_no_context": "#168F72",
-    "abc_context": "#2C7FB8",
-    "abc_wrong_context": "#B5405F",
-    "abc_symbol_context": "#7A5195",
-}
+# Panel titles are text, not a series, so they wear text ink rather than a hue.
+# The four data colours here -- orange City C OLS, green A/B/C OLS, purple best
+# deployment, grey others -- already occupy most of the wheel; five more title
+# hues would put nine competing colours in one small figure and invite the
+# reader to look for a title/line correspondence that does not exist. Position
+# and the (a)-(e) label carry the panel identity.
+ARM_TITLE_INK = "#333A45"
 CITY_C_OLS_COLOR = "#E69F00"
 BEST_LLM_COLOR = "#6A3D9A"
 INDIVIDUAL_LLM_COLOR = "#A8ADB4"
@@ -958,7 +958,7 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
             loc="left",
             fontweight="bold",
             fontsize=8.3,
-            color=ARM_TITLE_COLORS[arm],
+            color=ARM_TITLE_INK,
         )
         if column_index == 0:
             ax.set_ylabel("MAE (poll points)")
