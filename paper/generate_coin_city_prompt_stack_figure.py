@@ -30,13 +30,17 @@ plt.rcParams.update(
 
 INK = "#333A45"
 MUTED = "#6B7280"
-QUESTION_FILL = "#FFF6E3"
-QUESTION_EDGE = "#D9A441"
-CARD_FILL = "#EDF3F8"
-CARD_EDGE = "#4F7EA8"
-HINT_FILL = "#DCE9F5"
-HINT_EDGE = "#2C7FB8"
+QUESTION_FILL = "#FFF2CC"   # draw.io yellow
+QUESTION_EDGE = "#D6B656"
+C_FILL = "#DAE8FC"          # draw.io blue, the city being forecast
+C_EDGE = "#6C8EBF"
+REF_FILL = "#D5E8D4"        # draw.io green, the two reference cities
+REF_EDGE = "#82B366"
+HINT_FILL = "#E1D5E7"       # draw.io purple, the hint
+HINT_EDGE = "#9673A6"
 MONO = {"family": "monospace", "fontsize": 6.6}
+TAG_INK = "#5A7D3F"
+HIGHLIGHT = "#FFE9A8"
 
 HEADER = "Start    News   Change     End"
 CITY_C = ("   57.8      +8     +9.4    67.2",)
@@ -56,53 +60,95 @@ def box(ax, x, y, w, h, fill, edge):
     )
 
 
-def table(ax, x, y_top, name, rows, note, LINE, PAD):
-    ax.text(x + PAD, y_top, name, ha="left", va="top",
-            fontsize=7.4, fontweight="bold", color=INK)
-    ax.text(x + PAD, y_top - LINE * 1.3, HEADER, ha="left", va="top", color=MUTED, **MONO)
+TABLE_W = 2.62
+RULE = "#6B7280"
+
+
+def _rule(ax, x, y, width, lw):
+    ax.plot([x, x + width], [y, y], color=RULE, linewidth=lw,
+            solid_capstyle="butt", zorder=3)
+
+
+def measure(ax, artist):
+    """Width of a drawn text in data units."""
+    fig = ax.figure
+    fig.canvas.draw()
+    bbox = artist.get_window_extent(renderer=fig.canvas.get_renderer())
+    return ax.transData.inverted().transform(bbox.corners())[2, 0] - \
+        ax.transData.inverted().transform(bbox.corners())[0, 0]
+
+
+def table(ax, x, y_top, name, rows, tag, LINE, PAD):
+    """One city's cases, ruled top / under-header / bottom.
+
+    The y axis is on a different scale from the x axis, so every rule is placed
+    a full LINE clear of the text above it rather than a fraction of one.
+    """
+    left = x + PAD
+    title = ax.text(left, y_top, name, ha="left", va="top",
+                    fontsize=7.4, fontweight="bold", color=INK)
+    if tag is not None:
+        width = measure(ax, title)
+        ax.text(left + width + 0.16, y_top - LINE * 0.06, tag,
+                ha="left", va="top", fontsize=6.6, color=TAG_INK,
+                fontweight="bold")
+
+    top_rule = y_top - LINE * 1.30
+    _rule(ax, left, top_rule, TABLE_W, 1.0)
+    ax.text(left, top_rule - LINE * 0.26, HEADER, ha="left", va="top",
+            color=MUTED, **MONO)
+
+    head_rule = top_rule - LINE * 1.30
+    _rule(ax, left, head_rule, TABLE_W, 0.7)
     for index, row in enumerate(rows):
-        ax.text(x + PAD, y_top - LINE * (2.3 + index), row,
+        ax.text(left, head_rule - LINE * (0.26 + index), row,
                 ha="left", va="top", color=INK, **MONO)
-    ax.text(x + PAD, y_top - LINE * (2.5 + len(rows)), note,
-            ha="left", va="top", fontsize=6.4, color=MUTED, style="italic")
+
+    bottom_rule = head_rule - LINE * (len(rows) + 0.30)
+    _rule(ax, left, bottom_rule, TABLE_W, 1.0)
+    return bottom_rule
 
 
 def build(output_dir: Path) -> Path:
-    fig, ax = plt.subplots(figsize=(6.6, 3.55), facecolor="white")
+    fig, ax = plt.subplots(figsize=(6.6, 3.78), facecolor="white")
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 8.05)
+    ax.set_ylim(0, 8.55)
     ax.axis("off")
 
     left, width = 0.08, 9.84
     LINE, PAD = 0.34, 0.20
-    top = 7.90
+    top = 8.40
 
     # The question, first.
     height = PAD * 2 + LINE * 1.9
     box(ax, left, top - height, width, height, QUESTION_FILL, QUESTION_EDGE)
     ax.text(left + PAD, top - PAD,
-            "A new City C case is starting with a poll of 53.9 and has net news of +5.\n"
+            "Prompt:  City C has a starting poll of 53.9 and has net news of +5.\n"
             "What do you predict the poll will be at the end of the week?",
             ha="left", va="top", fontsize=7.6, color=INK, fontweight="bold", linespacing=1.5)
     top -= height + 0.34
 
     # City C, one case, as an example of how a case reads.
-    height = PAD * 2 + LINE * 4.0
-    box(ax, left, top - height, width, height, CARD_FILL, CARD_EDGE)
-    table(ax, left, top - PAD, "CITY C  ·  the city being forecast",
-          CITY_C, "one earlier case, shown as an example", LINE, PAD)
-    ax.text(left + width - PAD, top - PAD - LINE * 1.9,
-            "← example: a poll of 57.8 met +8 net news and ended at 67.2",
-            ha="right", va="top", fontsize=6.6, color=MUTED)
+    height = PAD * 2 + LINE * 4.95
+    box(ax, left, top - height, width, height, C_FILL, C_EDGE)
+    bottom = table(ax, left, top - PAD, "CITY C  ·  the city being forecast",
+                   CITY_C, None, LINE, PAD)
+    ax.text(left + width - PAD, top - PAD - LINE * 2.3,
+            "one earlier case, shown as an example",
+            ha="right", va="top", fontsize=6.6, color=MUTED, style="italic")
+    ax.text(left + PAD, bottom - LINE * 0.36,
+            "read as: a poll of 57.8 met +8 net news and ended at 67.2",
+            ha="left", va="top", fontsize=6.4, color=MUTED, style="italic")
     top -= height + 0.34
 
     # The two reference cities, side by side.
     half = (width - 0.24) / 2
-    height = PAD * 2 + LINE * 5.0
-    for offset, (name, rows) in enumerate((("CITY A", CITY_A), ("CITY B", CITY_B))):
+    height = PAD * 2 + LINE * 5.45
+    references = (("CITY A", CITY_A, "national news"), ("CITY B", CITY_B, "local news"))
+    for offset, (name, rows, tag) in enumerate(references):
         x = left + offset * (half + 0.24)
-        box(ax, x, top - height, half, height, CARD_FILL, CARD_EDGE)
-        table(ax, x, top - PAD, name, rows, "two of its earlier cases", LINE, PAD)
+        box(ax, x, top - height, half, height, REF_FILL, REF_EDGE)
+        table(ax, x, top - PAD, name, rows, tag, LINE, PAD)
     top -= height + 0.34
 
     # The hint.
@@ -110,10 +156,25 @@ def build(output_dir: Path) -> Path:
     box(ax, left, top - height, width, height, HINT_FILL, HINT_EDGE)
     ax.text(left + PAD, top - PAD, "HINT", ha="left", va="top",
             fontsize=7.2, fontweight="bold", color=HINT_EDGE)
-    ax.text(left + PAD + 0.92, top - PAD,
-            "City C residents generally encounter campaign developments through\n"
-            "national news coverage — the same as City A.",
-            ha="left", va="top", fontsize=7.2, color=INK, linespacing=1.5)
+    body = left + PAD + 0.92
+    ax.text(body, top - PAD,
+            "City C residents generally encounter campaign developments through",
+            ha="left", va="top", fontsize=7.2, color=INK)
+    # The phrase that does the work is highlighted: it is the only part of the
+    # hint that changes between conditions.
+    second = top - PAD - LINE * 1.05
+    phrase = ax.text(body, second, "national news coverage", ha="left", va="top",
+                     fontsize=7.2, color=INK, fontweight="bold", zorder=3)
+    span = measure(ax, phrase)
+    ax.add_patch(
+        FancyBboxPatch(
+            (body - 0.05, second - LINE * 0.60), span + 0.10, LINE * 0.64,
+            boxstyle="round,pad=0,rounding_size=0.04",
+            facecolor=HIGHLIGHT, edgecolor="none", zorder=1.5, mutation_aspect=0.5,
+        )
+    )
+    ax.text(body + span + 0.14, second, "— the same as City A.",
+            ha="left", va="top", fontsize=7.2, color=INK)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "exp2_coin_city_prompt_stack.pdf"
