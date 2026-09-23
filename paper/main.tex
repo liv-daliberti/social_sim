@@ -205,12 +205,10 @@ should be able to use it without depending on the original surface form.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{exp1_protocol_four_panels.pdf}
+\includegraphics[width=.90\linewidth]{exp1_protocol_four_panels.pdf}
 \caption{\textbf{When should a forecast change?} An agent forecasts an
-unresolved question, then receives one fictional update with search off. Some
-updates support the outcome, some oppose it, and some concern the same topic but
-do not bear on the outcome. The labels remain hidden; we ask whether the model
-moves when the news matters and whether it moves the right way.}
+unresolved question, then receives one fictional update with search off. We ask
+whether it moves when the news matters, and whether it moves the right way.}
 \label{fig:exp1-pipeline}
 \end{figure}
 
@@ -259,58 +257,40 @@ forecast.
 \label{sec:exp1}
 
 \noindent\textbf{Design.}
-We evaluate the forecasting capabilities of nine models on 100 unresolved binary
-Polymarket questions with web search. Then, we ask the models to revise their
-forecast after a fictional news update with search disabled
-(Fig.~\ref{fig:exp1-pipeline}). Unbeknownst to the models, we construct these
-updates to support the outcome, oppose it, or cover the same topic without
-directly influencing the outcome. Because models could potentially distinguish
-directional from orthogonal evidence using superficial textual cues, we
-additionally evaluate a word-only, bag-of-words classifier that receives only the
-text of the news update. We also construct matched forecasting scenarios in which
-the same evidence should produce opposed outcomes; for example, intense rainfall
-could increase the probability of a good harvest in a dry region but decrease it
-in a region prone to flooding. To remove the shortcut by construction rather than
-by measurement, we then froze a cohort of 80 finite-rule instances in which the
-evidence text, the prior, and the named actor are identical across three stated
-relations, and the three correct posteriors are distinct and exactly computable
-(App.~\ref{app:exp1}).
+We ask nine models to forecast 100 unresolved binary Polymarket questions with
+web search, then to revise each forecast after one fictional news update with
+search disabled (Fig.~\ref{fig:exp1-pipeline}). Updates support the outcome,
+oppose it, or stay on topic without bearing on it; these labels are hidden from
+the model. To remove lexical shortcuts by construction rather than by
+measurement, we also froze 80 finite-rule instances whose evidence, prior and
+named actor are identical across three stated relations, with three distinct,
+exactly computable posteriors (App.~\ref{app:exp1}).
 
-\noindent\textbf{Finding: models selectively update in the direction implied by the evidence.}
-Across the nine models considered, and 30,094 valid forecast revisions, we find
-that pro-outcome evidence increases forecasts, anti-outcome evidence decreases
-them, and topically related but orthogonal evidence produces little change
-(Fig.~\ref{fig:exp1-updating}a). Conditional on changing their forecast, we find
-that models move their probability $1.9$--$7.5\times$ farther for updates intended
-to influence the prediction (Fig.~\ref{fig:exp1-updating}b). Uncertainty estimates
-and robustness analyses are reported in
+\noindent\textbf{Finding: models update in the implied direction.}
+Across 30,094 valid revisions, pro-outcome evidence raises forecasts,
+anti-outcome evidence lowers them, and orthogonal topical evidence changes
+little (Fig.~\ref{fig:exp1-updating}a). Conditional on moving, models move
+$1.9$--$7.5\times$ farther for directional updates
+(Fig.~\ref{fig:exp1-updating}b). Uncertainty and robustness analyses are in
 App.~\ref{app:exp1-threshold-robustness}; independent human review covers the
-original evidence packets, not the frozen cohort.
+original packets, not the frozen cohort.
 
-\noindent\textbf{Finding: lexical cues alone do not explain model performance.}
-We find that bag-of-words classifiers can almost perfectly distinguish directional
-from orthogonal evidence ($.989$ accuracy), confirming that superficial cues could
-explain models' selectivity. Yet, the same classifiers are much less successful at
-distinguishing whether directional evidence supports or opposes the outcome
-($.688$ accuracy), and models are considerably more directionally consistent
-($.887$--$.990$). The frozen cohort settles the question by construction rather
-than by comparison: because the evidence, the prior, and the named actor are
-identical within a matched triple, any predictor that ignores the stated relation
-answers identically across the triple, so it can win at most one of three items
-and no complete triple at all. Four such predictors, including one permitted to
-choose the best constant revision while knowing every correct answer, score
-exactly $320/960$ items and $0/320$ triples. GPT-5.6 reverses $48/48$ triples and
-matches the exact posterior on $144/144$ items
-(App.~\ref{app:exp1-fresh-factorial}).
+\noindent\textbf{Finding: lexical cues do not explain the result.}
+Bag-of-words classifiers separate directional from orthogonal evidence almost
+perfectly ($.989$) but are far worse at telling support from opposition
+($.688$), where models reach $.887$--$.990$. In the frozen cohort a predictor
+ignoring the stated relation answers identically within a triple, so it can win
+no triple at all: four such predictors, one allowed the best constant revision
+while knowing every answer, score exactly $320/960$ items and $0/320$ triples,
+while GPT-5.6 reverses $48/48$ triples and matches the exact posterior on
+$144/144$ items (App.~\ref{app:exp1-fresh-factorial}).
 
-\noindent\textbf{Finding: the capability depends on inference-time reasoning.}
+\noindent\textbf{Finding: it depends on inference-time reasoning.}
 Holding weights and prompts fixed, Qwen3-32B wins $29/320$ triples with reasoning
-disabled and $297/320$ with it enabled, and matches the exact posterior on $1/960$
-against $811/960$ items. Because both arms see identical items, the gap cannot be
-attributed to item difficulty or to the answer leaking from the prompt. Counting
-every planned call, Claude Opus~5 declined $84$ of $576$, which blocked a further
-$153$ dependent updates, and retains $17/48$ triples once those are scored as
-failures (App.~\ref{app:exp1-fresh-factorial}).
+disabled and $297/320$ with it enabled ($1/960$ against $811/960$ items), and
+both arms see identical items, so the gap is not difficulty or leakage. Counting every planned call, Claude Opus~5 declined
+$84$ of $576$, blocking $153$ dependent updates, and retains $17/48$ triples once
+those count as failures (App.~\ref{app:exp1-fresh-factorial}).
 
 \begin{figure}[!b]
 \centering
@@ -348,13 +328,12 @@ failures (App.~\ref{app:exp1-fresh-factorial}).
 \end{subfigure}
 \caption{\textbf{Models move much more for evidence than for topical
 chatter, and usually move in the implied direction.} \textbf{(a)} Average
-revision after supporting, contrary, and topical updates. \textbf{(b)} The
-table summarizes how much farther models move for directional evidence than for
-topical updates, conditional on moving (Sens.), and how often
-a move of at least three percentage points has the right sign (EHC$_{\geq3}$). Intervals and robustness checks are in
-App.~\ref{app:exp1-threshold-robustness}. How often a model leaves a topical
-premise exactly unchanged is reported separately in Table~\ref{tab:exp1-abstention};
-it disagrees with movement about which deployments are selective.}
+revision after supporting, contrary, and topical updates. \textbf{(b)} How much
+farther models move for directional evidence, conditional on moving (Sens.), and
+how often a move of at least three points has the right sign (EHC$_{\geq3}$).
+Abstention is decomposed separately in Table~\ref{tab:exp1-abstention}, which
+disagrees with movement about which deployments are selective; intervals are in
+App.~\ref{app:exp1-threshold-robustness}.}
 \label{fig:exp1-updating}
 \end{figure}
 
@@ -424,7 +403,7 @@ forecasts increasingly rely on direct local evidence.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{exp2_coin_city_results.pdf}
+\includegraphics[width=.90\linewidth]{exp2_coin_city_results.pdf}
 \vspace{3pt}
 \begin{minipage}{\linewidth}
 \centering
@@ -477,7 +456,7 @@ relationship, with the threshold varying by model family
 \begin{figure}[!t]
 \centering
 \begin{minipage}[c]{0.46\linewidth}
-\includegraphics[width=\linewidth]{exp2_symbol_decoding.pdf}
+\includegraphics[width=.90\linewidth]{exp2_symbol_decoding.pdf}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.50\linewidth}
 \caption{\textbf{Larger models infer an episode-local convention, then yield
@@ -513,7 +492,7 @@ but gives way once direct observations reveal City C's own response relationship
 \begin{figure}[!t]
 \vspace{-0.4em}
 \centering
-\includegraphics[width=\linewidth]{exp2_causal_patch.pdf}
+\includegraphics[width=.90\linewidth]{exp2_causal_patch.pdf}
 \vspace{-0.7em}
 \caption{\textbf{Changing the induced convention changes the forecast when
 evidence is sparse.} In the illustrated pair, swapping the internal
@@ -540,7 +519,7 @@ of this behavior training carries into new domains and response structures.
 \section{Can relationship use survive a change of world?}
 \label{sec:transfer}
 
-Finetuning may teach evidence use or merely typical answers. We test whether
+Finetuning may teach evidence use or only typical answers. We test whether
 training transfers relationships to new worlds and improves unseen-event forecasts.
 
 \subsection{Exp.~3: what training transfers, and what it does not}
@@ -556,7 +535,7 @@ training transfers relationships to new worlds and improves unseen-event forecas
 %
 % Row cards carry the mechanism detail: a two-node vs three-node graph with the
 % mediator drawn hollow (it is never named to the model) and a persistence loop,
-% plus the six-period impulse response on labelled axes. Bar heights are the
+% plus the six-period impulse response on labeled axes. Bar heights are the
 % normalised responses to a unit shock under worlds.transition at the midpoint of
 % each sampling band (direct: gain .57; mediated: gain .57, rho .61, phi .30,
 % lambda .81), i.e. A = (1, 0, 0, 0, 0, 0) and B = (.81, .74, .52, .34, .21, .13).
@@ -606,7 +585,7 @@ training transfers relationships to new worlds and improves unseen-event forecas
       (-.26,-.24)..controls(-.18,-.19)and(-.10,-.29)..(-.02,-.24)
       ..controls(.06,-.19)and(.14,-.29)..(.26,-.24);
   \end{scope}}
-% Impulse response on labelled axes: response (Delta y) against period (t).
+% Impulse response on labeled axes: response (Delta y) against period (t).
 \newcommand{\impulse}[3]{% #1 = axis corner x, #2 = baseline y, #3 = bar heights
   \draw[-{Stealth[length=2.6pt,width=2.2pt]},draw=miniInk!65,line width=.5pt]
     (#1,#2) -- (#1,#2+0.40);
@@ -832,10 +811,10 @@ range penalty, we report base contrasts twice: the joint-cell gain is
 stochastic decoding, eight training seeds.} Bars show task-averaged response MAE
 over four evidence depths; trained arms average eight seeds. Each cell prints the
 paired seed-first prior-minus-matched contrast, bold when its 95\% interval
-excludes zero. At three seeds three of the four contrasts excluded zero; at eight
-only the in-distribution cell does. The structure-shift row is a control rather than
-a transfer test: training contains no structural variation, so the trained policy
-emits no delayed response anywhere (Section~\ref{sec:exp3}).}
+excludes zero; at eight seeds only the in-distribution cell does. The
+structure-shift row is a control, not a transfer test: training contains no
+structural variation, so the trained policy emits no delayed response anywhere
+(Section~\ref{sec:exp3}).}
 \label{fig:exp3-transfer-results}
 \vspace{10pt}
 \end{figure}
@@ -892,7 +871,7 @@ where the manipulation bites; held-out gain tracking stays unestablished
 
 \begin{figure}[!b]
 \centering
-\includegraphics[width=\linewidth]{exp4_qwen_scale_results.pdf}
+\includegraphics[width=.90\linewidth]{exp4_qwen_scale_results.pdf}
 \caption{\textbf{Training improves the tested bases, but scale alone does not
 guarantee a better trained forecaster.} Across Qwen3 checkpoints from 1.7B to
 32B, several trained models reach crowd-level performance, while the gain narrows

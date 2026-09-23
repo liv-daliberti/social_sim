@@ -100,6 +100,23 @@ def main():
     write('exp3_gain_evidence.tex','llrrrrrrrr',
           r'Disclosure & Mechanisms & Base & Matched & Shuffled & No change & '
           r'Slope M & Slope S & Shuffled$-$matched & 95\% interval', rows)
+    # Seed replication of the successful 2e-5 recipe (seeds 43-45 extend seed 42).
+    lroot = ROOT / 'learnability'
+    rows = []
+    for seed in (42, 43, 44, 45):
+        name = f'forecast_lr2e5_s{seed}'
+        raw = (lroot / f'runs/{name}/component_results/qwen3_8b_sft_{name}.summary.json').read_bytes()
+        SOURCES[f'learnability/runs/{name}/summary'] = hashlib.sha256(raw).hexdigest()
+        cells = {(c['domain'], c['label_kind'], c['interface']): c for c in json.loads(raw)['cells']}
+        assert all(c['parse_rate'] == 1 and c['n_pairs'] == 24 for c in cells.values())
+        acc = lambda d, l: f"{100*cells[(d, l, 'original')]['accuracy']:.1f}"
+        rows.append([str(seed), acc('coin_city', 'semantic'), acc('coin_city', 'arbitrary'),
+                     acc('coin_harbor', 'semantic'), acc('coin_harbor', 'arbitrary'),
+                     f"{cells[('coin_city', 'semantic', 'original')]['response_mae']:.3f}",
+                     f"{100*cells[('coin_city', 'semantic', 'selection_only')]['accuracy']:.0f}"])
+    write('exp3_learnability_seeds.tex', 'lrrrrrr',
+          r'Seed & City/sem. & City/arb. & Harbor/sem. & Harbor/arb. & Resp. MAE & Name (\%)', rows)
+
     # Native-cell SFT: each cell trained in its own domain/label condition.
     native_root = ROOT / 'native_cells'
     NATIVE = [('coin_city','arbitrary'), ('coin_harbor','semantic'), ('coin_harbor','arbitrary')]
