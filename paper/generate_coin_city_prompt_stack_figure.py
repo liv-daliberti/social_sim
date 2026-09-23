@@ -110,14 +110,14 @@ def table(ax, x, y_top, name, rows, tag, LINE, PAD):
 
 
 def build(output_dir: Path) -> Path:
-    fig, ax = plt.subplots(figsize=(6.6, 3.78), facecolor="white")
+    fig, ax = plt.subplots(figsize=(6.6, 3.30), facecolor="white")
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 8.55)
+    ax.set_ylim(0.84, 8.31)
     ax.axis("off")
 
     left, width = 0.08, 9.84
     LINE, PAD = 0.34, 0.20
-    top = 8.40
+    top = 8.16
 
     # The question, first.
     height = PAD * 2 + LINE * 1.9
@@ -129,16 +129,10 @@ def build(output_dir: Path) -> Path:
     top -= height + 0.34
 
     # City C, one case, as an example of how a case reads.
-    height = PAD * 2 + LINE * 4.95
+    height = PAD * 2 + LINE * 4.25
     box(ax, left, top - height, width, height, C_FILL, C_EDGE)
-    bottom = table(ax, left, top - PAD, "CITY C  ·  the city being forecast",
-                   CITY_C, None, LINE, PAD)
-    ax.text(left + width - PAD, top - PAD - LINE * 2.3,
-            "one earlier case, shown as an example",
-            ha="right", va="top", fontsize=6.6, color=MUTED, style="italic")
-    ax.text(left + PAD, bottom - LINE * 0.36,
-            "read as: a poll of 57.8 met +8 net news and ended at 67.2",
-            ha="left", va="top", fontsize=6.4, color=MUTED, style="italic")
+    table(ax, left, top - PAD, "CITY C  ·  the city being forecast",
+          CITY_C, None, LINE, PAD)
     top -= height + 0.34
 
     # The two reference cities, side by side.
@@ -173,8 +167,8 @@ def build(output_dir: Path) -> Path:
             facecolor=HIGHLIGHT, edgecolor="none", zorder=1.5, mutation_aspect=0.5,
         )
     )
-    ax.text(body + span + 0.14, second, "— the same as City A.",
-            ha="left", va="top", fontsize=7.2, color=INK)
+    ax.text(body + span + 0.015, second, ".", ha="left", va="top",
+            fontsize=7.2, color=INK)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "exp2_coin_city_prompt_stack.pdf"
