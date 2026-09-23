@@ -8,6 +8,11 @@ from .. import run_local as c
 
 ROOT=Path(__file__).resolve().parents[1]
 FROZEN=ROOT/'data/fresh_evaluation_v1/frozen_v1'
+# The enabled arm was collected under a recorded amendment that raised only the
+# output-token allowance; see runs/fresh_evaluation_v1/TOKEN_BUDGET_AMENDMENT.md.
+# Each arm is verified against the freeze it was actually produced under.
+AMENDED=ROOT/'data/fresh_evaluation_v1/frozen_v1_amended/local_freeze_max_tokens_15360.json'
+ARM_FREEZE={'enabled':AMENDED,'disabled':None}
 RESULTS=ROOT/'results/fresh_evaluation_v1'
 
 
@@ -67,9 +72,10 @@ def finish():
         rows=[]
         for spec in f['plans']:
             plan=Path(spec['path']);units=c.read_units(plan);out=Path(f['responses_dir'])/(mode+'_'+plan.stem+'.jsonl');mp=Path(str(out)+'.manifest.json');man=json.loads(mp.read_text());cfg=man['config']
-            args=types.SimpleNamespace(design_freeze=fp,input=plan,output=out,model_key=key,thinking=mode)
+            fz=ARM_FREEZE.get(mode) or fp
+            args=types.SimpleNamespace(design_freeze=fz,input=plan,output=out,model_key=key,thinking=mode)
             freeze.verify_local(args,cfg)
-            assert man['design_freeze_sha256']==c.file_sha256(fp)
+            assert man['design_freeze_sha256']==c.file_sha256(fz)
             assert cfg['runner_sha256']==c.file_sha256(Path(reasoning.__file__)) and cfg['helper_runner_sha256']==c.file_sha256(Path(c.__file__))
             assert man['tokenizer_chat_template_sha256']==template_hash
             indexed=reasoning.load_existing(out,mp,cfg,units);assert len(indexed)==len(units)*4;checks+=5
@@ -79,7 +85,7 @@ def finish():
                     assert c.text_sha256(chat)==row['chat_prompt_sha256'] and len(tok.encode(chat,add_special_tokens=False))==row['prompt_token_count'] and opened==row['reasoning_open_in_prompt'];checks+=3
                 rows.append(row)
             hashes[str(out)]=c.file_sha256(out);hashes[str(mp)]=c.file_sha256(mp)
-        summary=analyze.analyze(full_units,rows,key);assert summary['all_planned_received'];summary['provenance']={'local_freeze':freeze.artifact(fp),'scorer':freeze.artifact(Path(analyze.__file__)),'response_sha256':dict(hashes)}
+        summary=analyze.analyze(full_units,rows,key);assert summary['all_planned_received'];summary['provenance']={'local_freeze':freeze.artifact(fp),'amended_freeze':freeze.artifact(AMENDED),'arm_freezes':{m:str((ARM_FREEZE.get(m) or fp)) for m in ('disabled','enabled')},'scorer':freeze.artifact(Path(analyze.__file__)),'response_sha256':dict(hashes)}
         n,values=independent_primary(full_units,rows,summary);checks+=n;pair_by_mode[mode]=values;summaries[mode]=summary;all_rows[mode]=rows;save(mode+'.json',summary)
     comparison=analyze.compare(summaries['disabled'],summaries['enabled']);save('reasoning_comparison.json',comparison)
     parents=sorted({u['parent_family_id'] for u in full_units});indices=np.random.default_rng(20260922).integers(0,len(parents),(2000,len(parents)))

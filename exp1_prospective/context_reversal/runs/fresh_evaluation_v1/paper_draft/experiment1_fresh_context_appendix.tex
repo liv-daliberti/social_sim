@@ -1,0 +1,226 @@
+\subsection{Fresh finite-rule context reversal: reasoning and wording}
+\label{app:exp1-fresh-factorial}
+
+The development studies above confound material version with the reasoning
+setting. We therefore froze a new diagnostic before collecting any target-model
+responses: 80 new finite-rule instances, ten in each of eight mechanism classes,
+with the same name, wording, and resampling controls in both Qwen3-32B thinking
+settings. The earlier qualitative 80-concept blueprint was replaced by these
+fully specified rules. They are parameterized instances of eight shared classes
+and one outcome wrapper, not 80 independent mechanisms or a representative
+natural-news sample. None of the original development outputs enters this cohort.
+
+\paragraph{Explicit mechanisms and residual uncertainty.}
+The classes cover detector calibration, prerequisite timing, component quorums,
+procedural waivers, proportional brokerage, directed reachability, bounded
+feedback, and dependence among stored reports. Each of three independently
+specified channels has private variables and primitive draws, including a binary
+state $X$. An audit revises $P(X=1)$ from $1/4$ to $3/4$ or conversely, without
+revealing a realized state. Other conditional rules remain fixed. In calibration
+and report-dependence cases, the stated $X$ probabilities already condition on
+stored observations; the observation is not applied twice.
+
+The project completes if a final inspection succeeds and either a reserve team
+succeeds or the ordinary channel fires without the cancellation channel firing.
+The independent inspection and reserve probabilities are $4/5$ and $1/5$.
+Writing $a,b$ for the ordinary and cancellation firing probabilities gives
+\[
+ P(\mathrm{complete})=\tfrac45\{\tfrac15+\tfrac45a(1-b)\}.
+\]
+The archive channel has neither an outcome pathway nor an information link to
+other channels. Thus identical news can raise, lower, or leave the forecast
+unchanged solely through actor-to-channel bindings. All channel descriptions
+appear in every context, with identical word and punctuation inventories.
+Half the questions ask about noncompletion, and rising/falling audits are
+balanced. Exact enumeration or Bayes calculations, cross-checked in a second
+implementation, establish every sign and retain both outcomes after every update.
+The question probability stays between $.16$ and $.84$; no normative forecast is
+forced to an endpoint. Component probabilities are supplied, but the model's
+initial forecast is elicited separately in each context and never replaced by
+the oracle probability.
+
+For example, in the first calibration instance the same audit changes a named
+channel's $P(X=1)$ from $1/4$ to $3/4$. Its oracle baseline is $.3079$ in each
+context. The new probabilities are $.3253$, $.2773$, and $.3079$ when that actor
+operates the ordinary, cancellation, or archive channel, respectively. These
+oracle values are analysis quantities, not supplied model forecasts.
+
+\paragraph{Screening and its limits.}
+No new human validation was obtained. Separate Llama-3.1-8B and Qwen3-14B
+checkpoints screened all 720 distinct packets (80 instances, three wording
+versions, three contexts), without intended labels, sibling contexts, or target
+outputs. Same-text resamples reuse an identical packet. The final screens had
+poor directional agreement: 224/720 and 182/720 planned judgments matched the
+rule-derived labels; 44 Llama completions were invalid. These screens do not
+validate the labels. Every valid endpoint judgment retained both outcomes.
+Author adjudication repaired two actual text defects in earlier drafts: an
+over-broad independence statement and reuse of ``inspection'' for two different
+events. The final version explicitly distinguishes private variables and a local
+approval coin from the final inspection. All versions and judgments are retained.
+No instance was removed because a reviewer answered incorrectly. Label authority
+is the disclosed formal specification and author cross-check, not model consensus
+or independent human judgment. Qwen3-14B also shares a model family with the target.
+
+\paragraph{Frozen paired collection.}
+Each instance has base, name-only, paraphrase, and same-text resample variants.
+Each variant contains three relational contexts and one own-context baseline
+with three independent new-news, no-news, and already-known-information branches.
+This gives 3,840 planned records per local reasoning mode. Qwen3-32B uses the same
+checkpoint, temperature $.7$, top-$p=1$, request seeds, unconstrained decoding,
+8,192-output-token allowance, and 16,384-token context in both modes; its thinking
+chat prefix is the intended manipulation. A final probability object may have
+one Markdown fence in either mode; enabled reasoning must close first. All
+received invalid/truncated responses and durably recorded interrupted requests
+are terminal failures, without resampling. This is a comparison of reasoning
+settings under these deployments, not a general causal decomposition of capability.
+
+Paired reversal requires both signed updates to be strictly correct; zero
+movement and all invalid or missing responses fail the binary endpoint. Magnitudes
+use observed values with missingness shown. The prespecified broken-link criterion
+requires a signed-mean 90\% interval strictly inside $\pm2$ points and an upper
+95\% mean-absolute bound below 2 points; any missing planned broken measurement
+makes it indeterminate. Intervals use 2,000 whole-instance bootstrap draws,
+keeping contexts, wordings, and modes paired. At all-correct or all-zero cells,
+these empirical intervals collapse; this does not establish population certainty.
+They are descriptive for the authored corpus; shared mechanism/template dependence limits generalization. Numerical
+calculation and rounding remain possible sources of error even when the rules
+do not force endpoint forecasts. The released scoring also reports accuracy in prespecified
+oracle-effect bins below 1, 1--2, and at least 2 percentage points.
+
+Valid final probabilities: thinking off: 3,840/3,840; thinking on: 3,803/3,840.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Fresh local evaluation. Signs are correct updates out of 160 planned signed contexts per wording; pairs are correct reversals out of 80, followed by a 95\% interval in percent. Broken movement is mean absolute change with its 95\% interval, in percentage points; the final column reports observed broken measurements.}
+\label{tab:exp1-fresh-performance}
+\small
+\input{tables/exp1_fresh_performance}
+\end{minipage}
+\end{center}
+
+The base-wording thinking contrast is 78.8 [68.8, 88.8] percentage points. The leave-one-mechanism-out contrasts range from 75.7 to 82.9 points. Thinking off: no wording variant meets the stability criterion. Thinking on: Base meet the stability criterion.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Matched thinking contrasts in paired reversal. The final column subtracts the base-wording contrast; all contexts and modes remain paired by parent instance. Brackets are descriptive 95\% intervals.}
+\label{tab:exp1-fresh-reasoning}
+\small
+\input{tables/exp1_fresh_reasoning}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Fresh controls and oracle discrepancy, all in percentage points. No-news and repeated-information columns give mean absolute movement across the three contexts. Baseline and updated error are mean absolute deviations from the exact rule-based probabilities, not calibration against realized real-world outcomes.}
+\label{tab:exp1-fresh-controls}
+\small
+\input{tables/exp1_fresh_controls}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Wording discrepancies relative to base, across all three contexts. Excess subtracts the identical-text resampling discrepancy. Joint correctness requires both the base and edited reversal pair to be correct out of 80. Intervals crossing zero do not establish equivalence; agreement alone does not establish correctness.}
+\label{tab:exp1-fresh-edits}
+\small
+\input{tables/exp1_fresh_edits}
+\end{minipage}
+\end{center}
+
+\paragraph{One frozen frontier evaluation.}
+A prospectively fixed balanced subset contains three instances per mechanism
+class (24 parents), with base and paraphrase wording. It has 576 planned records,
+not 48 independent families. GPT-5.6 Sol uses low reasoning, a 2,048-output-token
+allowance, strict probability JSON, no tools, and zero automatic retries. Batch
+baselines precede a separate update batch using only their own saved priors.
+The complete cohort was reserved within the user's budget before generation;
+provider token-count receipts and the persistent ledger are archived. No released
+reservation financed additional target cases. Local rows below use exactly this
+same subset. Frontier/local contrasts remain descriptive because deployments and
+reasoning allowances differ.
+
+GPT-5.6 returned 576/576 valid final probabilities.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Matched 24-parent subset, with all planned failures retained. Signs are out of 48; paired reversals out of 24. Pair intervals are percentages; broken movement and its interval are percentage points.}
+\label{tab:exp1-fresh-frontier}
+\small
+\input{tables/exp1_fresh_frontier}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Base-wording paired reversal by mechanism class. The equal-class macro average equals the overall rate because all classes contain ten instances. These repeated parameterizations do not supply 80 independent mechanism replications.}
+\label{tab:exp1-fresh-mechanisms}
+\small
+\input{tables/exp1_fresh_mechanisms}
+\end{minipage}
+\end{center}
+
+\paragraph{What a relation-blind predictor can reach.}
+The unit of evidence is the triple: one parent instance and wording, with the
+evidence text, the prior and the named actor identical across three stated
+relations. All 320 triples were verified to hold those
+three constant, to cover the three relations, and to have three distinct correct
+posteriors. The last property bounds every shortcut: a predictor reading only the
+evidence, the prior and the actor is constant within a triple, so it matches at
+most one of three items and never a whole triple. The bound is arithmetic, not
+empirical, and the predictors below only exhibit it -- including an adversary
+allowed to choose the best constant revision per triple knowing every oracle.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Predictors that read only the evidence, the prior and the named actor. Each is constant within a triple, so none can exceed one third of items or win a single triple.}
+\label{tab:exp1-fresh-bound}
+\small
+\input{tables/exp1_fresh_bound}
+\end{minipage}
+\end{center}
+
+\paragraph{Exact agreement and the reasoning contrast.}
+Scoring exact posterior agreement rather than revision direction separates
+systems that a binary criterion cannot: a guess supplies a sign, not a value.
+Denominators are unconditional, counting refusals, truncations and updates
+blocked by their own failed baseline as failures.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Triple and item accuracy against the exact oracles, with unconditional denominators. Exact agreement is to four decimals, the granularity at which the oracles are stated.}
+\label{tab:exp1-fresh-triples}
+\small
+\input{tables/exp1_fresh_triples}
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Every planned call, classified by attribution. A refusal or unparseable answer is the system's; a truncation at the output budget or a request killed mid-batch is ours; a record blocked by its own failed baseline is neither.}
+\label{tab:exp1-fresh-accounting}
+\small
+\input{tables/exp1_fresh_accounting}
+\end{minipage}
+\end{center}
+
+\paragraph{Interpretive boundary and audit.}
+These data address the original relevance shortcut under explicit finite rules:
+news-only, full-word, and word-bigram classifiers all achieve $1/3$ direction
+accuracy and $.50$ balanced relevance accuracy in five-fold evaluation holding
+out entire parent instances and all their variants. This does not eliminate every
+possible structural heuristic. The new diagnostic does not retroactively validate
+the original packet relevance comparison, establish natural-news coverage, or
+replace the limitations of model screening. Raw completions, context-specific
+priors, effective chat hashes, token counts, failure denominators, and primary
+statistics were checked before these tables were generated. The artifact root is
+\path{exp1_prospective/context_reversal/results/fresh_evaluation_v1}; the immutable
+design is under \path{exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1}.

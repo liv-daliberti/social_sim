@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 REPO=ROOT.parents[1]
 STATE=ROOT/'runs/fresh_evaluation_v1/publication'
 APPENDIX='experiment1_fresh_context_appendix.tex'
-TABLES=tuple('tables/exp1_fresh_'+x+'.tex' for x in ('performance','controls','reasoning','edits','frontier','mechanisms'))
+TABLES=tuple('tables/exp1_fresh_'+x+'.tex' for x in ('performance','controls','reasoning','edits','frontier','mechanisms','bound','triples','accounting'))
 # The manuscript is two hand-edited sources: main.tex (body) and appendix.tex.
 TARGETS=('main.tex','appendix.tex',APPENDIX,*TABLES,'main.pdf')
 

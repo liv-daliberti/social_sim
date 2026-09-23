@@ -187,6 +187,47 @@ reasoning allowances differ.
     text+='\nGPT-5.6 returned '+str(gpt['coverage'].get('ok',0))+'/576 valid final probabilities.\n'
     text+=block('Matched 24-parent subset, with all planned failures retained. Signs are out of 48; paired reversals out of 24. Pair intervals are percentages; broken movement and its interval are percentage points.','tab:exp1-fresh-frontier','exp1_fresh_frontier')
     text+=block('Base-wording paired reversal by mechanism class. The equal-class macro average equals the overall rate because all classes contain ten instances. These repeated parameterizations do not supply 80 independent mechanism replications.','tab:exp1-fresh-mechanisms','exp1_fresh_mechanisms')
+    # Triple-level scoring and unconditional accounting, computed in process from
+    # the frozen plan and the saved records so they cannot go stale against the
+    # tables they produce.
+    from exp1_prospective.context_reversal import analyze_triples as tri, analyze_accounting as acc
+    units=tri.load_units();triples=tri.build_triples(units)
+    shortcuts=tri.score_shortcuts(triples)
+    arms=[a for a in (tri.score_arm(label,pats,units,triples) for _,label,pats in tri.ARMS) if a['items_valid']]
+    books=[b for b in (acc.score(label,pats,plan) for label,pats,plan in acc.ARMS) if b['categories'].get('ok')]
+    labels={'no_change':'Predict no change','evidence_direction':'Follow the evidence direction','always_up':'Always revise upward','best_constant_with_oracle':'Best constant, given every oracle'}
+    put('exp1_fresh_bound.tex',table(['Predictor','Items, direction','Triples, all three'],
+        [[labels[k],f"{v['item_sign_correct']}/{v['items']}",f"{v['triple_sign_all_correct']}/{v['triples']}"] for k,v in shortcuts.items()]
+        +[[r'\emph{Analytic bound}',r'$\leq 1/3$','$0$']],'lrr'))
+    def mean_pp(a,metric):return f"{next(x for x in a['errors'] if x['metric']==metric)['mean_pp']:.3f}"
+    put('exp1_fresh_triples.tex',table(['System','Triples','Items, direction','Items, exact','Posterior error, pp'],
+        [[a['arm'],f"{a['triple_sign_unconditional']}/{a['triples_planned']}",f"{a['item_sign_correct']}/{a['items_planned']}",
+          f"{a['item_exact_correct']}/{a['items_planned']}",mean_pp(a,'update absolute error')] for a in arms],'lrrrr'))
+    put('exp1_fresh_accounting.tex',table(['System','Planned','Valid','Model','Instrument','Cascade'],
+        [[b['arm'],str(b['planned_records']),str(b['categories'].get('ok',0)),str(b['by_attribution'].get('model',0)),
+          str(b['by_attribution'].get('instrument',0)),str(b['by_attribution'].get('cascade',0))] for b in books],'lrrrrr'))
+    text+=r'''
+\paragraph{What a relation-blind predictor can reach.}
+The unit of evidence is the triple: one parent instance and wording, with the
+evidence text, the prior and the named actor identical across three stated
+relations. All '''+str(len(triples))+r''' triples were verified to hold those
+three constant, to cover the three relations, and to have three distinct correct
+posteriors. The last property bounds every shortcut: a predictor reading only the
+evidence, the prior and the actor is constant within a triple, so it matches at
+most one of three items and never a whole triple. The bound is arithmetic, not
+empirical, and the predictors below only exhibit it -- including an adversary
+allowed to choose the best constant revision per triple knowing every oracle.
+'''
+    text+=block('Predictors that read only the evidence, the prior and the named actor. Each is constant within a triple, so none can exceed one third of items or win a single triple.','tab:exp1-fresh-bound','exp1_fresh_bound')
+    text+=r'''
+\paragraph{Exact agreement and the reasoning contrast.}
+Scoring exact posterior agreement rather than revision direction separates
+systems that a binary criterion cannot: a guess supplies a sign, not a value.
+Denominators are unconditional, counting refusals, truncations and updates
+blocked by their own failed baseline as failures.
+'''
+    text+=block('Triple and item accuracy against the exact oracles, with unconditional denominators. Exact agreement is to four decimals, the granularity at which the oracles are stated.','tab:exp1-fresh-triples','exp1_fresh_triples')
+    text+=block('Every planned call, classified by attribution. A refusal or unparseable answer is the system\'s; a truncation at the output budget or a request killed mid-batch is ours; a record blocked by its own failed baseline is neither.','tab:exp1-fresh-accounting','exp1_fresh_accounting')
     text+=r'''
 \paragraph{Interpretive boundary and audit.}
 These data address the original relevance shortcut under explicit finite rules:
