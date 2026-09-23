@@ -870,14 +870,16 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
     fig, axes = plt.subplots(
         1,
         len(panels),
-        figsize=(7.2 + 2.2 * (len(panels) - 3), 2.95),
+        figsize=(7.2 + 1.85 * (len(panels) - 3), 3.05),
         facecolor="white",
         sharex=True,
         sharey=True,
     )
     fig.subplots_adjust(
         left=0.075 if len(panels) == 3 else 0.058 - 0.006 * (len(panels) - 4),
-        right=0.995,
+        # Panel titles are left-aligned, so the rightmost one needs slack or it
+        # runs off the canvas. The longest label sets the requirement.
+        right=0.995 if len(panels) < 5 else 0.972,
         bottom=0.165,
         top=0.84,
         wspace=0.14,
