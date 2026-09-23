@@ -87,7 +87,7 @@ ARM_PANEL_LABELS = {
     "abc_no_context": "A/B/C, no C context",
     "abc_context": "A/B/C + C context",
     "abc_wrong_context": "A/B/C + wrong C context",
-    "abc_symbol_context": "A/B/C + arbitrary label",
+    "abc_symbol_context": "A/B/C + C context (KIV/ZOR)",
 }
 ARM_TITLE_COLORS = {
     "baseline": "#D89000",
