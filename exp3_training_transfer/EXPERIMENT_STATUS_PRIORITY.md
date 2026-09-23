@@ -68,12 +68,38 @@ walltime and walltime is an `sbatch` parameter rather than part of the script.
 When it lands, write a ledger naming the real jobs and **commit it** before
 rendering.
 
-**Newer runs are outside the canonical result.** `reports/registered_results.json`
-is dated 2026-08-23 and validates 24 jobs. It does not include the 2026-09-20/21
-`sel_causal_qwen3_8b` s42-44, `sel_population_prior_qwen3_8b` s42-44,
-`selbase_qwen3_8b`, or `causal`/`population_prior` `llama3_1_8b` s45-46 runs.
-Whether the `sel_` arm belongs in the manuscript is undecided and needs an
-author call.
+**The `sel_` runs are the structure-selection experiment, and they are already
+in the paper.** Corrects an earlier reading in this file that treated them as
+unregistered. They belong to `coin_city_structure_selection/`, protocol
+`coin_city_structure_selection_v1`, frozen 2026-09-16 before any training job
+existed, and they are reported in App. `app:exp3-structure-selection`. They sit
+outside `reports/registered_results.json` because that ledger belongs to the
+parent `coin_city_structural_transfer_v1`, which this protocol explicitly does
+not modify or supersede.
+
+That sibling exists because the parent cannot answer the structure question. The
+parent's training set varies gain, not structure, so "emit zero at horizon 3" is
+optimal under its training distribution: measured horizon-3 output is exactly
+0.000 in every evaluation cell on every seed in both arms, and the cue moves
+structure choice by -0.003 to +0.001 against Experiment 2's .51-.86. The paper
+states this.
+
+Compute is complete: `sel_causal_qwen3_8b` s42-44, `sel_population_prior_qwen3_8b`
+s42-44 and `selbase_qwen3_8b` all finished 2026-09-20/21. Every Exp 3 macro in
+`paper/tables/exp3_rebuilt_data.tex` regenerates byte-identically from
+`render_exp3_paper_macros.py`, so the manuscript is current against everything on
+disk.
+
+Two genuine decisions remain, both narrower than "does this belong":
+
+1. The appendix reports a three-seed pilot of the episode-matched arm and
+   declines the episode-matched minus population-prior contrast, saying it needs
+   the eight-seed treatment. The population-prior arm now exists at three seeds,
+   so the contrast is computable but still below the bar the protocol set.
+   Extend to eight seeds, or leave the pilot as written.
+2. `causal`/`population_prior` `llama3_1_8b` s45-46 completed 2026-09-21. The
+   appendix says the Llama-8B comparison "remains a three-seed analysis"; these
+   would make it five.
 
 **Seven-seed contrasts are computing, deliberately unpublished.** The seed 47/48
 trainings are still running with a finalizer queued behind them.
