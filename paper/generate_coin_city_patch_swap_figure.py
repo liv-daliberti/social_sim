@@ -89,7 +89,7 @@ def build(output_dir: Path) -> Path:
     name, study, window = MODEL
     pairs = load(study)
     fig, ax = plt.subplots(figsize=(3.45, 3.75), facecolor="white")
-    fig.subplots_adjust(left=0.185, right=0.695, bottom=0.115, top=0.80)
+    fig.subplots_adjust(left=0.185, right=0.695, bottom=0.115, top=0.895)
 
     # Which reference the label pointed at, and therefore which city's cases the
     # forecast should follow.
@@ -116,10 +116,6 @@ def build(output_dir: Path) -> Path:
             ax.plot([x], [before], marker="o", markersize=5.0, markerfacecolor="white",
                     markeredgecolor=color, markeredgewidth=1.3, zorder=3)
             ax.plot([x], [after], marker="o", markersize=5.0, color=color, zorder=3)
-            ax.text(x + 0.13, before, f"{before:.2f}", ha="left", va="center",
-                    fontsize=6.6, color=MUTED)
-            ax.text(x + 0.13, after, f"{after:.2f}", ha="left", va="center",
-                    fontsize=6.8, color=color, fontweight="bold")
 
     ax.set_xlim(0.0, 4.10)
     ax.set_ylim(0.15, 1.02)
@@ -137,12 +133,9 @@ def build(output_dir: Path) -> Path:
     handles = [plt.Line2D([], [], color=color, linewidth=1.9, marker="o",
                           markersize=5.0, label=label.replace("\n", " "))
                for label, color in series.values()]
-    ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.0, 1.005),
+    ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.0, 1.01),
               ncol=2, frameon=False, fontsize=6.9, handlelength=1.5,
               columnspacing=1.1, handletextpad=0.5)
-    ax.set_title(f"{name}, {window}\n{episodes} matched pairs, no City C cases yet",
-                 loc="left", fontsize=7.8, fontweight="bold", color=INK,
-                 pad=20, linespacing=1.45)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "exp2_causal_patch_swap.pdf"
