@@ -859,12 +859,13 @@ On the mechanism-family benchmark, episode-matched Qwen3-4B training beats a
 \emph{fixed population-prior} control on held-out compositions: response-MAE
 advantages are \eMechDiscEst{} \eMechDiscCi{} with the mechanism described and
 \eMechUndiscEst{} \eMechUndiscCi{} with it inferred, both clearing all four
-estimators at \eMechG{} seeds. A coherent gain intervention (two retained seeds) tracks better
+estimators at \eMechG{} seeds. A coherent gain intervention (five seeds) tracks better
 than the prior on seen mechanisms but not on held-out ones
 (App.~\ref{app:exp3-evidence-use}). A distribution-matched shuffled-target
 control at \eShufG{} seeds now replaces the fixed prior: matched training keeps a
 smaller advantage on the pre-registered stochastic endpoint
-(\eShufUndiscStochEst{} \eShufUndiscStochCi{} inferred). The shuffle leaves
+(\eShufUndiscStochEst{} \eShufUndiscStochCi{} inferred), which seven seeds
+leave positive but not separable from zero. The shuffle leaves
 episode level near-intact while destroying response shape, so the gain falls
 where the manipulation bites; held-out gain tracking stays unestablished
 (App.~\ref{app:exp3-shuffled-control}).
@@ -968,8 +969,9 @@ would test generality.
 Performance is heterogeneous. Smaller checkpoints often struggle to induce the
 KIV/ZOR meaning. The episode-matching advantage under joint domain and mechanism
 shift does not survive the eight-seed replication; the benefit for compositions
-of familiar mechanisms is checkpoint-specific and survives a
-distribution-matched shuffled-target control only under stochastic decoding. Structure diagnostics use no target
+of familiar mechanisms is checkpoint-specific, and against a
+distribution-matched shuffled-target control its sign is stable at seven seeds
+but its separation from zero is not. Structure diagnostics use no target
 observations; the supervised pilot replicates at four seeds but differs from
 RL in update budget and, at that setting, learning rate. Semantic cue-to-pattern
 learning could explain its in-domain success; native training places its
@@ -991,8 +993,8 @@ Forecast accuracy alone does not establish inductive reasoning. Models select
 relevant evidence and revise contextual relationships, while training improves
 forecasts across domains and held-out markets. A supervised pilot learns
 response-form selection in distribution; its boundary is arbitrary labels, not
-domain. Composition accuracy exceeds a shuffled-target control on seen
-mechanisms without establishing transferred evidence use. These contrasts distinguish predictive accuracy from
+domain. Composition accuracy favors matched training in sign without
+establishing transferred evidence use. These contrasts distinguish predictive accuracy from
 reliable relationship use without presuming a general world model.
 %============================================================================
 % END conclusion.tex
@@ -1025,7 +1027,7 @@ censoring, estimators, deployment settings, missingness, hyperparameters, baseli
 and fail-closed checks. Builders, manifests, checksums, and saved generations support
 each result. Experiment~3 reports the original three-seed Qwen3-8B, Qwen3-4B,
 and Llama-3.1-8B roster, eight-seed Qwen extensions, a five-seed mechanism-family
-study with its five-seed shuffled-target control, a three-seed structure-selection pilot, and exploratory component,
+study with its five-seed shuffled-target control and pre-declared seven-seed extension, a three-seed structure-selection pilot, and exploratory component,
 four-seed and native-cell supervised, and five-seed gain-intervention diagnostics. Parent-roster endpoints use
 round 300 and five draws under a common stochastic decoder. The appendix
 discloses the pilot's interim look at training monitors and the outcome-informed

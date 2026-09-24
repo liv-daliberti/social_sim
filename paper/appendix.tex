@@ -4282,13 +4282,34 @@ disclosure conditions. With the mechanism inferred it is
 \eShufUndiscStochEst{} (\eShufUndiscStochSign{} seeds positive, Student-$t$
 \eShufUndiscStochTci{}, hierarchical \eShufUndiscStochCi{}, wild cluster
 $p=\eShufUndiscStochWild{}$, exact sign test $p=\eShufUndiscStochSignP{}$),
-the only cell that clears every estimator. With the mechanism described the
+the only cell that clears every estimator at this roster size. With the mechanism described the
 point estimate is larger, \eShufDiscStochEst{} \eShufDiscStochCi{}, but rests
 on \eShufDiscStochSign{} seeds, one of which reverses sign, and does not clear
 the cluster-robust test ($p=\eShufDiscStochWild{}$). Greedy decoding is
 directionally consistent in both conditions---\eShufDiscGreedyEst{} described
 and \eShufUndiscGreedyEst{} inferred---but neither cell clears the
 cluster-robust test.
+
+\paragraph{The pre-declared seed extension does not firm up this result.}
+Seeds 47--48 were frozen before any extension result existed and added to both
+disclosure conditions and both arms, so the extension is symmetric and was not
+aimed at the condition whose five-seed estimate was marginal. It was declared
+to firm up the five-seed roster. It does not. At seven seeds every cell stays
+positive, $+.065$ to $+.111$, and $24$ of the $28$ seed-level effects are
+positive, so the direction is unchanged. Which cell reaches significance is
+not. The pre-registered primary endpoint falls from $+.094$
+$[+.041,+.146]$ to $+.076$ $[-.003,+.154]$ and no longer excludes zero under
+any estimator (wild cluster $p=.059$, $6/7$ seeds positive); a single seed, 47,
+is the only negative one at $-.091$, and its cells are complete and parse at
+$.999$--$1.000$, so there is no basis for setting it aside. Meanwhile the
+described/greedy cell moves the other way, from $[-.027,+.267]$ to
+$[+.006,+.196]$ with $p=.035$. We do not promote it: elevating whichever cell
+clears at a given roster size is the error the primary endpoint was registered
+to prevent. The five-seed roster remains the registered result and the
+seven-seed estimates are reported alongside it, never in place of it. Read
+together, the two rosters support a small positive effect whose sign is stable
+and whose separation from zero is not established at this number of training
+seeds.
 
 \begin{table}[htbp]
 \centering\footnotesize
