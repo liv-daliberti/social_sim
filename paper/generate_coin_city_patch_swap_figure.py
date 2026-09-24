@@ -26,7 +26,12 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 PROBE = (ROOT / "exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4"
          / "mechanistic_probe")
-MODEL = ("Qwen3-14B", "qwen3_14b_symbol_relational_v2", "layers 19\u201321 of 40")
+MODELS = {
+    "qwen3_14b": ("Qwen3-14B", "qwen3_14b_symbol_relational_v2",
+                  "exp2_causal_patch_swap.pdf", (0.15, 1.02)),
+    "llama3_1_70b": ("Llama-3.1-70B", "llama3_1_70b_symbol_relational_v1",
+                     "exp2_causal_patch_swap_llama.pdf", (0.15, 1.60)),
+}
 # Two sites: the mid-network window the protocol selected, and the label token's
 # own embedding. The second is close to editing the prompt, so it bounds what a
 # complete swap looks like for that deployment.
@@ -88,8 +93,8 @@ def interval(values, index, draws=5000, seed=20260923):
     return means[int(0.025 * draws)], means[int(0.975 * draws)]
 
 
-def build(output_dir: Path) -> Path:
-    name, study, window = MODEL
+def build(output_dir: Path, key: str = "qwen3_14b") -> Path:
+    name, study, filename, ylim = MODELS[key]
     pairs = load(study)
     fig, ax = plt.subplots(figsize=(3.45, 3.75), facecolor="white")
     fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.835)
@@ -131,7 +136,7 @@ def build(output_dir: Path) -> Path:
             ax.plot([x], [after], marker="o", markersize=5.0, color=color, zorder=3)
 
     ax.set_xlim(0.0, 4.10)
-    ax.set_ylim(0.15, 1.02)
+    ax.set_ylim(*ylim)
     ax.set_xticks([(positions[(0, True)] + positions[(0, False)]) / 2,
                    (positions[(1, True)] + positions[(1, False)]) / 2])
     ax.set_xticklabels([label for _site, label in SITES], fontsize=7.4,
@@ -160,7 +165,7 @@ def build(output_dir: Path) -> Path:
               columnspacing=1.0, handletextpad=0.55, labelspacing=0.45)
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    path = output_dir / "exp2_causal_patch_swap.pdf"
+    path = output_dir / filename
     fig.savefig(path, facecolor="white", bbox_inches="tight", pad_inches=0.03)
     plt.close(fig)
     return path
@@ -169,8 +174,10 @@ def build(output_dir: Path) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", type=Path, default=ROOT / "paper" / "figures")
+    parser.add_argument("--model", choices=sorted(MODELS), default=None)
     args = parser.parse_args()
-    print(build(args.output_dir))
+    for key in ([args.model] if args.model else sorted(MODELS)):
+        print(build(args.output_dir, key))
 
 
 if __name__ == "__main__":
