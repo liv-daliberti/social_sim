@@ -45,6 +45,12 @@ MUTED = "#6B7280"
 TO_WEAK = "#B5405F"
 TO_STRONG = "#2C7FB8"
 GRID = "#D9DCE0"
+BAND = "#EDEFF2"
+BAND_INK = "#8A93A3"
+# The regimes City C is drawn from, from the frozen design: g ~ N(.90, .03^2)
+# for a strong-response city and N(.25, .03^2) for a weak one. Two standard
+# deviations either side covers essentially every episode.
+REGIMES = ((0.250, 0.031, "weak-response\nregime"), (0.900, 0.027, "strong-response\nregime"))
 
 
 def load(study: str):
@@ -85,7 +91,7 @@ def build(output_dir: Path) -> Path:
     fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.35), facecolor="white")
     fig.subplots_adjust(left=0.20, right=0.985, bottom=0.26, top=0.78, wspace=0.42)
 
-    directions = {True: ("started strong", TO_WEAK), False: ("started weak", TO_STRONG)}
+    directions = {True: ("strong-response", TO_WEAK), False: ("weak-response", TO_STRONG)}
     ticks, labels = [], []
 
     for ax, (name, study, window) in zip(axes, MODELS):
@@ -95,6 +101,10 @@ def build(output_dir: Path) -> Path:
                      fontsize=8.0, fontweight="bold", color=INK, pad=5, linespacing=1.45)
         ax.grid(axis="x", color=GRID, linewidth=0.65)
         ax.set_axisbelow(True)
+        for centre, sd, band_label in REGIMES:
+            ax.axvspan(centre - 2 * sd, centre + 2 * sd, color=BAND, zorder=0)
+            ax.text(centre, 4.62, band_label, ha="center", va="top", fontsize=6.3,
+                    color=BAND_INK, linespacing=1.3)
         ticks, labels = [], []
         for site_index, (site, site_label) in enumerate(SITES):
             for offset, (started_strong, (label, color)) in enumerate(directions.items()):
@@ -117,7 +127,8 @@ def build(output_dir: Path) -> Path:
             ax.text(0.0, 3.0 - site_index * 1.95 + 0.40, site_label,
                     transform=ax.get_yaxis_transform(), ha="left", va="bottom",
                     fontsize=7.2, color=INK, fontweight="bold", clip_on=False)
-        ax.set_ylim(-0.02, 3.92)
+        ax.set_ylim(-0.02, 4.72)
+        ax.set_xlim(0.15, 1.42)
         ax.set_yticks(ticks)
         ax.set_yticklabels(labels, fontsize=7.0)
         for tick, color in zip(ax.get_yticklabels(), (TO_WEAK, TO_STRONG) * len(SITES)):
@@ -127,7 +138,8 @@ def build(output_dir: Path) -> Path:
         ax.spines[["top", "right", "left"]].set_visible(False)
 
     fig.supxlabel("implied responsiveness of City C, no City C cases yet "
-                  "(poll points per news point)", fontsize=7.6, color=INK, y=0.03)
+                  "(poll points per news point); shaded bands are the regimes "
+                  "City C is drawn from", fontsize=7.4, color=INK, y=0.03)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "exp2_causal_patch_swap.pdf"
