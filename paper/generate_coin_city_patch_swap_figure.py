@@ -29,14 +29,21 @@ PROBE = (ROOT / "exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n
 MODELS = {
     "qwen3_14b": ("Qwen3-14B", "qwen3_14b_symbol_relational_v2",
                   "exp2_causal_patch_swap.pdf", (0.15, 1.02)),
-    "llama3_1_70b": ("Llama-3.1-70B", "llama3_1_70b_symbol_relational_v1",
+    "llama3_1_70b": ("Llama-3.1-70B", "llama3_1_70b_window_sweep_dev",
                      "exp2_causal_patch_swap_llama.pdf", (0.15, 1.60)),
 }
 # Two sites: the mid-network window the protocol selected, and the label token's
 # own embedding. The second is close to editing the prompt, so it bounds what a
 # complete swap looks like for that deployment.
-SITES = (("cross_selected_window", "mid-network\nwindow"),
-         ("cross_embedding_only", "label token"))
+SITES_BY_MODEL = {
+    "qwen3_14b": (("cross_selected_window", "mid-network\nwindow"),
+                  ("cross_embedding_only", "label token")),
+    # Llama is shown at a window inside its effective band and at the registered
+    # one, which sits past the end of it.
+    "llama3_1_70b": (("cross_window_22", "layers 22\u201324"),
+                     ("cross_window_35", "layers 35\u201337")),
+}
+SITES = SITES_BY_MODEL["qwen3_14b"]
 
 plt.rcParams.update(
     {"font.family": "sans-serif", "font.size": 9, "pdf.fonttype": 42, "ps.fonttype": 42}
@@ -59,26 +66,35 @@ REGIMES = ((0.250, 0.031, "weak-response outcome", TO_STRONG),
            (0.900, 0.027, "strong-response outcome", TO_WEAK))
 
 
+def _cue_strong(row) -> bool:
+    return (row["target_strong"] if row["recipient_arm"] == "abc_context"
+            else not row["target_strong"])
+
+
 def load(study: str):
-    rows = [json.loads(line) for line in (PROBE / study / "activation_patch_generations.jsonl")
-            .read_text().splitlines() if line.strip()]
+    directory = PROBE / study
+    files = sorted(directory.glob("shard*.jsonl")) or [
+        directory / "activation_patch_generations.jsonl"]
+    rows = []
+    for path in files:
+        rows += [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
     by: dict[tuple, dict] = {}
     for row in rows:
-        by.setdefault((row["episode"], row["c_cases"], row["recipient_arm"]), {})[
-            row["condition"]] = row
-    pairs: dict[tuple, list] = {}
-    for (_episode, depth, _arm), conditions in by.items():
-        if depth != 0:                      # only the no-evidence stratum
+        if row.get("c_cases", 0) != 0:
             continue
+        by.setdefault((row["episode"], row["recipient_arm"]), {})[row["condition"]] = row
+    pairs: dict[tuple, list] = {}
+    for _key, conditions in by.items():
         before = conditions.get("unpatched")
         if not before or before.get("implied_slope") is None:
             continue
+        strong = (before["recipient_cue_strong"] if "recipient_cue_strong" in before
+                  else _cue_strong(before))
         for site, _label in SITES:
             after = conditions.get(site)
             if not after or after.get("implied_slope") is None:
                 continue
-            key = (site, bool(before["recipient_cue_strong"]))
-            pairs.setdefault(key, []).append(
+            pairs.setdefault((site, bool(strong)), []).append(
                 (before["implied_slope"], after["implied_slope"]))
     return pairs
 
@@ -94,7 +110,9 @@ def interval(values, index, draws=5000, seed=20260923):
 
 
 def build(output_dir: Path, key: str = "qwen3_14b") -> Path:
+    global SITES
     name, study, filename, ylim = MODELS[key]
+    SITES = SITES_BY_MODEL[key]
     pairs = load(study)
     fig, ax = plt.subplots(figsize=(3.45, 3.75), facecolor="white")
     fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.835)
