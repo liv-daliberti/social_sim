@@ -31,7 +31,7 @@ MODEL = ("Qwen3-14B", "qwen3_14b_symbol_relational_v2", "layers 19\u201321 of 40
 # own embedding. The second is close to editing the prompt, so it bounds what a
 # complete swap looks like for that deployment.
 SITES = (("cross_selected_window", "mid-network\nwindow"),
-         ("cross_embedding_only", "label token\nitself"))
+         ("cross_embedding_only", "label token"))
 
 plt.rcParams.update(
     {"font.family": "sans-serif", "font.size": 9, "pdf.fonttype": 42, "ps.fonttype": 42}
@@ -47,8 +47,11 @@ BAND_INK = "#8A93A3"
 # The regimes City C is drawn from, from the frozen design: g ~ N(.90, .03^2)
 # for a strong-response city and N(.25, .03^2) for a weak one. Two standard
 # deviations either side covers essentially every episode.
-REGIMES = ((0.250, 0.031, "weak-response outcome"),
-           (0.900, 0.027, "strong-response outcome"))
+# Each band wears its regime's hue, washed out so it reads as ground rather
+# than as a mark: the series and the bands then agree that red is the
+# strong-response regime and blue the weak one.
+REGIMES = ((0.250, 0.031, "weak-response outcome", TO_STRONG),
+           (0.900, 0.027, "strong-response outcome", TO_WEAK))
 
 
 def load(study: str):
@@ -89,17 +92,20 @@ def build(output_dir: Path) -> Path:
     name, study, window = MODEL
     pairs = load(study)
     fig, ax = plt.subplots(figsize=(3.45, 3.75), facecolor="white")
-    fig.subplots_adjust(left=0.185, right=0.695, bottom=0.115, top=0.895)
+    fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.895)
 
     # Which reference the label pointed at, and therefore which city's cases the
     # forecast should follow.
     series = {True: ("strong-response\ndata", TO_WEAK), False: ("weak-response\ndata", TO_STRONG)}
     positions = {(0, True): 0.55, (0, False): 1.35, (1, True): 2.75, (1, False): 3.55}
 
-    for centre, sd, band_label in REGIMES:
-        ax.axhspan(centre - 2 * sd, centre + 2 * sd, color=BAND, zorder=0)
-        ax.text(4.16, centre, band_label, ha="left", va="center", fontsize=6.6,
-                color=BAND_INK, clip_on=False)
+    for centre, sd, band_label, band_colour in REGIMES:
+        ax.axhspan(centre - 2 * sd, centre + 2 * sd, color=band_colour, alpha=0.11,
+                   linewidth=0, zorder=0)
+        # Sitting the label inside its own band ties the two together without a
+        # leader line, and frees the right margin the outside labels needed.
+        ax.text(0.14, centre, band_label, ha="left", va="center", fontsize=6.7,
+                color=band_colour, alpha=0.9, fontweight="bold")
 
     episodes = len(pairs[(SITES[0][0], True)]) + len(pairs[(SITES[0][0], False)])
     for site_index, (site, site_label) in enumerate(SITES):
