@@ -58,27 +58,18 @@ Paper under double-blind review}
 \begin{document}
 \maketitle
 
-% Share the current replication estimates with the introduction.
-\input{tables/exp3_rebuilt_data}
-%============================================================================
-% BEGIN frontmatter.tex
-%============================================================================
 \begin{abstract}
-Judgmental forecasting requires inferring predictive relationships from sparse
-observations and contextual knowledge. We ask whether language models recover
-and use these relationships. Across prediction markets and synthetic worlds,
-models selectively update forecasts, infer relationships from context, and
-revise them as direct evidence accumulates. Larger tested models infer arbitrary
-conventions; intervening on one model's internal representation changes its
-forecast. Training improves forecasts across domains, but an eight-seed
-replication weakens structural-transfer claims. A supervised pilot learns
-response-form selection in distribution where the tested RL recipe fails;
-its boundary is arbitrary labels, not a new domain. Accuracy gains on
-compositions of familiar mechanisms exceed a fixed prior, but a gain intervention
-does not establish transferred evidence use. Historical-market training lowers
-mean error on unseen event families. These findings support context-sensitive
-inductive forecasting while distinguishing in-domain learnability, transfer,
-and episode-specific evidence use.\footnotemark
+
+Judgmental forecasting involves predicting uncertain events like elections or geopolitical conflicts where
+abundant historical data is lacking.
+A key challenge is \textit{induction}: forecasters must generalize from sparse evidence and contextual knowledge to infer how available evidence predicts future outcomes.
+Here, we investigate whether language models (LMs) recover and use such predictive relationships when forecasting, rather than relying on base rates or surface cues.
+Across a battery of experiments spanning real-world prediction markets and controlled synthetic environments, we test whether models: 1) update their beliefs coherently; 2) correctly recover predictive relationships, and 3) transfer what they learn to new settings.
+Our results provide evidence for each capability.
+Models selectively update their forecasts in response to causally relevant evidence, use contextual information to infer predictive relationships when observations are sparse, and revise these inferences as direct evidence accumulates.
+Training on families of predictive relationships improves forecasting on unseen structures, although the gains diminish as the held-out structures depart further from those seen in training.
+Together, our experiments provide behavioral evidence that LMs can forecast inductively.
+\footnotemark
 \end{abstract}
 \footnotetext{%
   \micon{huggingface.png}\;%
@@ -94,205 +85,66 @@ and episode-specific evidence use.\footnotemark
 
 \setlength{\columnsep}{6pt}
 \begin{wrapfigure}{r}{0.44\textwidth}
-\vspace{-1.2em}
+\vspace{-4em}
 \centering
-\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_revised.pdf}
+\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_motivated.pdf}
 \vspace{-0.45cm}
-\caption{\textbf{Motivation.} Judgmental forecasts combine observations with
-contextual knowledge about the process that generated them. Frontier models,
-asked to forecast this question, average $P(H)\approx0.68$ (see
-App.~\ref{app:carnival-coin-probe}).}
-\vspace{0pt}
+\caption{\textbf{Motivation.} Judgmental forecasts combine observations with contextual knowledge about the process that generated them.
+Frontier models, asked to forecast this question, average $P(H)\approx0.68$ (see App.~\ref{app:carnival-coin-probe}).}
+\vspace{-2pt}
 \label{fig:world-knowledge-evidence}
 \end{wrapfigure}
 
-Judgmental forecasting is a demanding form of reasoning central to decisions
-about political, social, and economic futures. Unlike settings with abundant
-historical data for statistical extrapolation, judgmental forecasting requires
-integrating sparse, noisy evidence with contextual knowledge to form calibrated
-beliefs about future outcomes
-\citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
-This creates an inductive challenge: forecasters must
-infer from limited observations the relationships that govern how evidence
-impacts outcomes, and use those relationships to anticipate how events may
-unfold
-\citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
-Figure~\ref{fig:world-knowledge-evidence} illustrates this identification problem
-in a low-stakes setting. A researcher observes a carnival coin-flipping machine
-and, after seeing two heads, must estimate the probability that the next flip
-will be heads. A judgmental forecast may incorporate contextual knowledge (e.g.,
-whether the game is rigged) to infer the process generating the observed
-outcomes.
+Judgmental forecasting is a demanding form of reasoning central to decisions about political, social, and economic futures.
+Unlike settings with abundant historical data for statistical extrapolation, judgmental forecasting requires integrating sparse, noisy evidence with contextual knowledge to form calibrated beliefs about future outcomes \citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
+This creates an inductive challenge: forecasters must infer from limited observations the relationships that govern how evidence impacts outcomes, and use those relationships to anticipate how events might unfold \citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates this identification problem in a toy setting.
+A researcher observes a carnival coin-flipping machine and, after seeing two heads, must estimate the probability that the next flip will be heads.
+A judgmental forecast may incorporate contextual knowledge (e.g., that such games are often rigged) to infer the data-generating process.
 
-Language models (LMs) now approach crowd accuracy in judgmental forecasting
-\citep{halawi2024approaching,schoenegger2024wisdom}, but accurate predictions need
-not imply recovery of the underlying task structure. Models recover latent
-structure in some settings \citep{li2023emergent}, yet can predict accurately
-using relationships that fail to generalize in others \citep{vafa2025foundation}.
-This distinction matters when decision-makers ask how and whether a forecast
-should change under alternative evidence or events. Answering such questions
-requires predictive relationships that generalize across changes in context.
+Language models (LMs) now approach crowd accuracy in judgmental forecasting \citep{halawi2024approaching,schoenegger2024wisdom}, but accurate predictions need not imply recovery of the underlying task structure.
+Models recover latent structure in some settings \citep{li2023emergent}, yet can predict accurately using relationships that fail to generalize in others \citep{vafa2025foundation}.
+This distinction matters when decision-makers ask how and whether a forecast should change under alternative evidence or events.
+Answering such questions requires predictive relationships that generalize across changes in context.
 
 \noindent
 \textbf{Present work.}
-We study whether LMs exhibit inductive reasoning in forecasting tasks through a
-series of progressively more stringent behavioral tests spanning both real-world
-prediction markets and controlled synthetic environments. First, we evaluate
-whether LMs respond selectively to new evidence, distinguishing
-outcome-relevant information from topically related but orthogonal information
-(\hyperref[sec:exp1]{Exp.~1}). Second, we test whether LMs infer predictive
-relationships from described context before statistical evidence accumulates. We
-construct synthetic forecasting problems in which the numerical observations are
-identical across conditions and only the described setting varies, isolating the
-contribution of background knowledge to the LM's forecast
-(\hyperref[sec:exp2]{Exp.~2}). Finally, we test whether relationships learned
-during fine-tuning transfer to new settings. We fine-tune LMs with reinforcement
-learning from verifiable rewards (RLVR) on both synthetic tasks and historical
-prediction market data, diagnose component failures with a supervised pilot,
-and evaluate on held-out structures and domains
-(\hyperref[sec:exp3]{Exp.~3}, \hyperref[sec:exp4]{Exp.~4}).
+We study whether LMs exhibit inductive reasoning in judgemental forecasting tasks through a series of progressively more stringent behavioral tests spanning both real-world prediction markets and controlled synthetic environments.
+First, we evaluate whether LMs respond selectively to new evidence, distinguishing outcome-relevant information from topically related but orthogonal information (\hyperref[sec:exp1]{Exp.~1}).
+Second, we test whether LMs infer predictive relationships from described context before statistical evidence accumulates.
+We construct synthetic forecasting problems in which the numerical observations are identical across conditions and only the described setting varies, isolating the contribution of background knowledge to the LM's forecast (\hyperref[sec:exp2]{Exp.~2}).
+Finally, we test whether relationships learned during fine-tuning transfer to new settings.
+We fine-tune LMs with reinforcement learning from verifiable rewards (RLVR) on both synthetic tasks and historical prediction market data, diagnose component failures with a supervised pilot, and evaluate on held-out structures and domains (\hyperref[sec:exp3]{Exp.~3}, \hyperref[sec:exp4]{Exp.~4}).
 
 \noindent\textbf{Results.}
-All nine systems move $1.9$--$7.5\times$ farther for outcome-relevant than topical
-evidence, conditional on updating (\hyperref[sec:exp1]{Exp.~1}). In Coin City,
-forecasts track context-selected relationships ($r=.52$--$.70$) and revise them
-as direct evidence arrives; larger models infer episode-local conventions, with
-a causal intervention linking the induced representation to Qwen3-14B's forecast
-(\hyperref[sec:exp2]{Exp.~2}). Training transfers across domains, but its
-advantage over an answer-matched shuffled control under joint domain and structure
-shift is uncertain at eight seeds (Qwen3-8B:
-$\eEightJointEst{}$, 95\% CI $\eEightJointCi{}$). A supervised pilot learns response-form selection in distribution and, trained
-natively, fails under labels but not domain. A separate composition benchmark improves
-accuracy over a fixed prior and an answer-matched shuffled control, without
-clear evidence of transferred gain tracking (\hyperref[sec:exp3]{Exp.~3}). On 318 held-out markets, training lowers mean
-error for every tested base and several checkpoints reach crowd performance,
-although the Qwen3-32B improvement is uncertain
-(\hyperref[sec:exp4]{Exp.~4}).
-%============================================================================
-% END frontmatter.tex
-%============================================================================
-%============================================================================
-% BEGIN inductive_forecasting.tex
-%============================================================================
-\section{What does it mean to forecast inductively?}
-\label{sec:inductive-forecasting}
+Across experiments, we find behavioral evidence that models forecast inductively.
+\vspace{-1.5mm}
+\begin{itemize}[
+    leftmargin=3.5mm,
+    itemsep=2pt,
+    parsep=0pt,
+    topsep=3pt
+]
+\item When forecasting unresolved prediction-market questions, all nine tested models selectively incorporate new evidence, revising their forecast probabilities $1.9$–$7.5\times$ more for outcome-relevant than for merely topically related information (\hyperref[sec:exp1]{Exp.~1}).
+\item In controlled synthetic worlds, we find that models use context to select between predictive relationships even when the numerical evidence is held constant, and increasingly rely on direct observations as they accumulate, as a forecaster capable of inductive reasoning should (\hyperref[sec:exp2]{Exp.~2}).
+We further find that larger models can learn a new relationship from examples within the prompt. For example, when told that a city resembles either KIV or ZOR (random strings), 12 of 15 tested models can infer from examples how each city type responds to events in the simulated environment.
+For Qwen3-14B, manipulating the internal representation of this inferred relationship (resemblance to KIV or ZOR) changes the model's forecasts, providing causal evidence that the inferred relationship guides its prediction.
+\item Finally, we find that post-training can teach models predictive relationships that generalize across domains, although evidence for more demanding forms of transfer is substantially weaker.
+On synthetic data, post-training transfers robustly across a change in domain, but evidence for transfer when both the domain and the relationship between evidence and outcomes change is weaker: for Qwen3-8B, the episode-matched advantage is $0.126$ (95\% CI $[-0.002, 0.265]$) across eight seeds (\hyperref[sec:exp3]{Exp.~3}).
+On 318 held-out real-world prediction markets, training on other event families reduces mean forecasting error at every tested model size, with several trained checkpoints reaching contemporaneous crowd performance (\hyperref[sec:exp4]{Exp.~4}).
+\end{itemize}
 
-Forecasting is a useful testbed for inductive reasoning because it makes
-otherwise hidden choices observable. A forecaster must decide which evidence
-matters, which population provides the relevant comparison, how strongly that
-evidence should affect an outcome, and when direct observations should override
-an existing belief. Each of these choices implies a different numerical
-forecast. An accurate prediction alone does not tell us whether the forecaster
-made those choices for the right reasons.
-
-This distinction matters because a forecast is rarely the last question. We often
-want to know what evidence should change the prediction, whether the same
-evidence should matter differently in another population, and what new
-observation should trigger revision. A model that reaches the right number
-through a familiar base rate, a topical cue, or some other surface regularity may
-still fail under exactly these changes. Average accuracy can therefore conceal an
-important weakness: two models can give the same forecast while relying on very
-different relationships between evidence and outcomes.
-
-We use \emph{inductive forecasting} to describe the stronger behavior we care
-about here. An inductive forecaster should not only identify whether evidence is
-relevant, but also infer the relationship that determines how that evidence
-should affect the outcome. When context changes which comparison is appropriate,
-the forecast should change with it. When direct evidence becomes available, that
-evidence should be able to revise the earlier contextual inference. And when the
-same underlying relationship appears in an unfamiliar setting, the forecaster
-should be able to use it without depending on the original surface form.
-
-\begin{figure}[!t]
+\begin{figure}[!b]
 \centering
-\includegraphics[width=.90\linewidth]{exp1_protocol_four_panels.pdf}
-\caption{\textbf{When should a forecast change?} An agent forecasts an
-unresolved question, then receives one fictional update with search off. We ask
-whether it moves when the news matters, and whether it moves the right way.}
+\includegraphics[width=\linewidth]{exp1_protocol_four_panels.pdf}
+\caption{\textbf{When should a forecast change?}
+Effective forecasting requires updating one's beliefs appropriately as new evidence arrives. This requires determining whether the evidence affects the outcome and, if so, by how much. We study these two challenges in Exp.~1 and Exp.~2, respectively. The figure illustrates our Exp.~1 setup. A model is first asked to evaluate an unresolved Polymarket question (1-2), and then we introduce
+synthetic new evidence that either supports the outcome, opposes it, or concerns
+the same topic but is largely orthogonal to it (3). Finally, with search disabled, we ask the model to revise its forecast, allowing us to measure whether it updates selectively and in the direction implied by the evidence.}
 \label{fig:exp1-pipeline}
 \end{figure}
 
-These requirements extend beyond forecasting. A persuasion model should respond
-not only to a message, but to who delivers it. A coordination model should
-distinguish shared incentives from what participants know about one another. A
-policy model should distinguish similar language from the institutional pathway
-through which an intervention takes effect. In each case, the conditional
-relationship is often the object of interest: who trusts whom, which population
-responds to which signal, or which mechanism connects an action to an outcome.
-Matching an average outcome while missing these dependencies can produce a
-convincing static prediction and a misleading response when the setting changes
-\citep{park2023generative,aher2023simulate,argyle2023out,bisbee2024synthetic}.
-
-This suggests a stronger way to evaluate forecasting systems. Rather than asking
-only whether a model reaches the correct number, we can ask whether its forecast
-changes when the relevant evidence, comparison, or relationship changes. We
-therefore proceed through increasingly demanding tests: first whether models
-distinguish relevant evidence from topical information, then whether they infer
-how strongly evidence should matter from context, and finally whether those
-relationships can be revised and carried into new settings.
-%============================================================================
-% END inductive_forecasting.tex
-%============================================================================
-%============================================================================
-% BEGIN evidence_ladder.tex
-%============================================================================
-\section{Do forecasts change for the right reason?}
-\label{sec:evidence}
-
-A key forecasting skill is to appropriately incorporate new evidence as it
-arrives; for example, classic work on judgmental forecasting identifies repeated
-belief revision as a hallmark of strong human forecasters
-\citep{tetlock2005expert}. We argue that effective updating requires a forecaster
-to determine: (1) which evidence is relevant in predicting an outcome and (2) the
-extent to which the new evidence should affect the forecast. We assess these
-capacities in two experiments. First, we pair real-world prediction-market
-questions with controlled synthetic evidence, allowing us to test whether models
-update selectively and in the direction the evidence warrants. Second, we use a
-controlled synthetic environment in which the same evidence has different
-predictive effects across contexts, allowing us to test whether models can infer
-the relationship that determines how strongly the evidence should affect their
-forecast.
-
-\subsection{Exp.~1: Can models directionally update?}
-\label{sec:exp1}
-
-\noindent\textbf{Design.}
-We ask nine models to forecast 100 unresolved binary Polymarket questions with
-web search, then to revise each forecast after one fictional news update with
-search disabled (Fig.~\ref{fig:exp1-pipeline}). Updates support the outcome,
-oppose it, or stay on topic without bearing on it; these labels are hidden from
-the model. To remove lexical shortcuts by construction rather than by
-measurement, we also froze 80 finite-rule instances whose evidence, prior and
-named actor are identical across three stated relations, with three distinct,
-exactly computable posteriors (App.~\ref{app:exp1}).
-
-\noindent\textbf{Finding: models update in the implied direction.}
-Across 30,094 valid revisions, pro-outcome evidence raises forecasts,
-anti-outcome evidence lowers them, and orthogonal topical evidence changes
-little (Fig.~\ref{fig:exp1-updating}a). Conditional on moving, models move
-$1.9$--$7.5\times$ farther for directional updates
-(Fig.~\ref{fig:exp1-updating}b). Uncertainty and robustness analyses are in
-App.~\ref{app:exp1-threshold-robustness}; independent human review covers the
-original packets, not the frozen cohort.
-
-\noindent\textbf{Finding: lexical cues do not explain the result.}
-Bag-of-words classifiers separate directional from orthogonal evidence almost
-perfectly ($.989$) but are far worse at telling support from opposition
-($.688$), where models reach $.887$--$.990$. In the frozen cohort a predictor
-ignoring the stated relation answers identically within a triple, so it can win
-no triple at all: four such predictors, one allowed the best constant revision
-while knowing every answer, score exactly $320/960$ items and $0/320$ triples,
-while GPT-5.6 reverses $48/48$ triples and matches the exact posterior on
-$144/144$ items (App.~\ref{app:exp1-fresh-factorial}).
-
-\noindent\textbf{Finding: it depends on inference-time reasoning.}
-Holding weights and prompts fixed, Qwen3-32B wins $29/320$ triples with reasoning
-disabled and $297/320$ with it enabled ($1/960$ against $811/960$ items), and
-both arms see identical items, so the gap is not difficulty or leakage. Counting every planned call, Claude Opus~5 declined
-$84$ of $576$, blocking $153$ dependent updates, and retains $17/48$ triples once
-those count as failures (App.~\ref{app:exp1-fresh-factorial}).
-
-\begin{figure}[!b]
+\begin{figure}[!t]
 \centering
 \begin{subfigure}[c]{0.525\textwidth}
 \centering
@@ -329,187 +181,184 @@ those count as failures (App.~\ref{app:exp1-fresh-factorial}).
 \caption{\textbf{Models move much more for evidence than for topical
 chatter, and usually move in the implied direction.} \textbf{(a)} Average
 revision after supporting, contrary, and topical updates. \textbf{(b)} How much
-farther models move for directional evidence, conditional on moving (Sens.), and
-how often a move of at least three points has the right sign (EHC$_{\geq3}$).
-Abstention is decomposed separately in Table~\ref{tab:exp1-abstention}, which
-disagrees with movement about which deployments are selective; intervals are in
-App.~\ref{app:exp1-threshold-robustness}.}
+farther models move for directional evidence than for topical updates,
+conditional on moving (Sens.), and how often a move of at least three percentage
+points has the right sign (EHC$_{\geq3}$). Intervals and robustness checks are
+in App.~\ref{app:exp1-threshold-robustness}; the rate at which a model leaves a
+topical premise exactly unchanged is reported separately in
+Table~\ref{tab:exp1-abstention}, where it disagrees with movement about which
+deployments are selective.}
 \label{fig:exp1-updating}
 \end{figure}
 
-\noindent\textbf{Takeaway.}
-Lexical cues identify original-packet relevance ($.989$ accuracy). A frozen
-follow-up uses identical news across relational contexts in 80 finite-rule
-instances spanning eight mechanism classes. Qwen3-32B reverses both directions
-in 14/80 pairs without thinking and 77/80 with thinking; GPT-5.6 reaches 24/24 on a fixed subset, with 0.0-point broken-link movement (base wording; all planned failures count). 
-Wording, control drift, and failure analyses appear in App.~\ref{app:exp1-fresh-factorial}.
-This formally checked diagnostic has no new human validation and does not
-establish natural-news coverage. Experiment~2 tests contextual relationship
-selection under a controlled generative process.
+
+\section{Do forecasts change for the right reason?}
+\label{sec:evidence}
+
+Appropriately revising beliefs as new evidence arrives is a hallmark of strong judgmental forecasters \citep{tetlock2005expert}.
+We argue that effective updating requires a forecaster
+to determine:
+(1)~which evidence is relevant in predicting an outcome and (2)~the
+extent to which the new evidence should affect the forecast.
+Figure~\ref{fig:exp1-pipeline} illustrates these challenges considering the question of whether the Trump administration will order a federal
+review of new AI models. For (1), new evidence that corroborates plans for such a review should change the forecast, whereas other related AI news should not do so (unless there is a plausible causal pathway connecting it to the outcome).
+For (2), the forecaster must determine the extent to which the new evidence should affect the outcome probability. Both challenges require inductive reasoning, as they require the forecaster to infer the predictive structure connecting observed evidence to future outcomes.
+
+We assess these capacities in two experiments.
+First, we pair real-world prediction-market questions with controlled synthetic evidence to test whether models update selectively and in the direction the evidence warrants.
+Second, we use a controlled synthetic environment where the same evidence has, by construction,  different predictive effects across contexts. This let us test whether models can infer the relationships determining how strongly the evidence should affect forecasts.
+
+\subsection{Exp.~1: Can models update in the right direction?}
+\label{sec:exp1}
+
+\noindent\textbf{Design.}
+We evaluate the forecasting capabilities of nine models on 100 unresolved binary Polymarket questions
+with web search. Then, we ask the models to revise their forecast after a fictional news update with
+search disabled (Fig.~\ref{fig:exp1-pipeline}). Unbeknownst to the models, we construct these updates to support the outcome, oppose it, or cover the same topic without directly influencing the outcome.
+Because models could potentially distinguish directional from orthogonal
+evidence using superficial textual cues,  we additionally evaluate a word-only, bag-of-words classifier that receives only the text of the news update.
+We also construct matched forecasting scenarios in which the same evidence should produce opposed outcomes; for example, intense rainfall could increase the probability of a good harvest in a dry region but decrease it in a region prone to flooding.
+(See  App.~\ref{app:exp1} for details.)
+
+\noindent\textbf{Finding: models selectively update in the direction implied by the evidence.}
+Across the nine models considered, and 30,094 valid forecast revisions, we find that pro-outcome evidence increases forecasts, anti-outcome evidence decreases them, and topically related but orthogonal evidence produces little change (Fig.~\ref{fig:exp1-updating}a).
+Conditional on changing their forecast, we find that models move their probability $1.9$--$7.5\times$ farther for updates intended to influence the prediction (Fig.~\ref{fig:exp1-updating}b).
+Uncertainty estimates and robustness analyses are reported in App.~\ref{app:exp1-threshold-robustness}; independent human review covers the original evidence packets.
+
+\noindent\textbf{Finding: lexical cues alone do not explain model performance.}
+We find that bag-of-words classifiers can almost perfectly distinguish directional from orthogonal evidence ($.989$ accuracy), confirming that superficial cues could explain models' selectivity.
+Yet, the same classifiers are much less successful at distinguishing whether directional evidence supports or opposes the outcome ($.688$ accuracy).
+Models are considerably more directionally consistent ($.887$--$.990$), suggesting lexical cues alone cannot explain their performance.
+More directly, we hold the evidence, the prior, and the named actor fixed and vary only the stated relationship to the outcome. Because the three correct answers within such a triple are distinct, any predictor that ignores the relationship is bounded at one third of items and no complete triple; four such predictors, including one permitted to choose the best constant revision knowing every correct answer, score exactly $320/960$ items and $0/320$ triples. GPT-5.6 reverses $48/48$ triples and matches the exact posterior on $144/144$ items (App.~\ref{app:exp1-fresh-factorial}).
+
+\noindent\textbf{Finding: selective updating depends on inference-time reasoning.}
+Having ruled out simple lexical shortcuts, we next ask what makes this capability possible. In particular, does the model simply recognize a familiar pattern, or does it need inference-time reasoning to combine the stated relationship with the evidence? We isolate this by holding the model weights, prompts, and test items fixed and changing only whether reasoning is enabled. We find that Qwen3-32B's success on fixed evidence rises from 9.1\% to 92.8\%, while exact-posterior accuracy rises from 0.1\% to 84.5\%.
+Since the two conditions see identical items, this gap isolates the reasoning setting rather than item difficulty or information available in the prompt (App.~\ref{app:exp1-fresh-factorial}).
+
+\noindent\textbf{Take-away.}
+We find that models distinguish evidence that is predictive of an outcome from information that is only topically related, and generally update in the direction implied by that evidence. Models' performance is not explained by surface-level lexical cues alone. This ability largely disappears when inference-time reasoning is disabled, suggesting that models must reason about how evidence bears on the outcome rather than just recognizing familiar cues.
 
 \subsection{Exp.~2: can models infer how strongly evidence should matter?}
 \label{sec:exp2}
 
-\begin{figure}[!t]
-\centering
-\includegraphics[
-  width=.90\linewidth,
-  trim=11pt 14.5pt 3.5pt 7pt,
-  clip
-]{exp2_coin_city_prompt_arms.pdf}
-\caption{\textbf{Coin City turns contextual reasoning into a paired
-comparison.} Every arm shares the query and numerical cases. The context arm
-adds a description connecting City C to one displayed media environment; the
-opposite-context arm changes only that sentence. Target cases then accumulate,
-allowing local evidence to confirm or correct the contextual choice.}
-\label{fig:coin-city-prompt}
-\end{figure}
-
 \noindent\textbf{Design.}
-Experiment~1 tests which evidence warrants an update. Forecasting also requires
-inferring how strongly that evidence should matter. In the opening coin-flip
-example (Fig.~\ref{fig:world-knowledge-evidence}), the same observation warrants
-different predictions depending on the process believed to have generated it.
-
-We systematize this ambiguity in \emph{Coin City}: the same campaign news moves
-polls strongly in one reference city and weakly in another. Context identifies the
-better analogue for target City C, while zero to four City C cases provide direct
-evidence that can confirm or override it. Each city's polling response follows
+We study whether models can determine \textit{how much} new evidence should update a forecast in a synthetic scenario we dub \emph{Coin City}.
+We construct two reference cities (Cities A and B) where news coverage affects election polling differently: strongly in one city and weakly in the other.
+Specifically, an election poll in a city changes based on whether the news coverage favored one of the candidates ($x_{ij} \in [-10,-4] \cup [4,10]$) and the city's sensitivity to news, drawing $g_j \sim \mathcal{N}(0.90,0.03^2)$ for the strong-response city and $g_j \sim \mathcal{N}(0.25,0.03^2)$ for the weak-response city:
 \begin{equation}
   \Delta p_{ij}=g_j x_{ij}+\epsilon_{ij},
-  \qquad \epsilon_{ij}\sim\mathcal{N}(0,5^2),
+  \qquad \epsilon_{ij}\sim\mathcal{N}(0,5^2).
   \label{eq:coin-city-dgp}
 \end{equation}
-where $x_{ij}$ is signed campaign news and $g_j$ is the city's stable sensitivity,
-which is never stated: the model must infer it from examples.
 
-We compare target cases alone, reference cases without target context, correct
-context, and opposite context, holding numerical evidence fixed across the paired
-arms (Fig.~\ref{fig:coin-city-prompt}). A fifth arm replaces familiar descriptions
-with episode-varying labels whose meaning must be inferred from the references.
-Forecast error tests whether context helps; the forecast-implied response to news
-tests which reference the model selects (App.~\ref{app:coin-city-results}).
+% Match the visual encoding in the prompt figure
+\definecolor{cityCblue}{HTML}{5B83C5}
+\definecolor{refgreen}{HTML}{6B9E57}
+\definecolor{cuepurple}{HTML}{8E63A6}
 
-\noindent\textbf{Finding: the forecast follows the contextual clue.}
-Figure~\ref{fig:coin-city-results} shows that, when City C provides few direct
-observations, context guides which reference city's response is used to forecast.
-The correct context lowers forecast error, while the wrong analogue increases
-error. Moreover, the effect implies the model is quantifying the importance of
-the contextual clue: after controlling for the underlying response regime, the
-forecast-implied slope correlates $r=.51$--$.86$ with the fitted slope of the
-cue-selected reference city, while its correlation with the other reference
-remains near zero. As City C observations accumulate, context matters less, as
-forecasts increasingly rely on direct local evidence.
+
+\begin{wrapfigure}{r}{0.40\textwidth}
+    \vspace{-1.4\baselineskip}
+    \centering
+    \includegraphics[width=0.9\linewidth]{exp2_coin_city_prompt_stack.pdf}
+    \caption{%
+    To forecast polling in City C, the model may receive: (\textcolor{cityCblue}{\textbf{a}}) observations from City C, (\textcolor{refgreen}{\textbf{b}})  reference cities A and B, and contextual cues linking City C's response pattern to A or B (\textcolor{cuepurple}{\textbf{c-e}})}
+    \label{fig:coin-city-prompt}
+        \vspace{-16mm}
+
+\end{wrapfigure}
+
+We then ask the model to forecast the effect of campaign news on polling in a third city, City C, which we construct to have either the strong or weak response. Across conditions, we incrementally provide the model with additional information, asking it each time to forecast how a new piece of campaign news will affect election polling in City C. Specifically, we provide
+
+\vspace{-1mm}
+\begin{itemize}[
+    leftmargin=5.5mm,
+    labelsep=1.5mm,
+    itemsep=2pt,
+    parsep=0pt,
+    topsep=1pt,
+    partopsep=0pt
+]
+\item[\textcolor{cityCblue}{\textbf{(a)}}]
+Up to four previous observations from City C, showing how polling numbers
+changed in response to news.
+
+\item[\textcolor{refgreen}{\textbf{(b)}}]
+Additionally, four observations from each of Cities A and B, showing how
+their polling numbers changed in response to news.
+
+\item[\textcolor{cuepurple}{\textbf{(c)}}]
+Additionally, a contextual cue: strong-response cities are described as
+primarily receiving national news coverage and weak-response, local news coverage.
+
+\item[\textcolor{cuepurple}{\textbf{(d)}}]
+Building on (b), we provide an \textit{incorrect} contextual cue, linking
+City C to the wrong type of city.
+
+\item[\textcolor{cuepurple}{\textbf{(e)}}]
+Finally, we replace the semantic cues with \textit{arbitrary} labels
+(KIV and ZOR), requiring the model to infer their meanings.
+\end{itemize}
+
+We illustrate our incremental experimental setup in Fig.~\ref{fig:coin-city-prompt}.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{exp2_coin_city_results.pdf}
-\vspace{3pt}
-\begin{minipage}{\linewidth}
-\centering
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\resizebox{\linewidth}{!}{%
-\begin{tabular}{l r rrrr rr}
-\toprule
-& & \multicolumn{4}{c}{Forecast MAE [95\% CI]} & \multicolumn{2}{c}{$\rho(\hat g,g_C)$} \\
-\cmidrule(lr){3-6}\cmidrule(lr){7-8}
-Model & Paired $n$ & Target only & No C context & $+$ C context &
-$+$ wrong C context & No context & $+$ context \\
-\midrule
-\micon{claude.png}~Opus~4.8 & 250 & 2.32 [2.20,\,2.46] & 2.65 [2.41,\,2.89] & \textbf{1.82} [1.64,\,2.02] & 4.20 [3.87,\,4.54] & $-.06$ & \textbf{.70} \\
-\micon{claude.png}~Opus~5 & 250 & 2.36 [2.12,\,2.59] & 2.62 [2.38,\,2.84] & \textbf{1.76} [1.57,\,1.99] & 4.25 [3.92,\,4.57] & $-.01$ & \textbf{.62} \\
-\micon{openai.png}~GPT-5.6 & 250 & 3.60 [3.28,\,3.94] & 2.52 [2.33,\,2.75] & \textbf{1.60} [1.42,\,1.77] & 4.23 [3.90,\,4.55] & $-.04$ & \textbf{.68} \\
-\micon{deepseek.png}~V4-Pro & 250 & \textbf{2.45} [2.27,\,2.61] & 2.84 [2.55,\,3.15] & 2.47 [2.19,\,2.77] & 4.36 [4.01,\,4.74] & $-.03$ & \textbf{.52} \\
-\micon{kimi.png}~K3 & 250 & 3.35 [3.04,\,3.67] & 2.55 [2.32,\,2.78] & \textbf{1.89} [1.66,\,2.13] & 4.31 [3.98,\,4.62] & $-.02$ & \textbf{.59} \\
-\micon{gemini.png}~3.6 Flash & 250 & 2.53 [2.35,\,2.73] & 2.55 [2.31,\,2.80] & \textbf{2.17} [1.89,\,2.48] & 4.29 [3.94,\,4.66] & $.08$ & \textbf{.56} \\
-\bottomrule
-\end{tabular}
-}
-\end{minipage}
-\caption{\textbf{Context improves forecasts before target cases and helps assign
-the response pattern across six systems.} Giving the correct analogue lowers
-error before City C has a history; naming the wrong analogue raises it. As direct
-City C cases accumulate, forecasts rely less on either contextual cue. Full
-results by model are in App.~\ref{app:coin-city-results}.}
+\caption{\textbf{Forecast error across experimental conditions.}
+Mean absolute error (MAE) as the number of observed City C cases increases
+across conditions (a)--(e). Colored lines show GPT-5.6 and OLS baselines;
+gray lines show the other models. Full results are in App.~\ref{app:coin-city-results}.}
 \label{fig:coin-city-results}
 \end{figure}
 
-\subsubsection{Infer a convention without stable semantics}
-\label{sec:novel-mapping}
 
-However, a different explanation for the relational mapping above is that the
-model may already associate familiar cues, like ``national news,'' with a
-stronger response and ``local news'' with a weaker one, rather than actually
-inferring the mapping from the reference cases. We remove this shortcut by
-replacing these cues with the arbitrary labels KIV and ZOR. Their meanings are
-randomized across episodes, so neither label has any stable association with
-strong or weak responsiveness. Twelve of fifteen tested systems recover the episode-local mapping before any
-target cases, including all tested local checkpoints above 8B
-(App.~\ref{app:coin-city-symbol-context}), although recovery does not always
-improve forecast error. When we further challenge this
-inference by making the two response regimes harder to distinguish, recovery
-weakens, but sufficiently large models are still able to recover the
-relationship, with the threshold varying by model family
-(App.~\ref{app:coin-city-robustness}).
+This design allows us to test whether models use context to infer how strongly new evidence should affect their forecasts, and whether they increasingly rely on direct evidence from City C as it becomes available---all with ground truth on how forecasts should update.
+We evaluate six frontier systems: Claude Opus~4.8 \citep{anthropic2026claude48}, Opus~5 \citep{anthropic2026claude5}, GPT-5.6 \citep{openai2026gpt56},
+DeepSeek~V4-Pro \citep{deepseek2026v4}, Kimi~K3 \citep{moonshot2026kimik3}, and Gemini~3.6~Flash \citep{google2026gemini36}.
+As baselines, we also fit OLS regressions to the observations available in each
+condition to estimate the relationship between campaign news and polling changes.
 
-\begin{figure}[!t]
-\centering
-\begin{minipage}[c]{0.46\linewidth}
-\includegraphics[width=.90\linewidth]{exp2_symbol_decoding.pdf}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.50\linewidth}
-\caption{\textbf{Larger models infer an episode-local convention, then yield
- to direct evidence.} On 88 new episodes, four larger Qwen and Llama checkpoints
-(14--72B) encode the changing KIV/ZOR mapping; three smaller checkpoints
-(4--8B) do not reliably encode it. The decoded state follows context before
-City C has a history and follows the target relationship as local cases accumulate.}
-\label{fig:coin-city-symbol-decoding}
-\end{minipage}
-\end{figure}
 
-This pattern matches what we would expect if models are inferring a latent
-mapping: doing so becomes harder as the underlying regimes become less
-distinguishable. \emph{But when a model does recover that mapping, what has it
-actually inferred?} We ask whether the episode-local KIV/ZOR relationship can be
-decoded from the model's hidden states. In larger open models, the decoded
-representation follows the context-selected relationship before City C has its
-own history, and then shifts toward City C's observed behavior as direct evidence
-accumulates (Fig.~\ref{fig:coin-city-symbol-decoding}).
+\noindent\textbf{Finding: models use context to make better forecasts.}
+In Fig.~\ref{fig:coin-city-results}, we show that when there are few observed City C cases, strong models use the reference cities together with the contextual cue to infer which response pattern applies.
+For stronger models, this ``hint'' substantially improves forecasting over relying on City C alone or pooling the reference cities without knowing which one is relevant; e.g., in Fig.~\ref{fig:coin-city-results}c, GPT-5.6 Sol substantially outperforms the baselines when $k=0$ or $k=1$.
+This holds true even when the cues given are arbitrary KIV/ZOR labels whose meaning must be inferred (Fig.~\ref{fig:coin-city-results}e).
+Finally, giving the model the \textit{wrong} contextual cue  sharply worsens its forecast (Fig.~\ref{fig:coin-city-results}d).
 
-But decoding still leaves open whether this representation actually matters for
-the forecast. Figure~\ref{fig:coin-city-causal-patch} tests this directly by
-swapping the label-state representation between otherwise matched Qwen3-14B
-prompts. Before City C provides any direct observations, the intervention changes
-both the analogue the model names and its numerical forecast. After four City C
-cases, the same swap has no reliable effect. Across episodes, the intervention
-produces a regime-aligned symmetric forecast shift of \(+.333\) before target
-cases and \(-.035\) after four; the latter falls within the sign-flip null range. For Qwen3-14B, this shows that
-the induced mapping helps determine the forecast when target evidence is sparse,
-but gives way once direct observations reveal City C's own response relationship
-(App.~\ref{app:coin-city-causal-patch}).
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{exp2_causal_patch_swap.pdf}
+    \caption{\textbf{Changing the inferred KIV/ZOR relationship changes Qwen3-14B's forecast.}
+    With no direct City C evidence, replacing the label-token hidden states with
+    those produced by the opposite-label prompt moves the forecast toward the
+    opposite response regime. Patching three mid-network layers moves it as far
+    as overwriting the label token itself.}
+    \label{fig:coin-city-causal-patch}
+\end{wrapfigure}
 
-\begin{figure}[!t]
-\vspace{-0.4em}
-\centering
-\includegraphics[width=.90\linewidth]{exp2_causal_patch.pdf}
-\vspace{-0.7em}
-\caption{\textbf{Changing the induced convention changes the forecast when
-evidence is sparse.} In the illustrated pair, swapping the internal
-representation moves the forecast from 51.3 to 54.0 and changes which reference
-city the model names; reversing the swap reverses the movement. As more City C
-behavior is revealed, the same label-state swap has no reliable effect. Full controls in
-Table~\ref{tab:coin-city-causal-patch}.}
-\label{fig:coin-city-causal-patch}
-\vspace{-1.0em}
-\end{figure}
+\noindent\textbf{Finding: models revise their initial contextual inference as direct evidence accumulates.}
+We find that context matters most when direct evidence from City C is sparse.
+As observations from City C accumulate, forecasts increasingly approach the OLS baselines. This suggests the models shift from contextual information toward direct evidence as its evidential value grows, as a forecaster should.
+This pattern holds across conditions in Fig.~\ref{fig:coin-city-results}, but is most striking in Fig.~\ref{fig:coin-city-results}d: even when initially misled by an incorrect contextual cue, models recover as direct evidence accumulates.
+
+\noindent\textbf{Mechanistic analysis.}
+The above behavioral results show that models can infer which predictive relationship applies, \textit{but they do not tell us whether the model represents that relationship internally or uses it to produce the forecast.}
+We thus further investigate how the predictive relationship inferred from the arbitrary KIV/ZOR labels is represented internally and whether that representation actually influences the forecast.
+We fit linear probes to hidden states from Qwen3-14B~\citep{qwen2025qwen3} and Llama-3.1-70B~\citep{grattafiori2024llama} to decode whether the model associates City C with the strong- or weak-response regime.
+We then test whether this representation influences the forecast using held-out matched KIV/ZOR prompt pairs. At layers located separately for each model, we swap the label-token hidden states (a patch) with those produced by the opposite-label prompt and regenerate the forecast. We perform this intervention both before and after City C provides direct observations.
+
+\noindent\textbf{Finding: inferred relationships are represented internally and can shape forecasts.}
+The decoded representation initially follows the relationship implied by the KIV/ZOR label, then shifts toward City C's actual response pattern as direct observations accumulate.
+In Qwen3-14B, swapping this representation before City C provides any direct observations changes both the selected reference city and the numerical forecast, moving the forecast-implied response far enough that each arm lands close to where the opposite label began (Fig.~\ref{fig:coin-city-causal-patch}).
+After four City C observations, the same intervention has no reliable effect.
+The representation therefore influences the forecast when the model must rely on the inferred relationship, and yields to direct evidence once it identifies City C's response pattern. The same intervention in Llama-3.1-70B, at layers located for that model, is reported in
+App.~\ref{app:coin-city-causal-patch}.
 
 \noindent\textbf{Takeaway.}
-Models use context to select a predictive relationship and revise that selection
-from local evidence. Arbitrary labels remove a familiar-semantic shortcut;
-decoding reveals an episode-local representation, and intervention links it to
-Qwen3-14B's forecast when target evidence is absent. Experiment~3 asks which parts
-of this behavior training carries into new domains and response structures.
+Models can infer which predictive relationship applies, use it when direct evidence is sparse, and revise it as local evidence accumulates.
+In stronger models, this behavior persists under arbitrary labels, appears in internal representations, and causally shapes the resulting forecast.
+Experiment~3 asks whether training can carry this relationship use into new domains and response structures.
 %============================================================================
 % END evidence_ladder.tex
 %============================================================================
