@@ -40,8 +40,11 @@ SITES_BY_MODEL = {
                   ("cross_embedding_only", "label token")),
     # Llama is shown at a window inside its effective band and at the registered
     # one, which sits past the end of it.
-    "llama3_1_70b": (("cross_window_22", "layers 22\u201324"),
-                     ("cross_window_35", "layers 35\u201337")),
+    "llama3_1_70b": (("cross_window_11", "layers\n11\u201313"),
+                     ("cross_window_15", "layers\n15\u201317"),
+                     ("cross_window_19", "layers\n19\u201321"),
+                     ("cross_window_22", "layers\n22\u201324"),
+                     ("cross_window_28", "layers\n28\u201330")),
 }
 SITES = SITES_BY_MODEL["qwen3_14b"]
 
@@ -114,20 +117,25 @@ def build(output_dir: Path, key: str = "qwen3_14b") -> Path:
     name, study, filename, ylim = MODELS[key]
     SITES = SITES_BY_MODEL[key]
     pairs = load(study)
-    fig, ax = plt.subplots(figsize=(3.45, 3.75), facecolor="white")
-    fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.835)
+    width = 3.45 if len(SITES) <= 2 else 1.55 + 1.15 * len(SITES)
+    fig, ax = plt.subplots(figsize=(width, 3.75), facecolor="white")
+    fig.subplots_adjust(left=0.195 if len(SITES) <= 2 else 0.115,
+                        right=0.975, bottom=0.135, top=0.835)
 
     # Which reference the label pointed at, and therefore which city's cases the
     # forecast should follow.
     series = {True: ("strong-response\ndata", TO_WEAK), False: ("weak-response\ndata", TO_STRONG)}
-    positions = {(0, True): 0.55, (0, False): 1.35, (1, True): 2.75, (1, False): 3.55}
+    span = 2.2
+    positions = {(i, strong): i * span + (0.55 if strong else 1.25)
+                 for i in range(len(SITES)) for strong in (True, False)}
+    right = (len(SITES) - 1) * span + 1.85
 
     for centre, sd, band_label, band_colour in REGIMES:
         ax.axhspan(centre - 2 * sd, centre + 2 * sd, color=band_colour, alpha=0.11,
                    linewidth=0, zorder=0)
         # Sitting the label inside its own band ties the two together without a
         # leader line, and frees the right margin the outside labels needed.
-        ax.text(0.14, centre, band_label, ha="left", va="center", fontsize=6.7,
+        ax.text(0.10, centre, band_label, ha="left", va="center", fontsize=6.7,
                 color=band_colour, alpha=0.9, fontweight="bold")
 
     episodes = len(pairs[(SITES[0][0], True)]) + len(pairs[(SITES[0][0], False)])
@@ -153,10 +161,10 @@ def build(output_dir: Path, key: str = "qwen3_14b") -> Path:
                     markeredgecolor=color, markeredgewidth=1.3, zorder=3)
             ax.plot([x], [after], marker="o", markersize=5.0, color=color, zorder=3)
 
-    ax.set_xlim(0.0, 4.10)
+    ax.set_xlim(0.0, right)
     ax.set_ylim(*ylim)
-    ax.set_xticks([(positions[(0, True)] + positions[(0, False)]) / 2,
-                   (positions[(1, True)] + positions[(1, False)]) / 2])
+    ax.set_xticks([(positions[(i, True)] + positions[(i, False)]) / 2
+                   for i in range(len(SITES))])
     ax.set_xticklabels([label for _site, label in SITES], fontsize=7.4,
                        fontweight="bold", linespacing=1.3)
     ax.tick_params(axis="x", length=0, pad=4)
