@@ -42,8 +42,8 @@ plt.rcParams.update(
 
 INK = "#333A45"
 MUTED = "#6B7280"
-TO_SLOW = "#B5405F"
-TO_FAST = "#2C7FB8"
+TO_WEAK = "#B5405F"
+TO_STRONG = "#2C7FB8"
 GRID = "#D9DCE0"
 
 
@@ -85,7 +85,7 @@ def build(output_dir: Path) -> Path:
     fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.35), facecolor="white")
     fig.subplots_adjust(left=0.20, right=0.985, bottom=0.26, top=0.78, wspace=0.42)
 
-    directions = {True: ("started fast", TO_SLOW), False: ("started slow", TO_FAST)}
+    directions = {True: ("started strong", TO_WEAK), False: ("started weak", TO_STRONG)}
     ticks, labels = [], []
 
     for ax, (name, study, window) in zip(axes, MODELS):
@@ -120,7 +120,7 @@ def build(output_dir: Path) -> Path:
         ax.set_ylim(-0.02, 3.92)
         ax.set_yticks(ticks)
         ax.set_yticklabels(labels, fontsize=7.0)
-        for tick, color in zip(ax.get_yticklabels(), (TO_SLOW, TO_FAST) * len(SITES)):
+        for tick, color in zip(ax.get_yticklabels(), (TO_WEAK, TO_STRONG) * len(SITES)):
             tick.set_color(color)
         ax.tick_params(axis="y", length=0)
         ax.tick_params(axis="x", labelsize=7.2)
