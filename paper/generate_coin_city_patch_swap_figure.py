@@ -92,7 +92,7 @@ def build(output_dir: Path) -> Path:
     name, study, window = MODEL
     pairs = load(study)
     fig, ax = plt.subplots(figsize=(3.45, 3.75), facecolor="white")
-    fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.895)
+    fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.835)
 
     # Which reference the label pointed at, and therefore which city's cases the
     # forecast should follow.
@@ -108,6 +108,13 @@ def build(output_dir: Path) -> Path:
                 color=band_colour, alpha=0.9, fontweight="bold")
 
     episodes = len(pairs[(SITES[0][0], True)]) + len(pairs[(SITES[0][0], False)])
+    # A guide at each starting level. The point of the result is that an arrow
+    # ends where the other one began, which is hard to see across a gap and
+    # obvious against a line.
+    for started_strong, (_label, colour) in series.items():
+        start = float(np.mean([v[0] for v in pairs[(SITES[0][0], started_strong)]]))
+        ax.axhline(start, color=colour, linewidth=0.7, linestyle=(0, (2.2, 2.0)),
+                   alpha=0.45, zorder=0)
     for site_index, (site, site_label) in enumerate(SITES):
         for started_strong, (label, color) in series.items():
             x = positions[(site_index, started_strong)]
@@ -136,12 +143,21 @@ def build(output_dir: Path) -> Path:
     ax.grid(axis="y", color=GRID, linewidth=0.6)
     ax.set_axisbelow(True)
     ax.spines[["top", "right"]].set_visible(False)
-    handles = [plt.Line2D([], [], color=color, linewidth=1.9, marker="o",
-                          markersize=5.0, label=label.replace("\n", " "))
+    # Colour says which reference the label pointed at; the marker says whether
+    # the forecast is the unpatched one or the patched one. Both are needed to
+    # read a single arrow, so both are in the legend.
+    handles = [plt.Line2D([], [], color=color, linewidth=1.9, label=label.replace("\n", " "))
                for label, color in series.values()]
-    ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.0, 1.01),
-              ncol=2, frameon=False, fontsize=6.9, handlelength=1.5,
-              columnspacing=1.1, handletextpad=0.5)
+    handles += [
+        plt.Line2D([], [], color=MUTED, linestyle="none", marker="o", markersize=5.0,
+                   markerfacecolor="white", markeredgewidth=1.3,
+                   label="before the patch"),
+        plt.Line2D([], [], color=MUTED, linestyle="none", marker="o", markersize=5.0,
+                   label="after the patch"),
+    ]
+    ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(-0.02, 1.01),
+              ncol=2, frameon=False, fontsize=6.7, handlelength=1.5,
+              columnspacing=1.0, handletextpad=0.55, labelspacing=0.45)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "exp2_causal_patch_swap.pdf"
