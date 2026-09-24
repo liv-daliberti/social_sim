@@ -30,7 +30,7 @@ MODEL = ("Qwen3-14B", "qwen3_14b_symbol_relational_v2", "layers 19\u201321 of 40
 # Two sites: the mid-network window the protocol selected, and the label token's
 # own embedding. The second is close to editing the prompt, so it bounds what a
 # complete swap looks like for that deployment.
-SITES = (("cross_selected_window", "mid-network\nwindow"),
+SITES = (("cross_selected_window", "mid-network\nlayers 19\u201321"),
          ("cross_embedding_only", "label token"))
 
 plt.rcParams.update(
@@ -92,7 +92,7 @@ def build(output_dir: Path) -> Path:
     name, study, window = MODEL
     pairs = load(study)
     fig, ax = plt.subplots(figsize=(3.45, 3.75), facecolor="white")
-    fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.835)
+    fig.subplots_adjust(left=0.195, right=0.975, bottom=0.115, top=0.805)
 
     # Which reference the label pointed at, and therefore which city's cases the
     # forecast should follow.
@@ -155,6 +155,8 @@ def build(output_dir: Path) -> Path:
         plt.Line2D([], [], color=MUTED, linestyle="none", marker="o", markersize=5.0,
                    label="after the patch"),
     ]
+    ax.text(-0.02, 1.185, f"{name}", transform=ax.transAxes, ha="left", va="bottom",
+            fontsize=7.6, fontweight="bold", color=INK)
     ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(-0.02, 1.01),
               ncol=2, frameon=False, fontsize=6.7, handlelength=1.5,
               columnspacing=1.0, handletextpad=0.55, labelspacing=0.45)
