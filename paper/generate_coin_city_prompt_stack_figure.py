@@ -82,7 +82,7 @@ def measure(ax, artist):
         ax.transData.inverted().transform(bbox.corners())[0, 0]
 
 
-def table(ax, x, y_top, name, rows, tag, LINE, PAD):
+def table(ax, x, y_top, name, rows, tag, LINE, PAD, tag_colour=TAG_INK):
     """One city's cases, ruled top / under-header / bottom.
 
     The y axis is on a different scale from the x axis, so every rule is placed
@@ -94,7 +94,7 @@ def table(ax, x, y_top, name, rows, tag, LINE, PAD):
     if tag is not None:
         width = measure(ax, title)
         ax.text(left + width + 0.16, y_top - LINE * 0.06, tag,
-                ha="left", va="top", fontsize=6.6, color=TAG_INK,
+                ha="left", va="top", fontsize=6.6, color=tag_colour,
                 fontweight="bold")
 
     top_rule = y_top - LINE * 1.30
@@ -127,7 +127,7 @@ def build(output_dir: Path) -> Path:
     height = PAD * 2 + LINE * 4.0
     box(ax, left, top - height, width, height, QUESTION_FILL, QUESTION_EDGE)
     ax.text(left + PAD, top - PAD,
-            "Prompt:  City C has a starting poll\n"
+            "Prompt:  City C has a new starting poll\n"
             "of 53.9 and has net news of +5.\n"
             "What do you predict the poll will be\n"
             "at the end of the week?",
@@ -136,14 +136,14 @@ def build(output_dir: Path) -> Path:
     top -= height + 0.30
 
     cards = (
-        ("CITY C  \u00b7  being forecast", CITY_C, None, C_FILL, C_EDGE),
+        ("CITY C  \u00b7  being forecast", CITY_C, "prior samples", C_FILL, C_EDGE),
         ("CITY A", CITY_A, "national news", REF_FILL, REF_EDGE),
         ("CITY B", CITY_B, "local news", REF_FILL, REF_EDGE),
     )
     for name, rows, tag, fill, edge in cards:
         height = PAD * 2 + LINE * (len(rows) + 2.9)
         box(ax, left, top - height, width, height, fill, edge)
-        table(ax, left, top - PAD, name, rows, tag, LINE, PAD)
+        table(ax, left, top - PAD, name, rows, tag, LINE, PAD, edge)
         top -= height + 0.30
 
     # The hint.
