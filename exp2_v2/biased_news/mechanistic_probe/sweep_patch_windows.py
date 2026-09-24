@@ -26,6 +26,12 @@ from pathlib import Path
 import sys
 import time
 
+# Must precede the import below: the registered module reads these at import
+# time, and the compute nodes have no route to huggingface.co, so a tokenizer
+# load that falls through to the network fails the job outright.
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
+os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import patch_symbol_label_activations as base
