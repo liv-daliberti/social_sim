@@ -671,12 +671,14 @@ structural variation, so the trained policy emits no delayed response anywhere
 % END fig_exp3_results_grid.tex
 %============================================================================
 
-The finer contrast between episode-matched and shuffled-pair training does not
-survive replication. Estimated at three seeds and extended to eight under a
-pre-registered amendment, the Qwen3-8B joint-shift contrast falls from
-\ePubEightJointEst{} \ePubEightJointCi{} to \eEightJointEst{} \eEightJointCi{};
-all four of Qwen3-4B's cells excluded zero at three seeds and all span it at
-eight. A wrapper crossover retains a similar three-seed mean ($.251$ versus $.255$;
+The finer contrast between episode-matched and shuffled-pair training is
+estimated, not resolved. Extended from three seeds to eight under a
+pre-registered amendment, the Qwen3-8B joint-shift contrast moves from
+\ePubEightJointEst{} \ePubEightJointCi{} to \eEightJointEst{} \eEightJointCi{},
+and Qwen3-4B's four cells span zero at eight where all excluded it at three.
+With a between-seed standard deviation of $.160$ the eight-seed roster could
+separate only effects above $.134$, so it bounds this advantage below roughly
+that size rather than showing it absent. A wrapper crossover retains a similar three-seed mean ($.251$ versus $.255$;
 App.~\ref{app:exp3-eight-seed}). One cell survives every test: Qwen3-8B in distribution,
 \eEightIdEst{} \eEightIdCi{}, \eEightIdSign{} seeds, clearing the conservative
 $t$ \eEightIdTci{}, a wild cluster bootstrap ($p=\eEightIdWild{}$) and an exact
@@ -817,7 +819,8 @@ would test generality.
 
 Performance is heterogeneous. Smaller checkpoints often struggle to induce the
 KIV/ZOR meaning. The episode-matching advantage under joint domain and mechanism
-shift does not survive the eight-seed replication; the benefit for compositions
+shift is bounded below about $.13$ by the eight-seed roster rather than
+resolved; the benefit for compositions
 of familiar mechanisms is checkpoint-specific, and against a
 distribution-matched shuffled-target control its sign is stable at seven seeds
 but its separation from zero is not. Structure diagnostics use no target

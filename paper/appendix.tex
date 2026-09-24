@@ -3871,6 +3871,15 @@ for Qwen3-4B only.}
 
 
 \subsubsection{Later eight-seed precision extension}
+
+\noindent\textbf{What this roster could have detected.} The eight-seed
+joint-cell contrast has a between-seed standard deviation of $.160$, so the
+smallest effect it could have separated from zero is $\pm.134$. The observed
+estimate is $+.126$. The extension therefore bounds the episode-matching
+advantage under joint shift rather than excluding it: it rules out effects
+appreciably larger than about $.13$ response-MAE points and is uninformative
+about effects at or below that size. This contrast is therefore reported as an
+estimate with its bound, not as a verdict on whether the advantage exists.
 \label{app:exp3-eight-seed}
 
 Qwen3-8B and Qwen3-4B were extended to seeds 42--49 in both reward arms, holding
@@ -4236,7 +4245,9 @@ intervals include zero, and matched held-out errors exceed the no-change baselin
 Matched training improves on the shuffled-target control for seen mechanisms
 by $.262$ $[.212,.319]$ (disclosed) and $.373$ $[.318,.426]$ (undisclosed),
 but held-out contrasts are $-.024$ $[-.079,.027]$ and $-.016$
-$[-.061,.027]$, both spanning zero. The tracking slopes separate the same way:
+$[-.061,.027]$, both spanning zero. Those intervals have half-widths of $.053$
+and $.044$, so held-out gain tracking is bounded below about $.05$ change-MAE
+points rather than shown to be absent. The tracking slopes separate the same way:
 on seen mechanisms matched training reaches $.323$ and $.461$ against $.084$
 and $.107$ for the shuffle, whereas on held-out mechanisms matched tracking
 falls to $.122$ and $.238$ and its errors exceed the $.826$ no-change baseline
@@ -4309,7 +4320,12 @@ to prevent. The five-seed roster remains the registered result and the
 seven-seed estimates are reported alongside it, never in place of it. Read
 together, the two rosters support a small positive effect whose sign is stable
 and whose separation from zero is not established at this number of training
-seeds.
+seeds. The bound is explicit: at seven seeds the inferred-mechanism contrast has
+a between-seed standard deviation of $.084$ and could separate effects of
+$\pm.078$, against an estimate of $+.076$; the described-mechanism contrast
+could separate $\pm.118$ against $+.111$. Both nulls sit just inside their own
+detection limit, so this roster bounds the effect near $.08$--$.12$ rather than
+excluding it.
 
 \begin{table}[htbp]
 \centering\footnotesize
