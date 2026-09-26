@@ -1,0 +1,81 @@
+{
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "classification": "post_hoc_descriptive_hosted_extension",
+  "status": "registered",
+  "registered_at": "2026-08-26T14:36:22Z",
+  "timing_disclosure": {
+    "parent_holdout_was_observed": true,
+    "opus5_development_calls_started": false,
+    "opus5_holdout_calls_started": false,
+    "reason": "The user requested Claude Opus 5 after the other hosted and local Experiment 4 results were available."
+  },
+  "authorization": {
+    "source": "Explicit user instruction to run Opus 5 and finish outstanding transport retries.",
+    "external_prompt_transmission_authorized": true
+  },
+  "parent_registration": {
+    "path": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_registration_20260825T203304Z.json",
+    "sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd"
+  },
+  "protocol": {
+    "path": "exp3_training_transfer/polymarket/ARCHITECTURE_PROVIDER_SWEEP_PROTOCOL.md",
+    "sha256": "87bdbcb19f5fc6fc138ea1bdc1ed5c27c811c981c504adff0a4dbd7e14e749dd"
+  },
+  "hosted_models": [
+    "claude-opus-4-8",
+    "gpt-5.6-sol",
+    "FW-Kimi-K3",
+    "DeepSeek-V4-Pro",
+    "claude-opus-5"
+  ],
+  "added_model": {
+    "deployment": "claude-opus-5",
+    "provider_protocol": "Foundry Anthropic Messages API",
+    "endpoint": "https://liv.services.ai.azure.com/anthropic",
+    "credential_env": "LIV_AZURE_API_KEY",
+    "credential_value_recorded": false,
+    "classification": "off_the_shelf_api_reference",
+    "temperature_supplied": false,
+    "top_p_supplied": false,
+    "extended_thinking": "provider default; score the first text block after any thinking block",
+    "max_output_tokens": 4096,
+    "configuration_source": "The deployment-specific transport was established on separate Coin City development work before this extension; no Experiment 4 holdout forecast from Opus 5 was used for configuration."
+  },
+  "development_gate": {
+    "task_file": "exp3_training_transfer/polymarket/data/exp3b_registered/dev.tasks.jsonl",
+    "task_file_sha256": "702f257fd952a4fed5f4798cd4a64165dab630d67b2e4e1b6820c68e3af8f59f",
+    "calls": 2,
+    "draw_index": 0,
+    "pass_rule": "Both calls must return responses parseable by the frozen exact JSON parser; otherwise do not open the holdout."
+  },
+  "locked_evaluation": {
+    "holdout_tasks": 318,
+    "draws_per_task": 5,
+    "total_calls": 1590,
+    "aggregation": "arithmetic mean of five parsed yes probabilities",
+    "incomplete_draw_policy": "endpoint_task_brier_loss_one",
+    "scoring": "Brier score against settlement outcome",
+    "comparison": "contemporaneous Polymarket user probability",
+    "inference": "family-clustered bootstrap with 5000 repetitions and seed 30032026",
+    "report_regardless_of_direction": true,
+    "no_holdout_retry_after_model_response": true,
+    "pre_model_transport_retries": {
+      "maximum": 12,
+      "statuses": [408, 429, 500, 502, 503, 504]
+    }
+  },
+  "frozen_data": {
+    "holdout_manifest": "exp3_training_transfer/polymarket/data/exp4_scale_registered/manifest.json",
+    "holdout_manifest_sha256": "f210b7cc0d7c9ea099af06a46af8a6852250902697d2a84944f7d046dd3f4ec6",
+    "holdout_n": 318,
+    "holdout_tasks": "exp3_training_transfer/polymarket/data/exp4_scale_registered/test.tasks.jsonl",
+    "holdout_tasks_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24"
+  },
+  "software": {
+    "shared_runner": "exp3_training_transfer/polymarket/scripts/evaluate_hosted_scale_holdout.py",
+    "shared_runner_sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf",
+    "deployment_adapter": "exp3_training_transfer/polymarket/scripts/evaluate_hosted_scale_holdout_opus5.py",
+    "deployment_adapter_sha256": "211055727c4dee096c3457ad09c442eb2b24b535553b40985609bb86ca9b17de"
+  },
+  "output_dir": "exp3_training_transfer/polymarket/reports/exp4_hosted_opus5"
+}

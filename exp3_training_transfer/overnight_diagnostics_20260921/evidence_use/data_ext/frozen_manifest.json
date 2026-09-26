@@ -1,0 +1,59 @@
+{
+  "amended_at": "2026-09-23T02:36:04.880099+00:00",
+  "amendment": "Checkpoint roster only. Gain-pair and held-out data are reused byte-for-byte (hashes unchanged). Seeds 42-44 were missing at freeze time and now exist; the shuffled-target arm replaces population_prior as the distribution-matched comparator, which PROTOCOL.md already contemplated.",
+  "artifacts": {
+    "gain_pairs_disclosed": {
+      "dataset": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/gain_pairs_disclosed",
+      "jsonl": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/gain_pairs_disclosed.jsonl",
+      "rows": 384,
+      "sha256": "e19ff5a71a56c77e6415a4afc38f7fb0e69923d004dab1c38516aca4f8a424d3"
+    },
+    "gain_pairs_undisclosed": {
+      "dataset": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/gain_pairs_undisclosed",
+      "jsonl": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/gain_pairs_undisclosed.jsonl",
+      "rows": 384,
+      "sha256": "6eb3d35da036e37defe38931a417cf299b8b6a39c850657b17af31f9d21dc876"
+    },
+    "heldout_disclosed": {
+      "dataset": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/heldout_disclosed",
+      "jsonl": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/heldout_disclosed.jsonl",
+      "rows": 720,
+      "sha256": "846a6acc2178ac976b455cf4fb3dde3e0f7a8b7e847ad5668e4e3be37c5dfb0c"
+    },
+    "heldout_undisclosed": {
+      "dataset": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/heldout_undisclosed",
+      "jsonl": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/heldout_undisclosed.jsonl",
+      "rows": 720,
+      "sha256": "ac62cfda929139d247d7f152cd86735e047bbba95b3a4d6a0e2c7e1251efea4b"
+    }
+  },
+  "checkpoint_inventory_sha256": "414b8b8da579e9a260dbe0b9610bcf3e4f5bdb31d6cde1ce572d70f606c80882",
+  "extends": "mechanism_evidence_gain_20260921_v1",
+  "fresh_holdout_seed_base": 921000000,
+  "fresh_k": [
+    3,
+    6,
+    9
+  ],
+  "fresh_n_per_world": 60,
+  "frozen_at": "2026-09-22T03:17:55.780906+00:00",
+  "gain_quantiles": [
+    0.2,
+    0.8
+  ],
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "pair_k": 9,
+  "pair_n_per_world": 16,
+  "pair_seed_base": 950000000,
+  "parent_checkpoint_inventory_sha256": "40b848d9a4a1a97282aeb63030b69fc2629ee3a6e2b251672f00864953e9d66d",
+  "parent_manifest_sha256": "222169569599c2926ffccfde8e6db97e88e01bad7f253a6691c2bd63376db0af",
+  "protocol": "mechanism_evidence_gain_20260921_v1_ext_full_roster",
+  "source_sha256": {
+    "exp3_training_transfer/mechanism_family/make_dataset.py": "0dabd9e5c92909f374bd0cd6b7a40cb18a61d976b037f39dba86df8f4148c8ef",
+    "exp3_training_transfer/mechanism_family/output_contract.py": "24674dc2b9836337589fecda597122bc8781d43e68ff60ab6838d29deb5226b1",
+    "exp3_training_transfer/mechanism_family/prompt.py": "e96335d7f7ea0928c204428d3a5024891771ba030df876e27fac0b77a50d6a77",
+    "exp3_training_transfer/mechanism_family/worlds.py": "f940d2d734258f5b45ff8db579d3de8cae02e6185c841e3f9faab8e397549f94",
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/PROTOCOL.md": "a7fc3972e6dedb9dcc43d58c6791880a719ba8ab29c8c9bc662d71eb925973bb",
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/build_frozen.py": "c8bc5ff16f5e84ca52ca70b438d42ece39fa4d0c655628a0a4bed82d9cf85e59"
+  }
+}

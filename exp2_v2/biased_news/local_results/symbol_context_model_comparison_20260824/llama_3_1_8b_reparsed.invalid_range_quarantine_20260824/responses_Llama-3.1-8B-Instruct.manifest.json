@@ -1,0 +1,715 @@
+{
+  "arms": [
+    "abc_no_context",
+    "abc_context",
+    "abc_symbol_context"
+  ],
+  "chat_template": "tokenizer.apply_chat_template(default model template)",
+  "completed_at": "2026-08-24T19:34:48.959998+00:00",
+  "control": "configuration-matched open-model arbitrary-symbol replication",
+  "counts": {
+    "abc_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1242
+    },
+    "abc_no_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1234
+    },
+    "abc_symbol_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1232
+    }
+  },
+  "decode_seed": 20260824,
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "gpu_memory_utilization": 0.9,
+  "max_model_len": 3072,
+  "max_tokens": 512,
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "model_label": "Llama-3.1-8B-Instruct",
+  "model_license_family": "Llama 3.1 Community License open-weight release",
+  "order_seed": 20260804,
+  "parser": "eval/run_frozen_task_shard.py::_parse_reply",
+  "reparse": {
+    "allowed_syntax": "numeric constants, parentheses, unary +/-, +, -, *, /",
+    "destination_response_sha256": {
+      "abc_context": "3282ffa0ee9b60977e19703972fe49f78d0fac7424b0f3bab95b7c9f58e5c6fe",
+      "abc_no_context": "6b01cb709eb2528f1376261470c90ff8eec20d5f365a8857a3237154459f9a68",
+      "abc_symbol_context": "7b03438ab402227cda36e49953fecaedefdb8c92c3d0e0a5624b35fb44bb708e"
+    },
+    "new_model_calls": 0,
+    "original_outputs_preserved": true,
+    "recovered": [
+      {
+        "arm": "abc_no_context",
+        "expression": "46.3 + 0.1 - 2.5",
+        "task_id": "coincityclaude250v4_0246_c1",
+        "value": 43.9
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "44.5 - (6 * ((14.0 + 2.6) / 2) / 9)",
+        "task_id": "coincityclaude250v4_0020_c0",
+        "value": 38.96666666666667
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "45.7 + 0.9",
+        "task_id": "coincityclaude250v4_0011_c1",
+        "value": 46.6
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "54.5 + ((-1.3 + 1.1) / 2 + 6) / 2",
+        "task_id": "coincityclaude250v4_0194_c3",
+        "value": 57.45
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "62.5 + 0.0",
+        "task_id": "coincityclaude250v4_0150_c1",
+        "value": 62.5
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "44.1 - 7.3",
+        "task_id": "coincityclaude250v4_0210_c2",
+        "value": 36.800000000000004
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "37.0 + 0.6",
+        "task_id": "coincityclaude250v4_0006_c2",
+        "value": 37.6
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "48.9 + (5.3 * (10 - 7) / 7)",
+        "task_id": "coincityclaude250v4_0154_c2",
+        "value": 51.17142857142857
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "38.0 - 2.45",
+        "task_id": "coincityclaude250v4_0040_c0",
+        "value": 35.55
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "53.1 - 1.9",
+        "task_id": "coincityclaude250v4_0206_c3",
+        "value": 51.2
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "57.0 + (10.5 * (-6/6))",
+        "task_id": "coincityclaude250v4_0083_c1",
+        "value": 46.5
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "49.1 + 1.6",
+        "task_id": "coincityclaude250v4_0132_c1",
+        "value": 50.7
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "49.7 + (11.3 - 8) * (6 / 8)",
+        "task_id": "coincityclaude250v4_0044_c4",
+        "value": 52.175000000000004
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "46.3 + 0.1 - 2.1",
+        "task_id": "coincityclaude250v4_0246_c2",
+        "value": 44.3
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "37.0 + 0.6",
+        "task_id": "coincityclaude250v4_0006_c1",
+        "value": 37.6
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "64.2 - 3.7",
+        "task_id": "coincityclaude250v4_0116_c1",
+        "value": 60.5
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "40.6 - 6.5",
+        "task_id": "coincityclaude250v4_0101_c4",
+        "value": 34.1
+      },
+      {
+        "arm": "abc_no_context",
+        "expression": "47.2 - 4.6",
+        "task_id": "coincityclaude250v4_0039_c2",
+        "value": 42.6
+      },
+      {
+        "arm": "abc_context",
+        "expression": "45.5 - 4.1",
+        "task_id": "coincityclaude250v4_0168_c1",
+        "value": 41.4
+      },
+      {
+        "arm": "abc_context",
+        "expression": "56.3 + 2.9",
+        "task_id": "coincityclaude250v4_0172_c1",
+        "value": 59.199999999999996
+      },
+      {
+        "arm": "abc_context",
+        "expression": "53.5 + (4/7) * (51.6 - 43.4)",
+        "task_id": "coincityclaude250v4_0045_c0",
+        "value": 58.18571428571428
+      },
+      {
+        "arm": "abc_context",
+        "expression": "50.2 - 1.4",
+        "task_id": "coincityclaude250v4_0190_c1",
+        "value": 48.800000000000004
+      },
+      {
+        "arm": "abc_context",
+        "expression": "42.2 - 3.6",
+        "task_id": "coincityclaude250v4_0028_c0",
+        "value": 38.6
+      },
+      {
+        "arm": "abc_context",
+        "expression": "44.5 - 6.65",
+        "task_id": "coincityclaude250v4_0020_c0",
+        "value": 37.85
+      },
+      {
+        "arm": "abc_context",
+        "expression": "40.1 + 3.15",
+        "task_id": "coincityclaude250v4_0003_c0",
+        "value": 43.25
+      },
+      {
+        "arm": "abc_context",
+        "expression": "40.6 - 2.15",
+        "task_id": "coincityclaude250v4_0070_c3",
+        "value": 38.45
+      },
+      {
+        "arm": "abc_context",
+        "expression": "49.4 + 3.2",
+        "task_id": "coincityclaude250v4_0023_c0",
+        "value": 52.6
+      },
+      {
+        "arm": "abc_context",
+        "expression": "45.9 + (45.9 - 60.6) * (7 - 10) / (10 - 7) + 60.6 + 7",
+        "task_id": "coincityclaude250v4_0177_c0",
+        "value": 128.2
+      },
+      {
+        "arm": "abc_context",
+        "expression": "59.1 - 8.1",
+        "task_id": "coincityclaude250v4_0125_c2",
+        "value": 51.0
+      },
+      {
+        "arm": "abc_context",
+        "expression": "38.1 - 2.45",
+        "task_id": "coincityclaude250v4_0019_c0",
+        "value": 35.65
+      },
+      {
+        "arm": "abc_context",
+        "expression": "59.9 + (4 / 10) * ((-1.2 - 0.0 + 6.8 - 1.5) / 3)",
+        "task_id": "coincityclaude250v4_0211_c0",
+        "value": 60.446666666666665
+      },
+      {
+        "arm": "abc_context",
+        "expression": "50.9 + 7.8",
+        "task_id": "coincityclaude250v4_0016_c1",
+        "value": 58.699999999999996
+      },
+      {
+        "arm": "abc_context",
+        "expression": "59.9 - 5.5 + 3.5",
+        "task_id": "coincityclaude250v4_0194_c1",
+        "value": 57.9
+      },
+      {
+        "arm": "abc_context",
+        "expression": "55.1 + 0.9",
+        "task_id": "coincityclaude250v4_0093_c3",
+        "value": 56.0
+      },
+      {
+        "arm": "abc_context",
+        "expression": "41.8 - 2.55",
+        "task_id": "coincityclaude250v4_0035_c0",
+        "value": 39.25
+      },
+      {
+        "arm": "abc_context",
+        "expression": "50.2 - 1.1",
+        "task_id": "coincityclaude250v4_0190_c2",
+        "value": 49.1
+      },
+      {
+        "arm": "abc_context",
+        "expression": "38.7 - 0.1",
+        "task_id": "coincityclaude250v4_0227_c1",
+        "value": 38.6
+      },
+      {
+        "arm": "abc_context",
+        "expression": "53.1 - 1.9",
+        "task_id": "coincityclaude250v4_0206_c3",
+        "value": 51.2
+      },
+      {
+        "arm": "abc_context",
+        "expression": "58.6 - 4.25",
+        "task_id": "coincityclaude250v4_0055_c0",
+        "value": 54.35
+      },
+      {
+        "arm": "abc_context",
+        "expression": "39.8 - 0.4",
+        "task_id": "coincityclaude250v4_0180_c4",
+        "value": 39.4
+      },
+      {
+        "arm": "abc_context",
+        "expression": "43.9 - 0.5",
+        "task_id": "coincityclaude250v4_0225_c1",
+        "value": 43.4
+      },
+      {
+        "arm": "abc_context",
+        "expression": "53.5 + (9 / 10) * ((7.9 + 15.4) / 2)",
+        "task_id": "coincityclaude250v4_0059_c0",
+        "value": 63.985
+      },
+      {
+        "arm": "abc_context",
+        "expression": "59.9 + (4.9 + (-9.8)) / 2",
+        "task_id": "coincityclaude250v4_0165_c4",
+        "value": 57.449999999999996
+      },
+      {
+        "arm": "abc_context",
+        "expression": "49.1 + (10 * (4.2 / 7))",
+        "task_id": "coincityclaude250v4_0009_c0",
+        "value": 55.1
+      },
+      {
+        "arm": "abc_context",
+        "expression": "40.6 - 4.15",
+        "task_id": "coincityclaude250v4_0070_c2",
+        "value": 36.45
+      },
+      {
+        "arm": "abc_context",
+        "expression": "41.2 + 0.8",
+        "task_id": "coincityclaude250v4_0224_c4",
+        "value": 42.0
+      },
+      {
+        "arm": "abc_context",
+        "expression": "49.7 + 4.2",
+        "task_id": "coincityclaude250v4_0044_c0",
+        "value": 53.900000000000006
+      },
+      {
+        "arm": "abc_context",
+        "expression": "56.1 + (10/6) * 11.45",
+        "task_id": "coincityclaude250v4_0012_c0",
+        "value": 75.18333333333334
+      },
+      {
+        "arm": "abc_context",
+        "expression": "50.0 + 5.7",
+        "task_id": "coincityclaude250v4_0094_c1",
+        "value": 55.7
+      },
+      {
+        "arm": "abc_context",
+        "expression": "40.6 - 11.1",
+        "task_id": "coincityclaude250v4_0101_c2",
+        "value": 29.5
+      },
+      {
+        "arm": "abc_context",
+        "expression": "61.4 - 1.4",
+        "task_id": "coincityclaude250v4_0231_c4",
+        "value": 60.0
+      },
+      {
+        "arm": "abc_context",
+        "expression": "49.5 - 4.5",
+        "task_id": "coincityclaude250v4_0021_c0",
+        "value": 45.0
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "43.5 + (48.1 - 40.0) * (4.9 / 9)",
+        "task_id": "coincityclaude250v4_0058_c2",
+        "value": 47.910000000000004
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "64.1 + 2.2",
+        "task_id": "coincityclaude250v4_0120_c3",
+        "value": 66.3
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "46.3 + 0.1",
+        "task_id": "coincityclaude250v4_0246_c1",
+        "value": 46.4
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "53.0 + 9.3",
+        "task_id": "coincityclaude250v4_0060_c4",
+        "value": 62.3
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "49.1 + 10",
+        "task_id": "coincityclaude250v4_0009_c1",
+        "value": 59.1
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "53.1 - 1.9",
+        "task_id": "coincityclaude250v4_0206_c3",
+        "value": 51.2
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "51.4 - 2.65",
+        "task_id": "coincityclaude250v4_0127_c0",
+        "value": 48.75
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "55.8 - 0.5",
+        "task_id": "coincityclaude250v4_0112_c1",
+        "value": 55.3
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "54.1 - 0.3",
+        "task_id": "coincityclaude250v4_0018_c1",
+        "value": 53.800000000000004
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "38.7 - 0.1",
+        "task_id": "coincityclaude250v4_0227_c2",
+        "value": 38.6
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "50.1 - 4.2",
+        "task_id": "coincityclaude250v4_0128_c0",
+        "value": 45.9
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "43.9 - 0.5",
+        "task_id": "coincityclaude250v4_0225_c1",
+        "value": 43.4
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "53.5 + 7 + ((-2.5 + 7.7) / 2)",
+        "task_id": "coincityclaude250v4_0095_c0",
+        "value": 63.1
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "59.9 + 0.6",
+        "task_id": "coincityclaude250v4_0211_c4",
+        "value": 60.5
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "52.6 + 0.9",
+        "task_id": "coincityclaude250v4_0047_c1",
+        "value": 53.5
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "57.4 - 4.4",
+        "task_id": "coincityclaude250v4_0237_c1",
+        "value": 53.0
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "59.9 - 2.2",
+        "task_id": "coincityclaude250v4_0072_c2",
+        "value": 57.699999999999996
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "46.3 + 0.1",
+        "task_id": "coincityclaude250v4_0246_c2",
+        "value": 46.4
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "55.8 + 1.1",
+        "task_id": "coincityclaude250v4_0112_c4",
+        "value": 56.9
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "55.8 + 1.1",
+        "task_id": "coincityclaude250v4_0112_c3",
+        "value": 56.9
+      },
+      {
+        "arm": "abc_symbol_context",
+        "expression": "51.3 - 4.6",
+        "task_id": "coincityclaude250v4_0064_c4",
+        "value": 46.699999999999996
+      }
+    ],
+    "source_dir": "/n/fs/similarity/social_sim/exp2_v2/biased_news/local_results/symbol_context_model_comparison_20260824/llama_3_1_8b",
+    "source_response_sha256": {
+      "abc_context": "4ea3aa7f77b079348793e7d8c897eb6ba8a7056b06d2564d4cae36c132078ba6",
+      "abc_no_context": "6377c5d20662ff7a8d891354f8bbe067ff5128b0e5fa29dd09399718f6fc7f65",
+      "abc_symbol_context": "78e1623625758795da9b24488b734166f19555bee73d0b12f1a3abcf682cd423"
+    },
+    "unresolved": [
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0067_c1"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0117_c0"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0195_c2"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0047_c3"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0224_c2"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0142_c1"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0021_c4"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0047_c2"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "float division by zero",
+        "task_id": "coincityclaude250v4_0060_c2"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0148_c3"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0062_c3"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "disallowed arithmetic syntax: Call(func=Name(id='abs', ctx=Load()), args=[BinOp(left=UnaryOp(op=USub(), operand=Constant(value=5.0)), op=Sub(), right=Constant(value=1.0))], keywords=[])",
+        "task_id": "coincityclaude250v4_0095_c0"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "disallowed arithmetic syntax: Call(func=Name(id='abs', ctx=Load()), args=[BinOp(left=UnaryOp(op=USub(), operand=Constant(value=15.4)), op=Sub(), right=Constant(value=7.9))], keywords=[])",
+        "task_id": "coincityclaude250v4_0059_c0"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0001_c1"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0082_c1"
+      },
+      {
+        "arm": "abc_no_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0064_c0"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0067_c1"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0143_c4"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0211_c2"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0157_c2"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0072_c3"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0116_c0"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0076_c1"
+      },
+      {
+        "arm": "abc_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0145_c0"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0177_c3"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0177_c2"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0145_c2"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0017_c2"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0177_c4"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0216_c1"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0009_c3"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0114_c2"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0230_c1"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0047_c2"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0009_c2"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0062_c4"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0062_c3"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0161_c1"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "no terminal predicted_poll arithmetic expression",
+        "task_id": "coincityclaude250v4_0057_c2"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0241_c0"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0145_c1"
+      },
+      {
+        "arm": "abc_symbol_context",
+        "reason": "invalid syntax (<unknown>, line 1)",
+        "task_id": "coincityclaude250v4_0177_c1"
+      }
+    ]
+  },
+  "software": {
+    "python": "3.10.20",
+    "transformers": "4.51.3",
+    "vllm": "0.8.4"
+  },
+  "status": "complete",
+  "task_file_sha256": {
+    "abc_context": "d5752831f8c995ac1939048d0ec9f37d99393e0e2f24492c5ed47ea94842be10",
+    "abc_no_context": "23e2e3493e6d378af165b6851fd527c75c044db3ddc14041e9ca1ea8af06367e",
+    "abc_symbol_context": "91ea6940ff934bf1a21b0bd8682b34ef1b3d25d543af7af504e8c3d4a67fff70"
+  },
+  "temperature": 0.0,
+  "tensor_parallel_size": 1
+}

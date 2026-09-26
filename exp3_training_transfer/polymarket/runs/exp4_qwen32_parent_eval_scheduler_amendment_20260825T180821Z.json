@@ -1,0 +1,59 @@
+{
+  "changes": {
+    "account_partition": "allcs/cs -> mltheory/all",
+    "hold_state": "released",
+    "pending_memory": "100G -> 48G for 8B/14B only",
+    "qos": "vshort",
+    "time_limit": "08:00:00 -> 01:00:00"
+  },
+  "data_or_checkpoint_changed": false,
+  "decoding_changed": false,
+  "evidence": {
+    "prior_qwen3_4b_elapsed": "00:11:18",
+    "prior_qwen3_4b_peak_rss": "4.14G",
+    "prior_qwen3_8b_elapsed": "00:10:21",
+    "prior_qwen3_8b_peak_rss": "3.67G"
+  },
+  "holdout_opening_amendment": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_holdout_opening_amendment_20260825T180230Z.json",
+  "jobs": {
+    "finalizer": {
+      "dependency": "afterok:30870546:30870547:30870548",
+      "job_id": "30870549"
+    },
+    "qwen3_14b": {
+      "account": "mltheory",
+      "job_id": "30870548",
+      "memory": "48G",
+      "node": "node207",
+      "partition": "all",
+      "qos": "vshort",
+      "started_at": "2026-08-25T14:07:11-04:00",
+      "time_limit": "01:00:00"
+    },
+    "qwen3_4b": {
+      "account": "mltheory",
+      "job_id": "30870546",
+      "memory": "100G",
+      "node": "node208",
+      "partition": "all",
+      "qos": "vshort",
+      "started_at": "2026-08-25T14:04:10-04:00",
+      "time_limit": "01:00:00"
+    },
+    "qwen3_8b": {
+      "account": "mltheory",
+      "job_id": "30870547",
+      "memory": "48G",
+      "node": "node207",
+      "partition": "all",
+      "qos": "vshort",
+      "started_at": "2026-08-25T14:07:11-04:00",
+      "time_limit": "01:00:00"
+    }
+  },
+  "kind": "parent_eval_scheduler_amendment",
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "reason": "User directive to evaluate immediately after all three Qwen3-14B seeds completed.",
+  "recorded_at": "20260825T180821Z",
+  "scientific_configuration_changed": false
+}

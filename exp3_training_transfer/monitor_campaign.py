@@ -94,10 +94,16 @@ def registered_steps(environment: dict[str, Any]) -> int | None:
 def latest_full_mechanism_ledger() -> Path:
     for path in sorted((MECHANISM / "runs").glob("c3_mechanism_*.json"), reverse=True):
         payload = read_json(path)
-        training = [item for item in payload.get("submissions", [])
-                    if item.get("kind") == "training"]
-        bases = [item for item in payload.get("submissions", [])
-                 if item.get("kind") == "base_evaluation"]
+        training = [
+            item
+            for item in payload.get("submissions", [])
+            if item.get("kind") == "training"
+        ]
+        bases = [
+            item
+            for item in payload.get("submissions", [])
+            if item.get("kind") == "base_evaluation"
+        ]
         if len(training) == 42 and len(bases) == 6:
             return path
     raise MonitorError("no exact 42-training/6-base mechanism ledger found")
@@ -201,22 +207,26 @@ def add_current_finalizer(
         raise MonitorError(f"handoff has no numeric current finalizer: {path}")
     if any(job.job_id == job_id for job in jobs):
         raise MonitorError(f"current finalizer duplicates scientific job {job_id}")
-    jobs.append(JobSpec(
-        job_id=job_id,
-        experiment="paper",
-        role="current-finalizer",
-        seed=None,
-        ledger=path,
-        max_steps=None,
-        dependencies=tuple(job.job_id for job in jobs),
-        arm="paper",
-    ))
+    jobs.append(
+        JobSpec(
+            job_id=job_id,
+            experiment="paper",
+            role="current-finalizer",
+            seed=None,
+            ledger=path,
+            max_steps=None,
+            dependencies=tuple(job.job_id for job in jobs),
+            arm="paper",
+        )
+    )
     verifier_id = clean_job_id((handoff.get("paper_verifier") or {}).get("job_id"))
     if verifier_id:
         if not verifier_id.isdigit():
             raise MonitorError(f"handoff has nonnumeric paper verifier: {path}")
         if any(job.job_id == verifier_id for job in jobs):
-            raise MonitorError(f"paper verifier duplicates registered job {verifier_id}")
+            raise MonitorError(
+                f"paper verifier duplicates registered job {verifier_id}"
+            )
         verifier_dependencies = tuple(
             clean_job_id(value)
             for value in (handoff.get("paper_verifier") or {}).get(
@@ -224,16 +234,18 @@ def add_current_finalizer(
             )
             if clean_job_id(value)
         )
-        jobs.append(JobSpec(
-            job_id=verifier_id,
-            experiment="paper",
-            role="completion-verifier",
-            seed=None,
-            ledger=path,
-            max_steps=None,
-            dependencies=verifier_dependencies,
-            arm="verification",
-        ))
+        jobs.append(
+            JobSpec(
+                job_id=verifier_id,
+                experiment="paper",
+                role="completion-verifier",
+                seed=None,
+                ledger=path,
+                max_steps=None,
+                dependencies=verifier_dependencies,
+                arm="verification",
+            )
+        )
     ledgers["handoff"] = str(path)
 
 
@@ -243,7 +255,11 @@ def run_command(command: list[str]) -> tuple[str, str | None]:
     except FileNotFoundError:
         return "", f"command not found: {command[0]}"
     if result.returncode:
-        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        detail = (
+            result.stderr.strip()
+            or result.stdout.strip()
+            or f"exit {result.returncode}"
+        )
         return "", f"{command[0]} failed: {detail}"
     return result.stdout, None
 
@@ -271,7 +287,18 @@ def parse_sacct(text: str) -> dict[str, dict[str, str]]:
         fields = line.split("|", 9)
         if len(fields) != 10:
             continue
-        job_id, name, state, elapsed, limit, start, end, exit_code, node, reason = fields
+        (
+            job_id,
+            name,
+            state,
+            elapsed,
+            limit,
+            start,
+            end,
+            exit_code,
+            node,
+            reason,
+        ) = fields
         if "." in job_id:
             continue
         records[job_id] = {
@@ -291,9 +318,7 @@ def parse_sacct(text: str) -> dict[str, dict[str, str]]:
 def slurm_status(job_ids: list[str]) -> tuple[dict[str, dict[str, str]], list[str]]:
     ids = ",".join(job_ids)
     warnings: list[str] = []
-    queue_text, error = run_command(
-        ["squeue", "-h", "-j", ids, "-o", "%i|%T|%M|%l|%R"]
-    )
+    queue_text, error = run_command(["squeue", "-h", "-j", ids, "-o", "%i|%T|%M|%l|%R"])
     if error:
         warnings.append(error)
     account_text, error = run_command(
@@ -332,7 +357,11 @@ def tail_text(path: Path, max_bytes: int = 2 * 1024 * 1024) -> str:
 
 
 def newest(paths: list[Path]) -> Path | None:
-    return max(paths, key=lambda path: (path.stat().st_mtime, str(path))) if paths else None
+    return (
+        max(paths, key=lambda path: (path.stat().st_mtime, str(path)))
+        if paths
+        else None
+    )
 
 
 def report_directory(job: JobSpec) -> Path | None:
@@ -388,7 +417,9 @@ def artifact_status(job: JobSpec) -> dict[str, Any]:
         summary = prefix.with_suffix(".summary.json")
         predictions = prefix.with_suffix(".jsonl")
         result["locked_summary"] = str(summary) if summary.exists() else None
-        result["locked_predictions"] = str(predictions) if predictions.exists() else None
+        result["locked_predictions"] = (
+            str(predictions) if predictions.exists() else None
+        )
         return result
     if report is None:
         return result
@@ -406,7 +437,11 @@ def artifact_status(job: JobSpec) -> dict[str, Any]:
     # campaign read as complete while it was deadlocked. Only trust a bar whose TOTAL is the
     # registered step count.
     tqdm = [(int(done), int(total)) for done, total in TQDM_RE.findall(text)]
-    tqdm = [(d, t) for d, t in tqdm if result["max_steps"] is not None and t == result["max_steps"]]
+    tqdm = [
+        (d, t)
+        for d, t in tqdm
+        if result["max_steps"] is not None and t == result["max_steps"]
+    ]
     if tqdm:
         steps.append(tqdm[-1][0])
 
@@ -416,7 +451,9 @@ def artifact_status(job: JobSpec) -> dict[str, Any]:
             eval_steps.append(int(path.stem))
         except ValueError:
             continue
-    registered_evals = [step for step in eval_steps if job.max_steps is None or step <= job.max_steps]
+    registered_evals = [
+        step for step in eval_steps if job.max_steps is None or step <= job.max_steps
+    ]
     if registered_evals:
         result["latest_eval_step"] = max(registered_evals)
         steps.append(max(registered_evals))
@@ -471,7 +508,9 @@ def render_table(rows: list[list[str]]) -> str:
     rendered = []
     for number, row in enumerate(rows):
         values = [clipped(value, widths[index]) for index, value in enumerate(row)]
-        rendered.append("  ".join(value.ljust(widths[index]) for index, value in enumerate(values)))
+        rendered.append(
+            "  ".join(value.ljust(widths[index]) for index, value in enumerate(values))
+        )
         if number == 0:
             rendered.append("  ".join("-" * width for width in widths))
     return "\n".join(rendered)
@@ -497,31 +536,43 @@ def frozen_baseline_lines() -> list[str]:
 
 
 def locked_result_lines(artifacts: dict[str, dict[str, Any]]) -> list[str]:
-    summaries = [Path(item["locked_summary"]) for item in artifacts.values() if item.get("locked_summary")]
+    summaries = sorted(
+        {
+            Path(item["locked_summary"])
+            for item in artifacts.values()
+            if item.get("locked_summary")
+        }
+    )
     if not summaries:
         return ["Locked 3B learned-model result: pending"]
-    path = newest(summaries)
-    assert path is not None
-    try:
-        summary = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        return [f"Locked 3B result unreadable: {path} ({exc})"]
-    lines = [f"Locked 3B result: {path}"]
-    for name, metrics in summary.get("models", {}).items():
-        lines.append(
-            f"  {name}: Brier {metrics['brier']:.5f}; "
-            f"parse coverage {metrics['parse_coverage']:.1%}"
-        )
-    for name, comparison in summary.get("comparisons_brier", {}).items():
-        lines.append(
-            f"  {name}: {comparison['estimate']:+.5f} "
-            f"[{comparison['ci95_low']:+.5f}, {comparison['ci95_high']:+.5f}]"
-        )
+    lines = []
+    for path in summaries:
+        try:
+            summary = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            lines.append(f"Locked 3B result unreadable: {path} ({exc})")
+            continue
+        model = summary.get("model_key") or summary.get("model") or path.stem
+        lines.append(f"Locked 3B result ({model}): {path}")
+        for name, metrics in summary.get("models", {}).items():
+            lines.append(
+                f"  {name}: Brier {metrics['brier']:.5f}; "
+                f"parse coverage {metrics['parse_coverage']:.1%}"
+            )
+        for name, comparison in summary.get("comparisons_brier", {}).items():
+            lines.append(
+                f"  {name}: {comparison['estimate']:+.5f} "
+                f"[{comparison['ci95_low']:+.5f}, {comparison['ci95_high']:+.5f}]"
+            )
     return lines
 
 
 def last_lines(path: Path, count: int) -> list[str]:
-    lines = [line for line in tail_text(path, max_bytes=256 * 1024).splitlines() if line.strip()]
+    lines = [
+        line
+        for line in tail_text(path, max_bytes=256 * 1024).splitlines()
+        if line.strip()
+    ]
     return lines[-count:]
 
 
@@ -592,7 +643,11 @@ def render(snapshot_data: dict[str, Any], tail: int = 0) -> str:
     artifacts = {job["job_id"]: job["artifact"] for job in jobs}
     lines.extend(locked_result_lines(artifacts))
 
-    existing = [job for job in jobs if job["artifact"].get("report") or job["artifact"].get("locked_summary")]
+    existing = [
+        job
+        for job in jobs
+        if job["artifact"].get("report") or job["artifact"].get("locked_summary")
+    ]
     if existing:
         lines.append("")
         lines.append("Artifacts:")
@@ -626,7 +681,9 @@ def render(snapshot_data: dict[str, Any], tail: int = 0) -> str:
             preferred = paths[0]
             lines.append(f"--- {job['job_id']} {job['label']} | {preferred}")
             lines.extend(f"    {line}" for line in last_lines(preferred, tail))
-            error_paths = [path for path in paths if path.suffix == ".err" and path.stat().st_size]
+            error_paths = [
+                path for path in paths if path.suffix == ".err" and path.stat().st_size
+            ]
             for error_path in error_paths:
                 lines.append(f"--- stderr | {error_path}")
                 lines.extend(f"    {line}" for line in last_lines(error_path, tail))
@@ -638,15 +695,18 @@ def parser() -> argparse.ArgumentParser:
         description="Monitor the current structural-OOD and Polymarket-extension ledgers."
     )
     result.add_argument(
-        "--mechanism-ledger", type=Path,
+        "--mechanism-ledger",
+        type=Path,
         help="override the expanded-C3 mechanism ledger",
     )
     result.add_argument(
-        "--polymarket-extension-ledger", type=Path,
+        "--polymarket-extension-ledger",
+        type=Path,
         help="override the expanded-C3 Polymarket extension ledger",
     )
     result.add_argument(
-        "--handoff", type=Path,
+        "--handoff",
+        type=Path,
         help="add the current-paper finalizer registered in this handoff",
     )
     result.add_argument(
@@ -657,8 +717,16 @@ def parser() -> argparse.ArgumentParser:
         metavar="SECONDS",
         help="refresh continuously (default interval: 30 seconds)",
     )
-    result.add_argument("--tail", type=int, default=0, metavar="N", help="show N recent log lines per job")
-    result.add_argument("--json", action="store_true", help="emit a machine-readable snapshot")
+    result.add_argument(
+        "--tail",
+        type=int,
+        default=0,
+        metavar="N",
+        help="show N recent log lines per job",
+    )
+    result.add_argument(
+        "--json", action="store_true", help="emit a machine-readable snapshot"
+    )
     return result
 
 
@@ -679,12 +747,18 @@ def main() -> int:
 
     while True:
         data = snapshot(jobs, ledgers)
-        output = json.dumps(data, indent=2, sort_keys=True) if args.json else render(data, args.tail)
+        output = (
+            json.dumps(data, indent=2, sort_keys=True)
+            if args.json
+            else render(data, args.tail)
+        )
         if args.watch is not None and sys.stdout.isatty():
             print("\033[2J\033[H", end="")
         print(output, flush=True)
         if args.watch is None:
-            return 1 if any(job["state"] in FAILURE_STATES for job in data["jobs"]) else 0
+            return (
+                1 if any(job["state"] in FAILURE_STATES for job in data["jobs"]) else 0
+            )
         time.sleep(args.watch)
 
 

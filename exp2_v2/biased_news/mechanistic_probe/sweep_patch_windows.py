@@ -80,6 +80,7 @@ def main():
         records = [json.loads(l) for l in a.out.read_text().splitlines() if l.strip()]
         done = {(r['episode'], r['c_cases'], r['recipient_arm'], r['condition']) for r in records}
 
+    started = time.time()   # before the load: it is most of a short allocation
     tokenizer = AutoTokenizer.from_pretrained(model_id, local_files_only=True)
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
@@ -99,7 +100,6 @@ def main():
         tmp.write_text(''.join(json.dumps(r, sort_keys=True) + '\n' for r in records))
         tmp.replace(a.out)
 
-    started = time.time()
     for episode in episodes:
         for depth in a.depths:
             pair = {arm: by_key.get((episode, depth, arm)) for arm in ARMS}

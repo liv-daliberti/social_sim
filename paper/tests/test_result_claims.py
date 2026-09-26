@@ -445,28 +445,28 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
         "Qwen3-32B",
         "Qwen2.5-32B",
         "Qwen2.5-72B",
-        "Llama~3.1 8B",
-        "Llama~3.1 70B",
+        "Llama-3.1-8B",
+        "Llama-3.1-70B",
         "DeepSeek V4-Pro",
         "Kimi K3",
         "Claude Opus~4.8",
         "Claude Opus~5",
-        "GPT-5.6 Sol",
+        "GPT-5.6",
     ):
         assert model in result_table
     scaling_table = compact("paper/tables/exp2_symbol_context_scaling.tex")
     for model in (
         "Qwen2.5-32B",
         "Qwen2.5-72B",
-        "Llama~3.1 8B",
-        "Llama~3.1 70B",
+        "Llama-3.1-8B",
+        "Llama-3.1-70B",
     ):
         assert model in scaling_table
     appendix = compact("paper/appendix.tex")
-    assert r"\input{tables/exp2_symbol_context_results}" in appendix
-    assert r"\input{tables/exp2_symbol_context_scaling}" in appendix
-    assert r"\input{tables/exp2_generator_population_robustness}" in appendix
-    assert r"\input{tables/exp2_gpt56_repeat}" in appendix
+    assert "% ---- begin inlined tables/exp2_symbol_context_results.tex ----" in appendix
+    assert "% ---- begin inlined tables/exp2_symbol_context_scaling.tex ----" in appendix
+    assert "% ---- begin inlined tables/exp2_generator_population_robustness.tex ----" in appendix
+    assert "% ---- begin inlined tables/exp2_gpt56_repeat.tex ----" in appendix
 
     # Exp. 2 was consolidated into main.tex and restructured into Design/Finding
     # paragraphs; the probe, robustness and reference-selection numbers moved to
@@ -504,7 +504,7 @@ def test_experiment2_main_ranges_match_frozen_results() -> None:
     assert "exp2_reference_selection.pdf" not in source
     appendix = compact("paper/appendix.tex")
     assert "figures/exp2_reference_selection.pdf" in appendix
-    assert "including Llama~3.1-8B, where every analysis run is null" in appendix
+    assert "including Llama-3.1-8B, where every analysis run is null" in appendix
     assert "A prior attached to the words" in appendix
 
     # The claims the section is organised around, in its current Design/Finding
@@ -643,7 +643,7 @@ def test_experiment3_main_values_match_analysis() -> None:
 
     qwen14_roots = {
         ("causal", 42): "scale_causal_qwen3_14b_s42_20260826_025010_j30880155",
-        ("causal", 43): "scale_causal_qwen3_14b_s43_recovery2_20260828_204430_j30948628",
+        ("causal", 43): "scale_causal_qwen3_14b_s43_20260924_011636_j31481143",
         ("causal", 44): "scale_causal_qwen3_14b_s44_20260826_183443_j30880157",
         ("population_prior", 42): "scale_population_prior_qwen3_14b_s42_20260826_183724_j30880158",
         ("population_prior", 43): "scale_population_prior_qwen3_14b_s43_20260826_183724_j30880159",
@@ -672,7 +672,7 @@ def test_experiment3_main_values_match_analysis() -> None:
         for seed in (42, 43, 44)
     ]
     qwen14_contrast = statistics.mean(qwen14_seed_contrasts)
-    close(qwen14_contrast, 0.11980725666666665)
+    close(qwen14_contrast, 0.10758215791666664)
     family_contrast = statistics.mean(
         (
             qwen4["population_prior_minus_causal"]["estimate"],
@@ -680,7 +680,7 @@ def test_experiment3_main_values_match_analysis() -> None:
             qwen14_contrast,
         )
     )
-    close(family_contrast, 0.23005305722222227)
+    close(family_contrast, 0.2259780243055556)
     assert sum(value > 0 for value in qwen14_seed_contrasts) == 2
 
     llama = next(
@@ -1017,7 +1017,7 @@ def test_experiment4_main_values_match_heldout_evaluation() -> None:
     appendix = compact("paper/appendix.tex")
     assert "latest pre-cutoff market price obtains Brier $.11369$" in appendix
     assert "training split obtains $.11232$" in appendix
-    assert r"\input{tables/exp3b_model_roster_results}" in appendix
+    assert "% ---- begin inlined tables/exp3b_model_roster_results.tex ----" in appendix
     assert "Llama-8B improves from $.15203$ to $.11502$" in appendix
     assert (
         "base-relative improvement rather than superiority to market-based forecasts"
@@ -1030,8 +1030,8 @@ def test_experiment4_main_values_match_heldout_evaluation() -> None:
     # temperature-zero test rather than merging into the 318-market holdout.
     assert "1,024-market" in appendix
     assert r"\label{tab:exp4-endpoint-results}" in appendix
-    assert r"\input{tables/exp3b_qwen3_8b_endpoint_results}" in appendix
-    assert r"\input{tables/exp4_qwen_scale_results}" in appendix
+    assert "% ---- begin inlined tables/exp3b_qwen3_8b_endpoint_results.tex ----" in appendix
+    assert "% ---- begin inlined tables/exp4_qwen_scale_results.tex ----" in appendix
     assert (
         r"\includegraphics[width=\linewidth]{figures/exp4_llama_scale_results.pdf}"
         in appendix

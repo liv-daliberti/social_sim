@@ -3,7 +3,7 @@
 
 exp1_direction_selective_updating.pdf — single panel:
   Mean SIGNED Δp̂ by CF direction × model — causal selectivity
-  (pro-H1 pushes ↑, anti-H1 ↓, orthogonal ≈ 0).
+  (pro-H1 pushes right, anti-H1 left, orthogonal ≈ 0), one row per model.
 Run from repo root:
     python paper/generate_figures.py
 """
@@ -154,13 +154,13 @@ DIRECTIONS = ["pro_H1", "anti_H1", "orthogonal"]
 # ordered model list — strictly ascending parameter count, frontier last
 MODELS = [
     # key                 short label        size    is_frontier  brand logo
-    ("qwen2.5:7b", "Qwen 2.5-7B", "7B", False, "qwen.png"),
-    ("llama3.1:8b", "Llama 3.1-8B", "8B", False, "llama.png"),
-    ("qwen2.5:14b", "Qwen 2.5-14B", "14B", False, "qwen.png"),
-    ("qwen2.5:32b", "Qwen 2.5-32B", "32B", False, "qwen.png"),
-    ("llama3.3:70b", "Llama 3.3-70B", "70B", False, "llama.png"),
-    ("llama3.1:70b", "Llama 3.1-70B", "70B", False, "llama.png"),
-    ("qwen2.5:72b", "Qwen 2.5-72B", "72B", False, "qwen.png"),
+    ("qwen2.5:7b", "Qwen2.5-7B", "7B", False, "qwen.png"),
+    ("llama3.1:8b", "Llama-3.1-8B", "8B", False, "llama.png"),
+    ("qwen2.5:14b", "Qwen2.5-14B", "14B", False, "qwen.png"),
+    ("qwen2.5:32b", "Qwen2.5-32B", "32B", False, "qwen.png"),
+    ("llama3.3:70b", "Llama-3.3-70B", "70B", False, "llama.png"),
+    ("llama3.1:70b", "Llama-3.1-70B", "70B", False, "llama.png"),
+    ("qwen2.5:72b", "Qwen2.5-72B", "72B", False, "qwen.png"),
     ("DeepSeek-V4-Pro", "DeepSeek V4", "DS", True, "deepseek.png"),
     ("gpt-5.4", "GPT-5.4", "GPT", True, "openai.png"),
     ("claude-opus-4-8", "Claude Opus 4.8", "Claude", True, "claude.png"),
@@ -168,22 +168,24 @@ MODELS = [
 MODEL_BRAND = {m[0]: m[4] for m in MODELS}
 
 # The main comparison includes only deployments whose archived revisions use a
-# consistent probability scale. Qwen 2.5-7B remains documented in the appendix.
+# consistent probability scale. Qwen2.5-7B remains documented in the appendix.
 MAIN_MODELS = [m for m in MODELS if m[0] != "qwen2.5:7b"]
 MAIN_MODEL_KEYS = [m[0] for m in MAIN_MODELS]
 
-# short names printed under the frontier bars (local bars get the param size)
-FRONTIER_LABEL = {
-    "DeepSeek-V4-Pro": "Pro-V4",
-    "gpt-5.4": "5.4",
-    "claude-opus-4-8": "Opus-4.8",
-}
-
-# per-model logo size multiplier (the Claude mark has more internal padding, so
-# it reads smaller than the others at a uniform display height)
-LOGO_SCALE = {
-    "claude-opus-4-8": 1.45,
-}
+# Row labels, in the order and spelling of the table beside the figure (Fig. 3b):
+# hosted systems first, then open-weight models by descending parameter count.
+ROW_ORDER = [
+    ("claude-opus-4-8", "Opus 4.8"),
+    ("gpt-5.4", "GPT-5.4"),
+    ("DeepSeek-V4-Pro", "V4-Pro"),
+    ("qwen2.5:72b", "Qwen2.5-72B"),
+    ("llama3.3:70b", "Llama-3.3-70B"),
+    ("llama3.1:70b", "Llama-3.1-70B"),
+    ("qwen2.5:32b", "Qwen2.5-32B"),
+    ("qwen2.5:14b", "Qwen2.5-14B"),
+    ("llama3.1:8b", "Llama-3.1-8B"),
+]
+N_HOSTED = 3
 
 # ── frozen clustered-uncertainty loader ──────────────────────────────────────
 _CLUSTERED_PATH = _ROOT / "data" / "results" / "clustered_movement_uncertainty.json"
@@ -213,130 +215,61 @@ def _load_clustered_uncertainty() -> dict:
 def _panel_A(ax: plt.Axes, clustered: dict) -> None:
     # Mean signed revision and its 95% interval come from the frozen
     # market-clustered bootstrap. Showing the sign makes selectivity visible as
-    # an up/down split: pro-H1 evidence pushes up, anti-H1 pushes down, and
-    # orthogonal evidence remains near zero.
+    # a left/right split: pro-H1 evidence pushes right, anti-H1 pushes left, and
+    # orthogonal evidence remains near zero. One row per model keeps the labels
+    # horizontal and aligned with the table beside the figure.
     uncertainty = clustered["per_model"]
+    bar_h = 0.26
+    offsets = {"pro_H1": -bar_h, "anti_H1": 0.0, "orthogonal": bar_h}
+    hosted_gap = 0.45  # extra space separating hosted from open-weight rows
 
-    # bar positions: group by direction, models ordered small→large within group
-    n_models = len(MAIN_MODEL_KEYS)
-    group_gap = 0.14  # tight spacing between pro / anti / orthogonal groups
-    bar_w = 0.085
-
-    dir_positions = {
-        "pro_H1": 0.0,
-        "anti_H1": n_models * bar_w + group_gap,
-        "orthogonal": 2 * (n_models * bar_w + group_gap),
-    }
-
-    # x in data coords, y in axes fraction — for per-bar logos / labels below 0
-    blend = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
-
-    max_abs = 0.0  # track extent (pp) for symmetric y-limits
-    for m_idx, (key, _, size, frontier, _) in enumerate(MAIN_MODELS):
-        fam = _family(key)
-        col = FAMILY_COLOR[fam]  # qwen=purple, llama=blue, frontier=orange
-        alpha_mod = 1.0 if frontier else 0.9
-        tint = col if fam in ("qwen", "llama") else None  # tint family marks only
+    y_rows = [i + (hosted_gap if i >= N_HOSTED else 0.0) for i in range(len(ROW_ORDER))]
+    max_abs = 0.0
+    for y, (key, _) in zip(y_rows, ROW_ORDER):
         for direction in DIRECTIONS:
-            row = uncertainty.get(key, {}).get("signed_revision", {}).get(direction)
-            if not row:
-                continue
-            mean = float(row["estimate"])
-            ci_low = float(row["ci_low"])
-            ci_high = float(row["ci_high"])
-            lower_error = mean - ci_low
-            upper_error = ci_high - mean
-            xc = dir_positions[direction] + m_idx * bar_w + bar_w * 0.44
-            ax.bar(xc, mean * 100, bar_w * 0.88, color=col, alpha=alpha_mod, zorder=3)
+            row = uncertainty[key]["signed_revision"][direction]
+            mean = float(row["estimate"]) * 100
+            ci_low = float(row["ci_low"]) * 100
+            ci_high = float(row["ci_high"]) * 100
+            yc = y + offsets[direction]
+            ax.barh(yc, mean, bar_h * 0.9, color=DIR_COLOR[direction], zorder=3)
             ax.errorbar(
-                xc,
-                mean * 100,
-                yerr=np.asarray([[lower_error * 100], [upper_error * 100]]),
+                mean,
+                yc,
+                xerr=np.asarray([[mean - ci_low], [ci_high - mean]]),
                 fmt="none",
                 color="black",
                 capsize=1.5,
-                linewidth=0.7,
+                linewidth=0.8,
                 zorder=4,
             )
-            max_abs = max(max_abs, abs(ci_low * 100), abs(ci_high * 100))
+            max_abs = max(max_abs, abs(ci_low), abs(ci_high))
 
-        # logo (uniform display size) + size label beneath each bar.
-        # Direction labels sit just under the axis (see below), so the per-bar
-        # marks are pushed down to leave room for them.
-        for direction in DIRECTIONS:
-            xc = dir_positions[direction] + m_idx * bar_w + bar_w * 0.44
-            oi = _oimage(key, target_px=12.0 * LOGO_SCALE.get(key, 1.0), tint=tint)
-            if oi is not None:
-                ab = AnnotationBbox(
-                    oi,
-                    (xc, -0.18),
-                    xycoords=blend,
-                    frameon=False,
-                    box_alignment=(0.5, 1.0),
-                    clip_on=False,
-                    zorder=5,
-                )
-                ax.add_artist(ab)
-            # text label beneath each bar: param size for local models,
-            # model name for the frontier agents (DeepSeek / GPT / Claude)
-            lbl = size if not frontier else FRONTIER_LABEL.get(key, size)
-            lcol = "#6b7280" if not frontier else FAMILY_COLOR["frontier"]
-            ax.text(
-                xc,
-                -0.27,
-                lbl,
-                transform=blend,
-                ha="center",
-                va="top",
-                fontsize=16,
-                rotation=90,
-                color=lcol,
-                clip_on=False,
-                fontweight="bold" if frontier else "normal",
-            )
+    lim = max(max_abs * 1.08, 1.0)
+    ax.set_xlim(-lim, lim)
+    ax.set_ylim(y_rows[-1] + 0.6, y_rows[0] - 0.6)  # first model at the top
+    ax.axvline(0, color="#4b5563", linewidth=1.2, zorder=2)
+    ax.axhline((y_rows[N_HOSTED - 1] + y_rows[N_HOSTED]) / 2, color="#9ca3af",
+               linewidth=0.8, linestyle=(0, (3, 2)), zorder=1)
+    ax.set_yticks(y_rows)
+    ax.set_yticklabels([label for _, label in ROW_ORDER], fontsize=16)
+    for tick, (key, _) in zip(ax.get_yticklabels(), ROW_ORDER):
+        tick.set_color(FAMILY_COLOR[_family(key)])
+    ax.tick_params(axis="y", length=0)
+    ax.tick_params(axis="x", labelsize=15)
+    ax.grid(axis="y", visible=False)
+    ax.set_xlabel("Mean signed revision $\\Delta\\hat{p}$ (pp)", fontsize=16)
 
-    # direction group labels — placed just below the x-axis (closest to it)
-    for direction in DIRECTIONS:
-        cx = dir_positions[direction] + (n_models - 1) * bar_w / 2 + bar_w * 0.44
-        ax.text(
-            cx,
-            -0.05,
-            DIR_LABEL[direction],
-            transform=blend,
-            ha="center",
-            va="top",
-            fontsize=21,
-            color=DIR_COLOR[direction],
-            fontweight="bold",
-            clip_on=False,
-        )
-
-    # symmetric limits about zero so the pro-up / anti-down split reads as a mirror
-    lim = max(max_abs * 1.16, 1.0)
-    ax.set_ylim(-lim, lim)
-    # faint half-plane cue: above 0 the forecast was pushed toward YES, below toward NO
-    ax.axhspan(0, lim, color=C_PRO, alpha=0.045, zorder=0, linewidth=0)
-    ax.axhspan(-lim, 0, color=C_ANTI, alpha=0.045, zorder=0, linewidth=0)
-    ax.axhline(0, color="#4b5563", linewidth=1.2, zorder=2)
-    ax.set_ylabel("Mean signed revision  $\\Delta\\hat{p}$  (pp)", fontsize=19)
-    ax.tick_params(axis="y", labelsize=17)
-    ax.set_xlim(
-        -bar_w * 0.5, dir_positions["orthogonal"] + n_models * bar_w + bar_w * 0.5
-    )
-    ax.set_xticks([])
-
-    # legend: model family (matches the Qwen/Llama colours in the other figures)
-    leg = [
-        mpatches.Patch(color=C_QWEN, alpha=0.9, label="Qwen 2.5 (local)"),
-        mpatches.Patch(color=C_LLAMA, alpha=0.9, label="Llama 3.x (local)"),
-        mpatches.Patch(color=C_FRONT, label="Frontier"),
-    ]
+    leg = [mpatches.Patch(color=DIR_COLOR[d], label=DIR_LABEL[d]) for d in DIRECTIONS]
     ax.legend(
         handles=leg,
-        loc="upper right",
-        bbox_to_anchor=(0.995, 1.0),
-        handlelength=0.8,
-        fontsize=17,
+        loc="lower center",
+        bbox_to_anchor=(0.5, 1.0),
+        ncol=3,
+        frameon=False,
+        handlelength=0.9,
+        columnspacing=1.0,
+        fontsize=16,
     )
 
 
@@ -364,11 +297,10 @@ def main() -> None:
         plt.close(fig)
 
     print("Composing exp1_direction_selective_updating (signed, single panel) …")
-    # Figure 5 places this asset at half text width. A narrower source canvas
-    # increases the rendered type size and panel height without raster scaling.
-    fig = plt.figure(figsize=(7.2, 5.4))
+    # Fig. 3 places this asset at about half text width (~2.6 in), so the
+    # 5.2 in source canvas prints at half scale: 16 pt labels print near 8 pt.
+    fig = plt.figure(figsize=(5.2, 4.6))
     ax = fig.add_subplot(1, 1, 1)
-    fig.subplots_adjust(left=0.12, right=0.985, top=0.95, bottom=0.27)
     _panel_A(ax, clustered)
     _save(fig, "exp1_direction_selective_updating")
     print("Done.")

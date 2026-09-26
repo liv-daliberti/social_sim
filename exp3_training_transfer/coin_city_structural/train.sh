@@ -39,6 +39,29 @@ PROMPTS_PER_ACTOR="$(( BATCH / ROLLOUT_WORKERS ))"
 MAX_TRAIN="${MAX_TRAIN:-4800}"
 GEN_LEN="${GEN_LEN:-192}"
 MAX_MODEL_LEN="${MAX_MODEL_LEN:-3072}"
+SAVE_STEPS="${SAVE_STEPS:-40}"
+
+PREFIX_CACHE_ARGS=()
+case "${ENABLE_PREFIX_CACHING:-1}" in
+  1) PREFIX_CACHE_ARGS+=(--enable_prefix_caching) ;;
+  0) ;;
+  *) echo "ENABLE_PREFIX_CACHING must be 0 or 1"; exit 2 ;;
+esac
+
+SAVE_CKPT_ARGS=()
+case "${SAVE_CKPT:-1}" in
+  1) SAVE_CKPT_ARGS+=(--save_ckpt) ;;
+  0) ;;
+  *) echo "SAVE_CKPT must be 0 or 1"; exit 2 ;;
+esac
+
+RESUME_ARGS=()
+if [ -n "${RESUME_DIR:-}" ]; then
+  RESUME_ARGS+=(--resume_dir "$RESUME_DIR")
+  if [ -n "${RESUME_TAG:-}" ]; then
+    RESUME_ARGS+=(--resume_tag "$RESUME_TAG")
+  fi
+fi
 
 echo "Coin City structural transfer: arm=$ARM model=$MODEL seed=$SEED"
 echo "data=$DATA output=$OUT max_train=$MAX_TRAIN"
@@ -52,7 +75,7 @@ cd "$REPO/.runtime/oat"
   --lora_alpha "${LORA_ALPHA:-64}" \
   --vllm_gpu_ratio "${VLLM_RATIO:-0.38}" \
   --max_model_len "$MAX_MODEL_LEN" \
-  --enable_prefix_caching \
+  "${PREFIX_CACHE_ARGS[@]}" \
   --gradient-checkpointing \
   --flash-attn \
   --bf16 \
@@ -95,7 +118,9 @@ cd "$REPO/.runtime/oat"
   --eval_temperature 0 \
   --eval_n 1 \
   --eval_generate_max_length "$GEN_LEN" \
-  --save_steps 999999 \
+  --save_steps "$SAVE_STEPS" \
+  "${SAVE_CKPT_ARGS[@]}" \
+  "${RESUME_ARGS[@]}" \
   --max_save_num 1 \
   --save_path "$OUT" \
   --no-use-wb \

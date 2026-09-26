@@ -44,4 +44,4 @@ verify_hash "$HANDOFF" "$EXPECTED_HANDOFF_SHA256" "handoff"
   --polymarket-ledger "$POLY_EXTENSION_LEDGER" \
   --coin-ledger "$COIN_LEDGER" \
   --handoff "$HANDOFF"
-echo "Both campaigns and both paper PDFs passed the registered handoff verification"
+echo "All campaigns and the canonical ICLR PDF passed handoff verification"

@@ -1,0 +1,117 @@
+% Experiment 3: Structure A versus Structure B, in the prompt's format, with the
+% hidden rules that generate them. Backgrounds are verbatim from held-out prompt
+% eval:coin_city:direct_a:r0:k0:cue-correct
+% (exp3_training_transfer/coin_city_structural/data/causal/heldout); bold marks the
+% phrase that distinguishes them (coloured too, since typewriter fonts often
+% lack a bold weight). The table rows are an illustration, not the
+% prompt's rows: both cities receive the same news (+4, +12, 0, 0) and support is
+% the noise-free worlds.expected_series under that episode's parameters, from
+% make_dataset._evaluation_core(COIN_CITY, 0):
+%   direct_a   g=0.771169                                   -> 53.1 59.3 50.0 50.0
+%   mediated_b g=0.665663 rho=0.550796 phi=0.353853 lambda=0.732322
+%                                                           -> 51.9 57.6 56.5 54.4
+% Real prompts show 14 weeks with observation noise (sd 1.6).
+% The target shares each reference's parameters. The two candidate answers are
+% worlds.forecast_scenarios for a +12 shock from rest at horizon 3: A 50.000,
+% B 53.647. In worlds.transition the news and
+% support in one table row belong to the same week, so the rules are indexed that
+% way. The model never sees the rules or parameters. Block titles are relabelled:
+% the prompt says REFERENCE SYSTEM 1 / 2 and TARGET SYSTEM, shown here as
+% City A / B / C, and the target question is paraphrased from the ten-scenario
+% prompt block (the figure shows only its horizon-3 question). Colours follow the transfer-grid figure. Natural width is 7cm
+% (half a text width); include it at natural size so the type stays at \scriptsize.
+\definecolor{spInk}{HTML}{3F4550}%
+\definecolor{spMute}{HTML}{8A93A3}%
+\definecolor{spA}{HTML}{4F7EA8}%
+\definecolor{spAFill}{HTML}{E8F2FB}%
+\definecolor{spB}{HTML}{3F8E82}%
+\definecolor{spBFill}{HTML}{E4F2EF}%
+\definecolor{spHi}{HTML}{FFF2CC}%
+\definecolor{spHiEdge}{HTML}{D6B656}%
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  head/.style={anchor=west, font=\ttfamily\bfseries\scriptsize},
+  chip/.style={anchor=east, rounded corners=1.6pt, draw=none, text=white,
+    inner xsep=3pt, inner ysep=1.4pt, font=\sffamily\bfseries\scriptsize},
+  bg/.style={anchor=north west, font=\ttfamily\tiny, text=spInk,
+    text width=6.70cm, align=left, inner sep=0pt},
+  mono/.style={font=\ttfamily\scriptsize, text=spInk, inner sep=0pt},
+  colh/.style={font=\ttfamily\tiny, text=spMute, inner sep=0pt},
+  note/.style={anchor=west, font=\sffamily\scriptsize, align=left, inner sep=0pt},
+  rule/.style={anchor=north west, font=\scriptsize, text=spInk, inner sep=0pt,
+    align=left},
+  rulehead/.style={anchor=north west, font=\sffamily\tiny, text=spMute,
+    inner sep=0pt},
+]
+% #1 top y, #2 colour, #3 fill, #4 city letter, #5 chip, #6 background,
+% #7 rows (week/news/support), #8 card height
+\newcommand{\spcard}[8]{%
+  \begin{scope}[shift={(0,#1)}]
+    \fill[#3, rounded corners=3pt] (0,0) rectangle (7.0,-#8);
+    \draw[#2, rounded corners=3pt, line width=.6pt] (0,0) rectangle (7.0,-#8);
+    \node[head, text=#2] at (0.15,-0.25) {CITY #4};
+    \node[chip, fill=#2] at (6.85,-0.25) {#5};
+    \node[bg] at (0.15,-0.47) {Background: #6};
+    \node[colh, anchor=east] at (0.72,-1.30) {week};
+    \node[colh, anchor=east] at (2.07,-1.30) {net news};
+    \node[colh, anchor=east] at (3.37,-1.30) {support};
+    \draw[spMute!60, line width=.3pt] (0.15,-1.41) -- (3.52,-1.41);
+    % the two zero-news weeks
+    \fill[spHi] (0.09,-1.41-0.28*3+0.125) rectangle (3.55,-1.41-0.28*4-0.135);
+    \draw[spHiEdge, line width=.4pt]
+      (0.09,-1.41-0.28*3+0.125) rectangle (3.55,-1.41-0.28*4-0.135);
+    \foreach \r/\n/\s in {#7}{%
+      \node[mono, anchor=east] at (0.72,-1.41-0.28*\r) {\r};
+      \node[mono, anchor=east] at (2.07,-1.41-0.28*\r) {\n};
+      \node[mono, anchor=east] at (3.37,-1.41-0.28*\r) {\s};}
+  \end{scope}}
+% hidden-rule panel: #1 top y (absolute), #2 bottom y, #3 colour
+\newcommand{\sprule}[3]{%
+  \fill[white, rounded corners=2pt] (0.15,#1) rectangle (6.85,#2);
+  \draw[#3!45, rounded corners=2pt, line width=.4pt] (0.15,#1) rectangle (6.85,#2);
+  \node[rulehead] at (0.28,#1-0.08) {HIDDEN RULE \ (never shown to the model)};}
+
+% ---- City A: Structure A --------------------------------------------------
+\spcard{0}{spA}{spAFill}{A}{Structure A: direct}
+  {Residents receive campaign developments through synchronized citywide
+   alerts. Reactions occur mostly {\color{spA}\bfseries during the same week as the news}.}
+  {1/4.0/53.1, 2/12.0/59.3, 3/0.0/50.0, 4/0.0/50.0}
+  {3.82}
+\node[note, text=spA] at (3.80,-2.43) {no news:\\back at 50};
+\draw[spHiEdge, line width=.5pt] (3.55,-2.43) -- (3.72,-2.43);
+\sprule{-2.72}{-3.67}{spA}
+\node[rule] at (0.28,-3.02) {%
+  $y_t = 50 + g\,x_t$\\[1pt]
+  {\color{spMute}$g=0.771$;\ \sffamily only this week's news counts}};
+
+% ---- City B: Structure B --------------------------------------------------
+\spcard{-3.97}{spB}{spBFill}{B}{Structure B: persistent}
+  {Campaign developments usually spread through neighborhood conversations and
+   local organizations. Reactions may {\color{spB}\bfseries build gradually and persist} after
+   the original story has faded.}
+  {1/4.0/51.9, 2/12.0/57.6, 3/0.0/56.5, 4/0.0/54.4}
+  {4.14}
+\node[note, text=spB] at (3.80,-3.97-2.43) {no news, yet\\still above 54};
+\draw[spHiEdge, line width=.5pt] (3.55,-3.97-2.43) -- (3.72,-3.97-2.43);
+\sprule{-3.97-2.72}{-3.97-3.99}{spB}
+\node[rule] at (0.28,-3.97-3.02) {%
+  $m_t = \rho\,m_{t-1} + g\,x_t$
+  \quad {\color{spMute}\sffamily($m$: hidden local state)}\\[1pt]
+  $y_t - 50 = \phi\,(y_{t-1}-50) + \lambda\,m_t$\\[1pt]
+  {\color{spMute}$g=0.666,\ \rho=0.551,\ \phi=0.354,\ \lambda=0.732$}};
+
+% ---- City C: the target, and the two candidate answers ---------------------
+\begin{scope}[shift={(0,-8.26)}]
+\fill[black!3, rounded corners=3pt] (0,0) rectangle (7.0,-1.95);
+\draw[spMute!60, rounded corners=3pt, line width=.6pt] (0,0) rectangle (7.0,-1.95);
+\node[head, text=spInk] at (0.15,-0.25) {CITY C};
+\node[anchor=west, font=\ttfamily\tiny, text=spInk, inner sep=0pt]
+  at (1.28,-0.25) {No observations from City C are available yet.};
+\node[bg] at (0.15,-0.47) {Apply net campaign news of +12.0 in the next week,
+  then set it to 0. Forecast City C's candidate support 3 weeks later.};
+\node[note, text=spA] at (0.15,-1.25)
+  {\bfseries If City C works like City A:\ \ predict 50.0};
+\node[note, text=spB] at (0.15,-1.65)
+  {\bfseries If City C works like City B:\ \ predict 53.6};
+\end{scope}
+\end{tikzpicture}

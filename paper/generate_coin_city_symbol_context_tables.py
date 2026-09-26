@@ -48,13 +48,13 @@ DISPLAY = {
     "Qwen3-32B": "Qwen3-32B",
     "Qwen2.5-32B-Instruct": "Qwen2.5-32B",
     "Qwen2.5-72B-Instruct": "Qwen2.5-72B",
-    "Llama-3.1-8B-Instruct": "Llama~3.1 8B",
-    "Llama-3.1-70B-Instruct": "Llama~3.1 70B",
+    "Llama-3.1-8B-Instruct": "Llama-3.1-8B",
+    "Llama-3.1-70B-Instruct": "Llama-3.1-70B",
     "DeepSeek-V4-Pro": "DeepSeek V4-Pro",
     "FW-Kimi-K3": "Kimi K3",
     "claude-opus-4-8": "Claude Opus~4.8",
     "claude-opus-5": "Claude Opus~5",
-    "gpt-5.6-sol": "GPT-5.6 Sol",
+    "gpt-5.6-sol": "GPT-5.6",
 }
 
 
@@ -93,7 +93,7 @@ def _k0_table(results: dict) -> str:
     )
     forecast = [
         header,
-        "\\textit{Panel A: Forecast calibration}\\par\\vspace{-2pt}",
+        "\\textit{Panel A: Forecast accuracy}\\par\\vspace{-2pt}",
         "\\resizebox{0.82\\linewidth}{!}{%",
         "\\begin{tabular}{l r rrr c}",
         "\\toprule",

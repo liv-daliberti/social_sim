@@ -1,0 +1,40 @@
+{
+  "change_rationale": {
+    "--lora_sync_only": "uses OATs ZeRO-3-compatible LoRARequest synchronization path instead of merging and broadcasting sharded base parameters",
+    "--no-use_fused_lm_head": "required by OAT argument validation whenever ZeRO stage 3 is used"
+  },
+  "corrected_launcher_sha256": "bb1afb8deb34c305b1bc1b75f6b23c4641c4544a6f07acedb12b28de070fc6c3",
+  "corrected_trainer_sha256": "301945be5369e006923f8aa1e74dae3f1a65538f8c23ddff8474836fb7258daf",
+  "execution_only_changes": [
+    "--no-use_fused_lm_head",
+    "--lora_sync_only"
+  ],
+  "failed_canary_exit_code": "1:0",
+  "failed_canary_job_id": "30885396",
+  "failed_canary_state": "FAILED",
+  "failed_launcher_sha256": "488870bd77d21916088d2dcc72fa2745319beb03321210c10fd59b6f613b51d0",
+  "failed_trainer_sha256": "f820aba42db936595f3b07bd020d256dac3439b8d74ffffcce44c799b370d5ae",
+  "failure_message": "fused lm head is not supported for ZeRO-3, please set --no-use_fused_lm_head",
+  "failure_stage": "pre-training argument validation",
+  "kind": "zero3_compatibility_amendment",
+  "obsolete_advance_job_id": "30886076",
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "recorded_at": "20260825T220836Z",
+  "replacement_canary": {
+    "eval_steps": 10,
+    "max_train": 160,
+    "performance_threshold": false,
+    "seed": 42
+  },
+  "scientific_hyperparameters_changed": false,
+  "supersedes_registration": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T181450Z.json",
+  "unchanged": [
+    "model checkpoint and prompt template",
+    "training and development examples",
+    "rank-32 LoRA with alpha 64",
+    "learning rate, optimizer, and schedule",
+    "reward, rollout sampling, and batch sizes",
+    "4,800-presentation full budget and seed roster",
+    "sealed-evaluation estimands"
+  ]
+}

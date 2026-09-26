@@ -27,7 +27,7 @@ RESPONSES = HERE / 'responses/fresh_evaluation_v1'
 OUT = HERE / 'results/fresh_evaluation_v1'
 
 ARMS = [
-    ('GPT-5.6 Sol', ['frontier_gpt56_sol.jsonl'], FRONTIER_PLAN),
+    ('GPT-5.6', ['frontier_gpt56_sol.jsonl'], FRONTIER_PLAN),
     ('Claude Opus 5', ['frontier_claude_opus5.jsonl'], FRONTIER_PLAN),
     ('Qwen3-32B thinking off', ['disabled_shard*.jsonl'], PLAN),
     ('Qwen3-32B thinking on', ['enabled_shard*.jsonl'], PLAN),

@@ -82,6 +82,9 @@ def test_registry_pins_each_run_to_its_own_task_file_and_source_probe():
     assert set(RUN_REGISTRY) == {
         "qwen3_14b_symbol_relational_v1",
         "qwen3_14b_symbol_relational_v2",
+        "llama3_1_70b_symbol_relational_v1",
+        "qwen3_32b_symbol_relational_v1",
+        "qwen2_5_72b_symbol_relational_v1",
         "qwen3_14b_symbol_probe_v1",
         "qwen3_14b_symbol_probe_v2",
     }
@@ -99,6 +102,22 @@ def test_registry_pins_each_run_to_its_own_task_file_and_source_probe():
         assert v1[key] != v2[key], key
     with pytest.raises(ValueError, match="unregistered"):
         run_spec(Path("/tmp/qwen3_14b_symbol_relational_v3"))
+    llama = RUN_REGISTRY["llama3_1_70b_symbol_relational_v1"]
+    assert llama["replication_role"] == "cross_family_confirmation"
+    assert llama["parent_study"] == "qwen3_14b_symbol_relational_v2"
+    assert llama["transformer_layers"] == 80
+    assert llama["tasks_sha256"] == v2["tasks_sha256"]
+    qwen32 = RUN_REGISTRY["qwen3_32b_symbol_relational_v1"]
+    assert qwen32["replication_role"] == "same_family_scale_confirmation"
+    assert qwen32["source_receipt_required"] is True
+    assert qwen32["transformer_layers"] == 64
+    qwen72 = RUN_REGISTRY["qwen2_5_72b_symbol_relational_v1"]
+    assert qwen72["replication_role"] == "cross_generation_scale_confirmation"
+    assert qwen72["source_features_required"] is False
+    assert qwen72["transformer_layers"] == 80
+    for replication in (qwen32, qwen72):
+        assert replication["parent_study"] == "qwen3_14b_symbol_relational_v2"
+        assert replication["tasks_sha256"] == v2["tasks_sha256"]
 
 
 @pytest.mark.skipif(not V2.exists(), reason="v2 relational run absent")
@@ -153,4 +172,4 @@ def test_no_pipeline_step_pins_a_v1_size_in_a_comparison():
 def test_label_state_shape_expectation_is_derived_not_pinned():
     source = (ROOT / "mechanistic_probe" / "analyze_symbol_relational_probe.py").read_text()
     assert "(160, 41, 3, 2)" not in source
-    assert "expected_shape = (len(rows), TRANSFORMER_LAYERS + 1, len(ANCHORS), 2)" in source
+    assert "expected_shape = (len(rows), transformer_layers + 1, len(ANCHORS), 2)" in source

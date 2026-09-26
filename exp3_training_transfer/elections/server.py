@@ -595,7 +595,6 @@ def training_rollouts():
 @app.route("/api/update_cpt", methods=["POST"])
 def update_cpt():
     """Receive {updates: {nid: cpt_list}} and patch NODES in memory."""
-    global _exact_forecast_cache
     body = request.get_json() or {}
     changed = []
     for nid, cpt in body.get("updates", {}).items():

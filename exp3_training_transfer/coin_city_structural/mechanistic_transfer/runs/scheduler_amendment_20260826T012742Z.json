@@ -1,0 +1,41 @@
+{
+  "study": "coin_city_exp3_reference_transplant_qwen8_v1",
+  "created_at": "2026-08-26T01:27:42Z",
+  "status": "scheduler_recovery_active",
+  "paper_external": true,
+  "scientific_protocol_changed": false,
+  "completed_before_recovery": {
+    "matched_activation_extractions": ["30893325", "30893329", "30893333"],
+    "matched_behavior": ["30893326", "30893330"],
+    "base_activation": "30893337",
+    "base_behavior": "30893338"
+  },
+  "timeout": {
+    "job_id": "30893334",
+    "endpoint": "seed44_matched_behavior",
+    "cause": "node-local model loading consumed about 13 minutes; generation began correctly but the scheduling-only 20-minute walltime expired",
+    "scientific_failure": false
+  },
+  "a100_replacements": {
+    "seed42_prior_activation": "30897356",
+    "seed43_prior_activation": "30897352",
+    "seed44_prior_activation": "30897351",
+    "seed42_prior_behavior": "30897354",
+    "seed43_prior_behavior": "30897353",
+    "seed44_prior_behavior": "30897355",
+    "seed44_matched_behavior_retry": "30897350"
+  },
+  "dependency_repairs": {
+    "common_probe_job": "30893339",
+    "common_probe_dependency": "afterok:30897356:30897352:30897351",
+    "replacement_final_gate_job": "30897297",
+    "replacement_final_gate_dependency": "afterok:30897354:30897353:30897355:30897350:30893341:30893342:30893343",
+    "canceled_poisoned_final_gate_job": "30893344"
+  },
+  "patch_route": {
+    "patch_smoke": "30893340",
+    "patch_arrays": ["30893341", "30893342", "30893343"],
+    "gpu_type": "a100"
+  },
+  "running_at_receipt": ["30897350", "30897351"]
+}

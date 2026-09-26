@@ -88,3 +88,23 @@ exp1_prospective/context_reversal/runs/**/backups/**/*.pdf
 
 # Ledger mutex files are process-local, not accounting records.
 exp1_prospective/context_reversal/runs/**/ledger.json.lock
+
+# Trained adapters, optimizer/resume checkpoints, and lock files are run
+# products; manifests, summaries, and scores stay tracked.
+*.pt
+*.safetensors
+*.lock
+/*.zip
+# Per-row generation and prediction dumps from the diagnostic campaigns are
+# regenerable run products (hundreds of MB); their summaries and scores stay tracked.
+exp3_training_transfer/mechanism_family/mechanistic_probe/runs/**/*.jsonl
+exp3_training_transfer/overnight_diagnostics_20260921/*/runs/**/*.jsonl
+exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/results_ext/**/*.jsonl
+# Tokenizer copies saved beside each LoRA adapter duplicate the base model's
+# tokenizer; adapter_config.json and the adapter README remain tracked.
+**/adapter/tokenizer.json
+**/adapter/vocab.json
+**/adapter/merges.txt
+**/adapter/added_tokens.json
+**/adapter/special_tokens_map.json
+**/adapter/tokenizer_config.json

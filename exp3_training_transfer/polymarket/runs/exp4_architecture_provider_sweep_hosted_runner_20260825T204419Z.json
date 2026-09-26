@@ -1,0 +1,62 @@
+{
+  "classification": "hosted_runner_implementation_amendment_before_canaries",
+  "development_canary": {
+    "draw_index": 0,
+    "may_change_before_holdout": [
+      "provider-supported sampling controls",
+      "max_output_tokens"
+    ],
+    "may_not_change": [
+      "prompt text",
+      "output contract",
+      "model deployment",
+      "holdout",
+      "scoring"
+    ],
+    "purpose": "transport, accepted-parameter, and parse validation only",
+    "tasks": "exp3_training_transfer/polymarket/data/exp3b_registered/dev.tasks.jsonl",
+    "tasks_per_model": 2,
+    "tasks_sha256": "702f257fd952a4fed5f4798cd4a64165dab630d67b2e4e1b6820c68e3af8f59f"
+  },
+  "family_bootstrap": "exp3_training_transfer/polymarket/scripts/family_clusters.py",
+  "family_bootstrap_sha256": "30aab6030c320d8b34a3e7774684f5c2632677334c3a4ee888243859f7bde56b",
+  "hosted_holdout_calls_started": false,
+  "incomplete_draw_policy": "endpoint_task_brier_loss_one",
+  "parent_registration": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_registration_20260825T203304Z.json",
+  "parent_registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "provider_roster": {
+    "DeepSeek-V4-Pro": {
+      "endpoint": "https://liv.services.ai.azure.com/openai/v1",
+      "protocol": "openai_chat"
+    },
+    "FW-Kimi-K3": {
+      "endpoint": "https://liv.services.ai.azure.com/openai/v1",
+      "protocol": "openai_chat",
+      "reasoning_effort": "low"
+    },
+    "claude-opus-4-8": {
+      "endpoint": "https://liv.services.ai.azure.com/anthropic",
+      "protocol": "anthropic_messages"
+    },
+    "gpt-5.6-sol": {
+      "endpoint": "https://liv.services.ai.azure.com/openai/v1",
+      "protocol": "openai_responses",
+      "reasoning_effort": "low"
+    }
+  },
+  "registered_at": "20260825T204419Z",
+  "report_regardless_of_direction": true,
+  "requested_sampling": {
+    "draws": 5,
+    "max_output_tokens": 128,
+    "temperature": 0.7,
+    "top_k": null,
+    "top_p": 0.8
+  },
+  "runner": "exp3_training_transfer/polymarket/scripts/evaluate_hosted_scale_holdout.py",
+  "runner_sha256": "344813cfa617963e63c5dd56a3f8353bbef2039475506f59f0dc0d037676092b",
+  "shared_scoring": "exp3_training_transfer/polymarket/scripts/evaluate_locked_test.py",
+  "shared_scoring_sha256": "bd6000dcd7b08d65ce43db0b4fc55aa777c4a77435a2508496602ec7b4768d00",
+  "status": "registered"
+}

@@ -1,0 +1,24 @@
+{
+  "action": "rerun only the Qwen canary and amend existing dependent training jobs in place",
+  "amended_at": "20260825T204928Z",
+  "change": "Replace the canary gate's raw json.loads with the frozen forecast_scoring.parse_yes_probability parser used by the registered endpoint evaluator.",
+  "classification": "validation_code_alignment_amendment",
+  "failed_canary": {
+    "development_tasks": 512,
+    "draws": 2560,
+    "exit_code": "1:0",
+    "frozen_parser_coverage": 1.0,
+    "frozen_parser_parsed": 2560,
+    "job_id": "30889966",
+    "state": "FAILED"
+  },
+  "holdout_opened": false,
+  "new_train_wrapper_sha256": "fd7bb23f011c950cc9b341240d635bbf6d284383582964639521e636c2e650fe",
+  "old_train_wrapper_sha256": "50ab899bbab7860080d67197dfcd63d88e0841e0b06c3ba3887be959a3a67e8b",
+  "parent_registration": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_registration_20260825T203304Z.json",
+  "parent_registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "rationale": "Qwen3-1.7B returned fenced JSON. All 2,560 development draws parse under the frozen evaluator, while the stricter accidental gate rejected the first fenced response.",
+  "status": "registered_before_qwen_canary_rerun",
+  "training_or_evaluation_settings_changed": false
+}

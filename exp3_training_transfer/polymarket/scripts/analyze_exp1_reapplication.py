@@ -108,6 +108,31 @@ def sensitivity_from_markets(
     return directional_mean / orthogonal_mean
 
 
+def movement_components_by_market(
+    grouped: dict[str, dict[str, list[float]]], task_ids: list[str]
+) -> dict[str, float | None]:
+    """Pool matched packet movements over a (possibly resampled) market list."""
+    directional = []
+    orthogonal = []
+    for task_id in task_ids:
+        values = grouped.get(task_id, {})
+        for direction in DIRECTIONAL:
+            directional.extend(values.get(direction, []))
+        orthogonal.extend(values.get("orthogonal", []))
+    directional_mean = mean(directional)
+    orthogonal_mean = mean(orthogonal)
+    gap = (
+        directional_mean - orthogonal_mean
+        if directional_mean is not None and orthogonal_mean is not None
+        else None
+    )
+    return {
+        "directional_movement": directional_mean,
+        "orthogonal_movement": orthogonal_mean,
+        "directional_minus_orthogonal_movement": gap,
+    }
+
+
 def summarize_model(rows: list[dict[str, Any]]) -> dict[str, Any]:
     task_ids = sorted({str(row["task_id"]) for row in rows})
     output: dict[str, Any] = {
@@ -242,6 +267,48 @@ def paired_bootstrap(
         "n_markets": len(task_ids),
         "bootstrap_repetitions": repetitions,
     }
+
+    # Report the ratio together with its components. A ratio can rise even when
+    # both kinds of revision shrink, so the components identify the underlying
+    # behavioral change directly. A separate seeded stream makes these intervals
+    # invariant to additions to the metric loop above.
+    component_rng = random.Random(30_032_026)
+    for component in (
+        "directional_movement",
+        "orthogonal_movement",
+        "directional_minus_orthogonal_movement",
+    ):
+        samples = []
+        for _ in range(repetitions):
+            selected = [component_rng.choice(task_ids) for _ in task_ids]
+            base_value = movement_components_by_market(
+                magnitude_maps["base"], selected
+            )[component]
+            trained_value = mean(
+                movement_components_by_market(magnitude_maps[name], selected)[component]
+                for name in trained
+            )
+            if base_value is not None and trained_value is not None:
+                samples.append(trained_value - base_value)
+
+        base_value = movement_components_by_market(
+            magnitude_maps["base"], task_ids
+        )[component]
+        trained_value = mean(
+            movement_components_by_market(magnitude_maps[name], task_ids)[component]
+            for name in trained
+        )
+        difference = (
+            trained_value - base_value
+            if trained_value is not None and base_value is not None
+            else None
+        )
+        results[f"trained_mean_minus_base_{component}"] = {
+            "estimate": difference,
+            **percentile_interval(samples),
+            "n_markets": len(task_ids),
+            "bootstrap_repetitions": repetitions,
+        }
     return results
 
 

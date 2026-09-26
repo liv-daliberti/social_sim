@@ -14,10 +14,15 @@ set -euo pipefail
 
 REPO=/n/fs/similarity/social_sim
 POLY="$REPO/exp3_training_transfer/polymarket"
+FAMILY="$REPO/exp3_training_transfer/mechanism_family"
 DATA="$POLY/data/exp3b_registered"
 source "$REPO/.runtime/oat_env.sh"
 PY="$REPO/.runtime/oat_conda/bin/python"
-export PYTHONPATH="$REPO/exp3_training_transfer/biased_news${PYTHONPATH:+:$PYTHONPATH}"
+# Launchpad unpickles the actor in a fresh Python process whose working
+# directory is the OAT checkout. The extension uses the shared mechanism
+# trainer, so both its local output contract and the biased-news scoring helper
+# must remain importable in that child process.
+export PYTHONPATH="$FAMILY:$REPO/exp3_training_transfer/biased_news${PYTHONPATH:+:$PYTHONPATH}"
 
 MODEL_KEY="${MODEL_KEY:?MODEL_KEY is required}"
 MODEL="${MODEL:?MODEL is required}"
@@ -49,6 +54,7 @@ PROMPTS_PER_ACTOR="$(( BATCH / ROLLOUT_WORKERS ))"
 echo "batch=$BATCH rollout_workers=$ROLLOUT_WORKERS prompts_per_actor=$PROMPTS_PER_ACTOR samples_per_prompt=$ROLLOUT_PER_PROMPT buffer_per_learner=$(( PROMPTS_PER_ACTOR * ROLLOUT_PER_PROMPT ))"
 
 cd "$REPO/.runtime/oat"
+"$PY" -c 'from output_contract import FORECAST_ARRAY_GBNF, parse_forecast_array; assert FORECAST_ARRAY_GBNF and callable(parse_forecast_array)'
 "$PY" "$REPO/exp3_training_transfer/mechanism_family/run_mechanism_rl.py" \
   --critic_type drgrpo \
   --gpus "$GPUS" \

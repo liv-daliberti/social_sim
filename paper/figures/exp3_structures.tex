@@ -1,0 +1,96 @@
+% Experiment 3: Structure A (direct) versus Structure B (persistent), told as one
+% Coin City example. A +12 net-news pulse arrives in week 0 and nothing follows.
+% Traces are the noise-free responses of the simulators in App. eq:exp3-coin-a /
+% eq:exp3-coin-b at the midpoint of each sampling range (g=.57, rho=.61, phi=.30,
+% lambda=.81), on Coin City's resting level b=50:
+%   A support, weeks 0..7: 50, 56.8, 50, 50, 50, 50, 50, 50
+%   B support, weeks 0..7: 50, 55.5, 55.0, 53.6, 52.3, 51.5, 50.9, 50.6
+% Plotted heights are (support - 50) / 6.84, so both panels share one scale.
+% The pathway descriptions are the ones the prompts use
+% (Table tab:exp3-domain-contrast). Colours follow the transfer-grid figure.
+\definecolor{sabInk}{HTML}{3F4550}
+\definecolor{sabMute}{HTML}{8A93A3}
+\definecolor{sabInput}{HTML}{D6B656}
+\definecolor{sabInputFill}{HTML}{FFF2CC}
+\definecolor{sabA}{HTML}{4F7EA8}
+\definecolor{sabB}{HTML}{3F8E82}
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  gnode/.style={circle, draw=sabInk!80, fill=white, line width=.6pt,
+    inner sep=0pt, minimum size=0.42cm, font=\sffamily\scriptsize, text=sabInk},
+  hidden/.style={gnode, draw=sabMute, fill=sabMute!12, text=sabMute,
+    dash pattern=on 1.4pt off 1.1pt},
+  garrow/.style={-{Stealth[length=3.2pt,width=2.6pt]}, draw=sabInk!75,
+    line width=.6pt, shorten >=.5pt, shorten <=.5pt},
+  loop/.style={garrow, looseness=5.5},
+  nlab/.style={anchor=north, font=\sffamily\tiny, text=sabInk,
+    inner sep=1pt, align=center},
+  title/.style={anchor=west, font=\sffamily\bfseries\small},
+  sub/.style={anchor=west, font=\sffamily\scriptsize, text=sabInk, align=left},
+  axlab/.style={font=\sffamily\scriptsize, text=sabInk},
+  val/.style={font=\sffamily\scriptsize, anchor=south, inner sep=2pt},
+]
+% #1 x-offset, #2 colour, #3 week/height pairs for weeks 0..7
+\newcommand{\sabplot}[3]{%
+  \begin{scope}[shift={(#1,0)}]
+    % input strip: the news pulse in week 0, nothing afterwards
+    \draw[sabMute!70, line width=.4pt] (1.30,1.95) -- (6.55,1.95);
+    \fill[sabInputFill] (1.48,1.95) rectangle (1.72,2.30);
+    \draw[sabInput, line width=.7pt] (1.48,1.95) rectangle (1.72,2.30);
+    \node[axlab, anchor=west, text=sabInk] at (1.78,2.13) {$+12$ news};
+    \node[axlab, anchor=west, text=sabMute] at (3.20,2.13) {no further news};
+    \node[axlab, anchor=east, align=right] at (1.24,2.10) {campaign\\news};
+    % support axes
+    \draw[-{Stealth[length=3pt,width=2.4pt]}, sabInk!65, line width=.5pt]
+      (1.30,0.25) -- (1.30,1.65);
+    \draw[-{Stealth[length=3pt,width=2.4pt]}, sabInk!65, line width=.5pt]
+      (1.30,0.25) -- (6.70,0.25);
+    \node[axlab, anchor=east, align=right] at (1.24,1.05) {candidate\\support};
+    \node[axlab, anchor=east, text=sabMute] at (1.24,0.25) {50};
+    \node[axlab, anchor=north west, inner sep=1.5pt] at (6.22,0.22) {week};
+    \foreach \i in {0,...,7}{%
+      \node[axlab, text=sabMute, anchor=north, inner sep=1.5pt]
+        at (1.60+0.62*\i,0.25) {\i};}
+    % response trace
+    \fill[#2!14]
+      (1.60,0.25) \foreach \i/\h in {#3}{ -- (1.60+0.62*\i,0.25+1.15*\h)}
+      -- (5.94,0.25) -- cycle;
+    \draw[#2, line width=1.1pt, line join=round]
+      (1.60,0.25) \foreach \i/\h in {#3}{ -- (1.60+0.62*\i,0.25+1.15*\h)};
+    \foreach \i/\h in {#3}{%
+      \fill[#2] (1.60+0.62*\i,0.25+1.15*\h) circle (1.5pt);}
+  \end{scope}}
+
+% ---- Structure A --------------------------------------------------------
+\node[title, text=sabA] at (0.00,3.15) {Structure A: direct};
+\node[sub] at (0.00,2.78) {citywide alerts; reactions occur in one week};
+\node[gnode] (ax) at (5.30,3.12) {$x$};
+\node[gnode] (ay) at (6.35,3.12) {$y$};
+\draw[garrow] (ax) -- (ay);
+\sabplot{0}{sabA}{0/0, 1/1, 2/0, 3/0, 4/0, 5/0, 6/0, 7/0}
+\node[val, text=sabA] at (2.22,1.40) {56.8};
+\node[axlab, anchor=west, align=left] at (3.30,1.00)
+  {back to 50 the week after};
+
+% ---- Structure B --------------------------------------------------------
+\begin{scope}[shift={(7.35,0)}]
+\node[title, text=sabB] at (0.00,3.15) {Structure B: persistent};
+\node[sub] at (0.00,2.78) {local talk; reactions build and persist};
+\node[gnode]  (bx) at (4.95,3.08) {$x$};
+\node[hidden] (bm) at (5.70,3.08) {$m$};
+\node[gnode]  (by) at (6.45,3.08) {$y$};
+\draw[garrow] (bx) -- (bm);
+\draw[garrow] (bm) -- (by);
+\draw[loop] (bm) to[out=120,in=60] (bm);
+\draw[loop] (by) to[out=120,in=60] (by);
+\end{scope}
+\sabplot{7.35}{sabB}{0/0, 1/.810, 2/.737, 3/.523, 4/.341, 5/.214, 6/.133, 7/.082}
+\node[val, text=sabB] at (7.35+2.22,1.18) {55.5};
+\node[val, text=sabB] at (7.35+3.46,0.85) {53.6};
+\node[val, text=sabB] at (7.35+5.32,0.40) {50.9};
+\node[axlab, anchor=west, align=left] at (7.35+3.90,1.35)
+  {still above 50\\weeks later};
+
+% divider
+\draw[sabMute!40, line width=.5pt] (7.00,0.0) -- (7.00,3.35);
+\end{tikzpicture}

@@ -1,0 +1,57 @@
+{
+  "cancelled_out_of_scope": [
+    {
+      "arm": "causal_family",
+      "disclosure": "undisclosed",
+      "job_id": "31519298",
+      "model_key": "qwen3_8b",
+      "seed": 45
+    },
+    {
+      "arm": "causal_family",
+      "disclosure": "undisclosed",
+      "job_id": "31519299",
+      "model_key": "qwen3_8b",
+      "seed": 46
+    },
+    {
+      "arm": "population_prior",
+      "disclosure": "undisclosed",
+      "job_id": "31519300",
+      "model_key": "qwen3_8b",
+      "seed": 45
+    },
+    {
+      "arm": "population_prior",
+      "disclosure": "undisclosed",
+      "job_id": "31519301",
+      "model_key": "qwen3_8b",
+      "seed": 46
+    }
+  ],
+  "created_at": "20260925T235006Z",
+  "kind": "qwen3_8b_mechanism_disclosed_walltime_recovery",
+  "parent_roster": "exp3_training_transfer/five_seed_extension/runs/mechanism_qwen3_4b_five_seed_20260919T215154Z.json",
+  "reason": "Rerun of the two Qwen3-8B disclosed population_prior seed-45/46 jobs (31366644, 31366645) from the 2026-09-19 disclosed-only submission. Both hit their 20h walltime at training round 293 of 300 with no saved adapter (SAVE_STEPS=999999), so each restarts from scratch under the same script, data, seed and environment with walltime raised to 30h. Allocation-only recovery; no scientific setting changes.",
+  "scope_note": "MECHANISM_QWEN3_4B_FIVE_SEED_AMENDMENT.md leaves the Qwen3-8B undisclosed cells at three seeds. Four undisclosed seed-45/46 jobs were submitted in error in this recovery and cancelled before starting: 31519298, 31519299, 31519300, 31519301. They are not part of any roster.",
+  "submissions": [
+    {
+      "arm": "population_prior",
+      "disclosure": "disclosed",
+      "job_id": "31519296",
+      "model_key": "qwen3_8b",
+      "seed": 45
+    },
+    {
+      "arm": "population_prior",
+      "disclosure": "disclosed",
+      "job_id": "31519297",
+      "model_key": "qwen3_8b",
+      "seed": 46
+    }
+  ],
+  "superseded_incomplete_reports": [
+    "disclosed_population_prior_qwen3_8b_s45_20260922_004458_j31366644",
+    "disclosed_population_prior_qwen3_8b_s46_20260922_004457_j31366645"
+  ]
+}

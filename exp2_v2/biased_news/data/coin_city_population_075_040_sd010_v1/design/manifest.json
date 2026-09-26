@@ -1,0 +1,58 @@
+{
+  "answer_key_sha256": "56800854dee4a303fc4032bd5b2658a306083309fb755dc5f03059097ae2dbe8",
+  "arms": [
+    "abc_no_context",
+    "abc_context",
+    "abc_symbol_context"
+  ],
+  "classification": "post_hoc_generator_population_robustness",
+  "created_at": "2026-08-26T16:08:20.182488+00:00",
+  "data_generating_process": {
+    "case_noise_sd": 5.0,
+    "city_slope_sd": 0.1,
+    "draw_policy": "untruncated_unreordered",
+    "strong_slope_mean": 0.75,
+    "weak_slope_mean": 0.4
+  },
+  "episodes": 250,
+  "episodes_sha256": "61b1685732912c885345e0c6e20ec0abe7b5053f038cb4320ee05a6b70580ce2",
+  "experiment": "coin_city_population_075_040_sd010_v1",
+  "factorial_balance": {
+    "A:False": 62,
+    "A:True": 63,
+    "B:False": 63,
+    "B:True": 62
+  },
+  "planned_open_models": 10,
+  "planned_responses": 37500,
+  "protocol_version": "coin_city_robustness_v1",
+  "realized": {
+    "median_fitted_reference_separation": 0.4299017094017096,
+    "reference_latent_reversals": 2,
+    "reference_strong_mean": 0.7511506125570255,
+    "reference_strong_sd": 0.1002636205102632,
+    "reference_weak_mean": 0.39576172052637276,
+    "reference_weak_sd": 0.10949669568355841,
+    "target_strong_mean": 0.7523419893421733,
+    "target_strong_sd": 0.10038549337227437,
+    "target_weak_mean": 0.40384181828988575,
+    "target_weak_sd": 0.10474651334225006
+  },
+  "scoring_key_sha256": "1fe229522716f209d9be2602528911f21bd2b15e97dba42220406295a00ab5d5",
+  "seed_base": 940000,
+  "seed_last": 940249,
+  "source_sha256": {
+    "builder": "e1b89f8f3df09e39d0742fa1952253be5d6b39e28ac0afe5cca6dbd0ba0f4564",
+    "frozen_prompt_engine": "732eeee13b764936284fd7a034fc7d63f1bc5678431115dd230199f33f8830eb",
+    "protocol": "2a12df6c40effc19c882debbc63df13ceb1946cbcf782b423965aa03206567bf",
+    "robustness_engine": "3f12849c483668b17df6157b955b28c453cf2b21ae8befbba849bcdf56e0c88b",
+    "symbol_engine": "31c765b53c0ba8cb6344c0047d838b60136f5ab62d99b00d84c93e9fab34ab53"
+  },
+  "status": "frozen_no_model_calls",
+  "task_sha256": {
+    "abc_context": "42d23d43ae1f38d7b0844a8fee9dfee6308a0b939c80308f15f375fc817b9fdd",
+    "abc_no_context": "19a9c0573941a951c2a94a19c19a9b93fad3446ea9dc26f7e05b87d22d3f82e4",
+    "abc_symbol_context": "f33eade91b790962a0738b0616b71ac04ab880db5453540f3676ed3fad341e53"
+  },
+  "tasks_per_arm": 1250
+}

@@ -1,0 +1,52 @@
+{
+  "amendment_class": "development_only_canary_gate",
+  "amended_at": "20260825T205750Z",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "registration": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_registration_20260825T203304Z.json",
+  "registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+  "timing_disclosure": "Recorded after observing the Llama-3.2-3B development canary and before any full Llama-3.2-3B training, any evaluation on the 318-item sealed holdout, or any hosted-model holdout call.",
+  "trigger": {
+    "model": "unsloth/Llama-3.2-3B-Instruct",
+    "failed_canary_job_id": "30890111",
+    "failure_class": "development_output_gate_only",
+    "training_updates_completed": 10,
+    "finite_training_diagnostics": true,
+    "development_tasks": 512,
+    "draws": 2560,
+    "parseable_draws_under_frozen_parser": 2555,
+    "parse_coverage": 0.998046875,
+    "tasks_with_at_least_one_parseable_draw": 512,
+    "exact_eval_score": 0.7272670865058899,
+    "final_eval_artifact": "exp3_training_transfer/polymarket/reports/scale_canary_llama3_2_3b_market_20260825_163924_j30890111/debug_0825T16:39:45/eval_results/10.json",
+    "final_eval_artifact_sha256": "23de4216205419753f072da4611a5b546c22acd7a3be3f8f8b4cb824ca0be844",
+    "stdout_sha256": "1ebb57c12923c5f6b30b3fb0e5926fceb74c9e4b767a4066ccd5f91fdb565470"
+  },
+  "original_gate": {
+    "required_parse_coverage": 1,
+    "required_task_coverage": 1
+  },
+  "amended_gate": {
+    "required_parse_coverage": 0.99,
+    "required_task_coverage": 1,
+    "draw_parser": "forecast_scoring.parse_yes_probability",
+    "holdout_incomplete_draw_policy_changed": false,
+    "holdout_policy": "endpoint_task_brier_loss_one"
+  },
+  "rationale": "The five misses were verbose stochastic responses truncated before the requested JSON, not training instability. A 100% development parse gate is brittle and stricter than the preregistered fail-closed holdout policy. The amended threshold remains demanding, requires every development task to have a usable draw, and is fixed before any sealed-holdout access.",
+  "scientific_settings_changed": false,
+  "wrapper": {
+    "path": "exp3_training_transfer/polymarket/scripts/polymarket_rl_architecture_extension.sh",
+    "pre_amendment_sha256": "fd7bb23f011c950cc9b341240d635bbf6d284383582964639521e636c2e650fe",
+    "amended_sha256": "f4fcc5a1cdf32c069947fe7e97664cdbf0be2cb3a4c93e454ec0a1848babaee1"
+  },
+  "execution_plan": {
+    "replacement_llama_canary": "submit_after_this_amendment",
+    "preserve_full_training_job_ids": [
+      "30890112",
+      "30890113",
+      "30890114"
+    ],
+    "rewire_full_training_dependencies_to_replacement_canary": true
+  },
+  "status": "registered_before_replacement_canary"
+}

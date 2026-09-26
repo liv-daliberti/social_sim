@@ -1,0 +1,64 @@
+{
+  "recorded_at": "20260825T211830Z",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "scheduler_correction": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_scheduler_correction_20260825T210434Z.json",
+  "scheduler_correction_sha256": "d78ff38839a6496565718808bd2a23ee9f541514f8c7a9dfb267a24245334d69",
+  "canary_gate_amendment": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_canary_gate_amendment_20260825T205750Z.json",
+  "canary_gate_amendment_sha256": "3a6d16616956e2d58eee302d030f51d605fa2aecc1b833d45a77517de4d933c8",
+  "llama3_2_3b_canary": {
+    "job_id": "30890626",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:14:31",
+    "node": "node208",
+    "training_updates": 10,
+    "development_tasks": 512,
+    "requested_draws": 2560,
+    "parseable_draws": 2555,
+    "parse_coverage": 0.998046875,
+    "tasks_with_at_least_one_parseable_draw": 512,
+    "task_coverage": 1,
+    "final_eval_artifact": "exp3_training_transfer/polymarket/reports/scale_canary_llama3_2_3b_market_20260825_170146_j30890626/debug_0825T17:02:07/eval_results/10.json",
+    "final_eval_artifact_sha256": "e012d47cd837190253710b3e274b8eaafee8748bb90f6fdb9b2261a237fd9335",
+    "stdout": "exp3_training_transfer/polymarket/logs/arch_train_30890626.out",
+    "stdout_sha256": "bf53e3b5a020065ec6fc24adfe0631d65d23604d9a13463f76ae6c2ba6216667"
+  },
+  "full_training": {
+    "42": {
+      "job_id": "30890112",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:16:34-04:00",
+      "node": "node208",
+      "walltime": "10:00:00"
+    },
+    "43": {
+      "job_id": "30890113",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:18:23-04:00",
+      "node": "node208",
+      "walltime": "08:00:00"
+    },
+    "44": {
+      "job_id": "30890114",
+      "state": "PENDING_RESOURCES",
+      "reserved_start_time": "2026-08-25T21:09:55-04:00",
+      "reserved_node": "node207",
+      "walltime": "08:00:00"
+    }
+  },
+  "scheduler_only_amendment": {
+    "jobs": [
+      "30890113",
+      "30890114"
+    ],
+    "prior_walltime": "10:00:00",
+    "amended_walltime": "08:00:00",
+    "rationale": "The 14.5-minute canary and reduced full-run evaluation frequency project approximately 5-6 hours, so eight hours retains substantial margin while improving backfill eligibility.",
+    "scientific_settings_changed": false
+  },
+  "downstream_evaluation_job_id": "30890115",
+  "downstream_evaluation_dependency": "afterok:30890112:30890113:30890114",
+  "hosted_development_calls_started": false,
+  "hosted_holdout_calls_started": false,
+  "status": "canary_passed_full_training_running"
+}

@@ -3,6 +3,8 @@ import re
 import sys
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -17,6 +19,11 @@ from engine.coin_city_symbol_context_arm import (
     validate_arm_prompt,
     weak_symbol,
 )
+from analysis.analyze_coin_city_symbol_context import CONTROL_MODELS, EXPECTED_TASKS
+from eval.run_coin_city_symbol_context_open_model import format_prompts
+from local_results.symbol_context_model_comparison_20260824.reparse_qwen2_5_32b import (
+    parse_explicit_arithmetic,
+)
 
 
 DESIGN = ROOT / "data" / EXPERIMENT / "design"
@@ -25,6 +32,35 @@ NUMBER = re.compile(r"[-+]?\d+(?:\.\d+)?")
 
 def read_jsonl(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+
+
+def test_open_model_chat_template_modes_keep_qwen_option_model_specific():
+    class RecordingTokenizer:
+        def __init__(self):
+            self.calls = []
+
+        def apply_chat_template(self, messages, **kwargs):
+            self.calls.append((messages, kwargs))
+            return "formatted"
+
+    tasks = [{"prompt": "frozen prompt"}]
+    tokenizer = RecordingTokenizer()
+    assert format_prompts(tokenizer, tasks, "auto") == ["formatted"]
+    assert tokenizer.calls[-1] == (
+        [{"role": "user", "content": "frozen prompt"}],
+        {"tokenize": False, "add_generation_prompt": True},
+    )
+
+    assert format_prompts(tokenizer, tasks, "qwen-no-thinking") == ["formatted"]
+    assert tokenizer.calls[-1][1]["enable_thinking"] is False
+
+
+def test_arithmetic_reparse_preserves_primary_forecast_range():
+    expression, value = parse_explicit_arithmetic('{"predicted_poll": 40 + 2.5}')
+    assert expression == "40 + 2.5"
+    assert value == 42.5
+    with pytest.raises(ValueError, match="outside the 0--100 forecast range"):
+        parse_explicit_arithmetic('{"predicted_poll": 100 + 0.1}')
 
 
 def test_mapping_reverses_and_target_symbol_is_balanced():
@@ -75,3 +111,17 @@ def test_symbol_arm_preserves_all_numeric_prompt_content():
             assert NUMBER.findall(make_prompt(episode, k)) == NUMBER.findall(
                 semantic[task_id]
             )
+
+
+def test_frozen_symbol_analysis_matches_the_executed_control_scope():
+    result = json.loads(
+        (DESIGN.parent / "analysis" / "symbol_context_results.json").read_text()
+    )
+
+    assert CONTROL_MODELS == ("DeepSeek-V4-Pro", "Qwen3-4B-Instruct-2507")
+    assert result["complete"] is True
+    assert result["complete_models"] == list(CONTROL_MODELS)
+    assert set(result["models"]) == set(CONTROL_MODELS)
+    for model in CONTROL_MODELS:
+        for counts in result["models"][model]["record_counts"].values():
+            assert counts == EXPECTED_TASKS

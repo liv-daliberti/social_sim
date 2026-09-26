@@ -1,0 +1,37 @@
+{
+  "registered_at": "20260825T212916Z",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "classification": "local_result_ingestion_gate_before_sealed_evaluations",
+  "parent_registration": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_registration_20260825T203304Z.json",
+  "parent_registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+  "execution_ledger": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_all_local_seeds_started_20260825T212445Z.json",
+  "finalizer": "exp3_training_transfer/polymarket/scripts/finalize_architecture_extension.py",
+  "finalizer_sha256": "f777be83a81442e827d8394ce34a0d14eb86a9b6db9017e17eedb27738f3614c",
+  "tests": "exp3_training_transfer/polymarket/tests/test_finalize_architecture_extension.py",
+  "tests_sha256": "08c14fb435857d3ee2f413035d4ff7a5937c99a343eb669bdf1c0e1b9eb63112",
+  "validation": {
+    "pytest": "6 passed",
+    "black": "pass",
+    "flake8": "pass"
+  },
+  "required_checks": [
+    "exact 318-task identity and order",
+    "registered model key and absolute snapshot",
+    "registered stochastic decoder",
+    "holdout task and manifest hashes",
+    "frozen evaluator hash",
+    "four-endpoint roster",
+    "adapter paths tied to registered seed job IDs",
+    "adapter weight hashes",
+    "summary and raw hashes",
+    "common contemporaneous-market baseline"
+  ],
+  "qwen_evaluation_job_id": "30890110",
+  "llama_evaluation_job_id": "30890115",
+  "qwen_sealed_evaluation_started": false,
+  "llama_sealed_evaluation_started": false,
+  "hosted_development_calls_started": false,
+  "hosted_holdout_calls_started": false,
+  "scientific_settings_changed": false,
+  "status": "registered_before_new_local_holdout_access"
+}

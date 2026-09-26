@@ -1,0 +1,21 @@
+{
+  "created_at": "20260829T223955Z",
+  "kind": "qwen32_ordered_three_seed_eval_then_seed45_46_release",
+  "ordered_release": [
+    {"eligible_at": "2026-08-29T18:38:59", "job_id": "30913533", "role": "three_seed_evaluation"},
+    {"eligible_at": "2026-08-29T18:39:18", "job_id": "30894222", "role": "seed_45_training"},
+    {"eligible_at": "2026-08-29T18:39:18", "job_id": "30894223", "role": "seed_46_training"}
+  ],
+  "post_release": [
+    {"dependency": null, "job_id": "30913533", "reason": "Resources", "state": "PENDING"},
+    {"dependency": null, "job_id": "30894222", "reason": "None", "state": "PENDING", "time_limit": "3-00:00:00"},
+    {"dependency": null, "job_id": "30894223", "reason": "None", "state": "PENDING", "time_limit": "3-00:00:00"}
+  ],
+  "intentionally_remained_held": [
+    "30913543",
+    "30913560"
+  ],
+  "scientific_hyperparameters_changed": false,
+  "artifact_and_evaluator_amendment": "exp3_training_transfer/polymarket/runs/exp4_qwen32_completed_training_artifact_and_evaluator_path_compatibility_amendment_20260829T223605Z.json",
+  "artifact_and_evaluator_amendment_sha256": "f5f4c3c92a48b5f2613fc330e5aa719bc9c209d8b617bc60d5bcc22d38fe1223"
+}

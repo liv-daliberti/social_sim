@@ -1,0 +1,69 @@
+{
+  "arms": [
+    "abc_no_context",
+    "abc_context",
+    "abc_symbol_context"
+  ],
+  "chat_template": "tokenizer.apply_chat_template(enable_thinking=False)",
+  "completed_at": "2026-08-24T15:48:21.862076+00:00",
+  "control": "configuration-matched open-model arbitrary-symbol replication",
+  "counts": {
+    "abc_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1249
+    },
+    "abc_no_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1250
+    },
+    "abc_symbol_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1249
+    }
+  },
+  "decode_seed": 20260824,
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "gpu_memory_utilization": 0.86,
+  "max_model_len": 3072,
+  "max_tokens": 512,
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "model_label": "Qwen2.5-7B-Instruct",
+  "model_license_family": "Apache-2.0 Qwen open-weight release",
+  "order_seed": 20260804,
+  "parser": "eval/run_frozen_task_shard.py::_parse_reply",
+  "reparse": {
+    "additional_model_calls": 0,
+    "completed_at": "2026-08-24T15:51:02.293285+00:00",
+    "description": "Evaluate only numeric constants with +, -, *, /, parentheses, and unary signs in otherwise explicit predicted_poll fields; omitted fields remain unresolved.",
+    "method": "safe_arithmetic_ast_v1",
+    "output_sha256": {
+      "abc_context": "f3234fccbe4a1af1ddef1ad1a647a3c798986f8bb9db8f6f5e023ee53a47ad83",
+      "abc_no_context": "56e440f99b57dddf8f398d696adf63f20d47d8a44d23611e257ec91394cdbcfd",
+      "abc_symbol_context": "ad1e017a45ffdbd8da1ec9152431fc9a747c9cc352b79c312d43a6d525e37cb5"
+    },
+    "recovered_by_arm": {
+      "abc_context": 1,
+      "abc_no_context": 1,
+      "abc_symbol_context": 0
+    },
+    "source_directory": "exp2_v2/biased_news/local_results/symbol_context_model_comparison_20260824/qwen2_5_7b",
+    "source_manifest_sha256": "b8ba66b8fbbfd09cc33ba0f2fec25974f00e9a8282da920627c683adce8ce412",
+    "unresolved_by_arm": {
+      "abc_context": 1,
+      "abc_no_context": 0,
+      "abc_symbol_context": 1
+    }
+  },
+  "software": {
+    "python": "3.10.20",
+    "transformers": "4.51.3",
+    "vllm": "0.8.4"
+  },
+  "status": "complete",
+  "task_file_sha256": {
+    "abc_context": "d5752831f8c995ac1939048d0ec9f37d99393e0e2f24492c5ed47ea94842be10",
+    "abc_no_context": "23e2e3493e6d378af165b6851fd527c75c044db3ddc14041e9ca1ea8af06367e",
+    "abc_symbol_context": "91ea6940ff934bf1a21b0bd8682b34ef1b3d25d543af7af504e8c3d4a67fff70"
+  },
+  "temperature": 0.0
+}

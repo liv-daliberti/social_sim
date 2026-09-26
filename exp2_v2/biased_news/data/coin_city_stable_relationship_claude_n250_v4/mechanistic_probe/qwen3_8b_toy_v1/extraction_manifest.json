@@ -1,0 +1,59 @@
+{
+  "behavior_sha256": "416a37a4c12de7f1eddb52beb6373a309d9a40f3390492e65af3f43e90c4a8f5",
+  "behavior_summary": {
+    "elapsed_seconds": 98.99867534637451,
+    "max_new_tokens": 160,
+    "parsed_count": 96,
+    "record_count": 96
+  },
+  "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+  "completed_at": "2026-08-24T13:55:20.546378+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "cuda": {
+    "device_count": 1,
+    "device_name": "NVIDIA RTX A5000",
+    "max_memory_allocated_bytes": 17315789824
+  },
+  "decode_seed": 20260824,
+  "feature_summary": {
+    "elapsed_seconds": 76.47511076927185,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      384,
+      37,
+      4096
+    ],
+    "hidden_size": 4096,
+    "layer_count_including_embedding": 37,
+    "mean_control_shape": [
+      384,
+      2,
+      4096
+    ],
+    "record_count": 384,
+    "token_count_max": 718,
+    "token_count_median": 649.5,
+    "token_count_min": 586,
+    "transformer_layer_count": 36
+  },
+  "features_sha256": "e1d99e5913d1b14e00697276298f5c015f56fbb09eb59731bbabad836bb2078b",
+  "model": "Qwen/Qwen3-8B",
+  "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "model_label": "Qwen3-8B",
+  "primary_anchor": "final input token",
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "python": "3.10.20",
+    "safetensors": "0.8.0",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "complete",
+  "study": "qwen3_8b_toy_v1",
+  "task_manifest_sha256": "4b73ac0e9634d144feead8a35668f4ddd85c6c6ac8ab0207ef2d17f01d4c4ecb",
+  "tasks_sha256": "2e0f65d6801b96616fb53b764470960a96b4c08c73483006ca626477de30ccb8"
+}

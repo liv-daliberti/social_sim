@@ -1,0 +1,43 @@
+{
+  "analysis_code_sha256": "d36d5c1203fd68b049f3e4a606c4d4e5f8254c89cc50a215f0e330883b9f157c",
+  "completed_at": "2026-08-25T23:19:22.473768+00:00",
+  "holdout": {
+    "complete_task_parse_coverage": 0.9937106918238994,
+    "draw_parse_coverage": 0.9962264150943396,
+    "draws": 5,
+    "responses_parsed": 1584,
+    "responses_received": 1590,
+    "tasks": 318,
+    "tasks_with_all_draws_parsed": 316
+  },
+  "market": {
+    "brier": 0.12654794182389942,
+    "log_loss_nats": 0.39267174987108305
+  },
+  "model": "gpt-5.6-sol",
+  "model_minus_market_brier": {
+    "bootstrap_repetitions": 5000,
+    "ci95_high": 0.016346497538940814,
+    "ci95_low": 0.0001621830745341649,
+    "estimate": 0.006797212075471698,
+    "family_clusters": 223
+  },
+  "parse_policy": {
+    "holdout_retries": 0,
+    "incomplete_aggregate_tasks_receive_maximum_loss": true,
+    "unparseable_draws": 6
+  },
+  "result": {
+    "brier": 0.13334515389937113,
+    "log_loss_nats": 0.47999133220926987
+  },
+  "status": "complete",
+  "summary": {
+    "path": "exp3_training_transfer/polymarket/reports/exp4_hosted/exp4_hosted_gpt-5.summary.json",
+    "sha256": "672dc6d684a8d908f72630f9ca3244a937da5dcc78d72bbe3a54480b435a237e"
+  },
+  "raw": {
+    "path": "exp3_training_transfer/polymarket/reports/exp4_hosted/exp4_hosted_gpt-5.jsonl",
+    "sha256": "67d1a93859b92a657a892b1d17e6e1e935ad1b5ef9d1e2c902496d1183213766"
+  }
+}

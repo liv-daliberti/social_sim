@@ -73,8 +73,8 @@ a 1,920-token model context, 1,792 prompt tokens, and at most 128 generated
 tokens. The synthetic C3 canary audit must pass before submission.
 
 For each added model, one dependency-locked evaluation loads the untrained base
-and all three final adapters and makes exactly one greedy (`temperature=0`) call
-per system on each of the same 1,024 sealed test tasks. Invalid outputs retain
+and all three final adapters and makes exactly one temperature-zero call per
+system on each of the same 1,024 sealed test tasks. Invalid outputs retain
 Brier loss 1. The evaluator recomputes the registered trained-minus-base,
 trained-minus-market, and trained-minus-train-only-Platt contrasts with the same
 connected-component family bootstrap. The test file is supplied only to this
@@ -89,14 +89,15 @@ The fail-closed launch and paper-rendering path is:
 .runtime/oat_conda/bin/python \
   exp3_training_transfer/polymarket/scripts/render_model_extension_table.py \
   --latex paper/tables/exp3b_model_roster_results.tex \
-  --latex paper/ICLR/tables/exp3b_model_roster_results.tex
+  --qwen8-main-latex paper/tables/exp3b_qwen3_8b_endpoint_results.tex \
+  --output exp3_training_transfer/polymarket/results/model_roster_results.json
 ```
 
 The launcher records frozen-input and script hashes, complete Slurm commands,
 environment variables, job IDs, and the successful synthetic-canary audit hash
 in `runs/`. The renderer validates both extension summaries against the frozen
-Qwen3-4B result, writes an aggregate JSON with input hashes, and emits
-byte-identical tables into both paper trees. It refuses missing models, missing
+Qwen3-4B result, writes an aggregate JSON with input hashes, and emits the table
+into the canonical paper tree. It refuses missing models, missing
 seeds, altered test counts, altered baselines, or absent registered contrasts.
 
 ## Comparisons and decision rule
@@ -137,5 +138,9 @@ Array job 30535058 completed the base and all three final adapters with 900/900
 structured parses per condition. Three-seed mean EHC/HFC is 0.9191 versus 0.9090
 for base; the paired market-bootstrap difference is +0.0101 with 95% interval
 [+0.0004, +0.0207]. Mean sensitivity is 4.834 versus 4.642; its difference of
-+0.192 has interval [-0.073, +0.482]. Thus training modestly improves directional
-consistency, while the sensitivity change is not distinguishable from zero.
++0.192 has interval [-0.073, +0.482]. Component analysis shows why: relative to
+base, training reduces mean absolute directional revision by 0.0052
+[-0.0070, -0.0036] and orthogonal revision by 0.0022 [-0.0038, -0.0006]. The
+directional-minus-orthogonal movement gap narrows by 0.0030
+[-0.0052, -0.0009]. Training therefore improves directional consistency while
+producing smaller revisions overall; it does not increase absolute selectivity.

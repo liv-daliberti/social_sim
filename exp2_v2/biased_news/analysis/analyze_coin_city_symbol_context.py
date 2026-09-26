@@ -17,21 +17,19 @@ DESIGN = RUN / "design"
 RESPONSES = RUN / "responses"
 MATCHED_RESPONSES = RESPONSES / "symbol_control_matched_20260813"
 DEFAULT_OUTPUT = RUN / "analysis" / "symbol_context_results.json"
-MODELS = (
-    "claude-opus-4-8",
-    "gpt-5.6-sol",
+OPEN_MODEL_RESPONSES = RESPONSES / "symbol_control_open_qwen3_4b_20260824"
+CONTROL_MODELS = (
     "DeepSeek-V4-Pro",
-    "FW-Kimi-K3",
-    "gemini-3.6-flash",
-    "claude-opus-5",
+    "Qwen3-4B-Instruct-2507",
 )
 ARMS = ("abc_no_context", "abc_context", "abc_symbol_context")
 EXPECTED_TASKS = 1_250
 DISPLAY = {
     "claude-opus-4-8": "Claude Opus 4.8",
-    "gpt-5.6-sol": "GPT-5.6 Sol",
-    "DeepSeek-V4-Pro": "DeepSeek V4 Pro",
+    "gpt-5.6-sol": "GPT-5.6",
+    "DeepSeek-V4-Pro": "DeepSeek V4-Pro",
     "FW-Kimi-K3": "Kimi K3",
+    "Qwen3-4B-Instruct-2507": "Qwen3-4B",
     "gemini-3.6-flash": "Gemini 3.6 Flash",
     "claude-opus-5": "Claude Opus 5",
 }
@@ -42,6 +40,8 @@ def read_jsonl(path: Path) -> list[dict]:
 
 
 def response_path(model: str, arm: str) -> Path:
+    if model == "Qwen3-4B-Instruct-2507":
+        return OPEN_MODEL_RESPONSES / f"responses_{model}_{arm}.jsonl"
     if model == "DeepSeek-V4-Pro" and arm in {"abc_no_context", "abc_context"}:
         matched = MATCHED_RESPONSES / f"responses_{model}_{arm}.jsonl"
         if matched.exists():
@@ -233,7 +233,10 @@ def analyze_model(
 
 
 def fmt(value: float) -> str:
-    return f"{value:.2f}"
+    rounded = round(value, 2)
+    if rounded == 0:
+        rounded = 0.0
+    return f"{rounded:.2f}"
 
 
 def paired_cell(record: dict) -> str:
@@ -248,7 +251,8 @@ def difference_cell(record: dict) -> str:
 
 def write_tex(result: dict, path: Path) -> None:
     lines = []
-    for model in MODELS:
+    for model in CONTROL_MODELS:
+        model_lines = []
         for k in range(5):
             curve = result["models"][model]["curves"][str(k)]
             if not curve.get("n"):
@@ -256,9 +260,10 @@ def write_tex(result: dict, path: Path) -> None:
             arms = curve["arms"]
             paired = curve["paired_forecast_mae"]
             discrimination = curve["paired_discrimination"]
-            lines.append(
+            model_lines.append(
                 " & ".join(
                     [
+                        DISPLAY[model] if not model_lines else "",
                         str(k),
                         str(curve["n"]),
                         fmt(arms["abc_no_context"]["forecast_mae"]),
@@ -277,10 +282,25 @@ def write_tex(result: dict, path: Path) -> None:
                 )
                 + r" \\"
             )
+        if model_lines:
+            if lines:
+                lines.append(r"\midrule")
+            lines.extend(model_lines)
     path.parent.mkdir(parents=True, exist_ok=True)
-    # No trailing endline: this file is input immediately before a booktabs
-    # rule, and an intervening paragraph token would end the alignment row.
-    path.write_text("\n".join(lines))
+    table = [
+        r"\begin{tabular}{l cc rr rr rrr ccc}",
+        r"\toprule",
+        r"& & & \multicolumn{2}{c}{No C context} & \multicolumn{2}{c}{Semantic context}",
+        r"& \multicolumn{3}{c}{Arbitrary symbol} & \multicolumn{3}{c}{Symbol $-$ no context} \\",
+        r"\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}",
+        r"Model & $k$ & $n$ & MAE & $\rho$ & MAE & $\rho$ & MAE & $\rho$ & Acc.",
+        r"& $\Delta\mathrm{MAE}$ [CI] & $\Delta\rho$ [CI] & $\Delta\mathrm{Acc.}$ [CI] \\",
+        r"\midrule",
+        *lines,
+        r"\bottomrule",
+        r"\end{tabular}",
+    ]
+    path.write_text("\n".join(table) + "\n")
 
 
 def main() -> None:
@@ -304,6 +324,7 @@ def main() -> None:
         "response_sources": {
             "symbol": str(RESPONSES),
             "deepseek_comparison_arms": str(MATCHED_RESPONSES),
+            "qwen3_4b_open_model_arms": str(OPEN_MODEL_RESPONSES),
         },
         "models": {
             model: analyze_model(
@@ -312,16 +333,16 @@ def main() -> None:
                 episodes=episodes,
                 bootstrap_draws=args.bootstrap_draws,
             )
-            for model in MODELS
+            for model in CONTROL_MODELS
         },
     }
     complete_models = [
         model
-        for model in MODELS
+        for model in CONTROL_MODELS
         if all(result["models"][model]["record_counts"][arm] == EXPECTED_TASKS for arm in ARMS)
     ]
     result["complete_models"] = complete_models
-    result["complete"] = len(complete_models) == len(MODELS)
+    result["complete"] = len(complete_models) == len(CONTROL_MODELS)
     if not result["complete"] and not args.allow_partial:
         raise SystemExit("symbol-control response set is incomplete")
     args.output.parent.mkdir(parents=True, exist_ok=True)

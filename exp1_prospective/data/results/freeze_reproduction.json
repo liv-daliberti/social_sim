@@ -1,0 +1,1061 @@
+{
+  "analysis": "exp1_freeze_reproduction",
+  "generated_at_utc": "2026-08-25T23:00:24.253225+00:00",
+  "frozen_report": "consistency_report_2026-06-17.json",
+  "frozen_report_sha256": "b041e7e54f7b75f476e7dabe87823d162b0af72c07ca7cccadc4b2fc005ebfb5",
+  "checksum_matches_pinned": true,
+  "checks_run": 116,
+  "checks_failed": 0,
+  "failures": [],
+  "not_reproducible_from_freeze": {
+    "tab:exp1-threshold-robustness": "evaluate_threshold_robustness.py re-reads the row-level update directory and applies its own scale normalisation and validity filters; its denominators do not correspond to the frozen aggregate's arm counts.",
+    "stage3 human materials review": "separate frozen response export with its own generator.",
+    "post-freeze settlement audit": "dated market snapshot, descriptive and outside the frozen aggregate."
+  },
+  "checks": [
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:72b",
+      "field": "records",
+      "published": 2692,
+      "recomputed": 2692,
+      "rounded": 2692,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:72b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "llama3.3:70b",
+      "field": "records",
+      "published": 2682,
+      "recomputed": 2682,
+      "rounded": 2682,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "llama3.3:70b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "llama3.1:70b",
+      "field": "records",
+      "published": 2490,
+      "recomputed": 2490,
+      "rounded": 2490,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "llama3.1:70b",
+      "field": "markets",
+      "published": 99,
+      "recomputed": 99,
+      "rounded": 99,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:32b",
+      "field": "records",
+      "published": 2693,
+      "recomputed": 2693,
+      "rounded": 2693,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:32b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:14b",
+      "field": "records",
+      "published": 2700,
+      "recomputed": 2700,
+      "rounded": 2700,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:14b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "llama3.1:8b",
+      "field": "records",
+      "published": 5404,
+      "recomputed": 5404,
+      "rounded": 5404,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "llama3.1:8b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:7b",
+      "field": "records",
+      "published": 8636,
+      "recomputed": 8636,
+      "rounded": 8636,
+      "pass": true
+    },
+    {
+      "table": "tab:model-summary",
+      "model": "qwen2.5:7b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:72b",
+      "field": "pro pp",
+      "published": 15.0,
+      "recomputed": 15.01,
+      "rounded": 15.0,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:72b",
+      "field": "anti pp",
+      "published": 10.2,
+      "recomputed": 10.2,
+      "rounded": 10.2,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:72b",
+      "field": "orth pp",
+      "published": 3.0,
+      "recomputed": 2.98,
+      "rounded": 3.0,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:72b",
+      "field": "sensitivity",
+      "published": 4.2,
+      "recomputed": 4.234,
+      "rounded": 4.2,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:72b",
+      "field": "n",
+      "published": 2692,
+      "recomputed": 2692,
+      "rounded": 2692,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.3:70b",
+      "field": "pro pp",
+      "published": 14.8,
+      "recomputed": 14.83,
+      "rounded": 14.8,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.3:70b",
+      "field": "anti pp",
+      "published": 14.3,
+      "recomputed": 14.29,
+      "rounded": 14.3,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.3:70b",
+      "field": "orth pp",
+      "published": 2.3,
+      "recomputed": 2.29,
+      "rounded": 2.3,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.3:70b",
+      "field": "sensitivity",
+      "published": 6.4,
+      "recomputed": 6.35,
+      "rounded": 6.4,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.3:70b",
+      "field": "n",
+      "published": 2682,
+      "recomputed": 2682,
+      "rounded": 2682,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:70b",
+      "field": "pro pp",
+      "published": 14.8,
+      "recomputed": 14.79,
+      "rounded": 14.8,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:70b",
+      "field": "anti pp",
+      "published": 15.5,
+      "recomputed": 15.52,
+      "rounded": 15.5,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:70b",
+      "field": "orth pp",
+      "published": 3.3,
+      "recomputed": 3.29,
+      "rounded": 3.3,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:70b",
+      "field": "sensitivity",
+      "published": 4.6,
+      "recomputed": 4.601,
+      "rounded": 4.6,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:70b",
+      "field": "n",
+      "published": 2490,
+      "recomputed": 2490,
+      "rounded": 2490,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:32b",
+      "field": "pro pp",
+      "published": 15.0,
+      "recomputed": 15.01,
+      "rounded": 15.0,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:32b",
+      "field": "anti pp",
+      "published": 10.3,
+      "recomputed": 10.28,
+      "rounded": 10.3,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:32b",
+      "field": "orth pp",
+      "published": 4.0,
+      "recomputed": 3.97,
+      "rounded": 4.0,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:32b",
+      "field": "sensitivity",
+      "published": 3.2,
+      "recomputed": 3.186,
+      "rounded": 3.2,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:32b",
+      "field": "n",
+      "published": 2693,
+      "recomputed": 2693,
+      "rounded": 2693,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:14b",
+      "field": "pro pp",
+      "published": 14.8,
+      "recomputed": 14.85,
+      "rounded": 14.9,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:14b",
+      "field": "anti pp",
+      "published": 8.6,
+      "recomputed": 8.63,
+      "rounded": 8.6,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:14b",
+      "field": "orth pp",
+      "published": 4.1,
+      "recomputed": 4.07,
+      "rounded": 4.1,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:14b",
+      "field": "sensitivity",
+      "published": 2.9,
+      "recomputed": 2.888,
+      "rounded": 2.9,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "qwen2.5:14b",
+      "field": "n",
+      "published": 2700,
+      "recomputed": 2700,
+      "rounded": 2700,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:8b",
+      "field": "pro pp",
+      "published": 11.1,
+      "recomputed": 11.07,
+      "rounded": 11.1,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:8b",
+      "field": "anti pp",
+      "published": 12.0,
+      "recomputed": 11.97,
+      "rounded": 12.0,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:8b",
+      "field": "orth pp",
+      "published": 5.9,
+      "recomputed": 5.92,
+      "rounded": 5.9,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:8b",
+      "field": "sensitivity",
+      "published": 1.9,
+      "recomputed": 1.946,
+      "rounded": 1.9,
+      "pass": true
+    },
+    {
+      "table": "tab:anchoring",
+      "model": "llama3.1:8b",
+      "field": "n",
+      "published": 5404,
+      "recomputed": 5404,
+      "rounded": 5404,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "claude-opus-4-8",
+      "field": "sensitivity",
+      "published": 24.0,
+      "recomputed": 24.036,
+      "rounded": 24.0,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "claude-opus-4-8",
+      "field": "directional pp",
+      "published": 11.1,
+      "recomputed": 11.1238,
+      "rounded": 11.1,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "claude-opus-4-8",
+      "field": "orthogonal pp",
+      "published": 0.5,
+      "recomputed": 0.46,
+      "rounded": 0.5,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "claude-opus-4-8",
+      "field": "EHC at 3pp",
+      "published": 0.99,
+      "recomputed": 0.9903,
+      "rounded": 0.99,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "gpt-5.4",
+      "field": "sensitivity",
+      "published": 8.2,
+      "recomputed": 8.213,
+      "rounded": 8.2,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "gpt-5.4",
+      "field": "directional pp",
+      "published": 9.6,
+      "recomputed": 9.5502,
+      "rounded": 9.6,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "gpt-5.4",
+      "field": "orthogonal pp",
+      "published": 1.2,
+      "recomputed": 1.16,
+      "rounded": 1.2,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "gpt-5.4",
+      "field": "EHC at 3pp",
+      "published": 0.987,
+      "recomputed": 0.9869,
+      "rounded": 0.987,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "DeepSeek-V4-Pro",
+      "field": "sensitivity",
+      "published": 8.9,
+      "recomputed": 8.856,
+      "rounded": 8.9,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "DeepSeek-V4-Pro",
+      "field": "directional pp",
+      "published": 12.7,
+      "recomputed": 12.6703,
+      "rounded": 12.7,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "DeepSeek-V4-Pro",
+      "field": "orthogonal pp",
+      "published": 1.4,
+      "recomputed": 1.43,
+      "rounded": 1.4,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "DeepSeek-V4-Pro",
+      "field": "EHC at 3pp",
+      "published": 0.977,
+      "recomputed": 0.9773,
+      "rounded": 0.977,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:72b",
+      "field": "sensitivity",
+      "published": 4.2,
+      "recomputed": 4.234,
+      "rounded": 4.2,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:72b",
+      "field": "directional pp",
+      "published": 12.6,
+      "recomputed": 12.6037,
+      "rounded": 12.6,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:72b",
+      "field": "orthogonal pp",
+      "published": 3.0,
+      "recomputed": 2.98,
+      "rounded": 3.0,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "qwen2.5:72b",
+      "field": "EHC at 3pp",
+      "published": 0.963,
+      "recomputed": 0.9633,
+      "rounded": 0.963,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.3:70b",
+      "field": "sensitivity",
+      "published": 6.4,
+      "recomputed": 6.35,
+      "rounded": 6.4,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.3:70b",
+      "field": "directional pp",
+      "published": 14.6,
+      "recomputed": 14.56,
+      "rounded": 14.6,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.3:70b",
+      "field": "orthogonal pp",
+      "published": 2.3,
+      "recomputed": 2.29,
+      "rounded": 2.3,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "llama3.3:70b",
+      "field": "EHC at 3pp",
+      "published": 0.965,
+      "recomputed": 0.9653,
+      "rounded": 0.965,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.1:70b",
+      "field": "sensitivity",
+      "published": 4.6,
+      "recomputed": 4.601,
+      "rounded": 4.6,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.1:70b",
+      "field": "directional pp",
+      "published": 15.2,
+      "recomputed": 15.1548,
+      "rounded": 15.2,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.1:70b",
+      "field": "orthogonal pp",
+      "published": 3.3,
+      "recomputed": 3.29,
+      "rounded": 3.3,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "llama3.1:70b",
+      "field": "EHC at 3pp",
+      "published": 0.961,
+      "recomputed": 0.9605,
+      "rounded": 0.961,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:32b",
+      "field": "sensitivity",
+      "published": 3.2,
+      "recomputed": 3.186,
+      "rounded": 3.2,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:32b",
+      "field": "directional pp",
+      "published": 12.6,
+      "recomputed": 12.6437,
+      "rounded": 12.6,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:32b",
+      "field": "orthogonal pp",
+      "published": 4.0,
+      "recomputed": 3.97,
+      "rounded": 4.0,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "qwen2.5:32b",
+      "field": "EHC at 3pp",
+      "published": 0.964,
+      "recomputed": 0.9642,
+      "rounded": 0.964,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:14b",
+      "field": "sensitivity",
+      "published": 2.9,
+      "recomputed": 2.888,
+      "rounded": 2.9,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:14b",
+      "field": "directional pp",
+      "published": 11.7,
+      "recomputed": 11.74,
+      "rounded": 11.7,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "qwen2.5:14b",
+      "field": "orthogonal pp",
+      "published": 4.1,
+      "recomputed": 4.07,
+      "rounded": 4.1,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "qwen2.5:14b",
+      "field": "EHC at 3pp",
+      "published": 0.943,
+      "recomputed": 0.9434,
+      "rounded": 0.943,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.1:8b",
+      "field": "sensitivity",
+      "published": 1.9,
+      "recomputed": 1.946,
+      "rounded": 1.9,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.1:8b",
+      "field": "directional pp",
+      "published": 11.5,
+      "recomputed": 11.5198,
+      "rounded": 11.5,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table",
+      "model": "llama3.1:8b",
+      "field": "orthogonal pp",
+      "published": 5.9,
+      "recomputed": 5.92,
+      "rounded": 5.9,
+      "pass": true
+    },
+    {
+      "table": "fig:exp1-table (record-derived)",
+      "model": "llama3.1:8b",
+      "field": "EHC at 3pp",
+      "published": 0.887,
+      "recomputed": 0.8875,
+      "rounded": 0.887,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "claude-opus-4-8",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "claude-opus-4-8",
+      "field": "directional",
+      "published": 77,
+      "recomputed": 77,
+      "rounded": 77,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "claude-opus-4-8",
+      "field": "orthogonal",
+      "published": 82,
+      "recomputed": 82,
+      "rounded": 82,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "claude-opus-4-8",
+      "field": "all three arms",
+      "published": 73,
+      "recomputed": 73,
+      "rounded": 73,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "gpt-5.4",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "gpt-5.4",
+      "field": "directional",
+      "published": 99,
+      "recomputed": 99,
+      "rounded": 99,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "gpt-5.4",
+      "field": "orthogonal",
+      "published": 99,
+      "recomputed": 99,
+      "rounded": 99,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "gpt-5.4",
+      "field": "all three arms",
+      "published": 99,
+      "recomputed": 99,
+      "rounded": 99,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "DeepSeek-V4-Pro",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "DeepSeek-V4-Pro",
+      "field": "directional",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "DeepSeek-V4-Pro",
+      "field": "orthogonal",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "DeepSeek-V4-Pro",
+      "field": "all three arms",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:72b",
+      "field": "markets",
+      "published": 120,
+      "recomputed": 120,
+      "rounded": 120,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:72b",
+      "field": "directional",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:72b",
+      "field": "orthogonal",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:72b",
+      "field": "all three arms",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.3:70b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.3:70b",
+      "field": "directional",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.3:70b",
+      "field": "orthogonal",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.3:70b",
+      "field": "all three arms",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:70b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:70b",
+      "field": "directional",
+      "published": 99,
+      "recomputed": 99,
+      "rounded": 99,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:70b",
+      "field": "orthogonal",
+      "published": 99,
+      "recomputed": 99,
+      "rounded": 99,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:70b",
+      "field": "all three arms",
+      "published": 99,
+      "recomputed": 99,
+      "rounded": 99,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:32b",
+      "field": "markets",
+      "published": 120,
+      "recomputed": 120,
+      "rounded": 120,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:32b",
+      "field": "directional",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:32b",
+      "field": "orthogonal",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:32b",
+      "field": "all three arms",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:14b",
+      "field": "markets",
+      "published": 120,
+      "recomputed": 120,
+      "rounded": 120,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:14b",
+      "field": "directional",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:14b",
+      "field": "orthogonal",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "qwen2.5:14b",
+      "field": "all three arms",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:8b",
+      "field": "markets",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:8b",
+      "field": "directional",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:8b",
+      "field": "orthogonal",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    },
+    {
+      "table": "tab:exp1-arm-coverage",
+      "model": "llama3.1:8b",
+      "field": "all three arms",
+      "published": 100,
+      "recomputed": 100,
+      "rounded": 100,
+      "pass": true
+    }
+  ]
+}

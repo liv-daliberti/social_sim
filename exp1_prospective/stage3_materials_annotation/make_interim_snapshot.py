@@ -24,7 +24,11 @@ CATEGORIES = ["more_likely", "less_likely", "no_material_effect", "ambiguous"]
 
 
 def read_jsonl(path: Path) -> list[dict]:
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line)
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
 
 
 def cohen(a: list[str], b: list[str]) -> tuple[float, float]:
@@ -32,16 +36,21 @@ def cohen(a: list[str], b: list[str]) -> tuple[float, float]:
     observed = sum(x == y for x, y in zip(a, b)) / n
     ca, cb = collections.Counter(a), collections.Counter(b)
     expected = sum((ca[c] / n) * (cb[c] / n) for c in CATEGORIES)
-    return ((observed - expected) / (1 - expected) if expected < 1 else float("nan")), observed
+    return (
+        (observed - expected) / (1 - expected) if expected < 1 else float("nan")
+    ), observed
 
 
 def fleiss(counts: list[collections.Counter], categories: list[str]) -> float:
     n = sum(counts[0].values())
     item_count = len(counts)
-    observed = sum(
-        (sum(value * value for value in item.values()) - n) / (n * (n - 1))
-        for item in counts
-    ) / item_count
+    observed = (
+        sum(
+            (sum(value * value for value in item.values()) - n) / (n * (n - 1))
+            for item in counts
+        )
+        / item_count
+    )
     totals = collections.Counter()
     for item in counts:
         totals.update(item)
@@ -68,6 +77,15 @@ def main() -> int:
     parser.add_argument("--policy", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--protocol-version", default="stage3_materials_annotation_v8")
+    parser.add_argument(
+        "--final-descriptive",
+        action="store_true",
+        help=(
+            "Close the descriptive materials review at the completed roster, "
+            "remove obsolete recruitment-gate fields, and require at least six "
+            "quality-eligible reviewers."
+        ),
+    )
     args = parser.parse_args()
 
     status = json.loads(args.status.read_text(encoding="utf-8"))
@@ -82,7 +100,8 @@ def main() -> int:
     for row in rows:
         by_reviewer[row["reviewer_id"]].append(row)
     completed = sorted(
-        reviewer for reviewer, reviewer_rows in by_reviewer.items()
+        reviewer
+        for reviewer, reviewer_rows in by_reviewer.items()
         if len(reviewer_rows) == len(items)
     )
     if completed != sorted(status["completed_reviewers"]):
@@ -98,7 +117,9 @@ def main() -> int:
     cutoff = int(policy["rule"]["exclude_if_any_single_response_selected_at_least"])
     excluded = []
     for reviewer in completed:
-        pattern = collections.Counter(indexed[reviewer][item]["conditional_direction"] for item in items)
+        pattern = collections.Counter(
+            indexed[reviewer][item]["conditional_direction"] for item in items
+        )
         if max(pattern.values()) >= cutoff:
             excluded.append(reviewer)
     included = [reviewer for reviewer in completed if reviewer not in excluded]
@@ -113,28 +134,50 @@ def main() -> int:
         labels = [row["conditional_direction"] for row in reviewer_rows]
         correct = sum(label == gold[item] for label, item in zip(labels, items))
         kappa, _ = cohen(labels, [gold[item] for item in items])
-        starts = [parse_time(row["started_at"]) for row in reviewer_rows if row["started_at"]]
-        ends = [parse_time(row["submitted_at"]) for row in reviewer_rows if row["submitted_at"]]
+        starts = [
+            parse_time(row["started_at"]) for row in reviewer_rows if row["started_at"]
+        ]
+        ends = [
+            parse_time(row["submitted_at"])
+            for row in reviewer_rows
+            if row["submitted_at"]
+        ]
         reviewers[reviewer] = {
             "cohen_kappa_vs_registered_key": kappa,
             "completion_window_seconds": (max(ends) - min(starts)).total_seconds(),
             "direction_correct_n": correct,
             "direction_correct_rate": correct / len(items),
             "direction_denom": len(items),
-            "direction_response_pattern": dict(sorted(collections.Counter(labels).items())),
-            "median_clarity": statistics.median(int(row["clarity"]) for row in reviewer_rows),
+            "direction_response_pattern": dict(
+                sorted(collections.Counter(labels).items())
+            ),
+            "median_clarity": statistics.median(
+                int(row["clarity"]) for row in reviewer_rows
+            ),
             "median_direction_confidence": statistics.median(
                 int(row["direction_confidence"]) for row in reviewer_rows
             ),
-            "median_plausibility": statistics.median(int(row["plausibility"]) for row in reviewer_rows),
-            "one_sided_exact_binomial_p_vs_one_third": binomial_upper_tail(correct, len(items)),
-            "premise_usable_yes_n": sum(row["usable_premise"] == "yes" for row in reviewer_rows),
+            "median_plausibility": statistics.median(
+                int(row["plausibility"]) for row in reviewer_rows
+            ),
+            "one_sided_exact_binomial_p_vs_one_third": binomial_upper_tail(
+                correct, len(items)
+            ),
+            "premise_usable_yes_n": sum(
+                row["usable_premise"] == "yes" for row in reviewer_rows
+            ),
             "quality_excluded": reviewer in excluded,
         }
 
     def majority(item: str) -> str:
-        counts = collections.Counter(indexed[r][item]["conditional_direction"] for r in included).most_common()
-        return "ambiguous" if len(counts) > 1 and counts[0][1] == counts[1][1] else counts[0][0]
+        counts = collections.Counter(
+            indexed[r][item]["conditional_direction"] for r in included
+        ).most_common()
+        return (
+            "ambiguous"
+            if len(counts) > 1 and counts[0][1] == counts[1][1]
+            else counts[0][0]
+        )
 
     majorities = {item: majority(item) for item in items}
     counts = [
@@ -143,7 +186,8 @@ def main() -> int:
     ]
     folded = [
         collections.Counter(
-            "no_material_effect" if indexed[r][item]["conditional_direction"] == "ambiguous"
+            "no_material_effect"
+            if indexed[r][item]["conditional_direction"] == "ambiguous"
             else indexed[r][item]["conditional_direction"]
             for r in included
         )
@@ -164,14 +208,22 @@ def main() -> int:
     item_gates = []
     for item in items:
         item_rows = [indexed[r][item] for r in included]
-        direction_match = sum(row["conditional_direction"] == gold[item] for row in item_rows)
+        direction_match = sum(
+            row["conditional_direction"] == gold[item] for row in item_rows
+        )
         usable = sum(row["usable_premise"] == "yes" for row in item_rows)
         record = {
             "item_id": item,
             "direction_match": direction_match,
-            "median_confidence": statistics.median(int(row["direction_confidence"]) for row in item_rows),
-            "median_clarity": statistics.median(int(row["clarity"]) for row in item_rows),
-            "median_plausibility": statistics.median(int(row["plausibility"]) for row in item_rows),
+            "median_confidence": statistics.median(
+                int(row["direction_confidence"]) for row in item_rows
+            ),
+            "median_clarity": statistics.median(
+                int(row["clarity"]) for row in item_rows
+            ),
+            "median_plausibility": statistics.median(
+                int(row["plausibility"]) for row in item_rows
+            ),
             "premise_usable": usable,
         }
         record["passes"] = (
@@ -192,7 +244,8 @@ def main() -> int:
         by_class[category] = {
             "reviewer_correct": sum(
                 indexed[r][item]["conditional_direction"] == gold[item]
-                for r in included for item in subset
+                for r in included
+                for item in subset
             ),
             "reviewer_denom": len(included) * len(subset),
             "majority_correct": sum(majorities[item] == gold[item] for item in subset),
@@ -208,12 +261,14 @@ def main() -> int:
         "excluded_reviewers": excluded,
         "included_completed_reviewers": included,
         "partial_reviewers": {
-            reviewer: count for reviewer, count in sorted(status["ratings_by_reviewer"].items())
+            reviewer: count
+            for reviewer, count in sorted(status["ratings_by_reviewer"].items())
             if 0 < count < len(items)
         },
         "final_gate_available": len(completed) == int(status["expected_reviewers"]),
         "reason_final_gate_unavailable": (
-            None if len(completed) == int(status["expected_reviewers"])
+            None
+            if len(completed) == int(status["expected_reviewers"])
             else "The nine-reviewer roster is incomplete; this snapshot summarizes completed packets only."
         ),
         "status": status,
@@ -227,9 +282,13 @@ def main() -> int:
             "premise_usable_rate": included_usable / denominator,
         },
         "all_completed_sensitivity": {
-            "direction_correct_n": sum(reviewers[r]["direction_correct_n"] for r in completed),
+            "direction_correct_n": sum(
+                reviewers[r]["direction_correct_n"] for r in completed
+            ),
             "direction_denom": len(completed) * len(items),
-            "direction_correct_rate": sum(reviewers[r]["direction_correct_n"] for r in completed)
+            "direction_correct_rate": sum(
+                reviewers[r]["direction_correct_n"] for r in completed
+            )
             / (len(completed) * len(items)),
         },
         "panel_agreement": {
@@ -246,12 +305,41 @@ def main() -> int:
             "unanimous_direction_items": sum(
                 row["direction_match"] == len(included) for row in item_gates
             ),
-            "items_passing_interim_one_dissent_gate": sum(row["passes"] for row in item_gates),
+            "items_passing_interim_one_dissent_gate": sum(
+                row["passes"] for row in item_gates
+            ),
             "by_packet_class": by_class,
         },
     }
+    if args.final_descriptive:
+        partial = snapshot["partial_reviewers"]
+        target_met = len(included) >= 6 and not partial
+        if not target_met:
+            raise SystemExit(
+                "final descriptive summary requires at least six included complete "
+                "reviewers and no partially completed packets"
+            )
+        snapshot["analysis"] = "final_descriptive_materials_review"
+        snapshot["analysis_status"] = "complete"
+        snapshot["collection"] = {
+            "closed": True,
+            "completed_reviewer_count": len(completed),
+            "included_reviewer_count": len(included),
+            "excluded_reviewer_count": len(excluded),
+            "minimum_included_reviewers": 6,
+            "descriptive_target_met": True,
+        }
+        snapshot["source_status_sha256"] = hashlib.sha256(
+            args.status.read_bytes()
+        ).hexdigest()
+        snapshot.pop("final_gate_available")
+        snapshot.pop("reason_final_gate_unavailable")
+        snapshot.pop("status")
+        snapshot["panel_agreement"].pop("items_passing_interim_one_dissent_gate")
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(snapshot, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    args.output.write_text(
+        json.dumps(snapshot, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     print(
         f"wrote {args.output}: {len(completed)} complete, {len(included)} included, "
         f"{included_correct}/{denominator} direction-correct"

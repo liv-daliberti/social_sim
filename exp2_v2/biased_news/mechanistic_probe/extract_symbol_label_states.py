@@ -17,9 +17,8 @@ import numpy as np
 
 from symbol_relational_common import (
     ANCHORS,
+    checkpoint_spec,
     DEFAULT_RUN_DIR,
-    MODEL_COMMIT,
-    MODEL_ID,
     run_spec,
     file_sha256,
     find_label_anchors,
@@ -47,15 +46,16 @@ def model_input_device(model):
 
 
 def validate_protocol(run_dir: Path) -> dict[str, Any]:
+    checkpoint = checkpoint_spec(run_dir)
     path = run_dir / "relational_protocol_manifest.json"
     protocol = json.loads(path.read_text(encoding="utf-8"))
     if protocol.get("study") != run_spec(run_dir)["study"]:
         raise ValueError("protocol study mismatch")
     if protocol.get("status") != "frozen_before_label_activation_extraction":
         raise ValueError("protocol was not frozen before label-state extraction")
-    if protocol.get("model", {}).get("id") != MODEL_ID:
+    if protocol.get("model", {}).get("id") != checkpoint["model_id"]:
         raise ValueError("protocol model mismatch")
-    if protocol.get("model", {}).get("commit") != MODEL_COMMIT:
+    if protocol.get("model", {}).get("commit") != checkpoint["model_commit"]:
         raise ValueError("protocol checkpoint mismatch")
     return protocol
 
@@ -170,7 +170,16 @@ def extract(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-dir", type=Path, default=DEFAULT_RUN_DIR)
-    parser.add_argument("--model", default=MODEL_ID)
+    parser.add_argument("--model")
+    parser.add_argument(
+        "--device-map",
+        help="optional Accelerate device map, e.g. balanced for multi-GPU models",
+    )
+    parser.add_argument(
+        "--gpu-memory-gib",
+        type=int,
+        help="per-GPU memory ceiling used with --device-map",
+    )
     parser.add_argument("--max-input-tokens", type=int, default=2304)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
@@ -188,6 +197,11 @@ def main() -> None:
     torch.cuda.manual_seed_all(20260825)
     torch.backends.cuda.matmul.allow_tf32 = True
 
+    checkpoint = checkpoint_spec(args.run_dir)
+    model_id = str(checkpoint["model_id"])
+    expected_commit = str(checkpoint["model_commit"])
+    if args.model is not None and args.model != model_id:
+        raise ValueError(f"--model must equal the frozen checkpoint {model_id}")
     protocol = validate_protocol(args.run_dir)
     tasks, _ = load_tasks(args.run_dir)
     rows = label_tasks(tasks)
@@ -196,7 +210,7 @@ def main() -> None:
     if output_path.exists() and not args.force:
         raise FileExistsError(f"{output_path} already exists; refusing to overwrite")
 
-    tokenizer = AutoTokenizer.from_pretrained(args.model, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_id, local_files_only=True)
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
     load_kwargs = {
@@ -204,17 +218,28 @@ def main() -> None:
         "torch_dtype": torch.bfloat16,
         "attn_implementation": "sdpa",
     }
-    model = AutoModelForCausalLM.from_pretrained(args.model, **load_kwargs)
+    if args.device_map:
+        load_kwargs["device_map"] = args.device_map
+        if args.gpu_memory_gib is not None:
+            load_kwargs["max_memory"] = {
+                index: f"{args.gpu_memory_gib}GiB"
+                for index in range(torch.cuda.device_count())
+            }
+    model = AutoModelForCausalLM.from_pretrained(model_id, **load_kwargs)
     model.eval()
-    model.to("cuda")
+    if not args.device_map:
+        model.to("cuda")
     observed_commit = getattr(model.config, "_commit_hash", None)
-    if observed_commit != MODEL_COMMIT:
+    if observed_commit != expected_commit:
         raise RuntimeError(
-            f"checkpoint commit changed: observed={observed_commit}, expected={MODEL_COMMIT}"
+            f"checkpoint commit changed: observed={observed_commit}, "
+            f"expected={expected_commit}"
         )
+    if int(model.config.num_hidden_layers) != int(checkpoint["transformer_layers"]):
+        raise RuntimeError("model depth differs from the frozen protocol")
     parameter_count = sum(parameter.numel() for parameter in model.parameters())
     print(
-        f"loaded {args.model}: layers={model.config.num_hidden_layers}, "
+        f"loaded {model_id}: layers={model.config.num_hidden_layers}, "
         f"hidden={model.config.hidden_size}, parameters={parameter_count}",
         flush=True,
     )
@@ -228,7 +253,7 @@ def main() -> None:
     manifest = {
         "study": run_spec(args.run_dir)["study"],
         "status": "complete",
-        "model": MODEL_ID,
+        "model": model_id,
         "model_commit": observed_commit,
         "parameter_count": parameter_count,
         "chat_template": (
@@ -255,6 +280,8 @@ def main() -> None:
         "cuda": {
             "name": torch.cuda.get_device_name(0),
             "max_memory_allocated_bytes": int(torch.cuda.max_memory_allocated(0)),
+            "device_map_request": args.device_map,
+            "resolved_device_map": getattr(model, "hf_device_map", None),
         },
         "completed_at": datetime.now(timezone.utc).isoformat(),
     }

@@ -144,6 +144,11 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
         f"annotator_{index:02d}": f"review-code-{index:02d}-private"
         for index in range(1, 8)
     }
+    extension_codes = {
+        "annotator_08": "review-code-08-private",
+        "annotator_09": "review-code-09-private",
+        "annotator_10": "review-code-10-private",
+    }
     app = create_app(
         {
             "TESTING": True,
@@ -153,6 +158,9 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
             "ENABLE_PRACTICE": False,
             "PRACTICE_ONLY": False,
             "REVIEWER_CODES_JSON": json.dumps(codes),
+            "REVIEWER_08_CODE": extension_codes["annotator_08"],
+            "REVIEWER_09_CODE": extension_codes["annotator_09"],
+            "REVIEWER_10_CODE": extension_codes["annotator_10"],
             "DATABASE": tmp_path / "reviews.sqlite3",
             "PUBLIC_ITEMS": ROOT / "generated_v6/public_items.jsonl",
             "ASSIGNMENTS": ROOT / "generated_v6/assignments.json",
@@ -168,8 +176,14 @@ def test_production_uses_private_codes_and_disables_practice(tmp_path):
     assert response.status_code == 200
     assert b"not recognized" in response.data
 
-    response = post_with_csrf(client, "/", {"access_code": codes["annotator_01"]})
-    assert response.status_code == 302
+    for code in (codes["annotator_01"], *extension_codes.values()):
+        client = app.test_client()
+        response = post_with_csrf(client, "/", {"access_code": code})
+        assert response.status_code == 302
+
+    status = app.test_client().get("/admin/status?token=test-admin").get_json()
+    assert status["expected_reviewers"] == 10
+    assert status["expected_ratings"] == 180
 
 
 def test_health_is_private_and_admin_status_is_token_gated(tmp_path):

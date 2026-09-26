@@ -98,6 +98,8 @@ ARM_PANEL_LABELS = {
 ARM_TITLE_INK = "#333A45"
 CITY_C_OLS_COLOR = "#E69F00"
 BEST_LLM_COLOR = "#6A3D9A"
+# Label-conditioned analogical regression: the cue-aware reference policy.
+ANALOGICAL_COLOR = "#CC79A7"
 INDIVIDUAL_LLM_COLOR = "#A8ADB4"
 
 ARM_LABELS = {
@@ -917,6 +919,20 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
 
     best_model = best_overall_model()
 
+    def _analogical_label(arm: str) -> str | None:
+        """Which cue the analogical benchmark follows; None where no cue is shown."""
+        if arm == WRONG_ARM:
+            return "inverted"
+        if arm in ("abc_context", SYMBOL_ARM):
+            return "correct"
+        return None
+
+    def _analogical_curve(label: str) -> list[float]:
+        return [
+            reference_metrics[str(k)]["analogical_regression"][label]["forecast_mae"]
+            for k in range(5)
+        ]
+
     for column_index, arm in enumerate(panels):
         ax = axes[column_index]
         panel_models = _panel_models(arm)
@@ -953,6 +969,19 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
                 zorder=3,
             )
 
+        analogical_label = _analogical_label(arm)
+        if analogical_label is not None:
+            ax.plot(
+                x,
+                _analogical_curve(analogical_label),
+                color=ANALOGICAL_COLOR,
+                linestyle=":",
+                marker="s",
+                markersize=4.0,
+                linewidth=1.8,
+                zorder=3,
+            )
+
         ax.set_title(
             f"({chr(ord('a') + column_index)}) {ARM_PANEL_LABELS[arm]}",
             loc="left",
@@ -979,6 +1008,12 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
         reference_metrics[str(k)][f"{prefix}_mae"]
         for prefix, _, _, _ in reference_styles
         for k in range(5)
+    )
+    mae_values.extend(
+        value
+        for arm in panels
+        if _analogical_label(arm) is not None
+        for value in _analogical_curve(_analogical_label(arm))
     )
     axes[0].set_ylim(
         max(0.0, float(np.nanmin(mae_values)) - 0.25),
@@ -1016,11 +1051,23 @@ def make_results_figure(output_dir: Path, metrics: dict) -> None:
         )
         for _, color, marker, label in reference_styles
     )
+    handles.append(
+        Line2D(
+            [0],
+            [0],
+            color=ANALOGICAL_COLOR,
+            linestyle=":",
+            marker="s",
+            linewidth=1.8,
+            markersize=4.0,
+            label="Cue-named city's slope",
+        )
+    )
     fig.legend(
         handles=handles,
         loc="upper center",
         bbox_to_anchor=(0.54, 0.995),
-        ncol=4,
+        ncol=5,
         frameon=False,
         columnspacing=0.95,
         handlelength=1.8,

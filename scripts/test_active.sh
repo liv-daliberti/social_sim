@@ -16,13 +16,21 @@ run_suite() {
 
 run_suite "Experiment 1 human-materials review" "." \
   exp1_prospective/stage3_materials_annotation/tests
+run_suite "Experiment 1 clustered uncertainty" "." \
+  exp1_prospective/agent/tests
+run_suite "Experiment 1 context reversal" "." \
+  exp1_prospective/context_reversal/tests
 run_suite "Experiment 2 appendix probe and deployed viewer" \
   "exp2_simulated_worlds/biased_news" tests
 run_suite "Experiment 2 final Coin City" "exp2_v2/biased_news" tests
 run_suite "Experiment 3 Coin City transfer" \
   "exp3_training_transfer/coin_city_structural" tests
+run_suite "Experiment 3 mechanistic transfer" "." \
+  exp3_training_transfer/coin_city_structural/mechanistic_transfer/tests
 run_suite "Experiment 3 structural OOD" \
   "exp3_training_transfer/mechanism_family" tests
+run_suite "Five-seed extension" "." \
+  exp3_training_transfer/five_seed_extension/tests
 run_suite "Experiment 4 historical Polymarket" \
   "exp3_training_transfer/polymarket" tests
 run_suite "Deployed Experiment 3 viewer" \

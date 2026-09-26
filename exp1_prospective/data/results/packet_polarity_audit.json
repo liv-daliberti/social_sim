@@ -1,0 +1,76 @@
+{
+  "analysis": "exp1_packet_polarity_audit",
+  "generated_at_utc": "2026-08-25T20:27:22.518453+00:00",
+  "counterfactual_file": "counterfactuals_2026-06-10.jsonl",
+  "packets": 900,
+  "packets_by_direction": {
+    "pro_H1": 300,
+    "anti_H1": 300,
+    "orthogonal": 300
+  },
+  "prompt_withholding": {
+    "update_files": 24,
+    "prompts_verified_identical_to_packet_text": 12728,
+    "prompts_with_block_mismatch": 0,
+    "private_field_occurrences_in_evidence_block": {
+      "direction": 0,
+      "target_hypothesis": 0,
+      "slot_type": 0,
+      "evidence_headline": 0,
+      "mechanism_targeted": 0,
+      "rationale": 0,
+      "plausibility_note": 0
+    },
+    "total_private_field_occurrences": 0,
+    "generic_shift_word_coincidences": 102,
+    "prompts_verified_by_file": {
+      "updated_DeepSeek-V4-Pro_2026-06-10.jsonl": 2456,
+      "updated_DeepSeek-V4-Pro_2026-06-11.jsonl": 204,
+      "updated_DeepSeek-V4-Pro_2026-06-16.jsonl": 2044,
+      "updated_claude-opus-4-8_2026-06-10.jsonl": 2900,
+      "updated_claude-opus-4-8_2026-06-11.jsonl": 17,
+      "updated_claude-opus-4-8_2026-06-15.jsonl": 1600,
+      "updated_gpt-5-4_2026-06-15.jsonl": 3507
+    },
+    "records_with_no_stored_prompt": {
+      "updated_DeepSeek-V4-Pro_2026-06-10.jsonl": 1634,
+      "updated_claude-opus-4-8_2026-06-10.jsonl": 915,
+      "updated_claude-opus-4-8_2026-06-11.jsonl": 3656,
+      "updated_gpt-5-4_2026-06-15.jsonl": 69,
+      "updated_llama3.1-70b_2026-06-13.jsonl": 2490,
+      "updated_llama3.1-8b_2026-06-11.jsonl": 904,
+      "updated_llama3.1-8b_2026-06-12.jsonl": 6818,
+      "updated_llama3.3-70b_2026-06-15.jsonl": 2682,
+      "updated_qwen2.5-14b_2026-06-11.jsonl": 2786,
+      "updated_qwen2.5-32b_2026-06-12.jsonl": 1890,
+      "updated_qwen2.5-32b_2026-06-13.jsonl": 2737,
+      "updated_qwen2.5-72b_2026-06-12.jsonl": 2716,
+      "updated_qwen2.5-7b_2026-06-10.jsonl": 3335,
+      "updated_qwen2.5-7b_2026-06-11.jsonl": 4136,
+      "updated_qwen2.5-7b_2026-06-12.jsonl": 4500
+    },
+    "records_with_unparseable_stored_prompt": {
+      "updated_gpt-5-4_2026-06-15.jsonl": 329
+    },
+    "note": "Prompt persistence differs by runner: the local Ollama runner and several hosted batches did not store the prompt string, and one GPT-5.4 top-up file stored a truncated trace. Those records carry the numeric update fields the frozen evaluation uses, so coverage of this check is a subset of the record set by logging choice, not by outcome. The template itself substitutes only `evidence_text`."
+  },
+  "snippet_polarity": {
+    "names_market_or_resolution_n": 0,
+    "names_market_or_resolution_rate": 0.0,
+    "explicit_likelihood_n": 22,
+    "explicit_likelihood_rate": 0.024444444444444446,
+    "explicit_likelihood_by_direction": {
+      "pro_H1": 10,
+      "anti_H1": 12
+    },
+    "explicit_likelihood_cue_counts": {
+      "odds": 7,
+      "chance of": 6,
+      "more likely": 4,
+      "probability": 4,
+      "less likely": 3,
+      "likelihood": 1
+    },
+    "no_explicit_likelihood_rate": 0.9755555555555555
+  }
+}

@@ -41,7 +41,11 @@ PRUNED_DIRS = {
 
 def active_files(suffix: str):
     for directory, dirnames, filenames in os.walk(ROOT):
-        dirnames[:] = [name for name in dirnames if name not in PRUNED_DIRS]
+        dirnames[:] = [
+            name
+            for name in dirnames
+            if name not in PRUNED_DIRS and not name.startswith(".venv")
+        ]
         base = Path(directory)
         for name in filenames:
             if name.endswith(suffix):
@@ -77,6 +81,73 @@ def test_operational_entrypoints_never_execute_archive_paths():
         if "_archive" in path.read_text(encoding="utf-8")
     ]
     assert not violations, f"operational entrypoints reference archives: {violations}"
+
+
+def test_manuscript_has_one_physical_source_tree():
+    paper = ROOT / "paper"
+    compatibility_alias = paper / "ICLR"
+
+    assert (
+        compatibility_alias.is_symlink()
+    ), "paper/ICLR may only be a temporary compatibility symlink, not a mirror"
+    assert compatibility_alias.resolve() == paper.resolve()
+
+    main = (paper / "main.tex").read_text(encoding="utf-8")
+    assert r"\author{Anonymous authors" in main
+    # The manuscript is two hand-edited sources: the body and the appendix.
+    assert r"\input{appendix}" in main
+    assert (paper / "appendix.tex").is_file()
+
+
+def test_active_workflows_write_only_to_the_canonical_paper_tree():
+    legacy_path = "paper" + "/ICLR"
+    legacy_path_constructor = re.compile(r"/\s*['\"]ICLR['\"]")
+    allowed = {
+        ROOT / "README.md",
+        ROOT / "REPRODUCIBILITY.md",
+        ROOT / "paper/README.md",
+        ROOT / "paper/tests/test_layout.py",
+        ROOT / "scripts/lint_active.sh",
+        Path(__file__).resolve(),
+    }
+    suffixes = (".py", ".sh", ".sbatch", ".yaml", ".yml", ".md")
+    violations = [
+        str(path.relative_to(ROOT))
+        for suffix in suffixes
+        for path in active_files(suffix)
+        if path not in allowed
+        and (
+            legacy_path in path.read_text(encoding="utf-8", errors="replace")
+            or (
+                suffix in (".py", ".sh", ".sbatch", ".yaml", ".yml")
+                and legacy_path_constructor.search(
+                    path.read_text(encoding="utf-8", errors="replace")
+                )
+            )
+        )
+    ]
+    assert (
+        not violations
+    ), f"active workflows still target the legacy paper mirror: {violations}"
+
+
+def test_every_maintained_test_directory_is_in_the_review_suite():
+    runner = (ROOT / "scripts/test_active.sh").read_text(encoding="utf-8")
+    compact_runner = " ".join(runner.split())
+    missing = []
+    for path in active_files(".py"):
+        if not path.name.startswith("test_"):
+            continue
+        relative_directory = path.parent.relative_to(ROOT).as_posix()
+        suite_directory = path.parent.parent.relative_to(ROOT).as_posix()
+        runs_from_suite_directory = f'"{suite_directory}" tests' in compact_runner
+        if relative_directory not in runner and not runs_from_suite_directory:
+            missing.append(relative_directory)
+
+    assert not missing, (
+        "maintained test directories omitted from test_active.sh: "
+        f"{sorted(set(missing))}"
+    )
 
 
 def test_manuscripts_never_include_archive_paths():
@@ -139,5 +210,7 @@ def test_git_candidate_set_excludes_large_research_payloads():
         if path.stat().st_size >= 95_000_000:
             oversized.append((text, path.stat().st_size))
 
-    assert not prohibited, f"large local research payloads are Git-eligible: {prohibited[:10]}"
+    assert (
+        not prohibited
+    ), f"large local research payloads are Git-eligible: {prohibited[:10]}"
     assert not oversized, f"Git candidates approach GitHub's 100 MB limit: {oversized}"

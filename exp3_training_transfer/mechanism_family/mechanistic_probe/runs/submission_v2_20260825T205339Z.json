@@ -1,0 +1,568 @@
+{
+  "code_and_data_sha256": {
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/analyze_probe_v2.py": "7880fe6b9b4be295ed26e70e6387df397c966396d19f4184329e2079dd52b04e",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/data/auxiliary_targets_v2.jsonl": "1a8777ca2793b008cda119dfb3a9548e2efa8a2e7a97f14aa655ec2b494e094e",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/data/task_manifest.json": "364072b8d87cacd283ba776542086471a684ad1d3c6709a789c987370a053eef",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/data/tasks.jsonl": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/extract_hidden_states.py": "7bd6adfe6507e8f1e336186b6ef6782b000d5b137ac7d79e803d99a5e17ee88a",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/launch_probe_v2.py": "f25d3eba5099f6c6abaa9e427909d1cf578ee93143f8771772bc3e3b1bf96d1d",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch": "18f8bb832aa5b7fbe8da768f242b614096aa2a46574430b097105078e735fef1"
+  },
+  "created_at": "2026-08-25T20:53:39.582023+00:00",
+  "include_base": true,
+  "jobs": [
+    {
+      "action": "submit",
+      "adapter": null,
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=base,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_base,BATCH_SIZE=2",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "base",
+      "job_id": "30890401",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_base",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s42_20260818_004554_j30639718/debug_0818T00:46:44/saved_models/step_00301",
+      "adapter_config_sha256": "1b6b8995044e23f16a011029c978181b42967866af613a99eda068bd9335f930",
+      "adapter_weights_sha256": "972fe819310beb4b68197fae4c3c54f810ae9a83f30680ee5739a754d825ed92",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=disclosed_causal_family_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_causal_family_s42,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s42_20260818_004554_j30639718/debug_0818T00:46:44/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s42",
+      "job_id": "30890402",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_causal_family_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s43_20260818_004655_j30639719/debug_0818T00:47:17/saved_models/step_00301",
+      "adapter_config_sha256": "1f5575b870ff437350dc815272ac402cdaa06fbe874e9c8d4e312fb91341917a",
+      "adapter_weights_sha256": "d08ee851bb87d82cbb681ac1bdb1f60742c49b4edc6651e31dd10e199d1cb12f",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=disclosed_causal_family_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_causal_family_s43,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s43_20260818_004655_j30639719/debug_0818T00:47:17/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s43",
+      "job_id": "30890403",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_causal_family_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s44_20260818_005455_j30639720/debug_0818T00:55:17/saved_models/step_00301",
+      "adapter_config_sha256": "855b3f951472b8edaf38277d2af47bbcde9bc6e202af4b30de8821964b974a96",
+      "adapter_weights_sha256": "2c775357313abeaa57e23165baa1140cbb8ae9281f2ea9ba4574925046dac3bc",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=disclosed_causal_family_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_causal_family_s44,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s44_20260818_005455_j30639720/debug_0818T00:55:17/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s44",
+      "job_id": "30890404",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_causal_family_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_4b_s42_20260818_011156_j30639721/debug_0818T01:12:18/saved_models/step_00301",
+      "adapter_config_sha256": "1096bd925d14acb82878a3dcfbda11d8f21e4674a129d351098ea26a8b529625",
+      "adapter_weights_sha256": "f385a7d1f29eecc447924595ae044308ceebcb12467e392bfa65f5ab5bb77370",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=disclosed_population_prior_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_population_prior_s42,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_4b_s42_20260818_011156_j30639721/debug_0818T01:12:18/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s42",
+      "job_id": "30890405",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_population_prior_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_4b_s43_20260818_021502_j30639722/debug_0818T02:19:24/saved_models/step_00301",
+      "adapter_config_sha256": "b8728960a2199e3042a17379bd11d62f40b185f4488a2afde86b1be03f5042f2",
+      "adapter_weights_sha256": "ea557b4019dbc7268ba5c40d71d8417ad1411b965efa9965270fd1d8bae45a9b",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=disclosed_population_prior_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_population_prior_s43,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_4b_s43_20260818_021502_j30639722/debug_0818T02:19:24/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s43",
+      "job_id": "30890406",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_population_prior_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_4b_s44_20260818_113924_j30639723/debug_0818T11:39:56/saved_models/step_00301",
+      "adapter_config_sha256": "1ea18bdab0164171f3046471adf78e3b083a7f446b12dd8a19e3f7e3f3cc54f6",
+      "adapter_weights_sha256": "a91600b05c24b84b5cd9b94420c5dfeb95d2138d0733ae4b3f962ce3db99671e",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=disclosed_population_prior_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_population_prior_s44,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_4b_s44_20260818_113924_j30639723/debug_0818T11:39:56/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s44",
+      "job_id": "30890407",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_disclosed_population_prior_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_4b_s42_20260818_171928_j30639736/debug_0818T17:19:56/saved_models/step_00301",
+      "adapter_config_sha256": "cc6df07eb640405f820127bd8901d69525d2ae7330e77999ea0255c5012fca89",
+      "adapter_weights_sha256": "dca4d6bc1d918c17f49dfea5795e606598a910eec10fd7cc177d22b0970add74",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=undisclosed_causal_family_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_causal_family_s42,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_4b_s42_20260818_171928_j30639736/debug_0818T17:19:56/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s42",
+      "job_id": "30890408",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_causal_family_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_4b_s43_20260818_171928_j30639737/debug_0818T17:19:56/saved_models/step_00301",
+      "adapter_config_sha256": "77267793b77c670ba1ad30ee01f363caaf47db73fd8528aba70c761d32bac8f7",
+      "adapter_weights_sha256": "c7ac57ea544a428b9cf5a1c3579a4dcd8dce111b57d70cd2c19318d5368e7e1a",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=undisclosed_causal_family_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_causal_family_s43,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_4b_s43_20260818_171928_j30639737/debug_0818T17:19:56/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s43",
+      "job_id": "30890409",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_causal_family_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_4b_s44_20260818_171927_j30639738/debug_0818T17:19:56/saved_models/step_00301",
+      "adapter_config_sha256": "fcd263307dccd5521fba303e70e7b14be6c34ff9e751f2185448c5c1c03bcd9d",
+      "adapter_weights_sha256": "89ef9c0c18347ed053672c16b0891f0effdb5066843c348fdeef0e8d1d685453",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=undisclosed_causal_family_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_causal_family_s44,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_4b_s44_20260818_171927_j30639738/debug_0818T17:19:56/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s44",
+      "job_id": "30890410",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_causal_family_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_4b_s42_20260818_171927_j30639739/debug_0818T17:19:56/saved_models/step_00301",
+      "adapter_config_sha256": "8aca0911a859429976472319e2849a2a0117890581d8aad59ea573ed70da55e2",
+      "adapter_weights_sha256": "f1cb42638afc6beed501754d4fe97d1acb31507b0b36ac1956826d1a72df7d54",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=undisclosed_population_prior_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_population_prior_s42,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_4b_s42_20260818_171927_j30639739/debug_0818T17:19:56/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s42",
+      "job_id": "30890411",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_population_prior_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_4b_s43_20260818_171928_j30639740/debug_0818T17:19:48/saved_models/step_00301",
+      "adapter_config_sha256": "ca42469a7a7d3d04a679f69064aacd07908a20203dcf95375ec2531a51a9cdda",
+      "adapter_weights_sha256": "3bfe3d4e971b96278bcec4bac7e7142da3ff0bb98be8240a304be187bee32c6f",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=undisclosed_population_prior_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_population_prior_s43,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_4b_s43_20260818_171928_j30639740/debug_0818T17:19:48/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s43",
+      "job_id": "30890412",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_population_prior_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_4b_s44_20260818_171927_j30639741/debug_0818T17:19:49/saved_models/step_00301",
+      "adapter_config_sha256": "99127e209f5a0f032a06dce5a3ccde546e39792f38f477868376b4f45677dc48",
+      "adapter_weights_sha256": "02c73b088b0d55c34ce23c6f9fc7e35002d865c4ee4d5833079f861e493a08a7",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-4B-Instruct-2507,MODEL_COMMIT=cdbee75f17c01a7cc42f958dc650907174af0554,MODEL_LABEL=Qwen3-4B-Instruct-2507,ENDPOINT_LABEL=undisclosed_population_prior_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_population_prior_s44,BATCH_SIZE=2,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_4b_s44_20260818_171927_j30639741/debug_0818T17:19:49/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s44",
+      "job_id": "30890413",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_key": "qwen3_4b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_4b_undisclosed_population_prior_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": null,
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=base,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_base,BATCH_SIZE=1",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "base",
+      "job_id": "30890414",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_base",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_llama3_1_8b_s42_20260819_160853_j30730354/debug_0819T16:09:21/saved_models/step_00301",
+      "adapter_config_sha256": "f5b32056d4a788991153df8685f32251b01d76ce22cda2fe240b96077eb70cb2",
+      "adapter_weights_sha256": "8f3a693ee5dfc9a3ed18f066f9e049123036e6337cb7ce6d9fcfb3ab952d2d68",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=disclosed_causal_family_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_causal_family_s42,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_llama3_1_8b_s42_20260819_160853_j30730354/debug_0819T16:09:21/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s42",
+      "job_id": "30890415",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_causal_family_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_llama3_1_8b_s43_20260820_020616_j30730355/debug_0820T02:06:46/saved_models/step_00301",
+      "adapter_config_sha256": "e67acb29815d66743906559cb39e4050d1b3d9654e0fd9809d314b42b9ad0ec1",
+      "adapter_weights_sha256": "79c134f3f4ad67bce86c1dfee2d0a42a4cc3b1a47db40ddb94a6eddb39efd25b",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=disclosed_causal_family_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_causal_family_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_llama3_1_8b_s43_20260820_020616_j30730355/debug_0820T02:06:46/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s43",
+      "job_id": "30890416",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_causal_family_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_llama3_1_8b_s44_20260820_020817_j30730356/debug_0820T02:08:38/saved_models/step_00301",
+      "adapter_config_sha256": "c7600719a2d2c0128d6150ab206b2a2bc4aa8c9e95ae058db406acdf80662231",
+      "adapter_weights_sha256": "339056ba061e6114e7ccb17408fc42ac1b79eafc796ddcaa0b6ae08c3e3c6d7d",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=disclosed_causal_family_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_causal_family_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_llama3_1_8b_s44_20260820_020817_j30730356/debug_0820T02:08:38/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s44",
+      "job_id": "30890417",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_causal_family_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_llama3_1_8b_s42_20260820_024535_j30730357/debug_0820T02:45:56/saved_models/step_00301",
+      "adapter_config_sha256": "e3e997ad8f71b15595d4acc60b6c648482cc858bea881081788d2f88bbc8362a",
+      "adapter_weights_sha256": "e8d7a15de908366c0467d8c3d84cae5b34a89a45510c1d3c91323bff681840db",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=disclosed_population_prior_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_population_prior_s42,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_llama3_1_8b_s42_20260820_024535_j30730357/debug_0820T02:45:56/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s42",
+      "job_id": "30890418",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_population_prior_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_llama3_1_8b_s43_20260820_030518_j30730358/debug_0820T03:05:38/saved_models/step_00301",
+      "adapter_config_sha256": "3eeaeedfa09da7d9d35ba328e8db57324c76e9751f269c2a4f1e30a661392a2a",
+      "adapter_weights_sha256": "eb4c7cb00bd572f415754a392e3d06d61b4d6a8117fceaa0a63ec99c1469ca6c",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=disclosed_population_prior_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_population_prior_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_llama3_1_8b_s43_20260820_030518_j30730358/debug_0820T03:05:38/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s43",
+      "job_id": "30890419",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_population_prior_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_llama3_1_8b_s44_20260820_031439_j30730359/debug_0820T03:15:00/saved_models/step_00301",
+      "adapter_config_sha256": "19393cf88608180277cec60618c1c9fb17fdc388fec648247f440fd5fa47883b",
+      "adapter_weights_sha256": "a8eed2c544069d69e5af7f5b3a4b333a80d4c6c186e5def0a6eceef0156373de",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=disclosed_population_prior_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_population_prior_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_llama3_1_8b_s44_20260820_031439_j30730359/debug_0820T03:15:00/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s44",
+      "job_id": "30890420",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_disclosed_population_prior_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_llama3_1_8b_s42_20260820_175418_j30730366/debug_0820T17:54:40/saved_models/step_00301",
+      "adapter_config_sha256": "c41212f5f7f9f5ddbc9ee90ec16ca92f8b01d1718c6bd1aeef559a6003022334",
+      "adapter_weights_sha256": "be33884cf928a486b65c1fff929c73127d03381d937d66f09d0bfa16949d09da",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=undisclosed_causal_family_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_causal_family_s42,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_llama3_1_8b_s42_20260820_175418_j30730366/debug_0820T17:54:40/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s42",
+      "job_id": "30890421",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_causal_family_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_llama3_1_8b_s43_20260821_153628_j30730367/debug_0821T15:36:59/saved_models/step_00301",
+      "adapter_config_sha256": "7e0b28c50d36148f7b91eabaaef2d75436df3362eb8832d0c1ccc20322304a35",
+      "adapter_weights_sha256": "265b0431460b71ccccb76ca66c063992e55b8f61ef77e12551e502b3676f34db",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=undisclosed_causal_family_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_causal_family_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_llama3_1_8b_s43_20260821_153628_j30730367/debug_0821T15:36:59/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s43",
+      "job_id": "30890422",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_causal_family_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_llama3_1_8b_s44_20260821_162032_j30730368/debug_0821T16:21:00/saved_models/step_00301",
+      "adapter_config_sha256": "1dfa0f4335d4fc03827686fa6d6d778571eb0b054ea68b20c4d73dec58367566",
+      "adapter_weights_sha256": "0b5b86d5b0688792fbf85b5e4bab11df6850da4e911fb4489ef6a2b21dc20c91",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=undisclosed_causal_family_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_causal_family_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_llama3_1_8b_s44_20260821_162032_j30730368/debug_0821T16:21:00/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s44",
+      "job_id": "30890423",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_causal_family_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_llama3_1_8b_s42_20260821_193720_j30730369/debug_0821T19:37:50/saved_models/step_00301",
+      "adapter_config_sha256": "1b665840170561b5f4394fee2e78a4e36ec48192fdbf5c6a0e84948627c1a4cd",
+      "adapter_weights_sha256": "04b033527a77864a143e49982e8da6ad3d6ff960838b9315d91553411a73d5d3",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=undisclosed_population_prior_s42,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_population_prior_s42,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_llama3_1_8b_s42_20260821_193720_j30730369/debug_0821T19:37:50/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s42",
+      "job_id": "30890424",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_population_prior_s42",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_llama3_1_8b_s43_20260821_205850_j30730370/debug_0821T20:59:19/saved_models/step_00301",
+      "adapter_config_sha256": "400da733b957de6a0e9e49e4d2e3d7166e2dd392ac335c5181dd6d1a518b3ba9",
+      "adapter_weights_sha256": "4b56d31b6a413b42af726cd41cedec2e7bf62c129f8ca6c694e91309822e55ce",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=undisclosed_population_prior_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_population_prior_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_llama3_1_8b_s43_20260821_205850_j30730370/debug_0821T20:59:19/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s43",
+      "job_id": "30890425",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_population_prior_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_llama3_1_8b_s44_20260821_225358_j30730371/debug_0821T22:54:26/saved_models/step_00301",
+      "adapter_config_sha256": "5c42f8f26eb79e18a6f36cde8e9b15f199bf8dce0b0b9078cad91c812d26cd24",
+      "adapter_weights_sha256": "6e63dc19e736fef544aa9f412c96099afee9617ccbc6a1d73e7d03b9c8dea843",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=meta-llama/Llama-3.1-8B-Instruct,MODEL_COMMIT=0e9e39f249a16976918f6564b8830bc894c89659,MODEL_LABEL=Llama-3.1-8B-Instruct,ENDPOINT_LABEL=undisclosed_population_prior_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_population_prior_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_llama3_1_8b_s44_20260821_225358_j30730371/debug_0821T22:54:26/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s44",
+      "job_id": "30890426",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_key": "llama3_1_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/llama3_1_8b_undisclosed_population_prior_s44",
+      "submitted": true
+    }
+  ],
+  "models": [
+    "qwen3_4b",
+    "llama3_1_8b"
+  ],
+  "protocol": "exp3_mechanism_probe_v2",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "submitted": true
+}

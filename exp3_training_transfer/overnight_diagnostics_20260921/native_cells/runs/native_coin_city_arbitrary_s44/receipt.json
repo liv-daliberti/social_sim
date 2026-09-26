@@ -1,0 +1,43 @@
+{
+  "config": {
+    "batch_size": 16,
+    "cell": "coin_city_arbitrary",
+    "comparison": "same 4800 prompt presentations; SFT 300 updates vs RL 2400 updates and eight sampled completions per prompt",
+    "data": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/native_cells/train_coin_city_arbitrary.jsonl",
+    "data_sha256": "56b7474e8509a53f59290e378107c2bae758f9f2cad3577ba87b627399c74d35",
+    "domain": "coin_city",
+    "epochs": 1,
+    "label_kind": "arbitrary",
+    "learning_rate": 2e-05,
+    "lora_alpha": 64,
+    "lora_rank": 32,
+    "loss": "completion_only_per_sequence_mean",
+    "max_grad_norm": 1.0,
+    "max_length": 3072,
+    "model": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+    "name": "native_coin_city_arbitrary_s44",
+    "protocol": "native_cell_supervised_learnability_v1",
+    "scheduler": "constant",
+    "seed": 44,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "down_proj",
+      "up_proj",
+      "gate_proj"
+    ],
+    "template": "auto_no_think",
+    "train_seed_base": 62000000,
+    "unique_prompts": 4800
+  },
+  "config_sha256": "aa7fc5bcf21f1f46f7dcb4985b388d0100ab5eafdcd013659fb45c5889e9596a",
+  "code_sha256": "fdbeeb9ffe3d44b936bc08baf42dc8121e7f6e18b3b584db85b9d4b5926c8d61",
+  "data_sha256": "56b7474e8509a53f59290e378107c2bae758f9f2cad3577ba87b627399c74d35",
+  "examples": 4800,
+  "maximum_tokens": 1036,
+  "completion_tokens": 325320,
+  "torch_version": "2.6.0+cu124",
+  "job_id": "31465977"
+}

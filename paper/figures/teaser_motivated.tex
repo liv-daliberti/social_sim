@@ -1,4 +1,6 @@
 % Compile from paper/figures with: xelatex teaser_motivated.tex
+% teaser_drawio_outlined.pdf: gs -sDEVICE=pdfwrite -dNoOutputFonts teaser.drawio.pdf (text as paths, so
+% the hidden and cropped copies add nothing to the PDF text layer).
 % Original width and 72pt bottom trim; the title space is removed.
 \documentclass{minimal}
 \usepackage[paperwidth=353.04pt,paperheight=422pt,margin=0pt,noheadfoot]{geometry}
@@ -26,7 +28,7 @@
 \begin{scope}[shift={(current page.south west)},every node/.style={inner sep=0}]
   % Retain the original vector artwork and the two reference-policy rows.
   \node[anchor=south west] at (0,0)
-    {\includegraphics[width=353.04pt]{teaser.drawio.pdf}};
+    {\includegraphics[width=353.04pt]{teaser_drawio_outlined.pdf}};
   \fill[white] (0,414) rectangle (353.04,456);
 
   % The scene adds the decision and payoffs within the existing footprint.
@@ -53,7 +55,7 @@
   \begin{scope}[shift={(176.5,371)},scale=.82,transform shape]
     \clip (-19,-19) rectangle (19,19);
     \node[anchor=south west] at (-88.5,-365.5)
-      {\includegraphics[width=353.04pt]{teaser.drawio.pdf}};
+      {\includegraphics[width=353.04pt]{teaser_drawio_outlined.pdf}};
   \end{scope}
   \node[anchor=east,text=teaserGray,
     font=\teaserfont\fontsize{10.7}{11}\selectfont]
@@ -62,7 +64,7 @@
     \begin{scope}[shift={(\coinx,346)},scale=.52,transform shape]
       \clip (0,0) circle (17.2);
       \node[anchor=south west] at (-137.25,-364.5)
-        {\includegraphics[width=353.04pt]{teaser.drawio.pdf}};
+        {\includegraphics[width=353.04pt]{teaser_drawio_outlined.pdf}};
     \end{scope}
   }
   \node[text=teaserInk,font=\fontsize{12}{13}\selectfont]

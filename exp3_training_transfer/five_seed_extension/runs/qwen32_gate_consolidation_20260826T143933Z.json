@@ -1,0 +1,45 @@
+{
+  "active_gate": {
+    "advance_job_id": "30908506",
+    "advance_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_advance_20260826T142155Z.json",
+    "advance_ledger_sha256": "0f26f9037ed907530272a1047c58793baea84c03fead9ff855f59484e7a6e1f5",
+    "canary_job_id": "30908504",
+    "canary_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260826T142155Z.json",
+    "canary_ledger_sha256": "0f799e73f5813ce2d59fc22856cc012dc54751b106c8c130fc3a587216db233d",
+    "registration": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260826T142133Z.json",
+    "registration_sha256": "1e29595701fa3a0483fb69c40d5b59649f039cd976e27ebe1f7b6706152c837e"
+  },
+  "cancelled_redundant_gate": {
+    "advance_job_id": "30908525",
+    "canary_job_id": "30908524",
+    "reason": "equivalent later submission; cancellation prevents duplicate full-run launch and wasted four-GPU allocation"
+  },
+  "kind": "qwen32_recovery_gate_consolidation",
+  "recorded_at": "20260826T143933Z",
+  "rewired_jobs": [
+    {
+      "job_id": "30894222",
+      "role": "qwen3_32b_seed_45_training",
+      "dependency": "afterok:30908506"
+    },
+    {
+      "job_id": "30894223",
+      "role": "qwen3_32b_seed_46_training",
+      "dependency": "afterok:30908506"
+    },
+    {
+      "job_id": "30894368",
+      "role": "qwen3_32b_five_seed_evaluation_scheduler",
+      "dependency": "afterok:30908506"
+    }
+  ],
+  "scheduler_acceleration_audit": {
+    "a100_test_only_start": "2026-09-21T00:14:40",
+    "authorized_idle_four_gpu_route_found": false,
+    "shorter_backfill_walltime_improved_start": false,
+    "surviving_a6000_canary_soft_start": "2026-08-26T22:58:01"
+  },
+  "scientific_hyperparameters_changed": false,
+  "supersedes_recovery_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/qwen32_allreduce_recovery_20260826T142540Z.json",
+  "supersedes_recovery_ledger_sha256": "d8acbb8fe21c41bc3f750d2f25720e67f58a4b5134a1270538f94dd0b4029582"
+}

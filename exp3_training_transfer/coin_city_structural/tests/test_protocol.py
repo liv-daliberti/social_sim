@@ -3,21 +3,62 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from worlds import COIN_CITY, COIN_HARBOR, forecast_scenarios, response_vector  # noqa: E402
 from make_paper_outputs import (  # noqa: E402
+    APPENDIX_MODELS,
     EXPECTED_GROUPS,
     MODELS,
     SEEDS,
+    endpoint_path,
     paired_override_interval,
     registered_estimates,
     render_cues,
     render_diagnostics,
+    render_primary,
     render_summary,
+    transfer_bootstrap_seed,
 )
+
+
+def test_endpoint_path_supports_training_and_base_layouts(tmp_path):
+    training = tmp_path / "training"
+    nested = training / "debug_123" / "eval_results" / "301.scores.jsonl"
+    nested.parent.mkdir(parents=True)
+    nested.write_text("{}\n")
+    stochastic = training / "stochastic_n5.scores.jsonl"
+    stochastic.write_text("{}\n")
+
+    assert endpoint_path(training, "greedy") == nested
+    assert endpoint_path(training, "stochastic") == stochastic
+
+    base = tmp_path / "base"
+    base.mkdir()
+    greedy = base / "greedy.scores.jsonl"
+    greedy.write_text("{}\n")
+    (base / "stochastic_n5.scores.jsonl").write_text("{}\n")
+    assert endpoint_path(base, "greedy") == greedy
+
+
+def test_endpoint_path_rejects_ambiguous_runtime_outputs(tmp_path):
+    for runtime in ("debug_a", "debug_b"):
+        path = tmp_path / runtime / "eval_results" / "301.scores.jsonl"
+        path.parent.mkdir(parents=True)
+        path.write_text("{}\n")
+    with pytest.raises(AssertionError, match="expected one greedy endpoint"):
+        endpoint_path(tmp_path, "greedy")
+
+
+def test_transfer_seed_is_shared_across_models_and_output_views():
+    base = 20_260_818
+    assert transfer_bootstrap_seed(base, "coin_city", "direct_a") == base
+    assert transfer_bootstrap_seed(base, "coin_harbor", "direct_a") == base + 1
+    assert transfer_bootstrap_seed(base, "coin_city", "mediated_b") == base + 2
+    assert transfer_bootstrap_seed(base, "coin_harbor", "mediated_b") == base + 3
 
 
 def test_structure_a_is_direct_and_has_no_delayed_pulse():
@@ -130,9 +171,14 @@ def test_all_registered_estimands_render_with_seed_first_intervals():
                                     "response_mae": 5.0 + model_index,
                                 })
     diagnostics = render_diagnostics(rows, repetitions=20, bootstrap_seed=11)
+    primary = render_primary(rows, repetitions=20, bootstrap_seed=11)
     summary = render_summary(rows, repetitions=20, bootstrap_seed=11)
     estimates = registered_estimates(rows, repetitions=20, bootstrap_seed=11)
     assert diagnostics.count("[2.00,2.00]") == 12
+    assert APPENDIX_MODELS == ("qwen3_4b", "llama3_1_8b")
+    assert "Qwen3-4B" in primary and "Llama-3.1-8B" in primary
+    assert "Qwen3-8B" not in primary
+    assert "Greedy" not in primary and "Decode" not in primary
     assert "absent-minus-correct" in summary
     assert "$k=8$ minus $k=0$ change" in summary
     assert len(estimates["primary"]) == 6

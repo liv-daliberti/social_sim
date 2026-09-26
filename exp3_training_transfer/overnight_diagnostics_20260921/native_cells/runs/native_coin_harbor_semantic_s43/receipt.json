@@ -1,0 +1,43 @@
+{
+  "config": {
+    "batch_size": 16,
+    "cell": "coin_harbor_semantic",
+    "comparison": "same 4800 prompt presentations; SFT 300 updates vs RL 2400 updates and eight sampled completions per prompt",
+    "data": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/native_cells/train_coin_harbor_semantic.jsonl",
+    "data_sha256": "8716f54858bd3fbbe1fa4ca68244991b1fb689eb0ae0a0bae76202b7cb60a2ab",
+    "domain": "coin_harbor",
+    "epochs": 1,
+    "label_kind": "semantic",
+    "learning_rate": 2e-05,
+    "lora_alpha": 64,
+    "lora_rank": 32,
+    "loss": "completion_only_per_sequence_mean",
+    "max_grad_norm": 1.0,
+    "max_length": 3072,
+    "model": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+    "name": "native_coin_harbor_semantic_s43",
+    "protocol": "native_cell_supervised_learnability_v1",
+    "scheduler": "constant",
+    "seed": 43,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "down_proj",
+      "up_proj",
+      "gate_proj"
+    ],
+    "template": "auto_no_think",
+    "train_seed_base": 63000000,
+    "unique_prompts": 4800
+  },
+  "config_sha256": "2afb4e6b9e9f2d548d36d1525441e05d0aa0567c67c0c325e3f08038f862eb5c",
+  "code_sha256": "fdbeeb9ffe3d44b936bc08baf42dc8121e7f6e18b3b584db85b9d4b5926c8d61",
+  "data_sha256": "8716f54858bd3fbbe1fa4ca68244991b1fb689eb0ae0a0bae76202b7cb60a2ab",
+  "examples": 4800,
+  "maximum_tokens": 1156,
+  "completion_tokens": 373089,
+  "torch_version": "2.6.0+cu124",
+  "job_id": "31465979"
+}

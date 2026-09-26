@@ -1,0 +1,23 @@
+{
+  "study": "coin_city_exp3_reference_transplant_qwen8_v1",
+  "created_at": "2026-08-25T23:12:00Z",
+  "status": "scheduler_only_amendment",
+  "paper_external": true,
+  "scientific_protocol_changed": false,
+  "supersedes_canary_dependency_section_of": "scheduler_amendment_20260825T230625Z.json",
+  "change": "Released all six independently restartable matched/prior activation extractions. The common-readout selection job 30893339 still has afterok dependencies on all six, so any endpoint failure remains fail-closed and sealed-test work cannot proceed on partial data.",
+  "released_activation_jobs": [
+    "30893325",
+    "30893327",
+    "30893329",
+    "30893331",
+    "30893333",
+    "30893335"
+  ],
+  "base_activation_diagnostic_released": "30893337",
+  "estimates_at_amendment": {
+    "first_five_draw_behavior": "2026-08-25T20:57:31-04:00",
+    "first_matched_activation_extractions": "2026-08-25T21:40:00-04:00",
+    "first_population_prior_activation_extraction": "2026-08-26T06:40:00-04:00"
+  }
+}

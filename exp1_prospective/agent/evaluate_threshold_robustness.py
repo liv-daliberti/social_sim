@@ -9,7 +9,6 @@ duplicated H1 posterior before applying percentage-point thresholds.
 Outputs:
   data/results/threshold_robustness.json
   paper/tables/exp1_threshold_robustness.tex
-  paper/ICLR/tables/exp1_threshold_robustness.tex
 """
 
 from __future__ import annotations
@@ -33,35 +32,35 @@ REPO_ROOT = ROOT.parent
 UPDATE_DIR = ROOT / "data" / "updated_forecasts"
 OUT_JSON = ROOT / "data" / "results" / "threshold_robustness.json"
 OUT_TEX = REPO_ROOT / "paper" / "tables" / "exp1_threshold_robustness.tex"
-OUT_ICLR_TEX = REPO_ROOT / "paper" / "ICLR" / "tables" / "exp1_threshold_robustness.tex"
 
 THRESHOLDS = (0.00, 0.01, 0.03, 0.05)
 RELEVANT_DIRECTIONS = {"pro_H1": 1, "anti_H1": -1}
 
+# Hosted systems first; open-weight rows in descending parameter count.
 MODEL_ORDER = (
     "claude-opus-4-8",
     "gpt-5.4",
     "DeepSeek-V4-Pro",
+    "qwen2.5:72b",
     "llama3.3:70b",
     "llama3.1:70b",
-    "qwen2.5:72b",
     "qwen2.5:32b",
     "qwen2.5:14b",
-    "qwen2.5:7b",
     "llama3.1:8b",
+    "qwen2.5:7b",
 )
 
 MODEL_LABELS = {
     "claude-opus-4-8": "Claude Opus~4.8",
     "gpt-5.4": "GPT-5.4",
     "DeepSeek-V4-Pro": "DeepSeek V4-Pro",
-    "llama3.3:70b": "Llama~3.3-70B",
-    "llama3.1:70b": "Llama~3.1-70B",
-    "qwen2.5:72b": "Qwen~2.5-72B",
-    "qwen2.5:32b": "Qwen~2.5-32B",
-    "qwen2.5:14b": "Qwen~2.5-14B",
-    "qwen2.5:7b": "Qwen~2.5-7B",
-    "llama3.1:8b": "Llama~3.1-8B",
+    "llama3.3:70b": "Llama-3.3-70B",
+    "llama3.1:70b": "Llama-3.1-70B",
+    "qwen2.5:72b": "Qwen2.5-72B",
+    "qwen2.5:32b": "Qwen2.5-32B",
+    "qwen2.5:14b": "Qwen2.5-14B",
+    "qwen2.5:7b": "Qwen2.5-7B",
+    "llama3.1:8b": "Llama-3.1-8B",
 }
 
 
@@ -341,15 +340,12 @@ def main() -> None:
     report = build_report()
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_TEX.parent.mkdir(parents=True, exist_ok=True)
-    OUT_ICLR_TEX.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(report, indent=2) + "\n")
     rendered_table = _tex_table(report)
     OUT_TEX.write_text(rendered_table)
-    OUT_ICLR_TEX.write_text(rendered_table)
 
     print(f"Wrote {OUT_JSON}")
     print(f"Wrote {OUT_TEX}")
-    print(f"Wrote {OUT_ICLR_TEX}")
     for model in MODEL_ORDER:
         result = report["per_model"][model]
         ehc0 = result["EHC"]["thresholds"]["0"][

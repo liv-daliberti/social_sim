@@ -1,0 +1,23 @@
+{
+  "actions": [
+    {
+      "job_id": "30909297",
+      "job_id_preserved": true,
+      "model": "Qwen2.5-14B-Instruct",
+      "operation": "requeuehold; add node203 to existing node206 exclusion; release"
+    },
+    {
+      "job_id": "30909300",
+      "job_id_preserved": true,
+      "model": "Llama-3.1-8B-Instruct",
+      "operation": "requeuehold; add node203 to existing node206 exclusion; release"
+    }
+  ],
+  "amended_at": "2026-08-26T16:42:59.481763+00:00",
+  "classification": "infrastructure_only",
+  "kind": "generator_population_scheduler_amendment",
+  "protocol_version": "coin_city_robustness_v1",
+  "reason": "node203 checkpoint reads were too slow to complete within the unchanged wall-time request",
+  "responses_written_before_requeue": 0,
+  "scientific_settings_changed": false
+}\n

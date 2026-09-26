@@ -1,0 +1,57 @@
+{
+  "candidate_counts_before_family_filter": {
+    "dev": 1567,
+    "test": 2339,
+    "train": 1736
+  },
+  "hashes": {
+    "builder_sha256": "346786fa62464301a783e804f7689af50b6c1b183711164d022e3144907fe9dd",
+    "protocol_sha256": "228ba2bc0ae35c29984f4993244e931b01b1ca60947d70ecfa4eea1da9516a56",
+    "test_tasks_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24"
+  },
+  "holdout": {
+    "count": 318,
+    "distinct_events": 227,
+    "distinct_series": 0,
+    "distinct_templates": 288,
+    "first_decision_ts": "2026-01-01T00:00:00Z",
+    "last_decision_ts": "2026-06-08T00:00:00Z",
+    "outcomes_summarized": false
+  },
+  "protocol_version": "exp4_qwen_scale_v1",
+  "registered_parent": {
+    "manifest_sha256": "91ee617aff7e8629ed2d17fd7165d80c01e4c78384ef4520e9d184ef8618de6d",
+    "protocol_version": "exp3b_registered_v1",
+    "split_sha256": {
+      "dev": "702f257fd952a4fed5f4798cd4a64165dab630d67b2e4e1b6820c68e3af8f59f",
+      "test": "b5fd65f8ad6272e5e7de07d5ad602d00fa84cc216a6db55e682ad4595bf09a20",
+      "train": "cf0ab18be6046cb45292c7021ebd268c97a1599ff5e1a60f2e79b01f121c50af"
+    }
+  },
+  "selection": {
+    "eligible_test_before_opened_test_exclusion": 2190,
+    "included_all_remaining_family_disjoint_tasks": true,
+    "minimum_required": 256,
+    "ordering": "sha256(protocol_version|holdout|task_id)"
+  },
+  "selection_uses_outcomes_or_market_probabilities": false,
+  "skipped_counts": {
+    "already_effectively_resolved": 3631,
+    "fewer_than_four_real_prices": 6522,
+    "missing_open_or_close_time": 330,
+    "not_open_before_cutoff": 29161,
+    "not_price_extreme_resolution": 57637,
+    "not_yes_no_binary": 1120894,
+    "outside_judgment_domain": 563262,
+    "outside_registered_time_window": 1624
+  },
+  "source": {
+    "expected_sha256": "5697f7672bcb8dcc0af73272ff9ff1ec662241e92b0ac84f6e2bd4ba8f638e7d",
+    "fully_scanned": true,
+    "parsed_rows": 1788703,
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/raw/polymarket_full_market_dataset_2026_07_12_235011.json",
+    "sha256": "5697f7672bcb8dcc0af73272ff9ff1ec662241e92b0ac84f6e2bd4ba8f638e7d"
+  },
+  "status": "pass",
+  "test_was_used_for_protocol_or_hyperparameter_selection": false
+}

@@ -31,7 +31,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 GENERATED = HERE / "generated_v6"
-RESPONSES = HERE / "data/exports/registered_20260823T015500Z.csv"
+RESPONSES = HERE / "data/exports/registered_20260827T204456Z.csv"
 UPDATES = ROOT / "data/updated_forecasts"
 
 INCLUDED = [
@@ -41,6 +41,7 @@ INCLUDED = [
     "annotator_05",
     "annotator_06",
     "annotator_07",
+    "annotator_08",
     "annotator_09",
 ]
 LABEL = {reviewer_id: f"R{int(reviewer_id[-2:])}" for reviewer_id in INCLUDED}
@@ -50,13 +51,13 @@ MODEL_LABEL = {
     "gpt-5.4": "GPT-5.4",
     "claude-opus-4-8": "Claude Opus~4.8",
     "DeepSeek-V4-Pro": "DeepSeek V4-Pro",
-    "qwen2.5:7b": "Qwen~2.5-7B",
-    "qwen2.5:14b": "Qwen~2.5-14B",
-    "qwen2.5:32b": "Qwen~2.5-32B",
-    "qwen2.5:72b": "Qwen~2.5-72B",
-    "llama3.1:8b": "Llama~3.1-8B",
-    "llama3.1:70b": "Llama~3.1-70B",
-    "llama3.3:70b": "Llama~3.3-70B",
+    "qwen2.5:7b": "Qwen2.5-7B",
+    "qwen2.5:14b": "Qwen2.5-14B",
+    "qwen2.5:32b": "Qwen2.5-32B",
+    "qwen2.5:72b": "Qwen2.5-72B",
+    "llama3.1:8b": "Llama-3.1-8B",
+    "llama3.1:70b": "Llama-3.1-70B",
+    "llama3.3:70b": "Llama-3.3-70B",
 }
 
 

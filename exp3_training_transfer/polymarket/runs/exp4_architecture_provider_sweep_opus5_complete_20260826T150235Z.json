@@ -1,0 +1,46 @@
+{
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "classification": "post_hoc_descriptive_hosted_extension_completion",
+  "status": "complete",
+  "completed_at": "2026-08-26T15:02:35Z",
+  "model": "claude-opus-5",
+  "registration": {
+    "path": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_opus5_registration_20260826T143622Z.json",
+    "sha256": "b6d6e31df08f40642cbd5530f0e31cdc2fc8a8af5bcbaf2ce91c2d0cc8fdcb14"
+  },
+  "development_gate": {
+    "calls": 2,
+    "responses_received": 2,
+    "successfully_parsed": 2,
+    "status": "pass"
+  },
+  "execution": {
+    "holdout_calls": 1590,
+    "responses_received": 1590,
+    "transport_failures": 0,
+    "successfully_parsed_draws": 1578,
+    "malformed_responses": 12,
+    "complete_tasks": 309,
+    "complete_task_parse_coverage": 0.9716981132075472,
+    "received_holdout_responses_retried": 0
+  },
+  "result": {
+    "brier": 0.1557118028930818,
+    "market_brier": 0.12654794182389942,
+    "hosted_minus_market": {
+      "estimate": 0.02916386106918238,
+      "ci95_low": 0.011095832229508207,
+      "ci95_high": 0.04997851435215944
+    },
+    "summary": "exp3_training_transfer/polymarket/reports/exp4_hosted_opus5/exp4_hosted_claude-opus-5_stochastic.summary.json",
+    "summary_sha256": "2ec4d809c438eddbd912844fa2e8aa3c811e8f1b82877d1f78341dc5a70ba9af",
+    "raw": "exp3_training_transfer/polymarket/reports/exp4_hosted_opus5/exp4_hosted_claude-opus-5_stochastic.jsonl",
+    "raw_sha256": "c2e90a9b82c0185796fb1de40901da09ac6b75d0c92edc60dac018a1ae775a70"
+  },
+  "reporting": {
+    "figure_panel": "hosted_frontier_references",
+    "registered_after_parent_results_observed": true,
+    "fail_closed": true,
+    "report_regardless_of_direction": true
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "canary": {
+    "adapter_sha256": "66478304f0d27ab047245cd46c02266c9bf0cec2227b48b83cdfd0e5250b9cdb",
+    "development_parse_coverage": 1.0,
+    "final_eval": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/qwen32_canary_qwen3_32b_market_20260826_162559_j30910721/debug_0826T16:26:30/eval_results/11.json",
+    "job_id": "30910721",
+    "report": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/qwen32_canary_qwen3_32b_market_20260826_162559_j30910721",
+    "state": "COMPLETED"
+  },
+  "canary_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260826T192317Z.json",
+  "canary_ledger_sha256": "b62453175a9d938e1937597310f02fc12a3525a94f0b53d5b2106dfdaf78e8be",
+  "combined_finalizer": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--account=mltheory",
+      "--partition=all",
+      "--time=01:00:00",
+      "--mem=16G",
+      "--cpus-per-task=2",
+      "--exclude=node206",
+      "--dependency=afterok:30913533",
+      "--export=ALL,EVALUATION_SPECS=qwen3_4b:30870546;qwen3_8b:30870547;qwen3_14b:30870548;qwen3_32b:30913533,REGISTRATION_LEDGER=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260827T015925Z.json",
+      "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/finalize_qwen32_extension.sbatch"
+    ],
+    "environment": {
+      "EVALUATION_SPECS": "qwen3_4b:30870546;qwen3_8b:30870547;qwen3_14b:30870548;qwen3_32b:30913533",
+      "REGISTRATION_LEDGER": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260827T015925Z.json"
+    },
+    "job_id": "30913543"
+  },
+  "dry_run": false,
+  "holdout_opening_amendment": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_holdout_opening_amendment_20260825T180230Z.json",
+  "kind": "full",
+  "parent_evaluations": {
+    "qwen3_14b": "30870548",
+    "qwen3_4b": "30870546",
+    "qwen3_8b": "30870547"
+  },
+  "parent_finalizer": "30870549",
+  "partial_launch_recovery": {
+    "completed_parent_artifacts_retained_in_evaluation_specs": true,
+    "failed_advance_job_id": "30910722",
+    "finalizer_dependency_after": "afterok:30913533",
+    "finalizer_dependency_before": "afterok:30870546:30870547:30870548:30913533",
+    "partial_local_launch_failure": "Slurm rejected dependencies on completed parent jobs aged out of the live controller",
+    "preserved_submissions": [
+      "30913530",
+      "30913531",
+      "30913532",
+      "30913533"
+    ],
+    "recovered_finalizer_job_id": "30913543",
+    "scientific_hyperparameters_changed": false
+  },
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "qwen3_32b_evaluation": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--account=allcs",
+      "--partition=cs",
+      "--qos=medium",
+      "--gres=gpu:a6000:2",
+      "--mem=140G",
+      "--cpus-per-task=10",
+      "--time=12:00:00",
+      "--exclude=node206",
+      "--dependency=afterok:30913530:30913531:30913532",
+      "--export=ALL,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,ADAPTER_SPECS=42:job=30913530;43:job=30913531;44:job=30913532",
+      "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_qwen32_extension.sbatch"
+    ],
+    "environment": {
+      "ADAPTER_SPECS": "42:job=30913530;43:job=30913531;44:job=30913532",
+      "MODEL": "Qwen/Qwen3-32B",
+      "MODEL_KEY": "qwen3_32b",
+      "PROMPT_TEMPLATE": "auto_no_think"
+    },
+    "job_id": "30913533",
+    "scheduler_route": {
+      "account": "mltheory",
+      "job_id": "30913533",
+      "partition": "all"
+    }
+  },
+  "recorded_at": "20260827T020056Z",
+  "registration_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260827T015925Z.json",
+  "registration_ledger_sha256": "a3f6b34158b2830e15b4d69a646dea388df9c452900d0d9a773fcb53c157aca5",
+  "release_job": {
+    "holdout_opening_amendment": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_holdout_opening_amendment_20260825T180230Z.json",
+    "status": "not_submitted_parent_holdout_already_opened"
+  },
+  "training_jobs": [
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:4",
+        "--mem=220G",
+        "--cpus-per-task=12",
+        "--time=30:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,SEED=42,RUN_KIND=train,MAX_TRAIN=4800,EVAL_STEPS=25,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_qwen32_extension.sh"
+      ],
+      "environment": {
+        "EVAL_STEPS": "25",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-32B",
+        "MODEL_KEY": "qwen3_32b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "train",
+        "SEED": "42"
+      },
+      "job_id": "30913530",
+      "scheduler_route": {
+        "account": "mltheory",
+        "job_id": "30913530",
+        "partition": "all"
+      },
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:4",
+        "--mem=220G",
+        "--cpus-per-task=12",
+        "--time=30:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,SEED=43,RUN_KIND=train,MAX_TRAIN=4800,EVAL_STEPS=25,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_qwen32_extension.sh"
+      ],
+      "environment": {
+        "EVAL_STEPS": "25",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-32B",
+        "MODEL_KEY": "qwen3_32b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "train",
+        "SEED": "43"
+      },
+      "job_id": "30913531",
+      "scheduler_route": {
+        "account": "mltheory",
+        "job_id": "30913531",
+        "partition": "all"
+      },
+      "seed": 43
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:4",
+        "--mem=220G",
+        "--cpus-per-task=12",
+        "--time=30:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,SEED=44,RUN_KIND=train,MAX_TRAIN=4800,EVAL_STEPS=25,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_qwen32_extension.sh"
+      ],
+      "environment": {
+        "EVAL_STEPS": "25",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-32B",
+        "MODEL_KEY": "qwen3_32b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "train",
+        "SEED": "44"
+      },
+      "job_id": "30913532",
+      "scheduler_route": {
+        "account": "mltheory",
+        "job_id": "30913532",
+        "partition": "all"
+      },
+      "seed": 44
+    }
+  ]
+}

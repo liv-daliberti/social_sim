@@ -93,3 +93,24 @@ def test_analyzer_tolerates_missing_metric_values():
         "ci95_low": None,
         "ci95_high": None,
     }
+
+
+def test_movement_components_expose_ratio_behavior():
+    grouped = {
+        "market_a": {
+            "pro_H1": [0.20],
+            "anti_H1": [0.10],
+            "orthogonal": [0.05],
+        },
+        "market_b": {
+            "pro_H1": [0.30],
+            "anti_H1": [0.20],
+            "orthogonal": [0.15],
+        },
+    }
+    components = analyze.movement_components_by_market(
+        grouped, ["market_a", "market_b"]
+    )
+    assert components["directional_movement"] == 0.20
+    assert components["orthogonal_movement"] == 0.10
+    assert components["directional_minus_orthogonal_movement"] == 0.10

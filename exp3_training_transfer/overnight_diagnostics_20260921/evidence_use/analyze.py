@@ -55,9 +55,14 @@ def contrasts(pairrows,repetitions):
             chosen=[r for r in pairrows if r['disclosure']==disclosure and (group=='all' or r['split']==group)]
             index=defaultdict(dict)
             for r in chosen: index[(r['arm'],r['training_seed'])][r['pair_id']]=r
-            trained_seeds=sorted(s for arm,s in index if arm=='causal_family' and ('population_prior',s) in index)
-            for comparator in ('population_prior','base'):
-                seeds=[s for s in trained_seeds if (comparator,None if comparator=='base' else s) in index]
+            present={arm for arm,_ in index}
+            comparators=[a for a in ('population_prior','shuffled_target') if a in present]+['base']
+            for comparator in comparators:
+                if comparator=='base':
+                    seeds=sorted({s for arm,s in index if arm=='causal_family'})
+                    seeds=[s for s in seeds if ('base',None) in index]
+                else:
+                    seeds=sorted(s for arm,s in index if arm=='causal_family' and (comparator,s) in index)
                 if not seeds: continue
                 maps=[]
                 for s in seeds:
@@ -78,18 +83,21 @@ def contrasts(pairrows,repetitions):
                 output.append(dict(disclosure=disclosure,group=group,contrast=f'{comparator}_minus_causal_family_change_mae',
                     training_seeds=seeds,individual_seed_effects=dict(zip(map(str,seeds),estimates)),estimate=float(np.mean(estimates)),
                     ci95=ci(boot),bootstrap_repetitions=repetitions,
-                    uncertainty='paired training seeds and world-stratified episodes; two-seed results are exploratory'))
+                    uncertainty=('paired training seeds and world-stratified episodes; '
+                                 + ('fewer than five seeds is exploratory' if len(seeds)<5
+                                    else 'five paired training seeds'))))
     return output
 
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--results',type=Path,default=ROOT/'results')
+    parser.add_argument('--data',type=Path,default=ROOT/'data')
     parser.add_argument('--output',type=Path,default=ROOT/'analysis')
     parser.add_argument('--bootstrap-repetitions',type=int,default=2000)
     args=parser.parse_args()
     pairs=[]; summary=[]; ordinary=[]; provenance=[]
-    frozen=json.loads((ROOT/'data/frozen_manifest.json').read_text())
-    manifest_sha=hashlib.sha256((ROOT/'data/frozen_manifest.json').read_bytes()).hexdigest()
+    frozen=json.loads((args.data/'frozen_manifest.json').read_text())
+    manifest_sha=hashlib.sha256((args.data/'frozen_manifest.json').read_bytes()).hexdigest()
     for path in sorted(args.results.glob('*.json')):
         data=json.loads(path.read_text())
         if 'records' not in data: continue
@@ -124,7 +132,7 @@ def main():
                     'forecast_mae_valid_only':float(np.mean([np.abs(p-r['targets']).mean() for r,p in parsed])) if parsed else None,
                     'response_mae_valid_only':float(np.mean([np.abs(response_vector(p)-response_vector(r['targets'])).mean() for r,p in parsed])) if parsed else None})
     args.output.mkdir(parents=True,exist_ok=True)
-    expected=[c['id'] for c in json.loads((ROOT/'data/checkpoint_inventory.json').read_text())['available']]
+    expected=[c['id'] for c in json.loads((args.data/'checkpoint_inventory.json').read_text())['available']]
     observed=sorted({r['checkpoint'] for r in pairs})
     ordinary_observed=sorted({r['checkpoint'] for r in ordinary})
     result=dict(protocol=frozen['protocol'],analyzed_at=datetime.now(timezone.utc).isoformat(),frozen_manifest_sha256=manifest_sha,
@@ -142,8 +150,11 @@ def main():
         temp=path.with_suffix(f'.{os.getpid()}.tmp');temp.write_text(value);temp.replace(path)
     atomic(args.output/'summary.json',json.dumps(result,indent=2,sort_keys=True)+'\n')
     atomic(args.output/'pair_metrics.jsonl',''.join(json.dumps(r,sort_keys=True)+'\n' for r in pairs))
+    _seeds_present=sorted({r['training_seed'] for r in summary if r.get('training_seed') is not None})
     lines=['# Mechanism evidence-use diagnostic', '',f'Complete: {result["complete"]}. Frozen manifest: `{manifest_sha}`.',
-        '', 'Only two retained training seeds (45, 46) are available; these results are exploratory.', '',
+        '', ('Training seeds present: '+', '.join(str(x) for x in _seeds_present)+'. '
+              +('Fewer than five seeds; these results are exploratory.' if len(_seeds_present)<5
+                else 'Five or more paired training seeds.')), '',
         '| Disclosure | Arm | Seed | Mechanisms | Delta MAE | No-change MAE | Tracking slope | Parse pairs |',
         '|---|---|---:|---|---:|---:|---:|---:|']
     for r in summary:

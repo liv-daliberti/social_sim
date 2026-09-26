@@ -1,0 +1,36 @@
+{
+  "canary_job_id": "30885396",
+  "canary_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260825T174646Z.json",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=mltheory",
+    "--partition=all",
+    "--time=00:30:00",
+    "--mem=4G",
+    "--cpus-per-task=1",
+    "--exclude=node206",
+    "--dependency=afterok:30885396",
+    "--export=ALL,REGISTRATION_LEDGER=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T174634Z.json,CANARY_LEDGER=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260825T174646Z.json,CANARY_JOB_ID=30885396,QWEN32_ACCOUNT=mltheory,QWEN32_PARTITION=all,QWEN32_SUBMIT_ACCOUNT=allcs,QWEN32_SUBMIT_PARTITION=cs,QWEN32_SUBMIT_QOS=medium,QWEN32_EXCLUDE=node206,QWEN32_TRAIN_WALLTIME=30:00:00,QWEN32_EVAL_WALLTIME=12:00:00",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/advance_qwen32_extension.sbatch"
+  ],
+  "dry_run": false,
+  "environment": {
+    "CANARY_JOB_ID": "30885396",
+    "CANARY_LEDGER": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260825T174646Z.json",
+    "QWEN32_ACCOUNT": "mltheory",
+    "QWEN32_EVAL_WALLTIME": "12:00:00",
+    "QWEN32_EXCLUDE": "node206",
+    "QWEN32_PARTITION": "all",
+    "QWEN32_SUBMIT_ACCOUNT": "allcs",
+    "QWEN32_SUBMIT_PARTITION": "cs",
+    "QWEN32_SUBMIT_QOS": "medium",
+    "QWEN32_TRAIN_WALLTIME": "30:00:00",
+    "REGISTRATION_LEDGER": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T174634Z.json"
+  },
+  "job_id": "30885397",
+  "kind": "advance",
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "recorded_at": "20260825T174646Z",
+  "registration_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T174634Z.json"
+}

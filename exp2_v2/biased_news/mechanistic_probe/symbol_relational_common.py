@@ -32,6 +32,10 @@ STUDY = "qwen3_14b_symbol_relational_v1"
 RUN_REGISTRY = {
     "qwen3_14b_symbol_relational_v1": {
         "study": "qwen3_14b_symbol_relational_v1",
+        "model_id": MODEL_ID,
+        "model_commit": MODEL_COMMIT,
+        "transformer_layers": 40,
+        "replication_role": "discovery_gate",
         "source_probe_run": "qwen3_14b_symbol_probe_v1",
         "tasks_sha256": "6d4dd81bb031d7dc00320e97d2c1896a132c3deab54a6642b6b0105a954014a9",
         "task_manifest_sha256": "35cf4745a92fa10def497662156edcc9f16f98c8f36bfac19e72a986c9020a2c",
@@ -40,11 +44,82 @@ RUN_REGISTRY = {
     },
     "qwen3_14b_symbol_relational_v2": {
         "study": "qwen3_14b_symbol_relational_v2",
+        "model_id": MODEL_ID,
+        "model_commit": MODEL_COMMIT,
+        "transformer_layers": 40,
+        "replication_role": "discovery_gate",
         "source_probe_run": "qwen3_14b_symbol_probe_v2",
         "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01",
         "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
         "source_features_sha256": "72635a04043467c245b4b3972e6f9193baaa1baf004f4c8e0862c57160e98a57",
         "source_results_sha256": "b02aafe3a5d2012e1bafade81f2622b077bc9f9e74cd8209b30e471902ca45a2",
+    },
+    # The Qwen3-14B v2 gate prospectively authorized one cross-family
+    # replication. Llama-3.1-70B is fixed here before any label-token state is
+    # extracted or any activation-patch generation is produced. It is the only
+    # evaluated non-Qwen checkpoint that had both a significant held-out
+    # relational representation and cue-sensitive zero-shot behavior.
+    "llama3_1_70b_symbol_relational_v1": {
+        "study": "llama3_1_70b_symbol_relational_v1",
+        "model_id": "meta-llama/Llama-3.1-70B-Instruct",
+        "model_commit": "1605565b47bb9346c5515c34102e054115b4f98b",
+        "transformer_layers": 80,
+        "replication_role": "cross_family_confirmation",
+        "parent_study": "qwen3_14b_symbol_relational_v2",
+        "parent_results_sha256": "249a07a54ddd1fe8478eea40a127cf421c8d92926d6b9ec8e8ad997f96bbba78",
+        "source_probe_run": "llama3_1_70b_symbol_probe_v2",
+        "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01",
+        "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+        # The large source tensor was removed after the checkpoint-comparison
+        # analysis; its extraction manifest retains and validates this digest.
+        # The relational replication extracts its own label-token states and
+        # does not consume the old last-token tensor.
+        "source_features_sha256": "3523095ec15434b7878dce9ec7b6f46bd50991703e6a7566376d8bece263c207",
+        "source_features_required": False,
+        "source_extraction_manifest_sha256": "daf41a11b1f20191dfd7edf8bbaa4f61339a921f564db1579b371012bf8a2f86",
+        "source_results_sha256": "b59ac310960620169f5e94d9c619156df59b40f7d4adf1b8b1c92a4e64499b94",
+    },
+    # These two checkpoint replications were explicitly requested before any
+    # new label-token activation or patch outcome was generated. They reuse the
+    # powered v2 task split, estimand, controls, and pass/fail gate unchanged.
+    "qwen3_32b_symbol_relational_v1": {
+        "study": "qwen3_32b_symbol_relational_v1",
+        "model_id": "Qwen/Qwen3-32B",
+        "model_commit": "9216db5781bf21249d130ec9da846c4624c16137",
+        "transformer_layers": 64,
+        "replication_role": "same_family_scale_confirmation",
+        "parent_study": "qwen3_14b_symbol_relational_v2",
+        "parent_results_sha256": "249a07a54ddd1fe8478eea40a127cf421c8d92926d6b9ec8e8ad997f96bbba78",
+        "source_probe_run": "qwen3_32b_symbol_probe_v2",
+        "source_receipt_required": True,
+        "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01",
+        "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+        "target_selection_rule": (
+            "the dense same-release Qwen3 scale checkpoint with significant "
+            "arbitrary-label forecast discrimination; fixed before its new "
+            "arbitrary-label hidden-state or patch result was available"
+        ),
+    },
+    "qwen2_5_72b_symbol_relational_v1": {
+        "study": "qwen2_5_72b_symbol_relational_v1",
+        "model_id": "Qwen/Qwen2.5-72B-Instruct",
+        "model_commit": "495f39366efef23836d0cfae4fbe635880d2be31",
+        "transformer_layers": 80,
+        "replication_role": "cross_generation_scale_confirmation",
+        "parent_study": "qwen3_14b_symbol_relational_v2",
+        "parent_results_sha256": "249a07a54ddd1fe8478eea40a127cf421c8d92926d6b9ec8e8ad997f96bbba78",
+        "source_probe_run": "qwen2_5_72b_symbol_probe_v2",
+        "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01",
+        "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+        "source_features_sha256": "7d0347cf7a8ce8f06156bbaaa808e17048e06da082bfcfb632c576144a1b17f2",
+        "source_features_required": False,
+        "source_extraction_manifest_sha256": "db9e859ce67c22f6c363ba6dc76d662814c6552fb7f0092338f1b9141cb820fd",
+        "source_results_sha256": "b5b003a0a3af99cbe27891b02ad26093e37df1db5952946512b85d48ad2fdad9",
+        "target_selection_rule": (
+            "the largest completed Qwen checkpoint with significant "
+            "arbitrary-label forecast discrimination and held-out decoding; "
+            "fixed before any label-token activation or patch result"
+        ),
     },
     # The symbol probe runs are the source of each relational run's task file, and
     # are read directly when auditing the frozen design, so they carry the same
@@ -73,6 +148,18 @@ def run_spec(run_dir) -> dict:
     if name not in RUN_REGISTRY:
         raise ValueError(f"unregistered relational run directory: {name}")
     return RUN_REGISTRY[name]
+
+
+def checkpoint_spec(run_dir) -> dict:
+    """Return the checkpoint-specific frozen settings for a relational run."""
+    spec = run_spec(run_dir)
+    required = ("model_id", "model_commit", "transformer_layers")
+    missing = [name for name in required if name not in spec]
+    if missing:
+        raise ValueError(
+            f"relational run {Path(run_dir).name} lacks checkpoint settings: {missing}"
+        )
+    return spec
 
 
 TASKS_SHA256 = RUN_REGISTRY["qwen3_14b_symbol_relational_v1"]["tasks_sha256"]

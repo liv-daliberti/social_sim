@@ -359,8 +359,12 @@ Two readings of the table matter more than the significance. First, the
 embedding-only and all-layer rows are identical, and necessarily so: the two
 prefixes differ only at the patched label positions, so overwriting their embeddings
 and letting the model recompute reproduces what overwriting every later state does. They are one intervention reported at two depths, not two
-converging results. What distinguishes the mid-window row is that it reaches the
-same magnitude while touching only three layers late in the network.
+converging results, and the embedding row is the behavioral swap itself. What distinguishes the mid-window row is that it reaches the
+same magnitude while touching only three mid-network layers, whereas later windows
+at the same positions do nothing even where the embedding patch works (Qwen3-14B,
+layers 33--35, $-.033$ against $.236$; Llama~3.1-70B's registered layers 35--37,
+$-.009$, $p=.67$, against $.474$, $p<.001$). A pure input change would not depend
+on depth this way.
 
 Second, the effect is confined to $k=0$. With four City C cases every patch site
 returns a null ($p=.83$ and $p=.64$), so the induced label no longer controls the
@@ -372,7 +376,9 @@ rather than the cue-assigned one.
 At 16 episodes, the primary patch estimate is $-.033$ at $p=.75$ and the sign-flip
 null spans $[-.387,.387]$. Its 64-episode development set selects layers
 $33$--$35$, whereas the 160-episode development set selects $19$--$21$ at a
-higher cross-validation score ($.903$ against $.806$).
+higher cross-validation score ($.903$ against $.806$). Both windows come from the
+same fixed rule, the best probe layer on development data, which never sees a
+patch outcome.
 
 \noindent\textbf{Permutation implementation.} The test enumerates all $2^{n}$ sign
 assignments for 16 episodes; exhaustive enumeration is infeasible for 88

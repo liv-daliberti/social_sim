@@ -1,0 +1,35 @@
+{
+  "analysis_code_sha256": "d36d5c1203fd68b049f3e4a606c4d4e5f8254c89cc50a215f0e330883b9f157c",
+  "completed_at": "2026-08-25T23:12:21.176372+00:00",
+  "holdout": {
+    "draw_parse_coverage": 1.0,
+    "draws": 5,
+    "responses": 1590,
+    "tasks": 318
+  },
+  "market": {
+    "brier": 0.12654794182389942,
+    "log_loss_nats": 0.39267174987108305
+  },
+  "model": "claude-opus-4-8",
+  "model_minus_market_brier": {
+    "bootstrap_repetitions": 5000,
+    "ci95_high": 0.0061373180495356075,
+    "ci95_low": -0.0004892329141104294,
+    "estimate": 0.0027205614465408818,
+    "family_clusters": 223
+  },
+  "result": {
+    "brier": 0.12926850327044023,
+    "log_loss_nats": 0.3990496349339067
+  },
+  "status": "complete",
+  "summary": {
+    "path": "exp3_training_transfer/polymarket/reports/exp4_hosted/exp4_hosted_claude-opus-4-8_stochastic.summary.json",
+    "sha256": "a791217ff6275739eb9ef240c76bbe2d53b32abe2df1fbb0ce473f3fab3a2a6c"
+  },
+  "raw": {
+    "path": "exp3_training_transfer/polymarket/reports/exp4_hosted/exp4_hosted_claude-opus-4-8_stochastic.jsonl",
+    "sha256": "5d895387b6b1ad84c10314f825c211af1cf2afecf815bed78c52f2d14b6cb273"
+  }
+}

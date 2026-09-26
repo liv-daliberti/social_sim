@@ -87,8 +87,8 @@ def main() -> None:
     preamble = (
         "\\begin{tabular}{l c rrr rrr c}\n"
         "\\toprule\n"
-        "& & \\multicolumn{3}{c}{16 sealed, window 33--35}"
-        " & \\multicolumn{3}{c}{88 sealed, window 19--21} & \\\\\n"
+        "& & \\multicolumn{3}{c}{16 test episodes, window 33--35}"
+        " & \\multicolumn{3}{c}{88 test episodes, window 19--21} & \\\\\n"
         "\\cmidrule(lr){3-5}\\cmidrule(lr){6-8}\n"
         "Patch site & $k$ & Shift & $p$ & $n$ & Shift & $p$ & $n$ & Null 95\\% \\\\\n"
         "\\midrule"

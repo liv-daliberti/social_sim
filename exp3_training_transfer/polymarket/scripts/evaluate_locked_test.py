@@ -8,12 +8,13 @@ import json
 import math
 import random
 from pathlib import Path
-from typing import Any
-
-import vllm
-from vllm.lora.request import LoRARequest
+from typing import TYPE_CHECKING, Any
 
 from family_clusters import connected_index_groups
+
+if TYPE_CHECKING:
+    import vllm
+    from vllm.lora.request import LoRARequest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,8 +64,12 @@ def losses(probability: float | None, label: bool) -> tuple[float, float]:
     return (p - y) ** 2, -(y * math.log(p) + (1.0 - y) * math.log(1.0 - p))
 
 
-def summarize(probabilities: list[float | None], rows: list[dict[str, Any]]) -> dict[str, float]:
-    scored = [losses(p, bool(row["settlement_yes"])) for p, row in zip(probabilities, rows)]
+def summarize(
+    probabilities: list[float | None], rows: list[dict[str, Any]]
+) -> dict[str, float]:
+    scored = [
+        losses(p, bool(row["settlement_yes"])) for p, row in zip(probabilities, rows)
+    ]
     return {
         "n": len(rows),
         "parse_coverage": sum(p is not None for p in probabilities) / len(rows),
@@ -74,7 +79,10 @@ def summarize(probabilities: list[float | None], rows: list[dict[str, Any]]) -> 
 
 
 def cluster_bootstrap_delta(
-    rows: list[dict[str, Any]], first: list[float], second: list[float], repetitions: int = 5_000
+    rows: list[dict[str, Any]],
+    first: list[float],
+    second: list[float],
+    repetitions: int = 5_000,
 ) -> dict[str, float]:
     groups = connected_index_groups(rows)
     rng = random.Random(30_032_026)
@@ -95,7 +103,9 @@ def cluster_bootstrap_delta(
 def resolve_adapter(job_id: str) -> Path:
     roots = sorted((ROOT / "reports").glob(f"train_market_*_j{job_id}"))
     if len(roots) != 1:
-        raise AssertionError(f"expected one report directory for training job {job_id}, got {roots}")
+        raise AssertionError(
+            f"expected one report directory for training job {job_id}, got {roots}"
+        )
     adapters = sorted(roots[0].glob("debug_*/saved_models/step_*"))
     if not adapters:
         raise AssertionError(f"no saved adapter for training job {job_id}")
@@ -117,6 +127,9 @@ def generate(
 
 
 def main() -> None:
+    import vllm
+    from vllm.lora.request import LoRARequest
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--adapters",
@@ -160,7 +173,10 @@ def main() -> None:
     platt = baseline_report["platt_parameters"]
     market = [float(row["market_yes_prob"]) for row in rows]
     calibrated = [
-        sigmoid(float(platt["intercept"]) + float(platt["market_logit_slope"]) * logit(value))
+        sigmoid(
+            float(platt["intercept"])
+            + float(platt["market_logit_slope"]) * logit(value)
+        )
         for value in market
     ]
     labels = [bool(row["settlement_yes"]) for row in rows]
@@ -197,7 +213,9 @@ def main() -> None:
             "trained_seed_mean_minus_platt_market": cluster_bootstrap_delta(
                 rows, trained_mean_losses, calibrated_losses
             ),
-            "base_minus_market": cluster_bootstrap_delta(rows, model_losses["base"], market_losses),
+            "base_minus_market": cluster_bootstrap_delta(
+                rows, model_losses["base"], market_losses
+            ),
         },
     }
 
@@ -212,8 +230,12 @@ def main() -> None:
                         "event_id": row["event_id"],
                         "settlement_yes": row["settlement_yes"],
                         "market_yes_prob": row["market_yes_prob"],
-                        "forecasts": {name: values[index] for name, values in forecasts.items()},
-                        "responses": {name: values[index] for name, values in responses.items()},
+                        "forecasts": {
+                            name: values[index] for name, values in forecasts.items()
+                        },
+                        "responses": {
+                            name: values[index] for name, values in responses.items()
+                        },
                     },
                     sort_keys=True,
                     ensure_ascii=True,
@@ -221,7 +243,9 @@ def main() -> None:
                 + "\n"
             )
     summary_path = args.output_prefix.with_suffix(".summary.json")
-    summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    summary_path.write_text(
+        json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     print(json.dumps(summary, indent=2, sort_keys=True))
 
 

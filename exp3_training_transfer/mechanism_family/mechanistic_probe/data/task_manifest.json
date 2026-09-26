@@ -1,0 +1,36 @@
+{
+  "development_episodes": 180,
+  "disclosures": [
+    "disclosed",
+    "undisclosed"
+  ],
+  "episode_count": 240,
+  "k_values": [
+    3,
+    6,
+    9
+  ],
+  "record_count": 1440,
+  "source_file_sha256": {
+    "data/disclosed_causal_family/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/disclosed_causal_family/heldout/train/data-00000-of-00001.arrow": "18a600c71ffff6797eb351e931925273ddcaedbf1ac9e1a28c34d5b33e42ef9c",
+    "data/disclosed_causal_family/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/disclosed_causal_family/heldout/train/state.json": "e8d917dfa18bd7870483096199371e7c3a710e05340ad919fc07750c6dcd02fd",
+    "data/undisclosed_causal_family/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/undisclosed_causal_family/heldout/train/data-00000-of-00001.arrow": "d369c13892bdaedb73e5de11b886c457166b52e4e77f49dbd19def0abe8d43a9",
+    "data/undisclosed_causal_family/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/undisclosed_causal_family/heldout/train/state.json": "14cb9cd7e9696789112199eec4cffd4e3572287885c176c26a269b07bbc0532c"
+  },
+  "source_protocol": "c3_mechanism_disclosure_v3",
+  "split_rule": "within each world, sorted episode rank modulo 4 equals 0 is test; remaining ranks are development with fold=(rank//4) modulo 5",
+  "status": "tasks_frozen",
+  "study": "exp3_mechanism_probe_v1",
+  "tasks_sha256": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+  "test_episodes": 60,
+  "worlds": [
+    "mediated_feedback_linear",
+    "mediated_saturating",
+    "persistent_threshold",
+    "feedback_saturating_extrap"
+  ]
+}

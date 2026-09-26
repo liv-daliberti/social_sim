@@ -31,8 +31,8 @@ RUNS = (
     ("qwen3_4b_symbol_probe_v2", "Qwen3-4B, symbol", "Qwen3-4B-Instruct-2507"),
     ("qwen2_5_32b_symbol_probe_v2", "Qwen2.5-32B, symbol", "Qwen2.5-32B-Instruct"),
     ("qwen2_5_72b_symbol_probe_v2", "Qwen2.5-72B, symbol", "Qwen2.5-72B-Instruct"),
-    ("llama3_1_8b_symbol_probe_v2", "Llama~3.1-8B, symbol", "Llama-3.1-8B-Instruct"),
-    ("llama3_1_70b_symbol_probe_v2", "Llama~3.1-70B, symbol", "Llama-3.1-70B-Instruct"),
+    ("llama3_1_8b_symbol_probe_v2", "Llama-3.1-8B, symbol", "Llama-3.1-8B-Instruct"),
+    ("llama3_1_70b_symbol_probe_v2", "Llama-3.1-70B, symbol", "Llama-3.1-70B-Instruct"),
 )
 COMPARISON = (
     ROOT
@@ -135,7 +135,7 @@ def main() -> None:
     preamble = (
         "\\begin{tabular}{l l rrrr r r r r}\n"
         "\\toprule\n"
-        "Run & Target & Correct & None & Wrong & Wrong/cue & Layer & Embed. & $p$"
+        "Model / cue & Target & Correct & None & Wrong & Wrong/cue & Layer & Embed. & $p$"
         " & Behav. $\\Delta\\rho$ \\\\\n"
         "\\midrule"
     )

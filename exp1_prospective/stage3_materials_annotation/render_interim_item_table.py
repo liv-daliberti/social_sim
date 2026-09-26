@@ -15,8 +15,8 @@ from exp1_prospective.stage3_materials_annotation import analyze_annotations as 
 
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_SNAPSHOT = HERE / "data/exports/interim_summary_20260823T015500Z.json"
-DEFAULT_RESPONSES = HERE / "data/exports/registered_20260823T015500Z.csv"
+DEFAULT_SNAPSHOT = HERE / "data/exports/interim_summary_20260827T204456Z.json"
+DEFAULT_RESPONSES = HERE / "data/exports/registered_20260827T204456Z.csv"
 DEFAULT_GENERATED = HERE / "generated_v6"
 SHORT_LABELS = {
     "s3mat_8fc94e72b31731": "Hormuz traffic normal by July 31",
@@ -74,11 +74,6 @@ def main() -> int:
     )
     parser.add_argument(
         "--output-tex",
-        type=Path,
-        default=Path("paper/ICLR/tables/exp1_stage3_item_validation.tex"),
-    )
-    parser.add_argument(
-        "--mirror-tex",
         type=Path,
         default=Path("paper/tables/exp1_stage3_item_validation.tex"),
     )
@@ -172,7 +167,7 @@ def main() -> int:
             f"{median_text([row['direction_confidence'] for row in rows])}/"
             f"{median_text([row['clarity'] for row in rows])}/"
             f"{median_text([row['plausibility'] for row in rows])} & "
-            f"{usable}/{reviewer_count} & {gate} \\\\"
+            f"{usable}/{reviewer_count} \\\\"
         )
 
     correct_total = sum(row["direction_correct_n"] for row in audit_rows)
@@ -210,9 +205,9 @@ def main() -> int:
 
     latex = "\n".join(
         [
-            r"\begin{tabular}{@{}p{.38\linewidth}llcccc@{}}",
+            r"\begin{tabular}{@{}p{.40\linewidth}llccc@{}}",
             r"\toprule",
-            r"Question & Key & Majority & Agree & C/L/P & Usable & Gate \\",
+            r"Question & Key & Majority & Agree & C/L/P & Usable \\",
             r"\midrule",
             *tex_rows,
             r"\bottomrule",
@@ -220,9 +215,8 @@ def main() -> int:
             "",
         ]
     )
-    for output in (args.output_tex, args.mirror_tex):
-        output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(latex, encoding="utf-8")
+    args.output_tex.parent.mkdir(parents=True, exist_ok=True)
+    args.output_tex.write_text(latex, encoding="utf-8")
 
     print(
         f"rendered {len(audit_rows)} items; "

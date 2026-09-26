@@ -72,175 +72,194 @@ def write():
     for label,s in [('Off',off),('On',on)]:
         for mechanism,m in s['by_variant']['base']['by_mechanism'].items():rows.append([label,mechanism.replace('_',' '),f"{int(m['success'])}/{m['planned']}"])
     put('exp1_fresh_mechanisms.tex',table(['Thinking','Mechanism class','Base pairs correct'],rows,'llr'))
-    coverage='; '.join(f"thinking {label}: {s['coverage'].get('ok',0):,}/{s['coverage']['planned']:,}" for label,s in [('off',off),('on',on)])
+    coverage=('Thinking disabled yields '+f"{off['coverage'].get('ok',0):,}"+' valid probabilities out of '+f"{off['coverage']['planned']:,}"+' observations; thinking enabled yields '+f"{on['coverage'].get('ok',0):,}"+' out of '+f"{on['coverage']['planned']:,}"+'.')
     base_effect=contrast['paired_reversal_on_minus_off_pp']['base'];loo=list(contrast['leave_one_mechanism_out_base_difference_pp'].values())
-    stable={label:[NAMES[v] for v,m in s['by_variant'].items() if m['broken_stability']['status']=='criterion_met'] for label,s in [('off',off),('on',on)]}
-    stability=' '.join('Thinking '+label+': '+(', '.join(vs)+' meet the stability criterion.' if vs else 'no wording variant meets the stability criterion.') for label,vs in stable.items())
-    text=r'''\subsection{Fresh finite-rule context reversal: reasoning and wording}
+    stability_parts=[]
+    for label,summary in [('disabled',off),('enabled',on)]:
+        groups={status:[NAMES[v].lower() for v,m in summary['by_variant'].items() if m['broken_stability']['status']==status]
+                for status in ('criterion_met','criterion_not_met','indeterminate')}
+        if len(groups['criterion_not_met'])==len(NAMES):
+            stability_parts.append('With thinking '+label+', no wording meets the stability criterion.')
+        else:
+            if groups['criterion_met']:
+                stability_parts.append('With thinking '+label+', stability is established for the '+', '.join(groups['criterion_met'])+' wording.')
+            if groups['criterion_not_met']:
+                stability_parts.append('The criterion is not met for '+', '.join(groups['criterion_not_met'])+' wording.')
+            if groups['indeterminate']:
+                stability_parts.append('Stability remains indeterminate for the other variants because each has missing broken-link observations.')
+    stability=' '.join(stability_parts)
+    text=r'''\subsection{Finite-rule context reversal: reasoning and wording}
 \label{app:exp1-fresh-factorial}
 
-The development studies above confound material version with the reasoning
-setting. We therefore froze a new diagnostic before collecting any target-model
-responses: 80 new finite-rule instances, ten in each of eight mechanism classes,
-with the same name, wording, and resampling controls in both Qwen3-32B thinking
-settings. The earlier qualitative 80-concept blueprint was replaced by these
-fully specified rules. They are parameterized instances of eight shared classes
-and one outcome wrapper, not 80 independent mechanisms or a representative
-natural-news sample. None of the original development outputs enters this cohort.
+This task crosses reasoning mode with changes in names and wording on 80
+scenarios governed by explicit probabilistic rules. Ten scenarios instantiate
+each of eight mechanism classes. Both Qwen3-32B reasoning modes receive the
+same scenarios and wording variants, allowing their performance to be compared
+within each condition. The scenarios share eight mechanisms and a common
+outcome rule; their number does not imply 80 independent mechanisms or
+representative coverage of real-world news.
 
-\paragraph{Explicit mechanisms and residual uncertainty.}
-The classes cover detector calibration, prerequisite timing, component quorums,
-procedural waivers, proportional brokerage, directed reachability, bounded
-feedback, and dependence among stored reports. Each of three independently
-specified channels has private variables and primitive draws, including a binary
-state $X$. An audit revises $P(X=1)$ from $1/4$ to $3/4$ or conversely, without
-revealing a realized state. Other conditional rules remain fixed. In calibration
-and report-dependence cases, the stated $X$ probabilities already condition on
-stored observations; the observation is not applied twice.
+\paragraph{Mechanisms and outcome probabilities.}
+The mechanism classes concern detector calibration, prerequisite timing,
+component quorums, procedural waivers, proportional brokerage, directed
+reachability, bounded feedback, and dependence among stored reports. Each
+scenario describes three independent channels, each with its own latent variables and random
+draws, including a binary state $X$. A report revises $P(X=1)$ from $1/4$ to
+$3/4$, or conversely, without revealing the realized state. All other conditional
+rules remain fixed. In calibration and report-dependence scenarios, these
+probabilities already incorporate stored observations, which must not be counted
+a second time.
 
 The project completes if a final inspection succeeds and either a reserve team
-succeeds or the ordinary channel fires without the cancellation channel firing.
-The independent inspection and reserve probabilities are $4/5$ and $1/5$.
-Writing $a,b$ for the ordinary and cancellation firing probabilities gives
+succeeds or the ordinary channel activates without the cancellation channel
+activating. Inspection and reserve success are independent, with probabilities
+$4/5$ and $1/5$. If $a$ and $b$ are the activation probabilities of the ordinary
+and cancellation channels, respectively, then
 \[
- P(\mathrm{complete})=\tfrac45\{\tfrac15+\tfrac45a(1-b)\}.
+ P(\mathrm{complete})=\tfrac45\left\{\tfrac15+\tfrac45a(1-b)\right\}.
 \]
-The archive channel has neither an outcome pathway nor an information link to
-other channels. Thus identical news can raise, lower, or leave the forecast
-unchanged solely through actor-to-channel bindings. All channel descriptions
-appear in every context, with identical word and punctuation inventories.
-Half the questions ask about noncompletion, and rising/falling audits are
-balanced. Exact enumeration or Bayes calculations, cross-checked in a second
-implementation, establish every sign and retain both outcomes after every update.
-The question probability stays between $.16$ and $.84$; no normative forecast is
-forced to an endpoint. Component probabilities are supplied, but the model's
-initial forecast is elicited separately in each context and never replaced by
-the oracle probability.
+The archive channel neither affects the outcome nor provides information about
+the other channels. Assigning the actor named in the report to different channels
+therefore makes identical news increase, decrease, or leave unchanged the outcome
+probability. All channel descriptions appear in every context, with identical
+word and punctuation inventories. Half the questions ask about noncompletion;
+reports that raise and lower $P(X=1)$ are balanced.
 
-For example, in the first calibration instance the same audit changes a named
-channel's $P(X=1)$ from $1/4$ to $3/4$. Its oracle baseline is $.3079$ in each
-context. The new probabilities are $.3253$, $.2773$, and $.3079$ when that actor
-operates the ordinary, cancellation, or archive channel, respectively. These
-oracle values are analysis quantities, not supplied model forecasts.
+Exact enumeration or Bayesian calculation determines the correct probabilities,
+with a second implementation used to check them. Probabilities remain between
+$0.16$ and $0.84$, so both outcomes remain possible. For one calibration scenario,
+a report raising $P(X=1)$ from $1/4$ to $3/4$ changes the outcome probability
+from $0.3079$ to $0.3253$, $0.2773$, or $0.3079$, depending on whether the actor
+operates the ordinary, cancellation, or archive channel. These exact values are
+scoring references. Models receive the component probabilities and produce their
+own initial forecast separately in each context.
 
-\paragraph{Screening and its limits.}
-No new human validation was obtained. Separate Llama-3.1-8B and Qwen3-14B
-checkpoints screened all 720 distinct packets (80 instances, three wording
-versions, three contexts), without intended labels, sibling contexts, or target
-outputs. Same-text resamples reuse an identical packet. The final screens had
-poor directional agreement: 224/720 and 182/720 planned judgments matched the
-rule-derived labels; 44 Llama completions were invalid. These screens do not
-validate the labels. Every valid endpoint judgment retained both outcomes.
-Author adjudication repaired two actual text defects in earlier drafts: an
-over-broad independence statement and reuse of ``inspection'' for two different
-events. The final version explicitly distinguishes private variables and a local
-approval coin from the final inspection. All versions and judgments are retained.
-No instance was removed because a reviewer answered incorrectly. Label authority
-is the disclosed formal specification and author cross-check, not model consensus
-or independent human judgment. Qwen3-14B also shares a model family with the target.
+\paragraph{Model review and label validity.}
+Llama-3.1-8B and Qwen3-14B reviewed all 720 distinct packets: 80 scenarios,
+three wording variants, and three contexts. Each reviewer saw a packet without
+its intended label, alternative contexts, or target-model responses. Their
+directional judgments matched the rule-derived labels in 224/720 and 182/720
+cases, respectively; 44 Llama responses were invalid. Every valid judgment of
+whether both outcomes remained possible agreed that they did. No scenarios
+were excluded on the basis of reviewer disagreement.
 
-\paragraph{Frozen paired collection.}
-Each instance has base, name-only, paraphrase, and same-text resample variants.
-Each variant contains three relational contexts and one own-context baseline
-with three independent new-news, no-news, and already-known-information branches.
-This gives 3,840 planned records per local reasoning mode. Qwen3-32B uses the same
-checkpoint, temperature $.7$, top-$p=1$, request seeds, unconstrained decoding,
-8,192-output-token allowance, and 16,384-token context in both modes; its thinking
-chat prefix is the intended manipulation. A final probability object may have
-one Markdown fence in either mode; enabled reasoning must close first. All
-received invalid/truncated responses and durably recorded interrupted requests
-are terminal failures, without resampling. This is a comparison of reasoning
-settings under these deployments, not a general causal decomposition of capability.
+The low directional agreement provides little support for interpretability.
+Correct labels derive from the formal rules and the authors' computational
+cross-check, rather than reviewer consensus. The text distinguishes each
+channel's private variables and local approval event from the independent final
+inspection. The materials have not undergone independent human validation,
+and Qwen3-14B shares a model family with the evaluated Qwen3-32B.
 
-Paired reversal requires both signed updates to be strictly correct; zero
-movement and all invalid or missing responses fail the binary endpoint. Magnitudes
-use observed values with missingness shown. The prespecified broken-link criterion
-requires a signed-mean 90\% interval strictly inside $\pm2$ points and an upper
-95\% mean-absolute bound below 2 points; any missing planned broken measurement
-makes it indeterminate. Intervals use 2,000 whole-instance bootstrap draws,
-keeping contexts, wordings, and modes paired. At all-correct or all-zero cells,
-these empirical intervals collapse; this does not establish population certainty.
-They are descriptive for the authored corpus; shared mechanism/template dependence limits generalization. Numerical
-calculation and rounding remain possible sources of error even when the rules
-do not force endpoint forecasts. The released scoring also reports accuracy in prespecified
-oracle-effect bins below 1, 1--2, and at least 2 percentage points.
+\paragraph{Paired reasoning conditions.}
+Each scenario has a base description, a version with renamed entities, a
+paraphrase, and an identical-text resample. Each version has three relational
+contexts, each with its own baseline and three independent update branches:
+new news, no news, and repeated prior information. This yields 3,840 baseline
+and update observations per reasoning mode. Both modes use the same Qwen3-32B
+checkpoint, matched seeds, temperature $0.7$, top-$p=1$, unconstrained decoding,
+an 8,192-token output limit, and a 16,384-token context limit. The prompt prefix
+enables or disables thinking. Both modes accept a final probability JSON object
+with at most one enclosing Markdown fence; any reasoning segment must be complete.
+Invalid, truncated, and interrupted requests count as failures and are not
+resampled. The comparison concerns these inference settings on this scenario set.
+
+\clearpage
+\paragraph{Scoring and uncertainty.}
+Paired reversal requires both signed updates to move in the correct direction.
+Zero movement, invalid responses, and missing responses count as failures.
+Magnitude estimates use observed values, with coverage reported explicitly.
+Broken-link stability requires a 90\% interval for mean signed change strictly
+within $\pm2$~pp and a 95\% upper confidence bound for mean absolute change below
+2~pp. Any missing broken-link observation makes the criterion indeterminate.
+Intervals use 2,000 whole-scenario bootstrap draws, keeping contexts, wordings,
+and reasoning modes paired. When every observation has the same value, empirical
+intervals can collapse to a point; this does not imply population certainty.
+Shared mechanisms and templates further limit generalization beyond these
+scenarios. Calculation and rounding can also cause errors, so the analysis
+separately reports accuracy for exact probability changes below 1~pp, from 1 to
+less than 2~pp, and at least 2~pp.
 '''
-    text+='\nValid final probabilities: '+coverage+'.\n'
-    text+=block('Fresh local evaluation. Signs are correct updates out of 160 planned signed contexts per wording; pairs are correct reversals out of 80, followed by a 95\\% interval in percent. Broken movement is mean absolute change with its 95\\% interval, in percentage points; the final column reports observed broken measurements.','tab:exp1-fresh-performance','exp1_fresh_performance')
-    text+='\nThe base-wording thinking contrast is '+interval(base_effect)+' percentage points. The leave-one-mechanism-out contrasts range from '+number(min(loo),1)+' to '+number(max(loo),1)+' points. '+stability+'\n'
-    text+=block('Matched thinking contrasts in paired reversal. The final column subtracts the base-wording contrast; all contexts and modes remain paired by parent instance. Brackets are descriptive 95\\% intervals.','tab:exp1-fresh-reasoning','exp1_fresh_reasoning')
-    text+=block('Fresh controls and oracle discrepancy, all in percentage points. No-news and repeated-information columns give mean absolute movement across the three contexts. Baseline and updated error are mean absolute deviations from the exact rule-based probabilities, not calibration against realized real-world outcomes.','tab:exp1-fresh-controls','exp1_fresh_controls')
-    text+=block('Wording discrepancies relative to base, across all three contexts. Excess subtracts the identical-text resampling discrepancy. Joint correctness requires both the base and edited reversal pair to be correct out of 80. Intervals crossing zero do not establish equivalence; agreement alone does not establish correctness.','tab:exp1-fresh-edits','exp1_fresh_edits')
+    text+='\n'+coverage+'\n'
+    text+=block(r'\textbf{Qwen3-32B context reversal under explicit probabilistic rules.} Signs count correct directions out of 160 signed contexts per wording; pairs count successful reversals out of 80, with descriptive 95\% intervals in percent. Broken-link movement is mean absolute change with its 95\% interval, in percentage points. Observed counts show the available broken-link measurements.','tab:exp1-fresh-performance','exp1_fresh_performance')
+    text+='\nEnabling thinking increases paired reversal under the base wording by '+interval(base_effect)+' percentage points (95\\% interval in brackets). Omitting one mechanism class at a time gives contrasts from '+number(min(loo),1)+' to '+number(max(loo),1)+' points. '+stability+'\n'
+    text+=block(r'\textbf{Effect of reasoning mode on paired reversal.} Differences are in percentage points. The final column compares each reasoning contrast with the base-wording contrast. All contexts and modes remain paired by scenario; brackets give descriptive 95\% intervals.','tab:exp1-fresh-reasoning','exp1_fresh_reasoning')
+    text+=block(r'\textbf{Control responses and error relative to exact probabilities.} All values are in percentage points and use observed responses. No-news and repeated-information columns give mean absolute movement across the three contexts. Baseline and updated error are mean absolute deviations from the exact rule-based probabilities; they do not measure calibration against realized outcomes.','tab:exp1-fresh-controls','exp1_fresh_controls')
+    text+='\n\\clearpage\n'
+    text+=block(r'\textbf{Sensitivity of probability revisions to names and wording.} Discrepancy is the mean absolute difference between the new-news revision for each variant and the base revision across the three contexts. Excess subtracts the corresponding identical-text resampling discrepancy. Both are in percentage points, with descriptive 95\% intervals. Joint correctness requires successful signed reversal in both versions, out of 80 scenarios. Intervals containing zero do not establish equivalence.','tab:exp1-fresh-edits','exp1_fresh_edits')
     text+=r'''
-\paragraph{One frozen frontier evaluation.}
-A prospectively fixed balanced subset contains three instances per mechanism
-class (24 parents), with base and paraphrase wording. It has 576 planned records,
-not 48 independent families. GPT-5.6 Sol uses low reasoning, a 2,048-output-token
-allowance, strict probability JSON, no tools, and zero automatic retries. Batch
-baselines precede a separate update batch using only their own saved priors.
-The complete cohort was reserved within the user's budget before generation;
-provider token-count receipts and the persistent ledger are archived. No released
-reservation financed additional target cases. Local rows below use exactly this
-same subset. Frontier/local contrasts remain descriptive because deployments and
-reasoning allowances differ.
+\paragraph{GPT-5.6 comparison on matched scenarios.}
+A balanced subset contains 24 scenarios, three per mechanism class, with base
+and paraphrased wording. Each wording has three contexts, each with a baseline
+and three update branches, yielding 576 observations. GPT-5.6 uses low
+reasoning effort, a 2,048-token output limit, structured probability JSON, no
+tools, and no automatic retries. Updates receive only their own context's
+baseline. The Qwen3 rows in Table~\ref{tab:exp1-fresh-frontier} use the same
+subset. Differences in inference settings limit attribution of performance
+differences to model identity alone.
 '''
-    text+='\nGPT-5.6 returned '+str(gpt['coverage'].get('ok',0))+'/576 valid final probabilities.\n'
-    text+=block('Matched 24-parent subset, with all planned failures retained. Signs are out of 48; paired reversals out of 24. Pair intervals are percentages; broken movement and its interval are percentage points.','tab:exp1-fresh-frontier','exp1_fresh_frontier')
-    text+=block('Base-wording paired reversal by mechanism class. The equal-class macro average equals the overall rate because all classes contain ten instances. These repeated parameterizations do not supply 80 independent mechanism replications.','tab:exp1-fresh-mechanisms','exp1_fresh_mechanisms')
-    # Triple-level scoring and unconditional accounting, computed in process from
-    # the frozen plan and the saved records so they cannot go stale against the
-    # tables they produce.
+    text+='\nGPT-5.6 returns '+str(gpt['coverage'].get('ok',0))+'/576 valid probabilities.\n'
+    text+=block(r'\textbf{Context reversal on the same 24 scenarios.} Each wording contributes 48 signed updates and 24 reversal pairs. All trials remain in the binary denominators. Pair intervals are percentages; broken-link movement and its interval are in percentage points. Observed counts report available broken-link measurements.','tab:exp1-fresh-frontier','exp1_fresh_frontier')
+    text+=block(r'\textbf{Qwen3-32B paired reversal by mechanism class under base wording.} Each class contains ten scenarios, so the unweighted average of class accuracies equals overall accuracy. The 80 scenarios instantiate eight recurring mechanisms.','tab:exp1-fresh-mechanisms','exp1_fresh_mechanisms')
     from exp1_prospective.context_reversal import analyze_triples as tri, analyze_accounting as acc
     units=tri.load_units();triples=tri.build_triples(units)
     shortcuts=tri.score_shortcuts(triples)
     arms=[a for a in (tri.score_arm(label,pats,units,triples) for _,label,pats in tri.ARMS) if a['items_valid']]
     books=[b for b in (acc.score(label,pats,plan) for label,pats,plan in acc.ARMS) if b['categories'].get('ok')]
-    labels={'no_change':'Predict no change','evidence_direction':'Follow the evidence direction','always_up':'Always revise upward','best_constant_with_oracle':'Best constant, given every oracle'}
-    put('exp1_fresh_bound.tex',table(['Predictor','Items, direction','Triples, all three'],
+    labels={'no_change':'Predict no change','evidence_direction':'Follow the evidence direction','always_up':'Always revise upward','best_constant_with_oracle':'Best oracle-derived revision'}
+    tiny_change=tri.EXACT/2
+    tiny_correct=sum(sum(abs(tiny_change)<=tri.EXACT if m['expected_sign']==0 else tiny_change*m['expected_sign']>0 for m in members) for members in triples.values())
+    gaps=[abs(tri.frac(a['oracle_update'])-tri.frac(b['oracle_update'])) for members in triples.values() for i,a in enumerate(members) for b in members[i+1:]]
+    if min(gaps)<=2*tri.EXACT:raise ValueError('Exact-match tolerance intervals overlap; revise the analytic bound')
+    put('exp1_fresh_bound.tex',table(['Constant-revision predictor','Items, direction','Triples, all three'],
         [[labels[k],f"{v['item_sign_correct']}/{v['items']}",f"{v['triple_sign_all_correct']}/{v['triples']}"] for k,v in shortcuts.items()]
-        +[[r'\emph{Analytic bound}',r'$\leq 1/3$','$0$']],'lrr'))
+        +[[r'Revise upward by $5\times10^{-5}$',f'{tiny_correct}/{3*len(triples)}',f'0/{len(triples)}'],
+          [r'\emph{Directional upper bound}',r'$2/3$','$0$']],'lrr'))
     def mean_pp(a,metric):return f"{next(x for x in a['errors'] if x['metric']==metric)['mean_pp']:.3f}"
     put('exp1_fresh_triples.tex',table(['System','Triples','Items, direction','Items, exact','Posterior error, pp'],
         [[a['arm'],f"{a['triple_sign_unconditional']}/{a['triples_planned']}",f"{a['item_sign_correct']}/{a['items_planned']}",
           f"{a['item_exact_correct']}/{a['items_planned']}",mean_pp(a,'update absolute error')] for a in arms],'lrrrr'))
-    put('exp1_fresh_accounting.tex',table(['System','Planned','Valid','Model','Instrument','Cascade'],
+    put('exp1_fresh_accounting.tex',table(['System','Expected','Valid','Response','Limit','Dependent'],
         [[b['arm'],str(b['planned_records']),str(b['categories'].get('ok',0)),str(b['by_attribution'].get('model',0)),
           str(b['by_attribution'].get('instrument',0)),str(b['by_attribution'].get('cascade',0))] for b in books],'lrrrrr'))
     text+=r'''
-\paragraph{What a relation-blind predictor can reach.}
-The unit of evidence is the triple: one parent instance and wording, with the
-evidence text, the prior and the named actor identical across three stated
-relations. All '''+str(len(triples))+r''' triples were verified to hold those
-three constant, to cover the three relations, and to have three distinct correct
-posteriors. The last property bounds every shortcut: a predictor reading only the
-evidence, the prior and the actor is constant within a triple, so it matches at
-most one of three items and never a whole triple. The bound is arithmetic, not
-empirical, and the predictors below only exhibit it -- including an adversary
-allowed to choose the best constant revision per triple knowing every oracle.
+\clearpage
+\paragraph{Bounds for predictors that ignore the relation.}
+A triple comprises the three contexts for one scenario and wording. Across all
+'''+str(len(triples))+r''' triples, the news, named actor, and exact baseline
+probability are identical within each triple. Models' elicited baselines may differ; the shared reference baseline is rule-derived.
+A predictor that returns a constant revision within a triple cannot satisfy both
+the positive and negative targets, so it cannot answer an entire triple correctly.
+
+The directional scoring rule accepts any correctly signed change and treats
+$|\Delta p|\leq10^{-4}$ as unchanged in the irrelevant context. A tiny positive
+revision therefore satisfies both the positive and irrelevant targets, giving a
+sharp directional bound of $2/3$, rather than $1/3$. For posterior agreement
+within $10^{-4}$, the three reference probabilities are separated by more than
+$2\times10^{-4}$; a constant posterior can match at most one, giving a separate
+$1/3$ bound. Both bounds concern constant outputs within a triple, not arbitrary
+predictors that exploit additional context.
 '''
-    text+=block('Predictors that read only the evidence, the prior and the named actor. Each is constant within a triple, so none can exceed one third of items or win a single triple.','tab:exp1-fresh-bound','exp1_fresh_bound')
+    text+=block(r'\textbf{Direction scores for constant revisions within each triple.} The oracle-derived predictor selects among the three reference revisions. A small positive revision attains the directional upper bound because the unchanged tolerance overlaps the positive target. No constant revision satisfies all three directions.','tab:exp1-fresh-bound','exp1_fresh_bound')
     text+=r'''
-\paragraph{Exact agreement and the reasoning contrast.}
-Scoring exact posterior agreement rather than revision direction separates
-systems that a binary criterion cannot: a guess supplies a sign, not a value.
-Denominators are unconditional, counting refusals, truncations and updates
-blocked by their own failed baseline as failures.
+\paragraph{Direction, posterior accuracy, and missing responses.}
+Table~\ref{tab:exp1-fresh-triples} separates successful direction judgments from
+posteriors within $10^{-4}$ of the exact probability (0.01~pp). Triple success
+requires all three directions to be correct. Refusals, invalid answers, and
+updates unavailable because their baseline failed remain in these denominators;
+mean posterior error uses only valid baseline--update pairs. Claude Opus~5 is
+also evaluated on the 24-scenario subset, with low effort, a 1,024-token output
+limit, and structured probability output. Its incomplete coverage is reported
+explicitly in Table~\ref{tab:exp1-fresh-accounting}.
 '''
-    text+=block('Triple and item accuracy against the exact oracles, with unconditional denominators. Exact agreement is to four decimals, the granularity at which the oracles are stated.','tab:exp1-fresh-triples','exp1_fresh_triples')
-    text+=block('Every planned call, classified by attribution. A refusal or unparseable answer is the system\'s; a truncation at the output budget or a request killed mid-batch is ours; a record blocked by its own failed baseline is neither.','tab:exp1-fresh-accounting','exp1_fresh_accounting')
+    text+=block(r'\textbf{Direction and posterior accuracy.} Counts include all trials; posterior agreement uses an absolute tolerance of $10^{-4}$. Mean posterior error uses observed pairs, so low error among valid responses can coexist with low overall success. Hosted models use 48 triples; local models use 320.','tab:exp1-fresh-triples','exp1_fresh_triples')
+    text+=block(r'\textbf{Response completeness and failure categories.} Response denotes refusals or invalid answers; Limit denotes output-limit truncation or interrupted requests; Dependent denotes unavailable updates or undispatched requests. Every expected observation remains in the binary denominators.','tab:exp1-fresh-accounting','exp1_fresh_accounting')
     text+=r'''
-\paragraph{Interpretive boundary and audit.}
-These data address the original relevance shortcut under explicit finite rules:
-news-only, full-word, and word-bigram classifiers all achieve $1/3$ direction
-accuracy and $.50$ balanced relevance accuracy in five-fold evaluation holding
-out entire parent instances and all their variants. This does not eliminate every
-possible structural heuristic. The new diagnostic does not retroactively validate
-the original packet relevance comparison, establish natural-news coverage, or
-replace the limitations of model screening. Raw completions, context-specific
-priors, effective chat hashes, token counts, failure denominators, and primary
-statistics were checked before these tables were generated. The artifact root is
-\path{exp1_prospective/context_reversal/results/fresh_evaluation_v1}; the immutable
-design is under \path{exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1}.
+\paragraph{Scope of inference.}
+News-only, full-word, and word-bigram classifiers achieve $1/3$ direction
+accuracy and $.50$ balanced relevance accuracy when five-fold evaluation holds
+out whole scenarios and their variants. Other shortcuts remain possible; shared
+templates and the absence of independent human validation limit generalization
+to natural news.
 '''
     put('experiment1_fresh_context_appendix.tex',text)
     manifest={'status':'audited_draft','created_at':c.utc_now(),'technical_audit':artifact(RESULTS/'technical_audit.json'),'inputs':audit['summary_artifacts'],'files':{p.name:c.file_sha256(p) for p in DRAFT.glob('*.tex')},'writer':artifact(Path(__file__))};put('draft_manifest.json',json.dumps(manifest,indent=2)+'\n');return manifest

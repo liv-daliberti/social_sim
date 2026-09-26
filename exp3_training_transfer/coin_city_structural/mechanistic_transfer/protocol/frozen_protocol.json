@@ -1,0 +1,156 @@
+{
+  "activation_extraction": {
+    "anchors": [
+      "reference_1_end",
+      "reference_2_end",
+      "target_background_end",
+      "target_evidence_end",
+      "query_end",
+      "final_prompt"
+    ],
+    "maximum_input_tokens": 2304,
+    "patch_positions": "last token of each of the ten scenario rows A--J",
+    "primary_anchor": "query_end",
+    "states": "embedding plus every transformer-block output, float16",
+    "thinking": false
+  },
+  "behavior_estimands": {
+    "accuracy": "original-prompt response MAE(prior) minus response MAE(matched), equally averaged over k=0 and k=8",
+    "decode": "five draws, temperature 0.7, top_p 0.95, strict forecast-array grammar",
+    "evidence_resistance_k": 8,
+    "primary_transplant_k": 0,
+    "transplant": "projection of predicted response(transplant)-predicted response(original) onto donor-response minus original-response, normalized by squared donor displacement"
+  },
+  "confirmatory_endpoints": [
+    {
+      "adapter_config_sha256": "5764e05e6897d37176d1f5fac413110269114a8073b24d2402ab308b328709fe",
+      "adapter_weights_sha256": "c3a59dcfaa3fa4fc3e0b4595327950922b7714f6e461b7e734543955ae47a2b9",
+      "arm": "matched",
+      "job_id": "30730378",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/causal_qwen3_8b_s42_20260822_090426_j30730378/debug_0822T09:08:48/saved_models/step_00301",
+      "seed": 42
+    },
+    {
+      "adapter_config_sha256": "ae6d9bf7703a2af856313f8a709fff8299cd4cd3795677305d43aff96f62d06c",
+      "adapter_weights_sha256": "9b93bbc7505156364bf7020b1f8fdae346b4a0db0d2b212a94377182514420f9",
+      "arm": "prior",
+      "job_id": "30730381",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/population_prior_qwen3_8b_s42_20260822_090426_j30730381/debug_0822T09:09:00/saved_models/step_00301",
+      "seed": 42
+    },
+    {
+      "adapter_config_sha256": "ce1f14ebb4f782789efd550e7465175c7fd09ed2836092e25e54718d1ef472d5",
+      "adapter_weights_sha256": "3ac6e5d5460fc0c0a16e83950e221677f740bb5082ad8de58a743e9c268b8038",
+      "arm": "matched",
+      "job_id": "30730379",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/causal_qwen3_8b_s43_20260822_090426_j30730379/debug_0822T09:08:48/saved_models/step_00301",
+      "seed": 43
+    },
+    {
+      "adapter_config_sha256": "13d071524a7eabcf98d218f572ff10614b72664e6de57b6f720d304e878a7ff5",
+      "adapter_weights_sha256": "ef0eef85a7712bd7563d795afe57990ba6f6f49b0ee40eb16f54ca7f557b3327",
+      "arm": "prior",
+      "job_id": "30730382",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/population_prior_qwen3_8b_s43_20260822_095138_j30730382/debug_0822T09:52:12/saved_models/step_00301",
+      "seed": 43
+    },
+    {
+      "adapter_config_sha256": "80a7fc3fee167bddf47caee3a136752746450c743d726ba89fdb6eeb9441942c",
+      "adapter_weights_sha256": "c5644066d7b05772ecbf4fd2d8010270cff19599f6d221e69fce5b646c397fc8",
+      "arm": "matched",
+      "job_id": "30730380",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/causal_qwen3_8b_s44_20260822_090426_j30730380/debug_0822T09:09:00/saved_models/step_00301",
+      "seed": 44
+    },
+    {
+      "adapter_config_sha256": "5d48fc25ba218d59bb1a0e4f165808a7307b6ac8078c4ac1bf294fc616c97a57",
+      "adapter_weights_sha256": "1ea056842e8d9962ca25ebc4e3328f4b953fa34dd3172b81e648bca97cfa82bf",
+      "arm": "prior",
+      "job_id": "30730383",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/population_prior_qwen3_8b_s44_20260822_110211_j30730383/debug_0822T11:07:13/saved_models/step_00301",
+      "seed": 44
+    }
+  ],
+  "frozen_at": "2026-08-25T22:34:36.341172+00:00",
+  "model": "Qwen/Qwen3-8B",
+  "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "paper_status": "paper_external_do_not_render_or_import_into_manuscript",
+  "patching_estimand": {
+    "conditions": [
+      "prior_unpatched",
+      "prior_self",
+      "matched_same_to_prior",
+      "matched_wrong_to_prior",
+      "matched_unpatched",
+      "matched_self",
+      "prior_same_to_matched",
+      "prior_wrong_to_matched"
+    ],
+    "forward": "MAE(prior_unpatched) minus MAE(matched_same_to_prior)",
+    "positions": "scenario-row end tokens A--J",
+    "primary_k": 0,
+    "reverse": "MAE(prior_same_to_matched) minus MAE(matched_unpatched)",
+    "same_episode_specificity": "mean aligned same-episode effect minus mean aligned reciprocal wrong-episode effect",
+    "selection": "development-selected three-state-layer window centered on probe layer",
+    "test_inputs": "sealed original prompts at k=0 and k=8"
+  },
+  "registered_jobs": {
+    "42": {
+      "matched": "30730378",
+      "prior": "30730381"
+    },
+    "43": {
+      "matched": "30730379",
+      "prior": "30730382"
+    },
+    "44": {
+      "matched": "30730380",
+      "prior": "30730383"
+    }
+  },
+  "replication_rule": "submit the complete Qwen3-4B three-seed protocol only if every Qwen3-8B gate passes; 14B remains ineligible until its separate behavioral matched-training advantage is confirmed",
+  "representation_estimand": {
+    "cross_validation": "four development folds grouped by reciprocal donor pair",
+    "primary_effect": "standardized kernel MSE(prior) minus MSE(matched)",
+    "readout": "one ridge decoder pooled symmetrically across matched and prior arm means",
+    "selection": "development-only alpha and layer; transformer-state layers 1--35 eligible",
+    "standardization": "development-only target mean and SD",
+    "targets": [
+      "per-unit h1",
+      "per-unit h3"
+    ],
+    "transplant_effect": "projection of decoded transplant-minus-original kernel onto donor-minus-original kernel, divided by donor displacement squared"
+  },
+  "secondary_reference": "untrained base, extracted only for seed 42 and never gated",
+  "status": "protocol_frozen_before_activation_extraction",
+  "study": "coin_city_exp3_reference_transplant_qwen8_v1",
+  "success_gate": [
+    "frozen-subset matched accuracy advantage has CI lower bound > 0 and all seeds positive",
+    "common-readout within-cell kernel advantage has CI lower bound > 0 and all seeds positive",
+    "matched-state reference-transplant tracking has CI lower bound > 0",
+    "matched-to-prior patch improvement has CI lower bound > 0",
+    "prior-to-matched patch harm has CI lower bound > 0",
+    "same-episode aligned patch effect exceeds wrong-episode effect with CI lower bound > 0",
+    "all required directional effects are positive in seeds 42, 43, and 44",
+    "strict parse rate is at least 0.99 and self-patch forecast fidelity is at least 0.99"
+  ],
+  "tasks": {
+    "cell": "Coin Harbor / mediated_b / correct cue",
+    "development_episodes": 96,
+    "k_values": [
+      0,
+      8
+    ],
+    "manifest_path": "data/task_manifest.json",
+    "manifest_sha256": "71960808d037166fc54430abe82c70de2deebd1089e09e82b6d9b51cb06db779",
+    "record_count": 512,
+    "sealed_test_episodes": 32,
+    "tasks_sha256": "da2f3506fd8ad570865a28d18e66b15d881212aa41acdcc71315e9c6b69c9ce9"
+  },
+  "uncertainty": {
+    "draws_averaged_within_episode": true,
+    "interval": 0.95,
+    "method": "hierarchical paired bootstrap: training seed first, episode second",
+    "repetitions": 10000
+  }
+}

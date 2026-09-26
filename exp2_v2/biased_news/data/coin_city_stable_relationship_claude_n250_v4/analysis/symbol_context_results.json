@@ -1,9 +1,10 @@
 {
   "bootstrap_draws": 2000,
   "bootstrap_unit": "episode (one task per episode within each k)",
-  "complete": false,
+  "complete": true,
   "complete_models": [
-    "DeepSeek-V4-Pro"
+    "DeepSeek-V4-Pro",
+    "Qwen3-4B-Instruct-2507"
   ],
   "control": "episode-randomized arbitrary KIV/ZOR labels",
   "experiment": "coin_city_stable_relationship_claude_n250_v4",
@@ -332,155 +333,335 @@
         "abc_symbol_context": 1250
       }
     },
-    "FW-Kimi-K3": {
+    "Qwen3-4B-Instruct-2507": {
       "curves": {
         "0": {
-          "n": 0
+          "arms": {
+            "abc_context": {
+              "forecast_mae": 2.3646850541022824,
+              "regime_accuracy": 0.616,
+              "rho": 0.3704365575254958,
+              "slope_mae": 0.3507356457007072
+            },
+            "abc_no_context": {
+              "forecast_mae": 2.896389701940089,
+              "regime_accuracy": 0.496,
+              "rho": -0.010683847090896936,
+              "slope_mae": 0.4208097835299918
+            },
+            "abc_symbol_context": {
+              "forecast_mae": 2.8915031924078165,
+              "regime_accuracy": 0.512,
+              "rho": 0.08481495921395653,
+              "slope_mae": 0.4213283868368468
+            }
+          },
+          "n": 250,
+          "paired_discrimination": {
+            "symbol_minus_no_context_regime_accuracy": {
+              "ci_95": [
+                -0.008000000000000007,
+                0.04399999999999993
+              ],
+              "difference": 0.016000000000000014
+            },
+            "symbol_minus_no_context_rho": {
+              "ci_95": [
+                -0.05964681589678256,
+                0.2300251847240614
+              ],
+              "difference": 0.09549880630485347
+            }
+          },
+          "paired_forecast_mae": {
+            "semantic_minus_no_context": {
+              "ci_95": [
+                -0.7404974298308609,
+                -0.3494628516983323
+              ],
+              "mean": -0.5317046478378068
+            },
+            "symbol_minus_no_context": {
+              "ci_95": [
+                -0.08753524759349161,
+                0.07417552220225955
+              ],
+              "mean": -0.004886509532272697
+            },
+            "symbol_minus_semantic": {
+              "ci_95": [
+                0.34335765438358984,
+                0.7213638275266896
+              ],
+              "mean": 0.5268181383055341
+            }
+          }
         },
         "1": {
-          "n": 0
+          "arms": {
+            "abc_context": {
+              "forecast_mae": 2.728883601575552,
+              "regime_accuracy": 0.644,
+              "rho": 0.2985397072286009,
+              "slope_mae": 0.394627970328636
+            },
+            "abc_no_context": {
+              "forecast_mae": 3.3958588873059745,
+              "regime_accuracy": 0.572,
+              "rho": 0.13172040190484208,
+              "slope_mae": 0.4909244177246817
+            },
+            "abc_symbol_context": {
+              "forecast_mae": 3.457127478538752,
+              "regime_accuracy": 0.576,
+              "rho": 0.254913687400005,
+              "slope_mae": 0.5018269889401702
+            }
+          },
+          "n": 250,
+          "paired_discrimination": {
+            "symbol_minus_no_context_regime_accuracy": {
+              "ci_95": [
+                -0.03600000000000003,
+                0.04800000000000004
+              ],
+              "difference": 0.0040000000000000036
+            },
+            "symbol_minus_no_context_rho": {
+              "ci_95": [
+                0.0023772976663803255,
+                0.2503747298135657
+              ],
+              "difference": 0.1231932854951629
+            }
+          },
+          "paired_forecast_mae": {
+            "semantic_minus_no_context": {
+              "ci_95": [
+                -1.071105092341209,
+                -0.3130261698131348
+              ],
+              "mean": -0.6669752857304219
+            },
+            "symbol_minus_no_context": {
+              "ci_95": [
+                -0.33078768402334363,
+                0.43633219721663496
+              ],
+              "mean": 0.06126859123277793
+            },
+            "symbol_minus_semantic": {
+              "ci_95": [
+                0.43646643287046644,
+                1.0368763807454398
+              ],
+              "mean": 0.7282438769631999
+            }
+          }
         },
         "2": {
-          "n": 0
+          "arms": {
+            "abc_context": {
+              "forecast_mae": 2.5666322248381217,
+              "regime_accuracy": 0.64,
+              "rho": 0.3363412530715099,
+              "slope_mae": 0.3764390857301131
+            },
+            "abc_no_context": {
+              "forecast_mae": 3.256284486755463,
+              "regime_accuracy": 0.6,
+              "rho": 0.22114174366657274,
+              "slope_mae": 0.47512413609493825
+            },
+            "abc_symbol_context": {
+              "forecast_mae": 3.3288940011304784,
+              "regime_accuracy": 0.596,
+              "rho": 0.2318600926169191,
+              "slope_mae": 0.485351094345113
+            }
+          },
+          "n": 250,
+          "paired_discrimination": {
+            "symbol_minus_no_context_regime_accuracy": {
+              "ci_95": [
+                -0.04399999999999993,
+                0.03599999999999992
+              ],
+              "difference": -0.0040000000000000036
+            },
+            "symbol_minus_no_context_rho": {
+              "ci_95": [
+                -0.07254339121584062,
+                0.09211825361290145
+              ],
+              "difference": 0.010718348950346346
+            }
+          },
+          "paired_forecast_mae": {
+            "semantic_minus_no_context": {
+              "ci_95": [
+                -1.0430909020833625,
+                -0.34968237276098535
+              ],
+              "mean": -0.689652261917342
+            },
+            "symbol_minus_no_context": {
+              "ci_95": [
+                -0.21764477595316192,
+                0.36264932097338076
+              ],
+              "mean": 0.07260951437501477
+            },
+            "symbol_minus_semantic": {
+              "ci_95": [
+                0.46635804938534,
+                1.0985867366966668
+              ],
+              "mean": 0.7622617762923567
+            }
+          }
         },
         "3": {
-          "n": 0
+          "arms": {
+            "abc_context": {
+              "forecast_mae": 2.6809146662820176,
+              "regime_accuracy": 0.612,
+              "rho": 0.3009039411585623,
+              "slope_mae": 0.39865550894546264
+            },
+            "abc_no_context": {
+              "forecast_mae": 3.2028988153489935,
+              "regime_accuracy": 0.58,
+              "rho": 0.17681453868916985,
+              "slope_mae": 0.47043140115545895
+            },
+            "abc_symbol_context": {
+              "forecast_mae": 3.3918334352220136,
+              "regime_accuracy": 0.54,
+              "rho": 0.16144024029868514,
+              "slope_mae": 0.48918241595963385
+            }
+          },
+          "n": 250,
+          "paired_discrimination": {
+            "symbol_minus_no_context_regime_accuracy": {
+              "ci_95": [
+                -0.07999999999999996,
+                0.0
+              ],
+              "difference": -0.039999999999999925
+            },
+            "symbol_minus_no_context_rho": {
+              "ci_95": [
+                -0.10596250746724378,
+                0.07992413426898884
+              ],
+              "difference": -0.015374298390484709
+            }
+          },
+          "paired_forecast_mae": {
+            "semantic_minus_no_context": {
+              "ci_95": [
+                -0.8269629502929731,
+                -0.23501973842050514
+              ],
+              "mean": -0.5219841490669757
+            },
+            "symbol_minus_no_context": {
+              "ci_95": [
+                -0.10239670561045695,
+                0.4575747283094716
+              ],
+              "mean": 0.18893461987302054
+            },
+            "symbol_minus_semantic": {
+              "ci_95": [
+                0.4295530816756447,
+                1.020854608038143
+              ],
+              "mean": 0.7109187689399962
+            }
+          }
         },
         "4": {
-          "n": 0
+          "arms": {
+            "abc_context": {
+              "forecast_mae": 2.4367874621960484,
+              "regime_accuracy": 0.612,
+              "rho": 0.34486885297390496,
+              "slope_mae": 0.35960309596092177
+            },
+            "abc_no_context": {
+              "forecast_mae": 2.9940072873623422,
+              "regime_accuracy": 0.592,
+              "rho": 0.23853603982491448,
+              "slope_mae": 0.44047465716539835
+            },
+            "abc_symbol_context": {
+              "forecast_mae": 3.2574536035555512,
+              "regime_accuracy": 0.576,
+              "rho": 0.2404459374742893,
+              "slope_mae": 0.47928157639024305
+            }
+          },
+          "n": 250,
+          "paired_discrimination": {
+            "symbol_minus_no_context_regime_accuracy": {
+              "ci_95": [
+                -0.05999999999999994,
+                0.027999999999999914
+              ],
+              "difference": -0.016000000000000014
+            },
+            "symbol_minus_no_context_rho": {
+              "ci_95": [
+                -0.09383395256148348,
+                0.09400700160073765
+              ],
+              "difference": 0.0019098976493748254
+            }
+          },
+          "paired_forecast_mae": {
+            "semantic_minus_no_context": {
+              "ci_95": [
+                -0.8402248178848402,
+                -0.29535307562453134
+              ],
+              "mean": -0.5572198251662939
+            },
+            "symbol_minus_no_context": {
+              "ci_95": [
+                -0.018207253235323673,
+                0.5734948549974934
+              ],
+              "mean": 0.2634463161932095
+            },
+            "symbol_minus_semantic": {
+              "ci_95": [
+                0.48527090580930315,
+                1.169300512832429
+              ],
+              "mean": 0.8206661413595033
+            }
+          }
         }
       },
       "parsed_counts": {
         "abc_context": 1250,
         "abc_no_context": 1250,
-        "abc_symbol_context": 0
+        "abc_symbol_context": 1250
       },
       "record_counts": {
         "abc_context": 1250,
         "abc_no_context": 1250,
-        "abc_symbol_context": 0
-      }
-    },
-    "claude-opus-4-8": {
-      "curves": {
-        "0": {
-          "n": 0
-        },
-        "1": {
-          "n": 0
-        },
-        "2": {
-          "n": 0
-        },
-        "3": {
-          "n": 0
-        },
-        "4": {
-          "n": 0
-        }
-      },
-      "parsed_counts": {
-        "abc_context": 1250,
-        "abc_no_context": 1250,
-        "abc_symbol_context": 0
-      },
-      "record_counts": {
-        "abc_context": 1250,
-        "abc_no_context": 1250,
-        "abc_symbol_context": 0
-      }
-    },
-    "claude-opus-5": {
-      "curves": {
-        "0": {
-          "n": 0
-        },
-        "1": {
-          "n": 0
-        },
-        "2": {
-          "n": 0
-        },
-        "3": {
-          "n": 0
-        },
-        "4": {
-          "n": 0
-        }
-      },
-      "parsed_counts": {
-        "abc_context": 1249,
-        "abc_no_context": 1249,
-        "abc_symbol_context": 0
-      },
-      "record_counts": {
-        "abc_context": 1250,
-        "abc_no_context": 1250,
-        "abc_symbol_context": 0
-      }
-    },
-    "gemini-3.6-flash": {
-      "curves": {
-        "0": {
-          "n": 0
-        },
-        "1": {
-          "n": 0
-        },
-        "2": {
-          "n": 0
-        },
-        "3": {
-          "n": 0
-        },
-        "4": {
-          "n": 0
-        }
-      },
-      "parsed_counts": {
-        "abc_context": 1250,
-        "abc_no_context": 1250,
-        "abc_symbol_context": 0
-      },
-      "record_counts": {
-        "abc_context": 1250,
-        "abc_no_context": 1250,
-        "abc_symbol_context": 0
-      }
-    },
-    "gpt-5.6-sol": {
-      "curves": {
-        "0": {
-          "n": 0
-        },
-        "1": {
-          "n": 0
-        },
-        "2": {
-          "n": 0
-        },
-        "3": {
-          "n": 0
-        },
-        "4": {
-          "n": 0
-        }
-      },
-      "parsed_counts": {
-        "abc_context": 1250,
-        "abc_no_context": 1249,
-        "abc_symbol_context": 0
-      },
-      "record_counts": {
-        "abc_context": 1250,
-        "abc_no_context": 1250,
-        "abc_symbol_context": 0
+        "abc_symbol_context": 1250
       }
     }
   },
   "primary_stratum": "zero City C examples (k=0)",
   "response_sources": {
     "deepseek_comparison_arms": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/responses/symbol_control_matched_20260813",
+    "qwen3_4b_open_model_arms": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/responses/symbol_control_open_qwen3_4b_20260824",
     "symbol": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/responses"
   }
 }

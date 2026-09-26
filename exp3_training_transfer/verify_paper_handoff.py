@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prove that both registered campaigns completed and entered both paper PDFs."""
+"""Prove that every registered campaign entered the canonical paper PDF."""
 from __future__ import annotations
 
 import argparse
@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
-PAPER_ROOTS = (REPO / "paper", REPO / "paper" / "ICLR")
+PAPER_ROOTS = (REPO / "paper",)
 FAILURES = {
     "BOOT_FAIL", "CANCELLED", "DEADLINE", "FAILED", "NODE_FAIL",
     "OUT_OF_MEMORY", "PREEMPTED", "REVOKED", "TIMEOUT",
@@ -231,8 +231,8 @@ def verify_finalizer_logs(paper_ids: list[str]) -> None:
         ROOT / "coin_city_structural" / "logs" / f"finalize_{paper_ids[1]}.out",
     )
     markers = (
-        "Current structural-OOD and Polymarket-roster tables rendered; both PDFs compiled",
-        "Coin City tables rendered and both paper PDFs compiled",
+        "Current structural-OOD and Polymarket-roster tables rendered; ICLR PDF compiled",
+        "Coin City tables rendered and the ICLR paper compiled",
     )
     for path, marker in zip(paths, markers):
         if not path.is_file() or marker not in path.read_text(encoding="utf-8", errors="replace"):

@@ -101,18 +101,14 @@ audit before submitting and writes model, prompt-template, command, data-manifes
 Slurm job-ID provenance to `runs/`.
 
 After every full-grid job completes, one aggregation pass writes the archived JSON
-result and byte-identical tables into both paper trees:
+result and tables into the canonical paper tree:
 
 ```bash
 .runtime/oat_conda/bin/python exp3_training_transfer/mechanism_family/make_paper_outputs.py \
   --greedy-latex paper/tables/exp3c_structural_ood_greedy.tex \
-  --greedy-latex paper/ICLR/tables/exp3c_structural_ood_greedy.tex \
   --stochastic-latex paper/tables/exp3c_structural_ood_stochastic.tex \
-  --stochastic-latex paper/ICLR/tables/exp3c_structural_ood_stochastic.tex \
   --overall-latex paper/tables/exp3c_structural_ood_overall.tex \
-  --overall-latex paper/ICLR/tables/exp3c_structural_ood_overall.tex \
-  --secondary-latex paper/tables/exp3c_structural_ood_secondary.tex \
-  --secondary-latex paper/ICLR/tables/exp3c_structural_ood_secondary.tex
+  --secondary-latex paper/tables/exp3c_structural_ood_secondary.tex
 ```
 
 The generator requires the exact registered 42-training/6-base roster rather than
@@ -137,3 +133,13 @@ substitutions fail. Parse failures remain failed forecasts in
 the scientific analysis; the gate detects catastrophic protocol failure rather than selecting on
 perfect model behavior. The Polymarket Qwen3-8B/Llama-8B expansion remains downstream of these
 synthetic gates; its corpus, split, reward, and sealed test are not changed here.
+
+## Latent-mechanism extension
+
+The completed base and LoRA endpoints now have a frozen, appendix-only
+hidden-state study under [`mechanistic_probe/`](mechanistic_probe/README.md).
+It probes within-world episode gain and truth-minus-prior impulse responses,
+rather than the surface-confounded held-out world label, and compares base,
+causal-family, and population-prior endpoints on paired disclosed/undisclosed
+prompts. The seed-42 Qwen3-8B grid is a pilot; no training-mechanism claim is
+made until seeds 43/44 and the cross-model roster replicate it.

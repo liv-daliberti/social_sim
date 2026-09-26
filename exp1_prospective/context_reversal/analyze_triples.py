@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """Triple-level scoring of the frozen context-reversal cohort.
 
-The design's unit of evidence is the triple: one parent family and wording, with
-the evidence text, the prior and the named entity held identical across three
-stated relations. The three correct posteriors are distinct, so any predictor
-that reads only the evidence, the prior and the entity is constant within a
-triple and therefore cannot get more than one of the three items right, and can
-never get a whole triple right. That bound is arithmetic, not empirical; the
-shortcut predictors below only demonstrate it.
+The design groups positive, negative, and irrelevant contexts into triples with
+identical news, exact baseline probability, and named actor. A constant revision
+cannot satisfy both signed targets, so it cannot win a whole triple. Because the
+unchanged tolerance overlaps either signed target, a tiny nonzero revision can
+win two of three directional items. Exact posterior agreement has a separate
+one-third bound when the three tolerance intervals do not overlap.
 
 Offline: reads frozen plans and saved response records, verifies their hashes,
 writes results. No model is called and no record is modified.
@@ -36,7 +35,7 @@ STABILITY = 0.02
 AUDIT = re.compile(r'probability of X=1 is (\d+/\d+), replacing the initial (\d+/\d+)')
 
 ARMS = [
-    ('gpt56_sol', 'GPT-5.6 Sol', ['frontier_gpt56_sol.jsonl']),
+    ('gpt56_sol', 'GPT-5.6', ['frontier_gpt56_sol.jsonl']),
     ('claude_opus5', 'Claude Opus 5', ['frontier_claude_opus5.jsonl']),
     ('qwen3_32b_off', 'Qwen3-32B thinking off', ['disabled_shard*.jsonl']),
     ('qwen3_32b_on', 'Qwen3-32B thinking on', ['enabled_shard*.jsonl']),
@@ -179,7 +178,7 @@ def score_arm(label, patterns, units, triples):
 
 
 def score_shortcuts(triples):
-    """Every within-triple-constant predictor, including the oracle-informed best."""
+    """Selected constant revisions, including the best of the oracle revisions."""
     results = {}
     names = ['no_change', 'evidence_direction', 'always_up', 'best_constant_with_oracle']
     for name in names:
@@ -187,8 +186,8 @@ def score_shortcuts(triples):
         for members in triples.values():
             prior = frac(members[0]['oracle_baseline'])
             if name == 'best_constant_with_oracle':
-                # An adversary allowed to pick the single best constant change per
-                # triple, knowing every oracle. Still constant within the triple.
+                # Choose among the three oracle revisions. This candidate set
+                # does not optimize over every tolerance-admissible revision.
                 options = [frac(m['oracle_update']) - prior for m in members]
                 best = max(options, key=lambda c: sum(
                     (abs(c) <= EXACT) if m['expected_sign'] == 0 else (c * m['expected_sign'] > 0)
@@ -222,10 +221,10 @@ def main():
                                        'relations cover {-1, 0, +1}', 'three distinct correct answers'],
         'exact_tolerance': EXACT, 'stability_criterion': STABILITY,
         'impossibility_bound': {
-            'statement': ('A predictor that reads only the evidence text, the prior and the named entity is '
-                          'constant within a triple. The three correct posteriors are distinct, so it matches '
-                          'at most one of three items and never a whole triple.'),
-            'max_item_accuracy': '1/3', 'max_triple_accuracy': '0',
+            'statement': ('A constant revision cannot satisfy both signed targets. '
+                          'The unchanged tolerance allows a tiny nonzero revision to satisfy '
+                          'two of three directional targets, but never a whole triple.'),
+            'max_item_accuracy': '2/3', 'max_triple_accuracy': '0',
         },
         'shortcuts': score_shortcuts(triples),
         'arms': [score_arm(label, patterns, units, triples) for _, label, patterns in ARMS],

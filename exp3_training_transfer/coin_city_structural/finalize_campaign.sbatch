@@ -22,8 +22,4 @@ fi
   cd "$REPO/paper"
   latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 )
-(
-  cd "$REPO/paper/ICLR"
-  latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-)
-echo "Coin City tables rendered and both paper PDFs compiled"
+echo "Coin City tables rendered and the ICLR paper compiled"

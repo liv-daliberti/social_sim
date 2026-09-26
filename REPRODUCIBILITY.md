@@ -36,13 +36,20 @@ than the train-only Platt-calibrated market baseline.
    cases. Tables report complete-case `n`; Llama-3.1-8B has `n=242` at `k=0`.
    Arithmetic-only reparsing makes no new model calls, and unresolved outputs
    remain missing.
-5. The complete registered Coin City roster includes Llama-3.1-8B. Its
+5. Experiment 2's probe targets differ in what the displayed evidence can
+   determine. `exp2_v2/biased_news/analysis/compute_bayes_ceilings.py`
+   derives the Bayes-optimal ceiling for each: regime AUC 1.000 under a correct
+   semantic cue and .979 under an arbitrary label, full-slope R^2 .992, and
+   within-regime residual R^2 .000 at k=0 and .009 at k=4. The residual is a
+   probe-specificity control, not a target a model could hit; a null there is a
+   property of the design and must not be reported as a limit on a checkpoint.
+6. The complete registered Coin City roster includes Llama-3.1-8B. Its
    stochastic point estimate favors episode-matched training but its interval
    crosses zero. Its cue-use and evidence-override intervals exclude zero. The
    manuscript keeps Qwen3-8B in the main body and reports stochastic Qwen3-4B
    and Llama-8B comparators in the appendix; temperature-zero endpoints remain
    provenance rather than manuscript results.
-6. There is one physical manuscript tree, `paper/`; all source and output
+7. There is one physical manuscript tree, `paper/`; all source and output
    workflows target it directly.
 
 ## Reviewer commands

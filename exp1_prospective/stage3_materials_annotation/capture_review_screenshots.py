@@ -28,7 +28,6 @@ from exp1_prospective.stage3_materials_annotation.review_site.app import (
 
 HERE = SCRIPT.parent
 DEFAULT_OUTPUT = REPOSITORY / "paper/figures"
-DEFAULT_ICLR_OUTPUT = REPOSITORY / "paper/ICLR/figures"
 
 
 def capture(firefox: str, url: str, output: Path, width: int, height: int) -> None:
@@ -58,7 +57,6 @@ def main() -> None:
     parser.add_argument("--firefox", default=shutil.which("firefox") or "firefox")
     parser.add_argument("--port", type=int, default=5063)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--iclr-output-dir", type=Path, default=DEFAULT_ICLR_OUTPUT)
     args = parser.parse_args()
 
     with tempfile.TemporaryDirectory(prefix="stage3-review-capture-") as temporary:
@@ -146,11 +144,8 @@ def main() -> None:
             server.shutdown()
             thread.join(timeout=5)
 
-    args.iclr_output_dir.mkdir(parents=True, exist_ok=True)
     for path in paths.values():
-        shutil.copy2(path, args.iclr_output_dir / path.name)
         print(f"wrote {path}")
-    print(f"copied screenshots to {args.iclr_output_dir}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,40 @@
+{
+  "adapter_sha256": "d36d5c1203fd68b049f3e4a606c4d4e5f8254c89cc50a215f0e330883b9f157c",
+  "authorization": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_liv_full_authorization_20260825T230213Z.json",
+  "completed_at": "2026-08-25T23:04:00Z",
+  "gate": {
+    "criterion": "two responses received and parsed for each model without inspecting holdout outputs",
+    "passed_models": [
+      "gpt-5.6-sol",
+      "claude-opus-4-8"
+    ]
+  },
+  "models": {
+    "claude-opus-4-8": {
+      "manifest": "exp3_training_transfer/polymarket/reports/exp4_hosted/exp4_hosted_claude-opus-4-8_dev_draw0.manifest.json",
+      "manifest_sha256": "20a6b0c75ed191a8b6abf69d64d87a872c211af3e96da5f72f727b4372dea26c",
+      "parsed": 2,
+      "raw_sha256": "8b5293f9bd1af5004304fc876352cb6fdc424936b3df9617d9e8becf9905b05e",
+      "received": 2,
+      "transport_retries": 0,
+      "values": [
+        0.03,
+        0.02
+      ]
+    },
+    "gpt-5.6-sol": {
+      "manifest": "exp3_training_transfer/polymarket/reports/exp4_hosted/exp4_hosted_gpt-5.6-sol_dev_draw0.manifest.json",
+      "manifest_sha256": "2d1d02dd1f9569416f0109b3a440c39e5f2f5f644436cdeac03eff97df239fde",
+      "parsed": 2,
+      "raw_sha256": "b86b00c5a6753df7ffe32bae80c774213044db373babe8db9d28d641d634ac62",
+      "received": 2,
+      "transport_retries": 0,
+      "values": [
+        0.925,
+        0.024
+      ]
+    }
+  },
+  "next_action": "open_five_registered_holdout_draws_for_each_passed_model",
+  "status": "canary_gate_passed"
+}

@@ -73,7 +73,7 @@ def render(completion: dict, reference: dict) -> tuple[str, str]:
     if original["model_key"] != "qwen3_32b":
         raise ValueError("Original reference model must be Qwen3-32B")
     probability_rows = []
-    for label, summary in [("Original constrained, thinking disabled", original)] + [
+    for label, summary in [("Constrained, thinking disabled", original)] + [
             (label, completion["arms"][f"probability:{key}"]["metrics"]) for key, label in PROBABILITY]:
         metrics = summary["primary"]
         broken = summary["raw_updates"]["broken"]["new_news"]["mean_absolute_pp"]

@@ -1,0 +1,85 @@
+{
+  "amended_at": "20260825T210434Z",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "registration": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_registration_20260825T203304Z.json",
+  "registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+  "prior_scheduler_ledger": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_scheduler_20260825T203954Z.json",
+  "prior_scheduler_ledger_sha256": "9587b8eeb02006fb7f605c248ab4f6337973cf281a12682ac3c39ed0477a41bf",
+  "canary_gate_amendment": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_canary_gate_amendment_20260825T205750Z.json",
+  "canary_gate_amendment_sha256": "3a6d16616956e2d58eee302d030f51d605fa2aecc1b833d45a77517de4d933c8",
+  "scheduler_correction": {
+    "account": "mltheory",
+    "corrected_partition": "all",
+    "prior_effective_partition_on_full_training_jobs": "mltheory",
+    "trigger": "Qwen jobs became BadConstraints after their successful canary because the retained full jobs were effectively assigned to the mltheory partition.",
+    "action": "Updated all six full-training jobs in place to partition all.",
+    "preserved": [
+      "job_ids",
+      "model_checkpoints",
+      "seeds",
+      "dependencies",
+      "walltimes",
+      "resources",
+      "scientific_settings"
+    ],
+    "scientific_settings_changed": false
+  },
+  "qwen3_1_7b": {
+    "successful_canary_job_id": "30890323",
+    "canary_state": "COMPLETED",
+    "canary_exit_code": "0:0",
+    "development_tasks": 512,
+    "draws_per_task": 5,
+    "parse_coverage": 1,
+    "full_training_jobs": {
+      "42": {
+        "job_id": "30890065",
+        "state": "RUNNING",
+        "start_time": "2026-08-25T17:02:31-04:00",
+        "node": "node208"
+      },
+      "43": {
+        "job_id": "30890108",
+        "state": "RUNNING",
+        "start_time": "2026-08-25T17:02:35-04:00",
+        "node": "node208"
+      },
+      "44": {
+        "job_id": "30890109",
+        "state": "RUNNING",
+        "start_time": "2026-08-25T17:02:42-04:00",
+        "node": "node208"
+      }
+    },
+    "evaluation_job_id": "30890110",
+    "evaluation_dependency": "afterok:30890065:30890108:30890109"
+  },
+  "llama3_2_3b": {
+    "failed_strict_gate_canary_job_id": "30890111",
+    "replacement_amended_canary_job_id": "30890626",
+    "replacement_canary_state": "RUNNING",
+    "replacement_canary_start_time": "2026-08-25T17:01:46-04:00",
+    "replacement_canary_node": "node208",
+    "preserved_full_training_jobs": {
+      "42": {
+        "job_id": "30890112",
+        "dependency": "afterok:30890626",
+        "state": "PENDING"
+      },
+      "43": {
+        "job_id": "30890113",
+        "dependency": "afterok:30890626",
+        "state": "PENDING"
+      },
+      "44": {
+        "job_id": "30890114",
+        "dependency": "afterok:30890626",
+        "state": "PENDING"
+      }
+    },
+    "evaluation_job_id": "30890115",
+    "evaluation_dependency": "afterok:30890112:30890113:30890114"
+  },
+  "hosted_holdout_calls_started": false,
+  "status": "local_extension_running"
+}

@@ -1,0 +1,24 @@
+{
+  "amendment_class": "hosted_runner_formatting_only_before_api_calls",
+  "amended_at": "20260825T211258Z",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "parent_runner_ledger": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_hosted_runner_20260825T204419Z.json",
+  "parent_runner_ledger_sha256": "4b56d10921ab99eaf5ffc43519b211f3cdd5f83f8ac9693b930d9c79d0074b06",
+  "runner": "exp3_training_transfer/polymarket/scripts/evaluate_hosted_scale_holdout.py",
+  "prior_runner_sha256": "344813cfa617963e63c5dd56a3f8353bbef2039475506f59f0dc0d037676092b",
+  "amended_runner_sha256": "59a64152450cc414f0c60ceb38daadfc0a522fa7c28e2fbee4c8931f8516596f",
+  "changes": [
+    "Applied Black formatting.",
+    "Removed an unused math import.",
+    "No executable control flow, provider setting, prompt, parser, scoring rule, or output schema changed."
+  ],
+  "validation": {
+    "black_check": "pass",
+    "flake8": "pass",
+    "focused_tests": "pending_rerun_after_formatting"
+  },
+  "hosted_development_calls_started": false,
+  "hosted_holdout_calls_started": false,
+  "scientific_settings_changed": false,
+  "status": "registered_before_any_api_call"
+}

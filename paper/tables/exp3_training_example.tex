@@ -11,15 +11,15 @@
 % prompt keeps its own.
 \begin{center}
 \begin{minipage}{\linewidth}
-\captionof{table}{\textbf{One training episode, and what each policy is rewarded against.}
-Panel~A is the prompt for episode \texttt{train:1:k2}, abridged from the rendered
-text. Panel~B is the prompt--key pairing used during training, drawn for four episodes
-at one evidence depth: $P_i$ is episode $i$'s prompt and $\mathbf y^\star_i$ its
-ten-answer key. Episode-matched and population-prior training use byte-identical prompts
-and the same multiset of keys; only the pairing differs. The control shifts
-cyclically across all 1,200 episodes at a depth, so its key is a real key drawn
-from the same distribution but never this prompt's, and no reward can be earned by
-reading this row's references. Base is untrained and receives no supervision.}
+\captionof{table}{\textbf{A training prompt and its reward targets.}
+Panel~A shows an abridged prompt with two target observations. Panel~B illustrates
+answer-vector assignments for four episodes at one evidence depth: $P_i$ denotes
+a prompt and $\mathbf y_i^\star$ its ten-answer vector. Episode-matched training
+uses the corresponding vector; the population-prior control uses a nonzero
+cyclic shift across all 1,200 episodes at that depth. Prompts and the multiset
+of vectors are identical across these two conditions, including the association
+between evidence depth and gain band. The flat-response diagnostic also changes
+displayed inputs. The untrained base model receives no reward supervision.}
 \label{tab:exp3-training-policies}
 \scriptsize
 \setlength{\tabcolsep}{2.5pt}

@@ -21,9 +21,7 @@ ROOT = HERE.parent
 DEFAULT_OUTPUT = HERE / "build"
 PARQUET_COMPRESSION = "zstd"
 DATASET_PLACEHOLDER = "ANONYMOUS_NAMESPACE/ANONYMOUS_DATASET"
-REPO_ID_PATTERN = re.compile(
-    r"[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*"
-)
+REPO_ID_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*")
 
 
 def read_json(path: Path) -> Any:
@@ -39,7 +37,9 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
             try:
                 value = json.loads(line)
             except json.JSONDecodeError as exc:
-                raise ValueError(f"Invalid JSONL at {path}:{line_number}: {exc}") from exc
+                raise ValueError(
+                    f"Invalid JSONL at {path}:{line_number}: {exc}"
+                ) from exc
             if not isinstance(value, dict):
                 raise ValueError(f"Expected an object at {path}:{line_number}")
             rows.append(value)
@@ -209,9 +209,7 @@ def build_exp1(output: Path, counts: dict[str, int]) -> None:
                 for run in packet.get("runs", []):
                     rows.append({**common, **packet_fields, **run})
 
-    counts["exp1_updates"] = write_parquet(
-        rows, output / "data/exp1/updates.parquet"
-    )
+    counts["exp1_updates"] = write_parquet(rows, output / "data/exp1/updates.parquet")
 
     material_path = base / "stage3_materials_annotation/generated_v5/public_items.jsonl"
     counts["exp1_review_materials"] = write_parquet(
@@ -224,7 +222,9 @@ def build_exp1(output: Path, counts: dict[str, int]) -> None:
         base / "data/results/threshold_robustness.json",
         artifacts / "threshold_robustness.json",
     )
-    agreement_path = base / "stage3_materials_annotation/data/exports/agreement_current.json"
+    agreement_path = (
+        base / "stage3_materials_annotation/data/exports/agreement_current.json"
+    )
     if agreement_path.exists():
         agreement = read_json(agreement_path)
         human_key = dict(agreement.get("human_key", {}))
@@ -255,8 +255,7 @@ def build_exp1(output: Path, counts: dict[str, int]) -> None:
 
 def build_exp2(output: Path, counts: dict[str, int]) -> None:
     root = (
-        ROOT
-        / "exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4"
+        ROOT / "exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4"
     )
     design = root / "design"
     arm_files = {
@@ -305,7 +304,9 @@ def build_exp2(output: Path, counts: dict[str, int]) -> None:
 
     response_rows: list[dict[str, Any]] = []
     for path in response_files:
-        analysis_set = "symbol_control_matched" if path.parent == matched_dir else "production"
+        analysis_set = (
+            "symbol_control_matched" if path.parent == matched_dir else "production"
+        )
         for response in read_jsonl(path):
             arm = response.get("arm")
             task_id = response.get("task_id")
@@ -368,7 +369,9 @@ def build_arrow_family(
         counts[f"{count_prefix}_{split_name}"] = convert_arrow(source, destination)
 
 
-def _score_rows(paths: Iterable[Path], relative_to: Path = ROOT) -> list[dict[str, Any]]:
+def _score_rows(
+    paths: Iterable[Path], relative_to: Path = ROOT
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for path in paths:
         if not path.exists():
@@ -397,8 +400,10 @@ def build_exp3_coin_city(output: Path, counts: dict[str, int]) -> None:
     data = root / "data"
     arrow_sources = {
         "train_causal": data / "causal/train/train/data-00000-of-00001.arrow",
-        "train_population_prior": data / "population_prior/train/train/data-00000-of-00001.arrow",
-        "train_structureless": data / "structureless/train/train/data-00000-of-00001.arrow",
+        "train_population_prior": data
+        / "population_prior/train/train/data-00000-of-00001.arrow",
+        "train_structureless": data
+        / "structureless/train/train/data-00000-of-00001.arrow",
         "test": data / "causal/heldout/train/data-00000-of-00001.arrow",
     }
     build_arrow_family(
@@ -465,7 +470,10 @@ def build_exp4(output: Path, counts: dict[str, int]) -> None:
     )
 
     update_root = root / "reports/exp3b_exp1_reapplication_j30535058"
-    update_files = [update_root / f"{name}.jsonl" for name in ("base", "seed_42", "seed_43", "seed_44")]
+    update_files = [
+        update_root / f"{name}.jsonl"
+        for name in ("base", "seed_42", "seed_43", "seed_44")
+    ]
     counts["exp4_evidence_updates"] = write_parquet(
         _score_rows(update_files), output / "data/exp4/evidence_updates.parquet"
     )
@@ -560,7 +568,11 @@ def write_release_metadata(output: Path, counts: dict[str, int]) -> None:
 
 def prepare_output(output: Path, force: bool) -> None:
     resolved = output.resolve()
-    if resolved == Path("/") or resolved == ROOT.resolve() or resolved == HERE.resolve():
+    if (
+        resolved == Path("/")
+        or resolved == ROOT.resolve()
+        or resolved == HERE.resolve()
+    ):
         raise ValueError(f"Unsafe output directory: {resolved}")
     if output.exists():
         if not force:
@@ -597,7 +609,9 @@ def main() -> int:
     build_mechanism_study(output, counts)
     write_release_metadata(output, counts)
 
-    total_bytes = sum(path.stat().st_size for path in output.rglob("*") if path.is_file())
+    total_bytes = sum(
+        path.stat().st_size for path in output.rglob("*") if path.is_file()
+    )
     print(f"Built {output} ({total_bytes / 1024 / 1024:.1f} MiB)")
     for key, value in sorted(counts.items()):
         print(f"  {key}: {value:,} rows")

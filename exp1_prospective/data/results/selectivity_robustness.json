@@ -1,0 +1,369 @@
+{
+  "analysis": "exp1_selectivity_robustness",
+  "generated_at_utc": "2026-08-25T20:27:32.447712+00:00",
+  "record_source": "consistency_report_2026-06-17.json",
+  "frozen_enumeration_reconciliation": {
+    "claude-opus-4-8": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 1032,
+        "anti_H1": 1027,
+        "orthogonal": 1066
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 1032,
+        "anti_H1": 1020,
+        "orthogonal": 1059
+      },
+      "exact_match": false,
+      "runs_in_aggregate_not_enumerated": 14
+    },
+    "gpt-5.4": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 1304,
+        "anti_H1": 1316,
+        "orthogonal": 1293
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 1300,
+        "anti_H1": 1316,
+        "orthogonal": 1293
+      },
+      "exact_match": false,
+      "runs_in_aggregate_not_enumerated": 4
+    },
+    "DeepSeek-V4-Pro": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 1459,
+        "anti_H1": 1470,
+        "orthogonal": 1466
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 1459,
+        "anti_H1": 1470,
+        "orthogonal": 1466
+      },
+      "exact_match": true,
+      "runs_in_aggregate_not_enumerated": 0
+    },
+    "qwen2.5:72b": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 897,
+        "anti_H1": 898,
+        "orthogonal": 897
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 897,
+        "anti_H1": 898,
+        "orthogonal": 897
+      },
+      "exact_match": true,
+      "runs_in_aggregate_not_enumerated": 0
+    },
+    "llama3.3:70b": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 894,
+        "anti_H1": 894,
+        "orthogonal": 894
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 894,
+        "anti_H1": 894,
+        "orthogonal": 894
+      },
+      "exact_match": true,
+      "runs_in_aggregate_not_enumerated": 0
+    },
+    "llama3.1:70b": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 830,
+        "anti_H1": 829,
+        "orthogonal": 831
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 830,
+        "anti_H1": 829,
+        "orthogonal": 831
+      },
+      "exact_match": true,
+      "runs_in_aggregate_not_enumerated": 0
+    },
+    "qwen2.5:32b": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 897,
+        "anti_H1": 898,
+        "orthogonal": 898
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 897,
+        "anti_H1": 898,
+        "orthogonal": 898
+      },
+      "exact_match": true,
+      "runs_in_aggregate_not_enumerated": 0
+    },
+    "qwen2.5:14b": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 900,
+        "anti_H1": 900,
+        "orthogonal": 900
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 900,
+        "anti_H1": 900,
+        "orthogonal": 900
+      },
+      "exact_match": true,
+      "runs_in_aggregate_not_enumerated": 0
+    },
+    "llama3.1:8b": {
+      "aggregate_records_by_arm": {
+        "pro_H1": 1803,
+        "anti_H1": 1801,
+        "orthogonal": 1800
+      },
+      "enumerated_records_by_arm": {
+        "pro_H1": 1803,
+        "anti_H1": 1801,
+        "orthogonal": 1800
+      },
+      "exact_match": true,
+      "runs_in_aggregate_not_enumerated": 0
+    }
+  },
+  "runs_without_june10_packet_total": 346,
+  "excluded_models": [
+    "qwen2.5:7b"
+  ],
+  "frozen_arm_coverage": {
+    "claude-opus-4-8": {
+      "markets_in_report": 100,
+      "markets_all_three_arms": 73,
+      "markets_with_orthogonal": 82,
+      "markets_with_directional": 77,
+      "frozen_sensitivity_ratio": 24.036
+    },
+    "gpt-5.4": {
+      "markets_in_report": 100,
+      "markets_all_three_arms": 99,
+      "markets_with_orthogonal": 99,
+      "markets_with_directional": 99,
+      "frozen_sensitivity_ratio": 8.213
+    },
+    "DeepSeek-V4-Pro": {
+      "markets_in_report": 100,
+      "markets_all_three_arms": 100,
+      "markets_with_orthogonal": 100,
+      "markets_with_directional": 100,
+      "frozen_sensitivity_ratio": 8.856
+    },
+    "qwen2.5:72b": {
+      "markets_in_report": 120,
+      "markets_all_three_arms": 100,
+      "markets_with_orthogonal": 100,
+      "markets_with_directional": 100,
+      "frozen_sensitivity_ratio": 4.234
+    },
+    "llama3.3:70b": {
+      "markets_in_report": 100,
+      "markets_all_three_arms": 100,
+      "markets_with_orthogonal": 100,
+      "markets_with_directional": 100,
+      "frozen_sensitivity_ratio": 6.35
+    },
+    "llama3.1:70b": {
+      "markets_in_report": 100,
+      "markets_all_three_arms": 99,
+      "markets_with_orthogonal": 99,
+      "markets_with_directional": 99,
+      "frozen_sensitivity_ratio": 4.601
+    },
+    "qwen2.5:32b": {
+      "markets_in_report": 120,
+      "markets_all_three_arms": 100,
+      "markets_with_orthogonal": 100,
+      "markets_with_directional": 100,
+      "frozen_sensitivity_ratio": 3.186
+    },
+    "qwen2.5:14b": {
+      "markets_in_report": 120,
+      "markets_all_three_arms": 100,
+      "markets_with_orthogonal": 100,
+      "markets_with_directional": 100,
+      "frozen_sensitivity_ratio": 2.888
+    },
+    "llama3.1:8b": {
+      "markets_in_report": 100,
+      "markets_all_three_arms": 100,
+      "markets_with_orthogonal": 100,
+      "markets_with_directional": 100,
+      "frozen_sensitivity_ratio": 1.946
+    }
+  },
+  "shared_word_count_band": [
+    66,
+    114
+  ],
+  "packet_surface_by_arm": {
+    "pro_H1": {
+      "mean_words": 97.3,
+      "mean_digits": 7.4,
+      "n": 300
+    },
+    "anti_H1": {
+      "mean_words": 96.2,
+      "mean_digits": 6.8,
+      "n": 300
+    },
+    "orthogonal": {
+      "mean_words": 85.7,
+      "mean_digits": 3.7,
+      "n": 300
+    }
+  },
+  "per_model": {
+    "claude-opus-4-8": {
+      "label": "Claude Opus~4.8",
+      "frozen_sensitivity_ratio": 24.036,
+      "reproduced_sensitivity_ratio": 24.23,
+      "difference_pp": 10.69,
+      "auc_within_market": 0.984,
+      "markets_directional_exceeds_orthogonal": 77,
+      "markets_paired": 77,
+      "sensitivity_all_three_arm_markets": 23.69,
+      "sensitivity_on_markets_claude_covers": 23.69,
+      "sensitivity_on_markets_claude_misses": 268.33,
+      "sensitivity_length_matched": 24.29,
+      "spearman_words_vs_movement": -0.055439404030780376,
+      "spearman_digits_vs_movement": 0.058059370205031394,
+      "runs_without_june10_packet": 135
+    },
+    "gpt-5.4": {
+      "label": "GPT-5.4",
+      "frozen_sensitivity_ratio": 8.213,
+      "reproduced_sensitivity_ratio": 8.22,
+      "difference_pp": 8.4,
+      "auc_within_market": 0.994,
+      "markets_directional_exceeds_orthogonal": 99,
+      "markets_paired": 99,
+      "sensitivity_all_three_arm_markets": 8.22,
+      "sensitivity_on_markets_claude_covers": 8.41,
+      "sensitivity_on_markets_claude_misses": 7.63,
+      "sensitivity_length_matched": 8.14,
+      "spearman_words_vs_movement": -0.03102296789764529,
+      "spearman_digits_vs_movement": 0.04787882264799312,
+      "runs_without_june10_packet": 211
+    },
+    "DeepSeek-V4-Pro": {
+      "label": "DeepSeek V4-Pro",
+      "frozen_sensitivity_ratio": 8.856,
+      "reproduced_sensitivity_ratio": 8.86,
+      "difference_pp": 11.24,
+      "auc_within_market": 0.967,
+      "markets_directional_exceeds_orthogonal": 100,
+      "markets_paired": 100,
+      "sensitivity_all_three_arm_markets": 8.86,
+      "sensitivity_on_markets_claude_covers": 9.67,
+      "sensitivity_on_markets_claude_misses": 7.21,
+      "sensitivity_length_matched": 8.81,
+      "spearman_words_vs_movement": -0.056052058940128976,
+      "spearman_digits_vs_movement": 0.08096683175196547,
+      "runs_without_june10_packet": 0
+    },
+    "qwen2.5:72b": {
+      "label": "Qwen~2.5-72B",
+      "frozen_sensitivity_ratio": 4.234,
+      "reproduced_sensitivity_ratio": 4.23,
+      "difference_pp": 9.63,
+      "auc_within_market": 0.95,
+      "markets_directional_exceeds_orthogonal": 100,
+      "markets_paired": 100,
+      "sensitivity_all_three_arm_markets": 4.23,
+      "sensitivity_on_markets_claude_covers": 4.25,
+      "sensitivity_on_markets_claude_misses": 4.2,
+      "sensitivity_length_matched": 4.21,
+      "spearman_words_vs_movement": -0.014694307649432362,
+      "spearman_digits_vs_movement": 0.08578306156788346,
+      "runs_without_june10_packet": 0
+    },
+    "llama3.3:70b": {
+      "label": "Llama~3.3-70B",
+      "frozen_sensitivity_ratio": 6.35,
+      "reproduced_sensitivity_ratio": 6.35,
+      "difference_pp": 12.27,
+      "auc_within_market": 0.989,
+      "markets_directional_exceeds_orthogonal": 100,
+      "markets_paired": 100,
+      "sensitivity_all_three_arm_markets": 6.35,
+      "sensitivity_on_markets_claude_covers": 5.96,
+      "sensitivity_on_markets_claude_misses": 7.43,
+      "sensitivity_length_matched": 6.35,
+      "spearman_words_vs_movement": -0.06438312504606877,
+      "spearman_digits_vs_movement": 0.04292118971795599,
+      "runs_without_june10_packet": 0
+    },
+    "llama3.1:70b": {
+      "label": "Llama~3.1-70B",
+      "frozen_sensitivity_ratio": 4.601,
+      "reproduced_sensitivity_ratio": 4.6,
+      "difference_pp": 11.86,
+      "auc_within_market": 0.978,
+      "markets_directional_exceeds_orthogonal": 99,
+      "markets_paired": 99,
+      "sensitivity_all_three_arm_markets": 4.6,
+      "sensitivity_on_markets_claude_covers": 4.56,
+      "sensitivity_on_markets_claude_misses": 4.7,
+      "sensitivity_length_matched": 4.6,
+      "spearman_words_vs_movement": -0.00026835904102029553,
+      "spearman_digits_vs_movement": 0.02350531149805477,
+      "runs_without_june10_packet": 0
+    },
+    "qwen2.5:32b": {
+      "label": "Qwen~2.5-32B",
+      "frozen_sensitivity_ratio": 3.186,
+      "reproduced_sensitivity_ratio": 3.19,
+      "difference_pp": 8.67,
+      "auc_within_market": 0.906,
+      "markets_directional_exceeds_orthogonal": 100,
+      "markets_paired": 100,
+      "sensitivity_all_three_arm_markets": 3.19,
+      "sensitivity_on_markets_claude_covers": 3.21,
+      "sensitivity_on_markets_claude_misses": 3.14,
+      "sensitivity_length_matched": 3.17,
+      "spearman_words_vs_movement": -0.028415809933736328,
+      "spearman_digits_vs_movement": 0.09905103698306346,
+      "runs_without_june10_packet": 0
+    },
+    "qwen2.5:14b": {
+      "label": "Qwen~2.5-14B",
+      "frozen_sensitivity_ratio": 2.888,
+      "reproduced_sensitivity_ratio": 2.89,
+      "difference_pp": 7.68,
+      "auc_within_market": 0.852,
+      "markets_directional_exceeds_orthogonal": 100,
+      "markets_paired": 100,
+      "sensitivity_all_three_arm_markets": 2.89,
+      "sensitivity_on_markets_claude_covers": 2.93,
+      "sensitivity_on_markets_claude_misses": 2.78,
+      "sensitivity_length_matched": 2.87,
+      "spearman_words_vs_movement": -0.010123795038787188,
+      "spearman_digits_vs_movement": 0.08408183857860016,
+      "runs_without_june10_packet": 0
+    },
+    "llama3.1:8b": {
+      "label": "Llama~3.1-8B",
+      "frozen_sensitivity_ratio": 1.946,
+      "reproduced_sensitivity_ratio": 1.95,
+      "difference_pp": 5.6,
+      "auc_within_market": 0.791,
+      "markets_directional_exceeds_orthogonal": 100,
+      "markets_paired": 100,
+      "sensitivity_all_three_arm_markets": 1.95,
+      "sensitivity_on_markets_claude_covers": 1.91,
+      "sensitivity_on_markets_claude_misses": 2.06,
+      "sensitivity_length_matched": 1.93,
+      "spearman_words_vs_movement": -0.008583831491275984,
+      "spearman_digits_vs_movement": 0.005830452276097803,
+      "runs_without_june10_packet": 0
+    }
+  }
+}

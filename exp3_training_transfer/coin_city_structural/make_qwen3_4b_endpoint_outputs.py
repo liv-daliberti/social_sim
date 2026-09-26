@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Validate and render the completed Qwen3-4B Coin City stochastic endpoint.
 
-The full registered renderer remains fail-closed on the three-model roster.  This
-slice renderer is separately fail-closed on the exact nine trained Qwen3-4B runs
+Slice renderer; fail-closed on the exact nine trained Qwen3-4B runs
 and the Qwen3-4B base endpoint.  It uses the registered five-draw files and the
 same seed-first, paired-task bootstrap as the full renderer.
 """
@@ -265,7 +264,7 @@ def main() -> None:
     estimates = analyze(rows, args.bootstrap_repetitions, args.bootstrap_seed)
     artifact = {
         "analysis": "qwen3_4b_round300_five_draw_endpoint",
-        "status": "qwen3_4b_decode_complete_larger_models_pending",
+        "status": "complete_round300_five_draw_endpoint",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "ledger": str(args.ledger.relative_to(REPO)),
         "ledger_sha256": sha256(args.ledger),
@@ -292,7 +291,7 @@ def main() -> None:
         "make_interim_outputs.py", "make_qwen3_4b_endpoint_outputs.py"
     )
     cue_table = render_cue_table(estimates)
-    paper_roots = args.paper_root or [REPO / "paper", REPO / "paper" / "ICLR"]
+    paper_roots = args.paper_root or [REPO / "paper"]
     for paper_root in paper_roots:
         destination = paper_root / "tables" / "exp3_coin_qwen3_4b_stochastic.tex"
         destination.parent.mkdir(parents=True, exist_ok=True)

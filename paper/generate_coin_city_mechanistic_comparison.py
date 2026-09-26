@@ -369,7 +369,7 @@ def make_figure(runs: list[dict], output_base: Path) -> None:
         sharex=True,
         squeeze=False,
     )
-    limits = ((0.46, 1.04), (-0.04, 0.93), (-0.035, 0.17))
+    limits = ((0.46, 1.04), (-0.04, 1.02), (-0.035, 0.17))
     for row_index, loaded in enumerate(runs):
         spec = loaded["spec"]
         conditions = loaded["results"]["primary"]["conditions"]

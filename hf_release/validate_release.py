@@ -76,7 +76,9 @@ def validate(root: Path, *, allowed_repo_id: str | None = None) -> list[str]:
         for key, minimum in EXPECTED_MINIMUMS.items():
             actual = counts.get(key)
             if actual is None or actual < minimum:
-                errors.append(f"{key}: expected at least {minimum:,} rows, got {actual!r}")
+                errors.append(
+                    f"{key}: expected at least {minimum:,} rows, got {actual!r}"
+                )
 
     sums_path = root / "SHA256SUMS"
     if sums_path.is_file():
@@ -89,13 +91,19 @@ def validate(root: Path, *, allowed_repo_id: str | None = None) -> list[str]:
             if not path.is_file():
                 errors.append(f"SHA256SUMS:{line_number}: missing {relative}")
             elif sha256(path) != expected:
-                errors.append(f"SHA256SUMS:{line_number}: checksum mismatch for {relative}")
+                errors.append(
+                    f"SHA256SUMS:{line_number}: checksum mismatch for {relative}"
+                )
 
     for path in sorted(root.rglob("*")):
         if not path.is_file():
             continue
         relative = str(path.relative_to(root))
-        if path.suffix.lower() in TEXT_SUFFIXES or path.name in {"README.md", "LICENSE.md", "SHA256SUMS"}:
+        if path.suffix.lower() in TEXT_SUFFIXES or path.name in {
+            "README.md",
+            "LICENSE.md",
+            "SHA256SUMS",
+        }:
             text = path.read_text(encoding="utf-8", errors="replace")
             # An explicitly authorized personal-namespace upload must place its
             # exact repository ID in the dataset card so the loading examples
@@ -118,11 +126,17 @@ def validate(root: Path, *, allowed_repo_id: str | None = None) -> list[str]:
                     for chunk in column.chunks:
                         for index, value in enumerate(chunk.to_pylist()):
                             if value:
-                                scan_text(f"{relative}:{column_name}:{index}", value, errors)
+                                scan_text(
+                                    f"{relative}:{column_name}:{index}", value, errors
+                                )
                                 if errors:
                                     return errors
 
-    readme = (root / "README.md").read_text(encoding="utf-8") if (root / "README.md").exists() else ""
+    readme = (
+        (root / "README.md").read_text(encoding="utf-8")
+        if (root / "README.md").exists()
+        else ""
+    )
     if "configs:" not in readme or "license: other" not in readme:
         errors.append("README.md is missing dataset configs or license metadata")
     return errors
@@ -143,7 +157,9 @@ def main() -> int:
             print(f"- {error}")
         return 1
     files = sum(1 for path in args.release.rglob("*") if path.is_file())
-    size = sum(path.stat().st_size for path in args.release.rglob("*") if path.is_file())
+    size = sum(
+        path.stat().st_size for path in args.release.rglob("*") if path.is_file()
+    )
     print(f"Release validation passed: {files} files, {size / 1024 / 1024:.1f} MiB")
     return 0
 

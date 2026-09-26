@@ -27,7 +27,9 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*", args.repo_id):
+    if not re.fullmatch(
+        r"[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*", args.repo_id
+    ):
         parser.error("repo_id must be namespace/repository-name")
 
     errors = validate(
@@ -53,7 +55,11 @@ def main() -> int:
     identity = api.whoami()
     username = identity.get("name") or identity.get("fullname")
     namespace = args.repo_id.split("/", 1)[0]
-    if username and namespace.casefold() == str(username).casefold() and not args.allow_personal_namespace:
+    if (
+        username
+        and namespace.casefold() == str(username).casefold()
+        and not args.allow_personal_namespace
+    ):
         print(
             "Refusing to publish an anonymous-review artifact under the logged-in "
             "personal namespace. Use a neutral organization, or pass "

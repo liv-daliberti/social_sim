@@ -1,0 +1,84 @@
+{
+  "canary_gate": "feasibility_only_no_performance_threshold",
+  "code_sha256": {
+    "advance": "8eed2f1a2c2edc9eac11d3eafad310cad28ee7859434f9122545ef0990876c06",
+    "evaluator_wrapper": "c279050fc274e1fa875e5db191bc81cc0ce6d9567204267930d651bc4a497a95",
+    "finalizer": "b131af26090e9f792e454b4600dc9b5bf976f1eb465efd6fcbb70a9df67e1213",
+    "frozen_parent_evaluator": "4130fd351af884bd5d0b3b20c2b6e7335eed5abe93a91017f1d056ff171ec2b0",
+    "launcher": "5e2f50c7ff21fbb168b1d03a49978b6c7d6d80fe16151b9f6b71d79d30d44054",
+    "locked_evaluator": "caef29ad71195114199a806c3be8280cd70a8610e2226022468acc58a3bee706",
+    "parent_ledger": "b19f4cd0b90c55a6417a72856ca8cbceb048c006e4e9c5c4974f00cd68e6f511",
+    "parent_protocol": "228ba2bc0ae35c29984f4993244e931b01b1ca60947d70ecfa4eea1da9516a56",
+    "protocol": "0b94766fc0109c286526b7723745996ad1ef874e8610e92492ea773f878f7f70",
+    "release": "6b19a1bab95b1f95d146badf835ff7f5ab342f26cfc49286b09a0d261a9b5e39",
+    "renderer": "2b0aee2be0c19eee98c7c6f22ef124ae70f6b187c42808115893f13d625f1d7d",
+    "trainer": "f820aba42db936595f3b07bd020d256dac3439b8d74ffffcce44c799b370d5ae"
+  },
+  "decision": "run three dense Qwen3-32B seeds; retain Qwen3-14B; exclude Qwen3-30B-A3B",
+  "dry_run": false,
+  "execution_changes": {
+    "a6000_gpus": 4,
+    "learner_world_size": 2,
+    "policy_buffer_per_learner": 64,
+    "rollout_batch_size_per_learner": 8,
+    "rollout_tensor_parallel": 2,
+    "zero_stage": 3
+  },
+  "held_parent_jobs": {
+    "30870546": {
+      "dependency": "afterok:30870545(unfulfilled)",
+      "reason": "JobHeldUser",
+      "start_time": "Unknown",
+      "state": "PENDING"
+    },
+    "30870547": {
+      "dependency": "afterok:30870545(unfulfilled)",
+      "reason": "JobHeldUser",
+      "start_time": "Unknown",
+      "state": "PENDING"
+    },
+    "30870548": {
+      "dependency": "afterok:30870545(unfulfilled)",
+      "reason": "JobHeldUser",
+      "start_time": "Unknown",
+      "state": "PENDING"
+    },
+    "30870549": {
+      "dependency": "afterok:30870546(unfulfilled),afterok:30870547(unfulfilled),afterok:30870548(unfulfilled)",
+      "reason": "JobHeldUser",
+      "start_time": "Unknown",
+      "state": "PENDING"
+    }
+  },
+  "holdout_manifest_sha256": "f210b7cc0d7c9ea099af06a46af8a6852250902697d2a84944f7d046dd3f4ec6",
+  "holdout_public_description": {
+    "count": 318,
+    "distinct_events": 227,
+    "distinct_series": 0,
+    "distinct_templates": 288,
+    "first_decision_ts": "2026-01-01T00:00:00Z",
+    "last_decision_ts": "2026-06-08T00:00:00Z",
+    "outcomes_summarized": false
+  },
+  "holdout_tasks_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24",
+  "kind": "registration",
+  "model_cache": {
+    "cache_path": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-32B",
+    "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+    "model": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-32B/snapshots/9216db5781bf21249d130ec9da846c4624c16137"
+  },
+  "parent_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_scale_full_20260824T211347Z.json",
+  "parent_ledger_sha256": "b19f4cd0b90c55a6417a72856ca8cbceb048c006e4e9c5c4974f00cd68e6f511",
+  "parent_protocol_sha256": "228ba2bc0ae35c29984f4993244e931b01b1ca60947d70ecfa4eea1da9516a56",
+  "protocol_sha256": "0b94766fc0109c286526b7723745996ad1ef874e8610e92492ea773f878f7f70",
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "registered_at": "20260825T173642Z",
+  "scientific_hyperparameters_changed_from_qwen3_14b": false,
+  "seeds": [
+    42,
+    43,
+    44
+  ]
+}

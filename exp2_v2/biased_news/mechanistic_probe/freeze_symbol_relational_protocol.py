@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Freeze the Qwen3-14B symbolic relational/causal protocol before extraction."""
+"""Freeze a registered symbolic relational/causal protocol before extraction."""
 
 from __future__ import annotations
 
@@ -13,26 +13,20 @@ from typing import Any
 
 from symbol_relational_common import (
     CV_FOLDS,
+    checkpoint_spec,
     run_spec,
     FACTORIAL_CELLS,
     design_counts,
     ALPHAS,
     ARMS,
     DEFAULT_RUN_DIR,
-    LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER,
-    MODEL_COMMIT,
-    MODEL_ID,
     PERMUTATION_REPEATS,
     PERMUTATION_SEED,
     PRIMARY_REPRESENTATION,
     PRIMARY_TARGET,
     REPRESENTATIONS,
-    SOURCE_FEATURES_SHA256,
-    SOURCE_RESULTS_SHA256,
     SOURCE_RUN_DIR,
     TARGETS,
-    TASKS_SHA256,
-    TASK_MANIFEST_SHA256,
     file_sha256,
     find_label_anchors,
     formatted_prompt,
@@ -165,14 +159,64 @@ def design_balance(
 
 
 def source_artifacts(spec: dict) -> dict[str, str]:
+    source_dir = SOURCE_RUN_DIR.with_name(spec["source_probe_run"])
+    if spec.get("source_receipt_required"):
+        receipt_path = source_dir / "causal_source_receipt.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        if receipt.get("status") != "sealed_for_relational_replication":
+            raise ValueError("source probe receipt is not sealed")
+        if receipt.get("study") != spec["source_probe_run"]:
+            raise ValueError("source probe receipt study drifted")
+        checkpoint = receipt.get("model") or {}
+        if checkpoint != {
+            "id": spec["model_id"],
+            "commit": spec["model_commit"],
+        }:
+            raise ValueError("source probe receipt checkpoint drifted")
+        sealed = receipt.get("artifacts") or {}
+        expected = {
+            "tasks.jsonl": sealed.get("tasks.jsonl"),
+            "task_manifest.json": sealed.get("task_manifest.json"),
+            "hidden_states.npz": sealed.get("hidden_states.npz"),
+            "probe_results.json": sealed.get("probe_results.json"),
+        }
+        if expected["tasks.jsonl"] != spec["tasks_sha256"]:
+            raise ValueError("source receipt task hash drifted")
+        if expected["task_manifest.json"] != spec["task_manifest_sha256"]:
+            raise ValueError("source receipt task-manifest hash drifted")
+        extraction_digest = sealed.get("extraction_manifest.json")
+        if file_sha256(source_dir / "extraction_manifest.json") != extraction_digest:
+            raise ValueError("source extraction manifest changed after sealing")
+        if file_sha256(source_dir / "probe_results.json") != expected["probe_results.json"]:
+            raise ValueError("source probe result changed after sealing")
+        manifest = json.loads(
+            (source_dir / "extraction_manifest.json").read_text(encoding="utf-8")
+        )
+        if manifest.get("features_sha256") != expected["hidden_states.npz"]:
+            raise ValueError("sealed source feature digest drifted")
+        return {
+            **expected,
+            "extraction_manifest.json": extraction_digest,
+            "causal_source_receipt.json": file_sha256(receipt_path),
+        }
     expected = {
         "tasks.jsonl": spec["tasks_sha256"],
         "task_manifest.json": spec["task_manifest_sha256"],
         "hidden_states.npz": spec["source_features_sha256"],
         "probe_results.json": spec["source_results_sha256"],
     }
-    source_dir = SOURCE_RUN_DIR.with_name(spec["source_probe_run"])
     for name, digest in expected.items():
+        if name == "hidden_states.npz" and not spec.get(
+            "source_features_required", True
+        ):
+            manifest_path = source_dir / "extraction_manifest.json"
+            manifest_digest = spec["source_extraction_manifest_sha256"]
+            if file_sha256(manifest_path) != manifest_digest:
+                raise ValueError("source extraction manifest drifted")
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            if manifest.get("features_sha256") != digest:
+                raise ValueError("historical source feature hash drifted")
+            continue
         observed = file_sha256(source_dir / name)
         if observed != digest:
             raise ValueError(
@@ -205,8 +249,44 @@ def main() -> None:
                 f"{name} already exists; protocol cannot be frozen after result access"
             )
     spec = run_spec(args.run_dir)
+    checkpoint = checkpoint_spec(args.run_dir)
+    model_id = str(checkpoint["model_id"])
+    model_commit = str(checkpoint["model_commit"])
+    transformer_layers = int(checkpoint["transformer_layers"])
+    last_effective_layer = transformer_layers - 1
     source_dir = SOURCE_RUN_DIR.with_name(spec["source_probe_run"])
     artifacts = source_artifacts(spec)
+    replication = None
+    role = spec.get("replication_role", "discovery_gate")
+    if role.endswith("_confirmation"):
+        parent_dir = SOURCE_RUN_DIR.with_name(spec["parent_study"])
+        parent_path = parent_dir / "relational_probe_results.json"
+        if file_sha256(parent_path) != spec["parent_results_sha256"]:
+            raise ValueError("authorizing parent result drifted")
+        parent = json.loads(parent_path.read_text(encoding="utf-8"))
+        if not parent.get("stability_gate", {}).get("passed"):
+            raise ValueError("authorizing parent stability gate did not pass")
+        if role == "cross_family_confirmation" and (
+            parent.get("stability_gate", {}).get("cross_family_replication")
+            != "authorized_by_frozen_gate"
+        ):
+            raise ValueError("parent did not authorize the cross-family replication")
+        replication = {
+            "role": role,
+            "parent_study": spec["parent_study"],
+            "parent_results_sha256": spec["parent_results_sha256"],
+            "target_fixed_before_label_state_extraction": True,
+            "target_selection_rule": spec.get(
+                "target_selection_rule",
+                "the evaluated non-Qwen checkpoint with both significant held-out "
+                "relational decoding and cue-sensitive zero-shot behavior",
+            ),
+            "confirmatory_claim": (
+                "the development-selected three-layer City C label patch has a "
+                "positive bidirectional regime-aligned effect at k=0"
+            ),
+            "all_original_gate_checks_reused": True,
+        }
     copy_exact(
         source_dir / "tasks.jsonl",
         args.run_dir / "tasks.jsonl",
@@ -224,15 +304,15 @@ def main() -> None:
 
     from transformers import AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_id, local_files_only=True)
     prefix = validate_prefix_equivalence(tokenizer, tasks)
     intervention = validate_correct_swapped_token_intervention(tokenizer, tasks)
     balance = design_balance(tasks, counts)
     preflight = {
         "study": spec["study"],
         "status": "passed_before_label_activation_extraction",
-        "model": MODEL_ID,
-        "model_commit": MODEL_COMMIT,
+        "model": model_id,
+        "model_commit": model_commit,
         "tokenizer_class": tokenizer.__class__.__name__,
         "prefix": prefix,
         "intervention": intervention,
@@ -250,8 +330,13 @@ def main() -> None:
         "study": spec["study"],
         "status": "frozen_before_label_activation_extraction",
         "frozen_at": datetime.now(timezone.utc).isoformat(),
-        "paper_integration": "none; internal mechanistic diagnostic only",
-        "model": {"id": MODEL_ID, "commit": MODEL_COMMIT},
+        "paper_integration": (
+            "prospective checkpoint replication; integrate only after frozen analysis"
+            if replication
+            else "none; internal mechanistic diagnostic only"
+        ),
+        "model": {"id": model_id, "commit": model_commit},
+        "replication": replication,
         "source_artifacts_sha256": artifacts,
         "task_manifest_study": task_manifest["study"],
         "task_design": {
@@ -274,7 +359,10 @@ def main() -> None:
             "site": "both exact symbol subtokens in each Background label line",
             "cities": ["A", "B", "C"],
             "subtoken_pooling_for_probes": "arithmetic mean of the two subtokens",
-            "saved_tensor": "both subtokens separately at embedding output and transformer outputs 1--40",
+            "saved_tensor": (
+                "both subtokens separately at embedding output and transformer "
+                f"outputs 1--{transformer_layers}"
+            ),
         },
         "representations": {
             "primary": PRIMARY_REPRESENTATION,
@@ -299,11 +387,11 @@ def main() -> None:
             "ridge_alphas": list(ALPHAS),
             "layer_selection": (
                 "maximum development CV among causally effective transformer "
-                f"outputs 1--{LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER}; "
+                f"outputs 1--{last_effective_layer}; "
                 "earlier layer breaks ties"
             ),
             "final_output_layer": (
-                f"layer {LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER + 1} is saved as a "
+                f"layer {transformer_layers} is saved as a "
                 "diagnostic but is ineligible for selection because it has no "
                 "downstream transformer block"
             ),
@@ -330,8 +418,8 @@ def main() -> None:
             "primary_layer_rule": (
                 "three contiguous hidden-state layers centered on the "
                 "development-selected primary relational-probe layer; clamp "
-                f"to 1--3 or {LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER - 2}--"
-                f"{LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER} at boundaries"
+                f"to 1--3 or {last_effective_layer - 2}--"
+                f"{last_effective_layer} at boundaries"
             ),
             "primary_evidence_depth": 0,
             "secondary_evidence_depth": 4,
@@ -340,7 +428,7 @@ def main() -> None:
                 "self patch at selected window",
                 "cross patch at embedding output only",
                 "cross patch at all causally effective hidden-state layers "
-                f"0--{LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER}",
+                f"0--{last_effective_layer}",
             ],
             "primary_endpoint": (
                 "episode-level mean of the regime-aligned correct-into-swapped "
@@ -361,10 +449,18 @@ def main() -> None:
                 f"at least {counts['min_self_patch_pairs']} parsed self-patch pairs",
                 "self-patch exact poll match rate >= .95",
             ],
-            "failure_action": "stop; do not launch a cross-family replication",
+            "failure_action": (
+                "stop; report the checkpoint replication as failed"
+                if replication
+                else "stop; do not launch a cross-family replication"
+            ),
             "pass_action": (
-                "freeze and run one cross-family replication with the identical "
-                "anchor, representation, patch rule, and gate"
+                "report the prospectively frozen checkpoint replication"
+                if replication
+                else (
+                    "freeze and run one cross-family replication with the identical "
+                    "anchor, representation, patch rule, and gate"
+                )
             ),
         },
         "tokenization_preflight_sha256": file_sha256(preflight_path),

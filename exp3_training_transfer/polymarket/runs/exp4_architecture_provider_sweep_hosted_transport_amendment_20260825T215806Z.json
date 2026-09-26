@@ -1,0 +1,90 @@
+{
+  "amendment": "hosted_development_canary_transport_and_sdk",
+  "amended_at": "2026-08-25T21:58:06Z",
+  "authorization": {
+    "external_prompt_transmission_authorized": true,
+    "user_message": "yes, send the prompts."
+  },
+  "classification": "development-only transport amendment before holdout",
+  "failed_canary_attempt": {
+    "development_tasks_selected_per_model": 2,
+    "draw_index": 0,
+    "model_outputs_received": 0,
+    "models": {
+      "DeepSeek-V4-Pro": {
+        "failure": "HTTP 401 before model inference",
+        "requests_reaching_endpoint": 2
+      },
+      "FW-Kimi-K3": {
+        "failure": "HTTP 401 before model inference",
+        "requests_reaching_endpoint": 2
+      },
+      "claude-opus-4-8": {
+        "failure": "SDK TypeError before request dispatch",
+        "requests_reaching_endpoint": 0
+      },
+      "gpt-5.6-sol": {
+        "failure": "HTTP 401 before model inference",
+        "requests_reaching_endpoint": 2
+      }
+    },
+    "successful_responses": 0
+  },
+  "failed_canary_archive": "reports/exp4_hosted/archive/pre_model_transport_failure_20260825T215806Z",
+  "failed_canary_artifacts": [
+    {
+      "path": "reports/exp4_hosted/exp4_hosted_DeepSeek-V4-Pro_dev_draw0.jsonl",
+      "sha256": "076589667efc7529b920125f84a4a856d77162fe7e11938ceb258f25bc79c2b7"
+    },
+    {
+      "path": "reports/exp4_hosted/exp4_hosted_FW-Kimi-K3_dev_draw0.jsonl",
+      "sha256": "72d303a64e6c1b7a45eae67a2d53eb8a1f3f585d6a825b279f5e841789d5b814"
+    },
+    {
+      "path": "reports/exp4_hosted/exp4_hosted_claude-opus-4-8_dev_draw0.jsonl",
+      "sha256": "1606c42b5e2e3bf11e1d8f85f6adaedb169f70189dfa9b6ea1dc03372e2156d9"
+    },
+    {
+      "path": "reports/exp4_hosted/exp4_hosted_gpt-5.6-sol_dev_draw0.jsonl",
+      "sha256": "a488f7cd83c43387277544a0abfe705af54367b42163220e490491a19f8e291f"
+    }
+  ],
+  "frozen_inputs": {
+    "development_task_count": 512,
+    "development_tasks_used_for_canary": 2,
+    "holdout_task_count": 318,
+    "holdout_was_read_for_configuration": false,
+    "prompt_text_changed": false,
+    "registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+    "scoring_changed": false
+  },
+  "holdout_calls_started": false,
+  "protocol_sha256": "87bdbcb19f5fc6fc138ea1bdc1ed5c27c811c981c504adff0a4dbd7e14e749dd",
+  "resolved_sdk_environment": {
+    "anthropic": "1.0.0",
+    "openai": "3.3.1",
+    "requirements": "requirements-hosted.txt",
+    "requirements_sha256": "0fa08227456990cc5fa8464b4df964504e01f11cf3ce5d29ae34b7d4127a8595",
+    "shared_environments_modified": false
+  },
+  "runner_amendment": {
+    "amended_runner_sha256": "51a9a3b9fc41b6f5b234975c6dc263e62944c3e7ad3a74b1b37c466a096fefdf",
+    "changes": [
+      "Use Azure's api-key header for OpenAI-compatible Foundry deployments.",
+      "Omit unsupported temperature and top-p fields from Anthropic Messages calls.",
+      "Record Claude sampling as provider-native rather than decoder-identical."
+    ],
+    "requested_common_controls_changed": false
+  },
+  "scientific_scope": {
+    "hosted_panel_remains_separate": true,
+    "local_model_settings_changed": false,
+    "provider_native_sampling_is_stochastic": true,
+    "same_prompts_and_scoring": true
+  },
+  "tests": {
+    "command": "python -m pytest -q exp3_training_transfer/polymarket/tests/test_hosted_scale_holdout.py",
+    "passed": 5,
+    "test_file_sha256": "1992e88f322a3aab81c9ec8ceb14785c14344a04b65d1c91f4badf555b800a03"
+  }
+}

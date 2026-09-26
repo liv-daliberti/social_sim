@@ -1,0 +1,53 @@
+{
+  "adapter": null,
+  "chat_template": "native single-user template; thinking disabled when supported",
+  "completed_at": "2026-08-25T15:55:29.810874+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "device_map_request": "none",
+  "endpoint_label": "base",
+  "feature_summary": {
+    "elapsed_seconds": 339.3991746902466,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      1440,
+      37,
+      4096
+    ],
+    "hidden_size": 4096,
+    "layer_count_including_embedding": 37,
+    "mean_control_shape": [
+      1440,
+      2,
+      4096
+    ],
+    "record_count": 1440,
+    "token_count_max": 1205,
+    "token_count_median": 1102.0,
+    "token_count_min": 1003,
+    "transformer_layer_count": 36
+  },
+  "features_sha256": "97b2c0f8759f01a24250ea1ef649f294bc1816774587e65a4d6ead9548374e76",
+  "model": "Qwen/Qwen3-8B",
+  "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "model_label": "Qwen3-8B",
+  "parameter_count": 8190735360,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {},
+  "resolved_model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "peft": "0.15.2",
+    "python": "3.10.20",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "features_complete",
+  "study": "exp3_mechanism_probe_v1",
+  "task_manifest_sha256": "364072b8d87cacd283ba776542086471a684ad1d3c6709a789c987370a053eef",
+  "tasks_sha256": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+  "trainable_parameter_count_at_extraction": 8190735360
+}

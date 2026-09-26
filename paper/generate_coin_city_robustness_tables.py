@@ -44,8 +44,8 @@ DISPLAY = {
     "Qwen2.5-14B-Instruct": "Qwen2.5-14B",
     "Qwen2.5-32B-Instruct": "Qwen2.5-32B",
     "Qwen2.5-72B-Instruct": "Qwen2.5-72B",
-    "Llama-3.1-8B-Instruct": "Llama~3.1-8B",
-    "Llama-3.1-70B-Instruct": "Llama~3.1-70B",
+    "Llama-3.1-8B-Instruct": "Llama-3.1-8B",
+    "Llama-3.1-70B-Instruct": "Llama-3.1-70B",
 }
 ARM_DISPLAY = {
     "abc_no_context": "No C context",

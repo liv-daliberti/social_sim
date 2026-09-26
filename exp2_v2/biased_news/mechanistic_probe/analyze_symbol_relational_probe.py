@@ -14,7 +14,6 @@ import numpy as np
 
 import analyze_probe as base
 from symbol_relational_common import (
-    TRANSFORMER_LAYERS,
     design_counts,
     run_spec,
     ALPHAS,
@@ -73,7 +72,8 @@ def load_features(
         raise ValueError("label-state sample order differs from the frozen tasks")
     if anchor_names != list(ANCHORS):
         raise ValueError("label-state anchor order drifted")
-    expected_shape = (len(rows), TRANSFORMER_LAYERS + 1, len(ANCHORS), 2)
+    transformer_layers = int(run_spec(run_dir)["transformer_layers"])
+    expected_shape = (len(rows), transformer_layers + 1, len(ANCHORS), 2)
     if token_states.shape[:4] != expected_shape:
         raise ValueError(
             f"unexpected label-state shape: {token_states.shape}, "
@@ -147,6 +147,8 @@ def select_on_development(
     features: dict[str, np.ndarray],
     counts: dict[str, Any],
 ) -> dict[str, Any]:
+    transformer_layers = int(run_spec(run_dir)["transformer_layers"])
+    last_effective_layer = transformer_layers - 1
     dev = development_indices(rows, counts["development_episodes"])
     dev_rows = [rows[index] for index in dev]
     folds = np.asarray([row["cv_fold"] for row in dev_rows], dtype=int)
@@ -166,7 +168,7 @@ def select_on_development(
                 target_name=target,
                 alphas=np.asarray(ALPHAS, dtype=float),
             )
-            for layer in range(1, LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER + 1):
+            for layer in range(1, last_effective_layer + 1):
                 alpha, score, alpha_scores = base.cross_validated_alpha(
                     train=features[representation][dev, layer, :],
                     target=target_values,
@@ -194,7 +196,7 @@ def select_on_development(
             selection[representation][target] = {
                 "selected_by": (
                     "maximum four-fold development CV across transformer outputs "
-                    "1--39; ties choose the earlier layer"
+                    f"1--{last_effective_layer}; ties choose the earlier layer"
                 ),
                 "selected_layer": int(best["layer"]),
                 "selected_alpha": float(best["alpha"]),
@@ -220,10 +222,11 @@ def select_on_development(
         "targets": list(TARGETS),
         "alphas": list(ALPHAS),
         "selectable_hidden_state_layers": list(
-            range(1, LAST_CAUSALLY_EFFECTIVE_HIDDEN_LAYER + 1)
+            range(1, last_effective_layer + 1)
         ),
         "final_hidden_state_layer_role": (
-            "layer 40 is extracted as a diagnostic but cannot be selected because "
+            f"layer {transformer_layers} is extracted as a diagnostic but cannot "
+            "be selected because "
             "it has no downstream transformer block"
         ),
         "embedding_layer_role": "reported control only; excluded from layer selection",
@@ -239,7 +242,9 @@ def select_on_development(
                 "development_cv_score"
             ],
         },
-        "causal_patch_window_hidden_state_layers": three_layer_window(patch_center),
+        "causal_patch_window_hidden_state_layers": three_layer_window(
+            patch_center, last_effective_layer
+        ),
         "tasks_sha256": file_sha256(run_dir / "tasks.jsonl"),
         "protocol_sha256": file_sha256(
             run_dir / "relational_protocol_manifest.json"
@@ -540,6 +545,7 @@ def final_analysis(
         ),
     }
     gate_passed = all(gate_checks.values())
+    role = run_spec(run_dir).get("replication_role", "discovery_gate")
     result = {
         "study": run_spec(run_dir)["study"],
         "status": "complete",
@@ -564,8 +570,15 @@ def final_analysis(
             "passed": gate_passed,
             "checks": gate_checks,
             "cross_family_replication": (
-                "authorized_by_frozen_gate" if gate_passed else "not_authorized"
+                (
+                    "completed_passed_gate" if gate_passed else "completed_failed_gate"
+                )
+                if role.endswith("_confirmation")
+                else (
+                    "authorized_by_frozen_gate" if gate_passed else "not_authorized"
+                )
             ),
+            "replication_role": role,
         },
     }
     write_json(run_dir / "relational_probe_results.json", result)

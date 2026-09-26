@@ -1,0 +1,54 @@
+{
+  "authorization": {
+    "source": "explicit user instruction to redo Kimi even if it breaks the frozen policy",
+    "scope": "two-case targeted diagnostic followed by five complete replacement draws if diagnostic passes"
+  },
+  "classification": "post_hoc_transport_repair",
+  "created_at": "2026-08-26T01:20:26Z",
+  "diagnosis": {
+    "original_draw_parse_coverage": 0.3849056603773585,
+    "original_transport_failures": 6,
+    "original_unparseable_length_responses": 972,
+    "reason": "the 128-token output budget truncated responses before parseable final JSON"
+  },
+  "diagnostic": {
+    "cases": 2,
+    "code": "exp3_training_transfer/polymarket/scripts/diagnose_kimi_posthoc_repair.py",
+    "code_sha256": "50a8507104e8dc740c40399eea385a8ed60b7d0b7eb3944cfdde4323ecc7d6ee",
+    "selection": "first two unique original holdout cases with finish_reason=length and unparseable response",
+    "uses_holdout_for_configuration": true
+  },
+  "original_result": {
+    "preserved": true,
+    "summary": "exp3_training_transfer/polymarket/reports/exp4_hosted/exp4_hosted_FW-Kimi-K3_stochastic.summary.json",
+    "summary_sha256": "2634d88b9d367f6c011f7dedf2a7d880cb0f7da099fe29901d203fa5ff335081"
+  },
+  "repair": {
+    "changed_setting": {
+      "max_output_tokens_from": 128,
+      "max_output_tokens_to": 1024
+    },
+    "output_dir": "exp3_training_transfer/polymarket/reports/exp4_hosted_kimi_repair",
+    "unchanged": [
+      "model",
+      "prompts",
+      "temperature",
+      "top_p",
+      "reasoning_effort",
+      "five_draw_aggregation",
+      "parser",
+      "scoring"
+    ]
+  },
+  "reporting": {
+    "figure_panel": "frontier_hosted_models",
+    "label": "post-hoc output-budget repair",
+    "original_failure_disclosed_in_appendix": true,
+    "replacement_not_claimed_as_preregistered": true
+  },
+  "runner": {
+    "path": "exp3_training_transfer/polymarket/scripts/evaluate_hosted_scale_holdout.py",
+    "sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf"
+  },
+  "status": "registered_before_repair_calls"
+}

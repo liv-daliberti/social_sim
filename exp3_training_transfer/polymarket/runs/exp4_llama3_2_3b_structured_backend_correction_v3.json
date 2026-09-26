@@ -1,0 +1,46 @@
+{
+  "corrected_evaluator": "exp3_training_transfer/polymarket/scripts/evaluate_llama3_2_3b_base_structured_recovery.py",
+  "corrected_evaluator_sha256": "f0dcd6afd314a1c38c98bd9765cb3cb5990aaa9612b178f6fe2ba56109d36bd9",
+  "correction": {
+    "engine_backend": "guidance",
+    "request_backend": "guidance",
+    "sampling_change": false,
+    "schema_change": false,
+    "scientific_change": false
+  },
+  "failed_jobs": [
+    {
+      "exit_code": "1:0",
+      "holdout_generation_calls": 0,
+      "job_id": "30911975",
+      "mismatch": "xgrammar != auto"
+    },
+    {
+      "exit_code": "1:0",
+      "holdout_generation_calls": 0,
+      "job_id": "30912021",
+      "mismatch": "guidance != auto"
+    }
+  ],
+  "json_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "yes_prob": {
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "type": "number"
+      }
+    },
+    "required": [
+      "yes_prob"
+    ],
+    "type": "object"
+  },
+  "parent_amendment": "exp3_training_transfer/polymarket/runs/exp4_llama3_2_3b_base_structured_recovery_registration_v2.json",
+  "parent_amendment_sha256": "f77e4934bc11961cdc5ee23b553bf6c5bae6c857c9bf26439af2bd4924e8f6e1",
+  "prior_correction": "exp3_training_transfer/polymarket/runs/exp4_llama3_2_3b_structured_backend_correction_v2.json",
+  "prior_correction_sha256": "7a7e869f64c353978f8fc579727b345b64b6a38945d7311e9da223051891b536",
+  "protocol_version": "exp4_llama3_2_3b_base_structured_recovery_v2",
+  "registered_at_utc": "2026-08-26T22:30:00Z",
+  "status": "registered_before_corrected_execution"
+}

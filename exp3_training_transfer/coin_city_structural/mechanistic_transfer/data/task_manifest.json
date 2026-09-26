@@ -1,0 +1,47 @@
+{
+  "cell_counts": {
+    "('dev', 0, 'original')": 96,
+    "('dev', 0, 'transplant')": 96,
+    "('dev', 8, 'original')": 96,
+    "('dev', 8, 'transplant')": 96,
+    "('test', 0, 'original')": 32,
+    "('test', 0, 'transplant')": 32,
+    "('test', 8, 'original')": 32,
+    "('test', 8, 'transplant')": 32
+  },
+  "cue": "correct",
+  "development_episodes": 96,
+  "domain": "coin_harbor",
+  "donor_pair_count": 64,
+  "episode_count": 128,
+  "k_values": [
+    0,
+    8
+  ],
+  "median_h1_donor_separation": 0.28624023806340243,
+  "minimum_h1_donor_separation": 0.25359458854418016,
+  "record_count": 512,
+  "source_protocol": "coin_city_structural_transfer_v1",
+  "split_rule": "sort episodes by h1; pair lower and upper halves; choose 16 of 64 reciprocal donor pairs for sealed test with RNG seed 0xE3C0A51; assign four dev folds by remaining donor-pair rank modulo four",
+  "status": "tasks_frozen",
+  "structure": "mediated_b",
+  "study": "coin_city_exp3_reference_transplant_qwen8_v1",
+  "target_variables": [
+    "immediate_per_unit_response_h1",
+    "horizon_three_per_unit_response_h3",
+    "persistence_ratio",
+    "selected_reference_identity",
+    "eight_dimensional_nonzero_shock_response"
+  ],
+  "task_seed_band": [
+    93000000,
+    93000127
+  ],
+  "tasks_sha256": "da2f3506fd8ad570865a28d18e66b15d881212aa41acdcc71315e9c6b69c9ce9",
+  "test_episodes": 32,
+  "transplant_rule": "replace only the selected mediated reference numeric trajectory with its same-split paired donor; preserve slot, background, target, query, and formatting",
+  "variants": [
+    "original",
+    "transplant"
+  ]
+}

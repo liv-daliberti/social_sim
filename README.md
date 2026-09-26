@@ -12,13 +12,12 @@ work are deliberately separated.
 | `exp1_prospective/stage3_materials_annotation/` | Human materials review and deployed review site | Maintained paper code/service |
 | `exp2_simulated_worlds/biased_news/` | Appendix coin probe plus the deployed legacy-results viewer | Maintained paper artifact/service |
 | `exp2_v2/biased_news/` | Final six-model Coin City response-regime experiment | Maintained |
-| `exp3_training_transfer/coin_city_structural/` | Coin City transfer campaign | Maintained; jobs are running |
-| `exp3_training_transfer/mechanism_family/` | Structural-OOD campaign | Maintained; jobs are running |
-| `exp3_training_transfer/polymarket/` | Historical-market training | Maintained; jobs are running |
+| `exp3_training_transfer/coin_city_structural/` | Coin City transfer campaign | Complete; exact roster validated |
+| `exp3_training_transfer/mechanism_family/` | Structural-OOD campaign | Complete; exact roster validated |
+| `exp3_training_transfer/polymarket/` | Historical-market training | Complete three-model locked-test roster |
 | `exp3_training_transfer/biased_news/` | Shared RL runtime and frozen news-response world | Maintained internal dependency |
 | `exp3_training_transfer/elections/` | Deployed historical Experiment 3 viewer | Maintained service |
-| `paper/` | Working manuscript, figure generators, and tables | Maintained |
-| `paper/ICLR/` | Self-contained submission tree used by the paper finalizers | Maintained mirror |
+| `paper/` | Canonical ICLR manuscript, generators, figures, and tables | Maintained |
 | `viewer/`, `exp1_prospective/viewer/` | Deployed cross-experiment and Exp1 viewers | Maintained services |
 | `hf_release/` | Anonymous data-release builder and validator | Maintained release tooling |
 
@@ -30,11 +29,14 @@ separation for imports, operational entrypoints, and manuscript includes.
 
 ## Verification
 
-Run all maintained unit tests from the repository root:
+The repository has one review interface:
 
 ```bash
-./scripts/test_active.sh
+make review
 ```
+
+This runs static checks and all maintained tests. `make test` and `make lint`
+run either half independently; `make help` lists paper and submission commands.
 
 Validate the frozen Experiment 2 design without making an API call:
 
@@ -43,16 +45,21 @@ cd exp2_v2/biased_news
 python eval/validate_coin_city_stable_relationship_claude_n250.py
 ```
 
-Build the working paper with:
+Build the ICLR paper with:
 
 ```bash
-cd paper
-latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+make paper
 ```
 
 The Experiment 3 scheduler and paper handoff are tracked in
 `exp3_training_transfer/EXPERIMENT_STATUS_PRIORITY.md`. Do not rename shared
 Experiment 3 scripts or clear `.runtime/` while jobs are running.
+
+`REPRODUCIBILITY.md` maps each reported claim to its frozen authority, inference
+unit, and fail-closed validator.
+
+`paper/ICLR` is a temporary compatibility symlink for already-submitted Slurm
+finalizers. It resolves to `paper/`; there is only one physical manuscript tree.
 
 ## Artifact policy
 

@@ -38,10 +38,10 @@ nvidia-smi --query-gpu=index,name,memory.used --format=csv,noheader
   --model-commit 1605565b47bb9346c5515c34102e054115b4f98b \
   --model-label Llama-3.1-70B-Instruct \
   --study llama3_1_70b_symbol_probe_v2 \
-  --batch-size 1 --generation-batch-size 4 \
+  --batch-size 4 --generation-batch-size 8 \
   --max-input-tokens 2304 --max-new-tokens 160 \
   --device-map balanced --gpu-memory-gib 44 \
-  --checkpoint-every 100
+  --checkpoint-every 50
 rc=$?
 
 if [[ -f "$RUN_DIR/extraction_manifest.json" ]]; then

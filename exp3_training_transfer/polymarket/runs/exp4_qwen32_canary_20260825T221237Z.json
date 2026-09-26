@@ -1,0 +1,28 @@
+{
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=allcs",
+    "--partition=cs",
+    "--qos=medium",
+    "--gres=gpu:a6000:4",
+    "--mem=220G",
+    "--cpus-per-task=12",
+    "--time=04:00:00",
+    "--exclude=node206",
+    "--export=ALL,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,SEED=42,RUN_KIND=canary,MAX_TRAIN=160,EVAL_STEPS=10,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_qwen32_extension.sh"
+  ],
+  "dry_run": false,
+  "job_id": "30892281",
+  "kind": "canary",
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "recorded_at": "20260825T221237Z",
+  "registration_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T221201Z.json",
+  "registration_ledger_sha256": "c5505959d77f5def8547a3362d7072c6b446c89392cd068ef111ede0e3263f42",
+  "scheduler_route": {
+    "account": "mltheory",
+    "job_id": "30892281",
+    "partition": "all"
+  }
+}

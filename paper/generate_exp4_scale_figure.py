@@ -710,7 +710,7 @@ def draw_figure(
         2,
         figsize=(7.15, 1.48),
         sharey=False,
-        gridspec_kw={"width_ratios": (1.55, 1.0), "wspace": 0.10},
+        gridspec_kw={"width_ratios": (1.55, 1.0), "wspace": 0.22},
     )
     for index in range(len(x)):
         left.plot(
@@ -784,7 +784,7 @@ def draw_figure(
     left.set_xlabel("Parameters (billions; log scale)")
     left.set_ylabel("Brier score (lower is better)")
     left.set_title(
-        "Qwen3 checkpoints (log parameter scale)",
+        "(a) Qwen3 checkpoints (log parameter scale)",
         loc="left",
         fontweight="bold",
     )
@@ -874,7 +874,7 @@ def draw_figure(
         )
     right.set_xlabel("API deployment (categorical axis)")
     right.set_title(
-        "Hosted frontier references",
+        "(b) Hosted frontier references",
         loc="left",
         fontweight="bold",
     )
@@ -914,7 +914,7 @@ def draw_figure(
             [0],
             color=MARKET_COLOR,
             linestyle="--",
-            label="Polymarket",
+            label="Polymarket last price (in prompt)",
         ),
     ]
     left.legend(
@@ -1037,7 +1037,7 @@ def draw_llama_figure(
                 markersize=3.5, label="Trained seeds"
             ),
             Line2D(
-                [0], [0], color=MARKET_COLOR, linestyle="--", label="Polymarket"
+                [0], [0], color=MARKET_COLOR, linestyle="--", label="Polymarket last price (in prompt)"
             ),
         ],
         loc="upper right",

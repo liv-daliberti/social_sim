@@ -1,0 +1,48 @@
+{
+  "kind": "vllm_allreduce_compatibility_amendment",
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "recorded_at": "20260826T142018Z",
+  "failed_canary_job_id": "30892281",
+  "failed_canary_state": "TIMEOUT",
+  "failed_canary_exit_code": "0:0",
+  "failure_stage": "vLLM actor distributed initialization",
+  "failure_message": "vLLM custom all-reduce raised CUDA invalid argument; the learner then timed out in an NCCL barrier after the actor exited",
+  "failed_stdout": "exp3_training_transfer/polymarket/logs/qwen32_train_30892281.out",
+  "failed_stdout_sha256": "368b66a9ee6635dab899bd469faca61e9d0ac9ab3bef8f03172c350565dd752a",
+  "failed_stderr": "exp3_training_transfer/polymarket/logs/qwen32_train_30892281.err",
+  "failed_stderr_sha256": "2d1b2d097d329be0cea2db32c4503f9f4e0a2f4b193125e31a257252ce2c8463",
+  "obsolete_advance_job_id": "30892282",
+  "supersedes_registration": "exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T221201Z.json",
+  "supersedes_compatibility_amendment": "exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_compatibility_amendment_20260825T220836Z.json",
+  "supersedes_compatibility_amendment_sha256": "a7686dfda89159864a350df997cd4b2294f46aac8ed941bb3ef3682f78f844d5",
+  "execution_only_changes_added": [
+    "--disable-custom-all-reduce"
+  ],
+  "execution_only_changes_retained": [
+    "--no-use_fused_lm_head",
+    "--lora_sync_only"
+  ],
+  "change_rationale": {
+    "--disable-custom-all-reduce": "uses vLLMs supported NCCL fallback for tensor-parallel rollout synchronization after the A6000 custom kernel failed during initialization"
+  },
+  "scientific_hyperparameters_changed": false,
+  "corrected_trainer_sha256": "769f6a2e6733a6ce34df3a45d80119fba15e66f404ffe5dde99c697bfd65e77c",
+  "corrected_shared_trainer_sha256": "28de53c88b4edbf7e7dd6054a5650ab6a34b0832adc766b10d13ea9d3ee80652",
+  "corrected_launcher_sha256": "787af58aa4ad7a7fe3afbbd3960bdb0dc8037261151aace6ff4ceb776bafe32d",
+  "replacement_canary": {
+    "seed": 42,
+    "max_train": 160,
+    "eval_steps": 10,
+    "performance_threshold": false
+  },
+  "unchanged": [
+    "Qwen/Qwen3-32B checkpoint and non-thinking prompt template",
+    "training and development examples",
+    "rank-32 LoRA with alpha 64",
+    "learning rate, optimizer, reward, and schedule",
+    "rollout and evaluation sampling controls",
+    "global and per-device batch sizes",
+    "4,800-presentation full budget and seeds 42/43/44",
+    "sealed holdout and all evaluation estimands"
+  ]
+}

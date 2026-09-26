@@ -1,0 +1,96 @@
+{
+  "adapter": {
+    "config": {
+      "alpha_pattern": {},
+      "auto_mapping": null,
+      "base_model_name_or_path": "Qwen/Qwen3-4B-Instruct-2507",
+      "bias": "none",
+      "corda_config": null,
+      "eva_config": null,
+      "exclude_modules": null,
+      "fan_in_fan_out": false,
+      "inference_mode": true,
+      "init_lora_weights": true,
+      "layer_replication": null,
+      "layers_pattern": null,
+      "layers_to_transform": null,
+      "loftq_config": {},
+      "lora_alpha": 64,
+      "lora_bias": false,
+      "lora_dropout": 0,
+      "megatron_config": null,
+      "megatron_core": "megatron.core",
+      "modules_to_save": null,
+      "peft_type": "LORA",
+      "r": 32,
+      "rank_pattern": {},
+      "revision": null,
+      "target_modules": [
+        "v_proj",
+        "q_proj",
+        "up_proj",
+        "o_proj",
+        "gate_proj",
+        "down_proj",
+        "k_proj"
+      ],
+      "task_type": "CAUSAL_LM",
+      "trainable_token_indices": null,
+      "use_dora": false,
+      "use_rslora": false
+    },
+    "config_sha256": "855b3f951472b8edaf38277d2af47bbcde9bc6e202af4b30de8821964b974a96",
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_4b_s44_20260818_005455_j30639720/debug_0818T00:55:17/saved_models/step_00301",
+    "weights_sha256": "2c775357313abeaa57e23165baa1140cbb8ae9281f2ea9ba4574925046dac3bc"
+  },
+  "chat_template": "native single-user template; thinking disabled when supported",
+  "completed_at": "2026-08-26T01:56:18.440893+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "device_map_request": "none",
+  "endpoint_label": "disclosed_causal_family_s44",
+  "feature_summary": {
+    "elapsed_seconds": 426.6713240146637,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      1440,
+      37,
+      2560
+    ],
+    "hidden_size": 2560,
+    "layer_count_including_embedding": 37,
+    "mean_control_shape": [
+      1440,
+      2,
+      2560
+    ],
+    "record_count": 1440,
+    "token_count_max": 1201,
+    "token_count_median": 1098.0,
+    "token_count_min": 999,
+    "transformer_layer_count": 36
+  },
+  "features_sha256": "1688c992698b88b3fc2455f1e17003a63c6850e57c075b45704c86df510cd14b",
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "model_label": "Qwen3-4B-Instruct-2507",
+  "parameter_count": 4088528384,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {},
+  "resolved_model_commit": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "peft": "0.15.2",
+    "python": "3.10.20",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "features_complete",
+  "study": "exp3_mechanism_probe_v1",
+  "task_manifest_sha256": "364072b8d87cacd283ba776542086471a684ad1d3c6709a789c987370a053eef",
+  "tasks_sha256": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+  "trainable_parameter_count_at_extraction": 0
+}

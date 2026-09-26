@@ -1,0 +1,53 @@
+{
+  "compatibility_amendment": {
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_vllm_allreduce_compatibility_amendment_20260826T142114Z.json",
+    "sha256": "e867bbfc968e3d721330b7d2181f74a25346e3ebffddaa2cdb3e74db87700b81"
+  },
+  "failed_canary": {
+    "advance_job_id": "30892282",
+    "advance_terminal_state": "CANCELLED",
+    "job_id": "30892281",
+    "state": "TIMEOUT"
+  },
+  "five_seed_parent_ledger": {
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/five_seed_training_20260825T232245Z.json",
+    "sha256": "fecd559e39821c97724353e4806f4132c4cdb094b5f0699e3a79be93431ddc79"
+  },
+  "kind": "qwen32_allreduce_and_dependency_recovery",
+  "new_gate": {
+    "advance_job_id": "30908525",
+    "advance_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_advance_20260826T142432Z.json",
+    "advance_ledger_sha256": "7908dd1c2e840f11e699105a7bfab0fbd6400b3050ada2edd299881c81944d5f",
+    "canary_job_id": "30908524",
+    "canary_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260826T142432Z.json",
+    "canary_ledger_sha256": "6a7002a1d2759d761ed5f5d6063facde3391856e8e642469a470105abdc072cf",
+    "registration": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260826T142419Z.json",
+    "registration_sha256": "06f4af74b08289dc5f0abefa7ccdb821d027c7b4885c5a9c9454d497b3c0570f"
+  },
+  "recorded_at": "20260826T142540Z",
+  "rewired_jobs": [
+    {
+      "job_id": "30894222",
+      "role": "qwen3_32b_seed_45_training",
+      "dependency_after": "afterok:30908525",
+      "dependency_before": "afterok:30892282"
+    },
+    {
+      "job_id": "30894223",
+      "role": "qwen3_32b_seed_46_training",
+      "dependency_after": "afterok:30908525",
+      "dependency_before": "afterok:30892282"
+    },
+    {
+      "job_id": "30894368",
+      "role": "qwen3_32b_five_seed_evaluation_scheduler",
+      "dependency_after": "afterok:30908525",
+      "dependency_before": "afterok:30892282"
+    }
+  ],
+  "scientific_hyperparameters_changed": false,
+  "script_hashes": {
+    "five_seed_qwen32_trainer": "e7d6a2a94fd42c139fae97965abd74a6022c67e3d07aa5fcd581a1cfdf8fa5b9",
+    "five_seed_scheduler": "d6015faa5afe219cf690871252670d0934be342d693f270e3e64a6679fe4c1d2"
+  }
+}

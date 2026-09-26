@@ -1,0 +1,40 @@
+{
+  "advance_script_sha256": "1bb84f0ec341f6957471f7243559180a6fd13ed03ecbac987b69b80a4be407db",
+  "builder_sha256": "346786fa62464301a783e804f7689af50b6c1b183711164d022e3144907fe9dd",
+  "canary_job_id": "30866036",
+  "canary_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_scale_canary_20260824T134306Z.json",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--partition=all",
+    "--time=00:30:00",
+    "--mem=4G",
+    "--cpus-per-task=1",
+    "--exclude=node206",
+    "--dependency=afterok:30866036",
+    "--export=ALL,CANARY_JOB_ID=30866036,SCALE_PARTITION=all,SCALE_EXCLUDE=node206,SCALE_VLLM_RATIO=0.78,SCALE_TRAIN_WALLTIME=30:00:00,SCALE_EVAL_WALLTIME=08:00:00,SCALE_FINALIZE_WALLTIME=01:00:00",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/advance_scale_extension.sbatch"
+  ],
+  "dry_run": false,
+  "environment": {
+    "CANARY_JOB_ID": "30866036",
+    "SCALE_EVAL_WALLTIME": "08:00:00",
+    "SCALE_EXCLUDE": "node206",
+    "SCALE_FINALIZE_WALLTIME": "01:00:00",
+    "SCALE_PARTITION": "all",
+    "SCALE_TRAIN_WALLTIME": "30:00:00",
+    "SCALE_VLLM_RATIO": "0.78"
+  },
+  "evaluator_sha256": "4130fd351af884bd5d0b3b20c2b6e7335eed5abe93a91017f1d056ff171ec2b0",
+  "finalizer_script_sha256": "028e6aeb3f66a139dce13ecd9c8fa3e2868139d145e151f196ef93f733d9acd0",
+  "holdout_manifest_sha256": "f210b7cc0d7c9ea099af06a46af8a6852250902697d2a84944f7d046dd3f4ec6",
+  "holdout_tasks_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24",
+  "job_id": "30866097",
+  "launcher_sha256": "421278162f22b7b5bb105f7374305f5211fb00f55539438ca9c7a1a5247f5fcf",
+  "locked_script_sha256": "8d5c4a57d1c8b7042fc05428adf69a7761f2b487b9e87c3eadbba6ff25644c77",
+  "protocol_sha256": "228ba2bc0ae35c29984f4993244e931b01b1ca60947d70ecfa4eea1da9516a56",
+  "protocol_version": "exp4_qwen_scale_v1",
+  "renderer_sha256": "25d2b66d92dd791fdebc560e00771c594f0505eb0c3fa27fb724a0131137479c",
+  "submitted_at": "20260824T134904Z",
+  "train_script_sha256": "c49ca069836c82379a472a9c7993805627aff3d60beac4493f3c64505aa6bac8"
+}

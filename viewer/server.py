@@ -27,7 +27,12 @@ _UPSTREAMS = {
     "exp3": "http://127.0.0.1:5053",
 }
 
-_SKIP_HEADERS = {"content-encoding", "transfer-encoding", "content-length", "connection"}
+_SKIP_HEADERS = {
+    "content-encoding",
+    "transfer-encoding",
+    "content-length",
+    "connection",
+}
 
 
 def _inject_interceptor(html: str, prefix: str) -> str:
@@ -67,20 +72,22 @@ def _proxy(prefix: str, path: str) -> Response:
     ct = upstream_resp.headers.get("Content-Type", "")
     body = upstream_resp.content
     out_headers = {
-        k: v for k, v in upstream_resp.headers.items()
-        if k.lower() not in _SKIP_HEADERS
+        k: v for k, v in upstream_resp.headers.items() if k.lower() not in _SKIP_HEADERS
     }
 
     if "text/html" in ct:
         html = _inject_interceptor(upstream_resp.text, f"/{prefix}")
-        return Response(html, status=upstream_resp.status_code,
-                        content_type=ct, headers=out_headers)
+        return Response(
+            html, status=upstream_resp.status_code, content_type=ct, headers=out_headers
+        )
 
-    return Response(body, status=upstream_resp.status_code,
-                    content_type=ct, headers=out_headers)
+    return Response(
+        body, status=upstream_resp.status_code, content_type=ct, headers=out_headers
+    )
 
 
 # ── routes ─────────────────────────────────────────────────────────────────────
+
 
 @app.route("/")
 def hub():

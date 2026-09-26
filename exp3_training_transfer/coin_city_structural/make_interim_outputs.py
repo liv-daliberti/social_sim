@@ -329,7 +329,7 @@ def main() -> None:
     args.output.write_text(json.dumps(artifact, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     table = render_table(cell_results)
-    paper_roots = args.paper_root or [REPO / "paper", REPO / "paper" / "ICLR"]
+    paper_roots = args.paper_root or [REPO / "paper"]
     for paper_root in paper_roots:
         destination = paper_root / "tables" / "exp3_coin_qwen3_4b_greedy.tex"
         destination.parent.mkdir(parents=True, exist_ok=True)

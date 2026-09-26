@@ -1,0 +1,79 @@
+{
+  "result": "hosted_development_canary_after_explicit_fallback_authorization",
+  "completed_at": "2026-08-25T22:20:25Z",
+  "authorization": {
+    "approved_destinations": {
+      "DeepSeek-V4-Pro": "cos-tiktok-annotation-a-resource",
+      "claude-opus-4-8": "liv-forecast",
+      "gpt-5.6-sol": "cos-tiktok-annotation-a-resource"
+    },
+    "approved_prompts_per_deployment": 2,
+    "user_message": "Yes—send the two development prompts to cos-tiktok-annotation-a-resource for GPT/DeepSeek and liv-forecast for Claude."
+  },
+  "holdout": {
+    "calls_started": false,
+    "tasks_read_for_configuration": false
+  },
+  "models": {
+    "DeepSeek-V4-Pro": {
+      "development_prompts_sent": 2,
+      "effective_controls": {
+        "max_output_tokens": 128,
+        "reasoning_effort": null,
+        "temperature": 0.7,
+        "top_k": null,
+        "top_p": 0.8
+      },
+      "endpoint": "https://cos-tiktok-annotation-a-resource.services.ai.azure.com/openai/v1",
+      "manifest": "reports/exp4_hosted/exp4_hosted_DeepSeek-V4-Pro_dev_draw0.manifest.json",
+      "manifest_sha256": "e43fe93b51aaa0a1e1027a7038af829eeb72530e01244985823e99cca2cf77b1",
+      "parsed_probabilities": [
+        0.925,
+        0.0235
+      ],
+      "raw": "reports/exp4_hosted/exp4_hosted_DeepSeek-V4-Pro_dev_draw0.jsonl",
+      "raw_sha256": "9c93a32b95d28411c2cf67870ffe5057162e8bc4b70fc2079f56315f8717461e",
+      "responses_received": 2,
+      "status": "development_canary_passed",
+      "successfully_parsed": 2
+    },
+    "FW-Kimi-K3": {
+      "development_prompts_sent": 0,
+      "reason": "No valid credential for the exact liv deployment.",
+      "status": "paused"
+    },
+    "claude-opus-4-8": {
+      "development_prompts_sent": 2,
+      "error": "HTTP 401 before model inference",
+      "responses_received": 0,
+      "status": "credential_blocked"
+    },
+    "gpt-5.6-sol": {
+      "development_prompts_sent": 2,
+      "error": "HTTP 404 DeploymentNotFound before model inference",
+      "responses_received": 0,
+      "status": "deployment_blocked"
+    }
+  },
+  "failed_attempt_archive": {
+    "destination": "reports/exp4_hosted/archive/approved_fallback_failure_20260825T222025Z",
+    "raw_sha256": {
+      "claude-opus-4-8": "7b043f2b2d766b19241013ab3aab2a37a6609d06a189615284c9304bbdfa7ea5",
+      "gpt-5.6-sol": "da903db79015b3e0b875f2be0761474da98f25229d0c16c80f67a10ea8808f7b"
+    },
+    "successful_model_outputs": 0
+  },
+  "frozen_next_step": {
+    "DeepSeek-V4-Pro": "Eligible for holdout only after explicit authorization for holdout transmission to the fallback resource.",
+    "FW-Kimi-K3": "Requires a valid liv credential; do not substitute a different Kimi model.",
+    "claude-opus-4-8": "Requires a valid credential/resource pair.",
+    "gpt-5.6-sol": "Requires a resource with an active exact deployment."
+  },
+  "provenance": {
+    "protocol_sha256": "87bdbcb19f5fc6fc138ea1bdc1ed5c27c811c981c504adff0a4dbd7e14e749dd",
+    "registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+    "resource_amendment": "runs/exp4_architecture_provider_sweep_hosted_resource_amendment_20260825T221237Z.json",
+    "resource_amendment_sha256": "81801ad438f10a00976292b1308d2cbdf5039f360906f0d71646f0a8ca2b473f",
+    "runner_sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf"
+  }
+}

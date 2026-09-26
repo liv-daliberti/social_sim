@@ -99,13 +99,13 @@ def _local_color(key: str) -> str:
 # ── model catalogue (ordered for x-axis) ──────────────────────────────────────
 #   key         label             param_class   frontier?
 MODELS = [
-    ("llama3.1:8b", "Llama 3.1-8B", "8B", False),
-    ("qwen2.5:7b", "Qwen 2.5-7B", "7B", False),
-    ("qwen2.5:14b", "Qwen 2.5-14B", "14B", False),
-    ("qwen2.5:32b", "Qwen 2.5-32B", "32B", False),
-    ("qwen2.5:72b", "Qwen 2.5-72B", "72B", False),
-    ("llama3.1:70b", "Llama 3.1-70B", "70B", False),
-    ("llama3.3:70b", "Llama 3.3-70B", "70B", False),
+    ("llama3.1:8b", "Llama-3.1-8B", "8B", False),
+    ("qwen2.5:7b", "Qwen2.5-7B", "7B", False),
+    ("qwen2.5:14b", "Qwen2.5-14B", "14B", False),
+    ("qwen2.5:32b", "Qwen2.5-32B", "32B", False),
+    ("qwen2.5:72b", "Qwen2.5-72B", "72B", False),
+    ("llama3.1:70b", "Llama-3.1-70B", "70B", False),
+    ("llama3.3:70b", "Llama-3.3-70B", "70B", False),
     ("DeepSeek-V4-Pro", "DeepSeek V4-Pro", "DS", True),
     ("gpt-5.4", "GPT-5.4", "GPT", True),
     ("claude-opus-4-8", "Claude Opus 4.8", "Claude", True),
@@ -192,14 +192,13 @@ class _HandlerLogo(HandlerBase):
         return [image]
 
 
-# ── load consistency report ────────────────────────────────────────────────────
-def _load_report() -> dict:
-    reports = sorted(
-        (_ROOT / "data" / "results").glob("consistency_report_*.json"), reverse=True
-    )
-    if not reports:
-        raise FileNotFoundError("No consistency report found")
-    return json.loads(reports[0].read_text())
+# ── load normalized directional scores ────────────────────────────────────────
+def _load_threshold_report() -> dict:
+    path = _ROOT / "data" / "results" / "threshold_robustness.json"
+    report = json.loads(path.read_text())
+    if report["analysis"]["thresholds_pp"] != [0, 1, 3, 5]:
+        raise ValueError("Unexpected directional-correctness thresholds")
+    return report
 
 
 def _load_clustered_uncertainty() -> dict:
@@ -257,9 +256,9 @@ _XLABELS = {
     "llama3.1:70b": "L3.1\n70B",
     "llama3.3:70b": "L3.3\n70B",
     "qwen2.5:72b": "72B",
-    "DeepSeek-V4-Pro": "DS\nV4-Pro\n(1.6T MoE)",
-    "gpt-5.4": "GPT\n5.4\n(est. ~3T)",
-    "claude-opus-4-8": "Claude\nOpus 4.8\n(~5.3T MoE)",
+    "DeepSeek-V4-Pro": "DS\nV4-Pro",
+    "gpt-5.4": "GPT\n5.4",
+    "claude-opus-4-8": "Claude\nOpus 4.8",
 }
 
 # pts per x-data-unit for a standalone 7-inch-wide figure
@@ -320,7 +319,7 @@ def _draw_scale_panel(
         ax.text(
             sep_x + 0.18,
             0.97,
-            "Frontier systems",
+            "Hosted systems",
             transform=_blended,
             ha="left",
             va="top",
@@ -488,9 +487,9 @@ _SENS_LABEL_OFFSETS = {
     "claude-opus-4-8": (18, False),
 }
 
-# Qwen 2.5-7B is intentionally excluded from sensitivity panels: its archived
+# Qwen2.5-7B is intentionally excluded from sensitivity panels: its archived
 # absolute revisions mix 0--1 and 0--100 scales, so the derived ratio is not a
-# comparable measurement. It remains in EHC, which does not use magnitudes.
+# comparable measurement. EHC uses independently normalized probability fields.
 _SENSITIVITY_MODEL_KEYS = tuple(key for key, _, _, _ in MODELS if key != "qwen2.5:7b")
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -517,96 +516,77 @@ _EHC_LABEL_OFFSETS = {
 
 
 def fig_combined_ehc_sensitivity(report: dict, clustered: dict) -> None:
-    """Two-panel figure: EHC (left) and sensitivity ratio (right) vs model scale."""
-
-    ehc_values = {}
-    sens_values = {}
-    sens_intervals = {}
-    for key, _, _, _ in MODELS:
-        pm = report["per_model"].get(key, {})
-        ehc = pm.get("consistency", {}).get("EHC_rate")
-        clustered_row = clustered.get("per_model", {}).get(key, {})
-        sensitivity = clustered_row.get("sensitivity_ratio")
-        if ehc is not None:
-            ehc_values[key] = ehc
-        if sensitivity is not None and key in _SENSITIVITY_MODEL_KEYS:
-            sens_values[key] = sensitivity["estimate"]
-            sens_intervals[key] = (
-                sensitivity["ci_low"],
-                sensitivity["ci_high"],
-            )
-
-    # Layout: a less-extreme aspect ratio than before (was 14×4.4) so the paper
-    # downscales it far less aggressively — the previous 3.2:1 figure shrank all
-    # text to near-illegible sizes at text width.  Tight margins + small wspace
-    # keep the two panels as large as possible.
-    _fig_w, _fig_h = 13.5, 4.9
-    _left, _right, _wspace = 0.06, 0.98, 0.16
-
-    # Each subplot panel is narrower than the standalone 7-inch figure, so
-    # recalculate pts_per_x to keep dx_pts label offsets visually consistent.
-    # For two equal panels: panel_frac = (right-left) / (2 + wspace).
-    _panel_w_in = _fig_w * (_right - _left) / (2 + _wspace)
-    _pts_per_x_comb = _panel_w_in * 72 / _XLIM_SPAN
-
-    # Larger in-panel text: the combined figure is downscaled less in the paper,
-    # and these sizes restore legibility at print scale.
-    _panel_kw = dict(
-        show_zone_labels=True,
-        logo_zoom=0.10,
-        pts_per_x=_pts_per_x_comb,
-        zone_fs=10.0,
-        val_fs=9.5,
-        tick_fs=9.5,
-    )
-
+    """Compare normalized directional correctness and unconditional sensitivity."""
+    ordered_keys = report["model_order"]
+    labels = {key: label for key, label, _, _ in MODELS}
+    y = np.arange(len(ordered_keys))
     rc = {
         "savefig.bbox": None,
-        "axes.labelsize": 12,
-        "xtick.labelsize": 10.0,
-        "ytick.labelsize": 10.0,
-        "legend.fontsize": 10.5,
+        "font.size": 10,
+        "axes.labelsize": 10,
+        "axes.titlesize": 11,
+        "xtick.labelsize": 9,
+        "ytick.labelsize": 10,
     }
     with plt.rc_context(rc):
-        fig, (ax_ehc, ax_sens) = plt.subplots(1, 2, figsize=(_fig_w, _fig_h))
-
-        _draw_scale_panel(
-            ax_ehc,
-            ehc_values,
-            ymin=0.84,
-            ymax=1.005,
-            yformat="pct",
-            label_offsets=_EHC_LABEL_OFFSETS,
-            ylabel="Evidence–Hypothesis Consistency (EHC)",
-            xlabel="Model scale / system class",
-            yticks=[0.85, 0.90, 0.95, 1.00],
-            **_panel_kw,
+        fig, (ax_ehc, ax_sens) = plt.subplots(
+            1, 2, figsize=(9.2, 4.5), sharey=True
         )
+        for row, key in enumerate(ordered_keys):
+            color = C_FRONT if key in FRONTIER_LOGOS else _local_color(key)
+            ehc = report["per_model"][key]["EHC"]["thresholds"]["3"][
+                "market_macro_directional_correctness"
+            ]
+            ax_ehc.scatter(100 * ehc, row, s=27, color=color, zorder=3)
+            ax_ehc.annotate(
+                f"{ehc:.1%}", (100 * ehc, row), xytext=(6, 0),
+                textcoords="offset points", va="center", fontsize=9,
+            )
+            if key in _SENSITIVITY_MODEL_KEYS:
+                result = clustered["per_model"][key]["sensitivity_ratio"]
+                value = result["estimate"]
+                ax_sens.errorbar(
+                    value, row,
+                    xerr=[[value - result["ci_low"]],
+                          [result["ci_high"] - value]],
+                    fmt="o", markersize=4, color=color,
+                    linewidth=1.1, capsize=2.5, zorder=3,
+                )
+                rounded = Decimal(str(value)).quantize(
+                    Decimal("0.1"), rounding=ROUND_HALF_UP
+                )
+                ax_sens.annotate(
+                    f"{rounded}×", (result["ci_high"], row), xytext=(5, 0),
+                    textcoords="offset points", va="center", fontsize=9,
+                )
+            else:
+                ax_sens.text(2, row, "Excluded: mixed scales", va="center",
+                             fontsize=9, color="#64748b")
 
-        _draw_scale_panel(
-            ax_sens,
-            sens_values,
-            ymin=0,
-            ymax=40,
-            yformat="x",
-            label_offsets=_SENS_LABEL_OFFSETS,
-            ylabel="Sensitivity ratio\n(mean directional / mean orthogonal $|\\Delta\\hat{p}|$)",
-            xlabel="Model scale / system class",
-            yticks=[0, 10, 20, 30, 40],
-            model_keys=_SENSITIVITY_MODEL_KEYS,
-            intervals=sens_intervals,
-            **_panel_kw,
-        )
-
-        fig.subplots_adjust(
-            left=_left,
-            right=_right,
-            bottom=0.26,
-            top=0.97,
-            wspace=_wspace,
-        )
+        for ax in (ax_ehc, ax_sens):
+            ax.set_yticks(y)
+            ax.set_ylim(len(y) - 0.5, -0.6)
+            ax.grid(axis="y", visible=False)
+            ax.grid(axis="x", visible=True)
+            ax.axhline(2.5, color="#cbd5e1", linewidth=0.8)
+            ax.tick_params(axis="y", length=0)
+        ax_ehc.set_yticklabels([labels[key] for key in ordered_keys])
+        ax_sens.tick_params(axis="y", labelleft=False)
+        ax_sens.spines["left"].set_visible(False)
+        ax_ehc.set_xlim(85, 103)
+        ax_ehc.set_xticks([85, 90, 95, 100])
+        ax_ehc.xaxis.set_major_formatter(lambda value, _: f"{value:.0f}%")
+        ax_ehc.set_title("Directional correctness", loc="left", pad=10)
+        ax_ehc.set_xlabel("EHC among revisions ≥3 pp")
+        ax_sens.set_xlim(0, 44)
+        ax_sens.set_xticks([0, 10, 20, 30, 40])
+        ax_sens.xaxis.set_major_formatter(lambda value, _: f"{value:.0f}×")
+        ax_sens.set_title("Evidence selectivity", loc="left", pad=10)
+        ax_sens.set_xlabel("Unconditional sensitivity (95% CI)")
+        fig.subplots_adjust(left=0.19, right=0.985, bottom=0.15,
+                            top=0.90, wspace=0.20)
         out = _OUT / "exp1_ehc_sensitivity_combined.pdf"
-        fig.savefig(out, dpi=600)
+        fig.savefig(out)
         print(f"  Saved {out}")
     plt.close(fig)
 
@@ -618,9 +598,9 @@ def fig_combined_ehc_sensitivity(report: dict, clustered: dict) -> None:
 
 def main() -> None:
     print("Loading data …")
-    report = _load_report()
+    report = _load_threshold_report()
     clustered = _load_clustered_uncertainty()
-    print(f"  Report: {report['date']}")
+    print("  Directional scores: normalized probabilities, 3-pp threshold")
     print(
         "  Cluster bootstrap: "
         f"{clustered['bootstrap']['repetitions']:,} market resamples"

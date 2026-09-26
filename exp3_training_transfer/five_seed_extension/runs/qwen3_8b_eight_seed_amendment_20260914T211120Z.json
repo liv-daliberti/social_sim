@@ -1,0 +1,90 @@
+{
+  "allocation": {
+    "account": "allcs",
+    "cpus_per_task": 8,
+    "delta_from_seed_42_44_submission": [
+      "--account=allcs",
+      "--qos=medium"
+    ],
+    "exclude": "node206",
+    "gpu_type": "a6000",
+    "gpus": 2,
+    "matches_parent_gpu_architecture": true,
+    "memory": "100G",
+    "partition": "cs",
+    "qos": "medium",
+    "walltime": "30:00:00"
+  },
+  "code_sha256": {
+    "exp3_training_transfer/coin_city_structural/train.sh": "7ca287c389ff4f18678de9e381e5de6b0064cdd2635eebbfab3a749476685a21",
+    "exp3_training_transfer/five_seed_extension/PROTOCOL.md": "4c485b67a497fb36a3b866a964090af067e761bcf9512aca7e9723ebcf9d89ed",
+    "exp3_training_transfer/five_seed_extension/QWEN3_8B_EIGHT_SEED_AMENDMENT.md": "5d12d8a64922e73f5d63e55cdff8421d19cd54a59075567e2f8d5d5221810179",
+    "exp3_training_transfer/five_seed_extension/RECOVERY_AMENDMENT.md": "5ec19af03802bbe2fe6e2081402a3d8b3bbe9da77df5e100dbe73820adde4f7e",
+    "exp3_training_transfer/five_seed_extension/project_seed_power.py": "db6817a0574ee8c0ec429519f64ec7e48ed6b9fe033256646dd4a98366940267"
+  },
+  "created_at": "20260914T211120Z",
+  "existing_three_seed_jobs": {
+    "base": "30724002",
+    "causal": {
+      "42": "30730378",
+      "43": "30730379",
+      "44": "30730380"
+    },
+    "population_prior": {
+      "42": "30730381",
+      "43": "30730382",
+      "44": "30730383"
+    }
+  },
+  "kind": "qwen3_8b_coin_city_eight_seed_amendment",
+  "parent_protocol": "exp3_exp4_five_seed_extension_v1",
+  "power_projection_source": "exp3_training_transfer/five_seed_extension/project_seed_power.py",
+  "prespecified_analyses": [
+    "hierarchical_seed_first_bootstrap_5000_seed20260818",
+    "student_t_on_seed_level_means_df7",
+    "wild_cluster_bootstrap_webb_weights_9999_seed20260818",
+    "exact_one_sided_seed_level_sign_test"
+  ],
+  "protocol": "exp3_qwen3_8b_coin_city_eight_seed_v1",
+  "roster": {
+    "added_seeds": [
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "arms": [
+      "causal",
+      "population_prior"
+    ],
+    "campaign": "exp3_coin_current",
+    "combined_seed_roster": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "endpoint_files_at_completion": 17,
+    "model": "Qwen/Qwen3-8B",
+    "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+    "model_key": "qwen3_8b",
+    "training_jobs": 10
+  },
+  "scientific_hyperparameters_changed": false,
+  "seed_count_selected_from_observed_results": true,
+  "status": "recorded_before_submission",
+  "stopping_rule": {
+    "analysis_runs": 1,
+    "completed_seed_may_be_discarded": false,
+    "fixed_G": 8,
+    "infrastructural_retry_limit": 3,
+    "intermediate_analysis_permitted": false,
+    "seed_addition_after_result_permitted": false
+  },
+  "submitted": false
+}

@@ -1,0 +1,71 @@
+{
+  "active_gate": {
+    "advance_job_id": "30910722",
+    "advance_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_advance_20260826T192317Z.json",
+    "advance_ledger_sha256": "31da63565f1de7e4d09f0c402c82c56bc5345a9bf46bf84176c3260d5a414f04",
+    "canary_job_id": "30910721",
+    "canary_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260826T192317Z.json",
+    "canary_ledger_sha256": "b62453175a9d938e1937597310f02fc12a3525a94f0b53d5b2106dfdaf78e8be",
+    "registration": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260826T192306Z.json",
+    "registration_sha256": "790db763a9a5ef25bcff386bf46dddaa53cf397d660d4f1bbd6a2a1ce691b536"
+  },
+  "compatibility_amendment": {
+    "change": "enable reentrant gradient checkpointing for OAT ZeRO-3 compatibility while retaining the vLLM custom-all-reduce disablement",
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_reentrant_checkpoint_compatibility_amendment_20260826T192211Z.json",
+    "sha256": "549c07f0181220cd28e7803895654cbce326410fca7c74adcc49c45ddc6c51fe"
+  },
+  "failed_gate": {
+    "advance_job_id": "30908506",
+    "advance_state_after_recovery": "CANCELLED",
+    "canary_job_id": "30908504",
+    "canary_state_after_recovery": "CANCELLED",
+    "failure": "torch.utils.checkpoint.CheckpointError from non-reentrant recomputation metadata drift under ZeRO-3",
+    "gpu_allocation_released": true
+  },
+  "five_seed_parent_ledger": {
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/five_seed_training_20260825T232245Z.json",
+    "sha256": "fecd559e39821c97724353e4806f4132c4cdb094b5f0699e3a79be93431ddc79"
+  },
+  "kind": "qwen32_zero3_reentrant_checkpoint_and_dependency_recovery",
+  "recorded_at": "20260826T192712Z",
+  "rewired_jobs": [
+    {
+      "dependency_after": "afterok:30910722",
+      "dependency_before": "afterok:30908506",
+      "job_id": "30894222",
+      "role": "qwen3_32b_seed_45_training"
+    },
+    {
+      "dependency_after": "afterok:30910722",
+      "dependency_before": "afterok:30908506",
+      "job_id": "30894223",
+      "role": "qwen3_32b_seed_46_training"
+    },
+    {
+      "dependency_after": "afterok:30910722",
+      "dependency_before": "afterok:30908506",
+      "job_id": "30894368",
+      "role": "qwen3_32b_five_seed_evaluation_scheduler"
+    }
+  ],
+  "scheduler_status_at_recording": {
+    "canary_state": "PENDING",
+    "estimated_start": "2026-08-26T17:40:00",
+    "reason": "Priority",
+    "scheduled_node": "node205"
+  },
+  "scientific_hyperparameters_changed": false,
+  "script_hashes": {
+    "five_seed_qwen32_trainer": "a1bb09afe764daa66793a0ff6bcfa36997d751abb84b6f2ea00645171af47c19",
+    "five_seed_scheduler": "d6015faa5afe219cf690871252670d0934be342d693f270e3e64a6679fe4c1d2",
+    "qwen32_extension_launcher": "8a26c2b99550b281e37ea9b788ec8297f464649e2731105c09b6c19d97d9c736",
+    "qwen32_extension_trainer": "15399c2bfc2c2978c8466f61054e102889f4163f4d18d9e0a87f81781027b8e4",
+    "shared_oat_trainer": "28de53c88b4edbf7e7dd6054a5650ab6a34b0832adc766b10d13ea9d3ee80652"
+  },
+  "supersedes_recovery_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/qwen32_gate_consolidation_20260826T143933Z.json",
+  "supersedes_recovery_ledger_sha256": "9a62d5ba147e1645a67aef447ca60a7df333f46c93ed8fd2ca06ec40b26970e3",
+  "validation": {
+    "oat_parser_gradient_checkpointing_use_reentrant": true,
+    "tests": "17 passed"
+  }
+}

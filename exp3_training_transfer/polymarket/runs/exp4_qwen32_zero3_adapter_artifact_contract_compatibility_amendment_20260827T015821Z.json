@@ -1,0 +1,41 @@
+{
+  "canary_parse_audit": {
+    "draws": 2560,
+    "invalid_after_fence_normalization": 0,
+    "single_fenced_json": 2560,
+    "strict_json_before_fence_normalization": 0
+  },
+  "canary_performance_threshold_added": false,
+  "completed_canary_elapsed": "02:11:03",
+  "completed_canary_job_id": "30910721",
+  "completed_canary_state": "COMPLETED",
+  "conversion_validation": "identical tensor keys, shapes, and dtypes after safetensors reload",
+  "converted_adapter_safetensors": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/qwen32_canary_qwen3_32b_market_20260826_162559_j30910721/debug_0826T16:26:30/saved_models/step_00011/adapter_model.safetensors",
+  "converted_adapter_safetensors_sha256": "66478304f0d27ab047245cd46c02266c9bf0cec2227b48b83cdfd0e5250b9cdb",
+  "converted_tensor_count": 896,
+  "corrected_launcher_sha256": "60c887d08853530a29c4d659ba83dc6f9b89543842c163527365059cd3392d93",
+  "corrected_oat_deepspeed_sha256": "d1aa97a750b388ea74801150ebd5370160e46828ca58b2123c2beb226e4f9ff3",
+  "corrected_shared_trainer_sha256": "28de53c88b4edbf7e7dd6054a5650ab6a34b0832adc766b10d13ea9d3ee80652",
+  "corrected_trainer_sha256": "15399c2bfc2c2978c8466f61054e102889f4163f4d18d9e0a87f81781027b8e4",
+  "evaluation_data_changed": false,
+  "execution_only_changes": [
+    "write consolidated ZeRO-3 PEFT weights as adapter_model.safetensors while retaining adapter_model.bin",
+    "strip one Markdown JSON fence before strict canary JSON parsing"
+  ],
+  "failed_advance_elapsed": "00:00:02",
+  "failed_advance_job_id": "30910722",
+  "failed_advance_state": "FAILED",
+  "failure": "OAT ZeRO-3 correctly wrote consolidated PEFT weights as adapter_model.bin, while the fail-closed gate required adapter_model.safetensors; all canary outputs were single Markdown-fenced JSON objects while the gate applied raw json.loads.",
+  "kind": "zero3_adapter_artifact_contract_compatibility_amendment",
+  "prior_oat_deepspeed_sha256": "272f33de1dedff774835e4c9e33aea1192509067481b11d19eff1b933c1f091d",
+  "production_parser_would_parse_all_draws": true,
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "recorded_at": "20260827T015821Z",
+  "reuses_completed_canary_without_retraining": true,
+  "scientific_hyperparameters_changed": false,
+  "source_adapter_bin": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/qwen32_canary_qwen3_32b_market_20260826_162559_j30910721/debug_0826T16:26:30/saved_models/step_00011/adapter_model.bin",
+  "source_adapter_bin_sha256": "d0cf4fe6337be25cd6f92d8599e84324fb8b2a3b44fdb2cedbf1c6a32256d598",
+  "supersedes_compatibility_amendment": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_reentrant_checkpoint_compatibility_amendment_20260826T192211Z.json",
+  "supersedes_compatibility_amendment_sha256": "549c07f0181220cd28e7803895654cbce326410fca7c74adcc49c45ddc6c51fe",
+  "training_data_changed": false
+}

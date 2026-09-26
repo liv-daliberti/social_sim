@@ -1,0 +1,34 @@
+{
+  "status": "submitted_after_protocol_freeze",
+  "submitted_at": "2026-08-29T23:02:30-04:00",
+  "qwen2_5_72b": {
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "protocol_sha256": "fda4bc58e3914b01633767e7784fa67cf0159be92e09bde5ebb370f94aa6180c",
+    "jobs": {
+      "extract_select": "30971524",
+      "patch_k0": "30971525",
+      "patch_k4": "30971526",
+      "finalize": "30971532"
+    }
+  },
+  "qwen3_32b": {
+    "model": "Qwen/Qwen3-32B",
+    "probe_protocol_sha256": "64cc2ba0fc4606d93434b9d7981b7b221fe0b1d22ff40d2a9cd10a573e4d7a70",
+    "jobs": {
+      "symbol_probe": "30971429",
+      "seal_freeze_extract_select": "30971533",
+      "patch_k0": "30971536",
+      "patch_k4": "30971537",
+      "finalize": "30971538"
+    }
+  },
+  "stage_script_sha256": {
+    "extract": "cdcf75ba4be42d30b55a92767a4548c180b4ccc30be58fa8b66fbe9849532bd1",
+    "patch": "ae135d87d1b14d6a4fa02e3dedad94f7bef08c3096c701118738d5e818d18e91",
+    "finalize": "c37886d200c6ee800767ffd9e29ecabb8fbe7da932035be8fe9d5bd267d2a2bd"
+  },
+  "scheduler_amendments": [
+    "allcs used after mltheory rejected the available A6000 node shape; experiment, model, code, and frozen endpoints unchanged",
+    "Qwen3-32B jobs reduced from the generic 4xA6000/200G profile to 2xA6000/96G, matching prior successful Qwen3-32B inference allocations; frozen prompts, code, endpoints, and time limits unchanged"
+  ]
+}

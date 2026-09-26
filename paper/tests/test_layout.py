@@ -198,11 +198,11 @@ def test_every_declared_latex_input_exists() -> None:
     assert not missing, f"missing LaTeX inputs: {missing}"
     # The manuscript is a small, explicit set of hand-edited sources plus
     # generated tables. Name every hand-edited source so a stray new one fails.
-    assert seen == {
-        "main.tex",
-        "appendix.tex",
-        "experiment1_fresh_context_appendix.tex",
-    } | {name for name in seen if name.startswith("tables/")}
+    # The appendix inlines every table and the fresh-context appendix, so the
+    # build reaches only the two hand-edited sources plus tables main.tex pulls in.
+    assert seen == {"main.tex", "appendix.tex"} | {
+        name for name in seen if name.startswith("tables/")
+    }
 
 
 def test_main_experiments_link_to_their_appendices() -> None:
@@ -230,7 +230,7 @@ def test_complete_coin_city_roster_is_reported() -> None:
     table = (PAPER_DIR / "tables/exp3_coin_structural_primary.tex").read_text()
 
     assert "for 18 runs" in appendix
-    assert r"\input{tables/exp3_coin_structural_primary}" in appendix
+    assert "% ---- begin inlined tables/exp3_coin_structural_primary.tex ----" in appendix
     # The transfer figure states the decoding protocol in main text; the Llama
     # roster and the 70B scale check are reported in the appendix.
     compact_main = " ".join(main.split())
@@ -246,7 +246,7 @@ def test_complete_coin_city_roster_is_reported() -> None:
     # (a separate study) legitimately reports greedy and stochastic cells.
     import re as _re
 
-    anchor = appendix.find(r"\input{tables/exp3_coin_structural_primary}")
+    anchor = appendix.find("% ---- begin inlined tables/exp3_coin_structural_primary.tex ----")
     assert anchor != -1
     bounds = [m.start() for m in _re.finditer(r"\\subsubsection\{", appendix)]
     roster = appendix[
@@ -298,13 +298,13 @@ def test_polymarket_reporting_hierarchy_uses_main_scale_figure() -> None:
     assert "Llama 3B/8B replication shows the same qualitative" in normalized_main
     assert "on a logarithmic parameter axis" in normalized_main
     assert "categorical" in main
-    assert r"\input{tables/exp3b_qwen3_8b_endpoint_results}" in appendix
+    assert "% ---- begin inlined tables/exp3b_qwen3_8b_endpoint_results.tex ----" in appendix
     assert "Untrained Qwen3-8B" in original_table
-    assert r"\input{tables/exp3b_model_roster_results}" in appendix
+    assert "% ---- begin inlined tables/exp3b_model_roster_results.tex ----" in appendix
     assert "Qwen3-4B" in architecture_table
     assert "Llama-3.1-8B" in architecture_table
     assert "Qwen3-8B" not in architecture_table
-    assert r"\input{tables/exp4_qwen_scale_results}" in appendix
+    assert "% ---- begin inlined tables/exp4_qwen_scale_results.tex ----" in appendix
     assert (
         r"\includegraphics[width=\linewidth]{figures/exp4_llama_scale_results.pdf}"
         in appendix

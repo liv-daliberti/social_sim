@@ -28,6 +28,7 @@ MODEL_NAMES = {
     "llama3_1_8b": "meta-llama/Llama-3.1-8B-Instruct",
 }
 EXPECTED_OUTPUTS = {"base", *(f"seed_{seed}" for seed in SEEDS)}
+SCORE_RECOMPUTE_ATOL = 1e-7
 
 
 def sha256(path: Path) -> str:
@@ -64,25 +65,25 @@ def validate_ledgers(qwen4: dict, extension: dict) -> dict[str, dict]:
     if qwen4.get("protocol_version") != "exp3b_registered_v1":
         raise AssertionError("Qwen3-4B ledger has the wrong protocol")
     qwen4_jobs = {
-        int(item["seed"]): str(item["job_id"])
-        for item in qwen4.get("submissions", [])
+        int(item["seed"]): str(item["job_id"]) for item in qwen4.get("submissions", [])
     }
     if set(qwen4_jobs) != set(SEEDS) or len(qwen4.get("submissions", [])) != 3:
         raise AssertionError("Qwen3-4B ledger must contain exactly seeds 42/43/44")
     qwen4_test = qwen4.get("locked_test_submission", {})
     if qwen4_test.get("adapter_spec") != ";".join(
-            f"{seed}:{qwen4_jobs[seed]}" for seed in SEEDS):
+        f"{seed}:{qwen4_jobs[seed]}" for seed in SEEDS
+    ):
         raise AssertionError("Qwen3-4B locked-test adapter specification drifted")
 
     if extension.get("protocol_version") != "exp3b_model_extension_v1":
         raise AssertionError("8B ledger has the wrong protocol")
     expected_cells = {
-        (model, seed)
-        for model in ("qwen3_8b", "llama3_1_8b")
-        for seed in SEEDS
+        (model, seed) for model in ("qwen3_8b", "llama3_1_8b") for seed in SEEDS
     }
     submissions = extension.get("submissions", [])
-    actual_cells = [(item.get("model"), int(item.get("seed", -1))) for item in submissions]
+    actual_cells = [
+        (item.get("model"), int(item.get("seed", -1))) for item in submissions
+    ]
     if len(actual_cells) != 6 or set(actual_cells) != expected_cells:
         raise AssertionError("8B ledger does not contain the exact six training cells")
     training_jobs = {
@@ -91,7 +92,9 @@ def validate_ledgers(qwen4: dict, extension: dict) -> dict[str, dict]:
     }
     evaluations = extension.get("locked_evaluations", [])
     if len(evaluations) != 2 or {item.get("model") for item in evaluations} != {
-            "qwen3_8b", "llama3_1_8b"}:
+        "qwen3_8b",
+        "llama3_1_8b",
+    }:
         raise AssertionError("8B ledger does not contain the exact two locked tests")
 
     result = {
@@ -115,8 +118,7 @@ def validate_ledgers(qwen4: dict, extension: dict) -> dict[str, dict]:
 
 def validate_summary(summary: dict, model_key: str) -> None:
     expected_protocol = (
-        "exp3b_registered_v1" if model_key == "qwen3_4b"
-        else "exp3b_model_extension_v1"
+        "exp3b_registered_v1" if model_key == "qwen3_4b" else "exp3b_model_extension_v1"
     )
     if summary.get("protocol_version") != expected_protocol:
         raise AssertionError(f"{model_key}: wrong protocol version")
@@ -130,8 +132,10 @@ def validate_summary(summary: dict, model_key: str) -> None:
         if summary.get("frozen_parent_protocol") != "exp3b_registered_v1":
             raise AssertionError(f"{model_key}: frozen parent protocol missing")
     decoding = summary.get("decoding", {})
-    if (float(decoding.get("temperature", -1)), int(decoding.get("max_tokens", -1))) != (
-            0.0, 128):
+    if (
+        float(decoding.get("temperature", -1)),
+        int(decoding.get("max_tokens", -1)),
+    ) != (0.0, 128):
         raise AssertionError(f"{model_key}: locked decoding configuration drifted")
     if set(summary.get("adapter_paths", {})) != {str(seed) for seed in SEEDS}:
         raise AssertionError(f"{model_key}: expected three registered adapters")
@@ -170,7 +174,9 @@ def validate_summary(summary: dict, model_key: str) -> None:
             raise AssertionError(f"{model_key}/{name}: wrong connected-family count")
 
 
-def validate_raw_rows(rows: list[dict], test_rows: list[dict], model_key: str) -> None:
+def validate_raw_rows(
+    rows: list[dict], test_rows: list[dict], summary: dict, model_key: str
+) -> None:
     expected = {str(row["task_id"]): row for row in test_rows}
     if len(test_rows) != 1024 or len(expected) != 1024:
         raise AssertionError("frozen test data must contain 1,024 unique task IDs")
@@ -179,35 +185,78 @@ def validate_raw_rows(rows: list[dict], test_rows: list[dict], model_key: str) -
     task_ids = [str(row.get("task_id")) for row in rows]
     if len(set(task_ids)) != 1024 or set(task_ids) != set(expected):
         raise AssertionError(f"{model_key}: raw output task universe drifted")
+    valid_counts = {name: 0 for name in EXPECTED_OUTPUTS}
+    brier_losses = {name: [] for name in EXPECTED_OUTPUTS}
     for row in rows:
         task_id = str(row["task_id"])
         reference = expected[task_id]
         if (
             str(row.get("event_id")) != str(reference["event_id"])
             or bool(row.get("settlement_yes")) != bool(reference["settlement_yes"])
-            or abs(float(row.get("market_yes_prob")) -
-                   float(reference["market_yes_prob"])) > 1e-12
+            or abs(
+                float(row.get("market_yes_prob")) - float(reference["market_yes_prob"])
+            )
+            > 1e-12
         ):
             raise AssertionError(f"{model_key}/{task_id}: frozen task metadata drifted")
         if set(row.get("forecasts", {})) != EXPECTED_OUTPUTS:
-            raise AssertionError(f"{model_key}/{task_id}: forecast roster is incomplete")
+            raise AssertionError(
+                f"{model_key}/{task_id}: forecast roster is incomplete"
+            )
         if set(row.get("responses", {})) != EXPECTED_OUTPUTS:
-            raise AssertionError(f"{model_key}/{task_id}: response roster is incomplete")
-        probabilities = [float(value) for value in row["forecasts"].values()]
-        if not all(math.isfinite(value) and 0.0 <= value <= 1.0
-                   for value in probabilities):
-            raise AssertionError(f"{model_key}/{task_id}: invalid forecast probability")
+            raise AssertionError(
+                f"{model_key}/{task_id}: response roster is incomplete"
+            )
+        outcome = float(bool(reference["settlement_yes"]))
+        for name, raw_value in row["forecasts"].items():
+            if raw_value is None:
+                # The frozen evaluator assigns an invalid parse Brier loss one.
+                brier_losses[name].append(1.0)
+                continue
+            if isinstance(raw_value, bool):
+                raise AssertionError(f"{model_key}/{task_id}/{name}: Boolean forecast")
+            try:
+                probability = float(raw_value)
+            except (TypeError, ValueError) as error:
+                raise AssertionError(
+                    f"{model_key}/{task_id}/{name}: invalid forecast probability"
+                ) from error
+            if not math.isfinite(probability) or not 0.0 <= probability <= 1.0:
+                raise AssertionError(
+                    f"{model_key}/{task_id}/{name}: invalid forecast probability"
+                )
+            valid_counts[name] += 1
+            brier_losses[name].append((probability - outcome) ** 2)
+
+    for name in EXPECTED_OUTPUTS:
+        coverage = valid_counts[name] / len(rows)
+        brier = sum(brier_losses[name]) / len(rows)
+        recorded = summary["models"][name]
+        if abs(coverage - float(recorded["parse_coverage"])) > 1e-12:
+            raise AssertionError(f"{model_key}/{name}: raw parse coverage drifted")
+        # Summaries were accumulated from the parser's in-memory float values;
+        # raw JSON stores their short decimal serialization. The largest frozen
+        # round-trip discrepancy is below 1e-7 Brier.
+        if not math.isclose(
+            brier,
+            float(recorded["brier"]),
+            rel_tol=0.0,
+            abs_tol=SCORE_RECOMPUTE_ATOL,
+        ):
+            raise AssertionError(f"{model_key}/{name}: raw Brier score drifted")
 
 
 def row_from_summary(summary: dict, model_key: str, label: str) -> dict:
     validate_summary(summary, model_key)
     seeds = {
-        str(seed): float(summary["models"][f"seed_{seed}"]["brier"])
+        str(seed): float(summary["models"][f"seed_{seed}"]["brier"]) for seed in SEEDS
+    }
+    seed_log_losses = {
+        str(seed): float(summary["models"][f"seed_{seed}"]["log_loss_nats"])
         for seed in SEEDS
     }
     trained_log_losses = [
-        float(summary["models"][f"seed_{seed}"]["log_loss_nats"])
-        for seed in SEEDS
+        float(summary["models"][f"seed_{seed}"]["log_loss_nats"]) for seed in SEEDS
     ]
     coverages = [
         float(summary["models"][name]["parse_coverage"])
@@ -217,7 +266,9 @@ def row_from_summary(summary: dict, model_key: str, label: str) -> dict:
         "model_key": model_key,
         "label": label,
         "base_brier": float(summary["models"]["base"]["brier"]),
+        "base_log_loss_nats": float(summary["models"]["base"]["log_loss_nats"]),
         "seed_brier": seeds,
+        "seed_log_loss_nats": seed_log_losses,
         "trained_mean_brier": sum(seeds.values()) / len(seeds),
         "trained_mean_log_loss_nats": sum(trained_log_losses) / len(trained_log_losses),
         "minimum_parse_coverage": min(coverages),
@@ -234,6 +285,8 @@ def row_from_summary(summary: dict, model_key: str, label: str) -> dict:
 
 
 def fmt(value: float, digits: int = 4) -> str:
+    if round(float(value), digits) == 0:
+        return "." + "0" * digits
     text = f"{float(value):.{digits}f}"
     if text.startswith("-0."):
         return "-" + text[2:]
@@ -245,32 +298,61 @@ def fmt(value: float, digits: int = 4) -> str:
 def interval(contrast: dict) -> str:
     return (
         f"{fmt(contrast['estimate'])} "
-        f"[{fmt(contrast['ci95_low'])},{fmt(contrast['ci95_high'])}]"
+        f"[{fmt(contrast['ci95_low'], 5)},{fmt(contrast['ci95_high'], 5)}]"
     )
 
 
 def render_latex(rows: list[dict]) -> str:
     lines = [
         "% generated by polymarket/scripts/render_model_extension_table.py -- do not edit",
-        r"\begin{tabular}{lrrrrrrrrr}",
+        r"\begin{tabular}{l" + "r" * len(rows) + "}",
         r"\toprule",
-        r"Model & Base & Seed 42 & Seed 43 & Seed 44 & Trained mean & "
-        r"$\Delta$ base [95\% CI] & $\Delta$ market [95\% CI] & "
-        r"$\Delta$ Platt [95\% CI] & Parse \\",
+        "Measure & " + " & ".join(row["label"] for row in rows) + r" \\",
         r"\midrule",
     ]
-    for row in rows:
-        seeds = row["seed_brier"]
-        lines.append(
-            f"{row['label']} & {fmt(row['base_brier'])} & "
-            f"{fmt(seeds['42'])} & {fmt(seeds['43'])} & {fmt(seeds['44'])} & "
-            f"{fmt(row['trained_mean_brier'])} & "
-            f"{interval(row['trained_minus_base'])} & "
-            f"{interval(row['trained_minus_market'])} & "
-            f"{interval(row['trained_minus_platt_market'])} & "
-            f"{fmt(row['minimum_parse_coverage'], 3)} " + r"\\"
-        )
+    measures = [
+        ("Base Brier", lambda row: fmt(row["base_brier"])),
+        *((f"Trained Brier, seed {seed}",
+           lambda row, seed=seed: fmt(row["seed_brier"][str(seed)])) for seed in SEEDS),
+        ("Trained mean Brier", lambda row: fmt(row["trained_mean_brier"])),
+        (r"$\Delta$ base [95\% CI]", lambda row: interval(row["trained_minus_base"])),
+        (r"$\Delta$ market [95\% CI]", lambda row: interval(row["trained_minus_market"])),
+        (r"$\Delta$ Platt [95\% CI]", lambda row: interval(row["trained_minus_platt_market"])),
+        ("Minimum parse coverage", lambda row: fmt(row["minimum_parse_coverage"], 3)),
+    ]
+    for label, value in measures:
+        lines.append(label + " & " + " & ".join(value(row) for row in rows) + r" \\")
     lines.extend((r"\bottomrule", r"\end{tabular}"))
+    return "\n".join(lines)
+
+
+def render_qwen8_main_latex(row: dict) -> str:
+    lines = [
+        "% generated by polymarket/scripts/render_model_extension_table.py -- do not edit",
+        r"\begin{tabular}{lrrr}",
+        r"\toprule",
+        r"Forecaster & Brier $\downarrow$ & $\Delta$ base & Log loss $\downarrow$ \\",
+        r"\midrule",
+        f"Untrained Qwen3-8B & {fmt(row['base_brier'])} & --- & "
+        f"{fmt(row['base_log_loss_nats'])} " + r"\\",
+    ]
+    for seed in SEEDS:
+        key = str(seed)
+        delta = row["seed_brier"][key] - row["base_brier"]
+        lines.append(
+            f"Trained, seed {seed} & {fmt(row['seed_brier'][key])} & "
+            f"{fmt(delta)} & {fmt(row['seed_log_loss_nats'][key])} " + r"\\"
+        )
+    lines.extend(
+        (
+            r"\midrule",
+            f"Trained mean & {fmt(row['trained_mean_brier'])} & "
+            f"{interval(row['trained_minus_base'])} & "
+            f"{fmt(row['trained_mean_log_loss_nats'])} " + r"\\",
+            r"\bottomrule",
+            r"\end{tabular}",
+        )
+    )
     return "\n".join(lines)
 
 
@@ -287,6 +369,7 @@ def main() -> None:
         default=REPORTS / "exp3b_model_roster_summary.json",
     )
     parser.add_argument("--latex", type=Path, action="append", default=[])
+    parser.add_argument("--qwen8-main-latex", type=Path, action="append", default=[])
     args = parser.parse_args()
 
     paths = {
@@ -295,8 +378,7 @@ def main() -> None:
         "llama3_1_8b": args.llama8 or latest_extension_summary("llama3_1_8b"),
     }
     summaries = {
-        key: json.loads(path.read_text(encoding="utf-8"))
-        for key, path in paths.items()
+        key: json.loads(path.read_text(encoding="utf-8")) for key, path in paths.items()
     }
     extension_ledger_path = args.extension_ledger or latest_extension_ledger()
     ledgers = {
@@ -311,21 +393,23 @@ def main() -> None:
     }
     for key in paths:
         if job_id_from_summary_path(paths[key]) != lineage[key]["evaluation_job_id"]:
-            raise AssertionError(f"{key}: summary does not match the registered test job")
+            raise AssertionError(
+                f"{key}: summary does not match the registered test job"
+            )
         expected_training = lineage[key]["training_job_ids"]
         for seed in SEEDS:
             adapter_path = str(summaries[key]["adapter_paths"][str(seed)])
             if f"_j{expected_training[seed]}" not in adapter_path:
                 raise AssertionError(f"{key}/seed {seed}: adapter job lineage drifted")
-        validate_raw_rows(read_jsonl(raw_paths[key]), test_rows, key)
-    rows = [
-        row_from_summary(summaries[key], key, label)
-        for key, label in MODEL_SPECS
+        validate_raw_rows(read_jsonl(raw_paths[key]), test_rows, summaries[key], key)
+    rows = [row_from_summary(summaries[key], key, label) for key, label in MODEL_SPECS]
+    markets = [
+        float(summary["baselines"]["market"]["brier"]) for summary in summaries.values()
     ]
-    markets = [float(summary["baselines"]["market"]["brier"])
-               for summary in summaries.values()]
-    platts = [float(summary["baselines"]["platt_market_train_only"]["brier"])
-              for summary in summaries.values()]
+    platts = [
+        float(summary["baselines"]["platt_market_train_only"]["brier"])
+        for summary in summaries.values()
+    ]
     if max(markets) - min(markets) > 1e-12 or max(platts) - min(platts) > 1e-12:
         raise AssertionError("model summaries do not share the frozen market baselines")
 
@@ -365,10 +449,16 @@ def main() -> None:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
-    rendered = render_latex(rows) + "\n"
+    appendix_rows = [row for row in rows if row["model_key"] != "qwen3_8b"]
+    rendered = render_latex(appendix_rows) + "\n"
     for path in args.latex:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(rendered, encoding="utf-8")
+    qwen8 = next(row for row in rows if row["model_key"] == "qwen3_8b")
+    qwen8_rendered = render_qwen8_main_latex(qwen8) + "\n"
+    for path in args.qwen8_main_latex:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(qwen8_rendered, encoding="utf-8")
     print(f"result -> {args.output}")
 
 

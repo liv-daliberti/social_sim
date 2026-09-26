@@ -12,6 +12,9 @@ Usage (from biased_news/):
     export AZURE_AI_API_KEY=...        # gpt-5.4 + DeepSeek-V4-Pro
     export CLAUDE_AZURE_API_KEY=...    # claude-opus-4-8 (falls back to AZURE_AI_API_KEY)
     python eval/run_coin_probe.py                 # all 3 models, 8 samples each
+    python eval/run_coin_probe.py --arm fair      # control: coin stipulated fair
+    python eval/run_coin_probe.py --arm neutral   # control: unfamiliar coin, no carnival
+    python eval/run_coin_probe.py --arm carnival_calc  # carnival, calculation allowed
     python eval/run_coin_probe.py --n 1 --temperature 0   # one deterministic answer each
     python eval/run_coin_probe.py --dry-run       # just print the prompt
 """
@@ -47,6 +50,17 @@ MODELS = [
 # reflex; saying "we don't know if it's fair" would steer the other way). We just
 # report what was seen and ask for the next-flip probability, so the number reflects
 # the model's own prior, not ours.
+# The original probe collected one arm only. On its own that arm cannot say what
+# the carnival framing contributes: two heads from an unfamiliar coin already
+# imply .75 under Laplace's rule, with no world knowledge involved, so a reading
+# near .68 is inside ordinary sequential updating. These control arms separate
+# the accounts. FAIR stipulates a fair coin, so a model that still departs from
+# .5 is not reasoning about bias at all; NEUTRAL removes the carnival while
+# keeping the coin unfamiliar, isolating the framing; CALC repeats the carnival
+# arm without the no-calculation instruction, which in the original forecloses
+# both the .5 and the .75 answers it is contrasted against.
+ARMS = {}
+
 PROMPT = (
     "You are at a carnival game. A coin you have never seen before is flipped twice in "
     "front of you, and it comes up heads both times. These two flips are everything you "
@@ -57,6 +71,26 @@ PROMPT = (
     "reasoning. Just reason in plain words about what you'd expect and why. Then END "
     "your reply with your gut answer as a JSON object on its own line:\n"
     '{"rationale": "one short sentence, no math", "p_heads": <number between 0 and 1>}'
+)
+
+_TAIL = PROMPT[PROMPT.index("What is the probability"):]
+
+ARMS["carnival"] = PROMPT
+ARMS["fair"] = (
+    "You are at a carnival game. A coin that you have been reliably told is a fair "
+    "coin is flipped twice in front of you, and it comes up heads both times. These "
+    "two flips are everything else you know about this coin.\n\n" + _TAIL
+)
+ARMS["neutral"] = (
+    "A coin you have never seen before is flipped twice in front of you, and it comes "
+    "up heads both times. These two flips are everything you know about this "
+    "coin.\n\n" + _TAIL
+)
+ARMS["carnival_calc"] = PROMPT.replace(
+    "Think about it intuitively, the way you actually would in the moment \u2014 do NOT use "
+    "any formula, rule, or calculation, and do not work out any numbers in your "
+    "reasoning. Just reason in plain words about what you'd expect and why. Then END ",
+    "Reason it through however you find natural. Then END ",
 )
 
 
@@ -155,24 +189,28 @@ def main():
                     help="dir for the saved JSONL log (one record per sample)")
     ap.add_argument("--no-save", action="store_true", help="print only, do not write JSONL")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--arm", default="carnival", choices=sorted(ARMS),
+                    help="prompt arm; 'carnival' reproduces the frozen appendix run")
     args = ap.parse_args()
 
+    prompt = ARMS[args.arm]
     if args.dry_run:
-        print(PROMPT)
+        print(prompt)
         return
 
     todo = [m for m in MODELS if args.models is None or m[0] in args.models]
-    messages = [{"role": "user", "content": PROMPT}]
+    messages = [{"role": "user", "content": prompt}]
 
     fh = None
     if not args.no_save:
         from datetime import datetime, timezone
         args.out.mkdir(parents=True, exist_ok=True)
         date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        out_path = args.out / f"coin_probe_{date}.jsonl"
+        suffix = "" if args.arm == "carnival" else f"_{args.arm}"
+        out_path = args.out / f"coin_probe{suffix}_{date}.jsonl"
         fh = out_path.open("w")
         # prompt provenance lands as the first line so the file is self-describing
-        fh.write(json.dumps({"_meta": True, "prompt": PROMPT, "n": args.n,
+        fh.write(json.dumps({"_meta": True, "arm": args.arm, "prompt": prompt, "n": args.n,
                              "temperature": args.temperature, "max_tokens": args.max_tokens,
                              "created_at": datetime.now(timezone.utc).isoformat()}) + "\n")
         print(f"Saving samples → {out_path}")
