@@ -1,0 +1,86 @@
+{
+  "account": "mltheory",
+  "amended_at": "20260825T203954Z",
+  "excluded_nodes": [
+    "node206"
+  ],
+  "hosted_holdout_calls_started": false,
+  "jobs": {
+    "llama3_2_3b": {
+      "canary": {
+        "job_id": "30890111",
+        "node": "node208",
+        "start_time": "2026-08-25T16:39:24-04:00",
+        "state_at_amendment": "RUNNING",
+        "walltime": "01:00:00"
+      },
+      "evaluation": {
+        "dependency": "afterok:30890112:30890113:30890114",
+        "job_id": "30890115",
+        "walltime": "00:45:00"
+      },
+      "training": {
+        "42": {
+          "dependency": "afterok:30890111",
+          "job_id": "30890112",
+          "walltime": "10:00:00"
+        },
+        "43": {
+          "dependency": "afterok:30890111",
+          "job_id": "30890113",
+          "walltime": "10:00:00"
+        },
+        "44": {
+          "dependency": "afterok:30890111",
+          "job_id": "30890114",
+          "walltime": "10:00:00"
+        }
+      }
+    },
+    "qwen3_1_7b": {
+      "canary": {
+        "job_id": "30889966",
+        "node": "node208",
+        "start_time": "2026-08-25T16:35:19-04:00",
+        "state_at_amendment": "RUNNING",
+        "walltime": "01:00:00"
+      },
+      "evaluation": {
+        "dependency": "afterok:30890065:30890108:30890109",
+        "job_id": "30890110",
+        "walltime": "00:45:00"
+      },
+      "training": {
+        "42": {
+          "dependency": "afterok:30889966",
+          "job_id": "30890065",
+          "walltime": "08:00:00"
+        },
+        "43": {
+          "dependency": "afterok:30889966",
+          "job_id": "30890108",
+          "walltime": "08:00:00"
+        },
+        "44": {
+          "dependency": "afterok:30889966",
+          "job_id": "30890109",
+          "walltime": "08:00:00"
+        }
+      }
+    }
+  },
+  "partition": "all",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "qos": "none",
+  "registration": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_registration_20260825T203304Z.json",
+  "registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+  "scheduler_only_amendments": {
+    "llama_training_walltime": "10:00:00",
+    "qwen_training_walltime": "08:00:00",
+    "rationale": "Shorter reservations fit the available node configuration; prior 8B jobs took 7.8-8.4 hours on two GPUs and Llama-8B took about 7 hours, while these 1.7B/3B checkpoints use one collocated A6000.",
+    "registered_ceiling": "12:00:00",
+    "scientific_settings_changed": false
+  },
+  "status": "running",
+  "submission_note": "Slurm rejected jobs that included afterok at initial submission with Requested node configuration is not available. Each dependent job was therefore submitted held, amended in place with the identical registered afterok dependency, and released. Job IDs and dependency semantics were preserved."
+}

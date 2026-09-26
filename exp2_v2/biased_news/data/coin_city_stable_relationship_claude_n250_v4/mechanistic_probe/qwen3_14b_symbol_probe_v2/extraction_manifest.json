@@ -1,0 +1,68 @@
+{
+  "behavior_sha256": "e056f1a817d277f25891beea1f372ff85a6acd93a142b3dfd18c4c92a0d78d06",
+  "behavior_summary": {
+    "elapsed_seconds": 408.626672744751,
+    "max_new_tokens": 160,
+    "parsed_count": 523,
+    "record_count": 528
+  },
+  "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+  "completed_at": "2026-08-25T21:40:18.656605+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "cuda": {
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "max_memory_allocated_bytes": 31328859648,
+        "name": "NVIDIA RTX A6000"
+      }
+    ]
+  },
+  "decode_seed": 20260824,
+  "device_map_request": "none",
+  "feature_summary": {
+    "elapsed_seconds": 395.8096640110016,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      1488,
+      41,
+      5120
+    ],
+    "hidden_size": 5120,
+    "layer_count_including_embedding": 41,
+    "mean_control_shape": [
+      1488,
+      2,
+      5120
+    ],
+    "record_count": 1488,
+    "token_count_max": 717,
+    "token_count_median": 649.0,
+    "token_count_min": 586,
+    "transformer_layer_count": 40
+  },
+  "features_sha256": "72635a04043467c245b4b3972e6f9193baaa1baf004f4c8e0862c57160e98a57",
+  "gpu_memory_gib": null,
+  "model": "Qwen/Qwen3-14B",
+  "model_commit": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+  "model_label": "Qwen3-14B",
+  "parameter_count": 14768307200,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {},
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "python": "3.10.20",
+    "safetensors": "0.8.0",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "complete",
+  "study": "qwen3_14b_symbol_probe_v2",
+  "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+  "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01"
+}

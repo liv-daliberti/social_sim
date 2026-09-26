@@ -1,0 +1,1039 @@
+\documentclass{article}
+\PassOptionsToPackage{table}{xcolor}
+
+\usepackage{iclr2027_conference,times}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,backgrounds,positioning,shapes.geometric,calc,decorations.pathmorphing,fadings}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage[compatibility=false]{caption}
+\usepackage{subcaption}
+\usepackage{flafter}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+% Four-band Exp 1 heatmap. Pastel fills keep black text legible; printed values
+% remain the primary encoding.
+\definecolor{heatred}{HTML}{F4CCCC}
+\definecolor{heatorange}{HTML}{FCE5CD}
+\definecolor{heatyellow}{HTML}{FFF2CC}
+\definecolor{heatgreen}{HTML}{D9EAD3}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=[rgb]{0.10,0.25,0.55},
+  citecolor=[rgb]{0.10,0.25,0.55},
+  urlcolor=[rgb]{0.10,0.25,0.55}
+}
+
+\graphicspath{{figures/}{icons/}}
+\newcommand{\micon}[1]{%
+  \IfFileExists{icons/#1}{%
+    \raisebox{-0.25\height}{\includegraphics[height=1em]{icons/#1}}%
+  }{}%
+}
+
+\title{Can language models forecast inductively?}
+% Keep the submission source itself anonymous: supplementary source archives are
+% covered by ICLR's double-blind policy, even though the style hides this field.
+\author{Anonymous authors \\
+Paper under double-blind review}
+
+% \iclrfinalcopy % Uncomment only for the camera-ready version.
+
+
+% The ICLR style sets \flushbottom, so LaTeX stretches page glue to justify the
+% bottom edge. Left alone, most of that slack lands in \textfloatsep and opens a
+% large gap between a top float and the text under it. Removing the stretch
+% component (keeping the shrink) pins the float-to-text distance and pushes the
+% slack into the section skips instead, which absorb it far less visibly.
+\setlength{\textfloatsep}{16pt plus 0pt minus 4pt}
+\setlength{\intextsep}{12pt plus 0pt minus 3pt}
+\setlength{\floatsep}{12pt plus 0pt minus 3pt}
+
+\begin{document}
+\maketitle
+
+% Share the current replication estimates with the introduction.
+\input{tables/exp3_rebuilt_data}
+%============================================================================
+% BEGIN frontmatter.tex
+%============================================================================
+\begin{abstract}
+Judgmental forecasting requires inferring predictive relationships from sparse
+observations and contextual knowledge. We ask whether language models recover
+and use these relationships. Across prediction markets and synthetic worlds,
+models selectively update forecasts, infer relationships from context, and
+revise them as direct evidence accumulates. Larger tested models infer arbitrary
+conventions; intervening on one model's internal representation changes its
+forecast. Training improves forecasts across domains, but an eight-seed
+replication weakens structural-transfer claims. A supervised pilot learns
+response-form selection in distribution where the tested RL recipe fails;
+its boundary is arbitrary labels, not a new domain. Accuracy gains on
+compositions of familiar mechanisms exceed a fixed prior, but a gain intervention
+does not establish transferred evidence use. Historical-market training lowers
+mean error on unseen event families. These findings support context-sensitive
+inductive forecasting while distinguishing in-domain learnability, transfer,
+and episode-specific evidence use.\footnotemark
+\end{abstract}
+\footnotetext{%
+  \micon{huggingface.png}\;%
+  \href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
+  {\textbf{Study dataset and artifacts}}\qquad
+  \micon{gh_logo.png}\;%
+  \href{https://github.com/anonymous-review/forecasting-study-code}%
+  {\textbf{Code repository}}\quad
+  \textit{Links anonymized for review.}}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\setlength{\columnsep}{6pt}
+\begin{wrapfigure}{r}{0.44\textwidth}
+\vspace{-1.2em}
+\centering
+\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_revised.pdf}
+\vspace{-0.45cm}
+\caption{\textbf{Motivation.} Judgmental forecasts combine observations with
+contextual knowledge about the process that generated them. Frontier models,
+asked to forecast this question, average $P(H)\approx0.68$ (see
+App.~\ref{app:carnival-coin-probe}).}
+\vspace{0pt}
+\label{fig:world-knowledge-evidence}
+\end{wrapfigure}
+
+Judgmental forecasting is a demanding form of reasoning central to decisions
+about political, social, and economic futures. Unlike settings with abundant
+historical data for statistical extrapolation, judgmental forecasting requires
+integrating sparse, noisy evidence with contextual knowledge to form calibrated
+beliefs about future outcomes
+\citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
+This creates an inductive challenge: forecasters must
+infer from limited observations the relationships that govern how evidence
+impacts outcomes, and use those relationships to anticipate how events may
+unfold
+\citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates this identification problem
+in a low-stakes setting. A researcher observes a carnival coin-flipping machine
+and, after seeing two heads, must estimate the probability that the next flip
+will be heads. A judgmental forecast may incorporate contextual knowledge (e.g.,
+whether the game is rigged) to infer the process generating the observed
+outcomes.
+
+Language models (LMs) now approach crowd accuracy in judgmental forecasting
+\citep{halawi2024approaching,schoenegger2024wisdom}, but accurate predictions need
+not imply recovery of the underlying task structure. Models recover latent
+structure in some settings \citep{li2023emergent}, yet can predict accurately
+using relationships that fail to generalize in others \citep{vafa2025foundation}.
+This distinction matters when decision-makers ask how and whether a forecast
+should change under alternative evidence or events. Answering such questions
+requires predictive relationships that generalize across changes in context.
+
+\noindent
+\textbf{Present work.}
+We study whether LMs exhibit inductive reasoning in forecasting tasks through a
+series of progressively more stringent behavioral tests spanning both real-world
+prediction markets and controlled synthetic environments. First, we evaluate
+whether LMs respond selectively to new evidence, distinguishing
+outcome-relevant information from topically related but orthogonal information
+(\hyperref[sec:exp1]{Exp.~1}). Second, we test whether LMs infer predictive
+relationships from described context before statistical evidence accumulates. We
+construct synthetic forecasting problems in which the numerical observations are
+identical across conditions and only the described setting varies, isolating the
+contribution of background knowledge to the LM's forecast
+(\hyperref[sec:exp2]{Exp.~2}). Finally, we test whether relationships learned
+during fine-tuning transfer to new settings. We fine-tune LMs with reinforcement
+learning from verifiable rewards (RLVR) on both synthetic tasks and historical
+prediction market data, diagnose component failures with a supervised pilot,
+and evaluate on held-out structures and domains
+(\hyperref[sec:exp3]{Exp.~3}, \hyperref[sec:exp4]{Exp.~4}).
+
+\noindent\textbf{Results.}
+All nine systems move $1.9$--$7.5\times$ farther for outcome-relevant than topical
+evidence, conditional on updating (\hyperref[sec:exp1]{Exp.~1}). In Coin City,
+forecasts track context-selected relationships ($r=.52$--$.70$) and revise them
+as direct evidence arrives; larger models infer episode-local conventions, with
+a causal intervention linking the induced representation to Qwen3-14B's forecast
+(\hyperref[sec:exp2]{Exp.~2}). Training transfers across domains, but its
+advantage over an answer-matched shuffled control under joint domain and structure
+shift is uncertain at eight seeds (Qwen3-8B:
+$\eEightJointEst{}$, 95\% CI $\eEightJointCi{}$). A supervised pilot learns response-form selection in distribution and, trained
+natively, fails under labels but not domain. A separate composition benchmark improves
+accuracy over a fixed prior and an answer-matched shuffled control, without
+clear evidence of transferred gain tracking (\hyperref[sec:exp3]{Exp.~3}). On 318 held-out markets, training lowers mean
+error for every tested base and several checkpoints reach crowd performance,
+although the Qwen3-32B improvement is uncertain
+(\hyperref[sec:exp4]{Exp.~4}).
+%============================================================================
+% END frontmatter.tex
+%============================================================================
+%============================================================================
+% BEGIN inductive_forecasting.tex
+%============================================================================
+\section{What does it mean to forecast inductively?}
+\label{sec:inductive-forecasting}
+
+Forecasting is a useful testbed for inductive reasoning because it makes
+otherwise hidden choices observable. A forecaster must decide which evidence
+matters, which population provides the relevant comparison, how strongly that
+evidence should affect an outcome, and when direct observations should override
+an existing belief. Each of these choices implies a different numerical
+forecast. An accurate prediction alone does not tell us whether the forecaster
+made those choices for the right reasons.
+
+This distinction matters because a forecast is rarely the last question. We often
+want to know what evidence should change the prediction, whether the same
+evidence should matter differently in another population, and what new
+observation should trigger revision. A model that reaches the right number
+through a familiar base rate, a topical cue, or some other surface regularity may
+still fail under exactly these changes. Average accuracy can therefore conceal an
+important weakness: two models can give the same forecast while relying on very
+different relationships between evidence and outcomes.
+
+We use \emph{inductive forecasting} to describe the stronger behavior we care
+about here. An inductive forecaster should not only identify whether evidence is
+relevant, but also infer the relationship that determines how that evidence
+should affect the outcome. When context changes which comparison is appropriate,
+the forecast should change with it. When direct evidence becomes available, that
+evidence should be able to revise the earlier contextual inference. And when the
+same underlying relationship appears in an unfamiliar setting, the forecaster
+should be able to use it without depending on the original surface form.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{exp1_protocol_four_panels.pdf}
+\caption{\textbf{When should a forecast change?} An agent forecasts an
+unresolved question, then receives one fictional update with search off. Some
+updates support the outcome, some oppose it, and some concern the same topic but
+do not bear on the outcome. The labels remain hidden; we ask whether the model
+moves when the news matters and whether it moves the right way.}
+\label{fig:exp1-pipeline}
+\end{figure}
+
+These requirements extend beyond forecasting. A persuasion model should respond
+not only to a message, but to who delivers it. A coordination model should
+distinguish shared incentives from what participants know about one another. A
+policy model should distinguish similar language from the institutional pathway
+through which an intervention takes effect. In each case, the conditional
+relationship is often the object of interest: who trusts whom, which population
+responds to which signal, or which mechanism connects an action to an outcome.
+Matching an average outcome while missing these dependencies can produce a
+convincing static prediction and a misleading response when the setting changes
+\citep{park2023generative,aher2023simulate,argyle2023out,bisbee2024synthetic}.
+
+This suggests a stronger way to evaluate forecasting systems. Rather than asking
+only whether a model reaches the correct number, we can ask whether its forecast
+changes when the relevant evidence, comparison, or relationship changes. We
+therefore proceed through increasingly demanding tests: first whether models
+distinguish relevant evidence from topical information, then whether they infer
+how strongly evidence should matter from context, and finally whether those
+relationships can be revised and carried into new settings.
+%============================================================================
+% END inductive_forecasting.tex
+%============================================================================
+%============================================================================
+% BEGIN evidence_ladder.tex
+%============================================================================
+\section{Do forecasts change for the right reason?}
+\label{sec:evidence}
+
+A key forecasting skill is to appropriately incorporate new evidence as it
+arrives; for example, classic work on judgmental forecasting identifies repeated
+belief revision as a hallmark of strong human forecasters
+\citep{tetlock2005expert}. We argue that effective updating requires a forecaster
+to determine: (1) which evidence is relevant in predicting an outcome and (2) the
+extent to which the new evidence should affect the forecast. We assess these
+capacities in two experiments. First, we pair real-world prediction-market
+questions with controlled synthetic evidence, allowing us to test whether models
+update selectively and in the direction the evidence warrants. Second, we use a
+controlled synthetic environment in which the same evidence has different
+predictive effects across contexts, allowing us to test whether models can infer
+the relationship that determines how strongly the evidence should affect their
+forecast.
+
+\subsection{Exp.~1: Can models directionally update?}
+\label{sec:exp1}
+
+\noindent\textbf{Design.}
+We ask nine systems to forecast 100 unresolved binary Polymarket questions
+with web search, then revise each forecast after one fictional news update with
+search disabled (Fig.~\ref{fig:exp1-pipeline}). Updates support YES, support NO,
+or concern the same topic without bearing on the outcome; these labels are hidden
+from the model. This yields 30,094 valid updates
+(App.~\ref{app:exp1}).
+
+\noindent\textbf{Finding: models track the intended packet direction.}
+Every system leaves its forecast unchanged more often for topical controls.
+Conditional on moving, models move $1.9$--$7.5\times$ farther for directional
+than topical updates. For revisions of at least three percentage points,
+directional consistency ranges from $.887$ to $.990$, versus $.688$ for a
+word-only classifier evaluated on held-out markets. Human validation and
+uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
+
+\begin{figure}[!b]
+\centering
+\begin{subfigure}[c]{0.525\textwidth}
+\centering
+\includegraphics[width=.92\linewidth]{exp1_direction_selective_updating.pdf}
+\caption{}
+\label{fig:exp1-bars}
+\end{subfigure}\hspace{0.01\textwidth}
+\begin{subfigure}[c]{0.455\textwidth}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}rccc@{}}
+\toprule
+\textbf{Model} & \textbf{Size} & \textbf{Abst.} & \textbf{Sens.}$\uparrow$ & \textbf{EHC$_{\geq3}$}$\uparrow$ \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Hosted API (parameters undisclosed)}}\\
+\micon{claude.png}~Opus~4.8 & --- & 71.4\% & \cellcolor{heatgreen}$7.0\times$ & \cellcolor{heatgreen}.990 \\
+\micon{openai.png}~GPT-5.4 & --- & 8.4\% & \cellcolor{heatgreen}$7.5\times$ & \cellcolor{heatgreen}.987 \\
+\micon{deepseek.png}~V4-Pro & --- & 44.4\% & \cellcolor{heatyellow}$4.9\times$ & \cellcolor{heatyellow}.977 \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Open-weight, descending parameters} $\downarrow$}\\
+\micon{qwen.pdf}~2.5-72B & 72B & 24.2\% & \cellcolor{heatorange}$3.2\times$ & \cellcolor{heatyellow}.963 \\
+\micon{llamma.pdf}~3.3-70B & 70B & 10.7\% & \cellcolor{heatyellow}$5.7\times$ & \cellcolor{heatyellow}.965 \\
+\micon{llamma.pdf}~3.1-70B & 70B & 2.5\% & \cellcolor{heatyellow}$4.5\times$ & \cellcolor{heatyellow}.961 \\
+\micon{qwen.pdf}~2.5-32B & 32B & 11.1\% & \cellcolor{heatorange}$2.8\times$ & \cellcolor{heatyellow}.964 \\
+\micon{qwen.pdf}~2.5-14B & 14B & 26.1\% & \cellcolor{heatred}$2.2\times$ & \cellcolor{heatorange}.943 \\
+\micon{llamma.pdf}~3.1-8B & 8B & 1.1\% & \cellcolor{heatred}$1.9\times$ & \cellcolor{heatred}.887 \\
+\bottomrule
+\end{tabular*}
+\caption{}
+\label{fig:exp1-table}
+\label{tab:consistency}
+\end{subfigure}
+\caption{\textbf{Models move much more for evidence than for topical
+chatter, and usually move in the implied direction.} \textbf{(a)} Average
+revision after supporting, contrary, and topical updates. \textbf{(b)} The
+table summarizes how often models leave topical updates alone, how much farther
+they move for directional evidence conditional on moving (Sens.), and how often
+a move of at least three percentage points has the right sign (EHC$_{\geq3}$). Intervals and robustness checks are in
+App.~\ref{app:exp1-threshold-robustness}.}
+\label{fig:exp1-updating}
+\end{figure}
+
+\noindent\textbf{Takeaway.}
+Lexical cues identify original-packet relevance ($.989$ accuracy). On 20
+unvalidated context-reversal families, GPT-5.6 reverses both directions in
+85\% of pairs, with 0.5-point broken-link movement; the original constrained
+local deployments reach 25--35\% and 9.75--13.25 points in the matched
+single-repeat comparison. A matched Qwen3 follow-up reaches 60\% paired
+reversal with thinking enabled (App.~\ref{app:exp1-context-reversal}). This
+exploratory extension uses different inference settings and requires independent
+material validation. Experiment~2
+tests contextual relationship selection under a controlled generative process.
+
+\subsection{Exp.~2: can models infer how strongly evidence should matter?}
+\label{sec:exp2}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[
+  width=.90\linewidth,
+  trim=11pt 14.5pt 3.5pt 7pt,
+  clip
+]{exp2_coin_city_prompt_arms.pdf}
+\caption{\textbf{Coin City turns contextual reasoning into a paired
+comparison.} Every arm shares the query and numerical cases. The context arm
+adds a description connecting City C to one displayed media environment; the
+opposite-context arm changes only that sentence. Target cases then accumulate,
+allowing local evidence to confirm or correct the contextual choice.}
+\label{fig:coin-city-prompt}
+\end{figure}
+
+\noindent\textbf{Design.}
+Experiment~1 tests which evidence warrants an update. Forecasting also requires
+inferring how strongly that evidence should matter. In the opening coin-flip
+example (Fig.~\ref{fig:world-knowledge-evidence}), the same observation warrants
+different predictions depending on the process believed to have generated it.
+
+We systematize this ambiguity in \emph{Coin City}: the same campaign news moves
+polls strongly in one reference city and weakly in another. Context identifies the
+better analogue for target City C, while zero to four City C cases provide direct
+evidence that can confirm or override it. Each city's polling response follows
+\begin{equation}
+  \Delta p_{ij}=g_j x_{ij}+\epsilon_{ij},
+  \qquad \epsilon_{ij}\sim\mathcal{N}(0,5^2),
+  \label{eq:coin-city-dgp}
+\end{equation}
+where $x_{ij}$ is signed campaign news and $g_j$ is the city's stable sensitivity,
+which is never stated: the model must infer it from examples.
+
+We compare target cases alone, reference cases without target context, correct
+context, and opposite context, holding numerical evidence fixed across the paired
+arms (Fig.~\ref{fig:coin-city-prompt}). A fifth arm replaces familiar descriptions
+with episode-varying labels whose meaning must be inferred from the references.
+Forecast error tests whether context helps; the forecast-implied response to news
+tests which reference the model selects (App.~\ref{app:coin-city-results}).
+
+\noindent\textbf{Finding: the forecast follows the contextual clue.}
+Figure~\ref{fig:coin-city-results} shows that, when City C provides few direct
+observations, context guides which reference city's response is used to forecast.
+The correct context lowers forecast error, while the wrong analogue increases
+error. Moreover, the effect implies the model is quantifying the importance of
+the contextual clue: after controlling for the underlying response regime, the
+forecast-implied slope correlates $r=.51$--$.86$ with the fitted slope of the
+cue-selected reference city, while its correlation with the other reference
+remains near zero. As City C observations accumulate, context matters less, as
+forecasts increasingly rely on direct local evidence.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{exp2_coin_city_results.pdf}
+\vspace{3pt}
+\begin{minipage}{\linewidth}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l r rrrr rr}
+\toprule
+& & \multicolumn{4}{c}{Forecast MAE [95\% CI]} & \multicolumn{2}{c}{$\rho(\hat g,g_C)$} \\
+\cmidrule(lr){3-6}\cmidrule(lr){7-8}
+Model & Paired $n$ & Target only & No C context & $+$ C context &
+$+$ wrong C context & No context & $+$ context \\
+\midrule
+\micon{claude.png}~Opus~4.8 & 250 & 2.32 [2.20,\,2.46] & 2.65 [2.41,\,2.89] & \textbf{1.82} [1.64,\,2.02] & 4.20 [3.87,\,4.54] & $-.06$ & \textbf{.70} \\
+\micon{claude.png}~Opus~5 & 250 & 2.36 [2.12,\,2.59] & 2.62 [2.38,\,2.84] & \textbf{1.76} [1.57,\,1.99] & 4.25 [3.92,\,4.57] & $-.01$ & \textbf{.62} \\
+\micon{openai.png}~GPT-5.6 & 250 & 3.60 [3.28,\,3.94] & 2.52 [2.33,\,2.75] & \textbf{1.60} [1.42,\,1.77] & 4.23 [3.90,\,4.55] & $-.04$ & \textbf{.68} \\
+\micon{deepseek.png}~V4-Pro & 250 & \textbf{2.45} [2.27,\,2.61] & 2.84 [2.55,\,3.15] & 2.47 [2.19,\,2.77] & 4.36 [4.01,\,4.74] & $-.03$ & \textbf{.52} \\
+\micon{kimi.png}~K3 & 250 & 3.35 [3.04,\,3.67] & 2.55 [2.32,\,2.78] & \textbf{1.89} [1.66,\,2.13] & 4.31 [3.98,\,4.62] & $-.02$ & \textbf{.59} \\
+\micon{gemini.png}~3.6 Flash & 250 & 2.53 [2.35,\,2.73] & 2.55 [2.31,\,2.80] & \textbf{2.17} [1.89,\,2.48] & 4.29 [3.94,\,4.66] & $.08$ & \textbf{.56} \\
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
+\caption{\textbf{Context improves forecasts before target cases and helps assign
+the response pattern across six systems.} Giving the correct analogue lowers
+error before City C has a history; naming the wrong analogue raises it. As direct
+City C cases accumulate, forecasts rely less on either contextual cue. Full
+results by model are in App.~\ref{app:coin-city-results}.}
+\label{fig:coin-city-results}
+\end{figure}
+
+\subsubsection{Infer a convention without stable semantics}
+\label{sec:novel-mapping}
+
+However, a different explanation for the relational mapping above is that the
+model may already associate familiar cues, like ``national news,'' with a
+stronger response and ``local news'' with a weaker one, rather than actually
+inferring the mapping from the reference cases. We remove this shortcut by
+replacing these cues with the arbitrary labels KIV and ZOR. Their meanings are
+randomized across episodes, so neither label has any stable association with
+strong or weak responsiveness. Twelve of fifteen tested systems recover the episode-local mapping before any
+target cases, including all tested local checkpoints above 8B
+(App.~\ref{app:coin-city-symbol-context}), although recovery does not always
+improve forecast error. When we further challenge this
+inference by making the two response regimes harder to distinguish, recovery
+weakens, but sufficiently large models are still able to recover the
+relationship, with the threshold varying by model family
+(App.~\ref{app:coin-city-robustness}).
+
+\begin{figure}[!t]
+\centering
+\begin{minipage}[c]{0.46\linewidth}
+\includegraphics[width=\linewidth]{exp2_symbol_decoding.pdf}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.50\linewidth}
+\caption{\textbf{Larger models infer an episode-local convention, then yield
+ to direct evidence.} On 88 new episodes, four larger Qwen and Llama checkpoints
+(14--72B) encode the changing KIV/ZOR mapping; three smaller checkpoints
+(4--8B) do not reliably encode it. The decoded state follows context before
+City C has a history and follows the target relationship as local cases accumulate.}
+\label{fig:coin-city-symbol-decoding}
+\end{minipage}
+\end{figure}
+
+This pattern matches what we would expect if models are inferring a latent
+mapping: doing so becomes harder as the underlying regimes become less
+distinguishable. \emph{But when a model does recover that mapping, what has it
+actually inferred?} We ask whether the episode-local KIV/ZOR relationship can be
+decoded from the model's hidden states. In larger open models, the decoded
+representation follows the context-selected relationship before City C has its
+own history, and then shifts toward City C's observed behavior as direct evidence
+accumulates (Fig.~\ref{fig:coin-city-symbol-decoding}).
+
+But decoding still leaves open whether this representation actually matters for
+the forecast. Figure~\ref{fig:coin-city-causal-patch} tests this directly by
+swapping the label-state representation between otherwise matched Qwen3-14B
+prompts. Before City C provides any direct observations, the intervention changes
+both the analogue the model names and its numerical forecast. After four City C
+cases, the same swap has no reliable effect. Across episodes, the intervention
+produces a regime-aligned symmetric forecast shift of \(+.333\) before target
+cases and \(-.035\) after four; the latter falls within the sign-flip null range. For Qwen3-14B, this shows that
+the induced mapping helps determine the forecast when target evidence is sparse,
+but gives way once direct observations reveal City C's own response relationship
+(App.~\ref{app:coin-city-causal-patch}).
+
+\begin{figure}[!t]
+\vspace{-0.4em}
+\centering
+\includegraphics[width=\linewidth]{exp2_causal_patch.pdf}
+\vspace{-0.7em}
+\caption{\textbf{Changing the induced convention changes the forecast when
+evidence is sparse.} In the illustrated pair, swapping the internal
+representation moves the forecast from 51.3 to 54.0 and changes which reference
+city the model names; reversing the swap reverses the movement. As more City C
+behavior is revealed, the same label-state swap has no reliable effect. Full controls in
+Table~\ref{tab:coin-city-causal-patch}.}
+\label{fig:coin-city-causal-patch}
+\vspace{-1.0em}
+\end{figure}
+
+\noindent\textbf{Takeaway.}
+Models use context to select a predictive relationship and revise that selection
+from local evidence. Arbitrary labels remove a familiar-semantic shortcut;
+decoding reveals an episode-local representation, and intervention links it to
+Qwen3-14B's forecast when target evidence is absent. Experiment~3 asks which parts
+of this behavior training carries into new domains and response structures.
+%============================================================================
+% END evidence_ladder.tex
+%============================================================================
+%============================================================================
+% BEGIN transfer_and_grounding.tex
+%============================================================================
+\section{Can relationship use survive a change of world?}
+\label{sec:transfer}
+
+Finetuning may teach evidence use or merely typical answers. We test whether
+training transfers relationships to new worlds and improves unseen-event forecasts.
+
+\subsection{Exp.~3: what training transfers, and what it does not}
+\label{sec:exp3}
+
+\input{tables/exp3_rebuilt_data}
+\newcommand{\transfergridlines}{15}
+%============================================================================
+% BEGIN fig_exp3_transfer_grid.tex
+%============================================================================
+% Compact inline orientation graphic for the Experiment 3 transfer design: a 2x2
+% grid crossing generative mechanism (rows) with surface domain (columns).
+%
+% Row cards carry the mechanism detail: a two-node vs three-node graph with the
+% mediator drawn hollow (it is never named to the model) and a persistence loop,
+% plus the six-period impulse response on labelled axes. Bar heights are the
+% normalised responses to a unit shock under worlds.transition at the midpoint of
+% each sampling band (direct: gain .57; mediated: gain .57, rho .61, phi .30,
+% lambda .81), i.e. A = (1, 0, 0, 0, 0, 0) and B = (.81, .74, .52, .34, .21, .13).
+%
+% Geometry note: cards have fixed dimensions and every label is a single line
+% with no text width, so nothing can rewrap into a neighbour.
+% Callers may set \transfergridlines to match the paragraph they anchor this
+% to; wrapfig cannot wrap a section heading, so the count must not overrun it.
+\providecommand{\transfergridlines}{13}
+\begin{wrapfigure}[\transfergridlines]{r}{0.48\textwidth}
+\vspace{-0.8em}
+\centering
+\definecolor{miniCityFill}{HTML}{E8F2FB}
+\definecolor{miniCityEdge}{HTML}{4F7EA8}
+\definecolor{miniHarborEdge}{HTML}{3F8E82}
+\definecolor{miniTestFill}{HTML}{E7F4EA}
+\definecolor{miniTestEdge}{HTML}{6FA97F}
+\definecolor{miniTestChip}{HTML}{5E9470}
+% Coin discs reuse Figure 1's yellow pair exactly -- the fill and stroke of its
+% NAIVE box -- rather than the saturated gold used before. Figure 1's other warm
+% pair (#FFE6CC on #D79B00, its FREQUENTIST box) is the orange one and is not
+% used here. The glyph inside each disc still carries its domain colour.
+\definecolor{miniCoinFill}{HTML}{FFF2CC}
+\definecolor{miniCoinRim}{HTML}{D6B656}
+\definecolor{miniMute}{HTML}{8A93A3}
+\definecolor{miniInk}{HTML}{3F4550}
+\definecolor{miniBar}{HTML}{7C93AD}
+% Coin City: a skyline stamped into a coin.
+\newcommand{\coincity}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[miniCoinFill] (0,0) circle (.37);
+    \draw[miniCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[miniCityEdge] (-.23,-.18) rectangle (-.10,.04);
+    \fill[miniCityEdge] (-.07,-.18) rectangle (.07,.16);
+    \fill[miniCityEdge] (.10,-.18) rectangle (.24,.09);
+    \draw[miniCityEdge,line width=.65pt] (-.27,-.19)--(.27,-.19);
+  \end{scope}}
+% Coin Harbor: a small vessel and waves stamped into a coin.
+\newcommand{\coinharbor}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[miniCoinFill] (0,0) circle (.37);
+    \draw[miniCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[miniHarborEdge] (-.24,-.05)--(.24,-.05)--(.15,-.18)--(-.15,-.18)--cycle;
+    \draw[miniHarborEdge,line width=.7pt]
+      (-.01,-.05)--(-.01,.15)--(.15,.02)--(-.01,.02);
+    \draw[miniHarborEdge,line width=.55pt]
+      (-.26,-.24)..controls(-.18,-.19)and(-.10,-.29)..(-.02,-.24)
+      ..controls(.06,-.19)and(.14,-.29)..(.26,-.24);
+  \end{scope}}
+% Impulse response on labelled axes: response (Delta y) against period (t).
+\newcommand{\impulse}[3]{% #1 = axis corner x, #2 = baseline y, #3 = bar heights
+  \draw[-{Stealth[length=2.6pt,width=2.2pt]},draw=miniInk!65,line width=.5pt]
+    (#1,#2) -- (#1,#2+0.40);
+  \draw[-{Stealth[length=2.6pt,width=2.2pt]},draw=miniInk!65,line width=.5pt]
+    (#1,#2) -- (#1+0.72,#2);
+  \node[anchor=south,font=\sffamily\scriptsize,text=miniInk,inner sep=1pt]
+    at (#1,#2+0.40) {$\Delta y$};
+  \node[anchor=west,font=\sffamily\scriptsize,text=miniInk,inner sep=1.5pt]
+    at (#1+0.72,#2) {$t$};
+  \foreach \i/\h in {#3}{%
+    \fill[miniBar] (#1+0.055+\i*0.105,#2) rectangle (#1+0.055+\i*0.105+0.070,#2+\h);}}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  cell/.style={rounded corners=3pt, minimum width=1.95cm, minimum height=1.25cm,
+    line width=.6pt, inner sep=0pt},
+  traincell/.style={cell, draw=miniCityEdge, fill=miniCityFill},
+  heldcell/.style={cell, draw=miniTestEdge, fill=miniTestFill,
+    dash pattern=on 1.9pt off 1.5pt},
+  rowcard/.style={rounded corners=3pt, minimum width=2.60cm,
+    minimum height=1.25cm, inner sep=0pt, draw=miniMute!30, fill=black!3,
+    line width=.5pt},
+  dname/.style={anchor=south, font=\sffamily\bfseries\scriptsize},
+  rname/.style={anchor=center, font=\sffamily\scriptsize, text=miniInk},
+  note/.style={anchor=center, font=\sffamily\scriptsize, text=miniInk},
+  gnode/.style={circle, draw=miniInk!75, fill=white, line width=.5pt,
+    inner sep=0pt, minimum size=0.26cm, font=\sffamily\tiny, text=miniInk},
+  hidden/.style={gnode, draw=miniMute, fill=miniMute!14,
+    dash pattern=on 1.1pt off .9pt},
+  garrow/.style={-{Stealth[length=2.4pt,width=2pt]}, draw=miniInk!70,
+    line width=.45pt, shorten >=.4pt, shorten <=.4pt},
+  chip/.style={anchor=center, rounded corners=1.6pt, draw=none, text=white,
+    inner xsep=3pt, inner ysep=1.1pt, font=\sffamily\bfseries\tiny},
+]
+% ---- domain marks and names ----------------------------------------------
+\coincity{0.975}{2.56}
+\coinharbor{3.075}{2.56}
+\node[dname, text=miniCityEdge]   at (0.975,1.80) {COIN CITY};
+\node[dname, text=miniHarborEdge] at (3.075,1.80) {COIN HARBOR};
+
+% ---- Structure A: direct, one period -------------------------------------
+\node[rowcard] at (-1.50,1.00) {};
+\node[rname] at (-1.50,1.45) {\textbf{Structure A} direct};
+\node[gnode] (ax) at (-2.51,0.82) {$x$};
+\node[gnode] (ay) at (-2.07,0.82) {$y$};
+\draw[garrow] (ax) -- (ay);
+\impulse{-1.22}{0.62}{0/0.360, 1/0.000, 2/0.000, 3/0.000, 4/0.000, 5/0.000}
+
+% ---- Structure B: mediated, persistent -----------------------------------
+\node[rowcard] at (-1.50,-0.42) {};
+\node[rname] at (-1.50,0.03) {\textbf{Structure B} mediated};
+\node[gnode]  (bx) at (-2.51,-0.60) {$x$};
+\node[hidden] (bm) at (-2.07,-0.60) {$m$};
+\node[gnode]  (by) at (-1.63,-0.60) {$y$};
+\draw[garrow] (bx) -- (bm);
+\draw[garrow] (bm) -- (by);
+\draw[garrow] (bm) to[out=118,in=62,looseness=4.5] (bm);
+\impulse{-1.22}{-0.80}{0/0.292, 1/0.265, 2/0.188, 3/0.123, 4/0.077, 5/0.048}
+
+% ---- the four evaluation cells -------------------------------------------
+\node[traincell] at (0.975,1.00) {};
+\node[heldcell]  at (3.075,1.00) {};
+\node[heldcell]  at (0.975,-0.42) {};
+\node[heldcell]  at (3.075,-0.42) {};
+
+\node[chip, fill=miniCityEdge] at (0.975,1.26) {TRAINED};
+\node[chip, fill=miniTestChip] at (3.075,1.26) {TEST};
+\node[chip, fill=miniTestChip] at (0.975,-0.16) {TEST};
+\node[chip, fill=miniTestChip] at (3.075,-0.16) {TEST};
+
+\node[note] at (0.975,0.80) {in-distribution};
+\node[note] at (3.075,0.80) {domain shift};
+\node[note] at (0.975,-0.62) {structure shift};
+\node[note] at (3.075,-0.62) {joint shift};
+\end{tikzpicture}%
+}
+\vspace{-0.3em}
+\caption{\textbf{Transfer grid.} Training uses shading;
+all four are evaluated. Columns vary domain; rows vary response mechanism.}
+\label{fig:exp3-transfer-grid}
+\vspace{0.1em}
+\end{wrapfigure}
+%============================================================================
+% END fig_exp3_transfer_grid.tex
+%============================================================================
+
+\textbf{Why matching matters.}
+The parent experiment compares byte-identical prompts, identical target-answer
+multisets, and equal training budgets, changing only case--answer pairing.
+Figure~\ref{fig:exp3-transfer-grid} crosses a domain change---campaign news and
+candidate support become shipping bulletins and cargo flow---with a change
+from direct to persistent responses (App.~\ref{app:exp3-complete-training-setup}).
+
+\noindent\textbf{Finding: domain transfer is stronger than structural transfer.}
+Training generalizes across the surface change. Across both arms and
+\eEightG{} seeds, Qwen3-8B reduces domain-shift response error by
+\eEightDomainBaseGain{} points \eEightDomainBaseGainCi{}, with every seed agreeing.
+The matched arm reaches \eEightDomainMatched{} versus the base's
+\eEightDomainBase{}.
+Because unparsed draws take the full
+range penalty, we report base contrasts twice: the joint-cell gain is
+\eEightJointBaseGain{} \eEightJointBaseGainCi{} fail-closed and
+\eEightJointBaseGainParsed{} \eEightJointBaseGainParsedCi{} on parsed draws.
+
+%============================================================================
+% BEGIN fig_exp3_results_grid.tex
+%============================================================================
+% Experiment 3 transfer results, laid out on the same 2x2 grid as the design
+% figure (Figure~\ref{fig:exp3-transfer-grid}) so the reader reads results in the
+% cells they were introduced in: mechanism down the rows, surface domain across
+% the columns, the trained cell shaded blue and the three held-out cells green.
+%
+% Every number comes from tables/exp3_coin_qwen3_8b_stochastic_data.tex,
+% regenerated by coin_city_structural/make_qwen3_8b_eight_seed_outputs.py. Bar
+% lengths share one scale
+% (\cciPeak) across all four cells so cells are comparable by eye. Do not put
+% formatting logic here: emphasis on an interval that excludes zero is decided
+% by the generator and arrives pre-set in \cci*delta.
+\input{tables/exp3_coin_qwen3_8b_stochastic_data}
+\begin{figure}[!ht]
+\centering
+\definecolor{gCityFill}{HTML}{E8F2FB}
+\definecolor{gCityEdge}{HTML}{4F7EA8}
+\definecolor{gHarborEdge}{HTML}{3F8E82}
+\definecolor{gTestFill}{HTML}{E7F4EA}
+\definecolor{gTestEdge}{HTML}{6FA97F}
+\definecolor{gTestChip}{HTML}{5E9470}
+\definecolor{gCoinFill}{HTML}{FFF2CC}
+\definecolor{gCoinRim}{HTML}{D6B656}
+\definecolor{gInk}{HTML}{3F4550}
+\definecolor{gMute}{HTML}{8A93A3}
+\definecolor{gBarBase}{HTML}{C3CBD4}
+\definecolor{gBarLess}{HTML}{A9B4C0}
+\definecolor{gBarPrior}{HTML}{7C93AD}
+\definecolor{gBarMatched}{HTML}{4F7EA8}
+\newcommand{\gcoincity}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[gCoinFill] (0,0) circle (.37);
+    \draw[gCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[gCityEdge] (-.23,-.18) rectangle (-.10,.04);
+    \fill[gCityEdge] (-.07,-.18) rectangle (.07,.16);
+    \fill[gCityEdge] (.10,-.18) rectangle (.24,.09);
+    \draw[gCityEdge,line width=.65pt] (-.27,-.19)--(.27,-.19);
+  \end{scope}}
+\newcommand{\gcoinharbor}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[gCoinFill] (0,0) circle (.37);
+    \draw[gCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[gHarborEdge] (-.24,-.05)--(.24,-.05)--(.15,-.18)--(-.15,-.18)--cycle;
+    \draw[gHarborEdge,line width=.7pt] (-.01,-.05)--(-.01,.15)--(.15,.02)--(-.01,.02);
+    \draw[gHarborEdge,line width=.55pt]
+      (-.26,-.24)..controls(-.18,-.19)and(-.10,-.29)..(-.02,-.24)
+      ..controls(.06,-.19)and(.14,-.29)..(.26,-.24);
+  \end{scope}}
+% One results card. #1 cx, #2 cy, #3 cell name, #4 chip text, #5 chip fill,
+% #6..#8 base/prior/episode-matched MAE; the contrast is placed separately.
+\newcommand{\gcard}[8]{%
+  \node[cellname] at (#1-2.66,#2+0.78) {#3};
+  \node[chip, fill=#5] at (#1+2.66,#2+0.78) {#4};
+  \foreach \arm/\val/\col/\dy in {%
+      base/#6/gBarBase/0.34, prior/#7/gBarPrior/0.00,
+      episode-matched/#8/gBarMatched/-0.34}{%
+    \node[armlab] at (#1-2.66,#2+\dy) {\arm};
+    \fill[\col, rounded corners=1pt]
+      (#1-0.55,#2+\dy-0.075) rectangle (#1-0.55+\val*2.55/\cciPeak,#2+\dy+0.075);
+    \node[armval] at (#1-0.43+\val*2.55/\cciPeak,#2+\dy) {\val};}}
+\resizebox{.96\linewidth}{!}{%
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  card/.style={rounded corners=3pt, minimum width=5.80cm, minimum height=1.95cm,
+    line width=.6pt, inner sep=0pt},
+  traincard/.style={card, draw=gCityEdge, fill=gCityFill},
+  testcard/.style={card, draw=gTestEdge, fill=gTestFill,
+    dash pattern=on 1.9pt off 1.5pt},
+  dname/.style={anchor=south, font=\sffamily\bfseries\small},
+  rname/.style={anchor=east, align=right, font=\sffamily\small, text=gInk},
+  cellname/.style={anchor=west, font=\sffamily\bfseries\footnotesize, text=gInk},
+  chip/.style={anchor=east, rounded corners=1.6pt, draw=none, text=white,
+    inner xsep=3pt, inner ysep=1.1pt, font=\sffamily\bfseries\scriptsize},
+  armlab/.style={anchor=west, font=\sffamily\scriptsize, text=gInk},
+  armval/.style={anchor=west, font=\sffamily\scriptsize, text=gInk},
+  delta/.style={anchor=center, font=\sffamily\scriptsize, text=gInk},
+  legend/.style={anchor=east, font=\sffamily\scriptsize},
+]
+% ---- domain columns ------------------------------------------------------
+\gcoincity{2.90}{3.22}
+\gcoinharbor{9.00}{3.22}
+\node[dname, text=gCityEdge]   at (2.90,2.40) {COIN CITY};
+\node[dname, text=gHarborEdge] at (9.00,2.40) {COIN HARBOR};
+
+% ---- what the bars mean, and which way is good --------------------------
+\node[legend, text=gInk]  at (-0.20,2.62) {bars: response MAE};
+\node[legend, text=gMute] at (-0.20,2.28) {$\leftarrow$ lower is better};
+
+% ---- mechanism rows ------------------------------------------------------
+\node[rname] at (-0.20,1.25) {\textbf{Structure A}\\ direct};
+\node[rname] at (-0.20,-0.85) {\textbf{Structure B}\\ mediated};
+
+% ---- the four result cards ----------------------------------------------
+\node[traincard] at (2.90,1.25) {};
+\node[testcard]  at (9.00,1.25) {};
+\node[testcard]  at (2.90,-0.85) {};
+\node[testcard]  at (9.00,-0.85) {};
+
+\gcard{2.90}{1.25}{in-distribution}{TRAINED}{gCityEdge}
+  {\cciIDbase}{\cciIDprior}{\cciIDmatched}
+\node[delta] at (2.90,0.42) {prior $-$ matched\ \ \cciIDdelta};
+
+\gcard{9.00}{1.25}{domain shift}{TEST}{gTestChip}
+  {\cciDomainbase}{\cciDomainprior}{\cciDomainmatched}
+\node[delta] at (9.00,0.42) {prior $-$ matched\ \ \cciDomaindelta};
+
+\gcard{2.90}{-0.85}{structure shift}{TEST}{gTestChip}
+  {\cciStructurebase}{\cciStructureprior}{\cciStructurematched}
+\node[delta] at (2.90,-1.68) {prior $-$ matched\ \ \cciStructuredelta};
+
+\gcard{9.00}{-0.85}{joint shift}{TEST}{gTestChip}
+  {\cciJointbase}{\cciJointprior}{\cciJointmatched}
+\node[delta] at (9.00,-1.68) {prior $-$ matched\ \ \cciJointdelta};
+\end{tikzpicture}%
+}
+\caption{\textbf{Qwen3-8B Coin City transfer at round 300 under five-draw
+stochastic decoding, eight training seeds.} Bars show task-averaged response MAE
+over four evidence depths; trained arms average eight seeds. Each cell prints the
+paired seed-first prior-minus-matched contrast, bold when its 95\% interval
+excludes zero. At three seeds three of the four contrasts excluded zero; at eight
+only the in-distribution cell does. The structure-shift row is a control rather than
+a transfer test: training contains no structural variation, so the trained policy
+emits no delayed response anywhere (Section~\ref{sec:exp3}).}
+\label{fig:exp3-transfer-results}
+\vspace{10pt}
+\end{figure}
+%============================================================================
+% END fig_exp3_results_grid.tex
+%============================================================================
+
+The finer contrast between episode-matched and shuffled-pair training does not
+survive replication. Estimated at three seeds and extended to eight under a
+pre-registered amendment, the Qwen3-8B joint-shift contrast falls from
+\ePubEightJointEst{} \ePubEightJointCi{} to \eEightJointEst{} \eEightJointCi{};
+all four of Qwen3-4B's cells excluded zero at three seeds and all span it at
+eight. A wrapper crossover retains a similar three-seed mean ($.251$ versus $.255$;
+App.~\ref{app:exp3-eight-seed}). One cell survives every test: Qwen3-8B in distribution,
+\eEightIdEst{} \eEightIdCi{}, \eEightIdSign{} seeds, clearing the conservative
+$t$ \eEightIdTci{}, a wild cluster bootstrap ($p=\eEightIdWild{}$) and an exact
+sign test ($p=\eEightIdSignP{}$). It does not replicate on Qwen3-4B, and
+Llama-3.1-8B's estimate has the opposite sign.
+
+\noindent\textbf{Response-form selection is learnable, but transfer is limited.}
+The original structure-shift row is a control: training contains only the direct
+response, and every trained checkpoint emits zero delayed response. We therefore
+rebuilt the task with both forms in training: two references have identical
+horizon-1 responses but differ in persistence, and a cue names which the target
+follows. Three-seed Qwen3-8B RL learns marginal persistence without reliable cue
+following (App.~\ref{app:exp3-structure-selection}).
+
+In a fixed component diagnostic crossing both domains and semantic or arbitrary
+labels, all eight checkpoints identify the named reference perfectly.
+Supplying exact response patterns does not rescue the 8B forecasts; an untrained
+32B model shows partial numerical ability but often omits the resting baseline
+(App.~\ref{app:exp3-components}). An exploratory single-seed supervised pilot on
+4,800 prompts yields $97.9\%$ structure accuracy in Coin City/semantic versus
+$50.0\%$ for matched RL, falling to $39.6\%$--$50.0\%$ under arbitrary labels
+or in Coin Harbor. Trained natively it reaches $100.0\%$ in Harbor/semantic yet
+stays at chance under arbitrary labels: the barrier is the label mapping, not
+the domain. Rate and budget differ, limiting this to in-domain learnability,
+not a general SFT advantage or transferable induction (App.~\ref{app:exp3-learnability}).
+
+\noindent\textbf{Composition accuracy and evidence use are distinct.}
+On the mechanism-family benchmark, episode-matched Qwen3-4B training beats a
+\emph{fixed population-prior} control on held-out compositions: response-MAE
+advantages are \eMechDiscEst{} \eMechDiscCi{} with the mechanism described and
+\eMechUndiscEst{} \eMechUndiscCi{} with it inferred, both clearing all four
+estimators at \eMechG{} seeds. A coherent gain intervention (two retained seeds) tracks better
+than the prior on seen mechanisms but not on held-out ones
+(App.~\ref{app:exp3-evidence-use}). A distribution-matched shuffled-target
+control at \eShufG{} seeds now replaces the fixed prior: matched training keeps a
+smaller advantage on the pre-registered stochastic endpoint
+(\eShufUndiscStochEst{} \eShufUndiscStochCi{} inferred). The shuffle leaves
+episode level near-intact while destroying response shape, so the gain falls
+where the manipulation bites; held-out gain tracking stays unestablished
+(App.~\ref{app:exp3-shuffled-control}).
+
+\begin{figure}[!b]
+\centering
+\includegraphics[width=\linewidth]{exp4_qwen_scale_results.pdf}
+\caption{\textbf{Training improves the tested bases, but scale alone does not
+guarantee a better trained forecaster.} Across Qwen3 checkpoints from 1.7B to
+32B, several trained models reach crowd-level performance, while the gain narrows
+at the strongest base. Local model size is shown on a log parameter axis; hosted
+systems at right are reference points. The Llama replication is in App.
+Figure~\ref{fig:exp4-llama-scale-results}.}
+\label{fig:sealed-market-grounding}
+\label{fig:exp4-scale-results}
+\end{figure}
+
+\subsection{Exp.~4: external grounding in unseen historical markets}
+\label{sec:exp4}
+
+Historical markets test external forecasting accuracy without labeled mechanisms. We train on resolved markets using only
+information available before each outcome, then evaluate 318 unseen questions
+from different event families. Lower Brier scores mean less squared error
+between forecast probabilities and realized outcomes
+(App.~\ref{app:exp3b-protocol}).
+
+Training lowers
+error at every tested size, but the Qwen base-relative gap shrinks from 1.7B to
+32B without steady improvement in trained accuracy (Fig.~\ref{fig:sealed-market-grounding}). At 32B, trained mean Brier is \(.1265\)
+versus \(.1266\) for the base, the smallest observed gain; the trained-minus-base
+interval \([-.00045,.00029]\) includes zero. A Llama 3B/8B
+replication shows the same qualitative convergence pattern
+(App. Figure~\ref{fig:exp4-llama-scale-results}). Several trained checkpoints
+reach contemporaneous Polymarket performance. Hosted systems provide context,
+not additional points on the local scaling curve.
+
+\noindent\textbf{What Exp.~4 establishes.}
+Outcome-based training improves mean forecasting accuracy on held-out event
+families, with uncertain gains at the strongest Qwen base. This comparison is
+trained versus base; without a shuffled-outcome control, it does not isolate the
+contribution of learning episode-specific relationships. It complements the controlled transfer tests with external predictive validity.
+%============================================================================
+% END transfer_and_grounding.tex
+%============================================================================
+%============================================================================
+% BEGIN related_work.tex
+%============================================================================
+\section{Related work: why accuracy is not enough}
+\label{sec:related-work}
+
+\noindent\textbf{Judgmental forecasting.}
+Strong human forecasters combine base rates, decomposition, diverse evidence,
+and repeated revision
+\citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting}.
+LM benchmarks increasingly use time-indexed or leakage-controlled questions, and
+retrieval or ensembling can bring systems near crowd accuracy
+\citep{zou2022forecasting,karger2025forecastbench,halawi2024approaching,schoenegger2024wisdom}.
+These results establish what probabilities models can produce. They do not tell
+us what would make those probabilities change.
+
+\noindent\textbf{Induction and relational reasoning.}
+Transformers can infer functions from examples, and work on analogy and world
+models asks whether learned representations capture relations or dynamics
+\citep{garg2022what,chan2022data,webb2023emergent,yasunaga2024large,ha2018world,lecun2022path,li2023emergent}.
+At the same time, shortcut research shows that surface success can fail under
+structural change
+\citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. A forecast can
+therefore be right for the wrong reason: two models may report the same number
+while relying on different populations, evidence, or pathways.
+
+\noindent\textbf{Social agents and conditional validity.}
+Generative agents can reproduce plausible individual and collective behavior
+\citep{park2023generative,aher2023simulate,argyle2023out}, yet matching a
+population average is not the same as preserving the relationships within that
+population \citep{bisbee2024synthetic}. For systems intended to inform decisions,
+we care about both the \emph{probability reported} and the \emph{relationship
+that makes the evidence predictive}. Our experiments therefore move through
+increasingly stringent tests: relevance and direction, contextual relationship
+selection, revision from local evidence, induction of a novel convention, and
+transfer across worlds. Each step rules out a weaker account of the same
+forecast without assuming a general internal world model.
+%============================================================================
+% END related_work.tex
+%============================================================================
+%============================================================================
+% BEGIN limitations.tex
+%============================================================================
+\section{Limitations: what these studies do and do not establish}
+\label{sec:limitations}
+
+These controlled tasks demonstrate context-dependent predictive relationships,
+not human-like understanding or a general world model. Real settings contain
+strategic interaction, unreliable cues, changing variables, and longer feedback
+horizons absent from our market packets and constructed domains.
+
+The internal intervention concerns one checkpoint and one convention; the
+historical study covers one market cohort and training recipe. Additional
+architectures, later cohorts, interactive settings, and misleading evidence
+would test generality.
+
+Performance is heterogeneous. Smaller checkpoints often struggle to induce the
+KIV/ZOR meaning. The episode-matching advantage under joint domain and mechanism
+shift does not survive the eight-seed replication; the benefit for compositions
+of familiar mechanisms is checkpoint-specific and survives a
+distribution-matched shuffled-target control only under stochastic decoding. Structure diagnostics use no target
+observations; the supervised pilot has one seed and differs from RL in update
+budget and, at the successful setting, learning rate. Semantic cue-to-pattern
+learning could explain its in-domain success; native training places its
+boundary at labels, not domain. The five-seed gain intervention establishes
+evidence use on seen but not held-out mechanisms.
+Historical-market gains narrow at the strongest Qwen base. The nonmonotonic
+scale comparison uses one recipe; larger models may require different
+optimization or data budgets.
+%============================================================================
+% END limitations.tex
+%============================================================================
+%============================================================================
+% BEGIN conclusion.tex
+%============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+Forecast accuracy alone does not establish inductive reasoning. Models select
+relevant evidence and revise contextual relationships, while training improves
+forecasts across domains and held-out markets. A supervised pilot learns
+response-form selection in distribution; its boundary is arbitrary labels, not
+domain. Composition accuracy exceeds a shuffled-target control on seen
+mechanisms without establishing transferred evidence use. These contrasts distinguish predictive accuracy from
+reliable relationship use without presuming a general world model.
+%============================================================================
+% END conclusion.tex
+%============================================================================
+%============================================================================
+% BEGIN submission_statements.tex
+%============================================================================
+\subsection*{AI use statement}
+
+Language models produced the forecasts and experimental responses analyzed in this
+work and assisted with software and manuscript preparation. They also generated
+the context-reversal development vignettes. The authors verified
+numerical claims against saved experimental records and executable analyses, checked
+citations against original sources, reviewed the code, and take responsibility for
+the submission and its artifacts.
+
+\subsection*{Ethics statement}
+
+The reported analyses use public market metadata and price histories, model
+outputs, synthetic worlds, and an unpaid adult review of synthetic materials. The
+review collected no identifying or sensitive information. Under our institutional
+guidelines, it does not constitute human-subjects research; consequently, no IRB
+review was sought. Counterfactual evidence packets were evaluated offline and were
+not posted to markets or used for trading. We report aggregate model behavior
+rather than recommend deployment.
+
+\subsection*{Reproducibility statement}
+Appendices~A--G specify the prompts, data-generating processes, sample construction,
+censoring, estimators, deployment settings, missingness, hyperparameters, baselines,
+and fail-closed checks. Builders, manifests, checksums, and saved generations support
+each result. Experiment~3 reports the original three-seed Qwen3-8B, Qwen3-4B,
+and Llama-3.1-8B roster, eight-seed Qwen extensions, a five-seed mechanism-family
+study with its five-seed shuffled-target control, a three-seed structure-selection pilot, and exploratory component,
+single-seed and native-cell supervised, and five-seed gain-intervention diagnostics. Parent-roster endpoints use
+round 300 and five draws under a common stochastic decoder. The appendix
+discloses the pilot's interim look at training monitors and the outcome-informed
+supervised-launch amendment.
+Experiment~4 evaluates Qwen and Llama checkpoints on family-disjoint historical
+markets and reports hosted deployments as categorical references. Evaluation
+examples are excluded from training; selection rules and exploratory analyses
+are documented in the appendix.
+%============================================================================
+% END submission_statements.tex
+%============================================================================
+%============================================================================
+% BEGIN acknowledgements.tex
+%============================================================================
+\subsubsection*{Acknowledgments}
+Acknowledgments are redacted for double-blind review.
+%============================================================================
+% END acknowledgements.tex
+%============================================================================
+
+\clearpage
+\bibliographystyle{iclr2027_conference}
+\bibliography{references}
+
+% All supplementary material lives in appendix.tex.
+\clearpage
+\input{appendix}
+
+\end{document}

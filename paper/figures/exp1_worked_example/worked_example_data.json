@@ -1,0 +1,108 @@
+{
+  "task_id": "pm_2363609_2026-06-09",
+  "question": "Trump orders federal review of AI model releases by June 30?",
+  "category": "Tech",
+  "market_price": 0.375,
+  "days_to_resolution": 20.1,
+  "event_model": {
+    "key_actors": [
+      "Donald Trump",
+      "White House policy staff",
+      "Department of Commerce",
+      "National Institute of Standards and Technology (NIST)",
+      "National security agencies",
+      "Congress",
+      "Frontier AI developers such as OpenAI, Anthropic, Google, Meta, and xAI",
+      "Polymarket resolvers interpreting the market criteria"
+    ],
+    "key_mechanisms": [
+      "Presidential executive action can immediately create or direct a federal AI model review framework",
+      "A qualifying action must target review of public release of new AI models rather than procurement or internal government use",
+      "The June 2, 2026 executive order created a voluntary framework for early federal access to covered frontier models before release",
+      "Resolution likely turns on whether that voluntary pre-release framework counts as a qualifying federal review process under the market rules",
+      "Additional agency guidance or follow-up presidential action before June 30 could clarify whether the framework is review-like enough to qualify"
+    ],
+    "latent_variables": [
+      "How Polymarket interprets a voluntary pre-release framework versus mandatory pre-clearance",
+      "Whether follow-up implementation documents before June 30 make the review process more explicit",
+      "Whether the administration intends the June 2 order to function as substantive release oversight or only cooperative national-security screening",
+      "Whether any additional executive action is issued before the deadline",
+      "How strongly the White House's disclaimer against mandatory licensing and pre-clearance weighs against a YES resolution"
+    ]
+  },
+  "hypotheses": {
+    "H1": {
+      "description": "The market resolves YES: by June 30, 2026, Trump has already taken, or will still take, executive action or sign legislation that creates, authorizes, or directs a federal review process for the public release of new AI models, with the June 2, 2026 executive order potentially qualifying because it establishes a voluntary pre-release federal access and benchmarking framework for covered frontier models.",
+      "prior": 0.22,
+      "posterior": 0.46,
+      "supporting_evidence": [
+        "The White House announced on June 2, 2026 an executive order on AI innovation and security that directs the federal government to establish a voluntary framework under which developers of covered frontier models provide the government access before release. https://www.whitehouse.gov/fact-sheets/2026/06/fact-sheet-president-donald-j-trump-promotes-advanced-artificial-intelligence-innovation-and-security/",
+        "The Federal Register text says developers may provide the federal government access to covered frontier models for up to 30 days before they plan to release them to other trusted partners, which looks like a pre-release review mechanism. https://www.federalregister.gov/documents/2026/06/05/2026-11415/promoting-advanced-artificial-intelligence-innovation-and-security",
+        "WilmerHale's legal analysis describes the order as directing establishment of a benchmarking review process and assessment of covered frontier models prior to public release. https://www.wilmerhale.com/en/insights/client-alerts/20260602-new-executive-order-addressing-early-government-access-to-frontier-ai-models",
+        "AP reported Trump signed an executive order inviting vetting of top AI models for national-security risks, reinforcing that a model-review structure now exists. https://apnews.com/article/trump-ai-executive-order-e41af74f7b0865482f07d10fe7a50fe3",
+        "CNBC reported the order asks for access to AI models 30 days before release for a benchmarking process to assess capabilities, which is close to the market language. https://www.cnbc.com/2026/06/05/openai-trump-ai-model-review-order.html"
+      ],
+      "contradicting_evidence": [
+        "The White House fact sheet expressly says nothing in the order authorizes any mandatory governmental licensing, pre-clearance, or permitting requirement for AI model development, publication, release, or distribution. https://www.whitehouse.gov/fact-sheets/2026/06/fact-sheet-president-donald-j-trump-promotes-advanced-artificial-intelligence-innovation-and-security/",
+        "CRS says no federal legislation establishing broad AI regulatory authorities has been enacted and federal policy has leaned toward existing-authority enforcement and voluntary commitments rather than hard release controls. https://www.congress.gov/crs-product/R48555",
+        "The Biden 2023 EO is a precedent for information-sharing and safety reporting, but not a clean formal approval regime for public release, suggesting U.S. practice stops short of true release clearance. https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2023/10/30/fact-sheet-president-biden-issues-executive-order-on-safe-secure-and-trustworthy-artificial-intelligence/",
+        "The June 2 order appears focused on cybersecurity and release to trusted partners, leaving ambiguity about whether it covers public release in the sense required by the market. https://www.federalregister.gov/documents/2026/06/05/2026-11415/promoting-advanced-artificial-intelligence-innovation-and-security"
+      ]
+    },
+    "H2": {
+      "description": "The market resolves NO: by June 30, 2026, there is no qualifying federal review process for the public release of new AI models because the June 2, 2026 order is judged too voluntary, too national-security-focused, or too clearly disclaimed as non-preclearance to satisfy the resolution criteria, and no stronger follow-up action occurs before the deadline.",
+      "prior": 0.78,
+      "posterior": 0.54
+    }
+  },
+  "mapping": "Since H1=YES and H2=NO, yes_prob = posterior_probability(H1) directly. H1 posterior: 46%, therefore yes_prob = 46%.",
+  "initial_yes_prob": 0.46,
+  "initial_confidence": "medium",
+  "initial_rationale": "The key update is that Trump already signed a June 2, 2026 executive order creating a voluntary pre-release federal access and benchmarking framework for covered frontier models. The forecast stays slightly below 50% because the same White House fact sheet explicitly disclaims mandatory licensing or pre-clearance, leaving substantial ambiguity about whether the action satisfies the market's requirement for a federal review process for public release.",
+  "updates": {
+    "main": {
+      "direction": "pro_H1",
+      "cf_headline": "OMB tracking figures show agencies racing to finalize AI release review framework",
+      "cf_text": "WASHINGTON, June 10 — Internal Office of Management and Budget tracking figures reviewed by Reuters showed 14 federal agencies had returned comments this week on a draft framework for reviewing the public release of certain advanced AI models, with target deadlines of June 24 for final criteria and June 27 for presidential sign-off. The figures, circulated in an interagency budget and regulatory update, listed Commerce, Defense, Homeland Security and Justice among offices assigned implementation tasks tied to a potential executive action. The unusually compressed timeline and cross-agency staffing matrix suggest the administration is preparing a binding federal process before the end of June.",
+      "cf_news_date": "June 10, 2026",
+      "cf_mechanism_targeted": "Whether a White House-directed executive action creating a federal AI model release review process is already being actively drafted and coordinated across agencies",
+      "cf_slot_type": "DATA — a measurement, reading, price signal, or published statistic that indicates H1 is becoming more likely (e.g., a newly released number, index, or survey result).",
+      "cf_plausibility": 4,
+      "initial_yes_prob": 0.46,
+      "updated_yes_prob": 0.67,
+      "delta_yes_prob": 0.21,
+      "shift_correct": true,
+      "novelty_assessment": "This appears genuinely new and decision-relevant rather than already baked into the initial forecast, because it provides specific interagency timelines and planned presidential sign-off for an explicit public-release review framework.",
+      "updated_h1_posterior": 0.67,
+      "updated_rationale": "The new evidence materially increases the chance of YES because it does not merely reinterpret the June 2 order; it points to a near-complete interagency process for a draft framework explicitly described as reviewing the public release of advanced AI models, with concrete deadlines before June 30 and planned presidential sign-off. That sharply raises the odds of a qualifying executive action, though some residual ambiguity remains because the final action could still be framed as nonbinding or fall short of what resolvers treat as a true federal review process."
+    },
+    "opposite": {
+      "direction": "anti_H1",
+      "cf_headline": "White House rules out June order creating AI model release reviews",
+      "cf_text": "WASHINGTON, June 10 — The White House said on Wednesday that President Donald Trump will not sign any June directive establishing a federal review or approval process for public releases of new artificial intelligence models, calling such a move \"premature and unnecessarily restrictive.\" Speaking after a meeting with technology executives, White House press secretary Elena Cross said the administration would instead pursue nonbinding guidance on model security and export controls later this summer. The statement appeared to shut the door on industry speculation that Trump was weighing an executive order before June 30.",
+      "cf_news_date": "June 10, 2026",
+      "cf_mechanism_targeted": "An explicit presidential refusal, delivered by the White House, to use executive action before the deadline to create a qualifying federal AI model release review process.",
+      "cf_slot_type": "DECISION — an actor decision, official statement, policy announcement, or refusal (e.g., a government veto, institutional ruling, formal rejection) that opposes H1.",
+      "cf_plausibility": 4,
+      "initial_yes_prob": 0.46,
+      "updated_yes_prob": 0.27,
+      "delta_yes_prob": -0.19,
+      "shift_correct": true,
+      "updated_rationale": "The new June 10 White House statement materially reduces the chance of any additional qualifying action before June 30 by explicitly ruling out a June directive establishing a federal review or approval process for public model releases. That shifts weight toward NO, though YES remains possible because the existing June 2 executive order could still be interpreted by resolvers as already having created a sufficient pre-release review framework."
+    },
+    "orthogonal": {
+      "direction": "orthogonal",
+      "cf_headline": "Utilities warn AI data-center surge is straining summer power planning",
+      "cf_text": "ATLANTA, June 10 — U.S. grid operators and electric utilities said on Wednesday that a rapid build-out of AI-focused data centers is complicating summer reliability planning, with several Southeast and Midwest providers seeking faster forecasts of large industrial power demand. At an Edison Electric Institute meeting, utility executives said they were not asking for new federal controls on AI products, but wanted clearer timelines from developers on when major computing sites would come online. Industry analysts said the power scramble highlights how AI expansion is rippling through infrastructure markets even as Washington debates broader technology policy.",
+      "cf_news_date": "June 10, 2026",
+      "cf_mechanism_targeted": "Infrastructure and electricity-demand pressures surrounding AI deployment, rather than presidential or agency action on reviewing public releases of new AI models",
+      "cf_slot_type": "BACKDROP — an economic, logistical, or social context development that sets the scene but does not shift the odds of H1 vs H2.",
+      "cf_plausibility": 4,
+      "initial_yes_prob": 0.46,
+      "updated_yes_prob": 0.44,
+      "delta_yes_prob": -0.02,
+      "shift_correct": null,
+      "updated_rationale": "The new evidence is only weakly relevant to the resolution criteria. It suggests current stakeholder pressure around AI is centered on electricity-demand planning for data centers rather than new federal controls on AI products, and utilities explicitly said they are not seeking such controls. That slightly reduces the chance of additional late-June action that would clarify or strengthen the June 2 order into a more obviously qualifying federal review process, but it does not materially change the ambiguity around whether the existing order already counts."
+    }
+  }
+}

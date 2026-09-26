@@ -1,0 +1,78 @@
+{
+  "arms": [
+    "abc_no_context",
+    "abc_context",
+    "abc_symbol_context"
+  ],
+  "chat_template": "tokenizer.apply_chat_template(enable_thinking=False)",
+  "completed_at": "2026-08-24T18:29:37.708264+00:00",
+  "control": "configuration-matched open-model arbitrary-symbol replication",
+  "counts": {
+    "abc_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1250
+    },
+    "abc_no_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1250
+    },
+    "abc_symbol_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1250
+    }
+  },
+  "decode_seed": 20260824,
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "execution": {
+    "job_id": "30866578",
+    "job_state": "COMPLETED",
+    "precision": "torch.bfloat16",
+    "slurm_account": "mltheory",
+    "tensor_parallel_size": 4
+  },
+  "gpu_memory_utilization": 0.86,
+  "max_model_len": 3072,
+  "max_tokens": 512,
+  "model": "Qwen/Qwen2.5-32B-Instruct",
+  "model_label": "Qwen2.5-32B-Instruct",
+  "model_license_family": "Apache-2.0 Qwen open-weight release",
+  "order_seed": 20260804,
+  "parser": "eval/run_frozen_task_shard.py::_parse_reply",
+  "reparse": {
+    "allowed_syntax": "numeric constants, parentheses, unary +/-, +, -, *, /",
+    "destination_response_sha256": {
+      "abc_context": "0ae37f590d3cf940d3eea29b4dcd54d643e80ef84c35c58c31e93434f54daf5a",
+      "abc_no_context": "517e7157f75985f24d3287ef3100f8f3244ddb39bf85a863cfed8d0185a9435c",
+      "abc_symbol_context": "0695f0e2d3051a9bb9d9836230ce75226acbca8ee76960268901389444ec4d69"
+    },
+    "new_model_calls": 0,
+    "original_outputs_preserved": true,
+    "recovered": [
+      {
+        "arm": "abc_symbol_context",
+        "expression": "46.2 + 4 * 1.5",
+        "task_id": "coincityclaude250v4_0247_c2",
+        "value": 52.2
+      }
+    ],
+    "source_dir": "/n/fs/similarity/social_sim/exp2_v2/biased_news/local_results/symbol_context_model_comparison_20260824/qwen2_5_32b",
+    "source_response_sha256": {
+      "abc_context": "0ae37f590d3cf940d3eea29b4dcd54d643e80ef84c35c58c31e93434f54daf5a",
+      "abc_no_context": "517e7157f75985f24d3287ef3100f8f3244ddb39bf85a863cfed8d0185a9435c",
+      "abc_symbol_context": "b48e2167c52f534681a0dfa7bb688b43c04a80b5b99b10d4d7394c32136d0eb0"
+    },
+    "unresolved": []
+  },
+  "software": {
+    "python": "3.10.20",
+    "transformers": "4.51.3",
+    "vllm": "0.8.4"
+  },
+  "status": "complete",
+  "task_file_sha256": {
+    "abc_context": "d5752831f8c995ac1939048d0ec9f37d99393e0e2f24492c5ed47ea94842be10",
+    "abc_no_context": "23e2e3493e6d378af165b6851fd527c75c044db3ddc14041e9ca1ea8af06367e",
+    "abc_symbol_context": "91ea6940ff934bf1a21b0bd8682b34ef1b3d25d543af7af504e8c3d4a67fff70"
+  },
+  "temperature": 0.0
+}

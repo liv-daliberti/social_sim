@@ -1,0 +1,743 @@
+\documentclass{article}
+\PassOptionsToPackage{table}{xcolor}
+
+\usepackage{iclr2027_conference,times}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,backgrounds,positioning,shapes.geometric,calc,decorations.pathmorphing,fadings}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage[compatibility=false]{caption}
+\usepackage{subcaption}
+\usepackage{flafter}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+% Four-band Exp 1 heatmap. Pastel fills keep black text legible; printed values
+% remain the primary encoding.
+\definecolor{heatred}{HTML}{F4CCCC}
+\definecolor{heatorange}{HTML}{FCE5CD}
+\definecolor{heatyellow}{HTML}{FFF2CC}
+\definecolor{heatgreen}{HTML}{D9EAD3}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=[rgb]{0.10,0.25,0.55},
+  citecolor=[rgb]{0.10,0.25,0.55},
+  urlcolor=[rgb]{0.10,0.25,0.55}
+}
+
+\graphicspath{{figures/}{icons/}}
+\newcommand{\micon}[1]{%
+  \IfFileExists{icons/#1}{%
+    \raisebox{-0.25\height}{\includegraphics[height=1em]{icons/#1}}%
+  }{}%
+}
+
+\title{Can language models forecast inductively?}
+% Keep the submission source itself anonymous: supplementary source archives are
+% covered by ICLR's double-blind policy, even though the style hides this field.
+\author{Anonymous authors \\
+Paper under double-blind review}
+
+% \iclrfinalcopy % Uncomment only for the camera-ready version.
+
+
+% The ICLR style sets \flushbottom, so LaTeX stretches page glue to justify the
+% bottom edge. Left alone, most of that slack lands in \textfloatsep and opens a
+% large gap between a top float and the text under it. Removing the stretch
+% component (keeping the shrink) pins the float-to-text distance and pushes the
+% slack into the section skips instead, which absorb it far less visibly.
+\setlength{\textfloatsep}{16pt plus 0pt minus 4pt}
+\setlength{\intextsep}{12pt plus 0pt minus 3pt}
+\setlength{\floatsep}{12pt plus 0pt minus 3pt}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+Judgmental forecasting involves predicting uncertain events like elections or geopolitical conflicts where
+abundant historical data is lacking.
+A key challenge is \textit{induction}: forecasters must generalize from sparse evidence and contextual knowledge to infer how available evidence predicts future outcomes.
+Here, we investigate whether language models (LMs) recover and use such predictive relationships when forecasting, rather than relying on base rates or surface cues.
+Across a battery of experiments spanning real-world prediction markets and controlled synthetic environments, we test whether models: 1) update their beliefs coherently; 2) correctly recover predictive relationships, and 3) transfer what they learn to new settings.
+Our results provide evidence for each capability.
+Models selectively update their forecasts in response to causally relevant evidence, use contextual information to infer predictive relationships when observations are sparse, and revise these inferences as direct evidence accumulates.
+Training on families of predictive relationships improves forecasting across new domains, although evidence for transfer to unseen predictive structures is weaker.
+Together, our experiments provide behavioral evidence that LMs can forecast inductively.
+\footnotemark
+\end{abstract}
+\footnotetext{%
+  \micon{huggingface.png}\;%
+  \href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
+  {\textbf{Study dataset and artifacts}}\qquad
+  \micon{gh_logo.png}\;%
+  \href{https://github.com/anonymous-review/forecasting-study-code}%
+  {\textbf{Code repository}}\quad
+  \textit{Links anonymized for review.}}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\setlength{\columnsep}{6pt}
+\begin{wrapfigure}{r}{0.44\textwidth}
+\vspace{-4em}
+\centering
+\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_motivated.pdf}
+\vspace{-0.45cm}
+\caption{\textbf{Motivation.} Judgmental forecasts combine observations with contextual knowledge about the process that generated them.
+Frontier models, asked to forecast this question, average $P(H)\approx0.68$ (see App.~\ref{app:carnival-coin-probe}).}
+\vspace{-2pt}
+\label{fig:world-knowledge-evidence}
+\end{wrapfigure}
+
+Judgmental forecasting is a demanding form of reasoning central to decisions about political, social, and economic futures.
+Unlike settings with abundant historical data for statistical extrapolation, judgmental forecasting requires integrating sparse, noisy evidence with contextual knowledge to form calibrated beliefs about future outcomes \citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
+This creates an inductive challenge: forecasters must infer from limited observations the relationships that govern how evidence impacts outcomes, and use those relationships to anticipate how events might unfold \citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates this identification problem in a toy setting.
+A researcher observes a carnival coin-flipping machine and, after seeing two heads, must estimate the probability that the next flip will be heads.
+A judgmental forecast may incorporate contextual knowledge (e.g., that such games are often rigged) to infer the data-generating process.
+
+Language models (LMs) now approach crowd accuracy in judgmental forecasting \citep{halawi2024approaching,schoenegger2024wisdom}, but accurate predictions need not imply recovery of the underlying task structure.
+Models recover latent structure in some settings \citep{li2023emergent}, yet can predict accurately using relationships that fail to generalize in others \citep{vafa2025foundation}.
+This distinction matters when decision-makers ask how and whether a forecast should change under alternative evidence or events.
+%% CUT FOR LENGTH: Answering such questions requires predictive relationships that generalize across changes in context.
+
+\noindent
+\textbf{Present work.}
+We study whether LMs exhibit inductive reasoning in judgemental forecasting tasks through a series of progressively more stringent behavioral tests spanning both real-world prediction markets and controlled synthetic environments.
+First, we evaluate whether LMs respond selectively to new evidence, distinguishing outcome-relevant information from topically related but orthogonal information (\hyperref[sec:exp1]{Exp.~1}).
+Second, we test whether LMs infer predictive relationships from described context before statistical evidence accumulates.
+We construct synthetic forecasting problems in which the numerical observations are identical across conditions and only the described setting varies, isolating the contribution of background knowledge to the LM's forecast (\hyperref[sec:exp2]{Exp.~2}).
+Finally, we test whether relationships learned during fine-tuning transfer to new settings.
+We fine-tune LMs with reinforcement learning from verifiable rewards (RLVR) on both synthetic tasks and historical prediction market data, diagnose component failures with a supervised pilot, and evaluate on held-out structures and domains (\hyperref[sec:exp3]{Exp.~3}, \hyperref[sec:exp4]{Exp.~4}).
+
+\noindent\textbf{Results.}
+Across experiments, we find behavioral evidence that models forecast inductively.
+\vspace{-1.5mm}
+\begin{itemize}[
+    leftmargin=3.5mm,
+    itemsep=2pt,
+    parsep=0pt,
+    topsep=3pt
+]
+\item When forecasting unresolved prediction-market questions, all nine models in the magnitude analysis selectively incorporate new evidence, revising their forecast probabilities $1.9$–$7.5\times$ more for outcome-relevant than for merely topically related information (\hyperref[sec:exp1]{Exp.~1}).
+\item In controlled synthetic worlds, we find that models use context to select between predictive relationships even when the numerical evidence is held constant, and increasingly rely on direct observations as they accumulate, as a forecaster capable of inductive reasoning should (\hyperref[sec:exp2]{Exp.~2}).
+We further find that larger models can learn a new relationship from examples within the prompt. For example, when told that a city resembles either KIV or ZOR (random strings), 12 of 15 tested models can infer from examples how each city type responds to events in the simulated environment.
+For Qwen3-14B, manipulating the internal representation of this inferred relationship (resemblance to KIV or ZOR) changes the model's forecasts, providing causal evidence that the inferred relationship guides its prediction.
+%% ORIGINAL (tightened): \item Finally, we find that post-training can teach models predictive relationships that generalize across domains, although evidence for more demanding forms of transfer is substantially weaker.
+\item Finally, we find that post-training can produce forecasting behavior that generalizes across domains, although evidence for more demanding forms of transfer is substantially weaker.
+On synthetic data, post-training transfers robustly across a change in domain, but evidence for transfer when both the domain and the relationship between evidence and outcomes change is weaker: for Qwen3-8B, the episode-matched advantage is $0.126$ (90\% bootstrap CI $[0.018, 0.242]$) across eight seeds (\hyperref[sec:exp3]{Exp.~3}).
+On 318 held-out real-world prediction markets, training on other event families reduces mean forecasting error at every tested model size, with several trained checkpoints reaching contemporaneous crowd performance (\hyperref[sec:exp4]{Exp.~4}).
+\end{itemize}
+
+\begin{figure}[!b]
+\centering
+\includegraphics[width=\linewidth]{exp1_protocol_four_panels.pdf}
+\caption{\textbf{When should a forecast change?}
+Effective forecasting requires updating one's beliefs appropriately as new evidence arrives. This requires determining whether the evidence affects the outcome and, if so, by how much. We study these two challenges in Exp.~1 and Exp.~2, respectively. The figure illustrates our Exp.~1 setup. A model is first asked to evaluate an unresolved Polymarket question (1-2), and then we introduce
+synthetic new evidence that either supports the outcome, opposes it, or concerns
+the same topic but is largely orthogonal to it (3). Finally, with search disabled, we ask the model to revise its forecast, allowing us to measure whether it updates selectively and in the direction implied by the evidence.}
+\label{fig:exp1-pipeline}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\begin{subfigure}[c]{0.525\textwidth}
+\centering
+\includegraphics[width=.92\linewidth]{exp1_direction_selective_updating.pdf}
+\caption{}
+\label{fig:exp1-bars}
+\end{subfigure}\hspace{0.01\textwidth}
+\begin{subfigure}[c]{0.455\textwidth}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}rcc@{}}
+\toprule
+\textbf{Model} & \textbf{Size} & \textbf{Sens.}$\uparrow$ & \textbf{EHC$_{\geq3}$}$\uparrow$ \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Hosted API (parameters undisclosed)}}\\
+\micon{claude.png}~Opus~4.8 & --- & \cellcolor{heatgreen}$7.0\times$ & \cellcolor{heatgreen}.990 \\
+\micon{openai.png}~GPT-5.4 & --- & \cellcolor{heatgreen}$7.5\times$ & \cellcolor{heatgreen}.987 \\
+\micon{deepseek.png}~V4-Pro & --- & \cellcolor{heatyellow}$4.9\times$ & \cellcolor{heatyellow}.977 \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Open-weight, descending parameters} $\downarrow$}\\
+\micon{qwen.pdf}~2.5-72B & 72B & \cellcolor{heatorange}$3.2\times$ & \cellcolor{heatyellow}.963 \\
+\micon{llamma.pdf}~3.3-70B & 70B & \cellcolor{heatyellow}$5.7\times$ & \cellcolor{heatyellow}.965 \\
+\micon{llamma.pdf}~3.1-70B & 70B & \cellcolor{heatyellow}$4.5\times$ & \cellcolor{heatyellow}.961 \\
+\micon{qwen.pdf}~2.5-32B & 32B & \cellcolor{heatorange}$2.8\times$ & \cellcolor{heatyellow}.964 \\
+\micon{qwen.pdf}~2.5-14B & 14B & \cellcolor{heatred}$2.2\times$ & \cellcolor{heatorange}.943 \\
+\micon{llamma.pdf}~3.1-8B & 8B & \cellcolor{heatred}$1.9\times$ & \cellcolor{heatred}.887 \\
+\bottomrule
+\end{tabular*}
+\caption{}
+\label{fig:exp1-table}
+\label{tab:consistency}
+\end{subfigure}
+\caption{\textbf{Models move much more for evidence than for topical
+chatter, and usually move in the implied direction.} \textbf{(a)} Average
+revision after supporting, contrary, and topical updates. \textbf{(b)} The
+table summarizes how much farther models move for directional evidence conditional on moving
+(Sens.), and how often
+a move of at least three percentage points has the right sign (EHC$_{\geq3}$). Error bars in (a) are 90\% market-bootstrap intervals; robustness checks are in
+App.~\ref{app:exp1-threshold-robustness}.}
+\label{fig:exp1-updating}
+\end{figure}
+
+
+\section{Do forecasts change for the right reason?}
+\label{sec:evidence}
+
+%% CUT FOR LENGTH: Appropriately revising beliefs as new evidence arrives is a hallmark of strong judgmental forecasters \citep{tetlock2005expert}.
+We argue that effective updating requires a forecaster
+to determine:
+(1)~which evidence is relevant in predicting an outcome and (2)~the
+extent to which the new evidence should affect the forecast.
+Figure~\ref{fig:exp1-pipeline} illustrates these challenges considering the question of whether the Trump administration will order a federal
+review of new AI models. For (1), new evidence that corroborates plans for such a review should change the forecast, whereas other related AI news should not do so (unless there is a plausible causal pathway connecting it to the outcome).
+%% CUT FOR LENGTH: For (2), the forecaster must determine the extent to which the new evidence should affect the outcome probability. Both challenges require inductive reasoning, as they require the forecaster to infer the predictive structure connecting observed evidence to future outcomes.
+
+We assess these capacities in two experiments.
+First, we pair real-world prediction-market questions with controlled synthetic evidence to test whether models update selectively and in the direction the evidence warrants.
+Second, we use a controlled synthetic environment where the same evidence has, by construction, different predictive effects across contexts. This lets us test whether models can infer the relationships determining how strongly the evidence should affect forecasts.
+
+\subsection{Exp.~1: Can models update in the right direction?}
+\label{sec:exp1}
+
+\noindent\textbf{Design.}
+We evaluate ten model deployments on 100 unresolved binary Polymarket questions
+with web search; nine enter the revision-magnitude analyses below. Then, we ask the models to revise their forecast after a fictional news update with
+search disabled (Fig.~\ref{fig:exp1-pipeline}). Unbeknownst to the models, we construct these updates to support the outcome, oppose it, or cover the same topic without directly influencing the outcome.
+Because models could potentially distinguish directional from orthogonal
+evidence using superficial textual cues,  we additionally evaluate a word-only, bag-of-words classifier that receives only the text of the news update.
+We also construct matched forecasting scenarios in which the same evidence should produce opposed outcomes; for example, intense rainfall could increase the probability of a good harvest in a dry region but decrease it in a region prone to flooding.
+(See  App.~\ref{app:exp1} for details.)
+
+\noindent\textbf{Finding: models selectively update in the direction implied by the evidence.}
+Across the nine models considered, and 30,094 valid forecast revisions, we find that pro-outcome evidence increases forecasts, anti-outcome evidence decreases them, and topically related but orthogonal evidence produces little change (Fig.~\ref{fig:exp1-updating}a).
+Conditional on changing their forecast, we find that models move their probability $1.9$--$7.5\times$ farther for updates intended to influence the prediction (Fig.~\ref{fig:exp1-updating}b).
+Human validation, uncertainty estimates, and robustness analyses are reported in App.~\ref{app:exp1}.
+
+\noindent\textbf{Finding: lexical cues alone do not explain model performance.}
+We find that bag-of-words classifiers can almost perfectly distinguish directional from orthogonal evidence ($.989$ accuracy), confirming that superficial cues could explain models' selectivity.
+Yet, the same classifiers are much less successful at distinguishing whether directional evidence supports or opposes the outcome ($.688$ accuracy).
+Models are considerably more directionally consistent ($.887$--$.990$), suggesting lexical cues alone cannot explain their performance.
+More directly, when we hold the evidence fixed and vary only its relationship to the outcome, GPT-5.6 appropriately reverses the direction of its forecast update in 85\% of matched scenarios, while weaker models do so substantially less often (30--37\%; App.~\ref{app:exp1-context-reversal}).
+
+\noindent\textbf{Finding: selective updating depends on inference-time reasoning.}
+Having ruled out simple lexical shortcuts, we next ask what makes this capability possible. In particular, does the model simply recognize a familiar pattern, or does it need inference-time reasoning to combine the stated relationship with the evidence? We isolate this by holding the model weights, prompts, and test items fixed and changing only whether reasoning is enabled. We find that Qwen3-32B's paired-reversal success under base wording rises from 17.5\% to 96.3\%, while mean absolute updated-probability error falls from 26.89 to 0.08 percentage points.
+Since the two conditions see identical items, this gap isolates the reasoning setting rather than item difficulty or information available in the prompt (App.~\ref{app:exp1-fresh-factorial}).
+
+\noindent\textbf{Take-away.}
+%% ORIGINAL (tightened): We find that models distinguish evidence that is predictive of an outcome from information that is only topically related, and generally update in the direction implied by that evidence. Models' performance is not explained by surface-level lexical cues alone. This ability largely disappears when inference-time reasoning is disabled, suggesting that models must reason about how evidence bears on the outcome rather than just recognizing familiar cues.
+Models distinguish predictive from merely topical evidence and generally update in the implied direction. Performance drops sharply when inference-time reasoning is disabled, suggesting that this behavior depends strongly on the reasoning setting.
+
+\subsection{Exp.~2: can models infer how strongly evidence should matter?}
+\label{sec:exp2}
+
+We study whether models can determine \textit{how much} new evidence should update a forecast in a synthetic scenario we dub \emph{Coin City}.
+We construct two reference cities (Cities A and B) where news coverage affects election polling differently: strongly in one city and weakly in the other.
+Specifically, an election poll in a city changes based on whether the news coverage favored one of the candidates ($x_{ij} \in [-10,-4] \cup [4,10]$) and the city's sensitivity to news, drawing $g_j \sim \mathcal{N}(0.90,0.03^2)$ for the strong-response city and $g_j \sim \mathcal{N}(0.25,0.03^2)$ for the weak-response city:
+\begin{equation}
+  \Delta p_{ij}=g_j x_{ij}+\epsilon_{ij},
+  \qquad \epsilon_{ij}\sim\mathcal{N}(0,5^2).
+  \label{eq:coin-city-dgp}
+\end{equation}
+
+% Match the visual encoding in the prompt figure
+\definecolor{cityCblue}{HTML}{5B83C5}
+\definecolor{refgreen}{HTML}{6B9E57}
+\definecolor{cuepurple}{HTML}{8E63A6}
+
+
+\begin{wrapfigure}{r}{0.40\textwidth}
+    \vspace{-1.4\baselineskip}
+    \centering
+    \includegraphics[width=0.9\linewidth]{exp2_coin_city_prompt_stack.pdf}
+    % \vspace{-0.5\baselineskip}
+    \caption{%\textbf{Experimental setup.}
+    To forecast polling in City C, the model may receive: (\textcolor{cityCblue}{\textbf{a}}) observations from City C, (\textcolor{refgreen}{\textbf{b}})  reference cities A and B, and contextual cues linking City C's response pattern to A or B (\textcolor{cuepurple}{\textbf{c-e}})}
+    \label{fig:coin-city-prompt}
+        \vspace{-10mm}
+
+\end{wrapfigure}
+
+We then ask the model to forecast the effect of campaign news on polling in a third city, City C, which we construct to have either the strong or weak response. Across conditions, we incrementally provide the model with additional information, asking it each time to forecast how a new piece of campaign news will affect election polling in City C. Specifically, we provide
+
+\vspace{-1mm}
+\begin{itemize}[
+    leftmargin=5.5mm,
+    labelsep=1.5mm,
+    itemsep=2pt,
+    parsep=0pt,
+    topsep=1pt,
+    partopsep=0pt
+]
+\item[\textcolor{cityCblue}{\textbf{(a)}}]
+Up to four previous observations from City C, showing how polling numbers
+changed in response to news.
+
+\item[\textcolor{refgreen}{\textbf{(b)}}]
+Additionally, four observations from each of Cities A and B, showing how
+their polling numbers changed in response to news.
+
+\item[\textcolor{cuepurple}{\textbf{(c)}}]
+Additionally, a contextual cue: strong-response cities are described as
+primarily receiving national news coverage and weak-response, local news coverage.
+
+\item[\textcolor{cuepurple}{\textbf{(d)}}]
+Building on (b), we provide an \textit{incorrect} contextual cue, linking
+City C to the wrong type of city.
+
+\item[\textcolor{cuepurple}{\textbf{(e)}}]
+Finally, we replace the semantic cues with \textit{arbitrary} labels
+(KIV and ZOR), requiring the model to infer their meanings.
+\end{itemize}
+
+%% CUT FOR LENGTH: We illustrate our incremental experimental setup in Fig.~\ref{fig:coin-city-prompt}.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{exp2_coin_city_results.pdf}
+\caption{\textbf{Forecast error across experimental conditions.}
+Mean absolute error (MAE) as the number of observed City C cases increases
+across conditions (a)--(e). Colored lines show GPT-5.6 and OLS baselines;
+gray lines show the other models. Full results are in App.~\ref{app:coin-city-results}.}
+\label{fig:coin-city-results}
+\end{figure}
+
+
+This design allows us to test whether models use context to infer how strongly new evidence should affect their forecasts, and whether they increasingly rely on direct evidence from City C as it becomes available---all with ground truth on how forecasts should update.
+We evaluate six frontier systems: Claude Opus~4.8, Opus~5, GPT-5.6,
+DeepSeek~V4-Pro, Kimi~K3, and Gemini~3.6~Flash.
+As baselines, we also fit OLS regressions to the observations available in each
+condition to estimate the relationship between campaign news and polling changes.
+
+
+\noindent\textbf{Finding: models use context to make better forecasts.}
+%% CUT FOR LENGTH: In Fig.~\ref{fig:coin-city-results}, we show that when there are few observed City C cases, strong models use the reference cities together with the contextual cue to infer which response pattern applies.
+For stronger models, this ``hint'' substantially improves forecasting over relying on City C alone or pooling the reference cities without knowing which one is relevant; e.g., in Fig.~\ref{fig:coin-city-results}c, GPT-5.6 Sol substantially outperforms the baselines when $k=0$ or $k=1$.
+This holds true even when the cues given are arbitrary KIV/ZOR labels whose meaning must be inferred (Fig.~\ref{fig:coin-city-results}e).
+Finally, giving the model the \textit{wrong} contextual cue  sharply worsens its forecast (Fig.~\ref{fig:coin-city-results}d).
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{exp2_causal_patch_swap.pdf}
+    \caption{\textbf{Effect of representation patching on Qwen3-14B forecasts.}
+Predicted poll change per news point for City C before (open circles) and after (filled markers) replacing the hidden state produced by the KIV/ZOR label with that produced by the opposite-label prompt. Arrows connect predictions before and after patching; vertical lines are 90\% episode-bootstrap intervals for the post-patch mean; shaded regions indicate the strong- and weak-response regimes.}
+    \label{fig:coin-city-causal-patch}
+\end{wrapfigure}
+
+\noindent\textbf{Finding: models revise their initial contextual inference as direct evidence accumulates.}
+We find that context matters most when direct evidence from City C is sparse.
+As observations from City C accumulate, forecasts increasingly approach the OLS baselines. This suggests the models shift from contextual information toward direct evidence as its evidential value grows, as a forecaster should.
+This pattern holds across conditions in Fig.~\ref{fig:coin-city-results}, but is most striking in Fig.~\ref{fig:coin-city-results}d: even when initially misled by an incorrect contextual cue, models recover as direct evidence accumulates.
+
+\noindent\textbf{Mechanistic analysis.}
+The above behavioral results show that models can infer which predictive relationship applies, \textit{but they do not tell us whether the model represents that relationship internally or uses it to produce the forecast.}
+%% CUT FOR LENGTH: We thus further investigate how the predictive relationship inferred from the arbitrary KIV/ZOR labels is represented internally and whether that representation actually influences the forecast.
+We fit linear probes to hidden states from Qwen3-14B~\citep{yang2025qwen3} and Llama-3.1-70B~\citep{grattafiori2024llama3} to decode whether the model associates City C with the strong- or weak-response regime.
+We then test whether this representation influences the forecast using held-out matched KIV/ZOR prompt pairs. At model-specific layers, we swap the label-token hidden states (a patch) with those produced by the opposite-label prompt and regenerate the forecast. We perform this intervention both before and after City C provides direct observations.
+
+% I stopped here
+
+\noindent\textbf{Finding: inferred relationships are represented internally and can shape forecasts.}
+Fig.~\ref{fig:coin-city-causal-patch} shows the effect of swapping the KIV/ZOR representation on Qwen3-14B's forecasts when no direct City C observations are available.
+Before the intervention, forecasts reflect the response regime indicated by the original label; for example, prompts identifying City C as KIV produce forecasts consistent with the strong-response regime, while those identifying it as ZOR produce forecasts consistent with the weak-response regime (open circles in the figure).
+After swapping the internal representation associated with KIV for that associated with ZOR (and vice versa), forecasts shift toward the opposite response regime (filled circles), moving about 51\% of the way toward the swapped regime.
+After four direct City C observations, however, the same intervention has no reliable effect.
+%% ORIGINAL (tightened): Together, these results suggest that the inferred relationship influences the forecast when direct evidence is sparse, but is overridden as evidence about City C's response pattern accumulates.
+Together, these results suggest that the inferred relationship influences the forecast when direct evidence is sparse but has less influence as City C evidence accumulates.
+We observe the same zero-shot causal effect with Llama-3.1-70B at a pre-specified window on fresh episodes (App.~\ref{app:coin-city-fixed-window}).
+
+
+\noindent\textbf{Takeaway.}
+Models can infer which predictive relationship applies, use it when direct evidence is sparse, and revise it as local evidence accumulates.
+In stronger models, this behavior persists under arbitrary labels.
+Finally, we can decode what the model infers from its internal representations, and intervening on those representations causally shifts the resulting forecast.
+
+
+\section{Can models learn transferable forecasting skills?}
+\label{sec:transfer}
+
+A central idea in the forecasting literature is that forecasting is a \textit{transferable skill}: successful forecasters rely not only on domain expertise but on flexible reasoning strategies that generalize across problems and maintain high accuracy across questions spanning diverse topics \citep{tetlock2005expert,mellers2015identifying}.
+Specifically, inductive forecasting skills should (1) generalize across \textit{domains}, allowing forecasters to reason effectively about unfamiliar topics, and (2) generalize across \textit{predictive relationships}, allowing them to determine how evidence relates to outcomes rather than relying on previously learned associations.
+%% CUT FOR LENGTH: We thus investigate whether forecasting skills LMs acquire through post-training exhibit these two forms of transfer.
+
+We do so in two experiments.
+In \hyperref[sec:exp3]{Exp.~3}, we use a controlled synthetic setting to independently vary domains and predictive relationships, testing whether forecasting skills acquired through post-training transfer when either changes.
+In \hyperref[sec:exp4]{Exp.~4}, we move to real-world forecasting and test whether post-training on historical prediction-market questions improves forecasts on newer questions from event families and question types not encountered during training.
+
+\subsection{Exp.~3: Do learned forecasting skills transfer to new domains and relationships?}
+\label{sec:exp3}
+
+\noindent\textbf{Design.}
+%% CUT FOR LENGTH: We create a synthetic task that independently varies the domain and predictive relationships, allowing us to evaluate the generalizability of learned forecasting skills.
+We consider two domains, \emph{Coin City}, the setting used for Exp.~2, and \emph{Coin Harbor}, a new setting where shipping bulletins predict cargo flow.
+Coin Harbor has its own vocabulary and time unit, but uses the same distributions with different numerical values, e.g., outcomes lie on a $[40,320]$ scale and inputs, shocks, and noise are correspondingly larger.
+Independently, we vary the relationship between inputs and outcomes.
+In Structure A, an input affects the outcome only when it occurs, similar to Exp.~2, while in Structure B an input can have effects that persist after the news signal disappears. Crossing the two domains with the two relationships yields four evaluation conditions (see Fig.~\ref{fig:exp3-transfer-results} margins): (1) in-distribution, (2) domain shift, (3) relationship shift, and (4) joint domain-and-relationship shift.
+
+We post-train Qwen3-8B and Qwen3-4B~\citep{yang2025qwen3} using RLVR with Dr.~GRPO~\citep{liu2024oat} (details are in App.~\ref{app:exp3-complete-training-setup}).
+We train each model exclusively on Coin City episodes governed by Structure A (\textit{episode-matched} condition). We then evaluate the trained model under all four combinations of domain and predictive relationship: Structure A in Coin City (in-distribution), Structure A in Coin Harbor (domain shift), Structure B in Coin City (relationship shift), and Structure B in Coin Harbor (joint shift). Comparing this model with the untrained \textit{base} LM tests whether forecasting behavior acquired in one domain and predictive relationships transfer when the domain, relationship, or both change.
+
+
+% ADD DISTRIBUTIONS TO THE COLUMNS + MAYBE EQUATIONS -- SOMETHING THAT SHOWS THE EQUATION FOR DIRECT vs INDIRECT!!!
+\input{tables/exp3_coin_qwen3_8b_stochastic_data}
+\begin{figure}[!]
+\centering
+\definecolor{gCityFill}{HTML}{E8F2FB}
+\definecolor{gCityEdge}{HTML}{4F7EA8}
+\definecolor{gHarborEdge}{HTML}{3F8E82}
+\definecolor{gTestFill}{HTML}{E7F4EA}
+\definecolor{gTestEdge}{HTML}{6FA97F}
+\definecolor{gTestChip}{HTML}{5E9470}
+\definecolor{gCoinFill}{HTML}{FFF2CC}
+\definecolor{gCoinRim}{HTML}{D6B656}
+\definecolor{gInk}{HTML}{3F4550}
+\definecolor{gMute}{HTML}{8A93A3}
+\definecolor{gBarBase}{HTML}{C3CBD4}
+\definecolor{gBarLess}{HTML}{A9B4C0}
+\definecolor{gBarPrior}{HTML}{7C93AD}
+\definecolor{gBarMatched}{HTML}{4F7EA8}
+\newcommand{\gcoincity}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[gCoinFill] (0,0) circle (.37);
+    \draw[gCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[gCityEdge] (-.23,-.18) rectangle (-.10,.04);
+    \fill[gCityEdge] (-.07,-.18) rectangle (.07,.16);
+    \fill[gCityEdge] (.10,-.18) rectangle (.24,.09);
+    \draw[gCityEdge,line width=.65pt] (-.27,-.19)--(.27,-.19);
+  \end{scope}}
+\newcommand{\gcoinharbor}[2]{%
+  \begin{scope}[shift={(#1,#2)},scale=0.70]
+    \fill[gCoinFill] (0,0) circle (.37);
+    \draw[gCoinRim,line width=.75pt] (0,0) circle (.37);
+    \fill[gHarborEdge] (-.24,-.05)--(.24,-.05)--(.15,-.18)--(-.15,-.18)--cycle;
+    \draw[gHarborEdge,line width=.7pt] (-.01,-.05)--(-.01,.15)--(.15,.02)--(-.01,.02);
+    \draw[gHarborEdge,line width=.55pt]
+      (-.26,-.24)..controls(-.18,-.19)and(-.10,-.29)..(-.02,-.24)
+      ..controls(.06,-.19)and(.14,-.29)..(.26,-.24);
+  \end{scope}}
+% One results card. #1 cx, #2 cy, #3 cell name, #4 chip text, #5 chip fill,
+% #6..#8 base/prior/episode-matched MAE; the contrast is placed separately.
+\newcommand{\gcard}[8]{%
+  \node[cellname] at (#1-2.66,#2+0.78) {#3};
+  \node[chip, fill=#5] at (#1+2.66,#2+0.78) {#4};
+  \foreach \arm/\val/\col/\dy in {%
+      base/#6/gBarBase/0.34, prior/#7/gBarPrior/0.00,
+      episode-matched/#8/gBarMatched/-0.34}{%
+    \node[armlab] at (#1-2.66,#2+\dy) {\arm};
+    \fill[\col, rounded corners=1pt]
+      (#1-0.55,#2+\dy-0.075) rectangle (#1-0.55+\val*2.55/\cciPeak,#2+\dy+0.075);
+    \node[armval] at (#1-0.43+\val*2.55/\cciPeak,#2+\dy) {\val};}}
+\resizebox{.96\linewidth}{!}{%
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  card/.style={rounded corners=3pt, minimum width=5.80cm, minimum height=1.95cm,
+    line width=.6pt, inner sep=0pt},
+  traincard/.style={card, draw=gCityEdge, fill=gCityFill},
+  testcard/.style={card, draw=gTestEdge, fill=gTestFill,
+    dash pattern=on 1.9pt off 1.5pt},
+  dname/.style={anchor=south, font=\sffamily\bfseries\small},
+  rname/.style={anchor=east, align=right, font=\sffamily\small, text=gInk},
+  cellname/.style={anchor=west, font=\sffamily\bfseries\footnotesize, text=gInk},
+  chip/.style={anchor=east, rounded corners=1.6pt, draw=none, text=white,
+    inner xsep=3pt, inner ysep=1.1pt, font=\sffamily\bfseries\scriptsize},
+  armlab/.style={anchor=west, font=\sffamily\scriptsize, text=gInk},
+  armval/.style={anchor=west, font=\sffamily\scriptsize, text=gInk},
+  delta/.style={anchor=center, font=\sffamily\scriptsize, text=gInk},
+  legend/.style={anchor=east, font=\sffamily\scriptsize},
+]
+% ---- domain columns ------------------------------------------------------
+\gcoincity{2.90}{3.22}
+\gcoinharbor{9.00}{3.22}
+\node[dname, text=gCityEdge]   at (2.90,2.40) {COIN CITY};
+\node[dname, text=gHarborEdge] at (9.00,2.40) {COIN HARBOR};
+
+% ---- what the bars mean, and which way is good --------------------------
+\node[legend, text=gInk]  at (-0.20,2.62) {bars: response MAE};
+\node[legend, text=gMute] at (-0.20,2.28) {$\leftarrow$ lower is better};
+
+% ---- mechanism rows ------------------------------------------------------
+\node[rname] at (-0.20,1.25) {\textbf{Structure A}\\ direct};
+\node[rname] at (-0.20,-0.85) {\textbf{Structure B}\\ mediated};
+
+% ---- the four result cards ----------------------------------------------
+\node[traincard] at (2.90,1.25) {};
+\node[testcard]  at (9.00,1.25) {};
+\node[testcard]  at (2.90,-0.85) {};
+\node[testcard]  at (9.00,-0.85) {};
+
+\gcard{2.90}{1.25}{in-distribution}{TRAINED}{gCityEdge}
+  {\cciIDbase}{\cciIDprior}{\cciIDmatched}
+\node[delta] at (2.90,0.42) {prior $-$ matched\ \ \cciIDdelta};
+
+\gcard{9.00}{1.25}{domain shift}{TEST}{gTestChip}
+  {\cciDomainbase}{\cciDomainprior}{\cciDomainmatched}
+\node[delta] at (9.00,0.42) {prior $-$ matched\ \ \cciDomaindelta};
+
+\gcard{2.90}{-0.85}{structure shift}{TEST}{gTestChip}
+  {\cciStructurebase}{\cciStructureprior}{\cciStructurematched}
+\node[delta] at (2.90,-1.68) {prior $-$ matched\ \ \cciStructuredelta};
+
+\gcard{9.00}{-0.85}{joint shift}{TEST}{gTestChip}
+  {\cciJointbase}{\cciJointprior}{\cciJointmatched}
+\node[delta] at (9.00,-1.68) {prior $-$ matched\ \ \cciJointdelta};
+\end{tikzpicture}%
+}
+\caption{\textbf{Forecasting gains transfer strongly to a new domain, but not a new structure.} Mean absolute error (MAE; lower is better) for Qwen3-8B across the $2\times2$
+combination of domain (Coin City vs.\ Coin Harbor) and predictive relationship
+(Structure A vs.\ Structure B). Models are trained only on Coin City with
+Structure A (top left) and evaluated in-distribution, under a domain shift
+(top right), a structure shift (bottom left), and both shifts jointly
+(bottom right). We compare the base model, a population-prior control trained with shuffled targets, and episode-matched training with the correct target for
+each episode.
+}
+\label{fig:exp3-transfer-results}
+\vspace{10pt}
+\end{figure}
+
+However, improvement over the base model may reflect learning general regularities of the training task rather than the information contained in each episode. We thus construct a second post-trained condition using the same prompts and forecast targets, but shuffling the targets across episodes. We call this the \textit{population-prior} condition, and again evaluate it under all four combinations of domain and predictive relationship. Comparing the \textit{episode-matched} and \textit{population-prior} conditions isolates the benefit of learning the mapping between episode-specific evidence and forecasts, beyond learning population-level regularities of the training task.
+
+
+% We compare three model conditions to distinguish learning the task in general from learning which predictive relationship applies in each episode.
+% For the two trained conditions, we use reinforcement learning from verifiable rewards (RLVR) post-training with Dr.~GRPO~\citep{liu2024oat}
+% (App.~\ref{app:exp3-complete-training-setup}).
+% \begin{enumerate}[
+%     leftmargin=5.5mm,
+%     labelsep=1.5mm,
+%     itemsep=2pt,
+%     parsep=0pt,
+%     topsep=1pt,
+%     partopsep=0pt
+% ]
+% \item The \textit{base} is the original LM before any training.
+% \item The \textit{population-prior} LM is trained on the same prompts and the same collection of forecast targets as the episode-matched LM, but those targets are shuffled across episodes.
+% It can therefore learn what answers are common in the task, but not which answer belongs to the particular episode it is seeing.
+% \item The \textit{episode-matched} LM is trained with each prompt paired with its own correct forecasts.
+% It can therefore learn to use the information in that episode to determine which predictive relationship applies.
+% \end{enumerate}
+
+% \begin{wrapfigure}{r}{0.45\linewidth}
+%     \vspace{-0.75cm}
+%     \centering
+%     \includegraphics[width=0.9\linewidth]{exp3_structures_prompt.pdf}
+%     \vspace{-0.5\baselineskip}
+%     \caption{\textbf{Choosing between predictive relationships.}
+%     Structure A responds only to the current input, whereas Structure B
+%     produces effects that persist after the input disappears.
+%     The model sees examples of both structures and must determine which
+%     one governs the target before forecasting its future response.}
+%     \label{fig:exp3-structure-selection}
+% \end{wrapfigure}
+
+% Comparing either trained model to the \textit{base} measures the overall benefit of training.
+% Comparing the \textit{episode-matched} and \textit{population-prior} LMs asks the stricter question of whether preserving which forecasts belong to which episode provides an additional benefit.
+% Because the two training conditions use the same prompts, target distribution, and training budget, this contrast more directly tests episode-specific relationship use
+% (App.~\ref{app:exp3-complete-training-setup}).
+% For Qwen3-8B and Qwen3-4B~\citep{yang2025qwen3}, both trained conditions use eight training seeds; the Llama-3.1-8B~\citep{grattafiori2024llama3} replication uses three seeds per trained condition.
+
+% Models weren't capable of doing
+\textbf{Finding: forecasting improvements persist under a change of domain.}
+Both the \textit{population-prior} and \textit{episode-matched} LMs substantially improve over the untrained base when evaluated in Coin Harbor, showing that training transfers useful forecasting behavior to a new surface domain (Fig.~\ref{fig:exp3-transfer-results} top right). Under domain shift, response MAE falls from $7.30$ for the untrained base to $2.00$ for the \textit{population-prior}, with all eight training seeds showing improvement over the base (Fig.~\ref{fig:exp3-transfer-results}).
+Thus, most but not all of the gain comes from learning the forecasting task and its population-level regularities.
+We then ask the stricter question of whether preserving which forecasts belong to which episode provides an additional benefit.
+For Qwen3-8B, the \textit{episode-matched} LM improves over the \textit{population-prior} LM by $0.11$ response-MAE points under domain shift, with six of eight seeds favoring the episode matching setting.
+
+%%% LIV TO DO: How does this replicat!!! <How does this work for the other models?>
+% These results establish strong transfer of learned forecasting behavior across domains
+% (App.~\ref{app:exp3-eight-seed}).
+
+% Put p = 0.1 %% 10% confidence interval. Discuss this on the confidence intervals. Just say what it is.
+% Put something that indicates how long it takes?
+
+%\noindent\textbf{Finding: models can learn which relationship to use, but do not reliably carry that rule to a new setting.}
+%When both Structure A and Structure B appear during training, Qwen3-8B trained with RL does not reliably change its forecast according to which pattern the cue identifies.
+%We find that every tested LM is able to match the reference structure to the given cue.
+%Instead, the difficulty lies in using the selected relationship to produce the corresponding forecast.
+%The task is nevertheless learnable.
+%With SFT on the same training set, Qwen3-8B selects the correct structure with $97.9$--$100.0\%$ accuracy across four seeds.
+%But the learned rule remains tied to the training setting, performance returns to chance both (1) when familiar semantic cues are replaced by arbitrary labels and (2) when the task moves to Coin Harbor.
+%Training directly in Coin Harbor restores $100\%$ accuracy with semantic cues.
+%Thus, models can learn a familiar cue-to-relationship association, but we do not yet find reliable transfer of structures across a domain shift
+%(App.~\ref{app:exp3-structure-selection};
+%App.~\ref{app:exp3-components};
+%App.~\ref{app:exp3-learnability}).
+
+\noindent\textbf{Takeaway.}
+In open-weight models, we find evidence that forecasting improvements in synthetic scenarios transfer across domains, but training under a specific predictive structure does not clearly improve performance on unseen predictive structures.
+
+% Our experiments also show that structure shift does not seem to carry over from our in-distribution training. We further explore this by testing whether training teaches the model to \emph{choose} between different predictive relationships. We train while allowing both Structure A and Structure B patterns to appear during training, and the model must use a cue to determine which pattern governs the target.
+% We evaluate whether this learned choice survives a change from Coin City to Coin Harbor.
+% Finally, we run two diagnostics to locate the failure.
+% First, we test whether models can identify which reference structure applies before asking them to forecast.
+% Second, we use supervised fine-tuning (SFT) to ask whether models can learn to produce the correct response pattern
+% (App.~\ref{app:exp3-components};
+% App.~\ref{app:exp3-learnability}).
+% Models can learn which relationship to use in a familiar setting without learning a general rule for a new domain.
+
+
+
+\subsection{Exp.~4:   Can models transfer learned forecasting skills in the real world? }
+\label{sec:exp4}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{exp4_qwen_scale_results.pdf}
+% \caption{\textbf{Training improves the tested bases, but scale alone does not
+% guarantee a better trained forecaster.} Across Qwen3 checkpoints from 1.7B to
+% 32B, several trained models reach crowd-level performance, while the gain narrows
+% at the strongest base. Local model size is shown on a log parameter axis; hosted
+% systems at right are reference points. The Llama replication is in App.
+% Figure~\ref{fig:exp4-llama-scale-results}.}
+\caption{
+\textbf{Post-training improves forecasting accuracy, with gains diminishing as base-model performance improves.}
+(a) Brier scores for Qwen3 models from 1.7B to 32B parameters before and after
+post-training on historical prediction markets (lower Brier scores indicate more accurate forecasts). Post-training produces the
+largest improvement at 1.7B, with progressively smaller differences between trained and untrained models at larger scales. Several post-trained models reach approximately the Brier score of contemporaneous Polymarket prices (dashed line). Points show individual training seeds. (b) Brier scores of four hosted frontier models evaluated on the same held-out questions, with 90\% family-clustered bootstrap intervals. Their performance falls in a similar range to the strongest post-trained Qwen3 models and the Polymarket benchmark. The Llama replication is reported in App.~\ref{app:exp4-scale}.}
+\label{fig:exp4-scale-results}
+\end{figure}
+
+\noindent\textbf{Design.}
+Finally, we test whether forecasting improvements from post-training extend from synthetic settings to real-world forecasting questions. We post-train Qwen3 models from 1.7B to 32B parameters and Llama-3.1-8B on 1,736 resolved historical Polymarket questions and evaluate them on 1,024 held-out questions and, for the scale comparison below, a further 318-market holdout disjoint from both. For each market, we construct a forecasting task 30 days before resolution, providing the model with the question, resolution criteria, and pre-cutoff market-price history. Without access to external information, the model produces a probability forecast for the eventual binary outcome.
+%% CUT FOR LENGTH: Then, we evaluate the post-trained models, alongside their corresponding base LMs, on held-out historical questions.
+
+To test generalization, we make the train and test sets disjoint along two dimensions: test questions concern entirely different underlying events and follow different question templates, requiring models to transfer across both real-world contexts and question structures. We evaluate forecasting accuracy using the Brier score, where lower values indicate more accurate forecasts (App.~\ref{app:exp3b-protocol}). As external benchmarks, we compare model forecasts with contemporaneous Polymarket prices on the same questions (which correspond to forecasts) and with forecasts from four frontier models without post-training.
+% Experiment~4 asks whether the forecasting improvements we observe in controlled synthetic worlds extend to real forecasting questions.
+% We train models on resolved historical Polymarket questions, providing only information available before each outcome, and evaluate them on a held-out set of questions from different event and question families.
+% The train and test splits are separated by both event and normalized question template, so evaluation does not reuse the same underlying events or recurring question forms.
+% We measure forecasting accuracy using the Brier score, where lower values indicate more accurate probability forecasts
+% (App.~\ref{app:exp3b-protocol}).
+
+% To test whether the effect depends on model scale, we apply the same training procedure across Qwen3 and Llama-3.1  LMs from 1.7B to 32B parameters and replicate the comparison with Llama models.
+% We compare each trained model with its corresponding untrained base and use contemporaneous Polymarket prices as an external reference rather than as a training target
+% (Fig.~\ref{fig:sealed-market-grounding}).
+
+\noindent\textbf{Finding: post-training improves forecasting on unseen real-world questions, with diminishing gains for stronger base models.}
+We find that post-training reduces forecasting error across the tested Qwen3 models, but this improvement is substantial only for the smaller models (Fig.~\ref{fig:exp4-scale-results}a). For instance, Qwen3-1.7B improves from a Brier score of $.225$ to $.125$, while Qwen3-8B improves from $.137$ to $.129$.
+As the untrained models become stronger, however, the gap narrows such that at 32B, performance is roughly the same ($.1265$ versus $.1266$).
+The Llama replication shows the same broad pattern; see App.~\ref{app:exp4-scale}.
+
+
+\noindent\textbf{Finding: post-trained models reach prediction-market and frontier-model forecasting accuracy.} Several trained LMs also reach approximately the same Brier score as contemporaneous Polymarket prices on the shared holdout.
+Their performance is also comparable to the four untrained frontier models we evaluate: the frontier models obtain Brier scores between $.1266$ and $.1333$, similar to several of our post-trained Qwen3 models (Fig.~\ref{fig:exp4-scale-results}b).
+Thus, the forecasting gains learned during post-training are not confined to our synthetic environments; they extend to event families and questions absent from training.
+At the same time, the diminishing base-relative gain suggests that stronger pretrained models already possess more of the forecasting behavior that post-training teaches weaker models.
+
+\noindent\textbf{Takeaway.}
+Using data from real-world prediction markets, we find evidence that post-training improves forecasting beyond synthetic settings, where we can directly observe predictive relationships.
+We find that gains are largest for weaker base models and diminish as the untrained forecaster becomes stronger.
+A price-history ablation shows that this accuracy depends strongly on the supplied market history (App.~\ref{app:exp4-price-ablation}).
+Because this experiment compares trained models only with their untrained bases, however, it establishes improved out-of-distribution forecasting accuracy rather than isolating episode-specific relationship learning.
+
+\section{Related work}
+\label{sec:related-work}
+
+\noindent\textbf{Judgmental forecasting.}
+Work on human judgmental forecasting has identified base rates, decomposition, evidence aggregation, and continuous belief revision as consistent characteristics of strong forecasters \citep{tetlock2005expert,mellers2014psychological,tetlock2016superforecasting}.
+More recently, work on LMs has asked how well these systems can forecast real-world events, developing leakage-resistant benchmarks and improving accuracy through retrieval, ensembling, prompting, and post-training
+\citep{zou2022forecasting,karger2025forecastbench,halawi2024approaching,schoenegger2024wisdom}.
+This literature has established increasingly strong forecasting performance, in some settings approaching or beating the accuracy of human crowds.
+Related work has also begun to examine whether LMs employ established forecasting strategies \citep{pratt2024can}.
+We complement this literature by examining a different dimension of forecasting capability: whether LMs can forecast inductively, identifying predictive relationships from evidence and using them to revise their forecasts.
+
+\noindent\textbf{Induction and relational reasoning.}
+Transformers can infer functions from examples, and work on analogy and world
+models have investigated whether learned representations capture relations or dynamics
+\citep{garg2022what,chan2022data,webb2023emergent,yasunaga2024large,ha2018world,lecun2022path}.
+Evidence on this question is mixed. In some settings, models appear to recover
+structured representations of the processes generating their observations,
+such as the state of an Othello board \citep{li2023emergent}. In others,
+successful prediction can coexist with representations that fail to capture
+underlying spatial or temporal structure \citep{vafa2025foundation}.
+More broadly, this reflects the problem of \emph{shortcut learning}, where models can perform well by exploiting predictive associations without recovering the underlying structure that generated them \citep{geirhos2020shortcut}.
+This distinction is particularly important for forecasting, as producing an
+accurate prediction does not necessarily imply that a model has recovered the
+predictive relationships that make the available evidence informative.
+We study this distinction behaviorally, testing whether LMs can infer such
+relationships from evidence, use them to revise their forecasts, and transfer
+them when the setting changes.
+% At the same time, shortcut research shows that surface success can fail under
+% structural change
+% \citep{geirhos2020shortcut,mitchell2023ai,vafa2025foundation}. A forecast can
+% therefore be right for the wrong reason: two models may report the same number
+% while relying on different populations, evidence, or pathways.
+
+\noindent\textbf{Simulating human behavior.}
+A related literature uses LMs to simulate human behavior, asking whether
+synthetic agents can reproduce the responses of individuals or populations
+\citep{park2023generative,aher2023simulate,argyle2023out}.
+While early work emphasized agreement between simulated and observed outcomes, more recent work has questioned whether matching aggregate behavior is sufficient: models can reproduce population-level outcomes while failing to preserve relationships between variables within the population~\citep{bisbee2024synthetic,xie2026evaluating}.
+Forecasting raises an analogous problem, as models may produce accurate
+probabilities without capturing the predictive relationships that connect
+evidence to outcomes. Our work studies this form of conditional validity in
+forecasting, asking not only whether models predict accurately, but whether
+their forecasts change appropriately as the evidence and setting change.
+
+
+\section{Discussion \& Limitations}
+% \label{sec:discussion}%
+\label{sec:limitations}
+
+Our experiments provide behavioral evidence that LMs can forecast inductively, inferring, using, and revising predictive relationships as evidence changes. These behaviors do not establish human-like understanding or general world modeling capabilities,  but nonetheless show that models behave in ways we expect of competent human forecasters. This distinction matters as LM forecasts may increasingly inform real-world decisions~\citep{schoenegger2025ai}, where accuracy in familiar settings provides limited reassurance if forecasts become brittle when the evidence, context, or underlying predictive relationships change.
+
+
+
+%% CUT FOR LENGTH: Our results also raise questions around when inductive reasoning capabilities generalize. For instance, we find in Exp.~3 that forecasting improvements transferred readily across
+%% CUT FOR LENGTH: domains, but not when the underlying predictive relationship changed.
+This may reflect the limited training environment, and these capabilities may emerge with enough variation in the predictive structures encountered during training.
+The contrast between Exp.~2 and Exp.~3 points to a possible asymmetry. Models flexibly infer and revise predictive relationships from evidence available in context (Fig.~\ref{fig:coin-city-results}), while relationships acquired through post-training transfer less reliably when the underlying structure changes (Fig.~\ref{fig:exp3-transfer-results}). Although these experiments are not directly comparable, understanding when relationships inferred in context can become portable capabilities through post-training is an important direction for future work.
+
+\noindent\textbf{Limitations.}
+Our synthetic environments deliberately simplify real forecasting to isolate predictive relationships, and our mechanistic analyses are limited to open-weight models.
+We also do not study agentic forecasters that can actively search for information, test competing hypotheses, or seek evidence that distinguishes among possible predictive relationships. Such capabilities may change the induction problem by allowing models to determine which relationship applies rather than relying only on the evidence provided in context.
+Exp.~4 extends our evaluation to real-world forecasting, but improved held-out accuracy does not establish that these gains arise from the episode-specific relationship learning isolated in our controlled experiments.
+
+
+% Our experiments test whether LMs infer, use, and revise predictive relationships; they do not establish human-like understanding or a general world model.
+% The synthetic tasks simplify real forecasting, the mechanistic results cover open-weight models, and Experiment~4 establishes improved held-out accuracy without isolating episode-specific relationship learning.
+
+% Across experiments, models selectively respond to predictive evidence, use context to infer relationships when observations are sparse, and revise those inferences as direct evidence accumulates.
+% Post-training also produces forecasting gains that transfer across domains and to unseen real-world questions.
+% The harder capability is \emph{portability}: models can learn which relationship to use in a familiar setting, but do not reliably carry that rule to new structures, cues, or domains.
+% Thus, forecast accuracy alone is not enough; we should also ask whether the predictive relationships behind a forecast survive when the world changes.
+
+\clearpage % Keep statements after the 9-page main-text limit.
+\subsection*{AI use statement}
+
+Language models produced the forecasts and experimental responses analyzed in this work and assisted with software and manuscript preparation.
+They also generated the context-reversal development vignettes.
+The authors verified numerical claims against saved experimental records and executable analyses, checked citations against original sources, reviewed the code, and take responsibility for the submission and its artifacts.
+
+\subsection*{Ethics statement}
+
+The reported analyses use public market metadata and price histories, model outputs, synthetic worlds, and an unpaid adult review of synthetic materials.
+The review collected no identifying or sensitive information.
+Under our institutional guidelines, it does not constitute human-subjects research; consequently, no IRB review was sought.
+Counterfactual evidence packets were evaluated offline and were not posted to markets or used for trading. We report aggregate model behavior rather than recommend deployment.
+
+\subsection*{Reproducibility statement}
+The appendices specify the prompts, data-generating processes, sample construction, censoring, estimators, deployment settings, missingness, hyperparameters, and baselines needed to reproduce the reported analyses.
+Builders, manifests, checksums, and saved generations support each result.
+Experiment~3 reports the eight-seed Qwen transfer comparison, a four-seed supervised learnability diagnostic, and five-seed gain-intervention and shuffled-target analyses; later outcome-informed extensions are labeled descriptive in the appendix.
+Experiment~4 evaluates Qwen and Llama checkpoints on family-disjoint historical markets, with a separate scale holdout and price-history ablation.
+Evaluation examples are excluded from training; selection rules and exploratory analyses are documented in the appendix.
+
+\subsubsection*{Acknowledgments}
+Acknowledgments are redacted for double-blind review.
+
+\clearpage
+\bibliographystyle{iclr2027_conference}
+\bibliography{references}
+
+% All supplementary material lives in appendix.tex.
+\clearpage
+\input{appendix}
+
+\end{document}

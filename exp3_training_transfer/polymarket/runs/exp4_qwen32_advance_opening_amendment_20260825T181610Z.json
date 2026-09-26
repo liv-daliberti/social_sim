@@ -1,0 +1,25 @@
+{
+  "canary_job_id": "30885396",
+  "canary_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_canary_20260825T174646Z.json",
+  "duplicate_full_launch_prevented": true,
+  "holdout_opening_amendment": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_holdout_opening_amendment_20260825T180230Z.json",
+  "kind": "advance_opening_amendment",
+  "obsolete_advance_job": {
+    "action": "held_then_cancelled_before_replacement_submission_could_execute",
+    "job_id": "30885397",
+    "state": "CANCELLED"
+  },
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "reason": "Parent 4B/8B/14B holdout was opened at explicit user direction before Qwen3-32B full training.",
+  "recorded_at": "20260825T181610Z",
+  "registration_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T181450Z.json",
+  "replacement_advance_job": {
+    "account": "mltheory",
+    "dependency": "afterok:30885396",
+    "job_id": "30886076",
+    "partition": "all",
+    "state": "PENDING"
+  },
+  "scientific_configuration_changed": false,
+  "superseded_registration": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T174634Z.json"
+}

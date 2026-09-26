@@ -1,0 +1,82 @@
+experiment:
+  id: three_city_c2_v8_full_k1_15_matched
+  status: matched_redesign_no_model_runs
+  description: "Local full three-model, three-arm matched-estimator rerun reported at every City C step from k=1 through k=15."
+
+hidden_evaluator_world:
+  source_world: three_city_c2_v2
+  starting_poll: 50.0
+  net_news_per_case: 8
+  high_response: 1.0
+  buffered_response: 0.25
+  case_noise_sd: 3.25
+  reference_cases_per_city: 6
+  target_cases: 15
+  reference_residuals_mean_balanced: true
+  context_cue_reliability_for_privileged_oracle_only: 0.80
+
+design:
+  episodes: 120
+  seed_offset: 80000
+  target_prefixes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  figure_1_sparse_anchor: 2
+  convergence_anchor: 15
+  prompt_arms:
+    - blind
+    - hint
+    - strong_hint
+  context_conditions:
+    - none
+    - orthogonal
+    - cue_high
+    - cue_low
+  context_paraphrase_families: 3
+  tasks_per_model_arm: 7200
+  calls_per_model: 21600
+  total_calls_three_models: 64800
+
+execution:
+  mode: local_login_node
+  concurrent_model_arm_shards: 9
+  slurm: false
+  run_directory: "data/three_city_c2_v8/full_k1_15"
+
+model_prompt:
+  disclose_equation: false
+  disclose_response_values: false
+  disclose_noise_sd: false
+  disclose_prior_probability: false
+  disclose_context_reliability: false
+  ask_one_forecast_only: true
+  state_cases_are_independent: true
+  state_each_case_starts_at_50: true
+  same_output_contract_across_arms: true
+  same_token_budget_across_arms: true
+
+main_structure_curve:
+  condition: none
+  first_reported_prefix: 1
+  last_reported_prefix: 15
+  report_every_step: true
+  target_only_label: "Use City C only"
+  world_model_label: "Combine A/B/C (matched)"
+  world_model_method: "continuous empirical-Bayes shrinkage using the displayed A/B slope mean, slope variance, and residual variance"
+  matching_rule: "A/B reference weight decreases with k and approaches zero, so this estimator converges to City C only"
+
+context_panel:
+  paired_same_numeric_episode: true
+  cue_high_and_low_crossed_with_true_type: true
+  orthogonal_control: true
+  key_outcomes:
+    - early_relevant_context_movement
+    - orthogonal_context_specificity
+    - cue_direction
+    - misleading_context_override_by_k15
+
+analysis:
+  primary_k: 2
+  bootstrap_draws: 10000
+  bootstrap_unit: episode
+  report_models_separately: true
+  no_cross_model_population_claim: true
+  unparseable_received_completion_is_terminal: true

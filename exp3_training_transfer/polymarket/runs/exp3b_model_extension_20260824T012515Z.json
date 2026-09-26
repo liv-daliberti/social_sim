@@ -1,0 +1,342 @@
+{
+  "baseline_sha256": "88239a4656a0c5bcec12c1a70734cafadf4e258ae4ec29920a0f041aeca19ed4",
+  "dataset_manifest_sha256": "91ee617aff7e8629ed2d17fd7165d80c01e4c78384ef4520e9d184ef8618de6d",
+  "evaluator_sha256": "dd393a593c31a79bb36e2b9bc2a58b856901c33b066aa5e04253a7803b9381d6",
+  "frozen_parent_protocol": "exp3b_registered_v1",
+  "locked_evaluations": [
+    {
+      "adapter_spec": "42:30856247;43:30856248;44:30856249",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--dependency=afterok:30856247:30856248:30856249",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,TRAIN_ADAPTERS=42:30856247;43:30856248;44:30856249",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+      ],
+      "job_id": "30856250",
+      "model": "qwen3_8b"
+    },
+    {
+      "adapter_spec": "42:30856251;43:30856252;44:30856253",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--dependency=afterok:30856251:30856252:30856253",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,TRAIN_ADAPTERS=42:30856251;43:30856252;44:30856253",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+      ],
+      "job_id": "30856254",
+      "model": "llama3_1_8b"
+    }
+  ],
+  "locked_script_sha256": "093a702201f45592c065bad442b21b01d5aab4f2cdc7085ff4c3078334dc2ea9",
+  "preflight_sha256": "e3fdeb2a1cc9b391432efe06d96a73b1095446b9e135b2e6caaca64dbd415bdf",
+  "protocol_version": "exp3b_model_extension_v1",
+  "submissions": [
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=1-06:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42"
+      },
+      "job_id": "30856247",
+      "model": "qwen3_8b",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=1-06:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "43"
+      },
+      "job_id": "30856248",
+      "model": "qwen3_8b",
+      "seed": 43
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=1-06:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "44"
+      },
+      "job_id": "30856249",
+      "model": "qwen3_8b",
+      "seed": 44
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=1-06:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42"
+      },
+      "job_id": "30856251",
+      "model": "llama3_1_8b",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=1-06:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "43"
+      },
+      "job_id": "30856252",
+      "model": "llama3_1_8b",
+      "seed": 43
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=1-06:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "44"
+      },
+      "job_id": "30856253",
+      "model": "llama3_1_8b",
+      "seed": 44
+    }
+  ],
+  "submitted_at": "20260824T012515Z",
+  "synthetic_canary_audit_sha256": "282dda7e10ba285c8e73e88766cfb2a6bbce7d41e89dd94730dc6c9b7609fa14",
+  "train_script_sha256": "0e6d1edcd267d2f8ed9dc7e41384cf3d0cb1bfcc4baa5d45a12bc4923bf6ca57",
+  "trainer_sha256": "21245577ada407f3a5210230e066eb88fe3660974ee9cec071254726ac006a79",
+  "runtime_recovery": {
+    "registered_at": "20260824T012515Z",
+    "reason": "all six Launchpad actor children failed to unpickle because the extension launcher omitted the shared mechanism-family directory from PYTHONPATH",
+    "failure_marker": "ModuleNotFoundError: No module named 'output_contract'",
+    "scientific_configuration": "identical",
+    "operational_change_only": {
+      "pythonpath_addition": "exp3_training_transfer/mechanism_family",
+      "fail_fast_output_contract_import": true
+    },
+    "source_ledger": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z_walltime30h_20260818T211828Z.json",
+    "source_ledger_sha256": "9ecd3e356725448ebc0ed27594a615aea48e70ed45a9fa8bad72a42edd4a8dca",
+    "cancelled_source_job_ids": [
+      "30730372",
+      "30730373",
+      "30730374",
+      "30730375",
+      "30730376",
+      "30730377",
+      "30730390",
+      "30730391"
+    ],
+    "training_replacements": {
+      "30730372": "30856247",
+      "30730373": "30856248",
+      "30730374": "30856249",
+      "30730375": "30856251",
+      "30730376": "30856252",
+      "30730377": "30856253"
+    },
+    "locked_evaluation_replacements": {
+      "30730390": "30856250",
+      "30730391": "30856254"
+    },
+    "cancelled_superseded_finalizers": [
+      "30788374"
+    ],
+    "replacement_current_finalizer": {
+      "job_id": "30856298",
+      "dependency_semantics": "afterany",
+      "scientific_job_count": 56
+    },
+    "scheduler_change_only": {
+      "training_jobs": [
+        "30856247",
+        "30856248",
+        "30856249",
+        "30856251",
+        "30856252",
+        "30856253"
+      ],
+      "evaluation_jobs": [
+        "30856250",
+        "30856254"
+      ],
+      "account": {
+        "from": "allcs",
+        "to": "mltheory"
+      },
+      "partition": {
+        "from": "cs",
+        "to": "all"
+      },
+      "qos": {
+        "from": "medium",
+        "to": "normal"
+      },
+      "training_memory": {
+        "from": "100G",
+        "to": "56G"
+      },
+      "memory_basis": "matches the superseded Polymarket allocations and retains at least 24.9% headroom over the campaign maximum observed batch RSS",
+      "priority": {
+        "before": 4197,
+        "after": 8076
+      },
+      "scientific_configuration_changed": false
+    },
+    "startup_verification": {
+      "verified_at": "2026-08-23T21:36:42-04:00",
+      "scheduler_state": {
+        "running_training_jobs": [
+          "30856247",
+          "30856248",
+          "30856249",
+          "30856251",
+          "30856252",
+          "30856253"
+        ],
+        "dependency_pending_locked_evaluations": [
+          "30856250",
+          "30856254"
+        ]
+      },
+      "all_six_logs_free_of_original_import_failure_and_traceback": true,
+      "definitive_end_to_end_health_job": "30856248",
+      "definitive_health_markers": [
+        "actor service methods bound",
+        "actor/learner process group initialized",
+        "ZeRO optimizer initialized",
+        "512-item step-0 development evaluation completed",
+        "training example emitted"
+      ]
+    },
+    "sustained_health_verification": {
+      "verified_at": "2026-08-23T21:45:04-04:00",
+      "requirement": "all six training jobs RUNNING with at least one completed optimizer update, fresh logs, and no fatal runtime markers",
+      "training_steps": {
+        "30856247": 1,
+        "30856248": 6,
+        "30856249": 2,
+        "30856251": 5,
+        "30856252": 5,
+        "30856253": 4
+      },
+      "qwen3_8b_steps_by_seed": {
+        "42": 1,
+        "43": 6,
+        "44": 2
+      },
+      "llama3_1_8b_steps_by_seed": {
+        "42": 5,
+        "43": 5,
+        "44": 4
+      },
+      "fatal_error_counts": {
+        "30856247": 0,
+        "30856248": 0,
+        "30856249": 0,
+        "30856251": 0,
+        "30856252": 0,
+        "30856253": 0
+      },
+      "locked_evaluation_dependencies": {
+        "30856250": [
+          "30856247",
+          "30856248",
+          "30856249"
+        ],
+        "30856254": [
+          "30856251",
+          "30856252",
+          "30856253"
+        ]
+      },
+      "current_finalizer_job_id": "30856298",
+      "default_monitor_resolves_to_this_ledger": true,
+      "status": "healthy_and_progressing"
+    }
+  }
+}

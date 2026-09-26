@@ -1,0 +1,91 @@
+You are designing a preregistered forecasting instrument that distinguishes causal
+composition from semantic sign classification. Return exactly three mechanism-
+reversal families for the binary market below as one JSON object.
+
+MARKET QUESTION:
+{question}
+
+RESOLUTION CRITERIA:
+{resolution_criteria}
+
+CANONICAL INITIAL EVENT MODEL:
+{initial_event_model}
+
+If the development-stage input explicitly says that no canonical event model is
+available, infer a concise model from the question and resolution rules and return
+that same model in all three families.
+
+For each family, create one observational evidence item E and three hypothetical
+causal bridges. E must be byte-identical across the bridges. The positive bridge
+must make E increase P(YES); the negative bridge must reverse one decisive bridge
+clause so the same E decreases P(YES); the broken bridge must sever that link so E
+has no material effect. Each directional chain must contain at least two signed
+causal edges between E and market resolution.
+
+Use three substantively distinct actor/mechanism families. Give their evidence
+surface valences in this exact order: {surface_valences}. Surface valence describes
+the tone of E, not its effect on this market. Keep E to 20--45 words, 2--3 short
+wire-style sentences, and make it plausible as a synthetic development. Do not use any
+of these words in E: YES, NO, more likely, less likely, odds, probability,
+forecast, on-track, setback, boost, hurt, win, lose, approve, reject. Do not state
+or paraphrase the resolution outcome in E.
+
+Before emitting JSON, mechanically scan every evidence `headline` and `text`
+case-insensitively. If any forbidden word or phrase above appears as a whole word,
+rewrite that evidence field and scan again. In particular, neutral evidence must
+not use the word `no`; use factual language such as `without`, `absent`, or a
+positive description of the observed state. This restriction applies to evidence
+only, not to bridge text, labels, chain nodes, or the supplied market definition.
+
+The positive and negative bridge texts must share an exact prefix and exact suffix,
+differ only in one short decisive clause, and be complete readable paragraphs when
+concatenated. The broken bridge may be different. Do not use a direct outcome claim
+as the decisive clause. Each directional bridge must be 20--40 words, each
+decisive clause 3--12 words, and the broken bridge 15--28 words. Write for a
+general adult with no subject-matter expertise. Every bridge must have at most
+two sentences, each at most 24 words. Do not use semicolons, technical framework
+names, or all-caps abbreviations. Write the concept in plain words instead. Keep
+private rationales out of evidence and bridge text.
+
+Output only valid JSON, with no markdown, in this exact shape:
+{
+  "families": [
+    {
+      "family_slug": "lowercase_unique_slug",
+      "initial_event_model": {
+        "key_actors": ["at least two concise strings"],
+        "key_mechanisms": ["at least two concise strings"],
+        "latent_variables": ["at least one concise string"]
+      },
+      "evidence": {
+        "headline": "10--15 words",
+        "text": "20--100 words total with headline",
+        "surface_valence": "positive|negative|neutral"
+      },
+      "bridge_frame": {"prefix": "...", "suffix": "..."},
+      "contexts": {
+        "positive": {
+          "bridge_text": "prefix + positive decisive clause + suffix",
+          "decisive_clause": "positive decisive clause only",
+          "intended_label": "increase_yes",
+          "chain_nodes": ["E", "M1", "M2", "YES resolution"],
+          "chain_edges": ["+", "+", "+"]
+        },
+        "negative": {
+          "bridge_text": "same prefix + reversed decisive clause + same suffix",
+          "decisive_clause": "negative decisive clause only",
+          "intended_label": "decrease_yes",
+          "chain_nodes": ["E", "M1", "M2", "YES resolution"],
+          "chain_edges": ["+", "+", "-"]
+        },
+        "broken": {
+          "bridge_text": "bridge explicitly severing the decisive link",
+          "intended_label": "no_material_effect",
+          "chain_nodes": ["E", "excluded input", "YES resolution"],
+          "chain_edges": ["0", "0"]
+        }
+      },
+      "private_rationale": "why the same E changes sign only through the bridge"
+    }
+  ]
+}

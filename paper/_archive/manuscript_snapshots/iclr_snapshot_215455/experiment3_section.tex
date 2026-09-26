@@ -1,0 +1,93 @@
+\subsection{Experiment 3: Domain and Structural Transfer in Coin City}
+\label{sec:exp3}
+
+Experiment~3 extends Coin City from in-context inference to transfer after
+training. Table~\ref{tab:exp3-training-policies} (Appendix~\ref{app:exp3-coin-structural})
+defines the four training policies; Figure~\ref{fig:exp3-transfer-grid} shows the
+four evaluation cells:
+policies train only on Coin City/Structure~A, then face a domain shift, a
+mechanism shift, and both together. Equations, parameters, mediator names, and
+structure labels are withheld, while complete reference systems and a qualitative
+description provide indirect pathway evidence
+(Appendix~\ref{app:exp3-coin-structural}).
+
+The registered endpoint is round 300 with greedy and five-draw stochastic
+decoding over three models. The Qwen3-4B subset is complete under both
+decoding regimes: all nine trained runs and the untrained endpoint share the same
+1,440-task evaluation. The Qwen3-8B and Llama-3.1-8B confirmatory grids were
+incomplete at the analysis freeze, so the cross-model endpoint is unavailable.
+
+\input{fig_exp3_results_grid}
+
+\textbf{Episode-specific reward improves the hardest transfer forecast.}
+Under five-draw stochastic decoding, joint new-domain/new-structure MAE is $6.15$
+for the untrained base, $6.76$ for structureless training, $4.81$ for
+population-prior training, and $4.49$ for causal training. The paired
+prior-minus-causal difference is $.319$ $[.134,.489]$
+(Figure~\ref{fig:exp3-transfer-results}). Causal training has the lowest point
+estimate in all four cells, and all four intervals exclude zero. Draws are
+averaged within task before the seed-first bootstrap. Every trained forecast
+parses; the base parse rate is 99.97\%.
+
+Greedy decoding agrees directionally. Its joint-cell MAEs are $6.09$, $6.69$,
+$4.77$, and $4.59$, respectively, with a prior-minus-causal difference of $.174$
+$[.039,.316]$. Causal training again has the lowest point estimate in all four
+cells; the interval excludes zero for the in-distribution and joint-transfer
+cells, but not for the domain-only or structure-only cells. The complete greedy
+grid appears in Appendix~\ref{app:exp3-coin-qwen4b}.
+
+\textbf{The error gain does not establish recovery of the unseen dynamics.}
+In the joint cell, correct, absent, and misleading hints yield stochastic
+causal MAE of $4.49$, $4.64$, and $4.81$, so qualitative-hint separation remains
+small. The greedy values are $4.59$, $4.68$, and $4.86$. A nearest-pathway
+response-shape diagnostic identifies Structure~B for none of the stochastic
+causal draws and only $.025$ of greedy causal forecasts, compared with $.873$ and
+$.817$ for the corresponding, less accurate base forecasts. Thus,
+episode-aligned reward improves intervention forecasts, including under joint
+transfer, but the result remains compatible with conservative response shrinkage
+rather than reconstruction of the persistent mediator.
+
+A separate completed Qwen3-4B study evaluates four held-out blocks spanning unseen
+topologies, nonlinearities, mixed mechanism compositions, and parameter
+extrapolation (Appendix~\ref{app:exp3-expanded-structural-ood}). Causal training
+performs better under repeated sampling but not greedy decoding, and mechanism
+classification remains near chance. We report this broader structural-transfer
+test in the appendix and center Coin City because it directly extends
+Experiment~2.
+
+\subsection{Experiment 4: Transfer to Held-Out Historical Markets}
+\label{sec:exp4}
+
+Experiment~4 tests transfer on resolved events. Training, development, and sealed
+test sets share no event families or normalized question templates. The test
+contains 1,024 markets, and all 4,096 base and trained forecasts parse.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Historical-market training improves sealed-test
+accuracy.} The test contains 1,024 markets. Lower is better; negative differences
+favor the trained model.}
+\label{tab:exp4-endpoint-results}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3b_endpoint_results}}
+\end{minipage}
+\end{center}
+
+\textbf{Every training seed improves on the untrained model.}
+Mean Brier score falls from $.1316$ to $.1159$, a difference of $-.0157$
+$[-.0253,-.0067]$; log loss falls from $.5114$ to $.3960$. Exact event or
+question-template repetition across splits cannot explain the gain.
+
+\textbf{The trained model approaches, but does not surpass, the market.}
+Training closes 88\% of the base-to-market Brier gap. Its difference from the
+contemporaneous market is $.0022$ $[-.0026,.0072]$ and from train-only logistic
+recalibration is $.0036$ $[-.0013,.0087]$. Both intervals include zero.
+
+\textbf{Training changes directional consistency more than selectivity.}
+On fixed initial forecasts, training raises directional consistency by $.0101$
+$[.0004,.0207]$. The sensitivity difference, with interval $[-.07,.48]$, is
+unresolved. The historical study shows accuracy transfer relative to the untrained
+checkpoint. It does not show performance beyond market prices or a general change
+in evidence selectivity.

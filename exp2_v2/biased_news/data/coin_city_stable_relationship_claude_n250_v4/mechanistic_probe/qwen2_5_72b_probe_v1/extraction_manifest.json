@@ -1,0 +1,180 @@
+{
+  "behavior_sha256": null,
+  "behavior_summary": {
+    "status": "skipped"
+  },
+  "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+  "completed_at": "2026-08-24T19:29:45.934949+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "cuda": {
+    "device_count": 7,
+    "devices": [
+      {
+        "index": 0,
+        "max_memory_allocated_bytes": 21333564928,
+        "name": "NVIDIA RTX A5000"
+      },
+      {
+        "index": 1,
+        "max_memory_allocated_bytes": 21363634176,
+        "name": "NVIDIA RTX A5000"
+      },
+      {
+        "index": 2,
+        "max_memory_allocated_bytes": 21363634176,
+        "name": "NVIDIA RTX A5000"
+      },
+      {
+        "index": 3,
+        "max_memory_allocated_bytes": 21363634176,
+        "name": "NVIDIA RTX A5000"
+      },
+      {
+        "index": 4,
+        "max_memory_allocated_bytes": 21363634176,
+        "name": "NVIDIA RTX A5000"
+      },
+      {
+        "index": 5,
+        "max_memory_allocated_bytes": 21363634176,
+        "name": "NVIDIA RTX A5000"
+      },
+      {
+        "index": 6,
+        "max_memory_allocated_bytes": 20400087552,
+        "name": "NVIDIA RTX A5000"
+      }
+    ]
+  },
+  "decode_seed": 20260824,
+  "device_map_request": "balanced",
+  "feature_summary": {
+    "elapsed_seconds": 717.7068765163422,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      384,
+      81,
+      8192
+    ],
+    "hidden_size": 8192,
+    "layer_count_including_embedding": 81,
+    "mean_control_shape": [
+      384,
+      2,
+      8192
+    ],
+    "record_count": 384,
+    "token_count_max": 735,
+    "token_count_median": 666.5,
+    "token_count_min": 603,
+    "transformer_layer_count": 80
+  },
+  "features_sha256": "0c9a87ffe32bb12296b2028817c489ed52cf9e348c98133f4826fcb3d4374d88",
+  "gpu_memory_gib": 21,
+  "model": "Qwen/Qwen2.5-72B-Instruct",
+  "model_commit": "495f39366efef23836d0cfae4fbe635880d2be31",
+  "model_label": "Qwen2.5-72B-Instruct",
+  "parameter_count": 72706203648,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {
+    "lm_head": "6",
+    "model.embed_tokens": "0",
+    "model.layers.0": "0",
+    "model.layers.1": "0",
+    "model.layers.10": "1",
+    "model.layers.11": "1",
+    "model.layers.12": "1",
+    "model.layers.13": "1",
+    "model.layers.14": "1",
+    "model.layers.15": "1",
+    "model.layers.16": "1",
+    "model.layers.17": "1",
+    "model.layers.18": "1",
+    "model.layers.19": "1",
+    "model.layers.2": "0",
+    "model.layers.20": "1",
+    "model.layers.21": "1",
+    "model.layers.22": "2",
+    "model.layers.23": "2",
+    "model.layers.24": "2",
+    "model.layers.25": "2",
+    "model.layers.26": "2",
+    "model.layers.27": "2",
+    "model.layers.28": "2",
+    "model.layers.29": "2",
+    "model.layers.3": "0",
+    "model.layers.30": "2",
+    "model.layers.31": "2",
+    "model.layers.32": "2",
+    "model.layers.33": "2",
+    "model.layers.34": "3",
+    "model.layers.35": "3",
+    "model.layers.36": "3",
+    "model.layers.37": "3",
+    "model.layers.38": "3",
+    "model.layers.39": "3",
+    "model.layers.4": "0",
+    "model.layers.40": "3",
+    "model.layers.41": "3",
+    "model.layers.42": "3",
+    "model.layers.43": "3",
+    "model.layers.44": "3",
+    "model.layers.45": "3",
+    "model.layers.46": "4",
+    "model.layers.47": "4",
+    "model.layers.48": "4",
+    "model.layers.49": "4",
+    "model.layers.5": "0",
+    "model.layers.50": "4",
+    "model.layers.51": "4",
+    "model.layers.52": "4",
+    "model.layers.53": "4",
+    "model.layers.54": "4",
+    "model.layers.55": "4",
+    "model.layers.56": "4",
+    "model.layers.57": "4",
+    "model.layers.58": "5",
+    "model.layers.59": "5",
+    "model.layers.6": "0",
+    "model.layers.60": "5",
+    "model.layers.61": "5",
+    "model.layers.62": "5",
+    "model.layers.63": "5",
+    "model.layers.64": "5",
+    "model.layers.65": "5",
+    "model.layers.66": "5",
+    "model.layers.67": "5",
+    "model.layers.68": "5",
+    "model.layers.69": "5",
+    "model.layers.7": "0",
+    "model.layers.70": "6",
+    "model.layers.71": "6",
+    "model.layers.72": "6",
+    "model.layers.73": "6",
+    "model.layers.74": "6",
+    "model.layers.75": "6",
+    "model.layers.76": "6",
+    "model.layers.77": "6",
+    "model.layers.78": "6",
+    "model.layers.79": "6",
+    "model.layers.8": "0",
+    "model.layers.9": "0",
+    "model.norm": "6",
+    "model.rotary_emb": "6"
+  },
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "python": "3.10.20",
+    "safetensors": "0.8.0",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "complete",
+  "study": "qwen2_5_72b_probe_v1",
+  "task_manifest_sha256": "4b73ac0e9634d144feead8a35668f4ddd85c6c6ac8ab0207ef2d17f01d4c4ecb",
+  "tasks_sha256": "2e0f65d6801b96616fb53b764470960a96b4c08c73483006ca626477de30ccb8"
+}

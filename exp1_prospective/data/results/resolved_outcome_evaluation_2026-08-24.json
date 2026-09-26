@@ -1,0 +1,5854 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-25T18:05:18.689525+00:00",
+  "design": {
+    "roster": "data/selected_markets/diverse_2026-06-09.jsonl",
+    "roster_sha256": "2d0a3bc223b4ef112bda672a10c27fd3d7d5df26571b6d69b78626ca13dd4458",
+    "outcome_snapshot": "data/results/resolved_market_snapshot_2026-08-24.json",
+    "outcome_snapshot_sha256": "0e029b3e41645934fd019387ebb8a29579b84df06d3dd9f4311678b1870b54db",
+    "outcome_snapshot_queried_at": "2026-08-24T21:23:31.569333+00:00",
+    "outcome_rule": "closed=true and exact terminal YES/NO prices [1,0] or [0,1]",
+    "forecast_estimand": "Median of parseable repeated initial YES forecasts per agent-market, matching the maintained Experiment 1 viewer.",
+    "market_benchmark": "YES probability stored in the frozen June 9 selection record.",
+    "classification_rule": "Predict YES iff probability > 0.5.",
+    "proper_scores": "Mean Brier score and natural-log loss; lower is better."
+  },
+  "bootstrap": {
+    "unit": "market",
+    "repetitions": 20000,
+    "seed": 20260824,
+    "rng": "numpy.random.Generator(PCG64)",
+    "interval": "percentile 95% (2.5th, 97.5th percentiles)",
+    "contrast": "paired model-minus-market difference"
+  },
+  "outcomes": {
+    "n_roster": 100,
+    "n_strict_terminal": 60,
+    "n_yes": 21,
+    "n_no": 39,
+    "n_closed_nonterminal": 1,
+    "closed_nonterminal_market_ids": [
+      "540843"
+    ],
+    "n_not_strict_terminal": 40
+  },
+  "per_market": [
+    {
+      "market_id": "599305",
+      "task_id": "pm_599305",
+      "question": "Will Abdul El-Sayed win the 2026 Michigan Democratic Primary?",
+      "outcome": 1,
+      "market_yes_probability": 0.675,
+      "end_time": "2026-08-04T00:00:00Z",
+      "closed_time": "2026-08-05 17:16:20+00"
+    },
+    {
+      "market_id": "675610",
+      "task_id": "pm_675610",
+      "question": "Will Waymo operate in 11 cities on June 30 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.225,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-04 03:13:49+00"
+    },
+    {
+      "market_id": "676845",
+      "task_id": "pm_676845",
+      "question": "Will Sam Altman get OpenAI equity by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.14,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:48:35+00"
+    },
+    {
+      "market_id": "701702",
+      "task_id": "pm_701702",
+      "question": "Labour leadership election scheduled by June 30?",
+      "outcome": 1,
+      "market_yes_probability": 0.3,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-29 01:22:34+00"
+    },
+    {
+      "market_id": "787549",
+      "task_id": "pm_787549",
+      "question": "Will Matt Little be the Democratic nominee for MN-02?",
+      "outcome": 1,
+      "market_yes_probability": 0.61,
+      "end_time": "2026-08-11T00:00:00Z",
+      "closed_time": "2026-08-12 05:30:39+00"
+    },
+    {
+      "market_id": "907993",
+      "task_id": "pm_907993",
+      "question": "Will Mike Lindell win the 2026 Minnesota Governor Republican primary election?",
+      "outcome": 0,
+      "market_yes_probability": 0.16,
+      "end_time": "2026-08-11T00:00:00Z",
+      "closed_time": "2026-08-13 08:12:15+00"
+    },
+    {
+      "market_id": "957019",
+      "task_id": "pm_957019",
+      "question": "US-Iran nuclear deal by June 30?",
+      "outcome": 1,
+      "market_yes_probability": 0.195,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-15 04:49:27+00"
+    },
+    {
+      "market_id": "960320",
+      "task_id": "pm_960320",
+      "question": "Will Brent Hennrich advance to the general election for WA-03?",
+      "outcome": 0,
+      "market_yes_probability": 0.113,
+      "end_time": "2026-08-04T00:00:00Z",
+      "closed_time": "2026-08-05 05:52:27+00"
+    },
+    {
+      "market_id": "994858",
+      "task_id": "pm_994858",
+      "question": "Sudan civil war ceasefire by June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.215,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-07 01:08:58+00"
+    },
+    {
+      "market_id": "1057402",
+      "task_id": "pm_1057402",
+      "question": "Thailand strikes Cambodia by June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.1135,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:07:10+00"
+    },
+    {
+      "market_id": "1121887",
+      "task_id": "pm_1121887",
+      "question": "Israel strike on Yemen by June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.265,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 14:32:50+00"
+    },
+    {
+      "market_id": "1125374",
+      "task_id": "pm_1125374",
+      "question": "Will S&P 500 (SPX) hit $7,700 (HIGH) in June?",
+      "outcome": 0,
+      "market_yes_probability": 0.1545,
+      "end_time": "2026-06-30T20:00:00Z",
+      "closed_time": "2026-06-30 22:56:35+00"
+    },
+    {
+      "market_id": "1280208",
+      "task_id": "pm_1280208",
+      "question": "Israeli parliament dissolved by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.32,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:03:55+00"
+    },
+    {
+      "market_id": "1397260",
+      "task_id": "pm_1397260",
+      "question": "Will Russia capture Kostyantynivka by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.2,
+      "end_time": "2026-06-30T12:00:00Z",
+      "closed_time": "2026-07-01 06:08:40+00"
+    },
+    {
+      "market_id": "1494696",
+      "task_id": "pm_1494696",
+      "question": "Will a team from LPL (China) win MSI 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.265,
+      "end_time": "2026-07-12T00:00:00Z",
+      "closed_time": "2026-07-12 13:55:29+00"
+    },
+    {
+      "market_id": "1710036",
+      "task_id": "pm_1710036",
+      "question": "SCOTUS bars counting mail ballots after election day?",
+      "outcome": 0,
+      "market_yes_probability": 0.79,
+      "end_time": "2026-08-01T00:00:00Z",
+      "closed_time": "2026-06-29 23:47:53+00"
+    },
+    {
+      "market_id": "1731345",
+      "task_id": "pm_1731345",
+      "question": "Iran agrees to surrender enriched uranium stockpile by June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.105,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 11:58:35+00"
+    },
+    {
+      "market_id": "1831351",
+      "task_id": "pm_1831351",
+      "question": "Will any AI model reach 1510 Overall Arena Score by September 30, 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.81,
+      "end_time": "2026-09-30T00:00:00Z",
+      "closed_time": "2026-07-27 21:05:13+00"
+    },
+    {
+      "market_id": "1897399",
+      "task_id": "pm_1897399",
+      "question": "Will IR Iran win on 2026-06-26?",
+      "outcome": 0,
+      "market_yes_probability": 0.265,
+      "end_time": "2026-06-27T03:00:00Z",
+      "closed_time": "2026-06-27 05:21:25+00"
+    },
+    {
+      "market_id": "1911805",
+      "task_id": "pm_1911805",
+      "question": "Will Donald Trump attend NATO Summit?",
+      "outcome": 1,
+      "market_yes_probability": 0.85,
+      "end_time": "2026-07-08T00:00:00Z",
+      "closed_time": "2026-07-09 05:48:11+00"
+    },
+    {
+      "market_id": "1961522",
+      "task_id": "pm_1961522",
+      "question": "Will no qualifying diplomatic US-Iran meeting occur by June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.6285,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-21 14:02:17+00"
+    },
+    {
+      "market_id": "1986647",
+      "task_id": "pm_1986647",
+      "question": "Tamas Sulyok out as President of Hungary by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.11,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:50:34+00"
+    },
+    {
+      "market_id": "1999469",
+      "task_id": "pm_1999469",
+      "question": "Will the Workers' Party nominate Lula for President of Brazil by August 15?",
+      "outcome": 1,
+      "market_yes_probability": 0.83,
+      "end_time": "2026-08-15T06:00:00Z",
+      "closed_time": "2026-08-16 06:00:03+00"
+    },
+    {
+      "market_id": "2009765",
+      "task_id": "pm_2009765",
+      "question": "Will China GDP growth in Q2 2026 be between 4.6% and 4.9%?",
+      "outcome": 0,
+      "market_yes_probability": 0.845,
+      "end_time": "2026-07-16T00:00:00Z",
+      "closed_time": "2026-07-16 11:28:59+00"
+    },
+    {
+      "market_id": "2053595",
+      "task_id": "pm_2053595",
+      "question": "Will Russia enter Orikhiv by July 31?",
+      "outcome": 0,
+      "market_yes_probability": 0.135,
+      "end_time": "2026-07-31T00:00:00Z",
+      "closed_time": "2026-08-01 06:05:48+00"
+    },
+    {
+      "market_id": "2070756",
+      "task_id": "pm_2070756",
+      "question": "Will Iran advance to the knockout stages at the 2026 FIFA World Cup?",
+      "outcome": 0,
+      "market_yes_probability": 0.621,
+      "end_time": "2026-06-28T00:00:00Z",
+      "closed_time": "2026-06-28 06:08:07+00"
+    },
+    {
+      "market_id": "2099161",
+      "task_id": "pm_2099161",
+      "question": "Steve Bannon exonerated by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.28,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-02 13:57:56+00"
+    },
+    {
+      "market_id": "2108617",
+      "task_id": "pm_2108617",
+      "question": "Will Eisenkot join the Bennett-Lapid alliance by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.105,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-04 04:04:07+00"
+    },
+    {
+      "market_id": "2110241",
+      "task_id": "pm_2110241",
+      "question": "Netanyahu drops out of Israel election by July 31?",
+      "outcome": 0,
+      "market_yes_probability": 0.105,
+      "end_time": "2026-07-31T00:00:00Z",
+      "closed_time": "2026-08-01 06:04:59+00"
+    },
+    {
+      "market_id": "2110294",
+      "task_id": "pm_2110294",
+      "question": "Will a new Gemini flagship be released by June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.894,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:02:10+00"
+    },
+    {
+      "market_id": "2110507",
+      "task_id": "pm_2110507",
+      "question": "Will OpenAI release a new frontier model on or before June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.87,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:54:19+00"
+    },
+    {
+      "market_id": "2118270",
+      "task_id": "pm_2118270",
+      "question": "Will the Bank of Brazil make no change to the target for the Selic rate at the August meeting?",
+      "outcome": 0,
+      "market_yes_probability": 0.7995,
+      "end_time": "2026-08-04T00:00:00Z",
+      "closed_time": "2026-08-06 02:54:11+00"
+    },
+    {
+      "market_id": "2155023",
+      "task_id": "pm_2155023",
+      "question": "Will Donald Trump announce that the United States blockade of the Strait of Hormuz has been lifted by June 30, 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.375,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-15 00:24:00+00"
+    },
+    {
+      "market_id": "2176262",
+      "task_id": "pm_2176262",
+      "question": "Strait of Hormuz traffic returns to normal by July 31?",
+      "outcome": 0,
+      "market_yes_probability": 0.295,
+      "end_time": "2026-07-31T00:00:00Z",
+      "closed_time": "2026-08-04 18:19:27+00"
+    },
+    {
+      "market_id": "2241674",
+      "task_id": "pm_2241674",
+      "question": "Israel closes its airspace by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.275,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 17:01:05+00"
+    },
+    {
+      "market_id": "2268861",
+      "task_id": "pm_2268861",
+      "question": "Will GPT-5.6 be released between June 8 and June 14, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.25,
+      "end_time": "2026-06-28T00:00:00Z",
+      "closed_time": "2026-06-16 05:44:27+00"
+    },
+    {
+      "market_id": "2270167",
+      "task_id": "pm_2270167",
+      "question": "Will Apple be the second-largest company in the world by market cap on June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.275,
+      "end_time": "2026-06-30T16:00:00Z",
+      "closed_time": "2026-06-30 22:01:38+00"
+    },
+    {
+      "market_id": "2270338",
+      "task_id": "pm_2270338",
+      "question": "US x Iran permanent peace deal by July 31, 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.32,
+      "end_time": "2026-07-31T00:00:00Z",
+      "closed_time": "2026-06-18 00:32:35+00"
+    },
+    {
+      "market_id": "2270613",
+      "task_id": "pm_2270613",
+      "question": "U.S. anti-cartel operation outside of the U.S. by June 30? ",
+      "outcome": 1,
+      "market_yes_probability": 0.255,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-13 04:27:27+00"
+    },
+    {
+      "market_id": "2298007",
+      "task_id": "pm_2298007",
+      "question": "Will the U.S. lift direct Iran OFAC sanctions by June 30, 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.23,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-22 16:10:49+00"
+    },
+    {
+      "market_id": "2298739",
+      "task_id": "pm_2298739",
+      "question": "Will Anthropic’s valuation hit (HIGH) $1.1T by June 30?",
+      "outcome": 1,
+      "market_yes_probability": 0.33,
+      "end_time": "2026-07-01T12:00:00Z",
+      "closed_time": "2026-07-01 19:04:11+00"
+    },
+    {
+      "market_id": "2321468",
+      "task_id": "pm_2321468",
+      "question": "Will Trump agree to unfreeze Iranian assets by June 30?",
+      "outcome": 1,
+      "market_yes_probability": 0.265,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-18 00:03:47+00"
+    },
+    {
+      "market_id": "2333708",
+      "task_id": "pm_2333708",
+      "question": "Will Qatar send warships through the Strait of Hormuz by June 30, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.165,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:04:40+00"
+    },
+    {
+      "market_id": "2333713",
+      "task_id": "pm_2333713",
+      "question": "Will Trump restart Project Freedom by June 30?",
+      "outcome": 1,
+      "market_yes_probability": 0.125,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-14 00:31:28+00"
+    },
+    {
+      "market_id": "2333782",
+      "task_id": "pm_2333782",
+      "question": "Israel withdraws from Lebanon by July 31, 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.115,
+      "end_time": "2026-07-31T00:00:00Z",
+      "closed_time": "2026-08-01 06:13:23+00"
+    },
+    {
+      "market_id": "2350499",
+      "task_id": "pm_2350499",
+      "question": "Will Robinhood Markets, Inc. (HOOD) hit (HIGH) $100 in June?",
+      "outcome": 1,
+      "market_yes_probability": 0.265,
+      "end_time": "2026-07-01T03:59:59.999Z",
+      "closed_time": "2026-06-15 14:24:00+00"
+    },
+    {
+      "market_id": "2354984",
+      "task_id": "pm_2354984",
+      "question": " Iran agrees to end enrichment of uranium by July 31?",
+      "outcome": 0,
+      "market_yes_probability": 0.22,
+      "end_time": "2026-07-31T00:00:00Z",
+      "closed_time": "2026-08-01 06:14:53+00"
+    },
+    {
+      "market_id": "2363609",
+      "task_id": "pm_2363609",
+      "question": "Trump orders federal review of AI model releases by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.375,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-04 00:31:05+00"
+    },
+    {
+      "market_id": "2363674",
+      "task_id": "pm_2363674",
+      "question": "Will there be 4 or more ChatGPT outages in June 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.71,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 22:36:49+00"
+    },
+    {
+      "market_id": "2363817",
+      "task_id": "pm_2363817",
+      "question": "Will Trump meet with Volodymyr Zelenskyy in June 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.695,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-16 12:41:58+00"
+    },
+    {
+      "market_id": "2363862",
+      "task_id": "pm_2363862",
+      "question": "Will Donald Trump publicly insult Benjamin Netanyahu by June 30, 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.15,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-04 00:31:05+00"
+    },
+    {
+      "market_id": "2364009",
+      "task_id": "pm_2364009",
+      "question": "Will Anthropic have the best Math AI model at the end of June 2026?",
+      "outcome": 0,
+      "market_yes_probability": 0.465,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-30 18:14:19+00"
+    },
+    {
+      "market_id": "2364623",
+      "task_id": "pm_2364623",
+      "question": "Will USD reach 1.8M Iranian rials by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.725,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-02 04:37:37+00"
+    },
+    {
+      "market_id": "2365139",
+      "task_id": "pm_2365139",
+      "question": "Will J.D. Vance have a diplomatic meeting with Iran by June 30?",
+      "outcome": 1,
+      "market_yes_probability": 0.145,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-21 17:24:47+00"
+    },
+    {
+      "market_id": "2370154",
+      "task_id": "pm_2370154",
+      "question": "Iran agrees to unrestricted shipping through Hormuz by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.135,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:09:38+00"
+    },
+    {
+      "market_id": "2373456",
+      "task_id": "pm_2373456",
+      "question": "Will Ukraine re-enter Kamianske by June 30?",
+      "outcome": 0,
+      "market_yes_probability": 0.155,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-07-01 06:36:37+00"
+    },
+    {
+      "market_id": "2381051",
+      "task_id": "pm_2381051",
+      "question": "Will Durable Goods Orders MoM be between 0% and 2% in May?",
+      "outcome": 0,
+      "market_yes_probability": 0.105,
+      "end_time": "2026-06-25T06:00:00Z",
+      "closed_time": "2026-06-25 15:02:07+00"
+    },
+    {
+      "market_id": "2423576",
+      "task_id": "pm_2423576",
+      "question": "Will WTI Crude Oil (WTI) hit (LOW) $75 in June?",
+      "outcome": 1,
+      "market_yes_probability": 0.205,
+      "end_time": "2026-07-01T03:59:59.999Z",
+      "closed_time": "2026-06-17 09:31:05+00"
+    },
+    {
+      "market_id": "2431402",
+      "task_id": "pm_2431402",
+      "question": "Will SpaceX have 14+ launches in June 2026?",
+      "outcome": 1,
+      "market_yes_probability": 0.575,
+      "end_time": "2026-06-30T00:00:00Z",
+      "closed_time": "2026-06-29 07:23:35+00"
+    },
+    {
+      "market_id": "2462936",
+      "task_id": "pm_2462936",
+      "question": "President Trump to Attend USA Opening Match?",
+      "outcome": 0,
+      "market_yes_probability": 0.475,
+      "end_time": "2026-07-12T03:59:00Z",
+      "closed_time": "2026-06-13 07:38:42+00"
+    }
+  ],
+  "per_model": {
+    "qwen2.5:7b": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 38,
+        "model_rate": 0.6333333333333333,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": -0.016666666666666666,
+          "ci_low": -0.15,
+          "ci_high": 0.1
+        }
+      },
+      "disagreements": {
+        "same_side": 45,
+        "model_only_correct": 7,
+        "market_only_correct": 8,
+        "both_wrong": 14
+      },
+      "brier": {
+        "model": 0.22979166666666667,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": -0.016442266666666646,
+          "ci_low": -0.07544402999999998,
+          "ci_high": 0.041081141354166614
+        }
+      },
+      "log_loss": {
+        "model": 0.6511448594829362,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": -0.048987633475405135,
+          "ci_low": -0.19456273531450294,
+          "ci_high": 0.08974554886868764
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-10T15:29:59.245593+00:00",
+      "forecast_time_max": "2026-06-10T17:02:24.071644+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_qwen2.5-7b_2026-06-10.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.225,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.3,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.79,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.105,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.81,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.6285,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.845,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.48,
+          "market_yes_probability": 0.621,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.28,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.48,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.894,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.58,
+          "market_yes_probability": 0.87,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.275,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.33,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.375,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.695,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.15,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.465,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.57,
+          "market_yes_probability": 0.725,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.48,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.575,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.475,
+          "model_correct": false,
+          "market_correct": true
+        }
+      ]
+    },
+    "qwen2.5:72b": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 32,
+        "model_rate": 0.5333333333333333,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": -0.11666666666666667,
+          "ci_low": -0.21666666666666667,
+          "ci_high": -0.016666666666666666
+        }
+      },
+      "disagreements": {
+        "same_side": 49,
+        "model_only_correct": 2,
+        "market_only_correct": 9,
+        "both_wrong": 19
+      },
+      "brier": {
+        "model": 0.26491666666666663,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": 0.018682733333333344,
+          "ci_low": -0.031249393541666653,
+          "ci_high": 0.06605204895833326
+        }
+      },
+      "log_loss": {
+        "model": 0.7279768403353608,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": 0.027844347377019484,
+          "ci_low": -0.09736446323288393,
+          "ci_high": 0.1440144190117192
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-11T19:04:08.898486+00:00",
+      "forecast_time_max": "2026-06-15T02:46:06.835053+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_qwen2.5-72b_2026-06-11.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.225,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.32,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.81,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.6285,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.845,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.621,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.28,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.894,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.87,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.275,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.375,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.695,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.15,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.465,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.725,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.575,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.475,
+          "model_correct": true,
+          "market_correct": true
+        }
+      ]
+    },
+    "qwen2.5:32b": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 32,
+        "model_rate": 0.5333333333333333,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": -0.11666666666666667,
+          "ci_low": -0.23333333333333334,
+          "ci_high": 0.0
+        }
+      },
+      "disagreements": {
+        "same_side": 47,
+        "model_only_correct": 3,
+        "market_only_correct": 10,
+        "both_wrong": 18
+      },
+      "brier": {
+        "model": 0.2638466666666667,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": 0.017612733333333346,
+          "ci_low": -0.043887695729166655,
+          "ci_high": 0.07810197510416668
+        }
+      },
+      "log_loss": {
+        "model": 0.7279659398350271,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": 0.027833446876685836,
+          "ci_low": -0.12597831539869064,
+          "ci_high": 0.1778318823746069
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-11T18:53:52.037978+00:00",
+      "forecast_time_max": "2026-06-13T04:28:44.852104+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_qwen2.5-32b_2026-06-11.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.225,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.105,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.81,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.58,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.6285,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.845,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.621,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.28,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.894,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.87,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.275,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.9,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.695,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.15,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.465,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.725,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.575,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.475,
+          "model_correct": true,
+          "market_correct": true
+        }
+      ]
+    },
+    "qwen2.5:14b": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 37,
+        "model_rate": 0.6166666666666667,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": -0.03333333333333333,
+          "ci_low": -0.13333333333333333,
+          "ci_high": 0.06666666666666667
+        }
+      },
+      "disagreements": {
+        "same_side": 50,
+        "model_only_correct": 4,
+        "market_only_correct": 6,
+        "both_wrong": 17
+      },
+      "brier": {
+        "model": 0.27708333333333335,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": 0.030849400000000013,
+          "ci_low": -0.03132859822916664,
+          "ci_high": 0.09206530104166669
+        }
+      },
+      "log_loss": {
+        "model": 0.8267072009209234,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": 0.1265747079625822,
+          "ci_low": -0.049170242006654395,
+          "ci_high": 0.3083696201129402
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-11T18:19:23.813434+00:00",
+      "forecast_time_max": "2026-06-11T22:57:01.611096+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_qwen2.5-14b_2026-06-11.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.225,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.32,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.81,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.6285,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.845,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.621,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.28,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.894,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.87,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.95,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.695,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.15,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.465,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.725,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.575,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.475,
+          "model_correct": true,
+          "market_correct": true
+        }
+      ]
+    },
+    "llama3.3:70b": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 30,
+        "model_rate": 0.5,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": -0.15,
+          "ci_low": -0.26666666666666666,
+          "ci_high": -0.03333333333333333
+        }
+      },
+      "disagreements": {
+        "same_side": 47,
+        "model_only_correct": 2,
+        "market_only_correct": 11,
+        "both_wrong": 19
+      },
+      "brier": {
+        "model": 0.26614333333333334,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": 0.019909400000000015,
+          "ci_low": -0.037645161979166654,
+          "ci_high": 0.07750104937499999
+        }
+      },
+      "log_loss": {
+        "model": 0.73228755340185,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": 0.03215506044350877,
+          "ci_low": -0.1126304029253741,
+          "ci_high": 0.17724902946017254
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-15T01:50:52.042076+00:00",
+      "forecast_time_max": "2026-06-16T23:08:13.475099+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_llama3.3-70b_2026-06-17.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.58,
+          "market_yes_probability": 0.675,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.9,
+          "market_yes_probability": 0.225,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.1545,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.105,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.81,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.27,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.6285,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.11,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.62,
+          "market_yes_probability": 0.845,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.621,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.28,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.894,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.87,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.375,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.64,
+          "market_yes_probability": 0.275,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.22,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.695,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.15,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.465,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.725,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.575,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.475,
+          "model_correct": true,
+          "market_correct": true
+        }
+      ]
+    },
+    "llama3.1:8b": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 31,
+        "model_rate": 0.5166666666666667,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": -0.13333333333333333,
+          "ci_low": -0.26666666666666666,
+          "ci_high": 0.0
+        }
+      },
+      "disagreements": {
+        "same_side": 42,
+        "model_only_correct": 5,
+        "market_only_correct": 13,
+        "both_wrong": 16
+      },
+      "brier": {
+        "model": 0.26636166666666666,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": 0.020127733333333352,
+          "ci_low": -0.046950877604166656,
+          "ci_high": 0.08478957333333331
+        }
+      },
+      "log_loss": {
+        "model": 0.7408655708798917,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": 0.04073307792155048,
+          "ci_low": -0.12696045686042,
+          "ci_high": 0.20156604279515114
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-10T17:05:01.547516+00:00",
+      "forecast_time_max": "2026-06-10T18:41:54.853997+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_llama3.1-8b_2026-06-10.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.225,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.79,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.81,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.6285,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.11,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.845,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.621,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.9,
+          "market_yes_probability": 0.28,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.105,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.894,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.87,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.64,
+          "market_yes_probability": 0.275,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.695,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.15,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.465,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.725,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.08,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.575,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.475,
+          "model_correct": false,
+          "market_correct": true
+        }
+      ]
+    },
+    "llama3.1:70b": {
+      "n": 59,
+      "accuracy": {
+        "model_correct": 33,
+        "model_rate": 0.559322033898305,
+        "market_correct": 38,
+        "market_rate": 0.6440677966101694,
+        "difference_model_minus_market": {
+          "estimate": -0.0847457627118644,
+          "ci_low": -0.23728813559322035,
+          "ci_high": 0.06779661016949153
+        }
+      },
+      "disagreements": {
+        "same_side": 38,
+        "model_only_correct": 8,
+        "market_only_correct": 13,
+        "both_wrong": 13
+      },
+      "brier": {
+        "model": 0.25778347457627127,
+        "market": 0.24934806779661015,
+        "difference_model_minus_market": {
+          "estimate": 0.008435406779661042,
+          "ci_low": -0.05779222319915253,
+          "ci_high": 0.07538509427966096
+        }
+      },
+      "log_loss": {
+        "model": 0.7115023301613347,
+        "market": 0.7071231780516729,
+        "difference_model_minus_market": {
+          "estimate": 0.004379152109661943,
+          "ci_low": -0.15506813262319627,
+          "ci_high": 0.1639534277241743
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 1,
+      "missing_market_ids": [
+        "2268861"
+      ],
+      "forecast_time_min": "2026-06-15T01:09:10.355683+00:00",
+      "forecast_time_max": "2026-06-15T10:57:52.327087+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_llama3.1-70b_2026-06-16.jsonl",
+        "data/initial_forecasts/forecasts_llama3.1-70b_2026-06-15.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.225,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.14,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.195,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.36,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.2,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.105,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.81,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.6285,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.845,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.621,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.28,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.105,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.894,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.87,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.375,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.47500000000000003,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.275,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.32,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.695,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.15,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.465,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.725,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.22,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.105,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.575,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.475,
+          "model_correct": true,
+          "market_correct": true
+        }
+      ]
+    },
+    "gpt-5.4": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 40,
+        "model_rate": 0.6666666666666666,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": 0.016666666666666666,
+          "ci_low": -0.08333333333333333,
+          "ci_high": 0.11666666666666667
+        }
+      },
+      "disagreements": {
+        "same_side": 49,
+        "model_only_correct": 6,
+        "market_only_correct": 5,
+        "both_wrong": 15
+      },
+      "brier": {
+        "model": 0.22525416666666667,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": -0.020979766666666667,
+          "ci_low": -0.07367412302083332,
+          "ci_high": 0.02979108302083334
+        }
+      },
+      "log_loss": {
+        "model": 0.6628440875352378,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": -0.037288405423103535,
+          "ci_low": -0.17812025229983575,
+          "ci_high": 0.10326576846030254
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-10T16:06:41.581709+00:00",
+      "forecast_time_max": "2026-06-11T22:43:52.756924+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_gpt-5.4_2026-06-11.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.43,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.74,
+          "market_yes_probability": 0.225,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.16,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.24,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.66,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.22,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.28,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.09,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.09,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.125,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.38,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.24,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.36,
+          "market_yes_probability": 0.32,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.21,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.43,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.62,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.19,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.94,
+          "market_yes_probability": 0.81,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.28,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.84,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.6285,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.28,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.79,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.845,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.19,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.47,
+          "market_yes_probability": 0.621,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.62,
+          "market_yes_probability": 0.28,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.31,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.61,
+          "market_yes_probability": 0.894,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.32,
+          "market_yes_probability": 0.87,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.62,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.72,
+          "market_yes_probability": 0.375,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.18,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.24,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.39,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.14,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.24,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.15500000000000003,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.31,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.18,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.41,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.18,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.58,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.44,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.76,
+          "market_yes_probability": 0.695,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.56,
+          "market_yes_probability": 0.15,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.34,
+          "market_yes_probability": 0.465,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.62,
+          "market_yes_probability": 0.725,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.09,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.16,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.18,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.41,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.27,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.61,
+          "market_yes_probability": 0.575,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.08,
+          "market_yes_probability": 0.475,
+          "model_correct": true,
+          "market_correct": true
+        }
+      ]
+    },
+    "claude-opus-4-8": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 41,
+        "model_rate": 0.6833333333333333,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": 0.03333333333333333,
+          "ci_low": -0.05,
+          "ci_high": 0.11666666666666667
+        }
+      },
+      "disagreements": {
+        "same_side": 52,
+        "model_only_correct": 5,
+        "market_only_correct": 3,
+        "both_wrong": 16
+      },
+      "brier": {
+        "model": 0.24234958333333337,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": -0.0038843499999999987,
+          "ci_low": -0.06316400156249996,
+          "ci_high": 0.05381160770833327
+        }
+      },
+      "log_loss": {
+        "model": 0.7380178275557235,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": 0.037885334597382324,
+          "ci_low": -0.12914098841716673,
+          "ci_high": 0.21033715044941068
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-10T03:15:00.540770+00:00",
+      "forecast_time_max": "2026-06-10T12:41:36.755621+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_claude-opus-4-8_2026-06-10.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.485,
+          "market_yes_probability": 0.225,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.07,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.16,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.32,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.07500000000000001,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.52,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.75,
+          "market_yes_probability": 0.81,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.27,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.95,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.6285,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.97,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.845,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.62,
+          "market_yes_probability": 0.621,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.27,
+          "market_yes_probability": 0.28,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.18,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.03,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.894,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.87,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.7995,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.42,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.22,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.06,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.965,
+          "market_yes_probability": 0.255,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.07,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.06,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.08,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.07,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.33999999999999997,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.375,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.695,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.92,
+          "market_yes_probability": 0.15,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.18,
+          "market_yes_probability": 0.465,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.38,
+          "market_yes_probability": 0.725,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.13,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.575,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.475,
+          "model_correct": false,
+          "market_correct": true
+        }
+      ]
+    },
+    "DeepSeek-V4-Pro": {
+      "n": 60,
+      "accuracy": {
+        "model_correct": 40,
+        "model_rate": 0.6666666666666666,
+        "market_correct": 39,
+        "market_rate": 0.65,
+        "difference_model_minus_market": {
+          "estimate": 0.016666666666666666,
+          "ci_low": -0.08333333333333333,
+          "ci_high": 0.11666666666666667
+        }
+      },
+      "disagreements": {
+        "same_side": 51,
+        "model_only_correct": 5,
+        "market_only_correct": 4,
+        "both_wrong": 16
+      },
+      "brier": {
+        "model": 0.2570558333333334,
+        "market": 0.24623393333333338,
+        "difference_model_minus_market": {
+          "estimate": 0.01082190000000002,
+          "ci_low": -0.05006482166666665,
+          "ci_high": 0.06945308697916666
+        }
+      },
+      "log_loss": {
+        "model": 0.7928069993182392,
+        "market": 0.7001324929583412,
+        "difference_model_minus_market": {
+          "estimate": 0.09267450635989789,
+          "ci_low": -0.09328044496790781,
+          "ci_high": 0.2822977041936118
+        }
+      },
+      "n_strict_outcomes_available": 60,
+      "n_missing_forecasts": 0,
+      "missing_market_ids": [],
+      "forecast_time_min": "2026-06-10T03:17:26.863938+00:00",
+      "forecast_time_max": "2026-06-10T16:04:33.540864+00:00",
+      "source_files": [
+        "data/initial_forecasts/forecasts_DeepSeek-V4-Pro_2026-06-10.jsonl"
+      ],
+      "per_market": [
+        {
+          "market_id": "599305",
+          "outcome": 1,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.675,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "675610",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.225,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "676845",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.14,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "701702",
+          "outcome": 1,
+          "model_yes_probability": 0.08,
+          "market_yes_probability": 0.3,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "787549",
+          "outcome": 1,
+          "model_yes_probability": 0.7,
+          "market_yes_probability": 0.61,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "907993",
+          "outcome": 0,
+          "model_yes_probability": 0.18,
+          "market_yes_probability": 0.16,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "957019",
+          "outcome": 1,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.195,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "960320",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.113,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "994858",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.215,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1057402",
+          "outcome": 0,
+          "model_yes_probability": 0.01,
+          "market_yes_probability": 0.1135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1121887",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1125374",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.1545,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1280208",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.32,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1397260",
+          "outcome": 0,
+          "model_yes_probability": 0.065,
+          "market_yes_probability": 0.2,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1494696",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1710036",
+          "outcome": 0,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.79,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1731345",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1831351",
+          "outcome": 1,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.81,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1897399",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.265,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1911805",
+          "outcome": 1,
+          "model_yes_probability": 0.93,
+          "market_yes_probability": 0.85,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1961522",
+          "outcome": 0,
+          "model_yes_probability": 0.8,
+          "market_yes_probability": 0.6285,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "1986647",
+          "outcome": 0,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.11,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "1999469",
+          "outcome": 1,
+          "model_yes_probability": 0.85,
+          "market_yes_probability": 0.83,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2009765",
+          "outcome": 0,
+          "model_yes_probability": 0.6,
+          "market_yes_probability": 0.845,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2053595",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2070756",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.621,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2099161",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.28,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2108617",
+          "outcome": 0,
+          "model_yes_probability": 0.35,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110241",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2110294",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.894,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2110507",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.87,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2118270",
+          "outcome": 0,
+          "model_yes_probability": 0.5,
+          "market_yes_probability": 0.7995,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2155023",
+          "outcome": 1,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.375,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2176262",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.295,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2241674",
+          "outcome": 0,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2268861",
+          "outcome": 0,
+          "model_yes_probability": 0.2,
+          "market_yes_probability": 0.25,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270167",
+          "outcome": 0,
+          "model_yes_probability": 0.4,
+          "market_yes_probability": 0.275,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2270338",
+          "outcome": 1,
+          "model_yes_probability": 0.08,
+          "market_yes_probability": 0.32,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2270613",
+          "outcome": 1,
+          "model_yes_probability": 0.07500000000000001,
+          "market_yes_probability": 0.255,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298007",
+          "outcome": 1,
+          "model_yes_probability": 0.03,
+          "market_yes_probability": 0.23,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2298739",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.33,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2321468",
+          "outcome": 1,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333708",
+          "outcome": 0,
+          "model_yes_probability": 0.02,
+          "market_yes_probability": 0.165,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2333713",
+          "outcome": 1,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.125,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2333782",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.115,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2350499",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.265,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2354984",
+          "outcome": 0,
+          "model_yes_probability": 0.02,
+          "market_yes_probability": 0.22,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363609",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.375,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363674",
+          "outcome": 1,
+          "model_yes_probability": 0.25,
+          "market_yes_probability": 0.71,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363817",
+          "outcome": 1,
+          "model_yes_probability": 0.55,
+          "market_yes_probability": 0.695,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2363862",
+          "outcome": 1,
+          "model_yes_probability": 0.95,
+          "market_yes_probability": 0.15,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2364009",
+          "outcome": 0,
+          "model_yes_probability": 0.12,
+          "market_yes_probability": 0.465,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2364623",
+          "outcome": 0,
+          "model_yes_probability": 0.3,
+          "market_yes_probability": 0.725,
+          "model_correct": true,
+          "market_correct": false
+        },
+        {
+          "market_id": "2365139",
+          "outcome": 1,
+          "model_yes_probability": 0.03,
+          "market_yes_probability": 0.145,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2370154",
+          "outcome": 0,
+          "model_yes_probability": 0.1,
+          "market_yes_probability": 0.135,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2373456",
+          "outcome": 0,
+          "model_yes_probability": 0.05,
+          "market_yes_probability": 0.155,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2381051",
+          "outcome": 0,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.105,
+          "model_correct": true,
+          "market_correct": true
+        },
+        {
+          "market_id": "2423576",
+          "outcome": 1,
+          "model_yes_probability": 0.15,
+          "market_yes_probability": 0.205,
+          "model_correct": false,
+          "market_correct": false
+        },
+        {
+          "market_id": "2431402",
+          "outcome": 1,
+          "model_yes_probability": 0.45,
+          "market_yes_probability": 0.575,
+          "model_correct": false,
+          "market_correct": true
+        },
+        {
+          "market_id": "2462936",
+          "outcome": 0,
+          "model_yes_probability": 0.65,
+          "market_yes_probability": 0.475,
+          "model_correct": false,
+          "market_correct": true
+        }
+      ]
+    }
+  }
+}

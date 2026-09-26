@@ -1,0 +1,68 @@
+{
+  "behavior_sha256": "9ea24f5f2e0245d6016b12e82b831ca353937900148e862734a345d4e4f3cfad",
+  "behavior_summary": {
+    "elapsed_seconds": 412.86788177490234,
+    "max_new_tokens": 160,
+    "parsed_count": 517,
+    "record_count": 528
+  },
+  "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+  "completed_at": "2026-08-26T02:30:18.069466+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "cuda": {
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "max_memory_allocated_bytes": 16759103488,
+        "name": "NVIDIA RTX A6000"
+      }
+    ]
+  },
+  "decode_seed": 20260824,
+  "device_map_request": "none",
+  "feature_summary": {
+    "elapsed_seconds": 212.57026505470276,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      1488,
+      33,
+      4096
+    ],
+    "hidden_size": 4096,
+    "layer_count_including_embedding": 33,
+    "mean_control_shape": [
+      1488,
+      2,
+      4096
+    ],
+    "record_count": 1488,
+    "token_count_max": 681,
+    "token_count_median": 628.0,
+    "token_count_min": 575,
+    "transformer_layer_count": 32
+  },
+  "features_sha256": "fe6c4f7a69e68805c4249b43f1ecb21be1d3abe27900f841cbed2fff3ea14d27",
+  "gpu_memory_gib": null,
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "model_label": "Llama-3.1-8B-Instruct",
+  "parameter_count": 8030261248,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {},
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "python": "3.10.20",
+    "safetensors": "0.8.0",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "complete",
+  "study": "llama3_1_8b_symbol_probe_v2",
+  "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+  "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01"
+}

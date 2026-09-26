@@ -1,0 +1,72 @@
+{
+  "config": {
+    "decode": {
+      "chat_template_mode": "auto",
+      "guided_backend": "outlines:no-fallback",
+      "guided_regex": "\\{\"direction\": \"(?:increase|decrease|unchanged|unclear)\"\\}",
+      "max_tokens": 128,
+      "n": 1,
+      "per_request_seed": "SHA256(canonical JSON [base_seed, trial_id, stage, condition]) first 64 bits modulo 2**31-1",
+      "seed": 20260921,
+      "temperature": 0.7,
+      "top_p": 1.0
+    },
+    "engine": {
+      "batch_size": 32,
+      "disable_custom_all_reduce": true,
+      "dtype": "bfloat16",
+      "enable_prefix_caching": true,
+      "enforce_eager": true,
+      "gpu_memory_utilization": 0.9,
+      "guided_decoding_backend": "outlines:no-fallback",
+      "max_model_len": 4096,
+      "tensor_parallel_size": 4,
+      "vllm_use_v1": false
+    },
+    "helper_sha256": {
+      "direction_design.py": "c2b6a50809c886b4cd33a919be17727c341a2270a0492a8e34f53f5b68dafeae",
+      "run_local.py": "d76d65f94e34939a62898821fdd5a27db34abebe8ff20f8dd877da85eb7e0ec8"
+    },
+    "input_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/robustness_development_v2/direction_plan.jsonl",
+    "input_sha256": "cda62f5b8c6bc7cf91abd5d4c6eee8e471c93abf9154320f96fe83c66a07edd0",
+    "local_model": {
+      "metadata_sha256": {
+        "config.json": "fa6e9124e4621df77aecf96fbfaf7975814013d2d5ab1c972e965000588a9749",
+        "generation_config.json": "ececd938ce5442fbe86264ad158056f14df3501f3eabf89a12fc8ae8a82a21f1",
+        "model.safetensors.index.json": "2abe0910e23770a30ccf9b1b91804c64831c47f9c98defaa5293aa999433fc2b",
+        "special_tokens_map.json": "6f38c73729248f6c127296386e3cdde96e254636cc58b4169d3fd32328d9a8ec",
+        "tokenizer.json": "79e3e522635f3171300913bb421464a87de6222182a0570b9b2ccba2a964b2b4",
+        "tokenizer_config.json": "177c7b61e616fecb84c17ce0591acb92c6c4d60e9ac5ababfb940ff23bbcd424"
+      },
+      "model_type": "llama",
+      "path": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-70B-Instruct/snapshots/1605565b47bb9346c5515c34102e054115b4f98b",
+      "snapshot_revision": "1605565b47bb9346c5515c34102e054115b4f98b",
+      "weight_bytes": 141107497872,
+      "weight_shards": 30
+    },
+    "model_key": "llama3_1_70b_instruct",
+    "parent_plan_sha256": "0b72680063c482e3f3f786c4783073094af4d65b11e153f496dfec188e520992",
+    "protocol": "exp1_context_reversal_direction_companion_v1",
+    "runner_sha256": "02906987144b193c8a4506df3aecfb8191bebe5ee33e5e26b6d2f186ebdea2cc",
+    "schema_version": "direction_companion_run_v1",
+    "software": {
+      "outlines": "0.1.11",
+      "python": "3.10.20",
+      "torch": "2.6.0",
+      "transformers": "4.51.3",
+      "vllm": "0.8.4"
+    },
+    "unit_count": 320
+  },
+  "contexts": {
+    "broken": 80,
+    "masked": 80,
+    "negative": 80,
+    "positive": 80
+  },
+  "existing_records": 0,
+  "expected_records": 960,
+  "families": 80,
+  "run_signature": "e74100e71a2853abccd28e0e5d998377d817b8c7a559063e08a8aadc7c111f40",
+  "status": "dry_run_valid"
+}

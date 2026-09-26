@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Review complete · Stage 3 evidence review{% endblock %}
+{% block content %}
+  <section class="card narrow-card completion-card">
+    <p class="completion-mark">✓</p>
+    <h1>All 18 items are saved</h1>
+    {% if reviewer.cohort == 'practice' %}
+      <p>Your practice responses remain in the separate <code>practice</code> cohort and are excluded from the registered validation data. You can revisit any item below to test editing or note changes you want made before outside reviewers begin.</p>
+    {% else %}
+      <p>Thank you. Your responses have been saved. You may revisit an item below if you need to correct an answer.</p>
+    {% endif %}
+    <ol class="reviewed-items">
+      {% for item_id in item_ids %}
+        <li><a href="{{ url_for('review_item', item_id=item_id) }}">Review item {{ loop.index }}</a></li>
+      {% endfor %}
+    </ol>
+  </section>
+{% endblock %}

@@ -1,0 +1,35 @@
+experiment:
+  id: three_city_c2_v12_noisier_structural_choice
+  version: 12
+  run_directory: data/three_city_c2_v12/full_k1_5_noisier_structural_choice
+  execution: local_login_node
+
+design:
+  episodes: 120
+  seed_offset: 93000
+  evidence_rounds: [1, 2, 3, 4, 5]
+  cumulative_city_c_cases: [1, 2, 4, 8, 16]
+  reference_cases_per_city: 8
+  task_count_per_arm: 600
+  total_calls_three_models: 5400
+
+continuous_dgp:
+  starting_poll: 50.0
+  news_value: 8
+  case_noise_sd_poll_points: 6.0
+  city_deviation_sd_response_units: 0.16
+  low_reference_profile_range: [0.10, 0.30]
+  high_reference_profile_range: [0.70, 0.90]
+  target_offset_from_nearer_endpoint_fraction: [0.08, 0.22]
+  episode_intercept_range: [0.20, 0.38]
+  episode_profile_slope_range: [1.55, 1.95]
+  discrete_city_types: false
+
+arms: [c_only, abc, abc_structural_clue]
+
+models: [claude-opus-4-8, DeepSeek-V4-Pro, gpt-5.4]
+
+generation:
+  temperature: 0
+  max_tokens: 512
+  max_attempts: 1

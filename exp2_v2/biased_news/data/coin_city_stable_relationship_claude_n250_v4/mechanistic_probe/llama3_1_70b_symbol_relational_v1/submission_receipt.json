@@ -1,0 +1,50 @@
+{
+  "commands": {
+    "extract_select": [
+      "sbatch",
+      "--parsable",
+      "--account=allcs",
+      "/n/fs/similarity/social_sim/exp2_v2/biased_news/mechanistic_probe/run_llama3_1_70b_symbol_relational_extract.sbatch"
+    ],
+    "finalize": [
+      "sbatch",
+      "--parsable",
+      "--account=allcs",
+      "--dependency=afterok:30927289",
+      "/n/fs/similarity/social_sim/exp2_v2/biased_news/mechanistic_probe/run_llama3_1_70b_symbol_relational_finalize.sbatch"
+    ],
+    "patch_k0": [
+      "sbatch",
+      "--parsable",
+      "--account=allcs",
+      "--dependency=afterok:30927282",
+      "--export=ALL,DEPTH=0",
+      "/n/fs/similarity/social_sim/exp2_v2/biased_news/mechanistic_probe/run_llama3_1_70b_symbol_relational_patch.sbatch"
+    ],
+    "patch_k4": [
+      "sbatch",
+      "--parsable",
+      "--account=allcs",
+      "--dependency=afterok:30927288",
+      "--export=ALL,DEPTH=4",
+      "/n/fs/similarity/social_sim/exp2_v2/biased_news/mechanistic_probe/run_llama3_1_70b_symbol_relational_patch.sbatch"
+    ]
+  },
+  "jobs": {
+    "extract_select": "30927282",
+    "finalize": "30927290",
+    "patch_k0": "30927288",
+    "patch_k4": "30927289"
+  },
+  "protocol_sha256": "cfaa54f24032281d5a105ca092014c91cc9c03b0544dad64f3a100090f26c803",
+  "scheduler_amendment": "allcs account used because the scheduler rejected the otherwise identical mltheory/A6000 request as unavailable",
+  "script_sha256": {
+    "extract_select": "4c41df7fe05299d4a7368f074a3930c2ccf937d1b6c1f6a1fabd76b7a36b7bec",
+    "finalize": "61d7ccbe2ff869726996da9ee837f0f09927466307cf2c6eb4dfcd4255ba37de",
+    "patch_k0": "60968091941ab909a088ee1c935e7492582b9147f74d991735adb07b262bf608",
+    "patch_k4": "60968091941ab909a088ee1c935e7492582b9147f74d991735adb07b262bf608"
+  },
+  "status": "submitted_after_protocol_freeze",
+  "study": "llama3_1_70b_symbol_relational_v1",
+  "submitted_at": "2026-08-27T22:23:45.177695+00:00"
+}

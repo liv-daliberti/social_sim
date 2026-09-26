@@ -1,0 +1,81 @@
+{
+  "canonical_changes_possible": false,
+  "canonical_paper_modified": false,
+  "config_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/robustness_development_v2/finish_pipeline/config.json",
+  "config_sha256": "d3efc28853c9e9368e4c7b5806968b32f79030456b1dc965a899b8f9ecd2ed94",
+  "error": "Independent audits failed: qwen2_5_72b_instruct, llama3_1_70b_instruct",
+  "events": [
+    {
+      "at": "2026-09-22T03:51:02.490656+00:00",
+      "state": "preflight"
+    },
+    {
+      "at": "2026-09-22T03:51:02.523196+00:00",
+      "state": "audit_qwen2_5_72b_instruct"
+    },
+    {
+      "at": "2026-09-22T03:53:10.889305+00:00",
+      "state": "audit_qwen2_5_72b_instruct"
+    },
+    {
+      "at": "2026-09-22T03:53:10.918635+00:00",
+      "state": "audit_llama3_1_70b_instruct"
+    },
+    {
+      "at": "2026-09-22T03:53:15.899734+00:00",
+      "state": "audit_llama3_1_70b_instruct"
+    },
+    {
+      "at": "2026-09-22T03:53:15.927217+00:00",
+      "state": "audit_qwen3_32b"
+    },
+    {
+      "at": "2026-09-22T03:53:26.098668+00:00",
+      "state": "audit_qwen3_32b"
+    },
+    {
+      "at": "2026-09-22T03:53:26.101957+00:00",
+      "state": "failed"
+    }
+  ],
+  "frontier_api_calls": 0,
+  "last_command": {
+    "arguments": [
+      "/n/fs/similarity/social_sim/.runtime/oat_conda/bin/python",
+      "-m",
+      "exp1_prospective.context_reversal.audit_robustness_results",
+      "--run-dir",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/robustness_development_v2",
+      "--model-key",
+      "qwen3_32b"
+    ],
+    "logs": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/robustness_development_v2/finish_pipeline/attempts/20260922T035102Z-81b9524f",
+    "returncode": 0
+  },
+  "readiness": {
+    "finalizer_complete": true,
+    "missing_models": [],
+    "models": {
+      "llama3_1_70b_instruct": {
+        "ready": true,
+        "reasons": [],
+        "summary_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/robustness_development_v2/llama3_1_70b_instruct/summary.json"
+      },
+      "qwen2_5_72b_instruct": {
+        "ready": true,
+        "reasons": [],
+        "summary_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/robustness_development_v2/qwen2_5_72b_instruct/summary.json"
+      },
+      "qwen3_32b": {
+        "ready": true,
+        "reasons": [],
+        "summary_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/robustness_development_v2/qwen3_32b/summary.json"
+      }
+    },
+    "ready": true
+  },
+  "schema_version": "robustness_finish_pipeline_status_v1",
+  "started_at": "2026-09-22T03:50:57.621663+00:00",
+  "state": "failed",
+  "updated_at": "2026-09-22T03:53:26.101943+00:00"
+}

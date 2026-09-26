@@ -1,0 +1,47 @@
+{
+  "arms": [
+    "abc_no_context",
+    "abc_context",
+    "abc_symbol_context"
+  ],
+  "chat_template": "tokenizer.apply_chat_template(enable_thinking=False)",
+  "completed_at": "2026-08-26T16:58:10.714386+00:00",
+  "control": "configuration-matched open-model arbitrary-symbol replication",
+  "counts": {
+    "abc_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1239
+    },
+    "abc_no_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1238
+    },
+    "abc_symbol_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1241
+    }
+  },
+  "decode_seed": 20260824,
+  "experiment": "coin_city_population_075_040_sd010_v1",
+  "gpu_memory_utilization": 0.9,
+  "max_model_len": 3072,
+  "max_tokens": 512,
+  "model": "Qwen/Qwen3-8B",
+  "model_label": "Qwen3-8B",
+  "model_license_family": "Apache-2.0_Qwen",
+  "order_seed": 20260804,
+  "parser": "eval/run_frozen_task_shard.py::_parse_reply",
+  "software": {
+    "python": "3.10.20",
+    "transformers": "4.51.3",
+    "vllm": "0.8.4"
+  },
+  "status": "complete",
+  "task_file_sha256": {
+    "abc_context": "42d23d43ae1f38d7b0844a8fee9dfee6308a0b939c80308f15f375fc817b9fdd",
+    "abc_no_context": "19a9c0573941a951c2a94a19c19a9b93fad3446ea9dc26f7e05b87d22d3f82e4",
+    "abc_symbol_context": "f33eade91b790962a0738b0616b71ac04ab880db5453540f3676ed3fad341e53"
+  },
+  "temperature": 0.0,
+  "tensor_parallel_size": 1
+}

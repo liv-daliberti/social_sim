@@ -1,0 +1,29 @@
+% Experiment 3 — why the probe is read at each world's first-response horizon h*.
+% GENERATED: paper/figures/exp3_probe_diagnostic.pdf is drawn from the world matrices themselves by
+% exp3_training_transfer/dag_family/plot_probe_diagnostic.py, so it cannot drift from the catalog.
+% Regenerate with:  python3 plot_probe_diagnostic.py
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figures/exp3_probe_diagnostic.pdf}
+\captionof{figure}{\textbf{Why the instrument is read at each world's first-response horizon $h^\star$, and what
+counts as success.}
+\emph{(a)} The Experiment-2 four-shock probe asks how the poll moves under each of four news
+shocks. Read one week ahead it is \emph{degenerate} in any world where news needs longer than a week
+to reach the poll: all four scenarios then share a single target, so the answers say nothing about
+the hidden gain $g$ and a constant reply is exactly optimal. Six of the twelve worlds are blind this
+way. Reading each world at its own $h^\star$ (the earliest week a news pulse moves the
+probed poll) restores a $g$-bearing slope in every world where $g$ sits on an input edge ($6/8$ training,
+$4/4$ held-out). The two hidden-$\phi$ worlds stay flat by construction: there $g$ is a persistence,
+so no input$\to$output response identifies it at any horizon.
+\emph{(b)} The consequence for the reward. A constant ``ignore the news'' reply collects $70\%$ of the
+oracle's reward under the one-step probe, making a non-inferential policy nearly
+optimal. It collects only $46\%$ under $h^\star$.
+\emph{(c)} References for the held-out worlds. The oracle is an upper bound. Because the
+prompt discloses the structure, the relevant baselines are the \emph{blind constants}: the best
+single response $\gamma$ chosen in hindsight per world ($5.57$) and the always-prior $\gamma{=}0.55$
+($5.69$). A forecaster that estimates $g$ must land left of them; one that has learned a good
+average response cannot.}
+\label{fig:exp3-probe}
+\end{minipage}
+\end{center}

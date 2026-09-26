@@ -24,7 +24,6 @@ from datetime import datetime, timezone
 from openai import OpenAI, APIError, APITimeoutError, RateLimitError
 
 from prompts import (
-    SYSTEM_PROMPT,
     TURN1_TEMPLATE,
     TURN2_TEMPLATE,
     TURN3_TEMPLATE,
@@ -315,7 +314,7 @@ def forecast_market(
         category           = rec.category or "unknown",
     )
     if verbose:
-        print(f"\n  [T1] Sending event-model prompt …")
+        print("\n  [T1] Sending event-model prompt …")
 
     r1 = _create(t1_content)
     t1_text = _extract_text(r1)
@@ -328,7 +327,7 @@ def forecast_market(
 
     # ── Turn 2: evidence gathering ─────────────────────────────────────────────
     if verbose:
-        print(f"  [T2] Researching …")
+        print("  [T2] Researching …")
     t2_content = TURN2_TEMPLATE.format(days_to_resolution=rec.days_to_resolution or 0)
     r2 = _create(t2_content)
     t2_text = _extract_text(r2)
@@ -337,7 +336,7 @@ def forecast_market(
 
     if _is_refusal(t2_text):
         if verbose:
-            print(f"     T2 refusal detected — using placeholder, keeping search context")
+            print("     T2 refusal detected — using placeholder, keeping search context")
         # Searches ran (via tool calls) even when text is blocked; the search
         # context is still in the Azure conversation via r2.id.  We keep prev_id
         # pointing at r2 so T3/Final can access those results, and store a
@@ -352,7 +351,7 @@ def forecast_market(
     # ── Turn 3 (optional): deepen ──────────────────────────────────────────────
     if do_third_turn:
         if verbose:
-            print(f"  [T3] Refining estimates …")
+            print("  [T3] Refining estimates …")
         r3 = _create(TURN3_TEMPLATE)
         t3_text = _extract_text(r3)
         t3_calls, t3_queries = _extract_tool_calls(r3)
@@ -360,7 +359,7 @@ def forecast_market(
 
         if _is_refusal(t3_text):
             if verbose:
-                print(f"     T3 refusal detected — using placeholder, keeping search context")
+                print("     T3 refusal detected — using placeholder, keeping search context")
             t3_text = _REFUSAL_PLACEHOLDER
         prev_id = r3.id
 

@@ -1,0 +1,68 @@
+experiment:
+  id: three_city_c2_v11_identifiable_structural_choice
+  version: 11
+  run_directory: data/three_city_c2_v11/full_k1_5_identifiable_structural_choice
+  execution: local_login_node_after_prompt_approval
+
+design:
+  episodes: 120
+  seed_offset: 91000
+  evidence_rounds: [1, 2, 3, 4, 5]
+  cumulative_city_c_cases: [1, 2, 4, 8, 16]
+  reference_cases_per_city: 8
+  task_count_per_arm: 600
+  calls_per_model: 1800
+  total_calls_three_models: 5400
+  numerical_dgp_identical_to_v9: false
+  balances_high_reference_and_nearer_reference_factorially: true
+
+arms:
+  - id: c_only
+    information: City C observations and City C profile score only
+    prompt_template_identical_to_v9: true
+  - id: abc
+    information: City A, B, and C observations and continuous profile scores
+    prompt_template_identical_to_v9: true
+  - id: abc_structural_clue
+    information: identical to abc
+    guidance: structural choice exists but the clue does not identify A or B
+
+structural_choice_clue:
+  reveals_closer_city: false
+  reveals_distances: false
+  reveals_outcome_information: false
+  text: >-
+    Structural clue: One of Cities A and B is a more relevant analogue for
+    City C than the other. The displayed regional-profile indices are
+    informative about which reference is more relevant, although the
+    resemblance is imperfect and City C may still respond differently.
+
+continuous_dgp:
+  starting_poll: 50.0
+  news_value: 8
+  case_noise_sd_poll_points: 4.0
+  city_deviation_sd_response_units: 0.12
+  low_reference_profile_range: [0.10, 0.30]
+  high_reference_profile_range: [0.70, 0.90]
+  target_offset_from_nearer_endpoint_fraction: [0.08, 0.22]
+  episode_intercept_range: [0.20, 0.38]
+  episode_profile_slope_range: [1.00, 1.40]
+  discrete_city_types: false
+
+validation_gates:
+  minimum_reference_profile_gap: 39.5
+  minimum_target_endpoint_choice_strength: 0.54
+  minimum_profile_response_nearest_agreement: 0.90
+  minimum_median_displayed_reference_separation_poll_points: 5.0
+  minimum_round1_observed_choice_accuracy: 0.65
+  minimum_round5_observed_choice_accuracy: 0.85
+
+models:
+  - claude-opus-4-8
+  - DeepSeek-V4-Pro
+  - gpt-5.4
+
+generation:
+  temperature: 0
+  max_tokens: 512
+  max_attempts: 1

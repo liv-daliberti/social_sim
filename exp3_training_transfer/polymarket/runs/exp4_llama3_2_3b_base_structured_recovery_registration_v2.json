@@ -1,0 +1,81 @@
+{
+  "acceptance": {
+    "complete_task_parse_coverage": 1.0,
+    "draw_parse_coverage": 1.0,
+    "draws_per_task": 5,
+    "raw_rows": 318,
+    "score_policy": "mean exactly five independently sampled schema-valid probabilities per task"
+  },
+  "classification": "disclosed_holdout_informed_syntax_recovery",
+  "holdout_manifest_sha256": "f210b7cc0d7c9ea099af06a46af8a6852250902697d2a84944f7d046dd3f4ec6",
+  "holdout_n": 318,
+  "holdout_tasks_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24",
+  "json_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "yes_prob": {
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "type": "number"
+      }
+    },
+    "required": [
+      "yes_prob"
+    ],
+    "type": "object"
+  },
+  "launcher": "exp3_training_transfer/polymarket/scripts/llama3_2_3b_base_structured_recovery.sbatch",
+  "launcher_sha256": "689a19b33fe70bac2f9b8331e66181191a58a4040bead3b410112286c68fdec6",
+  "locked_settings": {
+    "draws": 5,
+    "probability_parser": "unchanged",
+    "prompts": "byte-identical",
+    "sampling_seed": 20260824,
+    "task_order": "identical",
+    "temperature": 0.7,
+    "template": "auto",
+    "top_k": 20,
+    "top_p": 0.8
+  },
+  "model_checkpoint": "unsloth/Llama-3.2-3B-Instruct",
+  "model_key": "llama3_2_3b",
+  "model_revision": "006f5dcd1393c3add266de40994ba96225e9689d",
+  "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--unsloth--Llama-3.2-3B-Instruct/snapshots/006f5dcd1393c3add266de40994ba96225e9689d",
+  "paper_policy": "If the gate passes, plot and tabulate this base with an appendix disclosure that its syntax constraint differs from the unconstrained trained endpoints.",
+  "prior_job_id": "30911810",
+  "prior_raw": "exp3_training_transfer/polymarket/reports/exp4_llama3_2_3b_base_recovery_j30911810.jsonl",
+  "prior_raw_sha256": "3453d4817b2a08bc7eccbbf2d0f44bbc675e3e0c35756b70056970445d6b32b5",
+  "prior_result": {
+    "complete_task_parse_coverage": 0.0660377358490566,
+    "draw_parse_coverage": 0.5308176100628931,
+    "status": "incomplete"
+  },
+  "prior_summary": "exp3_training_transfer/polymarket/reports/exp4_llama3_2_3b_base_recovery_j30911810.summary.json",
+  "prior_summary_sha256": "ea5dec14dd374d68a96233a8ee460bee29aef9d67884fb01e4c1631d0a940080",
+  "protocol_version": "exp4_llama3_2_3b_base_structured_recovery_v2",
+  "reason": "The registered 1024-token recovery completed all generation calls but only 53.08% of draws parsed because the base often ignored the exact-JSON instruction. The user explicitly requested a real complete five-draw base endpoint.",
+  "recovery_evaluator": "exp3_training_transfer/polymarket/scripts/evaluate_llama3_2_3b_base_structured_recovery.py",
+  "recovery_evaluator_sha256": "6b8bee8040e4129f7971c871659dac000426ca3794741ef25e697568eb821a20",
+  "registered_at_utc": "2026-08-26T22:22:31Z",
+  "status": "registered_before_recovery_execution",
+  "syntax_recovery": {
+    "backend": "xgrammar",
+    "json_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "yes_prob": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "yes_prob"
+      ],
+      "type": "object"
+    },
+    "max_tokens": 64,
+    "semantic_constraint": "yes_prob must be a numeric value in [0,1]; no target, label, or market value is supplied by the constraint"
+  },
+  "trained_endpoints_rerun": false
+}

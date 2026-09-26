@@ -1,0 +1,4337 @@
+Rc files read (in order):
+  /etc/latexmkrc
+Latexmk: This is Latexmk, John Collins, 9 March 2026. Version 4.88.
+No existing .aux file, so I'll make a simple one, and require run of *latex.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'pdflatex' forced or previously required:
+    Reason or flag: 'Initial setup'
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -file-line-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(./iclr2027_conference.sty
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)))) (./fancyhdr.sty)
+(./natbib.sty)) (/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarybackgrounds.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryshapes.geometric.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshape
+s.geometric.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathmorphing.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
+e.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
+decorations.pathmorphing.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryfadings.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings.code
+.tex)) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/flafter.sty) (./wrapfig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./main.aux) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(./tables/exp3_rebuilt_data.tex) (./frontmatter.tex
+
+LaTeX Warning: Reference `app:carnival-coin-probe' on page 1 undefined on input
+ line 37.
+
+
+LaTeX Warning: Reference `app:carnival-coin-probe' on page 1 undefined on input
+ line 37.
+
+
+Package natbib Warning: Citation `tetlock2016superforecasting' on page 1 undefi
+ned on input line 47.
+
+
+Package natbib Warning: Citation `mellers2014psychological' on page 1 undefined
+ on input line 47.
+
+
+Package natbib Warning: Citation `lawrence2006judgmental' on page 1 undefined o
+n input line 47.
+
+
+Package natbib Warning: Citation `tenenbaum2006theory' on page 1 undefined on i
+nput line 52.
+
+
+Package natbib Warning: Citation `griffiths2010probabilistic' on page 1 undefin
+ed on input line 52.
+
+
+Package natbib Warning: Citation `tenenbaum2011mind' on page 1 undefined on inp
+ut line 52.
+
+
+Package natbib Warning: Citation `lake2017building' on page 1 undefined on inpu
+t line 52.
+
+
+LaTeX Warning: Reference `fig:world-knowledge-evidence' on page 1 undefined on 
+input line 53.
+
+
+Package natbib Warning: Citation `halawi2024approaching' on page 1 undefined on
+ input line 61.
+
+
+Package natbib Warning: Citation `schoenegger2024wisdom' on page 1 undefined on
+ input line 61.
+
+
+Package natbib Warning: Citation `li2023emergent' on page 1 undefined on input 
+line 63.
+
+
+Package natbib Warning: Citation `vafa2025foundation' on page 1 undefined on in
+put line 64.
+
+
+LaTeX Warning: Hyper reference `sec:exp1' on page 1 undefined on input line 76.
+
+
+
+LaTeX Warning: Hyper reference `sec:exp2' on page 1 undefined on input line 81.
+
+
+
+LaTeX Warning: Hyper reference `sec:exp3' on page 1 undefined on input line 85.
+
+
+
+LaTeX Warning: Hyper reference `sec:exp4' on page 1 undefined on input line 85.
+
+
+[1{/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map} <./figures
+//teaser_revised.pdf> <./icons/huggingface.png> <./icons/gh_logo.png>]
+
+LaTeX Warning: Hyper reference `sec:exp1' on page 2 undefined on input line 89.
+
+
+
+LaTeX Warning: Hyper reference `sec:exp2' on page 2 undefined on input line 93.
+
+
+
+LaTeX Warning: Hyper reference `sec:exp3' on page 2 undefined on input line 98.
+
+
+
+LaTeX Warning: Hyper reference `sec:exp4' on page 2 undefined on input line 101
+.
+
+) (./inductive_forecasting.tex
+
+Package natbib Warning: Citation `park2023generative' on page 2 undefined on in
+put line 50.
+
+
+Package natbib Warning: Citation `aher2023simulate' on page 2 undefined on inpu
+t line 50.
+
+
+Package natbib Warning: Citation `argyle2023out' on page 2 undefined on input l
+ine 50.
+
+
+Package natbib Warning: Citation `bisbee2024synthetic' on page 2 undefined on i
+nput line 50.
+
+) (./evidence_ladder.tex
+Underfull \vbox (badness 10000) has occurred while \output is active [2]
+
+Package natbib Warning: Citation `tetlock2005expert' on page 3 undefined on inp
+ut line 7.
+
+
+LaTeX Warning: Reference `fig:exp1-pipeline' on page 3 undefined on input line 
+24.
+
+
+LaTeX Warning: Reference `app:exp1' on page 3 undefined on input line 27.
+
+
+LaTeX Warning: Reference `app:exp1-threshold-robustness' on page 3 undefined on
+ input line 35.
+
+
+LaTeX Warning: Reference `app:exp1-threshold-robustness' on page 3 undefined on
+ input line 77.
+
+
+LaTeX Warning: Reference `app:exp1-threshold-robustness' on page 3 undefined on
+ input line 77.
+
+
+LaTeX Warning: Reference `app:exp1-context-reversal' on page 3 undefined on inp
+ut line 87.
+
+
+LaTeX Warning: Reference `fig:world-knowledge-evidence' on page 3 undefined on 
+input line 113.
+
+[3 <./figures//exp1_protocol_four_panels.pdf>]
+
+LaTeX Warning: Reference `fig:coin-city-prompt' on page 4 undefined on input li
+ne 130.
+
+
+LaTeX Warning: Reference `app:coin-city-results' on page 4 undefined on input l
+ine 133.
+
+
+LaTeX Warning: Reference `fig:coin-city-results' on page 4 undefined on input l
+ine 136.
+
+
+LaTeX Warning: Reference `app:coin-city-results' on page 4 undefined on input l
+ine 176.
+
+
+LaTeX Warning: Reference `app:coin-city-results' on page 4 undefined on input l
+ine 176.
+
+
+LaTeX Warning: Reference `app:coin-city-symbol-context' on page 4 undefined on 
+input line 191.
+
+
+LaTeX Warning: Reference `app:coin-city-robustness' on page 4 undefined on inpu
+t line 196.
+
+
+LaTeX Warning: Reference `fig:coin-city-symbol-decoding' on page 4 undefined on
+ input line 220.
+
+
+Underfull \vbox (badness 1270) has occurred while \output is active [4 <./figur
+es//exp1_direction_selective_updating.pdf> <./icons/claude.png> <./icons/openai
+.png> <./icons/deepseek.png> <./icons/qwen.pdf> <./icons/llamma.pdf>]
+
+LaTeX Warning: Reference `fig:coin-city-causal-patch' on page 5 undefined on in
+put line 223.
+
+
+LaTeX Warning: Reference `app:coin-city-causal-patch' on page 5 undefined on in
+put line 232.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [5 <./figu
+res//exp2_coin_city_prompt_arms.pdf> <./figures//exp2_coin_city_results.pdf> <.
+/icons/kimi.png> <./icons/gemini.png>]
+
+LaTeX Warning: Reference `tab:coin-city-causal-patch' on page 6 undefined on in
+put line 244.
+
+
+LaTeX Warning: Reference `tab:coin-city-causal-patch' on page 6 undefined on in
+put line 244.
+
+) (./transfer_and_grounding.tex
+
+LaTeX Warning: Reference `sec:evidence' on page 6 undefined on input line 5.
+
+(./tables/exp3_rebuilt_data.tex) (./fig_exp3_transfer_grid.tex
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1phv.fd))
+
+LaTeX Warning: Reference `fig:exp3-transfer-grid' on page 6 undefined on input 
+line 24.
+
+
+LaTeX Warning: Reference `app:exp3-complete-training-setup' on page 6 undefined
+ on input line 25.
+
+(./fig_exp3_results_grid.tex (./tables/exp3_coin_qwen3_8b_stochastic_data.tex)
+
+LaTeX Warning: Reference `sec:exp3' on page 6 undefined on input line 122.
+
+
+LaTeX Warning: Reference `sec:exp3' on page 6 undefined on input line 122.
+
+)
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 6 undefined on input lin
+e 47.
+
+[6 <./figures//exp2_symbol_decoding.pdf>]
+
+LaTeX Warning: Reference `app:exp3-structure-selection' on page 7 undefined on 
+input line 67.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [7 <./figu
+res//exp2_causal_patch.pdf>]
+
+LaTeX Warning: Reference `fig:exp4-llama-scale-results' on page 8 undefined on 
+input line 91.
+
+
+LaTeX Warning: Reference `fig:exp4-llama-scale-results' on page 8 undefined on 
+input line 91.
+
+
+LaTeX Warning: Reference `app:exp3b-protocol' on page 8 undefined on input line
+ 105.
+
+
+LaTeX Warning: Reference `fig:sealed-market-grounding' on page 8 undefined on i
+nput line 107.
+
+
+LaTeX Warning: Reference `fig:exp4-llama-scale-results' on page 8 undefined on 
+input line 114.
+
+) (./related_work.tex
+
+Package natbib Warning: Citation `tetlock2005expert' on page 8 undefined on inp
+ut line 7.
+
+
+Package natbib Warning: Citation `mellers2014psychological' on page 8 undefined
+ on input line 7.
+
+
+Package natbib Warning: Citation `tetlock2016superforecasting' on page 8 undefi
+ned on input line 7.
+
+
+Package natbib Warning: Citation `zou2022forecasting' on page 8 undefined on in
+put line 10.
+
+
+Package natbib Warning: Citation `karger2025forecastbench' on page 8 undefined 
+on input line 10.
+
+
+Package natbib Warning: Citation `halawi2024approaching' on page 8 undefined on
+ input line 10.
+
+
+Package natbib Warning: Citation `schoenegger2024wisdom' on page 8 undefined on
+ input line 10.
+
+
+Underfull \vbox (badness 4940) has occurred while \output is active [8 <./figur
+es//exp4_qwen_scale_results.pdf>]
+
+Package natbib Warning: Citation `garg2022what' on page 9 undefined on input li
+ne 17.
+
+
+Package natbib Warning: Citation `chan2022data' on page 9 undefined on input li
+ne 17.
+
+
+Package natbib Warning: Citation `webb2023emergent' on page 9 undefined on inpu
+t line 17.
+
+
+Package natbib Warning: Citation `yasunaga2024large' on page 9 undefined on inp
+ut line 17.
+
+
+Package natbib Warning: Citation `ha2018world' on page 9 undefined on input lin
+e 17.
+
+
+Package natbib Warning: Citation `lecun2022path' on page 9 undefined on input l
+ine 17.
+
+
+Package natbib Warning: Citation `li2023emergent' on page 9 undefined on input 
+line 17.
+
+
+Package natbib Warning: Citation `geirhos2020shortcut' on page 9 undefined on i
+nput line 20.
+
+
+Package natbib Warning: Citation `mitchell2023ai' on page 9 undefined on input 
+line 20.
+
+
+Package natbib Warning: Citation `vafa2025foundation' on page 9 undefined on in
+put line 20.
+
+
+Package natbib Warning: Citation `park2023generative' on page 9 undefined on in
+put line 26.
+
+
+Package natbib Warning: Citation `aher2023simulate' on page 9 undefined on inpu
+t line 26.
+
+
+Package natbib Warning: Citation `argyle2023out' on page 9 undefined on input l
+ine 26.
+
+
+Package natbib Warning: Citation `bisbee2024synthetic' on page 9 undefined on i
+nput line 28.
+
+) (./limitations.tex) (./conclusion.tex) (./submission_statements.tex
+Underfull \vbox (badness 10000) has occurred while \output is active [9])
+(./acknowledgements.tex) [10]
+No file main.bbl.
+(./appendix_guide.tex
+
+LaTeX Warning: Hyper reference `app:carnival-coin-probe' on page 11 undefined o
+n input line 35.
+
+
+LaTeX Warning: Reference `app:carnival-coin-probe' on page 11 undefined on inpu
+t line 35.
+
+
+LaTeX Warning: Reference `app:carnival-coin-probe' on page 11 undefined on inpu
+t line 35.
+
+
+LaTeX Warning: Hyper reference `app:carnival-coin-probe' on page 11 undefined o
+n input line 35.
+
+
+LaTeX Warning: Reference `app:carnival-coin-probe' on page 11 undefined on inpu
+t line 35.
+
+
+LaTeX Warning: Hyper reference `app:exp1' on page 11 undefined on input line 37
+.
+
+
+LaTeX Warning: Reference `app:exp1' on page 11 undefined on input line 37.
+
+
+LaTeX Warning: Reference `app:exp1' on page 11 undefined on input line 37.
+
+
+LaTeX Warning: Hyper reference `app:exp1' on page 11 undefined on input line 37
+.
+
+
+LaTeX Warning: Reference `app:exp1' on page 11 undefined on input line 37.
+
+
+LaTeX Warning: Hyper reference `app:exp1-sample' on page 11 undefined on input 
+line 38.
+
+
+LaTeX Warning: Reference `app:exp1-sample' on page 11 undefined on input line 3
+8.
+
+
+LaTeX Warning: Reference `app:exp1-sample' on page 11 undefined on input line 3
+8.
+
+
+LaTeX Warning: Hyper reference `app:exp1-sample' on page 11 undefined on input 
+line 38.
+
+
+LaTeX Warning: Reference `app:exp1-sample' on page 11 undefined on input line 3
+8.
+
+
+LaTeX Warning: Hyper reference `app:exp1-protocol' on page 11 undefined on inpu
+t line 39.
+
+
+LaTeX Warning: Reference `app:exp1-protocol' on page 11 undefined on input line
+ 39.
+
+
+LaTeX Warning: Reference `app:exp1-protocol' on page 11 undefined on input line
+ 39.
+
+
+LaTeX Warning: Hyper reference `app:exp1-protocol' on page 11 undefined on inpu
+t line 39.
+
+
+LaTeX Warning: Reference `app:exp1-protocol' on page 11 undefined on input line
+ 39.
+
+
+LaTeX Warning: Hyper reference `app:metrics' on page 11 undefined on input line
+ 40.
+
+
+LaTeX Warning: Reference `app:metrics' on page 11 undefined on input line 40.
+
+
+LaTeX Warning: Reference `app:metrics' on page 11 undefined on input line 40.
+
+
+LaTeX Warning: Hyper reference `app:metrics' on page 11 undefined on input line
+ 40.
+
+
+LaTeX Warning: Reference `app:metrics' on page 11 undefined on input line 40.
+
+
+LaTeX Warning: Hyper reference `app:extended-results' on page 11 undefined on i
+nput line 41.
+
+
+LaTeX Warning: Reference `app:extended-results' on page 11 undefined on input l
+ine 41.
+
+
+LaTeX Warning: Reference `app:extended-results' on page 11 undefined on input l
+ine 41.
+
+
+LaTeX Warning: Hyper reference `app:extended-results' on page 11 undefined on i
+nput line 41.
+
+
+LaTeX Warning: Reference `app:extended-results' on page 11 undefined on input l
+ine 41.
+
+
+LaTeX Warning: Hyper reference `app:exp1-limitations' on page 11 undefined on i
+nput line 42.
+
+
+LaTeX Warning: Reference `app:exp1-limitations' on page 11 undefined on input l
+ine 42.
+
+
+LaTeX Warning: Reference `app:exp1-limitations' on page 11 undefined on input l
+ine 42.
+
+
+LaTeX Warning: Hyper reference `app:exp1-limitations' on page 11 undefined on i
+nput line 42.
+
+
+LaTeX Warning: Reference `app:exp1-limitations' on page 11 undefined on input l
+ine 42.
+
+
+LaTeX Warning: Hyper reference `app:fig-code' on page 11 undefined on input lin
+e 43.
+
+
+LaTeX Warning: Reference `app:fig-code' on page 11 undefined on input line 43.
+
+
+LaTeX Warning: Reference `app:fig-code' on page 11 undefined on input line 43.
+
+
+LaTeX Warning: Hyper reference `app:fig-code' on page 11 undefined on input lin
+e 43.
+
+
+LaTeX Warning: Reference `app:fig-code' on page 11 undefined on input line 43.
+
+
+LaTeX Warning: Hyper reference `app:exp1-context-reversal' on page 11 undefined
+ on input line 45.
+
+
+LaTeX Warning: Reference `app:exp1-context-reversal' on page 11 undefined on in
+put line 45.
+
+
+LaTeX Warning: Reference `app:exp1-context-reversal' on page 11 undefined on in
+put line 45.
+
+
+LaTeX Warning: Hyper reference `app:exp1-context-reversal' on page 11 undefined
+ on input line 45.
+
+
+LaTeX Warning: Reference `app:exp1-context-reversal' on page 11 undefined on in
+put line 45.
+
+
+LaTeX Warning: Hyper reference `app:coin-city' on page 11 undefined on input li
+ne 48.
+
+
+LaTeX Warning: Reference `app:coin-city' on page 11 undefined on input line 48.
+
+
+
+LaTeX Warning: Reference `app:coin-city' on page 11 undefined on input line 48.
+
+
+
+LaTeX Warning: Hyper reference `app:coin-city' on page 11 undefined on input li
+ne 48.
+
+
+LaTeX Warning: Reference `app:coin-city' on page 11 undefined on input line 48.
+
+
+
+LaTeX Warning: Hyper reference `app:coin-city-design' on page 11 undefined on i
+nput line 49.
+
+
+LaTeX Warning: Reference `app:coin-city-design' on page 11 undefined on input l
+ine 49.
+
+
+LaTeX Warning: Reference `app:coin-city-design' on page 11 undefined on input l
+ine 49.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-design' on page 11 undefined on i
+nput line 49.
+
+
+LaTeX Warning: Reference `app:coin-city-design' on page 11 undefined on input l
+ine 49.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-arms' on page 11 undefined on inp
+ut line 50.
+
+
+LaTeX Warning: Reference `app:coin-city-arms' on page 11 undefined on input lin
+e 50.
+
+
+LaTeX Warning: Reference `app:coin-city-arms' on page 11 undefined on input lin
+e 50.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-arms' on page 11 undefined on inp
+ut line 50.
+
+
+LaTeX Warning: Reference `app:coin-city-arms' on page 11 undefined on input lin
+e 50.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-execution' on page 11 undefined o
+n input line 51.
+
+
+LaTeX Warning: Reference `app:coin-city-execution' on page 11 undefined on inpu
+t line 51.
+
+
+LaTeX Warning: Reference `app:coin-city-execution' on page 11 undefined on inpu
+t line 51.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-execution' on page 11 undefined o
+n input line 51.
+
+
+LaTeX Warning: Reference `app:coin-city-execution' on page 11 undefined on inpu
+t line 51.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-analysis' on page 11 undefined on
+ input line 52.
+
+
+LaTeX Warning: Reference `app:coin-city-analysis' on page 11 undefined on input
+ line 52.
+
+
+LaTeX Warning: Reference `app:coin-city-analysis' on page 11 undefined on input
+ line 52.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-analysis' on page 11 undefined on
+ input line 52.
+
+
+LaTeX Warning: Reference `app:coin-city-analysis' on page 11 undefined on input
+ line 52.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-results' on page 11 undefined on 
+input line 53.
+
+
+LaTeX Warning: Reference `app:coin-city-results' on page 11 undefined on input 
+line 53.
+
+
+LaTeX Warning: Reference `app:coin-city-results' on page 11 undefined on input 
+line 53.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-results' on page 11 undefined on 
+input line 53.
+
+
+LaTeX Warning: Reference `app:coin-city-results' on page 11 undefined on input 
+line 53.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-mechanistic-probe' on page 11 und
+efined on input line 54.
+
+
+LaTeX Warning: Reference `app:coin-city-mechanistic-probe' on page 11 undefined
+ on input line 54.
+
+
+LaTeX Warning: Reference `app:coin-city-mechanistic-probe' on page 11 undefined
+ on input line 54.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-mechanistic-probe' on page 11 und
+efined on input line 54.
+
+
+LaTeX Warning: Reference `app:coin-city-mechanistic-probe' on page 11 undefined
+ on input line 54.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-limitations' on page 11 undefined
+ on input line 55.
+
+
+LaTeX Warning: Reference `app:coin-city-limitations' on page 11 undefined on in
+put line 55.
+
+
+LaTeX Warning: Reference `app:coin-city-limitations' on page 11 undefined on in
+put line 55.
+
+
+LaTeX Warning: Hyper reference `app:coin-city-limitations' on page 11 undefined
+ on input line 55.
+
+
+LaTeX Warning: Reference `app:coin-city-limitations' on page 11 undefined on in
+put line 55.
+
+
+LaTeX Warning: Hyper reference `app:exp3' on page 11 undefined on input line 57
+.
+
+
+LaTeX Warning: Reference `app:exp3' on page 11 undefined on input line 57.
+
+
+LaTeX Warning: Reference `app:exp3' on page 11 undefined on input line 57.
+
+
+LaTeX Warning: Hyper reference `app:exp3' on page 11 undefined on input line 57
+.
+
+
+LaTeX Warning: Reference `app:exp3' on page 11 undefined on input line 57.
+
+
+LaTeX Warning: Hyper reference `app:exp3-coin-structural' on page 11 undefined 
+on input line 58.
+
+
+LaTeX Warning: Reference `app:exp3-coin-structural' on page 11 undefined on inp
+ut line 58.
+
+
+LaTeX Warning: Reference `app:exp3-coin-structural' on page 11 undefined on inp
+ut line 58.
+
+
+LaTeX Warning: Hyper reference `app:exp3-coin-structural' on page 11 undefined 
+on input line 58.
+
+
+LaTeX Warning: Reference `app:exp3-coin-structural' on page 11 undefined on inp
+ut line 58.
+
+
+LaTeX Warning: Hyper reference `app:exp3-eight-seed' on page 11 undefined on in
+put line 59.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 11 undefined on input li
+ne 59.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 11 undefined on input li
+ne 59.
+
+
+LaTeX Warning: Hyper reference `app:exp3-eight-seed' on page 11 undefined on in
+put line 59.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 11 undefined on input li
+ne 59.
+
+
+LaTeX Warning: Hyper reference `app:exp3-structure-selection' on page 11 undefi
+ned on input line 60.
+
+
+LaTeX Warning: Reference `app:exp3-structure-selection' on page 11 undefined on
+ input line 60.
+
+
+LaTeX Warning: Reference `app:exp3-structure-selection' on page 11 undefined on
+ input line 60.
+
+
+LaTeX Warning: Hyper reference `app:exp3-structure-selection' on page 11 undefi
+ned on input line 60.
+
+
+LaTeX Warning: Reference `app:exp3-structure-selection' on page 11 undefined on
+ input line 60.
+
+
+LaTeX Warning: Hyper reference `app:exp4' on page 11 undefined on input line 62
+.
+
+
+LaTeX Warning: Reference `app:exp4' on page 11 undefined on input line 62.
+
+
+LaTeX Warning: Reference `app:exp4' on page 11 undefined on input line 62.
+
+
+LaTeX Warning: Hyper reference `app:exp4' on page 11 undefined on input line 62
+.
+
+
+LaTeX Warning: Reference `app:exp4' on page 11 undefined on input line 62.
+
+
+LaTeX Warning: Hyper reference `app:exp3b-results' on page 11 undefined on inpu
+t line 63.
+
+
+LaTeX Warning: Reference `app:exp3b-results' on page 11 undefined on input line
+ 63.
+
+
+LaTeX Warning: Reference `app:exp3b-results' on page 11 undefined on input line
+ 63.
+
+
+LaTeX Warning: Hyper reference `app:exp3b-results' on page 11 undefined on inpu
+t line 63.
+
+
+LaTeX Warning: Reference `app:exp3b-results' on page 11 undefined on input line
+ 63.
+
+
+LaTeX Warning: Hyper reference `app:exp3b-update' on page 11 undefined on input
+ line 64.
+
+
+LaTeX Warning: Reference `app:exp3b-update' on page 11 undefined on input line 
+64.
+
+
+LaTeX Warning: Reference `app:exp3b-update' on page 11 undefined on input line 
+64.
+
+
+LaTeX Warning: Hyper reference `app:exp3b-update' on page 11 undefined on input
+ line 64.
+
+
+LaTeX Warning: Reference `app:exp3b-update' on page 11 undefined on input line 
+64.
+
+
+LaTeX Warning: Hyper reference `app:exp3-complete-training-setup' on page 11 un
+defined on input line 66.
+
+
+LaTeX Warning: Reference `app:exp3-complete-training-setup' on page 11 undefine
+d on input line 66.
+
+
+LaTeX Warning: Reference `app:exp3-complete-training-setup' on page 11 undefine
+d on input line 66.
+
+
+LaTeX Warning: Hyper reference `app:exp3-complete-training-setup' on page 11 un
+defined on input line 66.
+
+
+LaTeX Warning: Reference `app:exp3-complete-training-setup' on page 11 undefine
+d on input line 66.
+
+
+LaTeX Warning: Hyper reference `app:exp3-coin-structural-hparams' on page 11 un
+defined on input line 67.
+
+
+LaTeX Warning: Reference `app:exp3-coin-structural-hparams' on page 11 undefine
+d on input line 67.
+
+
+LaTeX Warning: Reference `app:exp3-coin-structural-hparams' on page 11 undefine
+d on input line 67.
+
+
+LaTeX Warning: Hyper reference `app:exp3-coin-structural-hparams' on page 11 un
+defined on input line 67.
+
+
+LaTeX Warning: Reference `app:exp3-coin-structural-hparams' on page 11 undefine
+d on input line 67.
+
+
+LaTeX Warning: Hyper reference `app:exp3-repro' on page 11 undefined on input l
+ine 69.
+
+
+LaTeX Warning: Reference `app:exp3-repro' on page 11 undefined on input line 69
+.
+
+
+LaTeX Warning: Reference `app:exp3-repro' on page 11 undefined on input line 69
+.
+
+
+LaTeX Warning: Hyper reference `app:exp3-repro' on page 11 undefined on input l
+ine 69.
+
+
+LaTeX Warning: Reference `app:exp3-repro' on page 11 undefined on input line 69
+.
+
+) [11] (./teaser_probe_appendix.tex
+
+LaTeX Warning: Reference `fig:world-knowledge-evidence' on page 12 undefined on
+ input line 5.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 35.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:world-knowledge-evidence' on page 12 undefined on
+ input line 35.
+
+
+LaTeX Warning: Reference `fig:world-knowledge-evidence' on page 12 undefined on
+ input line 35.
+
+
+LaTeX Warning: Reference `fig:world-knowledge-evidence' on page 12 undefined on
+ input line 54.
+
+) (./experiment1_appendix.tex
+Underfull \hbox (badness 3312) in paragraph at lines 70--5
+[]\OT1/ptm/m/n/10 (+20) The prompt, tem-per-a-ture, out-put limit, parsed prob-
+a-bil-i-ties, ra-tio-nales, and raw com-
+[12]
+
+LaTeX Warning: Reference `app:metrics' on page 13 undefined on input line 32.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+
+LaTeX Warning: Reference `app:exp1-alternatives' on page 13 undefined on input 
+line 61.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 69.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `tab:agent-roster' on page 13 undefined on input line 
+91.
+
+
+Package natbib Warning: Citation `microsoft2026foundry' on page 13 undefined on
+ input line 92.
+
+
+Package natbib Warning: Citation `ollama2026' on page 13 undefined on input lin
+e 93.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 102.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `tab:model-summary' on page 13 undefined on input line
+ 102.
+
+
+LaTeX Warning: Reference `tab:model-summary' on page 13 undefined on input line
+ 102.
+
+[13]
+
+LaTeX Warning: Reference `app:record-processing' on page 14 undefined on input 
+line 131.
+
+
+Package natbib Warning: Citation `halawi2024approaching' on page 14 undefined o
+n input line 144.
+
+
+Package natbib Warning: Citation `wilson2025automated' on page 14 undefined on 
+input line 144.
+
+[14]
+
+LaTeX Warning: Reference `tab:slot-taxonomy' on page 15 undefined on input line
+ 222.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 234.
+See the caption package documentation for explanation.
+
+[15]
+
+LaTeX Warning: Reference `app:exp1-alternatives' on page 16 undefined on input 
+line 291.
+
+
+LaTeX Warning: Reference `tab:model-summary' on page 16 undefined on input line
+ 308.
+
+
+Underfull \hbox (badness 2856) in paragraph at lines 317--328
+\OT1/ptm/m/n/10 (+20) The frozen anal-y-sis ar-ti-fact is $\OT1/pcr/m/n/10 exp1
+ _ prospective / data / results / consistency _
+[16]
+
+LaTeX Warning: Reference `tab:exp1-threshold-robustness' on page 17 undefined o
+n input line 419.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 438.
+See the caption package documentation for explanation.
+
+(./tables/exp1_threshold_robustness.tex) [17]
+
+LaTeX Warning: Reference `tab:model-summary' on page 18 undefined on input line
+ 478.
+
+
+LaTeX Warning: Reference `app:exp1-alternatives' on page 18 undefined on input 
+line 482.
+
+[18]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 489.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 538.
+See the caption package documentation for explanation.
+
+(./tables/exp1_resolved_outcomes.tex) [19]
+
+LaTeX Warning: Reference `tab:anchoring' on page 20 undefined on input line 566
+.
+
+
+LaTeX Warning: Reference `tab:exp1-abstention' on page 20 undefined on input li
+ne 570.
+
+
+LaTeX Warning: Reference `app:record-processing' on page 20 undefined on input 
+line 574.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 584.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `tab:anchoring' on page 20 undefined on input line 609
+.
+
+
+LaTeX Warning: Reference `fig:causal-coherent' on page 20 undefined on input li
+ne 609.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 621.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `tab:exp1-abstention' on page 20 undefined on input li
+ne 621.
+
+
+LaTeX Warning: Reference `tab:exp1-abstention' on page 20 undefined on input li
+ne 621.
+
+
+LaTeX Warning: Reference `app:exp1-outcome-followup' on page 20 undefined on in
+put line 642.
+
+[20 <./figures/exp1_ehc_sensitivity_combined.pdf>]
+Underfull \hbox (badness 5288) in paragraph at lines 672--676
+\OT1/pcr/m/n/10 py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 audit _ orthogonal 
+_ abstention . py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 audit _ lexical _ si
+gn _ baseline . py$\OT1/ptm/m/n/10 (+20) ,
+[21]
+
+LaTeX Warning: Reference `tab:exp1-arm-coverage' on page 22 undefined on input 
+line 713.
+
+
+LaTeX Warning: Reference `tab:exp1-selectivity-robustness' on page 22 undefined
+ on input line 726.
+
+
+LaTeX Warning: Reference `tab:exp1-abstention' on page 22 undefined on input li
+ne 747.
+
+
+LaTeX Warning: Reference `app:exp1-limitations' on page 22 undefined on input l
+ine 768.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 782.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `eq:sensitivity-decomposition' on page 22 undefined on
+ input line 782.
+
+
+LaTeX Warning: Reference `eq:sensitivity-decomposition' on page 22 undefined on
+ input line 782.
+
+(./tables/exp1_abstention_decomposition.tex) [22]
+
+LaTeX Warning: Reference `tab:exp1-selectivity-robustness' on page 23 undefined
+ on input line 826.
+
+[23]
+
+LaTeX Warning: Reference `app:update-protocol' on page 24 undefined on input li
+ne 893.
+
+
+Underfull \hbox (badness 1147) in paragraph at lines 891--898
+[]\OT1/ptm/b/n/10 (+20) One de-ploy-ment was prompted dif-fer-ently. \OT1/ptm/m
+/n/10 (+20) GPT-5.4, and only GPT-5.4, re-ceived the
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 913.
+See the caption package documentation for explanation.
+
+[24]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 944.
+See the caption package documentation for explanation.
+
+(./tables/exp1_selectivity_robustness.tex)
+
+LaTeX Warning: Reference `tab:stage3-human' on page 25 undefined on input line 
+976.
+
+[25]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1001.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1032.
+See the caption package documentation for explanation.
+
+(./tables/exp1_stage3_item_validation.tex)
+
+LaTeX Warning: Reference `fig:exp1-review-interface' on page 26 undefined on in
+put line 1051.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1051--1056
+\OT1/pcr/m/n/10 stage3 _ materials _ annotation / capture _ review _ screenshot
+s . py$ \OT1/ptm/m/n/10 (+20) loads the
+[26] [27 <./figures/exp1_stage3_review_consent.png> <./figures/exp1_stage3_revi
+ew_item.png>]
+
+LaTeX Warning: Reference `app:record-processing' on page 28 undefined on input 
+line 1098.
+
+
+Underfull \hbox (badness 1859) in paragraph at lines 1117--1121
+[]\OT1/ptm/b/n/10 (+20) Sampling: $\OT1/pcr/m/n/10 exp1 _ prospective / fetch _
+ markets / select _ markets . py$ \OT1/ptm/m/n/10 (+20) and the
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1128
+[]\OT1/ptm/b/n/10 (+20) Interventions: $\OT1/pcr/m/n/10 exp1 _ prospective / ag
+ent / build _ counterfactuals . py$ \OT1/ptm/m/n/10 (+20) and
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1128
+\OT1/ptm/m/n/10 (+20) the frozen $\OT1/pcr/m/n/10 exp1 _ prospective / data / c
+ounterfactuals / counterfactuals _
+
+LaTeX Warning: Reference `tab:exp1-abstention' on page 28 undefined on input li
+ne 1138.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 prospective / data / results / consistency _ report _ 2026-[]06
+-[]17 . json$\OT1/ptm/m/n/10 (+20) ;
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 exp1 _ prospective / agent / evaluate _ clustered _ uncertainty
+ . py$ \OT1/ptm/m/n/10 (+20) re-con-
+
+Underfull \hbox (badness 6461) in paragraph at lines 1131--1141
+\OT1/ptm/m/n/10 (+20) structs the 20,000-draw market-clustered in-ter-vals in $
+\OT1/pcr/m/n/10 exp1 _ prospective / data /
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 results / clustered _ movement _ uncertainty . json$\OT1/ptm/m/
+n/10 (+20) ; $\OT1/pcr/m/n/10 exp1 _ prospective /
+
+Underfull \hbox (badness 4531) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 agent / audit _ orthogonal _ abstention . py$ \OT1/ptm/m/n/10 (
++20) writes the ab-sten-tion/magnitude de-
+
+Underfull \hbox (badness 4254) in paragraph at lines 1131--1141
+\OT1/ptm/m/n/10 (+20) com-po-si-tion of Ta-ble [] to $\OT1/pcr/m/n/10 exp1 _ pr
+ospective / data / results / orthogonal _
+
+Underfull \hbox (badness 1072) in paragraph at lines 1141--1148
+\OT1/ptm/m/n/10 (+20) tests in $\OT1/pcr/m/n/10 exp1 _ prospective / stage3 _ m
+aterials _ annotation/$\OT1/ptm/m/n/10 (+20) ; $\OT1/pcr/m/n/10 make _ final _
+) (./experiment1_context_reversal_appendix.tex [28]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 51.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reversal.tex)
+
+LaTeX Warning: Reference `tab:exp1-context-reversal' on page 29 undefined on in
+put line 58.
+
+[29]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 87.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reversal_frontier.tex)
+
+LaTeX Warning: Reference `tab:exp1-context-reversal-frontier' on page 30 undefi
+ned on input line 95.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 126.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_direction.tex)
+
+LaTeX Warning: Reference `tab:exp1-context-direction' on page 30 undefined on i
+nput line 134.
+
+[30]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 175.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reasoning.tex)
+
+LaTeX Warning: Reference `tab:exp1-context-reasoning' on page 31 undefined on i
+nput line 194.
+
+[31]
+
+LaTeX Warning: Reference `tab:exp1-robustness-v2-performance' on page 32 undefi
+ned on input line 239.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 252.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_performance.tex)
+
+LaTeX Warning: Reference `tab:exp1-robustness-v2-edits' on page 32 undefined on
+ input line 272.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 294.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_edits.tex) [32]
+
+LaTeX Warning: Reference `tab:exp1-robustness-v2-controls' on page 33 undefined
+ on input line 303.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 315.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_controls.tex)) (./experiment2_appendix.tex
+[33]
+
+LaTeX Warning: Reference `app:coin-city-execution' on page 34 undefined on inpu
+t line 23.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 67.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `app:coin-city-limitations' on page 34 undefined on in
+put line 67.
+
+
+LaTeX Warning: Reference `app:coin-city-limitations' on page 34 undefined on in
+put line 67.
+
+[34] [35]
+
+LaTeX Warning: Reference `tab:coin-city-analogical' on page 36 undefined on inp
+ut line 173.
+
+
+LaTeX Warning: Reference `app:coin-city-reference-selection' on page 36 undefin
+ed on input line 179.
+
+
+LaTeX Warning: Reference `tab:coin-city-execution' on page 36 undefined on inpu
+t line 186.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 194.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
+[]|\OT1/ptm/m/n/7 (+20) Anthropic Mes-sages via
+
+Underfull \hbox (badness 2828) in paragraph at lines 206--206
+[]|\OT1/ptm/m/n/7 (+20) Gemini OpenAI-compatible
+[36]
+
+LaTeX Warning: Reference `app:coin-city-limitations' on page 37 undefined on in
+put line 242.
+
+
+Underfull \hbox (badness 1259) in paragraph at lines 234--243
+\OT1/ptm/m/n/10 (+20) The parser scans the raw re-ply for JSON ob-jects, re-tai
+ns the last ob-ject with an ex-act
+
+LaTeX Warning: Reference `app:coin-city-limitations' on page 37 undefined on in
+put line 290.
+
+[37]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 335.
+See the caption package documentation for explanation.
+
+[38]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 385.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 420.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 455.
+See the caption package documentation for explanation.
+
+[39]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 490.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 526.
+See the caption package documentation for explanation.
+
+[40]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 563.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 606.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 642.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `app:coin-city-execution' on page 41 undefined on inpu
+t line 642.
+
+
+LaTeX Warning: Reference `app:coin-city-execution' on page 41 undefined on inpu
+t line 642.
+
+(./tables/exp2_symbol_context_results.tex) [41]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 657.
+See the caption package documentation for explanation.
+
+(./tables/exp2_symbol_context_scaling.tex) [42]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 707.
+See the caption package documentation for explanation.
+
+[43]
+
+LaTeX Warning: Reference `app:coin-city-reference-selection' on page 44 undefin
+ed on input line 787.
+
+
+LaTeX Warning: Reference `app:coin-city-reference-selection' on page 44 undefin
+ed on input line 787.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 798.
+See the caption package documentation for explanation.
+
+(./tables/exp2_reference_selection.tex) [44]
+
+LaTeX Warning: Reference `app:coin-city-probe-ceilings' on page 45 undefined on
+ input line 830.
+
+[45 <./figures/exp2_reference_selection.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 850.
+See the caption package documentation for explanation.
+
+(./tables/exp2_reference_selection_symbol.tex)
+
+LaTeX Warning: Reference `tab:coin-city-symbol-context' on page 46 undefined on
+ input line 862.
+
+(./experiment2_mechanistic_probe_appendix.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 19.
+See the caption package documentation for explanation.
+
+(./tables/exp2_qwen_behavior_gate.tex) [46]
+
+LaTeX Warning: Reference `app:coin-city-probe-ceilings' on page 47 undefined on
+ input line 61.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 72.
+See the caption package documentation for explanation.
+
+(./tables/exp2_open_model_mechanistic_summary.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 88.
+See the caption package documentation for explanation.
+
+(./tables/exp2_qwen3_mechanistic_probe.tex) [47]
+
+LaTeX Warning: Reference `tab:coin-city-mechanistic-summary' on page 48 undefin
+ed on input line 125.
+
+[48]
+
+LaTeX Warning: Reference `eq:coin-city-dgp' on page 49 undefined on input line 
+142.
+
+
+LaTeX Warning: Reference `tab:coin-city-probe-ceilings' on page 49 undefined on
+ input line 146.
+
+
+LaTeX Warning: Reference `app:coin-city-reference-selection' on page 49 undefin
+ed on input line 152.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 169.
+See the caption package documentation for explanation.
+
+(./tables/exp2_probe_target_ceilings.tex) [49 <./figures/exp2_qwen3_mechanistic
+_main.pdf>] [50 <./figures/exp2_qwen3_mechanistic_probe.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 227.
+See the caption package documentation for explanation.
+
+(./tables/exp2_probe_power_matched.tex) [51] [52]
+
+LaTeX Warning: Reference `app:coin-city-robustness' on page 53 undefined on inp
+ut line 281.
+
+
+LaTeX Warning: Reference `app:coin-city-robustness' on page 53 undefined on inp
+ut line 299.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 344.
+See the caption package documentation for explanation.
+
+(./tables/exp2_causal_patch.tex) [53]
+
+LaTeX Warning: Reference `app:coin-city-results' on page 54 undefined on input 
+line 368.
+
+
+LaTeX Warning: Reference `app:coin-city-causal-patch' on page 54 undefined on i
+nput line 439.
+
+)
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) (Qwen3-4B), \OT1/pcr/m/n/10 b968826d9c46dd6066d109eabc625
+5188de91218 \OT1/ptm/m/n/10 (+20) (Qwen3-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) 8B), \OT1/pcr/m/n/10 0e9e39f249a16976918f6564b8830bc894c8
+9659 \OT1/ptm/m/n/10 (+20) (Llama-3.1-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) 8B), \OT1/pcr/m/n/10 40c069824f4251a91eefaf281ebe4c544efd
+3e18 \OT1/ptm/m/n/10 (+20) (Qwen3-14B),
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 9216db5781bf21249d130ec9da846c4624c16137 \OT1/ptm/m/n/10 (+20) 
+(Qwen3-32B), and
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 495f39366efef23836d0cfae4fbe635880d2be31 \OT1/ptm/m/n/10 (+20) 
+(Qwen2.5-72B). The ac-ti-va-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) tion hashes are \OT1/pcr/m/n/10 e191385963d639aa5b8574a9a
+bbeb91b3519aed934ac491f
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 863655631b26dbbc \OT1/ptm/m/n/10 (+20) (Qwen3-4B) and \OT1/pcr/
+m/n/10 7f65aeec7a91e404cc60068618fedf25
+
+Underfull \hbox (badness 5652) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 c679abde5d48c2b8477f736670fbc54f \OT1/ptm/m/n/10 (+20) (Llama-3
+.1-8B); all six hashes and ten-sor
+
+Underfull \hbox (badness 2005) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) di-men-sions are en-forced by the fail-closed gen-er-a-to
+r. Frozen tasks, ac-ti-va-tion ten-sors,
+
+Underfull \hbox (badness 6078) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) ex-trac-tion man-i-fests, gen-er-ated be-hav-ior, se-lect
+ed pre-dic-tions, com-plete layer curves,
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and probe re-sults are un-der $\OT1/pcr/m/n/10 exp2 _ v2 
+/ biased _ news / data / coin _ city _ stable _
+
+Underfull \hbox (badness 2150) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 relationship _ claude _ n250 _ v4 / mechanistic _ probe/$\OT1/p
+tm/m/n/10 (+20) . The anal-y-sis and as-set
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) gen-er-a-tor are $\OT1/pcr/m/n/10 exp2 _ v2 / biased _ ne
+ws / mechanistic _ probe / analyze _ probe . py$
+
+Underfull \hbox (badness 6876) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 paper / generate _ coin _ city _ mec
+hanistic _ comparison . py$\OT1/ptm/m/n/10 (+20) . The causal
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) run is $\OT1/pcr/m/n/10 mechanistic _ probe / qwen3 _ 14b
+ _ symbol _ relational _ v2/$\OT1/ptm/m/n/10 (+20) , frozen
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) by $\OT1/pcr/m/n/10 freeze _ symbol _ relational _ protoc
+ol . py$ \OT1/ptm/m/n/10 (+20) and ex-e-cuted by $\OT1/pcr/m/n/10 extract _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 symbol _ label _ states . py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/
+m/n/10 patch _ symbol _ label _ activations . py$ \OT1/ptm/m/n/10 (+20) and
+
+Underfull \hbox (badness 3039) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 analyze _ symbol _ relational _ probe . py$\OT1/ptm/m/n/10 (+20
+) ; ev-ery count in that pipeline is de-rived
+
+Underfull \hbox (badness 2547) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) from the frozen task man-i-fest and checked by $\OT1/pcr/
+m/n/10 tests / test _ symbol _ relational _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 scaling . py$\OT1/ptm/m/n/10 (+20) . $\OT1/pcr/m/n/10 paper / g
+enerate _ coin _ city _ causal _ patch _ table . py$ \OT1/ptm/m/n/10 (+20) fail
+s
+
+Underfull \hbox (badness 5711) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) closed on the run's study name, sealed-test size and sta-
+bil-ity gate. The power-
+
+Underfull \hbox (badness 7064) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) matched runs are $\OT1/pcr/m/n/10 mechanistic _ probe / q
+wen3 _ 14b _ probe _ v2/$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 mechanistic _
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 probe / qwen3 _ 14b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20
+) , $\OT1/pcr/m/n/10 mechanistic _ probe / qwen3 _ 8b _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 m
+echanistic _ probe / qwen3 _ 4b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20) ,
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 mechanistic _ probe / llama3 _ 1 _ 70b _ symbol _ probe _ v2/$\
+OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 mechanistic _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 probe / qwen2 _ 5 _ 72b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 
+(+20) , $\OT1/pcr/m/n/10 mechanistic _ probe / qwen2 _ 5 _ 32b _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 mechanistic _ probe / llama3 _ 1 _ 8
+b _ symbol _ probe _ v2/$ \OT1/ptm/m/n/10 (+20) (check-point
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 0e9e39f249a16976918f6564b8830bc894c89659\OT1/ptm/m/n/10 (+20) )
+, built by $\OT1/pcr/m/n/10 exp2 _ v2 / biased _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 news / mechanistic _ probe / build _ probe _ tasks . py$ \OT1/p
+tm/m/n/10 (+20) and $\OT1/pcr/m/n/10 build _ arbitrary _
+[54]
+
+LaTeX Warning: Reference `tab:coin-city-generator-robustness' on page 55 undefi
+ned on input line 882.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 893.
+See the caption package documentation for explanation.
+
+(./tables/exp2_generator_population_robustness.tex) [55]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 942.
+See the caption package documentation for explanation.
+
+(./tables/exp2_gpt56_repeat.tex) [56]
+
+LaTeX Warning: Reference `app:coin-city-reference-selection' on page 57 undefin
+ed on input line 1027.
+
+
+LaTeX Warning: Reference `app:coin-city-causal-patch' on page 57 undefined on i
+nput line 1029.
+
+[57]
+Underfull \hbox (badness 10000) in paragraph at lines 1076--1081
+\OT1/ptm/m/n/10 (+20) The frozen data root is $\OT1/pcr/m/n/10 exp2 _ v2 / bias
+ed _ news / data / coin _ city _ stable _
+
+Underfull \hbox (badness 7203) in paragraph at lines 1082--1087
+[]\OT1/ptm/m/n/10 (+20) Under the data root, $\OT1/pcr/m/n/10 design / manifest
+ . json$ \OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 design /
+
+Underfull \hbox (badness 1590) in paragraph at lines 1082--1087
+\OT1/pcr/m/n/10 wrong _ context . manifest . json$ \OT1/ptm/m/n/10 (+20) record
+s the mis-lead-ing arm, and $\OT1/pcr/m/n/10 design /
+
+Underfull \hbox (badness 3029) in paragraph at lines 1089--1095
+\OT1/pcr/m/n/10 stable _ relationship _ claude _ n250 . py$\OT1/ptm/m/n/10 (+20
+) ; the builders are $\OT1/pcr/m/n/10 eval / build _
+
+Underfull \hbox (badness 6001) in paragraph at lines 1089--1095
+\OT1/pcr/m/n/10 coin _ city _ stable _ relationship _ claude _ n250 . py$ \OT1/
+ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 eval / build _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1111--1114
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ stable _ relationship _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1116--1123
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ symbol _ context . py$
+
+Underfull \hbox (badness 2253) in paragraph at lines 1116--1123
+\OT1/ptm/m/n/10 (+20) sup-plies the com-mon es-ti-ma-tor; $\OT1/pcr/m/n/10 loca
+l _ results / symbol _ context _ model _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1116--1123
+\OT1/ptm/m/n/10 (+20) thor-ity $\OT1/pcr/m/n/10 analysis / symbol _ context _ m
+odel _ comparison _ 20260824 . json$\OT1/ptm/m/n/10 (+20) .
+
+LaTeX Warning: Reference `app:coin-city-reference-selection' on page 58 undefin
+ed on input line 1127.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ reference _
+
+Underfull \hbox (badness 1210) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 selection . py$ \OT1/ptm/m/n/10 (+20) un-der the code root re-c
+om-putes the par-tial cor-re-la-tions of Sec-
+
+Underfull \hbox (badness 1354) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 results . json$ \OT1/ptm/m/n/10 (+20) un-der the data root; it 
+makes no model call. Checks are in
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 tests / test _ coin _ city _ reference _ selection . py$\OT1/pt
+m/m/n/10 (+20) , in-clud-ing one that
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 paper / generate _ coin _ city _ reference _ selection _ tables
+ . py$ \OT1/ptm/m/n/10 (+20) writes
+[58]
+
+LaTeX Warning: Reference `tab:coin-city-probe-ceilings' on page 59 undefined on
+ input line 1138.
+
+
+LaTeX Warning: Reference `fig:coin-city-results' on page 59 undefined on input 
+line 1139.
+
+
+Underfull \hbox (badness 1635) in paragraph at lines 1147--1152
+[]\OT1/ptm/m/n/10 (+20) The repository-level script $\OT1/pcr/m/n/10 paper / ge
+nerate _ coin _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+[]$\OT1/pcr/m/n/10 engine / coin _ city _ robustness _
+
+Underfull \hbox (badness 3646) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 population . py$ \OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 eva
+l / build _ coin _ city _ robustness _ population .
+
+Underfull \hbox (badness 4792) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 py$ \OT1/ptm/m/n/10 (+20) build the fresh-seed pop-u-la-tion; i
+ts de-sign, re-sponses, sched-uler ledgers,
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/ptm/m/n/10 (+20) and anal-y-sis are un-der $\OT1/pcr/m/n/10 data / coin _ 
+city _ population _ 075 _ 040 _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 sd010 _ v1/$\OT1/ptm/m/n/10 (+20) . $\OT1/pcr/m/n/10 analysis /
+ analyze _ coin _ city _ rationales . py$ \OT1/ptm/m/n/10 (+20) writes
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 analysis / rationale _ audit _ v1 . json$ \OT1/ptm/m/n/10 (+20)
+ un-der the pri-mary data root.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 eval / run _ coin _ city _ gpt56 _ k0 _ repeat . py$ \OT1/ptm/m
+/n/10 (+20) and $\OT1/pcr/m/n/10 analysis / analyze _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 coin _ city _ gpt56 _ k0 _ repeat . py$ \OT1/ptm/m/n/10 (+20) i
+so-late and score the hosted re-peat.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 paper / generate _ coin _ city _ robustness _ tables . py$ \OT1
+/ptm/m/n/10 (+20) ren-ders both ap-
+) (./experiment3_appendix.tex (./tables/exp3_rebuilt_data.tex)
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 59 undefined on input li
+ne 15.
+
+
+Package natbib Warning: Citation `kalman1960new' on page 59 undefined on input 
+line 39.
+
+[59]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 60.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 1484) in paragraph at lines 77--77
+[]|\OT1/ptm/m/n/9 (+20) Structure A de-scrip-
+
+Underfull \hbox (badness 1852) in paragraph at lines 80--80
+[]|\OT1/ptm/m/n/9 (+20) Structure B de-scrip-
+
+LaTeX Warning: Reference `eq:exp3-coin-a' on page 60 undefined on input line 91
+.
+
+(./tables/exp3_training_example.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 22.
+See the caption package documentation for explanation.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omspcr.fd)) [60] [61]
+
+Package natbib Warning: Citation `cameron2008bootstrap' on page 62 undefined on
+ input line 252.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 62 undefined on input li
+ne 271.
+
+
+LaTeX Warning: Reference `app:exp3-complete-training-setup' on page 62 undefine
+d on input line 287.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 62 undefined on input li
+ne 294.
+
+[62] [63]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 403.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `tab:exp3-eight-seed' on page 64 undefined on input li
+ne 403.
+
+
+LaTeX Warning: Reference `tab:exp3-eight-seed' on page 64 undefined on input li
+ne 403.
+
+(./tables/exp3_coin_structural_primary.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 431.
+See the caption package documentation for explanation.
+
+[64]
+Underfull \hbox (badness 2600) in paragraph at lines 535--548
+\OT1/ptm/b/n/10 (+20) Source archive and sam-ple. \OT1/ptm/m/n/10 (+20) The sou
+rce ex-port[][][][][] has 1,788,703 rows and SHA-256
+[65]
+
+LaTeX Warning: Reference `app:exp3-complete-training-setup' on page 66 undefine
+d on input line 588.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 594.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 635.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_qwen3_8b_endpoint_results.tex) [66]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 650.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_model_roster_results.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 696.
+See the caption package documentation for explanation.
+
+(./tables/exp4_qwen_scale_results.tex) [67]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 736.
+See the caption package documentation for explanation.
+
+[68 <./figures/exp4_llama_scale_results.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 815.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_update_seed_results.tex)
+(./experiment3_training_setup_appendix.tex
+
+LaTeX Warning: Reference `tab:exp3-oat-common' on page 69 undefined on input li
+ne 4.
+
+
+LaTeX Warning: Reference `tab:exp3-runtime' on page 69 undefined on input line 
+4.
+
+
+Package natbib Warning: Citation `liu2024oat' on page 69 undefined on input lin
+e 5.
+
+[69]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 26.
+See the caption package documentation for explanation.
+
+
+Package natbib Warning: Citation `loshchilov2019decoupled' on page 70 undefined
+ on input line 45.
+
+
+Package natbib Warning: Citation `rajbhandari2020zero' on page 70 undefined on 
+input line 60.
+
+
+Package natbib Warning: Citation `kwon2023vllm' on page 70 undefined on input l
+ine 61.
+
+
+LaTeX Warning: Reference `tab:exp3-coin-structural-hparams' on page 70 undefine
+d on input line 76.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 70 undefined on input li
+ne 78.
+
+
+LaTeX Warning: Reference `tab:exp3-oat-common' on page 70 undefined on input li
+ne 81.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 91.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 70 undefined on input li
+ne 91.
+
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 70 undefined on input li
+ne 91.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--101
+[]|\OT1/pcr/m/n/7 Qwen/Qwen3-4B-Instruct-2507\OT1/ptm/m/n/7 (+20) , \OT1/pcr/m/
+n/7 Qwen/Qwen3-8B\OT1/ptm/m/n/7 (+20) , and
+
+Underfull \hbox (badness 10000) in paragraph at lines 123--126
+\OT1/ptm/m/n/7 (+20) Coin Har-bor: base-line 180, sup-port $\OT1/cmr/m/n/7 [40\
+OML/cmm/m/it/7 ; \OT1/cmr/m/n/7 320]$\OT1/ptm/m/n/7 (+20) , noise 4.5, driver p
+ool
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 70 undefined on input li
+ne 165.
+
+[70]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 187.
+See the caption package documentation for explanation.
+
+[71])
+
+LaTeX Warning: Reference `app:exp3-eight-seed' on page 72 undefined on input li
+ne 838.
+
+
+LaTeX Warning: Reference `fig:exp3-transfer-results' on page 72 undefined on in
+put line 838.
+
+
+LaTeX Warning: Reference `fig:exp4-scale-results' on page 72 undefined on input
+ line 850.
+
+
+LaTeX Warning: Reference `tab:exp4-qwen-scale-results' on page 72 undefined on 
+input line 851.
+
+
+LaTeX Warning: Reference `fig:exp4-llama-scale-results' on page 72 undefined on
+ input line 852.
+
+)
+
+Package natbib Warning: There were undefined citations.
+
+[72] (./main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information){/usr/share/texlive/texmf-d
+ist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmbx7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
+/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (72 pages, 2212094 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'main.pdf'
+  ===Source file 'main.bbl' for 'pdflatex'
+Create bibtex main
+Latexmk: Found bibliography file(s):
+  ./references.bib
+Latexmk: applying rule 'bibtex main'...
+Rule 'bibtex main':  Reasons for rerun
+Category 'other':
+  Rerun of 'bibtex main' forced or previously required:
+    Reason or flag: 'Initial set up of rule'
+
+------------
+Run number 1 of rule 'bibtex main'
+------------
+------------
+Running 'bibtex  "main.aux"'
+------------
+This is BibTeX, Version 0.99d (TeX Live 2020)
+The top-level auxiliary file: main.aux
+The style file: iclr2027_conference.bst
+Database file #1: references.bib
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.aux
+  main.bbl
+  main.out
+
+------------
+Run number 2 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -file-line-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(./iclr2027_conference.sty
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)))) (./fancyhdr.sty)
+(./natbib.sty)) (/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarybackgrounds.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryshapes.geometric.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshape
+s.geometric.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathmorphing.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
+e.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
+decorations.pathmorphing.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryfadings.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings.code
+.tex)) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/flafter.sty) (./wrapfig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./main.aux) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(./main.out) (./main.out)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(./tables/exp3_rebuilt_data.tex) (./frontmatter.tex
+
+Package natbib Warning: Citation `tetlock2016superforecasting' on page 1 undefi
+ned on input line 47.
+
+
+Package natbib Warning: Citation `mellers2014psychological' on page 1 undefined
+ on input line 47.
+
+
+Package natbib Warning: Citation `lawrence2006judgmental' on page 1 undefined o
+n input line 47.
+
+
+Package natbib Warning: Citation `tenenbaum2006theory' on page 1 undefined on i
+nput line 52.
+
+
+Package natbib Warning: Citation `griffiths2010probabilistic' on page 1 undefin
+ed on input line 52.
+
+
+Package natbib Warning: Citation `tenenbaum2011mind' on page 1 undefined on inp
+ut line 52.
+
+
+Package natbib Warning: Citation `lake2017building' on page 1 undefined on inpu
+t line 52.
+
+
+Package natbib Warning: Citation `halawi2024approaching' on page 1 undefined on
+ input line 61.
+
+
+Package natbib Warning: Citation `schoenegger2024wisdom' on page 1 undefined on
+ input line 61.
+
+
+Package natbib Warning: Citation `li2023emergent' on page 1 undefined on input 
+line 63.
+
+
+Package natbib Warning: Citation `vafa2025foundation' on page 1 undefined on in
+put line 64.
+
+[1{/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map} <./figures
+//teaser_revised.pdf> <./icons/huggingface.png> <./icons/gh_logo.png>])
+(./inductive_forecasting.tex
+
+Package natbib Warning: Citation `park2023generative' on page 2 undefined on in
+put line 50.
+
+
+Package natbib Warning: Citation `aher2023simulate' on page 2 undefined on inpu
+t line 50.
+
+
+Package natbib Warning: Citation `argyle2023out' on page 2 undefined on input l
+ine 50.
+
+
+Package natbib Warning: Citation `bisbee2024synthetic' on page 2 undefined on i
+nput line 50.
+
+) (./evidence_ladder.tex
+Underfull \vbox (badness 10000) has occurred while \output is active [2]
+
+Package natbib Warning: Citation `tetlock2005expert' on page 3 undefined on inp
+ut line 7.
+
+[3 <./figures//exp1_protocol_four_panels.pdf>]
+Underfull \vbox (badness 1270) has occurred while \output is active [4 <./figur
+es//exp1_direction_selective_updating.pdf> <./icons/claude.png> <./icons/openai
+.png> <./icons/deepseek.png> <./icons/qwen.pdf> <./icons/llamma.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active [5 <./figu
+res//exp2_coin_city_prompt_arms.pdf> <./figures//exp2_coin_city_results.pdf> <.
+/icons/kimi.png> <./icons/gemini.png>]) (./transfer_and_grounding.tex
+(./tables/exp3_rebuilt_data.tex) (./fig_exp3_transfer_grid.tex
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1phv.fd))
+(./fig_exp3_results_grid.tex (./tables/exp3_coin_qwen3_8b_stochastic_data.tex))
+[6 <./figures//exp2_symbol_decoding.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active [7 <./figu
+res//exp2_causal_patch.pdf>]) (./related_work.tex
+
+Package natbib Warning: Citation `tetlock2005expert' on page 8 undefined on inp
+ut line 7.
+
+
+Package natbib Warning: Citation `mellers2014psychological' on page 8 undefined
+ on input line 7.
+
+
+Package natbib Warning: Citation `tetlock2016superforecasting' on page 8 undefi
+ned on input line 7.
+
+
+Package natbib Warning: Citation `zou2022forecasting' on page 8 undefined on in
+put line 10.
+
+
+Package natbib Warning: Citation `karger2025forecastbench' on page 8 undefined 
+on input line 10.
+
+
+Package natbib Warning: Citation `halawi2024approaching' on page 8 undefined on
+ input line 10.
+
+
+Package natbib Warning: Citation `schoenegger2024wisdom' on page 8 undefined on
+ input line 10.
+
+
+Underfull \vbox (badness 4940) has occurred while \output is active [8 <./figur
+es//exp4_qwen_scale_results.pdf>]
+
+Package natbib Warning: Citation `garg2022what' on page 9 undefined on input li
+ne 17.
+
+
+Package natbib Warning: Citation `chan2022data' on page 9 undefined on input li
+ne 17.
+
+
+Package natbib Warning: Citation `webb2023emergent' on page 9 undefined on inpu
+t line 17.
+
+
+Package natbib Warning: Citation `yasunaga2024large' on page 9 undefined on inp
+ut line 17.
+
+
+Package natbib Warning: Citation `ha2018world' on page 9 undefined on input lin
+e 17.
+
+
+Package natbib Warning: Citation `lecun2022path' on page 9 undefined on input l
+ine 17.
+
+
+Package natbib Warning: Citation `li2023emergent' on page 9 undefined on input 
+line 17.
+
+
+Package natbib Warning: Citation `geirhos2020shortcut' on page 9 undefined on i
+nput line 20.
+
+
+Package natbib Warning: Citation `mitchell2023ai' on page 9 undefined on input 
+line 20.
+
+
+Package natbib Warning: Citation `vafa2025foundation' on page 9 undefined on in
+put line 20.
+
+
+Package natbib Warning: Citation `park2023generative' on page 9 undefined on in
+put line 26.
+
+
+Package natbib Warning: Citation `aher2023simulate' on page 9 undefined on inpu
+t line 26.
+
+
+Package natbib Warning: Citation `argyle2023out' on page 9 undefined on input l
+ine 26.
+
+
+Package natbib Warning: Citation `bisbee2024synthetic' on page 9 undefined on i
+nput line 28.
+
+) (./limitations.tex) (./conclusion.tex) (./submission_statements.tex
+Underfull \vbox (badness 10000) has occurred while \output is active [9])
+(./acknowledgements.tex) [10] (./main.bbl
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd)
+Underfull \hbox (badness 2020) in paragraph at lines 44--53
+[]\OT1/ptm/m/n/10 (+20) Stephanie C. Y. Chan, Adam San-toro, An-drew K. Lampine
+n, Jane X. Wang, Aa-ditya
+
+Underfull \hbox (badness 2277) in paragraph at lines 44--53
+\OT1/ptm/m/n/10 (+20) prop-er-ties drive emer-gent in-context learn-ing in tran
+s-form-ers.  In \OT1/ptm/m/it/10 (+20) Ad-vances in Neu-
+
+Underfull \hbox (badness 1895) in paragraph at lines 44--53
+\OT1/ptm/m/it/10 (+20) ral In-for-ma-tion Pro-cess-ing Sys-tems\OT1/ptm/m/n/10 
+(+20) , vol-ume 35, 2022.  doi: $10 . 52202 / 068431-[]1371$.
+
+Underfull \hbox (badness 10000) in paragraph at lines 44--53
+\OT1/ptm/m/n/10 (+20) URL [][]$\OT1/pcr/m/n/10 https : / / proceedings . neurip
+s . cc / paper _ files / paper / 2022 / hash /
+
+Underfull \hbox (badness 1067) in paragraph at lines 55--63
+\OT1/ptm/m/n/10 (+20) ers learn in-context? a case study of sim-ple func-tion c
+lasses.  In \OT1/ptm/m/it/10 (+20) Ad-vances in Neu-
+
+Underfull \hbox (badness 1895) in paragraph at lines 55--63
+\OT1/ptm/m/it/10 (+20) ral In-for-ma-tion Pro-cess-ing Sys-tems\OT1/ptm/m/n/10 
+(+20) , vol-ume 35, 2022.  doi: $10 . 52202 / 068431-[]2217$.
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--63
+\OT1/ptm/m/n/10 (+20) URL [][]$\OT1/pcr/m/n/10 https : / / proceedings . neurip
+s . cc / paper _ files / paper / 2022 / hash /
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 170--174
+\OT1/pcr/m/n/10 / / learn . microsoft . com / en-[]us / azure / foundry / agent
+s / quickstarts /
+[12]
+Underfull \hbox (badness 4872) in paragraph at lines 254--259
+[]\OT1/ptm/m/n/10 (+20) Ben Wil-son.  Anal-y-sis of au-to-mated prompt en-gi-ne
+er-ing for fore-cast-ing.  Metac-
+
+Underfull \hbox (badness 10000) in paragraph at lines 254--259
+\OT1/ptm/m/n/10 (+20) u-lus, 2025.  URL [][]$\OT1/pcr/m/n/10 https : / / www . 
+metaculus . com / notebooks / 38421 /
+) [13] (./appendix_guide.tex) [14] (./teaser_probe_appendix.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 35.
+See the caption package documentation for explanation.
+
+) (./experiment1_appendix.tex
+Underfull \hbox (badness 3312) in paragraph at lines 70--5
+[]\OT1/ptm/m/n/10 (+20) The prompt, tem-per-a-ture, out-put limit, parsed prob-
+a-bil-i-ties, ra-tio-nales, and raw com-
+[15] (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 69.
+See the caption package documentation for explanation.
+
+
+Package natbib Warning: Citation `microsoft2026foundry' on page 16 undefined on
+ input line 92.
+
+
+Package natbib Warning: Citation `ollama2026' on page 16 undefined on input lin
+e 93.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 102.
+See the caption package documentation for explanation.
+
+[16]
+
+Package natbib Warning: Citation `halawi2024approaching' on page 17 undefined o
+n input line 144.
+
+
+Package natbib Warning: Citation `wilson2025automated' on page 17 undefined on 
+input line 144.
+
+[17]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 234.
+See the caption package documentation for explanation.
+
+[18]
+Underfull \hbox (badness 2856) in paragraph at lines 317--328
+\OT1/ptm/m/n/10 (+20) The frozen anal-y-sis ar-ti-fact is $\OT1/pcr/m/n/10 exp1
+ _ prospective / data / results / consistency _
+[19]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 438.
+See the caption package documentation for explanation.
+
+(./tables/exp1_threshold_robustness.tex) [20] [21]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 489.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 538.
+See the caption package documentation for explanation.
+
+(./tables/exp1_resolved_outcomes.tex) [22]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 584.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 621.
+See the caption package documentation for explanation.
+
+[23 <./figures/exp1_ehc_sensitivity_combined.pdf>]
+Underfull \hbox (badness 5288) in paragraph at lines 672--676
+\OT1/pcr/m/n/10 py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 audit _ orthogonal 
+_ abstention . py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 audit _ lexical _ si
+gn _ baseline . py$\OT1/ptm/m/n/10 (+20) ,
+[24]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 782.
+See the caption package documentation for explanation.
+
+(./tables/exp1_abstention_decomposition.tex) [25] [26]
+Underfull \hbox (badness 1147) in paragraph at lines 891--898
+[]\OT1/ptm/b/n/10 (+20) One de-ploy-ment was prompted dif-fer-ently. \OT1/ptm/m
+/n/10 (+20) GPT-5.4, and only GPT-5.4, re-ceived the
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 913.
+See the caption package documentation for explanation.
+
+[27]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 944.
+See the caption package documentation for explanation.
+
+(./tables/exp1_selectivity_robustness.tex) [28]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1001.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1032.
+See the caption package documentation for explanation.
+
+(./tables/exp1_stage3_item_validation.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 1051--1056
+\OT1/pcr/m/n/10 stage3 _ materials _ annotation / capture _ review _ screenshot
+s . py$ \OT1/ptm/m/n/10 (+20) loads the
+[29] [30 <./figures/exp1_stage3_review_consent.png> <./figures/exp1_stage3_revi
+ew_item.png>]
+Underfull \hbox (badness 1859) in paragraph at lines 1117--1121
+[]\OT1/ptm/b/n/10 (+20) Sampling: $\OT1/pcr/m/n/10 exp1 _ prospective / fetch _
+ markets / select _ markets . py$ \OT1/ptm/m/n/10 (+20) and the
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1128
+[]\OT1/ptm/b/n/10 (+20) Interventions: $\OT1/pcr/m/n/10 exp1 _ prospective / ag
+ent / build _ counterfactuals . py$ \OT1/ptm/m/n/10 (+20) and
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1128
+\OT1/ptm/m/n/10 (+20) the frozen $\OT1/pcr/m/n/10 exp1 _ prospective / data / c
+ounterfactuals / counterfactuals _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 prospective / data / results / consistency _ report _ 2026-[]06
+-[]17 . json$\OT1/ptm/m/n/10 (+20) ;
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 exp1 _ prospective / agent / evaluate _ clustered _ uncertainty
+ . py$ \OT1/ptm/m/n/10 (+20) re-con-
+
+Underfull \hbox (badness 6461) in paragraph at lines 1131--1141
+\OT1/ptm/m/n/10 (+20) structs the 20,000-draw market-clustered in-ter-vals in $
+\OT1/pcr/m/n/10 exp1 _ prospective / data /
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 results / clustered _ movement _ uncertainty . json$\OT1/ptm/m/
+n/10 (+20) ; $\OT1/pcr/m/n/10 exp1 _ prospective /
+
+Underfull \hbox (badness 1072) in paragraph at lines 1141--1148
+\OT1/ptm/m/n/10 (+20) tests in $\OT1/pcr/m/n/10 exp1 _ prospective / stage3 _ m
+aterials _ annotation/$\OT1/ptm/m/n/10 (+20) ; $\OT1/pcr/m/n/10 make _ final _
+) (./experiment1_context_reversal_appendix.tex [31]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 51.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reversal.tex) [32]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 87.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reversal_frontier.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 126.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_direction.tex) [33]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 175.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reasoning.tex) [34]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 252.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_performance.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 294.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_edits.tex) [35]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 315.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_controls.tex)) (./experiment2_appendix.tex
+[36]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 67.
+See the caption package documentation for explanation.
+
+[37] [38]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 194.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
+[]|\OT1/ptm/m/n/7 (+20) Anthropic Mes-sages via
+
+Underfull \hbox (badness 2828) in paragraph at lines 206--206
+[]|\OT1/ptm/m/n/7 (+20) Gemini OpenAI-compatible
+[39]
+Underfull \hbox (badness 1259) in paragraph at lines 234--243
+\OT1/ptm/m/n/10 (+20) The parser scans the raw re-ply for JSON ob-jects, re-tai
+ns the last ob-ject with an ex-act
+[40]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 335.
+See the caption package documentation for explanation.
+
+[41]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 385.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 420.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 455.
+See the caption package documentation for explanation.
+
+[42]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 490.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 526.
+See the caption package documentation for explanation.
+
+[43]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 563.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 606.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 642.
+See the caption package documentation for explanation.
+
+(./tables/exp2_symbol_context_results.tex) [44]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 657.
+See the caption package documentation for explanation.
+
+(./tables/exp2_symbol_context_scaling.tex) [45]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 707.
+See the caption package documentation for explanation.
+
+[46]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 798.
+See the caption package documentation for explanation.
+
+(./tables/exp2_reference_selection.tex) [47] [48 <./figures/exp2_reference_sele
+ction.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 850.
+See the caption package documentation for explanation.
+
+(./tables/exp2_reference_selection_symbol.tex)
+(./experiment2_mechanistic_probe_appendix.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 19.
+See the caption package documentation for explanation.
+
+(./tables/exp2_qwen_behavior_gate.tex) [49]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 72.
+See the caption package documentation for explanation.
+
+(./tables/exp2_open_model_mechanistic_summary.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 88.
+See the caption package documentation for explanation.
+
+(./tables/exp2_qwen3_mechanistic_probe.tex) [50] [51]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 169.
+See the caption package documentation for explanation.
+
+(./tables/exp2_probe_target_ceilings.tex) [52 <./figures/exp2_qwen3_mechanistic
+_main.pdf>] [53 <./figures/exp2_qwen3_mechanistic_probe.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 227.
+See the caption package documentation for explanation.
+
+(./tables/exp2_probe_power_matched.tex) [54] [55]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 344.
+See the caption package documentation for explanation.
+
+(./tables/exp2_causal_patch.tex) [56])
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) (Qwen3-4B), \OT1/pcr/m/n/10 b968826d9c46dd6066d109eabc625
+5188de91218 \OT1/ptm/m/n/10 (+20) (Qwen3-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) 8B), \OT1/pcr/m/n/10 0e9e39f249a16976918f6564b8830bc894c8
+9659 \OT1/ptm/m/n/10 (+20) (Llama-3.1-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) 8B), \OT1/pcr/m/n/10 40c069824f4251a91eefaf281ebe4c544efd
+3e18 \OT1/ptm/m/n/10 (+20) (Qwen3-14B),
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 9216db5781bf21249d130ec9da846c4624c16137 \OT1/ptm/m/n/10 (+20) 
+(Qwen3-32B), and
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 495f39366efef23836d0cfae4fbe635880d2be31 \OT1/ptm/m/n/10 (+20) 
+(Qwen2.5-72B). The ac-ti-va-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) tion hashes are \OT1/pcr/m/n/10 e191385963d639aa5b8574a9a
+bbeb91b3519aed934ac491f
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 863655631b26dbbc \OT1/ptm/m/n/10 (+20) (Qwen3-4B) and \OT1/pcr/
+m/n/10 7f65aeec7a91e404cc60068618fedf25
+
+Underfull \hbox (badness 5652) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 c679abde5d48c2b8477f736670fbc54f \OT1/ptm/m/n/10 (+20) (Llama-3
+.1-8B); all six hashes and ten-sor
+
+Underfull \hbox (badness 2005) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) di-men-sions are en-forced by the fail-closed gen-er-a-to
+r. Frozen tasks, ac-ti-va-tion ten-sors,
+
+Underfull \hbox (badness 6078) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) ex-trac-tion man-i-fests, gen-er-ated be-hav-ior, se-lect
+ed pre-dic-tions, com-plete layer curves,
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and probe re-sults are un-der $\OT1/pcr/m/n/10 exp2 _ v2 
+/ biased _ news / data / coin _ city _ stable _
+
+Underfull \hbox (badness 2150) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 relationship _ claude _ n250 _ v4 / mechanistic _ probe/$\OT1/p
+tm/m/n/10 (+20) . The anal-y-sis and as-set
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) gen-er-a-tor are $\OT1/pcr/m/n/10 exp2 _ v2 / biased _ ne
+ws / mechanistic _ probe / analyze _ probe . py$
+
+Underfull \hbox (badness 6876) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 paper / generate _ coin _ city _ mec
+hanistic _ comparison . py$\OT1/ptm/m/n/10 (+20) . The causal
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) run is $\OT1/pcr/m/n/10 mechanistic _ probe / qwen3 _ 14b
+ _ symbol _ relational _ v2/$\OT1/ptm/m/n/10 (+20) , frozen
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) by $\OT1/pcr/m/n/10 freeze _ symbol _ relational _ protoc
+ol . py$ \OT1/ptm/m/n/10 (+20) and ex-e-cuted by $\OT1/pcr/m/n/10 extract _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 symbol _ label _ states . py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/
+m/n/10 patch _ symbol _ label _ activations . py$ \OT1/ptm/m/n/10 (+20) and
+
+Underfull \hbox (badness 3039) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 analyze _ symbol _ relational _ probe . py$\OT1/ptm/m/n/10 (+20
+) ; ev-ery count in that pipeline is de-rived
+
+Underfull \hbox (badness 2547) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) from the frozen task man-i-fest and checked by $\OT1/pcr/
+m/n/10 tests / test _ symbol _ relational _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 scaling . py$\OT1/ptm/m/n/10 (+20) . $\OT1/pcr/m/n/10 paper / g
+enerate _ coin _ city _ causal _ patch _ table . py$ \OT1/ptm/m/n/10 (+20) fail
+s
+
+Underfull \hbox (badness 5711) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) closed on the run's study name, sealed-test size and sta-
+bil-ity gate. The power-
+
+Underfull \hbox (badness 7064) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) matched runs are $\OT1/pcr/m/n/10 mechanistic _ probe / q
+wen3 _ 14b _ probe _ v2/$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 mechanistic _
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 probe / qwen3 _ 14b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20
+) , $\OT1/pcr/m/n/10 mechanistic _ probe / qwen3 _ 8b _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 m
+echanistic _ probe / qwen3 _ 4b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20) ,
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 mechanistic _ probe / llama3 _ 1 _ 70b _ symbol _ probe _ v2/$\
+OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 mechanistic _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 probe / qwen2 _ 5 _ 72b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 
+(+20) , $\OT1/pcr/m/n/10 mechanistic _ probe / qwen2 _ 5 _ 32b _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 mechanistic _ probe / llama3 _ 1 _ 8
+b _ symbol _ probe _ v2/$ \OT1/ptm/m/n/10 (+20) (check-point
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 0e9e39f249a16976918f6564b8830bc894c89659\OT1/ptm/m/n/10 (+20) )
+, built by $\OT1/pcr/m/n/10 exp2 _ v2 / biased _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 news / mechanistic _ probe / build _ probe _ tasks . py$ \OT1/p
+tm/m/n/10 (+20) and $\OT1/pcr/m/n/10 build _ arbitrary _
+[57]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 893.
+See the caption package documentation for explanation.
+
+(./tables/exp2_generator_population_robustness.tex) [58]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 942.
+See the caption package documentation for explanation.
+
+(./tables/exp2_gpt56_repeat.tex) [59] [60]
+Underfull \hbox (badness 10000) in paragraph at lines 1076--1081
+\OT1/ptm/m/n/10 (+20) The frozen data root is $\OT1/pcr/m/n/10 exp2 _ v2 / bias
+ed _ news / data / coin _ city _ stable _
+
+Underfull \hbox (badness 7203) in paragraph at lines 1082--1087
+[]\OT1/ptm/m/n/10 (+20) Under the data root, $\OT1/pcr/m/n/10 design / manifest
+ . json$ \OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 design /
+
+Underfull \hbox (badness 1590) in paragraph at lines 1082--1087
+\OT1/pcr/m/n/10 wrong _ context . manifest . json$ \OT1/ptm/m/n/10 (+20) record
+s the mis-lead-ing arm, and $\OT1/pcr/m/n/10 design /
+
+Underfull \hbox (badness 3029) in paragraph at lines 1089--1095
+\OT1/pcr/m/n/10 stable _ relationship _ claude _ n250 . py$\OT1/ptm/m/n/10 (+20
+) ; the builders are $\OT1/pcr/m/n/10 eval / build _
+
+Underfull \hbox (badness 6001) in paragraph at lines 1089--1095
+\OT1/pcr/m/n/10 coin _ city _ stable _ relationship _ claude _ n250 . py$ \OT1/
+ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 eval / build _
+[61]
+Underfull \hbox (badness 10000) in paragraph at lines 1111--1114
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ stable _ relationship _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1116--1123
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ symbol _ context . py$
+
+Underfull \hbox (badness 2253) in paragraph at lines 1116--1123
+\OT1/ptm/m/n/10 (+20) sup-plies the com-mon es-ti-ma-tor; $\OT1/pcr/m/n/10 loca
+l _ results / symbol _ context _ model _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1116--1123
+\OT1/ptm/m/n/10 (+20) thor-ity $\OT1/pcr/m/n/10 analysis / symbol _ context _ m
+odel _ comparison _ 20260824 . json$\OT1/ptm/m/n/10 (+20) .
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ reference _
+
+Underfull \hbox (badness 1210) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 selection . py$ \OT1/ptm/m/n/10 (+20) un-der the code root re-c
+om-putes the par-tial cor-re-la-tions of Sec-
+
+Underfull \hbox (badness 1354) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 results . json$ \OT1/ptm/m/n/10 (+20) un-der the data root; it 
+makes no model call. Checks are in
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 tests / test _ coin _ city _ reference _ selection . py$\OT1/pt
+m/m/n/10 (+20) , in-clud-ing one that
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 paper / generate _ coin _ city _ reference _ selection _ tables
+ . py$ \OT1/ptm/m/n/10 (+20) writes
+
+Underfull \hbox (badness 1635) in paragraph at lines 1147--1152
+[]\OT1/ptm/m/n/10 (+20) The repository-level script $\OT1/pcr/m/n/10 paper / ge
+nerate _ coin _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+[]$\OT1/pcr/m/n/10 engine / coin _ city _ robustness _
+
+Underfull \hbox (badness 3646) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 population . py$ \OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 eva
+l / build _ coin _ city _ robustness _ population .
+
+Underfull \hbox (badness 4792) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 py$ \OT1/ptm/m/n/10 (+20) build the fresh-seed pop-u-la-tion; i
+ts de-sign, re-sponses, sched-uler ledgers,
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/ptm/m/n/10 (+20) and anal-y-sis are un-der $\OT1/pcr/m/n/10 data / coin _ 
+city _ population _ 075 _ 040 _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 sd010 _ v1/$\OT1/ptm/m/n/10 (+20) . $\OT1/pcr/m/n/10 analysis /
+ analyze _ coin _ city _ rationales . py$ \OT1/ptm/m/n/10 (+20) writes
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 analysis / rationale _ audit _ v1 . json$ \OT1/ptm/m/n/10 (+20)
+ un-der the pri-mary data root.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 eval / run _ coin _ city _ gpt56 _ k0 _ repeat . py$ \OT1/ptm/m
+/n/10 (+20) and $\OT1/pcr/m/n/10 analysis / analyze _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 coin _ city _ gpt56 _ k0 _ repeat . py$ \OT1/ptm/m/n/10 (+20) i
+so-late and score the hosted re-peat.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 paper / generate _ coin _ city _ robustness _ tables . py$ \OT1
+/ptm/m/n/10 (+20) ren-ders both ap-
+) (./experiment3_appendix.tex (./tables/exp3_rebuilt_data.tex) [62]
+
+Package natbib Warning: Citation `kalman1960new' on page 63 undefined on input 
+line 39.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 60.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 1484) in paragraph at lines 77--77
+[]|\OT1/ptm/m/n/9 (+20) Structure A de-scrip-
+
+Underfull \hbox (badness 1852) in paragraph at lines 80--80
+[]|\OT1/ptm/m/n/9 (+20) Structure B de-scrip-
+(./tables/exp3_training_example.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 22.
+See the caption package documentation for explanation.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omspcr.fd) [63]) [64]
+
+Package natbib Warning: Citation `cameron2008bootstrap' on page 65 undefined on
+ input line 252.
+
+[65] [66]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 403.
+See the caption package documentation for explanation.
+
+(./tables/exp3_coin_structural_primary.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 431.
+See the caption package documentation for explanation.
+
+[67] [68]
+Underfull \hbox (badness 2600) in paragraph at lines 535--548
+\OT1/ptm/b/n/10 (+20) Source archive and sam-ple. \OT1/ptm/m/n/10 (+20) The sou
+rce ex-port[][][][][] has 1,788,703 rows and SHA-256
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 594.
+See the caption package documentation for explanation.
+
+[69]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 635.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_qwen3_8b_endpoint_results.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 650.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_model_roster_results.tex) [70]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 696.
+See the caption package documentation for explanation.
+
+(./tables/exp4_qwen_scale_results.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 736.
+See the caption package documentation for explanation.
+
+[71] [72 <./figures/exp4_llama_scale_results.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 815.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_update_seed_results.tex)
+(./experiment3_training_setup_appendix.tex
+
+Package natbib Warning: Citation `liu2024oat' on page 73 undefined on input lin
+e 5.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 26.
+See the caption package documentation for explanation.
+
+
+Package natbib Warning: Citation `loshchilov2019decoupled' on page 73 undefined
+ on input line 45.
+
+
+Package natbib Warning: Citation `rajbhandari2020zero' on page 73 undefined on 
+input line 60.
+
+
+Package natbib Warning: Citation `kwon2023vllm' on page 73 undefined on input l
+ine 61.
+
+[73]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 91.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--101
+[]|\OT1/pcr/m/n/7 Qwen/Qwen3-4B-Instruct-2507\OT1/ptm/m/n/7 (+20) , \OT1/pcr/m/
+n/7 Qwen/Qwen3-8B\OT1/ptm/m/n/7 (+20) , and
+
+Underfull \hbox (badness 10000) in paragraph at lines 123--126
+\OT1/ptm/m/n/7 (+20) Coin Har-bor: base-line 180, sup-port $\OT1/cmr/m/n/7 [40\
+OML/cmm/m/it/7 ; \OT1/cmr/m/n/7 320]$\OT1/ptm/m/n/7 (+20) , noise 4.5, driver p
+ool
+[74]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 187.
+See the caption package documentation for explanation.
+
+[75]))
+
+Package natbib Warning: There were undefined citations.
+
+[76] (./main.aux
+
+Package natbib Warning: Citation(s) may have changed.
+(natbib)                Rerun to get citations correct.
+
+)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ )
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{figure.caption.16} has been referenced but does not exist, replaced by a fixed
+ one
+
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
+9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
+mri8a.pfb>
+Output written on main.pdf (76 pages, 2243696 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'main.pdf'
+  ===Source file 'main.bbl' for 'pdflatex'
+Latexmk: Found bibliography file(s):
+  ./references.bib
+Latexmk: applying rule 'bibtex main'...
+Rule 'bibtex main':  Reasons for rerun
+Changed files or newly in use/created:
+  main.aux
+
+------------
+Run number 2 of rule 'bibtex main'
+------------
+------------
+Running 'bibtex  "main.aux"'
+------------
+This is BibTeX, Version 0.99d (TeX Live 2020)
+The top-level auxiliary file: main.aux
+The style file: iclr2027_conference.bst
+Database file #1: references.bib
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  main.aux
+
+------------
+Run number 3 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -file-line-error -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(./iclr2027_conference.sty
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)))) (./fancyhdr.sty)
+(./natbib.sty)) (/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarytopaths.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarybackgrounds.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryshapes.geometric.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshape
+s.geometric.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarycalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathmorphing.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
+e.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
+decorations.pathmorphing.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryfadings.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings.code
+.tex)) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/flafter.sty) (./wrapfig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./main.aux) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(./main.out) (./main.out)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg)
+(./tables/exp3_rebuilt_data.tex) (./frontmatter.tex [1{/usr/share/texlive/texmf
+-dist/fonts/map/pdftex/updmap/pdftex.map} <./figures//teaser_revised.pdf> <./ic
+ons/huggingface.png> <./icons/gh_logo.png>]) (./inductive_forecasting.tex)
+(./evidence_ladder.tex
+Underfull \vbox (badness 10000) has occurred while \output is active [2]
+[3 <./figures//exp1_protocol_four_panels.pdf>]
+Underfull \vbox (badness 1270) has occurred while \output is active [4 <./figur
+es//exp1_direction_selective_updating.pdf> <./icons/claude.png> <./icons/openai
+.png> <./icons/deepseek.png> <./icons/qwen.pdf> <./icons/llamma.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active [5 <./figu
+res//exp2_coin_city_prompt_arms.pdf> <./figures//exp2_coin_city_results.pdf> <.
+/icons/kimi.png> <./icons/gemini.png>]) (./transfer_and_grounding.tex
+(./tables/exp3_rebuilt_data.tex) (./fig_exp3_transfer_grid.tex
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1phv.fd))
+(./fig_exp3_results_grid.tex (./tables/exp3_coin_qwen3_8b_stochastic_data.tex))
+[6 <./figures//exp2_symbol_decoding.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active [7 <./figu
+res//exp2_causal_patch.pdf>]) (./related_work.tex
+Underfull \vbox (badness 4940) has occurred while \output is active [8 <./figur
+es//exp4_qwen_scale_results.pdf>]) (./limitations.tex) (./conclusion.tex)
+(./submission_statements.tex [9]) (./acknowledgements.tex) [10] (./main.bbl
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd)
+Underfull \hbox (badness 2020) in paragraph at lines 44--53
+[]\OT1/ptm/m/n/10 (+20) Stephanie C. Y. Chan, Adam San-toro, An-drew K. Lampine
+n, Jane X. Wang, Aa-ditya
+
+Underfull \hbox (badness 2277) in paragraph at lines 44--53
+\OT1/ptm/m/n/10 (+20) prop-er-ties drive emer-gent in-context learn-ing in tran
+s-form-ers.  In \OT1/ptm/m/it/10 (+20) Ad-vances in Neu-
+
+Underfull \hbox (badness 1895) in paragraph at lines 44--53
+\OT1/ptm/m/it/10 (+20) ral In-for-ma-tion Pro-cess-ing Sys-tems\OT1/ptm/m/n/10 
+(+20) , vol-ume 35, 2022.  doi: $10 . 52202 / 068431-[]1371$.
+
+Underfull \hbox (badness 10000) in paragraph at lines 44--53
+\OT1/ptm/m/n/10 (+20) URL [][]$\OT1/pcr/m/n/10 https : / / proceedings . neurip
+s . cc / paper _ files / paper / 2022 / hash /
+
+Underfull \hbox (badness 1067) in paragraph at lines 55--63
+\OT1/ptm/m/n/10 (+20) ers learn in-context? a case study of sim-ple func-tion c
+lasses.  In \OT1/ptm/m/it/10 (+20) Ad-vances in Neu-
+
+Underfull \hbox (badness 1895) in paragraph at lines 55--63
+\OT1/ptm/m/it/10 (+20) ral In-for-ma-tion Pro-cess-ing Sys-tems\OT1/ptm/m/n/10 
+(+20) , vol-ume 35, 2022.  doi: $10 . 52202 / 068431-[]2217$.
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--63
+\OT1/ptm/m/n/10 (+20) URL [][]$\OT1/pcr/m/n/10 https : / / proceedings . neurip
+s . cc / paper _ files / paper / 2022 / hash /
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 170--174
+\OT1/pcr/m/n/10 / / learn . microsoft . com / en-[]us / azure / foundry / agent
+s / quickstarts /
+[12]
+Underfull \hbox (badness 4872) in paragraph at lines 254--259
+[]\OT1/ptm/m/n/10 (+20) Ben Wil-son.  Anal-y-sis of au-to-mated prompt en-gi-ne
+er-ing for fore-cast-ing.  Metac-
+
+Underfull \hbox (badness 10000) in paragraph at lines 254--259
+\OT1/ptm/m/n/10 (+20) u-lus, 2025.  URL [][]$\OT1/pcr/m/n/10 https : / / www . 
+metaculus . com / notebooks / 38421 /
+) [13] (./appendix_guide.tex) [14] (./teaser_probe_appendix.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 35.
+See the caption package documentation for explanation.
+
+) (./experiment1_appendix.tex
+Underfull \hbox (badness 3312) in paragraph at lines 70--5
+[]\OT1/ptm/m/n/10 (+20) The prompt, tem-per-a-ture, out-put limit, parsed prob-
+a-bil-i-ties, ra-tio-nales, and raw com-
+[15] (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 69.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 102.
+See the caption package documentation for explanation.
+
+[16] [17]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 234.
+See the caption package documentation for explanation.
+
+[18]
+Underfull \hbox (badness 2856) in paragraph at lines 317--328
+\OT1/ptm/m/n/10 (+20) The frozen anal-y-sis ar-ti-fact is $\OT1/pcr/m/n/10 exp1
+ _ prospective / data / results / consistency _
+[19]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 438.
+See the caption package documentation for explanation.
+
+(./tables/exp1_threshold_robustness.tex) [20] [21]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 489.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 538.
+See the caption package documentation for explanation.
+
+(./tables/exp1_resolved_outcomes.tex) [22]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 584.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 621.
+See the caption package documentation for explanation.
+
+[23 <./figures/exp1_ehc_sensitivity_combined.pdf>]
+Underfull \hbox (badness 5288) in paragraph at lines 672--676
+\OT1/pcr/m/n/10 py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 audit _ orthogonal 
+_ abstention . py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 audit _ lexical _ si
+gn _ baseline . py$\OT1/ptm/m/n/10 (+20) ,
+[24]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 782.
+See the caption package documentation for explanation.
+
+(./tables/exp1_abstention_decomposition.tex) [25] [26]
+Underfull \hbox (badness 1147) in paragraph at lines 891--898
+[]\OT1/ptm/b/n/10 (+20) One de-ploy-ment was prompted dif-fer-ently. \OT1/ptm/m
+/n/10 (+20) GPT-5.4, and only GPT-5.4, re-ceived the
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 913.
+See the caption package documentation for explanation.
+
+[27]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 944.
+See the caption package documentation for explanation.
+
+(./tables/exp1_selectivity_robustness.tex) [28]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1001.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 1032.
+See the caption package documentation for explanation.
+
+(./tables/exp1_stage3_item_validation.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 1051--1056
+\OT1/pcr/m/n/10 stage3 _ materials _ annotation / capture _ review _ screenshot
+s . py$ \OT1/ptm/m/n/10 (+20) loads the
+[29] [30 <./figures/exp1_stage3_review_consent.png> <./figures/exp1_stage3_revi
+ew_item.png>]
+Underfull \hbox (badness 1859) in paragraph at lines 1117--1121
+[]\OT1/ptm/b/n/10 (+20) Sampling: $\OT1/pcr/m/n/10 exp1 _ prospective / fetch _
+ markets / select _ markets . py$ \OT1/ptm/m/n/10 (+20) and the
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1128
+[]\OT1/ptm/b/n/10 (+20) Interventions: $\OT1/pcr/m/n/10 exp1 _ prospective / ag
+ent / build _ counterfactuals . py$ \OT1/ptm/m/n/10 (+20) and
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1128
+\OT1/ptm/m/n/10 (+20) the frozen $\OT1/pcr/m/n/10 exp1 _ prospective / data / c
+ounterfactuals / counterfactuals _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 prospective / data / results / consistency _ report _ 2026-[]06
+-[]17 . json$\OT1/ptm/m/n/10 (+20) ;
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 exp1 _ prospective / agent / evaluate _ clustered _ uncertainty
+ . py$ \OT1/ptm/m/n/10 (+20) re-con-
+
+Underfull \hbox (badness 6461) in paragraph at lines 1131--1141
+\OT1/ptm/m/n/10 (+20) structs the 20,000-draw market-clustered in-ter-vals in $
+\OT1/pcr/m/n/10 exp1 _ prospective / data /
+
+Underfull \hbox (badness 10000) in paragraph at lines 1131--1141
+\OT1/pcr/m/n/10 results / clustered _ movement _ uncertainty . json$\OT1/ptm/m/
+n/10 (+20) ; $\OT1/pcr/m/n/10 exp1 _ prospective /
+
+Underfull \hbox (badness 1072) in paragraph at lines 1141--1148
+\OT1/ptm/m/n/10 (+20) tests in $\OT1/pcr/m/n/10 exp1 _ prospective / stage3 _ m
+aterials _ annotation/$\OT1/ptm/m/n/10 (+20) ; $\OT1/pcr/m/n/10 make _ final _
+) (./experiment1_context_reversal_appendix.tex [31]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 51.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reversal.tex) [32]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 87.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reversal_frontier.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 126.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_direction.tex) [33]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 175.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_reasoning.tex) [34]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 252.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_performance.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 294.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_edits.tex) [35]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 315.
+See the caption package documentation for explanation.
+
+(./tables/exp1_context_robustness_v2_controls.tex)) (./experiment2_appendix.tex
+[36]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 67.
+See the caption package documentation for explanation.
+
+[37] [38]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 194.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
+[]|\OT1/ptm/m/n/7 (+20) Anthropic Mes-sages via
+
+Underfull \hbox (badness 2828) in paragraph at lines 206--206
+[]|\OT1/ptm/m/n/7 (+20) Gemini OpenAI-compatible
+[39]
+Underfull \hbox (badness 1259) in paragraph at lines 234--243
+\OT1/ptm/m/n/10 (+20) The parser scans the raw re-ply for JSON ob-jects, re-tai
+ns the last ob-ject with an ex-act
+[40]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 335.
+See the caption package documentation for explanation.
+
+[41]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 385.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 420.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 455.
+See the caption package documentation for explanation.
+
+[42]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 490.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 526.
+See the caption package documentation for explanation.
+
+[43]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 563.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 606.
+See the caption package documentation for explanation.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 642.
+See the caption package documentation for explanation.
+
+(./tables/exp2_symbol_context_results.tex) [44]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 657.
+See the caption package documentation for explanation.
+
+(./tables/exp2_symbol_context_scaling.tex) [45]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 707.
+See the caption package documentation for explanation.
+
+[46]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 798.
+See the caption package documentation for explanation.
+
+(./tables/exp2_reference_selection.tex) [47] [48 <./figures/exp2_reference_sele
+ction.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 850.
+See the caption package documentation for explanation.
+
+(./tables/exp2_reference_selection_symbol.tex)
+(./experiment2_mechanistic_probe_appendix.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 19.
+See the caption package documentation for explanation.
+
+(./tables/exp2_qwen_behavior_gate.tex) [49]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 72.
+See the caption package documentation for explanation.
+
+(./tables/exp2_open_model_mechanistic_summary.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 88.
+See the caption package documentation for explanation.
+
+(./tables/exp2_qwen3_mechanistic_probe.tex) [50] [51]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 169.
+See the caption package documentation for explanation.
+
+(./tables/exp2_probe_target_ceilings.tex) [52 <./figures/exp2_qwen3_mechanistic
+_main.pdf>] [53 <./figures/exp2_qwen3_mechanistic_probe.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 227.
+See the caption package documentation for explanation.
+
+(./tables/exp2_probe_power_matched.tex) [54] [55]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 344.
+See the caption package documentation for explanation.
+
+(./tables/exp2_causal_patch.tex) [56])
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) (Qwen3-4B), \OT1/pcr/m/n/10 b968826d9c46dd6066d109eabc625
+5188de91218 \OT1/ptm/m/n/10 (+20) (Qwen3-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) 8B), \OT1/pcr/m/n/10 0e9e39f249a16976918f6564b8830bc894c8
+9659 \OT1/ptm/m/n/10 (+20) (Llama-3.1-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) 8B), \OT1/pcr/m/n/10 40c069824f4251a91eefaf281ebe4c544efd
+3e18 \OT1/ptm/m/n/10 (+20) (Qwen3-14B),
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 9216db5781bf21249d130ec9da846c4624c16137 \OT1/ptm/m/n/10 (+20) 
+(Qwen3-32B), and
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 495f39366efef23836d0cfae4fbe635880d2be31 \OT1/ptm/m/n/10 (+20) 
+(Qwen2.5-72B). The ac-ti-va-
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) tion hashes are \OT1/pcr/m/n/10 e191385963d639aa5b8574a9a
+bbeb91b3519aed934ac491f
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 863655631b26dbbc \OT1/ptm/m/n/10 (+20) (Qwen3-4B) and \OT1/pcr/
+m/n/10 7f65aeec7a91e404cc60068618fedf25
+
+Underfull \hbox (badness 5652) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 c679abde5d48c2b8477f736670fbc54f \OT1/ptm/m/n/10 (+20) (Llama-3
+.1-8B); all six hashes and ten-sor
+
+Underfull \hbox (badness 2005) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) di-men-sions are en-forced by the fail-closed gen-er-a-to
+r. Frozen tasks, ac-ti-va-tion ten-sors,
+
+Underfull \hbox (badness 6078) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) ex-trac-tion man-i-fests, gen-er-ated be-hav-ior, se-lect
+ed pre-dic-tions, com-plete layer curves,
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and probe re-sults are un-der $\OT1/pcr/m/n/10 exp2 _ v2 
+/ biased _ news / data / coin _ city _ stable _
+
+Underfull \hbox (badness 2150) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 relationship _ claude _ n250 _ v4 / mechanistic _ probe/$\OT1/p
+tm/m/n/10 (+20) . The anal-y-sis and as-set
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) gen-er-a-tor are $\OT1/pcr/m/n/10 exp2 _ v2 / biased _ ne
+ws / mechanistic _ probe / analyze _ probe . py$
+
+Underfull \hbox (badness 6876) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 paper / generate _ coin _ city _ mec
+hanistic _ comparison . py$\OT1/ptm/m/n/10 (+20) . The causal
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) run is $\OT1/pcr/m/n/10 mechanistic _ probe / qwen3 _ 14b
+ _ symbol _ relational _ v2/$\OT1/ptm/m/n/10 (+20) , frozen
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) by $\OT1/pcr/m/n/10 freeze _ symbol _ relational _ protoc
+ol . py$ \OT1/ptm/m/n/10 (+20) and ex-e-cuted by $\OT1/pcr/m/n/10 extract _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 symbol _ label _ states . py$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/
+m/n/10 patch _ symbol _ label _ activations . py$ \OT1/ptm/m/n/10 (+20) and
+
+Underfull \hbox (badness 3039) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 analyze _ symbol _ relational _ probe . py$\OT1/ptm/m/n/10 (+20
+) ; ev-ery count in that pipeline is de-rived
+
+Underfull \hbox (badness 2547) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) from the frozen task man-i-fest and checked by $\OT1/pcr/
+m/n/10 tests / test _ symbol _ relational _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 scaling . py$\OT1/ptm/m/n/10 (+20) . $\OT1/pcr/m/n/10 paper / g
+enerate _ coin _ city _ causal _ patch _ table . py$ \OT1/ptm/m/n/10 (+20) fail
+s
+
+Underfull \hbox (badness 5711) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) closed on the run's study name, sealed-test size and sta-
+bil-ity gate. The power-
+
+Underfull \hbox (badness 7064) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) matched runs are $\OT1/pcr/m/n/10 mechanistic _ probe / q
+wen3 _ 14b _ probe _ v2/$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 mechanistic _
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 probe / qwen3 _ 14b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20
+) , $\OT1/pcr/m/n/10 mechanistic _ probe / qwen3 _ 8b _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 m
+echanistic _ probe / qwen3 _ 4b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 (+20) ,
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 mechanistic _ probe / llama3 _ 1 _ 70b _ symbol _ probe _ v2/$\
+OT1/ptm/m/n/10 (+20) , $\OT1/pcr/m/n/10 mechanistic _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 probe / qwen2 _ 5 _ 72b _ symbol _ probe _ v2/$\OT1/ptm/m/n/10 
+(+20) , $\OT1/pcr/m/n/10 mechanistic _ probe / qwen2 _ 5 _ 32b _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 mechanistic _ probe / llama3 _ 1 _ 8
+b _ symbol _ probe _ v2/$ \OT1/ptm/m/n/10 (+20) (check-point
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 0e9e39f249a16976918f6564b8830bc894c89659\OT1/ptm/m/n/10 (+20) )
+, built by $\OT1/pcr/m/n/10 exp2 _ v2 / biased _
+
+Underfull \hbox (badness 10000) in paragraph at lines 391--867
+\OT1/pcr/m/n/10 news / mechanistic _ probe / build _ probe _ tasks . py$ \OT1/p
+tm/m/n/10 (+20) and $\OT1/pcr/m/n/10 build _ arbitrary _
+[57]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 893.
+See the caption package documentation for explanation.
+
+(./tables/exp2_generator_population_robustness.tex) [58]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 942.
+See the caption package documentation for explanation.
+
+(./tables/exp2_gpt56_repeat.tex) [59] [60]
+Underfull \hbox (badness 10000) in paragraph at lines 1076--1081
+\OT1/ptm/m/n/10 (+20) The frozen data root is $\OT1/pcr/m/n/10 exp2 _ v2 / bias
+ed _ news / data / coin _ city _ stable _
+
+Underfull \hbox (badness 7203) in paragraph at lines 1082--1087
+[]\OT1/ptm/m/n/10 (+20) Under the data root, $\OT1/pcr/m/n/10 design / manifest
+ . json$ \OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 design /
+
+Underfull \hbox (badness 1590) in paragraph at lines 1082--1087
+\OT1/pcr/m/n/10 wrong _ context . manifest . json$ \OT1/ptm/m/n/10 (+20) record
+s the mis-lead-ing arm, and $\OT1/pcr/m/n/10 design /
+
+Underfull \hbox (badness 3029) in paragraph at lines 1089--1095
+\OT1/pcr/m/n/10 stable _ relationship _ claude _ n250 . py$\OT1/ptm/m/n/10 (+20
+) ; the builders are $\OT1/pcr/m/n/10 eval / build _
+
+Underfull \hbox (badness 6001) in paragraph at lines 1089--1095
+\OT1/pcr/m/n/10 coin _ city _ stable _ relationship _ claude _ n250 . py$ \OT1/
+ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 eval / build _
+[61]
+Underfull \hbox (badness 10000) in paragraph at lines 1111--1114
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ stable _ relationship _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1116--1123
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ symbol _ context . py$
+
+Underfull \hbox (badness 2253) in paragraph at lines 1116--1123
+\OT1/ptm/m/n/10 (+20) sup-plies the com-mon es-ti-ma-tor; $\OT1/pcr/m/n/10 loca
+l _ results / symbol _ context _ model _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1116--1123
+\OT1/ptm/m/n/10 (+20) thor-ity $\OT1/pcr/m/n/10 analysis / symbol _ context _ m
+odel _ comparison _ 20260824 . json$\OT1/ptm/m/n/10 (+20) .
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+[]$\OT1/pcr/m/n/10 analysis / analyze _ coin _ city _ reference _
+
+Underfull \hbox (badness 1210) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 selection . py$ \OT1/ptm/m/n/10 (+20) un-der the code root re-c
+om-putes the par-tial cor-re-la-tions of Sec-
+
+Underfull \hbox (badness 1354) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 results . json$ \OT1/ptm/m/n/10 (+20) un-der the data root; it 
+makes no model call. Checks are in
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 tests / test _ coin _ city _ reference _ selection . py$\OT1/pt
+m/m/n/10 (+20) , in-clud-ing one that
+
+Underfull \hbox (badness 10000) in paragraph at lines 1125--1134
+\OT1/pcr/m/n/10 paper / generate _ coin _ city _ reference _ selection _ tables
+ . py$ \OT1/ptm/m/n/10 (+20) writes
+
+Underfull \hbox (badness 1635) in paragraph at lines 1147--1152
+[]\OT1/ptm/m/n/10 (+20) The repository-level script $\OT1/pcr/m/n/10 paper / ge
+nerate _ coin _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+[]$\OT1/pcr/m/n/10 engine / coin _ city _ robustness _
+
+Underfull \hbox (badness 3646) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 population . py$ \OT1/ptm/m/n/10 (+20) and $\OT1/pcr/m/n/10 eva
+l / build _ coin _ city _ robustness _ population .
+
+Underfull \hbox (badness 4792) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 py$ \OT1/ptm/m/n/10 (+20) build the fresh-seed pop-u-la-tion; i
+ts de-sign, re-sponses, sched-uler ledgers,
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/ptm/m/n/10 (+20) and anal-y-sis are un-der $\OT1/pcr/m/n/10 data / coin _ 
+city _ population _ 075 _ 040 _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 sd010 _ v1/$\OT1/ptm/m/n/10 (+20) . $\OT1/pcr/m/n/10 analysis /
+ analyze _ coin _ city _ rationales . py$ \OT1/ptm/m/n/10 (+20) writes
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 analysis / rationale _ audit _ v1 . json$ \OT1/ptm/m/n/10 (+20)
+ un-der the pri-mary data root.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 eval / run _ coin _ city _ gpt56 _ k0 _ repeat . py$ \OT1/ptm/m
+/n/10 (+20) and $\OT1/pcr/m/n/10 analysis / analyze _
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 coin _ city _ gpt56 _ k0 _ repeat . py$ \OT1/ptm/m/n/10 (+20) i
+so-late and score the hosted re-peat.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1154--1164
+\OT1/pcr/m/n/10 paper / generate _ coin _ city _ robustness _ tables . py$ \OT1
+/ptm/m/n/10 (+20) ren-ders both ap-
+) (./experiment3_appendix.tex (./tables/exp3_rebuilt_data.tex) [62]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 60.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 1484) in paragraph at lines 77--77
+[]|\OT1/ptm/m/n/9 (+20) Structure A de-scrip-
+
+Underfull \hbox (badness 1852) in paragraph at lines 80--80
+[]|\OT1/ptm/m/n/9 (+20) Structure B de-scrip-
+(./tables/exp3_training_example.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 22.
+See the caption package documentation for explanation.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omspcr.fd) [63]) [64] [65]
+[66]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 403.
+See the caption package documentation for explanation.
+
+(./tables/exp3_coin_structural_primary.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 431.
+See the caption package documentation for explanation.
+
+[67] [68]
+Underfull \hbox (badness 2600) in paragraph at lines 535--548
+\OT1/ptm/b/n/10 (+20) Source archive and sam-ple. \OT1/ptm/m/n/10 (+20) The sou
+rce ex-port[][][][][] has 1,788,703 rows and SHA-256
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 594.
+See the caption package documentation for explanation.
+
+[69]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 635.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_qwen3_8b_endpoint_results.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 650.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_model_roster_results.tex) [70]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 696.
+See the caption package documentation for explanation.
+
+(./tables/exp4_qwen_scale_results.tex)
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 736.
+See the caption package documentation for explanation.
+
+[71] [72 <./figures/exp4_llama_scale_results.pdf>]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 815.
+See the caption package documentation for explanation.
+
+(./tables/exp3b_update_seed_results.tex)
+(./experiment3_training_setup_appendix.tex
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 26.
+See the caption package documentation for explanation.
+
+[73]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 91.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--101
+[]|\OT1/pcr/m/n/7 Qwen/Qwen3-4B-Instruct-2507\OT1/ptm/m/n/7 (+20) , \OT1/pcr/m/
+n/7 Qwen/Qwen3-8B\OT1/ptm/m/n/7 (+20) , and
+
+Underfull \hbox (badness 10000) in paragraph at lines 123--126
+\OT1/ptm/m/n/7 (+20) Coin Har-bor: base-line 180, sup-port $\OT1/cmr/m/n/7 [40\
+OML/cmm/m/it/7 ; \OT1/cmr/m/n/7 320]$\OT1/ptm/m/n/7 (+20) , noise 4.5, driver p
+ool
+[74]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 187.
+See the caption package documentation for explanation.
+
+[75])) [76] (./main.aux) )
+(see the transcript file for additional information){/usr/share/texlive/texmf-d
+ist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmbx7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
+10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
+/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (76 pages, 2248118 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+  ===Source file 'main.bbl' for 'pdflatex'
+Latexmk: Found bibliography file(s):
+  ./references.bib
+Latexmk: All targets (main.pdf) are up-to-date
+

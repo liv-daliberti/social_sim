@@ -1,0 +1,134 @@
+{
+  "anchor": {
+    "cities": [
+      "A",
+      "B",
+      "C"
+    ],
+    "saved_tensor": "both subtokens separately at embedding output and transformer outputs 1--80",
+    "site": "both exact symbol subtokens in each Background label line",
+    "subtoken_pooling_for_probes": "arithmetic mean of the two subtokens"
+  },
+  "causal_patching": {
+    "controls": [
+      "unpatched",
+      "self patch at selected window",
+      "cross patch at embedding output only",
+      "cross patch at all causally effective hidden-state layers 0--79"
+    ],
+    "directions": [
+      "correct_into_swapped",
+      "swapped_into_correct"
+    ],
+    "primary_endpoint": "episode-level mean of the regime-aligned correct-into-swapped shift and the sign-reversed swapped-into-correct shift",
+    "primary_evidence_depth": 0,
+    "primary_layer_rule": "three contiguous hidden-state layers centered on the development-selected primary relational-probe layer; clamp to 1--3 or 77--79 at boundaries",
+    "primary_test": "exact one-sided episode sign-flip test",
+    "secondary_evidence_depth": 4,
+    "site": "both City C symbol subtokens only"
+  },
+  "code_sha256": {
+    "analyze_symbol_relational_probe.py": "eef6bca03d6696e994fa5417743d5d29d71611f5f7f9a4ca2d33b451de51a551",
+    "extract_symbol_label_states.py": "bf6a00c720bc7ea660fa38df14139feded6c80d2020520310e359150fbb1e343",
+    "freeze_symbol_relational_protocol.py": "48a200e11636d0ad0bc6071b98a21a34c280c916f59f681963733062865f542b",
+    "patch_symbol_label_activations.py": "673a0fd314595fa8979836517a4e3482e089473045f67b7b63ee5e5d45692424",
+    "symbol_relational_common.py": "80ce8c7bde6a87e20e35b32b9ad5fc82ca4db7dac6f3170063e77991fe2d2f2f"
+  },
+  "frozen_at": "2026-08-27T22:20:56.995441+00:00",
+  "model": {
+    "commit": "1605565b47bb9346c5515c34102e054115b4f98b",
+    "id": "meta-llama/Llama-3.1-70B-Instruct"
+  },
+  "paper_integration": "prospective checkpoint replication; integrate only after frozen analysis",
+  "probe": {
+    "cv": "four episode-disjoint, fully factorially balanced folds",
+    "embedding_output": "control only; cannot be selected",
+    "final_output_layer": "layer 80 is saved as a diagnostic but is ineligible for selection because it has no downstream transformer block",
+    "layer_selection": "maximum development CV among causally effective transformer outputs 1--79; earlier layer breaks ties",
+    "permutation": {
+      "repeats": 10000,
+      "scheme": "held-out labels permuted with the development-selected representation, layer, ridge, and fitted probe fixed",
+      "seed": 20260825
+    },
+    "primary_target": "regime",
+    "ridge_alphas": [
+      0.0001,
+      0.003,
+      0.1,
+      3.0,
+      100.0
+    ],
+    "sealed_test": "88 correct-label and 88 swapped-label k=0 prompts",
+    "secondary_targets": [
+      "slope",
+      "residual_slope"
+    ],
+    "training": "correct-label development episodes only"
+  },
+  "replication": {
+    "all_original_gate_checks_reused": true,
+    "confirmatory_claim": "the development-selected three-layer City C label patch has a positive bidirectional regime-aligned effect at k=0",
+    "parent_results_sha256": "249a07a54ddd1fe8478eea40a127cf421c8d92926d6b9ec8e8ad997f96bbba78",
+    "parent_study": "qwen3_14b_symbol_relational_v2",
+    "role": "cross_family_confirmation",
+    "target_fixed_before_label_state_extraction": true,
+    "target_selection_rule": "the evaluated non-Qwen checkpoint with both significant held-out relational decoding and cue-sensitive zero-shot behavior"
+  },
+  "representations": {
+    "definitions": {
+      "city_c": "City C label state",
+      "city_c_minus_matching_reference": "City C minus matching A/B label state",
+      "city_c_minus_nonmatching_reference": "City C minus other A/B label state",
+      "matching_minus_nonmatching_reference": "matching A/B minus other A/B label state",
+      "matching_reference": "A/B label state whose symbol matches City C"
+    },
+    "diagnostic": [
+      "city_c",
+      "matching_reference",
+      "city_c_minus_nonmatching_reference",
+      "matching_minus_nonmatching_reference"
+    ],
+    "primary": "city_c_minus_matching_reference"
+  },
+  "source_artifacts_sha256": {
+    "hidden_states.npz": "3523095ec15434b7878dce9ec7b6f46bd50991703e6a7566376d8bece263c207",
+    "probe_results.json": "b59ac310960620169f5e94d9c619156df59b40f7d4adf1b8b1c92a4e64499b94",
+    "task_manifest.json": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+    "tasks.jsonl": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01"
+  },
+  "stability_gate_before_cross_family_replication": {
+    "all_required": true,
+    "checks": [
+      "primary correct-label relational regime AUC > .5",
+      "primary held-out permutation p < .05",
+      "at least 77 complete causal-patch episodes at k=0",
+      "primary causal-patch exact sign-flip p < .05",
+      "positive symmetric patch mean",
+      "positive mean in both patch directions",
+      "at least 319 parsed self-patch pairs",
+      "self-patch exact poll match rate >= .95"
+    ],
+    "failure_action": "stop; report the checkpoint replication as failed",
+    "pass_action": "report the prospectively frozen cross-family replication"
+  },
+  "status": "frozen_before_label_activation_extraction",
+  "study": "llama3_1_70b_symbol_relational_v1",
+  "task_design": {
+    "all_records": 1488,
+    "arms": [
+      "abc_context",
+      "abc_wrong_context"
+    ],
+    "balance_factors": [
+      "strong_reference_city",
+      "target_strong",
+      "episode_local_strong_symbol"
+    ],
+    "development_episodes": 160,
+    "label_extraction_records": 496,
+    "label_extraction_scope": "k=0 correct and swapped arms only; k=4 is causally identical through the City C label and is not duplicated",
+    "sealed_test_episodes": 88
+  },
+  "task_manifest_study": "qwen3_14b_symbol_probe_v2",
+  "tokenization_preflight_sha256": "3472db73231daaeaafdb5f05b43635988abcbfbfd7022fa94e1038abe4c76ebb"
+}

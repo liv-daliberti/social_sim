@@ -1,0 +1,256 @@
+\section{Do forecasts change for the right reason?}
+\label{sec:evidence}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{exp1_protocol_four_panels.pdf}
+\caption{\textbf{When should a forecast change?} An agent forecasts an
+unresolved question, then receives one fictional update with search off. Some
+updates support the outcome, some oppose it, and some concern the same topic but
+do not bear on the outcome. The labels remain hidden; we ask whether the model
+moves when the news matters and whether it moves the right way.}
+\label{fig:exp1-pipeline}
+\end{figure}
+
+Forecasting is not only about assigning a probability; it is also about knowing
+which evidence should change it. A model can still move for the wrong reason: a
+headline may share a market's topic without changing the event's likelihood. We
+therefore begin by asking whether models distinguish evidence that bears on an
+outcome from topical resemblance and move in the direction it warrants. Exp.~1
+tests this on unresolved markets. Exp.~2 raises the bar: when populations respond
+differently, can context select the relationship that governs a new case, and can
+local evidence revise it?
+
+\subsection{Exp.~1: can the model separate evidence from topical chatter?}
+\label{sec:exp1}
+
+\noindent\textbf{Design.}
+We test this before events resolve using 100 unresolved binary
+Polymarket questions. Each model first forecasts with web search, then sees one
+fictional update with search turned off. Some updates support YES, some support
+NO, and others mention the same topic without bearing on the outcome. The model
+does not see these labels. Its task is to decide whether to move and, if so, in
+which direction. A word-only classifier evaluated on separate markets shows what
+surface cues can accomplish; the full sampling design is in
+App.~\ref{app:exp1}. Figure~\ref{fig:exp1-pipeline} shows the sequence.
+Across nine systems, this yields 30,094 valid forecast updates.
+
+\noindent\textbf{Finding: models first decide whether an update is warranted.}
+Figure~\ref{fig:exp1-updating} shows that every system leaves its prior
+unchanged more often for topical controls. When models update, they move
+$1.9$--$7.5\times$ farther for directional packets across all nine systems. They
+also move in the implied direction: directional consistency spans $.887$--$.990$,
+compared with $.688$ for the word-only classifier. Human validation and
+uncertainty estimates are in App.~\ref{app:exp1-threshold-robustness}.
+
+\begin{figure}[!b]
+\centering
+\begin{subfigure}[c]{0.525\textwidth}
+\centering
+\includegraphics[width=.92\linewidth]{exp1_direction_selective_updating.pdf}
+\caption{}
+\label{fig:exp1-bars}
+\end{subfigure}\hspace{0.01\textwidth}
+\begin{subfigure}[c]{0.455\textwidth}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}rccc@{}}
+\toprule
+\textbf{Model} & \textbf{Size} & \textbf{Abst.} & \textbf{Sens.}$\uparrow$ & \textbf{EHC$_{\geq3}$}$\uparrow$ \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Hosted API (parameters undisclosed)}}\\
+\micon{claude.png}~Opus~4.8 & --- & 71.4\% & \cellcolor{heatgreen}$7.0\times$ & \cellcolor{heatgreen}.990 \\
+\micon{openai.png}~GPT-5.4 & --- & 8.4\% & \cellcolor{heatgreen}$7.5\times$ & \cellcolor{heatgreen}.987 \\
+\micon{deepseek.png}~V4-Pro & --- & 44.4\% & \cellcolor{heatyellow}$4.9\times$ & \cellcolor{heatyellow}.977 \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Open-weight, descending parameters} $\downarrow$}\\
+\micon{qwen.pdf}~2.5-72B & 72B & 24.2\% & \cellcolor{heatorange}$3.2\times$ & \cellcolor{heatyellow}.963 \\
+\micon{llamma.pdf}~3.3-70B & 70B & 10.7\% & \cellcolor{heatyellow}$5.7\times$ & \cellcolor{heatyellow}.965 \\
+\micon{llamma.pdf}~3.1-70B & 70B & 2.5\% & \cellcolor{heatyellow}$4.5\times$ & \cellcolor{heatyellow}.961 \\
+\micon{qwen.pdf}~2.5-32B & 32B & 11.1\% & \cellcolor{heatorange}$2.8\times$ & \cellcolor{heatyellow}.964 \\
+\micon{qwen.pdf}~2.5-14B & 14B & 26.1\% & \cellcolor{heatred}$2.2\times$ & \cellcolor{heatorange}.943 \\
+\micon{llamma.pdf}~3.1-8B & 8B & 1.1\% & \cellcolor{heatred}$1.9\times$ & \cellcolor{heatred}.887 \\
+\bottomrule
+\end{tabular*}
+\caption{}
+\label{fig:exp1-table}
+\label{tab:consistency}
+\end{subfigure}
+\caption{\textbf{Models move much more for evidence than for topical
+chatter, and usually move in the implied direction.} \textbf{(a)} Average
+revision after supporting, contrary, and topical updates. \textbf{(b)} The
+table summarizes how often models leave topical updates alone, how much farther
+they move for directional evidence, and how often a substantial move has the
+right sign. Intervals and robustness checks are in
+App.~\ref{app:exp1-threshold-robustness}.}
+\label{fig:exp1-updating}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[
+  width=.90\linewidth,
+  trim=11pt 14.5pt 3.5pt 7pt,
+  clip
+]{exp2_coin_city_prompt_arms.pdf}
+\caption{\textbf{Coin City turns contextual reasoning into a paired
+comparison.} Every arm shares the query and numerical cases. The context arm
+adds a description connecting City C to one displayed media environment; the
+opposite-context arm changes only that sentence. Target cases then accumulate,
+allowing local evidence to confirm or correct the contextual choice.}
+\label{fig:coin-city-prompt}
+\end{figure}
+
+\noindent\textbf{\emph{What Exp.~1 establishes.}}
+\emph{Across the tested systems, forecasts distinguish outcome-relevant evidence
+from topical chatter and move in the direction implied by the evidence.}
+This does not yet show whether the model knows whose response pattern makes that
+evidence predictive. Coin City exposes that hidden choice.
+
+\subsection{Exp.~2: let context select a relationship, then challenge it}
+\label{sec:exp2}
+
+\noindent\textbf{Coin City makes the process ambiguity observable.}
+Figure~\ref{fig:world-knowledge-evidence} began with a familiar ambiguity: the
+same two heads can imply different forecasts depending on what process the
+forecaster believes generated them. Coin City turns that intuition into a
+controlled test. The same campaign story moves polls strongly in City A but
+weakly in City B; context identifies the better analogue for target City C. If
+the model uses that link, changing only the context should change its forecast,
+while direct City C cases should eventually override a misleading cue. Each
+episode supplies noisy A/B examples, a one-sentence link, and zero to four target
+cases.
+Each city's poll response follows
+\[
+  \Delta p_{ij}=g_j x_{ij}+\epsilon_{ij},
+  \qquad \epsilon_{ij}\sim\mathcal{N}(0,5^2),
+  \label{eq:coin-city-dgp}
+\]
+where \(x_{ij}\) is signed campaign news and \(g_j\) is that city's stable
+sensitivity. The prompt never states \(g_j\); the model has to infer it from
+examples.
+Figure~\ref{fig:coin-city-prompt} shows the shared query, reference cities, and
+target-city context in one illustrated arm.
+
+We compare five versions of the same problem: target cases alone; references
+without a link; the correct link; the opposite link; and episode-varying KIV/ZOR
+labels whose meaning must be learned from the references. Forecast error tells us
+whether context helps. The model's implied response to campaign news tells us
+which city it is treating as the analogue. App.~\ref{app:coin-city-results}
+gives the full model roster and sampling design.
+
+\noindent\textbf{Finding: the forecast follows the selected analogue.}
+Figure~\ref{fig:coin-city-results} shows that correct context lowers error before
+any City C cases for every system; changing only that sentence reverses the selected
+regime. The implied response correlates $.51$--$.86$ with the named reference
+after controlling for the true regime, while the other reference is near zero.
+As City C cases accumulate, both the contextual advantage and inversion harm
+shrink: forecasts shift from context toward diagnostic local behavior.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{exp2_coin_city_results.pdf}
+\vspace{3pt}
+\begin{minipage}{\linewidth}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l r rrrr rr}
+\toprule
+& & \multicolumn{4}{c}{Forecast MAE [95\% CI]} & \multicolumn{2}{c}{$\rho(\hat g,g_C)$} \\
+\cmidrule(lr){3-6}\cmidrule(lr){7-8}
+Model & Paired $n$ & Target only & No C context & $+$ C context &
+$+$ wrong C context & No context & $+$ context \\
+\midrule
+\micon{claude.png}~Opus~4.8 & 250 & 2.32 [2.20,\,2.46] & 2.65 [2.41,\,2.89] & \textbf{1.82} [1.64,\,2.02] & 4.20 [3.87,\,4.54] & $-.06$ & \textbf{.70} \\
+\micon{claude.png}~Opus~5 & 250 & 2.36 [2.12,\,2.59] & 2.62 [2.38,\,2.84] & \textbf{1.76} [1.57,\,1.99] & 4.25 [3.92,\,4.57] & $-.01$ & \textbf{.62} \\
+\micon{openai.png}~GPT-5.6 & 250 & 3.60 [3.28,\,3.94] & 2.52 [2.33,\,2.75] & \textbf{1.60} [1.42,\,1.77] & 4.23 [3.90,\,4.55] & $-.04$ & \textbf{.68} \\
+\micon{deepseek.png}~V4-Pro & 250 & \textbf{2.45} [2.27,\,2.61] & 2.84 [2.55,\,3.15] & 2.47 [2.19,\,2.77] & 4.36 [4.01,\,4.74] & $-.03$ & \textbf{.52} \\
+\micon{kimi.png}~K3 & 250 & 3.35 [3.04,\,3.67] & 2.55 [2.32,\,2.78] & \textbf{1.89} [1.66,\,2.13] & 4.31 [3.98,\,4.62] & $-.02$ & \textbf{.59} \\
+\micon{gemini.png}~3.6 Flash & 250 & 2.53 [2.35,\,2.73] & 2.55 [2.31,\,2.80] & \textbf{2.17} [1.89,\,2.48] & 4.29 [3.94,\,4.66] & $.08$ & \textbf{.56} \\
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
+\caption{\textbf{Context improves forecasts before target cases and helps assign
+the response pattern across six systems.} Giving the correct analogue lowers
+error before City C has a history; naming the wrong analogue raises it. As direct
+City C cases accumulate, forecasts rely less on either contextual cue. Full
+results by model are in App.~\ref{app:coin-city-results}.}
+\label{fig:coin-city-results}
+\end{figure}
+
+\subsubsection{Infer a convention with no stable semantics}
+\label{sec:novel-mapping}
+
+The context result still admits a weaker explanation: familiar descriptions such
+as ``national news'' might cue a response without the model inferring the
+relationship. KIV and ZOR remove that route. Their meanings change in every
+episode, so the model can use them only by inferring from the reference cases
+which label names which response pattern. Twelve of fifteen systems recover the
+convention before any target cases. When the two populations are made harder to
+distinguish, performance falls but the ordering of models remains similar, as an
+induction account predicts (App.~\ref{app:coin-city-robustness}).
+
+\begin{wrapfigure}[23]{r}{0.43\textwidth}
+\vspace{-1.8em}
+\centering
+\includegraphics[width=\linewidth]{exp2_symbol_decoding.pdf}
+\vspace{-1.0em}
+\caption{\textbf{Larger models infer an episode-local convention, then yield
+to direct evidence.} On 88 new episodes, four larger Qwen and Llama checkpoints
+(14--72B) recover the changing KIV/ZOR mapping; three smaller checkpoints
+(4--8B) struggle.}
+\label{fig:coin-city-symbol-decoding}
+\vspace{-1.8em}
+\end{wrapfigure}
+
+This behavior shows that models can use a newly induced convention, but not
+whether they represent that convention internally or whether it helps produce
+the forecast.
+
+Figure~\ref{fig:coin-city-symbol-decoding} asks the first question. Across seven
+open checkpoints, the four larger models carry the episode's inferred KIV/ZOR
+meaning in their internal state, while the three smaller models struggle. That
+state follows the contextual relationship before City C has a history, then
+yields as direct City C evidence identifies the local response. The representation
+therefore tracks which source of information should govern the forecast, rather
+than a fixed meaning of either label.
+
+Decoding is still correlational. Figure~\ref{fig:coin-city-causal-patch} asks the
+causal question by swapping the label-state representation between otherwise
+matched Qwen3-14B prompts. Before City C provides its own history, the intervention
+changes both the analogue the model names and its numerical forecast. After four
+City C cases, the same swap has no reliable effect. Across episodes, the shift is
+\(+.333\) before target cases and \(-.035\) after four, the latter inside the
+random-swap range. This timing is the point: the induced convention helps produce
+the forecast when context is needed, then gives way when direct evidence reveals
+the relationship (App.~\ref{app:coin-city-causal-patch}).
+
+\noindent\textbf{\emph{What Exp.~2 establishes.}}
+\emph{Models use context to select which population's response governs a
+forecast and revise that choice when target evidence arrives. Twelve of fifteen
+systems infer a convention with no stable semantics; larger open models encode
+that episode-local mapping, and changing it causally changes Qwen3-14B's forecast
+when local evidence is absent.}
+
+\begin{figure}[!t]
+\vspace{-0.4em}
+\centering
+\includegraphics[width=\linewidth]{exp2_causal_patch.pdf}
+\vspace{-0.7em}
+\caption{\textbf{Changing the induced convention changes the forecast before
+target evidence arrives, but not after.} In the illustrated pair, swapping the
+internal representation moves the forecast from 51.3 to 54.0 and changes which
+reference city the model names; reversing the swap reverses the movement. Once
+four target cases reveal City C's own behavior, arbitrary swaps are no more
+influential than the intervention. Full controls and across-episode results are
+in Table~\ref{tab:coin-city-causal-patch}.}
+\label{fig:coin-city-causal-patch}
+\vspace{-1.0em}
+\end{figure}
+
+Section~4 asks whether training carries this form of relationship use into a new
+world.

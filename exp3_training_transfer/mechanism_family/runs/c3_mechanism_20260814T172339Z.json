@@ -1,0 +1,377 @@
+{
+  "base_script_sha256": "2371b460dbedfb1fc41c8f6e2c76f37869ea8f7fd8a3783d5abf20de46008955",
+  "evaluator_sha256": "e8aab819d4c95f768772121de15418b03200f582a61c1b780e7a7a099cc9e46f",
+  "git_revision": "7fa508c3458b86192282c4e45526b390083379b9",
+  "preflight_code_sha256": "05bc2fdbe76f4ad118d1b87931e90759a7ccc80a6906d8f494c52f41c3fcb1a7",
+  "preflight_manifest": "exp3_training_transfer/mechanism_family/protocol/c3_mechanism_manifest.json",
+  "preflight_sha256": "814a3395e8d66c30b8fb24c39b97f5fdfe0407ea1b2f7c679c25b606a490d678",
+  "prompt_renderer_sha256": "92b94ccded7023efd61cbff2067948421eecfc9a6f9e7e1dad057c7eb3adcf20",
+  "protocol": "c3_mechanism_disclosure_v1",
+  "report_sha256": "4e8c0f1ebed850c18988c7ef4caf5f2d22aea3d2c6fea0032c4e7ed743bf9f8f",
+  "submissions": [
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_4b,MODEL=Qwen/Qwen3-4B-Instruct-2507,PROMPT_TEMPLATE=biased_news,SEED=42,MAX_TRAIN=160,EVAL_STEPS=10,COLLOCATE=0,GPUS=2,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "COLLOCATE": "0",
+        "DISCLOSURE": "disclosed",
+        "EVAL_STEPS": "10",
+        "GPUS": "2",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "MAX_TRAIN": "160",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "MODEL_KEY": "qwen3_4b",
+        "PROMPT_TEMPLATE": "biased_news",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7",
+        "VLLM_RATIO": "0.38"
+      },
+      "job_id": "30575372",
+      "kind": "training",
+      "model": "qwen3_4b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=160,EVAL_STEPS=10,COLLOCATE=0,GPUS=2,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "COLLOCATE": "0",
+        "DISCLOSURE": "disclosed",
+        "EVAL_STEPS": "10",
+        "GPUS": "2",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "MAX_TRAIN": "160",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7",
+        "VLLM_RATIO": "0.38"
+      },
+      "job_id": "30575373",
+      "kind": "training",
+      "model": "qwen3_8b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,MAX_TRAIN=160,EVAL_STEPS=10,COLLOCATE=0,GPUS=2,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "COLLOCATE": "0",
+        "DISCLOSURE": "disclosed",
+        "EVAL_STEPS": "10",
+        "GPUS": "2",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "MAX_TRAIN": "160",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7",
+        "VLLM_RATIO": "0.38"
+      },
+      "job_id": "30575374",
+      "kind": "training",
+      "model": "llama3_1_8b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=qwen3_4b,MODEL=Qwen/Qwen3-4B-Instruct-2507,PROMPT_TEMPLATE=biased_news,SEED=42,MAX_TRAIN=160,EVAL_STEPS=10,COLLOCATE=0,GPUS=2,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "COLLOCATE": "0",
+        "DISCLOSURE": "undisclosed",
+        "EVAL_STEPS": "10",
+        "GPUS": "2",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "MAX_TRAIN": "160",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "MODEL_KEY": "qwen3_4b",
+        "PROMPT_TEMPLATE": "biased_news",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7",
+        "VLLM_RATIO": "0.38"
+      },
+      "job_id": "30575375",
+      "kind": "training",
+      "model": "qwen3_4b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=160,EVAL_STEPS=10,COLLOCATE=0,GPUS=2,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "COLLOCATE": "0",
+        "DISCLOSURE": "undisclosed",
+        "EVAL_STEPS": "10",
+        "GPUS": "2",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "MAX_TRAIN": "160",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7",
+        "VLLM_RATIO": "0.38"
+      },
+      "job_id": "30575376",
+      "kind": "training",
+      "model": "qwen3_8b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,MAX_TRAIN=160,EVAL_STEPS=10,COLLOCATE=0,GPUS=2,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "COLLOCATE": "0",
+        "DISCLOSURE": "undisclosed",
+        "EVAL_STEPS": "10",
+        "GPUS": "2",
+        "LORA_ALPHA": "64",
+        "LORA_RANK": "32",
+        "MAX_TRAIN": "160",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7",
+        "VLLM_RATIO": "0.38"
+      },
+      "job_id": "30575377",
+      "kind": "training",
+      "model": "llama3_1_8b",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=05:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,MODEL_KEY=qwen3_4b,MODEL=Qwen/Qwen3-4B-Instruct-2507,PROMPT_TEMPLATE=biased_news,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/base_eval.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "DISCLOSURE": "disclosed",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "MODEL_KEY": "qwen3_4b",
+        "PROMPT_TEMPLATE": "biased_news",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7"
+      },
+      "job_id": "30575378",
+      "kind": "base_evaluation",
+      "model": "qwen3_4b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=05:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/base_eval.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "DISCLOSURE": "disclosed",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7"
+      },
+      "job_id": "30575379",
+      "kind": "base_evaluation",
+      "model": "qwen3_8b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=05:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/base_eval.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "DISCLOSURE": "disclosed",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7"
+      },
+      "job_id": "30575380",
+      "kind": "base_evaluation",
+      "model": "llama3_1_8b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=05:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,MODEL_KEY=qwen3_4b,MODEL=Qwen/Qwen3-4B-Instruct-2507,PROMPT_TEMPLATE=biased_news,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/base_eval.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "DISCLOSURE": "undisclosed",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "MODEL_KEY": "qwen3_4b",
+        "PROMPT_TEMPLATE": "biased_news",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7"
+      },
+      "job_id": "30575381",
+      "kind": "base_evaluation",
+      "model": "qwen3_4b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=05:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/base_eval.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "DISCLOSURE": "undisclosed",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7"
+      },
+      "job_id": "30575382",
+      "kind": "base_evaluation",
+      "model": "qwen3_8b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=05:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/base_eval.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "DISCLOSURE": "undisclosed",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "STOCHASTIC_N": "5",
+        "STOCHASTIC_TEMP": "0.7"
+      },
+      "job_id": "30575383",
+      "kind": "base_evaluation",
+      "model": "llama3_1_8b"
+    }
+  ],
+  "submitted_at": "20260814T172339Z",
+  "train_script_sha256": "5330b80d5ff96d5ce49b4586e93b29db6b243f112182e213d9fd0dac8e447978",
+  "trainer_sha256": "0254e9b103ecfa2713e692fce562a2c1f3f1004a5bc10ec7c1801b8411c6470b",
+  "world_catalog_sha256": "f940d2d734258f5b45ff8db579d3de8cae02e6185c841e3f9faab8e397549f94"
+}

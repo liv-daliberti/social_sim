@@ -1,0 +1,53 @@
+{
+  "signature": "75941282f0ba9258cfbac869af9e3082aeb7e25d6339e06fe91d5e72773c3410",
+  "config": {
+    "packets_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/candidate_v3/blind_review_packets.jsonl",
+    "packets_sha256": "44cabe559c7d2ec3131f9be84e8394d15d498e662d6a8f95e7719962cd5dbde5",
+    "model": {
+      "path": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659",
+      "snapshot_revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "model_type": "llama",
+      "metadata_sha256": {
+        "config.json": "29e4c210b0d6ac178b16b2a255a568bdb23b581e50ca1ef6a6d071dd85704e6e",
+        "generation_config.json": "189fb0c0d7fd8a527db217c0a60a0e013f0394cd8800f9697a666a9e75e5f7fd",
+        "tokenizer_config.json": "177c7b61e616fecb84c17ce0591acb92c6c4d60e9ac5ababfb940ff23bbcd424",
+        "tokenizer.json": "79e3e522635f3171300913bb421464a87de6222182a0570b9b2ccba2a964b2b4",
+        "special_tokens_map.json": "6f38c73729248f6c127296386e3cdde96e254636cc58b4169d3fd32328d9a8ec",
+        "model.safetensors.index.json": "146776fce3f6db1103aa6f249e65ee5544c5923ce6f971b092eee79aa6e5d37b"
+      },
+      "weight_shards": 4,
+      "weight_bytes": 16060556376
+    },
+    "thinking": false,
+    "max_tokens": 1024,
+    "temperature": 0,
+    "seed": 20260922,
+    "batch_size": 32,
+    "tp": 1,
+    "runner_sha256": "ec57057a112c0a9b78271fe038897408d887835aa1cbff2f9f97f704438fb5b6",
+    "helper_sha256": "d76d65f94e34939a62898821fdd5a27db34abebe8ff20f8dd877da85eb7e0ec8"
+  },
+  "expected": 720,
+  "status": "complete",
+  "job_id": "31460192",
+  "started_at": "2026-09-22T15:22:38.999271+00:00",
+  "received": 720,
+  "updated_at": "2026-09-22T15:34:54.191854+00:00",
+  "valid": 687,
+  "chat_template_sha256": "ca5b86f15c19b53c24ff18228849e06ffb677b952d85171c66d9b720d924f9bb",
+  "hardware": {
+    "hostname": "node206.ionic.cs.princeton.edu",
+    "cuda_visible_devices": "0",
+    "visible_gpus": [
+      {
+        "ordinal": 0,
+        "name": "NVIDIA RTX A6000",
+        "total_memory_bytes": 50896568320,
+        "capability": [
+          8,
+          6
+        ]
+      }
+    ]
+  }
+}

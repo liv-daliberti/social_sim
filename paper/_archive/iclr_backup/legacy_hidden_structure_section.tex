@@ -1,0 +1,245 @@
+% ------------------------------------------------------------------
+%  EXPERIMENT 2 — MAIN SECTION (news-response / latent-recovery)
+%  Requires in preamble: \usepackage{booktabs,amsmath,graphicx}
+%    \usepackage{wrapfig}  \usepackage{tikz}\usetikzlibrary{arrows.meta}
+%  Table is auto-generated:  python paper/generate_exp2_table.py
+%  Curve is auto-generated:  python paper/generate_exp2_curve_parity.py
+% ------------------------------------------------------------------
+\section{Experiment 2: Recovering Hidden Structure in a Simulated Forecasting World}
+\label{app:legacy-hidden-structure}
+% ------------------------------------------------------------------
+
+Experiment~1 showed that frontier agents update coherently in real unresolved markets, but coherence alone does not establish world-model recovery: the true latent structure of a real market is unknown, and moreover, an agent can update in the right direction while still representing the wrong process~\citep{vafa2025foundation}.
+We therefore move to a controlled forecasting world where the hidden data-generating structure is known by construction.
+This follows the logic of world-model probes in sequence models.
+The question extends beyond predictive accuracy to whether predictions are mediated by latent structure aligned with the underlying process~\citep{li2023emergent,vafa2025foundation}.
+
+\begin{wrapfigure}{l}{0.50\textwidth}
+\vspace{-0.75cm}
+\caption{\textbf{A world where the latent gain $g$ must be inferred.}
+Generative structure of the biased-news world: each week, news $x_t$ moves a persistent
+latent opinion ($\phi$, mean-reverting toward the baseline) that emits a noisy poll $p_t$.
+The city-level gain $g$ (dashed) scales how strongly news moves opinion and is never observed;
+forecasting well requires recovering it from the polls alone. The \textcolor{orange!62!black}{orange}
+values are one realized instance (two weeks of a city with hidden $g{=}0.68$): news moves opinion by
+about $g$ per point, and the forecaster sees only news and poll, never the opinion the gain acts on.}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  >=Latex,
+  obs/.style={circle, draw=black!70, fill=gray!18, minimum size=1.0cm,
+              inner sep=1pt, align=center, font=\small},
+  lat/.style={ellipse, draw=black!70, fill=white,
+              minimum width=1.7cm, minimum height=1.0cm,
+              inner sep=1pt, align=center, font=\small},
+  gain/.style={rectangle, rounded corners=3pt, draw=teal!65!black, line width=0.8pt,
+               fill=teal!15, minimum width=1.5cm, minimum height=0.72cm,
+               align=center, font=\small\bfseries},
+  gen/.style={->, semithick, black!75},
+  mod/.style={->, semithick, teal!65!black, dashed},
+  per/.style={->, semithick, black!55},
+  elab/.style={font=\scriptsize, inner sep=1pt},
+  slab/.style={font=\scriptsize\itshape, text=black!60}]
+
+% latent gain (the thing to infer), centered between slices; value = this city's hidden truth
+\node[gain] (g) at (1.7,0.55) {gain $g{=}\mathbf{0.68}$};
+
+% one realized instance shown ON the nodes (seed-42 city, weeks 3->4): news +9 then +12, opinion
+% moves ~0.68x the news (mean-reverting toward 50), poll = opinion + survey noise. Orange = the
+% concrete example values; node fill still encodes observed (grey) vs latent (white).
+\def\val#1{{\color{orange!62!black}\bfseries #1}}
+% --- week t ---
+\node[obs] (x1) at (0,1.0)   {news $x_t$\\\val{$+9$}};
+\node[lat] (o1) at (0,-0.4)  {opinion $o_t$\\\val{$52.9$}};
+\node[obs] (p1) at (0,-1.8)  {poll $p_t$\\\val{$54$}};
+
+% --- week t+1 ---
+\node[obs] (x2) at (3.4,1.0)   {news $x_{t+1}$\\\val{$+12$}};
+\node[lat] (o2) at (3.4,-0.4)  {opinion $o_{t+1}$\\\val{$61.2$}};
+\node[obs] (p2) at (3.4,-1.8)  {poll $p_{t+1}$\\\val{$64$}};
+
+% continuity
+\node[text=black!45] at (-1.35,-0.4) {$\cdots$};
+\node[text=black!45] at (4.75,-0.4)  {$\cdots$};
+
+% within-slice generative edges
+\draw[gen] (x1) -- (o1);   \draw[gen] (x2) -- (o2);
+\draw[gen] (o1) -- (p1);   \draw[gen] (o2) -- (p2);
+
+% persistence / mean-reversion
+\draw[per] (-1.05,-0.4) -- (o1.west);
+\draw[per] (o1) -- node[elab,above]{$\phi$} (o2);
+\draw[per] (o2.east) -- (4.55,-0.4);
+
+% g modulates the news->opinion response
+\draw[mod] (g) to[bend right=10] (o1);
+\draw[mod] (g) to[bend left=10]  (o2);
+
+% time labels
+\node[slab] at (0,1.95)   {week $t$};
+\node[slab] at (3.4,1.95) {week $t{+}1$};
+
+% legend
+\node[circle,draw=black!70,fill=gray!18,minimum size=0.30cm,inner sep=0] at (-0.55,-3.0){};
+\node[right,slab] at (-0.40,-3.0){observed};
+\node[ellipse,draw=black!70,fill=white,minimum width=0.5cm,minimum height=0.32cm,inner sep=0] at (1.15,-3.0){};
+\node[right,slab] at (1.35,-3.0){latent};
+\node[rectangle,rounded corners=2pt,draw=teal!65!black,fill=teal!15,minimum size=0.30cm,inner sep=1pt] at (2.55,-3.0){};
+\node[right,slab] at (2.72,-3.0){inferred $g$};
+
+\end{tikzpicture}}
+\label{fig:exp2}
+\vspace{-1.0em}
+\end{wrapfigure}
+
+The key contrast is between \emph{few-shot inductive inference} and \emph{statistical estimation from accumulating data}.
+Work on theory-based induction emphasizes that useful priors can support generalization from sparse observations by inferring latent structure, rather than only fitting observed correlations~\citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
+A statistical forecaster can recover the latent once enough observations accumulate; real forecasting, however, often affords only a handful of noisy signals and a single attempt~\citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
+If language agents construct useful inductive world models, their advantage should appear in this sparse-evidence regime---and it does, on two axes at once (Figure~\ref{fig:exp2-skill}): from a single week the frontier agents recover the hidden gain \emph{and} forecast the next poll near-optimally, where an unregularized regression overshoots and every fixed shortcut fails.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp2_skill.pdf}
+\caption{\textbf{Frontier agents recover the hidden gain \emph{and} forecast the next poll near-optimally---from a single week.} Both panels read \emph{error} as the observed history grows (weeks $k$), against the same bracket: the Bayes-oracle ceiling, the overshooting naive frequentist, and the two fixed shortcuts (face value, ignore news). The green band is the achievable good region---between the Bayes-oracle floor (nothing can beat it) and the naive frequentist (the fair statistical bar)---and the frontier agents lie inside it throughout.
+\emph{(A) Latent recovery.} Error $\varepsilon_k{=}\overline{|\hat g_k-g|}$ on the hidden gain (lower is better). The frontier agents hug the oracle floor from $k{=}1$; the unregularized regression cannot identify the gain from a single poll---with no baseline of its own it reads the one week at face value ($\varepsilon{\approx}.46$) and still overshoots at $k{=}2$---and converges only as consecutive changes accumulate: the agents' prior regularizes where a bare estimator cannot.
+\emph{(B) Forecast skill.} Next-poll error $\overline{|\hat p_{t+1}-p_{t+1}|}$ (poll points) under the four held-out shocks, scored against the ground-truth expected poll. The recovered gain translates into forecasts within ${\approx}2$ points---near the oracle's ${\approx}1.2$--$1.9$, far below reading news at face value (${\approx}3.9$) or ignoring it (${\approx}4.3$), and again beating the sparse-data frequentist's overshoot. Only the three frontier agents are shown here for legibility; the full open-weight roster ($n{=}68$--$250$) orders by scale in Appendix Table~\ref{tab:exp2-poll} and Figure~\ref{fig:exp2-informativeness}. Frontier $n{=}100$.}
+\label{fig:exp2-skill}
+\end{figure*}
+
+
+\subsection{Setup: Task, Forecasters, and the World}
+\label{sec:exp2-setup}
+
+\textbf{Task.}
+Each episode is one city tracking a campaign through weekly polls. The city has a hidden \emph{news-responsiveness} parameter \(g\in[0.1,1.0]\), drawn once and never revealed. Each week, the agent observes a signed news dose \(x_t\) and a noisy poll \(p_t\). Low-\(g\) cities are sticky: news barely moves polls. High-\(g\) cities track news nearly one-for-one. Forecasting well therefore requires inferring \(g\), the hidden gain that maps visible news into poll movement. The exact data-generating process and prompts are in Appendix~\ref{app:exp2-prompt}.
+
+\newsavebox{\exptwopromptbox}
+\begin{lrbox}{\exptwopromptbox}
+\begin{minipage}{0.42\textwidth}
+\scriptsize
+\begin{verbatim}
+Weekly tracking poll.  Net news is signed
+(+ good / - bad); poll = support 0-100.
+
+The city has a FIXED responsiveness g in
+[0.1,1.0] (unknown). Each week:
+  opinion += about g*news  (+drift ~1)
+  poll     = opinion + noise ~2
+
+| Week | Net news | Poll |
+|   1  |   -10    |  36  |
+|   2  |    +4    |  46  |
+|   3  |    -5    |  37  |
+
+Estimate g.  Next news +10: predict the
+next poll.  Reply as JSON:
+{"points_per_news": _, "predicted_poll": _}
+\end{verbatim}
+\end{minipage}
+\end{lrbox}
+
+\begin{wrapfigure}{l}{0.48\textwidth}
+\vspace{-0.5cm}
+\centering
+\setlength{\fboxsep}{5pt}%
+\fcolorbox{black!30}{black!4}{\usebox{\exptwopromptbox}}
+
+\smallskip
+{\footnotesize\setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.05}%
+\begin{tabular}{@{}l c c@{}}
+\multicolumn{3}{@{}l@{}}{\itshape\ldots and what each forecaster answers:}\\[1pt]
+\toprule
+Forecaster & $\hat g$ & next poll\\
+\midrule
+Bayes oracle & 0.85 & 49\\
+Frontier agent (Claude) & 0.90 & 47\\
+Naive regression & \textcolor{red!72!black}{\textbf{2.07}} & \textcolor{red!72!black}{\textbf{58}}\\
+\midrule
+\emph{true} ($g{=}0.92$) & 0.92 & ${\approx}50$\\
+\bottomrule
+\end{tabular}}
+\caption{\textbf{What the forecaster sees---and what each answers.} An abridged prompt (full version, Appendix~\ref{app:exp2-prompt}) for one sparse history from a real city (hidden $g{=}0.92$). The model is \emph{told} the structure and \emph{sees} the news/poll table, but never $g$ or the opinion; the elicitation is neutral. The naive regression's unregularized fit reads the noisy swings as huge responsiveness (\(\hat g{=}2.07\)) and overshoots; the frontier agent and the Bayes oracle recover \(g\) and land near the true next poll. (One illustrative city; population results in Fig.~\ref{fig:exp2-skill}.)}
+\label{fig:exp2-prompt}
+\vspace{-0.6cm}
+\end{wrapfigure}
+
+\begin{wrapfigure}{r}{0.44\textwidth}
+\vspace{-0.6cm}
+\centering
+\includegraphics[width=\linewidth]{figures/exp2_recovery_stacked.pdf}
+\vspace{-0.5cm}
+\caption{\textbf{Forecasting cost is low across the range only when the forecaster infers \(g\).}
+Latent recovery compares the implied gain \(\hat g\) to the true hidden responsiveness \(g\). The Bayes oracle tracks the \(\hat g=g\) diagonal, while fixed shortcuts collapse to flat lines.}
+\label{fig:exp2-cost}
+\vspace{-0.5cm}
+\end{wrapfigure}
+
+
+To read off the gain a forecaster is using, we query it under four held-out shocks, \(\{-10,-5,+5,+10\}\), and take \(\hat g=\mathrm{Cov}_k(x^{(k)},\hat p^{(k)}-p_T)/\mathrm{Var}_k(x^{(k)})\). This multi-shock readout isolates responsiveness: errors in the forecasted level enter the intercept, while the slope captures the inferred gain. A forecaster that has inferred the city makes \(\hat g\) match \(g\); fixed shortcuts collapse to flat lines, with face value at \(\hat g\approx1\) and ignore-news at \(\hat g\approx0\).
+
+\textbf{Metrics.} Our claim is about \emph{sparse-evidence judgment}---the carnival-coin picture, where a good prior yields a sensible estimate from a single observation. That is a claim about the \emph{calibration} of one estimate, not about ordering a population, so we lead with two per-instance \emph{error} metrics, both read as observations accumulate. The first is the recovery error \(\varepsilon_k=\overline{|\hat g_k-g|}\) (lower is better): did the forecaster infer the hidden gain? The second asks whether that inference \emph{pays off in forecasts}---the next-poll error \(\overline{|\hat p_{t+1}-p_{t+1}|}\) (poll points), the mean gap between the poll a forecaster predicts under each held-out shock and the ground-truth expected poll that shock should produce. Because the shocks are counterfactual and never realize, the target is the data-generating process's conditional mean \(\mathbb{E}[p_{t+1}\mid\text{shock}]\)---the Bayes-optimal point forecast---so even the oracle, which must filter the current opinion and \(g\), sits above zero (Appendix~\ref{app:exp2-metrics}). We report the rank correlation \(\rho_k=\rho(\hat g_k,g)\) alongside as a distinct \emph{informativeness} axis, plus the mean \(\overline{\hat g}\) and the correlation of the model's \emph{stated} rate with \(g\). Error is the headline for a reason: rank correlation is scale-invariant, so an unregularized regression that badly overshoots the magnitude on sparse data can still score high \(\rho\) while being poorly calibrated---exactly the confound an ordering number hides (Appendix~\ref{app:exp2-metrics}).
+
+\textbf{References.} We bracket the agents with three principled forecasters. The \emph{Bayes oracle}---grid filtering over \(g\) with a Kalman state update~\citep{kalman1960new}, handed the full generative structure (the \(o_0{=}50\) baseline and mean-reversion \(\phi\))---is the ceiling. The two fixed shortcuts, face value \((\hat g{=}1)\) and ignore news \((\hat g{=}0)\), are the no-inference floor. Between them, the fair statistical bar is a \emph{naive frequentist}: an unregularized through-origin regression of the consecutive poll changes on the news, using only what the agent sees. With a single poll it cannot identify $g$---it has no baseline of its own---so it reads the news at face value; guessing the prior mean serves as a secondary no-information reference. The same bracket scores both error metrics---the recovered gain and the forecast it feeds---and a forecaster that infers structure should beat the frequentist on both.
+
+We evaluate frontier agents and open-weight local models with the same multi-shock probe at every prefix: open-weight models on 250 shared-seed cities, the frontier agents on \(n{=}100\). After \(k\) observed weeks, each model estimates the per-news response and predicts the next poll under the four shocks, yielding \(\hat g_k\).
+
+
+\subsection{Results: Calibrated Sparse-Evidence Inference, Not Asymptotic Optimality}
+\label{sec:exp2-results}
+
+The agents recover the hidden gain \emph{and} turn it into forecasts, and do both \emph{calibratedly from sparse evidence} (Fig.~\ref{fig:exp2-skill}): from a single week they sit near the Bayes oracle on both errors---beating every fixed shortcut and an overshooting regression---though the edge is regularization, not omniscience, so a matched estimator catches them as data accumulates.
+
+% ----------------------------------------------------------------------------
+% Static copy of the generated table. SOURCE OF TRUTH: paper/generate_exp2_skill_table.py
+% To refresh: run `python paper/generate_exp2_skill_table.py` and paste the new contents
+% of paper/tables/exp2_skill_table.tex below (or swap this block for an \input).
+% Requires \usepackage{wrapfig}, booktabs, and \usepackage[table]{xcolor}.
+% Cells: green = model beats the per-k fair bar (naive frequentist; always-prior at k=1) on
+% ERROR; red = falls short. Headline metric = calibration error; rho is the informativeness axis.
+% Last refreshed (2026-06-30, NEUTRAL prompt 9c45e7fc): GPT/Claude/DeepSeek n=100 COMPLETE;
+% open-weight rerun still accumulating (n=33-250, partial rows noisier).
+% ----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
+% Static copy of the generated table. SOURCE OF TRUTH: paper/generate_exp2_skill_table.py
+% (emits 9 open-weight rows incl. Qwen-72B/Llama-3.3-70B; here trimmed to the 7 with high n,
+%  n range adjusted to 128--250 to match). Metrics = the two ERRORS of Fig.~\ref{fig:exp2-skill}:
+% recovery eps=|g_hat-g| and next-poll pi=|p_hat-p|. Green = beats the naive frequentist on that
+% metric. Refresh: run the generator and re-paste.
+% ----------------------------------------------------------------------------
+\begin{wraptable}{r}{0.56\textwidth}
+\centering
+\vspace{-1.2em}
+\setlength{\tabcolsep}{2pt}
+\caption{Forecast skill from a sparse history.  Each $k$ pairs the two errors of Fig.~\ref{fig:exp2-skill} (both lower is better): the \emph{latent-recovery} error $\varepsilon_k{=}\overline{|\hat g-g|}$ and the \emph{next-poll} error $\pi_k{=}\overline{|\hat p_{t+1}-p_{t+1}|}$ (poll points).  The \emph{Bayes oracle} is the ceiling.  The fair statistical bar is the \emph{naive frequentist} (unregularized fit); with one poll it cannot identify $g$ and reads the news at face value, so its $k{=}1$ error is its worst.  Cells are \colorbox{green!22}{green} where a model beats the frequentist on that metric, \colorbox{red!18}{red} where it falls short.  \emph{Always-prior} (guess the mean) is a secondary no-information reference---calibrated on $\varepsilon$ but blind; the fixed shortcuts (ignore $g{=}0$, face value $g{=}1$) sit far above ($\varepsilon{\approx}.46$--$.54$, $\pi{\approx}3.9$--$4.3$).  The frontier agents beat the frequentist on both metrics from a single week and stay near the oracle.  Frontier $n{=}100$; open-weight $n{=}128\text{--}250$ (partial rows noisier).  \textsuperscript{$\dagger$}Frontier probe.}
+\label{tab:exp2-skill}
+\footnotesize
+\begin{tabular}{l@{\hskip 5pt}cc cc cc cc}
+\toprule
+ & \multicolumn{2}{c}{$k{=}1$} & \multicolumn{2}{c}{$k{=}2$} & \multicolumn{2}{c}{$k{=}3$} & \multicolumn{2}{c}{$k{=}5$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+\textbf{Forecaster} & $\varepsilon{\downarrow}$ & $\pi{\downarrow}$ & $\varepsilon{\downarrow}$ & $\pi{\downarrow}$ & $\varepsilon{\downarrow}$ & $\pi{\downarrow}$ & $\varepsilon{\downarrow}$ & $\pi{\downarrow}$ \\
+\midrule
+Bayes oracle & .18 & 1.9 & .15 & 1.6 & .14 & 1.5 & .10 & 1.2 \\
+Naive freq. & .46 & 3.9 & .35 & 3.1 & .24 & 2.6 & .16 & 2.2 \\
+Always-prior & .22 & 2.4 & .22 & 2.3 & .22 & 2.5 & .22 & 2.4 \\
+\midrule
+Claude Opus~4.8\textsuperscript{$\dagger$} & \cellcolor{green!22}.20 & \cellcolor{green!22}2.4 & \cellcolor{green!22}.18 & \cellcolor{green!22}2.4 & \cellcolor{green!22}.18 & \cellcolor{green!22}2.4 & \cellcolor{green!22}.13 & \cellcolor{green!22}2.0 \\
+GPT-5.4\textsuperscript{$\dagger$} & \cellcolor{green!22}.20 & \cellcolor{green!22}2.4 & \cellcolor{green!22}.22 & \cellcolor{green!22}2.5 & \cellcolor{green!22}.19 & \cellcolor{green!22}2.4 & \cellcolor{green!22}.15 & \cellcolor{green!22}2.0 \\
+DeepSeek V4-Pro\textsuperscript{$\dagger$} & \cellcolor{green!22}.22 & \cellcolor{green!22}2.5 & \cellcolor{green!22}.24 & \cellcolor{green!22}2.7 & \cellcolor{green!22}.18 & \cellcolor{green!22}2.3 & \cellcolor{green!22}.14 & \cellcolor{green!22}2.1 \\
+\midrule
+Llama~3.1-70B & \cellcolor{green!22}.23 & \cellcolor{green!22}2.9 & \cellcolor{green!22}.23 & \cellcolor{green!22}2.7 & \cellcolor{green!22}.21 & \cellcolor{red!18}2.6 & \cellcolor{red!18}.17 & \cellcolor{red!18}2.4 \\
+Qwen~2.5-32B & \cellcolor{green!22}.26 & \cellcolor{green!22}3.0 & \cellcolor{green!22}.23 & \cellcolor{green!22}2.5 & \cellcolor{green!22}.20 & \cellcolor{green!22}2.5 & \cellcolor{red!18}.16 & \cellcolor{red!18}2.3 \\
+Mistral-Small-24B & \cellcolor{green!22}.25 & \cellcolor{green!22}3.1 & \cellcolor{green!22}.23 & \cellcolor{green!22}2.7 & \cellcolor{green!22}.21 & \cellcolor{red!18}2.6 & \cellcolor{red!18}.17 & \cellcolor{red!18}2.4 \\
+Qwen~2.5-14B & \cellcolor{green!22}.28 & \cellcolor{green!22}3.3 & \cellcolor{green!22}.25 & \cellcolor{green!22}2.9 & \cellcolor{green!22}.20 & \cellcolor{red!18}2.7 & \cellcolor{red!18}.20 & \cellcolor{red!18}2.5 \\
+Mistral-Nemo-12B & \cellcolor{green!22}.38 & \cellcolor{red!18}4.5 & \cellcolor{green!22}.35 & \cellcolor{red!18}3.8 & \cellcolor{red!18}.35 & \cellcolor{red!18}4.3 & \cellcolor{red!18}.48 & \cellcolor{red!18}5.5 \\
+Llama~3.1-8B & \cellcolor{red!18}.95 & \cellcolor{red!18}10.3 & \cellcolor{red!18}.61 & \cellcolor{red!18}7.1 & \cellcolor{red!18}.50 & \cellcolor{red!18}6.3 & \cellcolor{red!18}.60 & \cellcolor{red!18}6.9 \\
+Qwen~2.5-7B & \cellcolor{green!22}.31 & \cellcolor{green!22}3.5 & \cellcolor{green!22}.27 & \cellcolor{green!22}2.9 & \cellcolor{green!22}.23 & \cellcolor{red!18}2.9 & \cellcolor{red!18}.23 & \cellcolor{red!18}3.1 \\
+\bottomrule
+\end{tabular}
+\end{wraptable}
+
+\textbf{Calibrated from a single week---on both errors.} The references bracket the task (Table~\ref{tab:exp2-skill}): the fixed shortcuts sit far off ($\varepsilon{\approx}.46$--$.54$, $\pi{\approx}3.9$--$4.3$) and the Bayes oracle is the ceiling ($\varepsilon{=}.10$--$.18$, $\pi{=}1.2$--$1.9$). From one poll the frontier agents already sit near the oracle---$\varepsilon_1{\approx}.20$, next-poll error ${\approx}2.4$ points---and beat the fair statistical bar on \emph{both} metrics at every $k$. The naive frequentist cannot identify $g$ from a single poll, so it reads the news at face value ($\varepsilon_1{\approx}.46$) then \emph{overshoots} on one or two noisy points ($\varepsilon_2{\approx}.35$, $\pi_2{\approx}3.1$); the agents' prior regularizes where the bare fit does not. No prompt hint tells them how to treat the sparse history (Appendix~\ref{app:exp2-prompt}), so this is their own disposition---the carnival-coin picture, measured.
+
+\textbf{Regularization, not omniscience.} The edge is bounded: the agents approximate optimal Bayesian shrinkage, so a matched estimator catches them as data accumulates ($k{=}5$: agents $\varepsilon{\approx}.13$--$.15$, frequentist $.16$, oracle $.10$). Low error alone is also not enough---guessing the prior mean is calibrated ($\varepsilon{=}.22$) yet \emph{blind} ($\rho{=}0$; Appendix Fig.~\ref{fig:exp2-informativeness}); only the agents are both calibrated and informative. Recovery still orders by capability: the frontier agents are calibrated in magnitude ($\overline{\hat g}{\approx}.55$--$.58$ vs.\ true $.55$) with a \emph{stated} rate that tracks behaviour (stated-$\rho{\approx}.7$--$.77$), while the smallest read news near face value ($\varepsilon{>}.5$) and cannot articulate $g$ (Appendix~\ref{app:exp2-parity-refs}).
+
+\textbf{Takeaway.} In a world where the hidden state is known, agents' forecasts vary systematically with it and are \emph{calibrated from a single week}---recovering the gain and forecasting the next poll to ${\approx}2$ points, beating every shortcut and an unregularized regression exactly in the sparse regime real forecasting inhabits, because a useful prior regularizes where a bare estimator overshoots. But the edge is regularization, not omniscience: a matched estimator catches them once data accumulates. This motivates Experiment~3---whether training can push agents to \emph{beat}, not just match, a well-posed estimator, and transfer beyond the training distribution.

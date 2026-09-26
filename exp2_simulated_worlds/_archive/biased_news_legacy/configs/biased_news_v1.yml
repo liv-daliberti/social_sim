@@ -1,0 +1,51 @@
+# Biased-News GRPO v1 — first training run.
+#
+# Training target: MAE-based reward against true E[Survey_{T+1}] from the
+# temporal sequential DGP.  The model sees T steps of (event, survey) history
+# and must predict the next survey.  Latent: whether the city is biased or neutral.
+#
+# Variants V0/V1/V2 mixed in training (2:1:1 natural ratio in the data).
+# Steps: 6000 tasks / batch_size 8 = 750 batches/epoch × 5 epochs ≈ 3750 steps.
+mode: train
+
+tasks_file: data/biased_news_train.tasks.jsonl
+eval_tasks_file: data/biased_news_eval.tasks.jsonl
+output_dir: reports/tinker_biased_news_grpo/biased_news_v1
+
+max_tasks: 6000
+eval_max_tasks: 300
+
+model: Qwen/Qwen3-4B-Instruct-2507
+renderer_name: qwen3
+agent_lightning_examples_path: /n/fs/similarity/social_sim/.runtime/agl_tinker_examples
+
+learning_rate: 5.0e-5
+batch_size: 8
+group_size: 4
+n_epochs: 5
+train_shuffle: true
+train_seed: 42
+n_runners: 1
+lora_rank: 16
+num_substeps: 1
+eval_every: 5
+skip_initial_eval: false
+save_every: 10
+execution_strategy: shm
+strategy_main: algorithm
+llm_proxy_launch_mode: thread
+llm_proxy_port: 12359
+store_port: 4748
+
+max_tokens: 512
+temperature: 1.0
+eval_temperature: 0.0
+forecast_reward_scale: 2.0
+llm_request_timeout_seconds: 90
+
+wandb: true
+wandb_project: elections_tinker
+wandb_entity: ogd3-princeton-university
+wandb_mode: online
+wandb_run_name: biased-news-v1
+wandb_tags: biased_news,v1,mae,temporal,qwen3-4b

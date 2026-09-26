@@ -1,0 +1,307 @@
+{
+  "data_sha256": "e19ff5a71a56c77e6415a4afc38f7fb0e69923d004dab1c38516aca4f8a424d3",
+  "gain_support_preserved": true,
+  "train_test_mechanism_keys_disjoint": true,
+  "worlds": [
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "linear",
+        "direct",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.2,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        37.5547,
+        60.0854
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "direct_linear"
+    },
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "saturating",
+        "direct",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.3,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        39.77,
+        53.4694
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "direct_saturating"
+    },
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "threshold",
+        "direct",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.7,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        40.7521,
+        59.7914
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "direct_threshold"
+    },
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "linear",
+        "feedback",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.8,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        31.57,
+        62.1759
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "feedback_linear"
+    },
+    {
+      "exposure": "test",
+      "k": 9,
+      "mechanism_key": [
+        "saturating",
+        "feedback",
+        1
+      ],
+      "native_gain_support": [
+        1.02,
+        1.28
+      ],
+      "observation_noise_sd": 4.2,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        25.8755,
+        67.173
+      ],
+      "paired_gains": [
+        1.072,
+        1.228
+      ],
+      "pairs": 16,
+      "world": "feedback_saturating_extrap"
+    },
+    {
+      "exposure": "test",
+      "k": 9,
+      "mechanism_key": [
+        "linear",
+        "mediated_feedback",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.8,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        41.2437,
+        61.9322
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "mediated_feedback_linear"
+    },
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "linear",
+        "mediated",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.4,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        30.9145,
+        54.9201
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "mediated_linear"
+    },
+    {
+      "exposure": "test",
+      "k": 9,
+      "mechanism_key": [
+        "saturating",
+        "mediated",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.6,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        34.8194,
+        50.7174
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "mediated_saturating"
+    },
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "linear",
+        "persistent",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.6,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        37.0993,
+        66.2675
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "persistent_linear"
+    },
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "saturating",
+        "persistent",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 2.0,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        33.7453,
+        54.5114
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "persistent_saturating"
+    },
+    {
+      "exposure": "test",
+      "k": 9,
+      "mechanism_key": [
+        "threshold",
+        "persistent",
+        1
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.9,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        40.2883,
+        67.388
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "persistent_threshold"
+    },
+    {
+      "exposure": "train",
+      "k": 9,
+      "mechanism_key": [
+        "linear",
+        "persistent",
+        2
+      ],
+      "native_gain_support": [
+        0.2,
+        0.9
+      ],
+      "observation_noise_sd": 1.5,
+      "observations_at_clip_boundary": 0,
+      "observed_range": [
+        42.01,
+        71.8788
+      ],
+      "paired_gains": [
+        0.33999999999999997,
+        0.76
+      ],
+      "pairs": 16,
+      "world": "two_driver_linear"
+    }
+  ]
+}

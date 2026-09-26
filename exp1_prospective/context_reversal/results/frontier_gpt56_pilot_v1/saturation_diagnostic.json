@@ -1,0 +1,1081 @@
+{
+  "llama3_1_70b_instruct": {
+    "source": "exp1_prospective/context_reversal/responses/development_v1/llama3_1_70b_instruct.jsonl",
+    "all": {
+      "direction": {
+        "n": 120,
+        "correct": 78,
+        "wrong": 28,
+        "zero": 14
+      },
+      "blocked_direction": {
+        "n": 19,
+        "correct": 0,
+        "wrong": 9,
+        "zero": 10
+      },
+      "feasible_direction": {
+        "n": 101,
+        "correct": 78,
+        "wrong": 19,
+        "zero": 4
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 60,
+            "correct": 46,
+            "wrong": 9,
+            "zero": 5
+          },
+          "blocked": {
+            "n": 4,
+            "correct": 0,
+            "wrong": 3,
+            "zero": 1
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 60,
+            "correct": 32,
+            "wrong": 19,
+            "zero": 9
+          },
+          "blocked": {
+            "n": 15,
+            "correct": 0,
+            "wrong": 6,
+            "zero": 9
+          }
+        }
+      },
+      "pairs": {
+        "n": 60,
+        "correct": 22,
+        "blocked": 18,
+        "both_blocked": 1,
+        "feasible": 42,
+        "feasible_correct": 22,
+        "optimistic_correct_after_repair_all_blocked": 37
+      },
+      "blocked_families": [
+        "dev_09",
+        "dev_15",
+        "dev_16",
+        "dev_17",
+        "dev_19",
+        "dev_20"
+      ],
+      "blocked_trials": [
+        {
+          "family": "dev_09",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_09",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_09",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.2,
+          "delta": 0.2,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_16",
+          "repeat": 0,
+          "context": "positive",
+          "baseline": 1.0,
+          "update": 0.5,
+          "delta": -0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_16",
+          "repeat": 1,
+          "context": "positive",
+          "baseline": 1.0,
+          "update": 0.5,
+          "delta": -0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_16",
+          "repeat": 2,
+          "context": "positive",
+          "baseline": 1.0,
+          "update": 0.5,
+          "delta": -0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_19",
+          "repeat": 1,
+          "context": "positive",
+          "baseline": 1.0,
+          "update": 1.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_19",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_19",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_19",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_20",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_20",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_20",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        }
+      ],
+      "headroom_le_05": 19,
+      "headroom_le_10": 19
+    },
+    "repeat0": {
+      "direction": {
+        "n": 40,
+        "correct": 26,
+        "wrong": 9,
+        "zero": 5
+      },
+      "blocked_direction": {
+        "n": 6,
+        "correct": 0,
+        "wrong": 3,
+        "zero": 3
+      },
+      "feasible_direction": {
+        "n": 34,
+        "correct": 26,
+        "wrong": 6,
+        "zero": 2
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 20,
+            "correct": 15,
+            "wrong": 3,
+            "zero": 2
+          },
+          "blocked": {
+            "n": 1,
+            "correct": 0,
+            "wrong": 1,
+            "zero": 0
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 20,
+            "correct": 11,
+            "wrong": 6,
+            "zero": 3
+          },
+          "blocked": {
+            "n": 5,
+            "correct": 0,
+            "wrong": 2,
+            "zero": 3
+          }
+        }
+      },
+      "pairs": {
+        "n": 20,
+        "correct": 7,
+        "blocked": 6,
+        "both_blocked": 0,
+        "feasible": 14,
+        "feasible_correct": 7,
+        "optimistic_correct_after_repair_all_blocked": 12
+      },
+      "blocked_families": [
+        "dev_09",
+        "dev_15",
+        "dev_16",
+        "dev_17",
+        "dev_19",
+        "dev_20"
+      ],
+      "blocked_trials": [
+        {
+          "family": "dev_09",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_16",
+          "repeat": 0,
+          "context": "positive",
+          "baseline": 1.0,
+          "update": 0.5,
+          "delta": -0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_19",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_20",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        }
+      ],
+      "headroom_le_05": 6,
+      "headroom_le_10": 6
+    }
+  },
+  "qwen2_5_72b_instruct": {
+    "source": "exp1_prospective/context_reversal/responses/development_v1/qwen2_5_72b_instruct_retry_eager.jsonl",
+    "all": {
+      "direction": {
+        "n": 120,
+        "correct": 75,
+        "wrong": 45,
+        "zero": 0
+      },
+      "blocked_direction": {
+        "n": 0,
+        "correct": 0,
+        "wrong": 0,
+        "zero": 0
+      },
+      "feasible_direction": {
+        "n": 120,
+        "correct": 75,
+        "wrong": 45,
+        "zero": 0
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 60,
+            "correct": 44,
+            "wrong": 16,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 60,
+            "correct": 31,
+            "wrong": 29,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        }
+      },
+      "pairs": {
+        "n": 60,
+        "correct": 18,
+        "blocked": 0,
+        "both_blocked": 0,
+        "feasible": 60,
+        "feasible_correct": 18,
+        "optimistic_correct_after_repair_all_blocked": 18
+      },
+      "blocked_families": [],
+      "blocked_trials": [],
+      "headroom_le_05": 0,
+      "headroom_le_10": 0
+    },
+    "repeat0": {
+      "direction": {
+        "n": 40,
+        "correct": 25,
+        "wrong": 15,
+        "zero": 0
+      },
+      "blocked_direction": {
+        "n": 0,
+        "correct": 0,
+        "wrong": 0,
+        "zero": 0
+      },
+      "feasible_direction": {
+        "n": 40,
+        "correct": 25,
+        "wrong": 15,
+        "zero": 0
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 20,
+            "correct": 15,
+            "wrong": 5,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 20,
+            "correct": 10,
+            "wrong": 10,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        }
+      },
+      "pairs": {
+        "n": 20,
+        "correct": 5,
+        "blocked": 0,
+        "both_blocked": 0,
+        "feasible": 20,
+        "feasible_correct": 5,
+        "optimistic_correct_after_repair_all_blocked": 5
+      },
+      "blocked_families": [],
+      "blocked_trials": [],
+      "headroom_le_05": 0,
+      "headroom_le_10": 0
+    }
+  },
+  "qwen3_32b": {
+    "source": "exp1_prospective/context_reversal/responses/development_v1/qwen3_32b.jsonl",
+    "all": {
+      "direction": {
+        "n": 120,
+        "correct": 77,
+        "wrong": 29,
+        "zero": 14
+      },
+      "blocked_direction": {
+        "n": 12,
+        "correct": 0,
+        "wrong": 5,
+        "zero": 7
+      },
+      "feasible_direction": {
+        "n": 108,
+        "correct": 77,
+        "wrong": 24,
+        "zero": 7
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 60,
+            "correct": 43,
+            "wrong": 11,
+            "zero": 6
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 60,
+            "correct": 34,
+            "wrong": 18,
+            "zero": 8
+          },
+          "blocked": {
+            "n": 12,
+            "correct": 0,
+            "wrong": 5,
+            "zero": 7
+          }
+        }
+      },
+      "pairs": {
+        "n": 60,
+        "correct": 19,
+        "blocked": 12,
+        "both_blocked": 0,
+        "feasible": 48,
+        "feasible_correct": 19,
+        "optimistic_correct_after_repair_all_blocked": 29
+      },
+      "blocked_families": [
+        "dev_03",
+        "dev_04",
+        "dev_06",
+        "dev_15",
+        "dev_17",
+        "dev_18"
+      ],
+      "blocked_trials": [
+        {
+          "family": "dev_03",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_03",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_03",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_04",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_06",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.3,
+          "delta": 0.3,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 2,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_18",
+          "repeat": 1,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        }
+      ],
+      "headroom_le_05": 12,
+      "headroom_le_10": 13
+    },
+    "repeat0": {
+      "direction": {
+        "n": 40,
+        "correct": 25,
+        "wrong": 11,
+        "zero": 4
+      },
+      "blocked_direction": {
+        "n": 4,
+        "correct": 0,
+        "wrong": 3,
+        "zero": 1
+      },
+      "feasible_direction": {
+        "n": 36,
+        "correct": 25,
+        "wrong": 8,
+        "zero": 3
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 20,
+            "correct": 14,
+            "wrong": 4,
+            "zero": 2
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 20,
+            "correct": 11,
+            "wrong": 7,
+            "zero": 2
+          },
+          "blocked": {
+            "n": 4,
+            "correct": 0,
+            "wrong": 3,
+            "zero": 1
+          }
+        }
+      },
+      "pairs": {
+        "n": 20,
+        "correct": 6,
+        "blocked": 4,
+        "both_blocked": 0,
+        "feasible": 16,
+        "feasible_correct": 6,
+        "optimistic_correct_after_repair_all_blocked": 9
+      },
+      "blocked_families": [
+        "dev_03",
+        "dev_06",
+        "dev_15",
+        "dev_17"
+      ],
+      "blocked_trials": [
+        {
+          "family": "dev_03",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_06",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.3,
+          "delta": 0.3,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_15",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.5,
+          "delta": 0.5,
+          "blocked": true,
+          "success": false,
+          "wrong": true,
+          "zero": false,
+          "headroom": 0.0
+        },
+        {
+          "family": "dev_17",
+          "repeat": 0,
+          "context": "negative",
+          "baseline": 0.0,
+          "update": 0.0,
+          "delta": 0.0,
+          "blocked": true,
+          "success": false,
+          "wrong": false,
+          "zero": true,
+          "headroom": 0.0
+        }
+      ],
+      "headroom_le_05": 4,
+      "headroom_le_10": 4
+    }
+  },
+  "gpt_5_6_frontier": {
+    "source": "exp1_prospective/context_reversal/responses/frontier_gpt56_pilot_v1/gpt_5_6_frontier.jsonl",
+    "all": {
+      "direction": {
+        "n": 40,
+        "correct": 37,
+        "wrong": 3,
+        "zero": 0
+      },
+      "blocked_direction": {
+        "n": 0,
+        "correct": 0,
+        "wrong": 0,
+        "zero": 0
+      },
+      "feasible_direction": {
+        "n": 40,
+        "correct": 37,
+        "wrong": 3,
+        "zero": 0
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 20,
+            "correct": 19,
+            "wrong": 1,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 20,
+            "correct": 18,
+            "wrong": 2,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        }
+      },
+      "pairs": {
+        "n": 20,
+        "correct": 17,
+        "blocked": 0,
+        "both_blocked": 0,
+        "feasible": 20,
+        "feasible_correct": 17,
+        "optimistic_correct_after_repair_all_blocked": 17
+      },
+      "blocked_families": [],
+      "blocked_trials": [],
+      "headroom_le_05": 0,
+      "headroom_le_10": 0
+    },
+    "repeat0": {
+      "direction": {
+        "n": 40,
+        "correct": 37,
+        "wrong": 3,
+        "zero": 0
+      },
+      "blocked_direction": {
+        "n": 0,
+        "correct": 0,
+        "wrong": 0,
+        "zero": 0
+      },
+      "feasible_direction": {
+        "n": 40,
+        "correct": 37,
+        "wrong": 3,
+        "zero": 0
+      },
+      "by_context": {
+        "positive": {
+          "all": {
+            "n": 20,
+            "correct": 19,
+            "wrong": 1,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        },
+        "negative": {
+          "all": {
+            "n": 20,
+            "correct": 18,
+            "wrong": 2,
+            "zero": 0
+          },
+          "blocked": {
+            "n": 0,
+            "correct": 0,
+            "wrong": 0,
+            "zero": 0
+          }
+        }
+      },
+      "pairs": {
+        "n": 20,
+        "correct": 17,
+        "blocked": 0,
+        "both_blocked": 0,
+        "feasible": 20,
+        "feasible_correct": 17,
+        "optimistic_correct_after_repair_all_blocked": 17
+      },
+      "blocked_families": [],
+      "blocked_trials": [],
+      "headroom_le_05": 0,
+      "headroom_le_10": 0
+    }
+  }
+}

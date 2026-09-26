@@ -1,0 +1,92 @@
+{
+  "answer_key_sha256": "3c2b3410ea5944e6a2127efd960ca51e6337ecdbc4f0778131faf89a57ecb1b4",
+  "arms": [
+    "baseline",
+    "abc_no_context",
+    "abc_context"
+  ],
+  "city_c_case_levels": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "context_alignment": "100_percent_correct_news_environment",
+  "context_sentences": {
+    "local_news": "Background: City C residents generally encounter campaign developments through local news coverage.",
+    "national_news": "Background: City C residents generally encounter campaign developments through national news coverage."
+  },
+  "created_at": "2026-08-06T17:04:25.058231+00:00",
+  "data_generating_process": {
+    "case_noise_sd": 5.0,
+    "city_slope_sd": 0.03,
+    "news_magnitudes": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "query_news_values": [
+      -10,
+      -9,
+      -8,
+      -7,
+      -6,
+      -5,
+      -4,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "starting_poll_range": [
+      35.0,
+      65.0
+    ],
+    "strong_slope_mean": 0.9,
+    "weak_slope_mean": 0.25
+  },
+  "displayed_analyst_benchmarks": {
+    "abc": "OLS through origin of poll change on net news, all displayed A/B/C rows",
+    "city_c": "OLS through origin of poll change on net news, City C rows only",
+    "included_in_llm_prompt": false,
+    "inputs": "displayed numeric rows and displayed query only"
+  },
+  "episodes": 250,
+  "episodes_sha256": "c1d9ea5a2ae17010f7d34ce11bc02b4d1bf7bfed462b0f81b64495c994db3f5f",
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "future_calls_if_run": 3750,
+  "hard_call_cap": 5000,
+  "models_if_run_later": [
+    "claude-opus-4-8"
+  ],
+  "planned_calls": 3750,
+  "reference_cases_per_city": 4,
+  "relationship_visibility": {
+    "displayed_poll_change_column": true,
+    "estimator_or_formula_in_prompt": false,
+    "matched_equal_and_opposite_news_pairs": true,
+    "stable_within_city_sentence": true
+  },
+  "scoring_key_sha256": "030c761560e3212be1327687f6719b7a47dd48ef495539af2b339d8727a9928f",
+  "seed_base": 930000,
+  "source_sha256": {
+    "builder_validator": "832bd496ea1fc75cd2553392c4f5854d38193d893547ceadf79152db0a6a61cf",
+    "engine": "732eeee13b764936284fd7a034fc7d63f1bc5678431115dd230199f33f8830eb",
+    "frozen_validator": "8849d3be3fa61ed0798aa26c04e39ed8d573f45dfeaa43dcdf56727e5177a2b3",
+    "local_launcher": "ed72b0acef3125208432300d0b94b83f30fc8362b1cb67ef83f72361ac1668ea",
+    "renderer": "b2817341a4245d2ae9752e311f77dda4f5a2a10fe877d04013fa78161cc2d833",
+    "runner": "0b49c1c7f3e1207080246a375630932ee65a79736bf98d6ef2a978c121130378"
+  },
+  "status": "frozen_design_preview_no_model_calls",
+  "task_sha256": {
+    "abc_context": "d5752831f8c995ac1939048d0ec9f37d99393e0e2f24492c5ed47ea94842be10",
+    "abc_no_context": "23e2e3493e6d378af165b6851fd527c75c044db3ddc14041e9ca1ea8af06367e",
+    "baseline": "c3b463a351df752856d1f3269c0147a04cbabed6a108a3d24142d4b920862815"
+  }
+}

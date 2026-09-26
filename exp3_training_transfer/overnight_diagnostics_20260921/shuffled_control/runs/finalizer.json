@@ -1,0 +1,26 @@
+{
+  "job_id": "31445499",
+  "submitted_at": "2026-09-22T03:51:16.685037+00:00",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=allcs",
+    "--partition=cs",
+    "--qos=none",
+    "--cpus-per-task=1",
+    "--mem=4G",
+    "--time=00:30:00",
+    "--dependency=afterany:31445281:31445452:31445453:31445454:31445455",
+    "--job-name=mech_shuffle_final",
+    "--output=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/logs/finalize_%j.out",
+    "--error=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/logs/finalize_%j.err",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/finalize.sh"
+  ],
+  "scheduler_record": "JobId=31445499 JobName=mech_shuffle_final UserId=od2961(363432) GroupId=grad(930) MCS_label=N/A Priority=3624 Nice=0 Account=allcs QOS=none JobState=PENDING Reason=Dependency Dependency=afterany:31445281_*(unfulfilled),afterany:31445452_*(unfulfilled),afterany:31445453_*(unfulfilled),afterany:31445454_*(unfulfilled),afterany:31445455_*(unfulfilled) Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:30:00 TimeMin=N/A SubmitTime=2026-09-21T23:51:16 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-09-21T23:51:16 Scheduler=Main Partition=all AllocNode:Sid=spin:147695 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=4G,node=1,billing=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryNode=4G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/finalize.sh SubmitLine=sbatch --parsable --account=allcs --partition=cs --qos=none --cpus-per-task=1 --mem=4G --time=00:30:00 --dependency=afterany:31445281:31445452:31445453:31445454:31445455 --job-name=mech_shuffle_final --output=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/logs/finalize_%j.out --error=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/logs/finalize_%j.err /n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/finalize.sh WorkDir=/n/fs/similarity/social_sim StdErr=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/logs/finalize_31445499.err StdIn=/dev/null StdOut=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/logs/finalize_31445499.out TresPerTask=cpu=1\n",
+  "source_sha256": {
+    "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/finalize.sh": "16a47d2c087922bfaf64972c8d0ae032997ba4a18af82dc12348c248329f7c35",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/analyze.py": "17e87314f1450d27bc7709c98049e1401d5099b9f1cc3ab887689befeb83c0cb",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/shuffled_control/monitor.py": "23d622855141df65080cb3b3d466574f87c1066b06409391d6232a3c6e48ae0b"
+  },
+  "policy": "afterany all20 active scientific jobs; report incomplete rather than treating partial runs as final"
+}

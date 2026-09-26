@@ -1,0 +1,47 @@
+{
+  "analysis": {
+    "permutation_repeats": 10000,
+    "permutation_seed": 20260825,
+    "required_reporting": "all frozen arms, depths, and targets",
+    "ridge_alphas": [
+      0.0001,
+      0.003,
+      0.1,
+      3.0,
+      100.0
+    ],
+    "selection": "four-fold development CV; sealed test unread",
+    "targets": [
+      "regime",
+      "slope",
+      "residual_slope"
+    ]
+  },
+  "code_sha256": {
+    "analyze_probe.py": "179511bae857e5f7919acc08e36656e5c2ab0374e4545379758f29e0237629f5",
+    "extract_qwen_hidden_states.py": "3bf8d3891dca32bffe9d1549085c9238a49320abe87149de84904d90fb5b84c8",
+    "freeze_qwen3_32b_symbol_probe_v2.py": "b4377eff78f074dd967d81d864e3b6f7efc441982c644e5bb60d5b2268140490",
+    "run_qwen3_32b_symbol_probe_v2.sbatch": "a4b4c66c2d01d3b5539ac97a928cdb9d92582c07dc3bdaac986bbff85c0d2889"
+  },
+  "frozen_at": "2026-08-30T02:54:04.898219+00:00",
+  "model": {
+    "commit": "9216db5781bf21249d130ec9da846c4624c16137",
+    "id": "Qwen/Qwen3-32B"
+  },
+  "next_stage": "freeze and run the identical bidirectional City C label-state causal patch regardless of the sealed probe result",
+  "source_task_run": "qwen3_14b_symbol_probe_v2",
+  "status": "frozen_before_hidden_state_extraction",
+  "study": "qwen3_32b_symbol_probe_v2",
+  "task_design": {
+    "development_folds": 4,
+    "episode_counts": {
+      "dev": 160,
+      "test": 88,
+      "total": 248
+    },
+    "record_count": 1488,
+    "sealed_test_reused_without_modification": true
+  },
+  "task_manifest_sha256": "eef19c61692942af998c9cc38b4a9f148424accb291dc6d01b6e03da8a515b56",
+  "tasks_sha256": "ee6735e9c2ec7b1c9bdae76fd5f52ce19bd6cfec3f96eee1808b52d9832e5a01"
+}

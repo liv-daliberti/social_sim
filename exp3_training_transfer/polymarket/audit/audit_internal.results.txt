@@ -1,0 +1,63 @@
+Timing is off.
+=== [1A] event/market referential integrity ===
+ markets_missing_parent_event | events_with_zero_markets | active_rows_missing_market
+------------------------------+--------------------------+----------------------------
+                            2 |                       36 |                          0
+(1 row)
+
+=== [2A] market quality ===
+ markets_missing_condition_id | markets_missing_tokens | open_markets_not_in_active_table
+------------------------------+------------------------+----------------------------------
+                         1377 |                   1446 |                            38147
+(1 row)
+
+=== [4] baseline snapshot ===
+ events | markets | active_markets | market_tokens | candle_rows | daily_candle_rows
+--------+---------+----------------+---------------+-------------+-------------------
+ 679884 | 1778182 |          48826 |       3553567 |    37673895 |          37500690
+(1 row)
+
+=== [C1] freshness: metadata + candles must reach the run date ===
+      max_market_created       |      max_market_updated       |       max_event_created       |     max_past_daily_candle
+-------------------------------+-------------------------------+-------------------------------+-------------------------------
+ 2026-07-11 17:15:18.239446-04 | 2026-07-12 06:52:13.471863-04 | 2026-07-11 15:56:35.159553-04 | 2026-07-12 06:24:43.464454-04
+(1 row)
+
+=== [C2] resolution coverage on closed markets ===
+ closed_markets | closed_with_outcome_prices | closed_with_extreme_price
+----------------+----------------------------+---------------------------
+        1713247 |                    1713238 |                   1683721
+(1 row)
+
+=== [C3] closed markets that ENDED in the gap window (must have metadata refresh) ===
+ gap_window_ended_markets | refreshed_today
+--------------------------+-----------------
+                   720466 |           10937
+(1 row)
+
+=== [C4] daily candle coverage by market (candles reach market end or today) ===
+ markets_with_condition | markets_with_daily_candles | pct_with_daily | markets_daily_reaches_end | pct_daily_reaches_end
+------------------------+----------------------------+----------------+---------------------------+-----------------------
+                1776805 |                    1747248 |          98.34 |                   1745318 |                 98.23
+(1 row)
+
+=== [C5] duplicate candles across partitions (PK is per-partition) ===
+ duplicate_candle_keys
+-----------------------
+                     0
+(1 row)
+
+=== [C6] memory-case coverage vs markets ===
+ memory_cases | markets_with_condition | distinct_case_keys
+--------------+------------------------+--------------------
+        46825 |                1776805 |              46825
+(1 row)
+
+=== [C7] gap-window created markets present ===
+   month    | markets_created
+------------+-----------------
+ 2026-04-01 |          262258
+ 2026-05-01 |          273475
+ 2026-06-01 |          335650
+ 2026-07-01 |          132727
+(4 rows)

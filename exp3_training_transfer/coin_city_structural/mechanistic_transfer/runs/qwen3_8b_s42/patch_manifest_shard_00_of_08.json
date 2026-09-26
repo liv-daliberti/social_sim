@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    "prior_unpatched",
+    "prior_self",
+    "matched_same_to_prior",
+    "matched_wrong_to_prior",
+    "matched_unpatched",
+    "matched_self",
+    "prior_same_to_matched",
+    "prior_wrong_to_matched"
+  ],
+  "created_at": "2026-08-26T03:11:56.632980+00:00",
+  "draws_per_condition": 5,
+  "model": "Qwen/Qwen3-8B",
+  "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "output_path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/mechanistic_transfer/runs/qwen3_8b_s42/patch_outputs_shard_00_of_08.jsonl",
+  "output_sha256": "f345d85f4fc08e7fcf01cfb29af926cc9ffe5aae22daf4f749c145f684019a8e",
+  "scenario_positions": 10,
+  "seed": 42,
+  "selection_sha256": "05b7c45ffb20d4000f9b7c20673cd7116bc2b64a87a3005bf5ea1b1e74a6e1bd",
+  "state_layers": [
+    5,
+    6,
+    7
+  ],
+  "status": "patching_complete",
+  "study": "coin_city_exp3_reference_transplant_qwen8_v1",
+  "tasks_sha256": "da2f3506fd8ad570865a28d18e66b15d881212aa41acdcc71315e9c6b69c9ce9",
+  "test_tasks": 8
+}

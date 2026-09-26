@@ -1,0 +1,23 @@
+% Experiment 3 — evidence accumulation on the held-out worlds (the Exp-2 sparse-evidence view).
+% GENERATED: paper/figures/exp3_per_week.pdf from the OAT eval dumps by
+% exp3_training_transfer/dag_family/plot_per_week.py (references recomputed at every prefix on the
+% identical episodes). Regenerate with:  python3 plot_per_week.py
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp3_per_week.pdf}
+\caption{\textbf{Evidence accumulation on the held-out worlds.} The Experiment-3 analogue of
+Experiment~2's sparse-evidence curve: each axis is read as a function of the number of weeks of history
+$k$ the forecaster has seen, for the untrained base (grey), the family-trained model (teal), and the
+structureless control (amber), against references recomputed at every $k$ on the identical episodes.
+Both arms are read at the same training step and over the same seeds, so any gap is the arm and not the
+sample. We pool only the held-out worlds whose probe response at $h^\star$ \emph{is} the gain itself
+(\texttt{direct}, \texttt{two\_news\_feedback}); \texttt{mediators} and \texttt{chain4} are excluded
+because their response is an affine image of $g$ (so $\varepsilon$ lives on a different scale) and
+because they are unidentifiable at small $k$. Including them would change \emph{what is being
+averaged} as $k$ grows, and a flat curve could be mistaken for a flat model. Informativeness $\rho$ rises steadily with evidence, showing that estimates
+sharpen as polls arrive. The gap between teal and amber identifies the training effect. If the
+structureless control tracks the family arm, the improvement over the untrained base reflects format
+and level tracking rather than recovered structure. Curves use
+all three paired seeds at the completed endpoint.}
+\label{fig:exp3-per-week}
+\end{figure*}

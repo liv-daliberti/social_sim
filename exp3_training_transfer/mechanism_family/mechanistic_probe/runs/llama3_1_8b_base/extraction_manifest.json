@@ -1,0 +1,53 @@
+{
+  "adapter": null,
+  "chat_template": "native single-user template; thinking disabled when supported",
+  "completed_at": "2026-08-26T02:56:08.171112+00:00",
+  "control_pooling": [
+    "mean embedding output",
+    "mean final layer"
+  ],
+  "device_map_request": "none",
+  "endpoint_label": "base",
+  "feature_summary": {
+    "elapsed_seconds": 461.26526498794556,
+    "feature_dtype": "float16",
+    "feature_shape": [
+      1440,
+      33,
+      4096
+    ],
+    "hidden_size": 4096,
+    "layer_count_including_embedding": 33,
+    "mean_control_shape": [
+      1440,
+      2,
+      4096
+    ],
+    "record_count": 1440,
+    "token_count_max": 1126,
+    "token_count_median": 1031.0,
+    "token_count_min": 941,
+    "transformer_layer_count": 32
+  },
+  "features_sha256": "cddf26d1e8029f7de1d46bc2e2a1ac20b1e62fa286f562e90c9d10a2b1bd68df",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "model_label": "Llama-3.1-8B-Instruct",
+  "parameter_count": 8030261248,
+  "primary_anchor": "final input token",
+  "resolved_device_map": {},
+  "resolved_model_commit": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "software": {
+    "accelerate": "1.14.0",
+    "numpy": "1.26.4",
+    "peft": "0.15.2",
+    "python": "3.10.20",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3"
+  },
+  "status": "features_complete",
+  "study": "exp3_mechanism_probe_v1",
+  "task_manifest_sha256": "364072b8d87cacd283ba776542086471a684ad1d3c6709a789c987370a053eef",
+  "tasks_sha256": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+  "trainable_parameter_count_at_extraction": 8030261248
+}

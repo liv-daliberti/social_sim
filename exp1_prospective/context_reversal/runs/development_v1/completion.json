@@ -1,0 +1,303 @@
+{
+  "aggregate_json": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/development_summary.json",
+  "aggregate_markdown": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/development_summary.md",
+  "aggregate_process": {
+    "command": [
+      "/n/fs/similarity/social_sim/.runtime/oat_conda/bin/python",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/code/aggregate.py",
+      "--results-root",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results",
+      "--output-prefix",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/development_summary"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "aggregate_succeeded": true,
+  "coverage_totals": {
+    "expected": 2880,
+    "models_with_coverage": 3,
+    "valid": 2880
+  },
+  "design_sha256": "cf6d5e30b5e3bd3ebd42be5348019c485f2f50f62d5a8b2ae07000ac5cbfb4a4",
+  "errors": [],
+  "expected_records_per_model": 960,
+  "finished_at": "2026-09-21T23:48:19.678925+00:00",
+  "frontier_api_calls": 0,
+  "independent_human_validation": "not_collected",
+  "material_status": "authored_development_unvalidated",
+  "models": {
+    "llama3_1_70b_instruct": {
+      "analysis_input": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/llama3_1_70b_instruct.jsonl",
+      "analysis_process": {
+        "command": [
+          "/n/fs/similarity/social_sim/.runtime/oat_conda/bin/python",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/code/analyze.py",
+          "--design",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_plan.jsonl",
+          "--responses",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/llama3_1_70b_instruct.jsonl",
+          "--model-key",
+          "llama3_1_70b_instruct",
+          "--output",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/llama3_1_70b_instruct"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "analysis_succeeded": true,
+      "coverage": {
+        "expected": 960,
+        "invalid_present": 0,
+        "missing_record": 0,
+        "present": 960,
+        "reason:ok": 960,
+        "valid": 960
+      },
+      "coverage_complete": true,
+      "job_id": "31433799",
+      "manifest_checks": {
+        "all_statuses_ok": true,
+        "design_hash_matches": true,
+        "job_id_recorded": true,
+        "model_key_matches": true,
+        "model_path_matches": true,
+        "planned_records_match": true,
+        "record_count_complete": true,
+        "runner_hash_matches": true,
+        "status_complete": true
+      },
+      "manifest_complete": true,
+      "manifest_copy": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/llama3_1_70b_instruct.manifest.json",
+      "manifest_counts": {
+        "ok": 960
+      },
+      "manifest_present": true,
+      "manifest_sha256": "a28aee9036acdd1459cac01295e7e332da0b3e93fbc6d88d56eaab8ec0cf0e7d",
+      "manifest_source": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/llama3_1_70b_instruct.jsonl.manifest.json",
+      "manifest_status": "complete",
+      "model_key": "llama3_1_70b_instruct",
+      "plan_complete": true,
+      "raw_response_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/llama3_1_70b_instruct.jsonl",
+      "raw_response_present": true,
+      "raw_response_sha256_after_analysis": "d55acde2a68fde97943ca6d6e3aa213357ab02048c5d91f5479b84e932159b66",
+      "raw_response_sha256_before_analysis": "d55acde2a68fde97943ca6d6e3aa213357ab02048c5d91f5479b84e932159b66",
+      "raw_response_unchanged": true,
+      "scheduler": {
+        "accounting_row_present": true,
+        "elapsed": "00:36:55",
+        "ended_at": "2026-09-21T15:01:11",
+        "exit_code": "0:0",
+        "job_id": "31433799",
+        "raw_state": "COMPLETED",
+        "started_at": "2026-09-21T14:24:16",
+        "state": "COMPLETED"
+      },
+      "summary_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/llama3_1_70b_instruct/summary.json",
+      "summary_sha256": "425dc7d8f2d4cbba2fe968bc71aac456a1e7ba22129bf6f78aa3f37bed58da07"
+    },
+    "qwen2_5_72b_instruct": {
+      "analysis_input": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen2_5_72b_instruct_retry_eager.jsonl",
+      "analysis_process": {
+        "command": [
+          "/n/fs/similarity/social_sim/.runtime/oat_conda/bin/python",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/code/analyze.py",
+          "--design",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_plan.jsonl",
+          "--responses",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen2_5_72b_instruct_retry_eager.jsonl",
+          "--model-key",
+          "qwen2_5_72b_instruct",
+          "--output",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/qwen2_5_72b_instruct"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "analysis_succeeded": true,
+      "coverage": {
+        "expected": 960,
+        "invalid_present": 0,
+        "missing_record": 0,
+        "present": 960,
+        "reason:ok": 960,
+        "valid": 960
+      },
+      "coverage_complete": true,
+      "job_id": "31440348",
+      "manifest_checks": {
+        "all_statuses_ok": true,
+        "design_hash_matches": true,
+        "job_id_recorded": true,
+        "model_key_matches": true,
+        "model_path_matches": true,
+        "planned_records_match": true,
+        "record_count_complete": true,
+        "runner_hash_matches": true,
+        "status_complete": true
+      },
+      "manifest_complete": true,
+      "manifest_copy": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/qwen2_5_72b_instruct.manifest.json",
+      "manifest_counts": {
+        "ok": 960
+      },
+      "manifest_present": true,
+      "manifest_sha256": "eb8efdaecb5c8c172bcdf52559d1bdf1e343bc2704b76bcbd0f334e62af56457",
+      "manifest_source": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen2_5_72b_instruct_retry_eager.jsonl.manifest.json",
+      "manifest_status": "complete",
+      "model_key": "qwen2_5_72b_instruct",
+      "plan_complete": true,
+      "raw_response_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen2_5_72b_instruct_retry_eager.jsonl",
+      "raw_response_present": true,
+      "raw_response_sha256_after_analysis": "92a2bd44b97d2b9d3d2e290923fa727113432ec087cb16807fc80a846ec3474f",
+      "raw_response_sha256_before_analysis": "92a2bd44b97d2b9d3d2e290923fa727113432ec087cb16807fc80a846ec3474f",
+      "raw_response_unchanged": true,
+      "scheduler": {
+        "accounting_row_present": true,
+        "elapsed": "00:30:52",
+        "ended_at": "2026-09-21T19:47:42",
+        "exit_code": "0:0",
+        "job_id": "31440348",
+        "raw_state": "COMPLETED",
+        "started_at": "2026-09-21T19:16:50",
+        "state": "COMPLETED"
+      },
+      "summary_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/qwen2_5_72b_instruct/summary.json",
+      "summary_sha256": "50ddce7b7486cfe116428da8139f4f139a51d54b91ef4c3424a9269422f53492"
+    },
+    "qwen3_32b": {
+      "analysis_input": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen3_32b.jsonl",
+      "analysis_process": {
+        "command": [
+          "/n/fs/similarity/social_sim/.runtime/oat_conda/bin/python",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/code/analyze.py",
+          "--design",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_plan.jsonl",
+          "--responses",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen3_32b.jsonl",
+          "--model-key",
+          "qwen3_32b",
+          "--output",
+          "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/qwen3_32b"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "analysis_succeeded": true,
+      "coverage": {
+        "expected": 960,
+        "invalid_present": 0,
+        "missing_record": 0,
+        "present": 960,
+        "reason:ok": 960,
+        "valid": 960
+      },
+      "coverage_complete": true,
+      "job_id": "31433855",
+      "manifest_checks": {
+        "all_statuses_ok": true,
+        "design_hash_matches": true,
+        "job_id_recorded": true,
+        "model_key_matches": true,
+        "model_path_matches": true,
+        "planned_records_match": true,
+        "record_count_complete": true,
+        "runner_hash_matches": true,
+        "status_complete": true
+      },
+      "manifest_complete": true,
+      "manifest_copy": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/qwen3_32b.manifest.json",
+      "manifest_counts": {
+        "ok": 960
+      },
+      "manifest_present": true,
+      "manifest_sha256": "da781afdad2f5dbf64e095fa6a372a1109e0143f153c55d773c305d10e4da7d0",
+      "manifest_source": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen3_32b.jsonl.manifest.json",
+      "manifest_status": "complete",
+      "model_key": "qwen3_32b",
+      "plan_complete": true,
+      "raw_response_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen3_32b.jsonl",
+      "raw_response_present": true,
+      "raw_response_sha256_after_analysis": "e7b85a15b35c404e2415f7020ff7928439aa740c61d9483bde57a8a2e98230b1",
+      "raw_response_sha256_before_analysis": "e7b85a15b35c404e2415f7020ff7928439aa740c61d9483bde57a8a2e98230b1",
+      "raw_response_unchanged": true,
+      "scheduler": {
+        "accounting_row_present": true,
+        "elapsed": "00:29:54",
+        "ended_at": "2026-09-21T14:56:10",
+        "exit_code": "0:0",
+        "job_id": "31433855",
+        "raw_state": "COMPLETED",
+        "started_at": "2026-09-21T14:26:16",
+        "state": "COMPLETED"
+      },
+      "summary_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/qwen3_32b/summary.json",
+      "summary_sha256": "05ca2698801b79f5ac8182411bcda5a16c65428ee5b4ddf49511b44decfc05a2"
+    }
+  },
+  "plan_complete": true,
+  "prescribed_models": [
+    "qwen2_5_72b_instruct",
+    "llama3_1_70b_instruct",
+    "qwen3_32b"
+  ],
+  "results_root": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results",
+  "run_dir": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1",
+  "scheduler": {
+    "jobs": {
+      "31433799": {
+        "accounting_row_present": true,
+        "elapsed": "00:36:55",
+        "ended_at": "2026-09-21T15:01:11",
+        "exit_code": "0:0",
+        "job_id": "31433799",
+        "raw_state": "COMPLETED",
+        "started_at": "2026-09-21T14:24:16",
+        "state": "COMPLETED"
+      },
+      "31433855": {
+        "accounting_row_present": true,
+        "elapsed": "00:29:54",
+        "ended_at": "2026-09-21T14:56:10",
+        "exit_code": "0:0",
+        "job_id": "31433855",
+        "raw_state": "COMPLETED",
+        "started_at": "2026-09-21T14:26:16",
+        "state": "COMPLETED"
+      },
+      "31440348": {
+        "accounting_row_present": true,
+        "elapsed": "00:30:52",
+        "ended_at": "2026-09-21T19:47:42",
+        "exit_code": "0:0",
+        "job_id": "31440348",
+        "raw_state": "COMPLETED",
+        "started_at": "2026-09-21T19:16:50",
+        "state": "COMPLETED"
+      }
+    },
+    "queried_at": "2026-09-21T23:48:18.372947+00:00",
+    "query": {
+      "command": [
+        "sacct",
+        "-n",
+        "-P",
+        "-X",
+        "-j",
+        "31440348,31433799,31433855",
+        "--format=JobIDRaw,State,ExitCode,Elapsed,Start,End"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "31433799|COMPLETED|0:0|00:36:55|2026-09-21T14:24:16|2026-09-21T15:01:11\n31433855|COMPLETED|0:0|00:29:54|2026-09-21T14:26:16|2026-09-21T14:56:10\n31440348|COMPLETED|0:0|00:30:52|2026-09-21T19:16:50|2026-09-21T19:47:42\n"
+    }
+  },
+  "schema_version": "context_reversal_run_completion_v1",
+  "started_at": "2026-09-21T23:48:18.323398+00:00",
+  "status": "complete",
+  "submission_sha256": "478d0ce6e17b1343c6b9943ea2cc334d9270fbeacec5efd776f467f86f1f9929"
+}

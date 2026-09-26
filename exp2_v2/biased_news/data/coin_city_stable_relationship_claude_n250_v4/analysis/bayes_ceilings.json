@@ -1,0 +1,81 @@
+{
+  "analysis": "coin_city_bayes_ceilings",
+  "generated_at_utc": "2026-08-26T20:01:46.920002+00:00",
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "makes_model_calls": false,
+  "generator_constants": {
+    "strong_slope_mean": 0.9,
+    "weak_slope_mean": 0.25,
+    "city_slope_sd": 0.03,
+    "case_noise_sd": 5.0,
+    "news_magnitudes": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "displayed_poll_rounding": 0.1
+  },
+  "monte_carlo": {
+    "draws": 400000,
+    "seed": 20260826
+  },
+  "analytic_r2_ceiling": {
+    "residual_slope": {
+      "k=0": 0.0,
+      "k=1": 0.0020848627139264534,
+      "k=2": 0.00416105020942051,
+      "k=3": 0.006597848735090319,
+      "k=4": 0.008834263925141717
+    },
+    "full_slope": {
+      "k=0": 0.9915512790424783,
+      "k=1": 0.9915688934657829,
+      "k=2": 0.991586434594588,
+      "k=3": 0.991607022425361,
+      "k=4": 0.991625917273247
+    }
+  },
+  "simulated": {
+    "reference_fit_sd_within_regime": 0.31831698954649423,
+    "corr_reference_residual_with_city_c_residual": -3.117475331964966e-05,
+    "corr_reference_fit_with_city_c_slope": 0.7109974822698066,
+    "corr_regime_indicator_with_city_c_slope": 0.995772382349239,
+    "regime_auc_ceiling_arbitrary_label_k0": 0.9790226777092461,
+    "regime_accuracy_ceiling_arbitrary_label_k0": 0.9262775,
+    "regime_auc_ceiling_correct_semantic_cue": 1.0,
+    "r2_ceiling": {
+      "residual_slope": {
+        "k=0": 0.0,
+        "k=1": 0.0025673213909143122,
+        "k=2": 0.0047953374153764106,
+        "k=3": 0.006425575473335221,
+        "k=4": 0.009295668429229242
+      },
+      "full_slope": {
+        "k=0": 0.9915625079991855,
+        "k=1": 0.9915841697528849,
+        "k=2": 0.991602968620269,
+        "k=3": 0.9916167237408424,
+        "k=4": 0.9916409401271994
+      }
+    }
+  },
+  "forecast_mae_floor": {
+    "cued": {
+      "k=0": 0.16716228922093584,
+      "k=1": 0.16694201150142823,
+      "k=2": 0.16673526211865614,
+      "k=3": 0.16658204627678275,
+      "k=4": 0.1663788501989055
+    },
+    "blind": {
+      "k=0": 2.2755087324535004,
+      "k=1": 1.4873287830873565,
+      "k=2": 1.1871932835095327,
+      "k=3": 0.9724758256990599,
+      "k=4": 0.8217793762887867
+    }
+  }
+}

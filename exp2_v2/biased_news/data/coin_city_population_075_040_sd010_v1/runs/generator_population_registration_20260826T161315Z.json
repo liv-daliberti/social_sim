@@ -1,0 +1,152 @@
+{
+  "classification": "post_hoc_robustness",
+  "design_manifest": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_population_075_040_sd010_v1/design/manifest.json",
+  "design_manifest_sha256": "79e30e53b710e27bf744b069b1bd15378d854ecdf454843e23ffa354e6a485c8",
+  "kind": "generator_population_registration",
+  "launcher_sha256": "b583656234d2125850b9f119556c382411c594b37132c06c92c3a31673966eb7",
+  "models": [
+    {
+      "cpus": 8,
+      "gres": "gpu:a6000:1",
+      "label": "Qwen3-4B-Instruct-2507",
+      "license": "Apache-2.0_Qwen",
+      "mem": "48G",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "slug": "qwen3_4b",
+      "template": "qwen-no-thinking",
+      "time": "00:45:00",
+      "tp": 1
+    },
+    {
+      "cpus": 8,
+      "gres": "gpu:a6000:1",
+      "label": "Qwen3-8B",
+      "license": "Apache-2.0_Qwen",
+      "mem": "48G",
+      "model": "Qwen/Qwen3-8B",
+      "slug": "qwen3_8b",
+      "template": "qwen-no-thinking",
+      "time": "00:45:00",
+      "tp": 1
+    },
+    {
+      "cpus": 8,
+      "gres": "gpu:a6000:1",
+      "label": "Qwen3-14B",
+      "license": "Apache-2.0_Qwen",
+      "mem": "56G",
+      "model": "Qwen/Qwen3-14B",
+      "slug": "qwen3_14b",
+      "template": "qwen-no-thinking",
+      "time": "01:00:00",
+      "tp": 1
+    },
+    {
+      "cpus": 16,
+      "gres": "gpu:a5000:4",
+      "label": "Qwen3-32B",
+      "license": "Apache-2.0_Qwen",
+      "mem": "128G",
+      "model": "Qwen/Qwen3-32B",
+      "slug": "qwen3_32b",
+      "template": "qwen-no-thinking",
+      "time": "01:30:00",
+      "tp": 4
+    },
+    {
+      "cpus": 8,
+      "gres": "gpu:a5000:1",
+      "label": "Qwen2.5-7B-Instruct",
+      "license": "Apache-2.0_Qwen",
+      "mem": "48G",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "slug": "qwen2_5_7b",
+      "template": "qwen-no-thinking",
+      "time": "01:00:00",
+      "tp": 1
+    },
+    {
+      "cpus": 8,
+      "gres": "gpu:a5000:2",
+      "label": "Qwen2.5-14B-Instruct",
+      "license": "Apache-2.0_Qwen",
+      "mem": "64G",
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "slug": "qwen2_5_14b",
+      "template": "qwen-no-thinking",
+      "time": "01:00:00",
+      "tp": 2
+    },
+    {
+      "cpus": 16,
+      "gres": "gpu:a5000:4",
+      "label": "Qwen2.5-32B-Instruct",
+      "license": "Apache-2.0_Qwen",
+      "mem": "128G",
+      "model": "Qwen/Qwen2.5-32B-Instruct",
+      "slug": "qwen2_5_32b",
+      "template": "qwen-no-thinking",
+      "time": "01:30:00",
+      "tp": 4
+    },
+    {
+      "cpus": 16,
+      "gres": "gpu:a5000:8",
+      "label": "Qwen2.5-72B-Instruct",
+      "license": "Apache-2.0_Qwen",
+      "mem": "192G",
+      "model": "Qwen/Qwen2.5-72B-Instruct",
+      "slug": "qwen2_5_72b",
+      "template": "qwen-no-thinking",
+      "time": "03:00:00",
+      "tp": 8
+    },
+    {
+      "cpus": 8,
+      "gres": "gpu:a5000:1",
+      "label": "Llama-3.1-8B-Instruct",
+      "license": "Llama_3.1_Community_License",
+      "mem": "48G",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "slug": "llama3_1_8b",
+      "template": "auto",
+      "time": "01:00:00",
+      "tp": 1
+    },
+    {
+      "cpus": 16,
+      "gres": "gpu:a5000:8",
+      "label": "Llama-3.1-70B-Instruct",
+      "license": "Llama_3.1_Community_License",
+      "mem": "192G",
+      "model": "meta-llama/Llama-3.1-70B-Instruct",
+      "slug": "llama3_1_70b",
+      "template": "auto",
+      "time": "03:00:00",
+      "tp": 8
+    }
+  ],
+  "planned_responses": 37500,
+  "protocol_sha256": "2a12df6c40effc19c882debbc63df13ceb1946cbcf782b423965aa03206567bf",
+  "protocol_version": "coin_city_robustness_v1",
+  "registered_at": "20260826T161315Z",
+  "runner_sha256": "5529b2f91812dcbb48b64a4ac5fa85a424ade38f60e4ddf1b52d09c7dd5e2f61",
+  "sbatch_sha256": "6f11aeeffd3e0d19f8bacc9231cdeb1f44df8bfc779ecdbf3b1ac97a4cefc18a",
+  "scientific_settings": {
+    "arms": [
+      "abc_no_context",
+      "abc_context",
+      "abc_symbol_context"
+    ],
+    "max_tokens": 512,
+    "prefixes": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "temperature": 0.0
+  },
+  "status": "registered"
+}

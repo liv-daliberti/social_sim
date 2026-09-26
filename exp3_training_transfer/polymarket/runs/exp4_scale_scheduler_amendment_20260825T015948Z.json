@@ -1,0 +1,50 @@
+{
+  "amended_at": "20260825T015948Z",
+  "changes": {
+    "account": {
+      "after": "mltheory",
+      "before": "allcs"
+    },
+    "partition": {
+      "after": "all",
+      "before": "cs"
+    },
+    "time_limit": {
+      "after": "18:00:00",
+      "before": "30:00:00"
+    }
+  },
+  "dependency_job_ids_unchanged": true,
+  "jobs": [
+    {
+      "job_id": "30870543",
+      "scheduled_node": "node208",
+      "scheduled_start": "2026-08-25T00:53:10",
+      "seed": 42
+    },
+    {
+      "job_id": "30870544",
+      "scheduled_node": "node104",
+      "scheduled_start": "2026-08-25T05:20:00",
+      "seed": 43
+    },
+    {
+      "job_id": "30870545",
+      "scheduled_node": "node103",
+      "scheduled_start": "2026-08-25T07:40:00",
+      "seed": 44
+    }
+  ],
+  "protocol_sha256": "228ba2bc0ae35c29984f4993244e931b01b1ca60947d70ecfa4eea1da9516a56",
+  "reason": "Use the user's mltheory fair-share association on the shared all partition and a canary-supported wall-time to enter earlier A6000 backfill windows.",
+  "runtime_basis": {
+    "canary_elapsed": "00:43:46",
+    "canary_rounds": 10,
+    "full_rounds": 300,
+    "projected_full_runtime_hours": 14,
+    "requested_runtime_hours": 18
+  },
+  "scientific_configuration_changed": false,
+  "source_ledger": "exp4_scale_full_20260824T211347Z.json",
+  "source_ledger_sha256": "b19f4cd0b90c55a6417a72856ca8cbceb048c006e4e9c5c4974f00cd68e6f511"
+}

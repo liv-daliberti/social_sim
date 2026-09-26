@@ -1,0 +1,247 @@
+% ============================================================
+%  EXPERIMENT 3 — MAIN SECTION  (training & transfer; synthetic + real pastcasting)
+%  Place after the Experiment 2 section.
+% ============================================================
+
+% ------------------------------------------------------------------
+\section{Experiment 3: Training and Transfer Across Synthetic and Real Forecasting Worlds}
+\label{sec:exp3}
+% ------------------------------------------------------------------
+
+Experiments~1 and~2 treated inductive world-modeling as a \emph{fixed} property of an agent---a
+disposition we probe but do not change. They left the third rung of our diagnostic
+(our third criterion, \emph{inductive transfer}) untouched, and they left a
+sharp open question. In Experiment~2 the strongest agents recovered the hidden gain from a single
+observation but \emph{plateaued}: they reached, yet never cleared, a well-posed same-information
+forecaster, and were overtaken as evidence accumulated (Table~\ref{tab:exp2-skill}). Experiment~3
+asks whether \emph{forecasting training} can move that ceiling---and, crucially, whether any gain is a
+\emph{general} improvement in inductive world-modeling rather than fit to the trained distribution.
+
+Transfer is the discriminating test: we train on one family of forecasting problems and evaluate on
+held-out problems the model never saw, reusing the very diagnostics of Experiments~1 and~2 so that an
+improvement is legible in the same terms. But transfer alone is not enough, and the design below is
+shaped by a single methodological worry. Training against a forecasting reward can lower held-out
+error for reasons that have nothing to do with world models: a model can learn the output format, learn
+to track the poll's level, or simply learn to stop over-reacting to news. Each of those improves the
+score while inferring nothing. Most of Experiment~3's machinery exists to separate that from genuine
+latent inference---an instrument that can see the latent, a reward that a shrinkage policy cannot
+collect, a bracket of blind references, and a structureless control arm.
+
+\paragraph{Why these two arms.}  The two earlier experiments isolated two different things a world model
+must do, and Experiment~3 stresses each under training. Experiment~2 isolated \emph{latent recovery} in
+a world we built, where the truth is known by construction; the synthetic arm trains that ability and
+asks whether it transfers to worlds withheld from training. Experiment~1 isolated \emph{coherent
+updating} on real questions, where the truth is contested and arrives only at resolution; the
+pastcasting arm trains on resolved questions and asks whether the coherence signature---not just raw
+accuracy---survives on held-out ones.
+
+% ------------------------------------------------------------------
+\subsection{Synthetic worlds: training latent-structure inference and testing transfer across structure}
+\label{sec:exp3-synthetic}
+% ------------------------------------------------------------------
+
+\input{fig_exp3_dag_family}
+
+\textbf{A family of latent-structure worlds.}  We generalize the Experiment~2 world into a
+\emph{family} of small linear-Gaussian DAGs that share its logic but vary its structure
+(Fig.~\ref{fig:exp3-family}).  In each, observed news $x$ drives one or more latent opinions $o$ that
+carry over and mean-revert week to week and emit an observed poll $p$ (Fig.~\ref{fig:exp3-unroll}); a
+single edge---the \emph{hidden gain} $g\sim\mathrm{Uniform}(0.1,1.0)$, drawn once per city---is never
+revealed.  The $12$ structures vary everything \emph{around} that edge: the number of news drivers, the
+depth and delay of the news$\to$poll path, inter-latent couplings and feedback, mediating latents, and
+which edge is hidden (an input gain, or the persistence itself).  We split them into $8$ \emph{training}
+and $4$ \emph{held-out} structures; among the held-out is the direct chain---the Experiment~2 world
+itself---so the test literally asks whether training on other structures improves recovery on the
+Experiment~2 world.
+
+Two properties make the split a real test rather than a relabeling. First, the held-out worlds are
+\emph{observationally distinct}: applying each structure's Kalman oracle to every other structure's data
+(within an interface), every world's own oracle is best by a margin of $21$--$463\%$, so no held-out
+world is a disguised copy of a trained one. Second, as in Experiment~2's parity prompt, the generative
+structure is \emph{disclosed} in words and only $g$ is hidden: the forecaster is told the graph, the
+delays, and the persistences, and must infer from the news/poll history the one latent scalar that
+scales news into opinion. Transfer therefore tests whether the model can \emph{use} a
+described-but-never-trained-on world model and pin down its free parameter---not whether it memorized a
+structure it trained on. It also means the structure-agnostic baselines are \emph{conservative}: the
+model is handed strictly more information than they get.
+
+\input{fig_exp3_unroll}
+\input{fig_exp3_probe_diagnostic}
+
+\textbf{The instrument must be able to see the latent.}  Experiment~2 reads recovery with a four-shock
+predict-then-slope probe: ask for the poll under each of four news shocks and take the slope of the
+answers. Carried over naively---asking always about \emph{next} week's poll---that probe is
+\emph{degenerate} in any world where news takes more than a week to reach the poll. There, next week's
+poll does not depend on next week's news at all: the four scenarios share one target, the true slope is
+zero, and a constant reply is exactly optimal. Six of our twelve worlds are blind in precisely this way
+(Fig.~\ref{fig:exp3-probe}a). We therefore read each world at its own \textbf{first-response horizon}
+$h^\star$: the earliest week at which a news pulse moves the probed poll, i.e.\ the smallest $h$ with
+$(C A^{h-1} B)\neq 0$. Under $h^\star$ the probe slope carries $g$ in $6/8$ training and $4/4$ held-out
+worlds. The two exceptions are the hidden-$\phi$ worlds, where $g$ is a persistence rather than an input
+gain; there no input$\to$output response identifies it at any horizon, correctly and by construction, and
+those worlds are scored on forecast error alone.
+
+\textbf{A reward a shrinkage policy cannot collect.}  The obvious reward---accuracy of the predicted
+poll---is \emph{improvable without inferring anything}. Because $g$ is drawn around a known mean, a
+policy that ignores the news and answers a well-chosen constant already captures most of the available
+reward: under the one-step probe, $70\%$ of the oracle's (Fig.~\ref{fig:exp3-probe}b). This is not
+hypothetical. An earlier generation of our runs optimized exactly this reward and converged exactly
+there: forecast error fell while informativeness \emph{collapsed} ($\rho: .58\!\to\!.26$), the signature
+of a model that had learned a better average response rather than a per-city inference. We therefore
+score the \emph{response}, not only the level. With the four scenario forecasts $\hat p_i$ elicited
+jointly in one reply,
+\begin{equation}
+r \;=\; (1-w)\cdot\underbrace{\tfrac14\textstyle\sum_i \max\!\big(0,\,1-|\hat p_i-\mu_i|/S\big)}_{\text{level}}
+\;+\; w\cdot\underbrace{\max\!\big(0,\,1-|\mathrm{slope}(\hat p)-\gamma^\star|/S_g\big)}_{\text{response}},
+\label{eq:exp3-reward}
+\end{equation}
+where $\mu_i$ is the noise-free target under shock $i$ and $\gamma^\star=(CA^{h^\star-1}B)$ is that
+city's true response at $h^\star$ ($w{=}0.5$, $S{=}15$ poll points, $S_g{=}0.5$). The slope term is
+per-episode: it can only be earned by reading \emph{this} city's history. It cuts a constant reply from
+$70\%$ to $46\%$ of the oracle's reward, and it does so in every world, not only the immediate ones.
+
+\textbf{Three metrics, because one is not enough.}  We read the same three axes as Experiment~2, and we
+read them together. $\pi=\overline{|\hat p-\mu|}$ is the next-poll forecast error (poll points; defined
+in every world). $\varepsilon=\overline{|\hat\gamma-\gamma^\star|}$ is the recovery error, and
+$\rho(\hat\gamma,\gamma^\star)$ the informativeness. Neither $\pi$ nor $\varepsilon$ alone certifies
+inference: a good constant response buys low $\pi$ with no inference at all, and shrinking $\hat\gamma$
+onto a world's mean response buys low $\varepsilon$ while ordering no cities. Only a forecaster that is
+calibrated \emph{and} informative---low $\varepsilon$ with $\rho$ well above zero---is recovering the
+latent. We meet a live instance of this below, on the deepest held-out chain.
+
+\textbf{Recovery must be read on each world's own scale.}  The recoverable response
+$\gamma^\star=(CA^{h^\star-1}B)$ spans $0.10$--$1.00$ in the direct chain but only $0.022$--$0.216$ in
+the four-stage chain, so a raw $\varepsilon$ is not comparable across worlds and must not be pooled.
+We therefore normalise by each world's own \emph{blind} floor,
+\begin{equation}
+\tilde\varepsilon \;=\; \varepsilon \,/\, \varepsilon_{\text{prior-blind}},
+\label{eq:exp3-epstilde}
+\end{equation}
+where prior-blind is that structure's Kalman filter with $g$ frozen at the range midpoint: it knows the
+structure and never infers the gain, so its $\varepsilon$ is exactly the cost of \emph{not} inferring,
+expressed on the right scale. $\tilde\varepsilon<1$ means inference beat not inferring.
+
+\textbf{References that are actually hard.}  The oracle is a ceiling, not a bar. Because the prompt
+discloses the structure, the sharp comparison is against forecasters that also know the structure but
+never infer $g$. We compute six references on the \emph{identical} episodes (Table~\ref{tab:exp3-refs}):
+the \emph{oracle} (Kalman filter marginalizing $g$); \emph{prior-blind} (the same filter with $g$ frozen
+at the range midpoint $0.55$); the \emph{best fixed $\gamma$}, the strongest single constant response
+chosen in hindsight per world; \emph{always-prior} ($\gamma{=}0.55$); a structure-agnostic \emph{naive
+frequentist}; and \emph{persistence}. The blind constants are the bar a genuine inference must clear.
+
+\begin{table}[h]
+\centering
+\caption{\textbf{The bracket, per held-out world}, computed on the identical episodes at each world's
+$h^\star$ and over its informative prefixes. The oracle is a ceiling, not a bar: the references that
+matter are the blind ones. Freezing $g$ at the range midpoint but using the disclosed structure
+(prior-blind) already forecasts the direct chain to $2.07$ poll points, and the best single constant
+response to $2.36$---so a low $\pi$ is not by itself evidence of inference. Note also how far apart the
+worlds are: $\pi$ in the delayed worlds is three to four times that of the immediate ones, and the
+recovery floors differ by $4\times$; this is why we neither pool $\pi$ nor pool raw $\varepsilon$.
+\emph{Generated by \texttt{make\_tables.py}.}}
+\label{tab:exp3-refs}
+\footnotesize
+\input{tables/exp3_refs}
+\end{table}
+
+\textbf{An identifiability guard.}  In a delayed world at a short prefix, the news has not yet reached
+the poll and \emph{no} forecaster can identify $g$: the oracle and the prior-blind filter coincide. Cells
+like these would dilute any claim, so we score only (structure, prefix) cells where the oracle beats
+prior-blind by at least $0.1$ poll points. In practice this keeps every prefix for the immediate worlds
+and only $k\geq5$ for the four-stage chain and the mediator graph.
+
+\textbf{The discriminating control.}  Even with all of the above, a held-out improvement could still come
+from learning the JSON format, from tracking the poll's level, or from learning to suppress a
+news-over-reaction the base model has. None of these is a world model. We therefore train a second arm
+on \textbf{structureless} data: the same worlds and the same prompts, but the \emph{displayed} news is
+resampled independently of the polls (zero mutual information), every scenario's target is the expected
+poll under \emph{zero} input, and the slope target is $0$. A control-trained model can learn format,
+level-tracking, and news-suppression---but there is no news$\to$poll structure in its data to learn. Both
+arms are then evaluated on the \emph{identical} real held-out worlds. This yields a sharp verdict rule:
+
+\begin{quote}
+\emph{Family training shows transfer-as-world-modeling only if, relative to the untrained base, $\pi$
+improves, $\pi$ beats the blind constants (always-prior and best-fixed), $\rho$ does not collapse toward
+zero---and the family arm separates from the control. A family arm that matches the control
+learned format, not structure.}
+\end{quote}
+
+\input{fig_exp3_transfer_curves}
+
+\textbf{Setup and status.}  We train Qwen-3-4B (LoRA rank $32$) with Dr.\ GRPO on the reward of
+Eq.~\eqref{eq:exp3-reward} over the $8$ training structures, paired seeds per arm, and evaluate on the
+$4$ held-out structures with the unchanged Experiment-2 instrument (full configuration in
+Appendix~\ref{app:exp3}). The base model is a genuinely poor forecaster on these worlds---it over-reads
+the news badly---so there is ample room for a training gain that means nothing. That is precisely what
+the control is for. Training is in progress; Table~\ref{tab:exp3-transfer} reports the current
+per-world state, Fig.~\ref{fig:exp3-curves} tracks the three axes against the bracket, and
+Fig.~\ref{fig:exp3-per-env} resolves them by world.
+
+\textbf{What the current checkpoints show.}  Training improves every world substantially over the
+untrained base, and on the two immediate worlds both arms move from well above persistence to well below
+it. But the family arm does not separate from the structureless control on the direct chain---the
+Experiment-2 world---on either $\pi$ or $\tilde\varepsilon$, and the control is there the \emph{more}
+informative of the two. Where the arms do separate is on the delayed worlds, and inconsistently: the
+family arm carries real $\rho$ on \texttt{mediators} and \texttt{chain4} where the control's collapses,
+yet on \texttt{chain4} the control still posts the lower raw $\varepsilon$ by shrinking onto that
+world's mean response. Meanwhile $\tilde\varepsilon\geq0.96$ everywhere: neither arm has yet beaten the
+cost of never inferring the gain at all. On the present evidence the large improvement over the
+untrained model is attributable to format and level-tracking---what the control also learns---rather
+than to recovered structure.
+
+\begin{table}[h]
+\centering
+\caption{Synthetic arm --- \textbf{transfer across structure, per held-out world}. Qwen-3-4B trained with
+Dr.\ GRPO on the $8$ training structures (family) and, identically, on structureless data (control), read
+on the $4$ held-out structures with the Experiment~2 four-shock instrument at each world's $h^\star$;
+paired seeds, bold marks the better arm on $\pi$. $\tilde\varepsilon$ is the recovery error relative to
+that world's blind floor (Eq.~\eqref{eq:exp3-epstilde}): $\tilde\varepsilon<1$ means inferring $g$ beat
+\emph{not} inferring it. \textbf{There is deliberately no pooled row}: $\pi$ would be dominated by the
+delayed worlds and raw $\varepsilon$ would average incommensurable scales. Two readings matter. First,
+$\tilde\varepsilon\geq0.96$ everywhere---neither arm clears the blind floor on any world. Second,
+\texttt{chain4} is the reason $\varepsilon$ and $\rho$ must be read together: the control attains the
+\emph{lower} raw $\varepsilon$ there while its $\rho$ collapses to $.081$, because it shrinks
+$\hat\gamma$ onto that world's small mean response---calibrated but blind, exactly the solution the
+reward was built to exclude. \emph{[Runs in flight; generated by \texttt{make\_tables.py}.]}}
+\label{tab:exp3-transfer}
+\footnotesize
+\input{tables/exp3_transfer}
+\end{table}
+
+% ------------------------------------------------------------------
+\subsection{Real-world pastcasting: training coherent updating and testing it on held-out questions}
+\label{sec:exp3-pastcasting}
+% ------------------------------------------------------------------
+
+\textbf{Setup.}  The pastcasting arm reuses the Experiment~1 pipeline---the same structured forecast
+(event model, competing hypotheses $H_1/H_2$, headline $\hat p = P(H_1)$) and the same agents---but
+swaps the \emph{unresolved} prospective markets for \emph{resolved} historical Polymarket questions,
+restricting each agent to evidence available at the time. This closes the one gap Experiment~1 had to
+defer: with realized outcomes in hand we can compute a genuine accuracy reward (Brier / log-loss against
+resolution), the ``resolution follow-up'' flagged in Appendix~\ref{app:exp1-limitations}. We train on
+one family of questions and evaluate on a held-out set, so the score measures forecasting skill that
+generalizes across questions, not memorization of particular resolutions.
+
+\textbf{Transfer is more than accuracy.}  Experiment~1 established that frontier agents already track
+without copying the market and update coherently; the risk in optimizing a resolution reward is that a
+model recovers accuracy by reviving exactly the shortcuts Experiment~1 ruled out---market imitation or
+surface matching. We therefore evaluate the held-out set on \emph{both} axes. (i) \emph{Accuracy}: Brier
+and log-loss on held-out resolved questions, relative to the pre-training agent and to the contemporary
+market price. (ii) \emph{Coherence}: we re-run the Experiment~1 counterfactual probe on the held-out
+questions and recompute EHC/HFC and the sensitivity ratio
+(Section~\ref{sec:exp1-results}). Training should preserve or sharpen the coherent-updating
+signature---larger, more causally selective revisions on relevant evidence, near-zero movement on
+orthogonal evidence---rather than trade it away for in-distribution fit. Improvement on held-out
+\emph{questions}, in the same coherence terms Experiment~1 introduced, is the real-world counterpart of
+the held-out-world recovery gain in the synthetic arm.
+
+% ------------------------------------------------------------------
+\paragraph{What the two arms together would show.}  The arms are deliberately complementary along the
+two dimensions Experiments~1 and~2 separated. The synthetic arm tests whether training improves
+\emph{latent-structure recovery} and carries it to an unseen generative process, scored where the truth
+is known and against a control that isolates the part of the gain attributable to structure. The real arm
+tests whether training improves \emph{coherent updating and accuracy} and carries it to unseen questions,
+scored where the truth eventually resolves. Read through the same metrics as the earlier experiments, a
+consistent lift on held-out distributions in both arms---one that the control cannot explain---is the
+cumulative evidence the diagnostic was built for: agents \emph{have} partial inductive world models,
+those models can be \emph{trained}, and the improvement is general.

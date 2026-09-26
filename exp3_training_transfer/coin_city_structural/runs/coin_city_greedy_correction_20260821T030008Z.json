@@ -1,0 +1,198 @@
+{
+  "created_at_utc": "20260821T030008Z",
+  "downstream_dependency": "afterok:30723978",
+  "endpoint_jobs": [
+    {
+      "arm": "causal",
+      "canary_job_id": "30723972",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--account=mltheory",
+        "--cpus-per-task=8",
+        "--mem=24G",
+        "--time=01:00:00",
+        "--gres=gpu:a6000:1",
+        "--exclude=node206",
+        "--export=ALL,CANARY_JOB_ID=30723972,ARM=causal,MODEL_KEY=qwen3_4b,MODEL=Qwen/Qwen3-4B-Instruct-2507,PROMPT_TEMPLATE=biased_news,SEED=42",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/greedy_endpoint.sh"
+      ],
+      "environment": {
+        "ARM": "causal",
+        "CANARY_JOB_ID": "30723972",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "MODEL_KEY": "qwen3_4b",
+        "PROMPT_TEMPLATE": "biased_news",
+        "SEED": "42"
+      },
+      "job_id": "30806330",
+      "model": "qwen3_4b",
+      "seed": 42
+    },
+    {
+      "arm": "population_prior",
+      "canary_job_id": "30723973",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--account=mltheory",
+        "--cpus-per-task=8",
+        "--mem=24G",
+        "--time=01:00:00",
+        "--gres=gpu:a6000:1",
+        "--exclude=node206",
+        "--export=ALL,CANARY_JOB_ID=30723973,ARM=population_prior,MODEL_KEY=qwen3_4b,MODEL=Qwen/Qwen3-4B-Instruct-2507,PROMPT_TEMPLATE=biased_news,SEED=42",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/greedy_endpoint.sh"
+      ],
+      "environment": {
+        "ARM": "population_prior",
+        "CANARY_JOB_ID": "30723973",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "MODEL_KEY": "qwen3_4b",
+        "PROMPT_TEMPLATE": "biased_news",
+        "SEED": "42"
+      },
+      "job_id": "30806331",
+      "model": "qwen3_4b",
+      "seed": 42
+    },
+    {
+      "arm": "causal",
+      "canary_job_id": "30723974",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--account=mltheory",
+        "--cpus-per-task=8",
+        "--mem=24G",
+        "--time=01:00:00",
+        "--gres=gpu:a6000:1",
+        "--exclude=node206",
+        "--export=ALL,CANARY_JOB_ID=30723974,ARM=causal,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/greedy_endpoint.sh"
+      ],
+      "environment": {
+        "ARM": "causal",
+        "CANARY_JOB_ID": "30723974",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "SEED": "42"
+      },
+      "job_id": "30806332",
+      "model": "qwen3_8b",
+      "seed": 42
+    },
+    {
+      "arm": "population_prior",
+      "canary_job_id": "30723975",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--account=mltheory",
+        "--cpus-per-task=8",
+        "--mem=24G",
+        "--time=01:00:00",
+        "--gres=gpu:a6000:1",
+        "--exclude=node206",
+        "--export=ALL,CANARY_JOB_ID=30723975,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/greedy_endpoint.sh"
+      ],
+      "environment": {
+        "ARM": "population_prior",
+        "CANARY_JOB_ID": "30723975",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "SEED": "42"
+      },
+      "job_id": "30806333",
+      "model": "qwen3_8b",
+      "seed": 42
+    },
+    {
+      "arm": "causal",
+      "canary_job_id": "30723976",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--account=mltheory",
+        "--cpus-per-task=8",
+        "--mem=24G",
+        "--time=01:00:00",
+        "--gres=gpu:a6000:1",
+        "--exclude=node206",
+        "--export=ALL,CANARY_JOB_ID=30723976,ARM=causal,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/greedy_endpoint.sh"
+      ],
+      "environment": {
+        "ARM": "causal",
+        "CANARY_JOB_ID": "30723976",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "SEED": "42"
+      },
+      "job_id": "30806334",
+      "model": "llama3_1_8b",
+      "seed": 42
+    },
+    {
+      "arm": "population_prior",
+      "canary_job_id": "30723977",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--account=mltheory",
+        "--cpus-per-task=8",
+        "--mem=24G",
+        "--time=01:00:00",
+        "--gres=gpu:a6000:1",
+        "--exclude=node206",
+        "--dependency=afterok:30723977",
+        "--export=ALL,CANARY_JOB_ID=30723977,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/greedy_endpoint.sh"
+      ],
+      "environment": {
+        "ARM": "population_prior",
+        "CANARY_JOB_ID": "30723977",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "SEED": "42"
+      },
+      "job_id": "30806335",
+      "model": "llama3_1_8b",
+      "seed": 42
+    }
+  ],
+  "gate_dependency": "afterok:30806330:30806331:30806332:30806333:30806334:30806335",
+  "gate_job_id": "30723978",
+  "invariants": [
+    "saved adapters unchanged",
+    "training rewards unchanged",
+    "held-out dataset unchanged",
+    "stochastic endpoints unchanged",
+    "greedy temperature remains zero",
+    "one greedy draw per task"
+  ],
+  "original_ledger": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z.json",
+  "original_ledger_sha256": "05c5207201aaaa933399ff05d95a1f7a71e3267eef50f2e402e9e51a339d2eca",
+  "protocol": "coin_city_constrained_greedy_correction_v1",
+  "reason": "Replace the training evaluator's unconstrained greedy dump with a matched xgrammar-constrained temperature-zero endpoint for every canary and future run.",
+  "source_sha256": {
+    "canary_audit.py": "49b4e2c2499ddf4b60556843b273c5af7b79edeadcc3ef1808cf814aca1ea77d",
+    "evaluate_endpoint.py": "d728f5eb9918c22956f011f1ba557be16735ea31d123498cc2d5a668c2ae9072",
+    "greedy_endpoint.sh": "31f58c5b5303d4d96b1da38341edf9b7efa73710ae2c963bc575339062a63f34",
+    "make_paper_outputs.py": "818fd79370557e4bd8a2b657538db39b387db05134800c55380934933dc5df70",
+    "report.py": "2a6d3f40922fc6543c65cfc0d11eaf776b23348b41ce31e5381c2f60bcce6856",
+    "train.sh": "46c95d79063e2b89c6db461aedd1bde163f7ec1730a1e3947faf2eaca9919ffb"
+  },
+  "status": "rewired"
+}

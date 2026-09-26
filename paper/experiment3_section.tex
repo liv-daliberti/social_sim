@@ -1,0 +1,177 @@
+\subsection{Experiment 3: What Training Transfers, and What It Does Not}
+\label{sec:exp3}
+
+\input{tables/exp3_rebuilt_data}
+
+Experiment~2 showed that a cue can select which of two displayed references a
+model applies, and that inverting the cue inverts the selection. Experiment~3
+asks two questions that follow from it. Does training strengthen and transfer
+that operation? And does the operation extend from the dimension Experiment~2
+tested---the magnitude of a response---to the dimension that matters for
+structural generalisation, its functional form?
+
+The answers separate. Training transfers strongly across surface domain.
+Selection does not extend to functional form, for trained or untrained models,
+and does not appear even when training is redesigned so that selecting on form
+is the rewarded behaviour.
+
+\textbf{Training transfers across surface domain.}
+Coin City trains on episode-matched references in a direct response setting;
+evaluation holds out a second surface, Coin Harbor
+(Figure~\ref{fig:exp3-transfer-grid}). Averaged over both trained arms and
+\eEightG{} training seeds, Qwen3-8B reduces response error from
+\eEightIdBase{} to \eEightIdMatched{} in distribution and from
+\eEightDomainBase{} to \eEightDomainMatched{} under domain shift, a gain of
+\eEightDomainBaseGain{} points \eEightDomainBaseGainCi{} with every seed
+agreeing; Qwen3-4B behaves the same way. Cosine to the true response shape rises
+from $.55$ to $.95$ under domain shift. Surface generalisation is the clearest
+positive result in this experiment.
+
+Two qualifications belong with it. Unparsed draws take the full
+observable-range penalty, so a base contrast is partly a parse-rate comparison:
+the base parses \eEightBaseParse{}\% of draws against the trained arms' 100\%,
+and the joint-cell gain falls from \eEightJointBaseGain{}
+\eEightJointBaseGainCi{} to \eEightJointBaseGainParsed{}
+\eEightJointBaseGainParsedCi{} on parsed draws alone. Both are reported
+throughout. And the structure column of the transfer grid is not a transfer
+test at all, for reasons given below; it is a control, and it shows no gain
+(\eEightStructureBase{} base against \eEightStructureMatched{} matched).
+
+\textbf{The episode-matching contrast does not survive replication.}
+The registered contrast between episode-matched and population-prior training
+was estimated at three seeds. Extended to eight under a pre-registered
+amendment, it moves toward zero in both Qwen sizes. The Qwen3-8B joint-shift
+contrast goes from \ePubEightJointEst{} \ePubEightJointCi{} at three seeds to
+\eEightJointEst{} \eEightJointCi{} at eight; Qwen3-4B's four transfer cells all
+excluded zero at three seeds and all span it at eight, with its
+in-distribution cell at \eFourbIdEst{} \eFourbIdCi{} on \eFourbIdSign{} seeds.
+A crossover control re-ran seeds 42--44 under the current training wrapper and
+reproduced their original contrasts, so the shift is a property of the seeds
+rather than of the pipeline (Appendix~\ref{app:exp3-coin-cluster-sensitivity}).
+
+One cell survives. Qwen3-8B in distribution is \eEightIdEst{} \eEightIdCi{},
+\eEightIdSign{} seeds positive, and it clears the conservative Student-$t$
+interval \eEightIdTci{}, a wild cluster bootstrap with Webb weights
+($p=\eEightIdWild{}$), and an exact one-sided sign test
+($p=\eEightIdSignP{}$). It does not replicate on Qwen3-4B, whose point estimate
+is close (\eFourbIdEst{}) but whose between-seed dispersion is roughly three
+times larger, and Llama-3.1-8B's in-distribution contrast has the opposite
+sign. We therefore report the effect as real for one checkpoint and not
+established across the family.
+
+\input{fig_exp3_results_grid}
+
+\textbf{Selection does not extend from magnitude to functional form.}
+Experiment~2's cue shifts loading onto the named reference by $.51$--$.86$ and
+reverses under inversion. The analogous quantity here---the change in implied
+persistence when the cue names a persistent rather than an immediate
+response---is at most $.026$ across three model families, for untrained and
+trained checkpoints alike. Neither conditions on the cue. The untrained models
+predict full persistence everywhere; the trained ones, in the parent design,
+predict none.
+
+That parent result is an artefact of the design and we report it as one.
+Training contains only the direct structure, so emitting no delayed response is
+the optimal training policy, and every trained checkpoint adopts it: measured
+horizon-3 output is exactly zero in every cell and every seed. The structure
+cells cannot measure whether selection transfers; they measure whether a model
+trained on one functional form spontaneously produces another.
+
+To ask the intended question we built a second dataset in which structure is
+selectable: each episode displays one immediate and one persistent reference
+with horizon-1 responses matched exactly, so persistence is the only
+discriminating feature, and the cue names which the target follows. Structure
+is balanced in training and the reward is the cue-named structure's own
+forecast. Coin Harbor and an arbitrary-label variant, whose symbol-to-structure
+mapping is redrawn each episode, are held out entirely.
+
+Training works, and selection still does not appear. Implied persistence falls
+from the untrained \eSelBasePersistMed{} to \eSelTrainedPersistLo--%
+\eSelTrainedPersistHi{}, approaching the marginal value of a half-immediate,
+half-persistent training set. But it falls by the same amount whichever
+structure the cue names. The cue-following index is \eSelCitySemEst{}
+\eSelCitySemCi{} in distribution and \eSelHarborSemEst{} \eSelHarborSemCi{}
+under domain shift, against an untrained baseline of \eSelCitySemBase{} and
+\eSelHarborSemBase{} and a value of roughly $.65$ for a model that selects. The
+arbitrary-label arm is likewise flat, which excludes the reading that any
+apparent effect is a learned association with the words describing persistence.
+Models acquire the average relationship, not a policy for choosing between
+relationships.
+
+\textbf{What training installs when the primitives are familiar.}
+The mechanism-family benchmark varies structure in training---eight worlds
+expose persistence, mediation, feedback, saturation and thresholds as
+primitives---and holds out compositions of them. No collapse occurs there:
+trained checkpoints produce delayed responses at $0.43$--$0.87$ of their true
+magnitude rather than zero, which shows the collapse in Coin City is caused by
+its training distribution and not by a limitation of these models. On this
+benchmark Qwen3-4B shows a robust episode-matched advantage at
+\eMechG{} seeds, \eMechDiscEst{} \eMechDiscCi{} when the held-out mechanism is
+described and \eMechUndiscEst{} \eMechUndiscCi{} when it must be inferred from
+calibration trajectories, both clearing the conservative $t$
+(\eMechDiscTci{}, \eMechUndiscTci{}), the wild cluster bootstrap
+($p=\eMechDiscWild{}$, $p=\eMechUndiscWild{}$) and the sign test
+(\eMechDiscSign{} and \eMechUndiscSign{} seeds, $p=\eMechDiscSignP{}$). Explicit
+mechanism identification remains at chance for trained and untrained models
+alike, so the gain is behavioural rather than a recovered label.
+
+\textbf{Reading.}
+Training transfers across surface form and not across relational form. Models
+select among displayed references on magnitude, as Experiment~2 shows, but not
+on functional form, even when training varies it and rewards the selection.
+What training installs is the marginal relationship of its own distribution.
+The episode-matching benefit is real where the relational primitives are
+familiar and the composition is new; it is not established where the functional
+form itself is new.
+
+Three limits bound this. The Qwen3-8B in-distribution effect replicates on
+neither of the other two checkpoints tested. The mechanism-family advantage is
+demonstrated for Qwen3-4B, and Qwen3-8B's estimate in the same roster carries
+the opposite sign. And the structure-selection result rests on a three-seed
+pilot whose control arm is reported in
+Appendix~\ref{app:exp3-structure-selection}; it establishes the absence of a
+large effect, not the absence of a small one.
+
+\subsection{Experiment 4: Historical-Market Training and Held-Out Evaluation}
+\label{sec:exp4}
+
+Experiment~4 is the real-world transfer step. Unlike Coin City, historical
+markets do not reveal a ground-truth response relationship that can be selectively
+broken while preserving answer marginals. The experiment therefore asks whether
+outcome training generalizes to 318 markets disjoint in task, event, series, and
+template family from training, development, and the 1,024-market appendix
+evaluation; it does not identify which relationship produces any gain. Figure~\ref{fig:exp4-scale-results} places
+Qwen3 at 1.7B, 4B, 8B, 14B, and 32B on a logarithmic parameter axis; API
+references are categorical. A Llama 3B/8B replication shows the same qualitative
+convergence pattern (Appendix Figure~\ref{fig:exp4-llama-scale-results}). Local
+points use five-draw non-thinking stochastic decoding (Appendix~\ref{app:exp4}).
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figures/exp4_qwen_scale_results.pdf}
+\captionof{figure}{\textbf{Qwen scaling and hosted frontier references.}
+Left: base/trained means and seeds on a log parameter axis. Right: clustered
+95\% intervals versus contemporaneous Polymarket; Brier scales differ.}
+\label{fig:exp4-scale-results}
+\end{minipage}
+\end{center}
+
+\textbf{Scale profile.}
+Qwen3 trained/base means are $.1248/.2253$, $.1366/.1522$, $.1286/.1369$,
+$.1270/.1281$, and $.1265/.1266$ at 1.7B/4B/8B/14B/32B. Across the dense
+4B--32B series, the gap contracts as bases approach the trained frontier. The
+Llama replication shows the same qualitative trend: the larger base improves
+and training approaches the same frontier
+(Figure~\ref{fig:exp4-llama-scale-results}). This is consistent with pretraining
+and outcome training providing partly substitutable routes to out-of-family
+forecast accuracy; Brier scores alone cannot show that they recover the same
+relationships.
+
+\textbf{Scale-comparison limits.}
+At 32B, trained-minus-base is $-.00007$ $[-.00045,+.00029]$ and trained
+minus the contemporaneous crowd (Brier $.12655$) is $-.00003$
+$[-.00009,+.00002]$; both intervals cross zero. Thus base scaling, not a larger
+marginal training gain, drives convergence under this recipe. Optimization was
+not size-tuned and Qwen is nonmonotone; the results establish neither crowd
+superiority nor a universal scaling law.

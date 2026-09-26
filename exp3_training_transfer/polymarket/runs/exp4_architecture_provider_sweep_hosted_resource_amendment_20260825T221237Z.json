@@ -1,0 +1,84 @@
+{
+  "amendment": "hosted_exact_deployment_resource_and_credential_scope",
+  "amended_at": "2026-08-25T22:12:37Z",
+  "authorization": {
+    "external_prompt_transmission_authorized": true,
+    "user_message": "yes, send the prompts."
+  },
+  "classification": "development-only transport amendment before any hosted model output or holdout call",
+  "diagnosis": {
+    "generic_dotenv_project_endpoint": "https://forecasting-agents-resource.services.ai.azure.com/api/projects/forecasting-agents",
+    "original_runner_resource": "liv",
+    "uniform_http_status": 401,
+    "cause": "The on-disk generic project key is scoped to a different Azure resource than liv."
+  },
+  "prompt_free_resource_probe": {
+    "cos_tiktok_http_status": 200,
+    "credential_env": "DEEPSEEK_AZURE_API_KEY",
+    "exact_deployments_present": {
+      "DeepSeek-V4-Pro": true,
+      "FW-Kimi-K3": false,
+      "gpt-5.6-sol": true
+    },
+    "response_bodies_retained": false
+  },
+  "provider_amendments": {
+    "DeepSeek-V4-Pro": {
+      "endpoint": "https://cos-tiktok-annotation-a-resource.services.ai.azure.com/openai/v1",
+      "key_env": "DEEPSEEK_AZURE_API_KEY",
+      "model_id_changed": false,
+      "status": "eligible_for_development_canary"
+    },
+    "FW-Kimi-K3": {
+      "endpoint": "https://liv.services.ai.azure.com/openai/v1",
+      "model_id_changed": false,
+      "status": "paused_pending_valid_liv_credential",
+      "substitute_model_permitted": false
+    },
+    "claude-opus-4-8": {
+      "auth_mode": "Foundry API key headers, not Azure AD bearer token",
+      "endpoint": "https://liv-forecast.services.ai.azure.com/anthropic",
+      "key_env": "CLAUDE_AZURE_API_KEY",
+      "model_id_changed": false,
+      "status": "eligible_for_development_canary"
+    },
+    "gpt-5.6-sol": {
+      "endpoint": "https://cos-tiktok-annotation-a-resource.services.ai.azure.com/openai/v1",
+      "key_env": "DEEPSEEK_AZURE_API_KEY",
+      "model_id_changed": false,
+      "status": "eligible_for_development_canary"
+    }
+  },
+  "frozen_scientific_inputs": {
+    "development_tasks_per_canary": 2,
+    "holdout_calls_started": false,
+    "holdout_was_read_for_configuration": false,
+    "model_ids_changed": false,
+    "prompt_text_changed": false,
+    "scoring_changed": false
+  },
+  "second_failed_canary_archive": {
+    "path": "reports/exp4_hosted/archive/cross_resource_credential_failure_20260825T220959Z",
+    "raw_sha256": {
+      "DeepSeek-V4-Pro": "e5393f2ae04ab613a9f0efa711ad00f228b5cd2f951a890733350a61f9ad5c74",
+      "FW-Kimi-K3": "467b0ed8d8ed8ebe07d88ddfb9ec9e1e990bcd95f73314ab56322feb79083272",
+      "claude-opus-4-8": "583711b88bbd8b65bdf6a77b0a42feeca5a95ada88e2c97e720e3754e27ea0e3",
+      "gpt-5.6-sol": "69466cc2b1214e74f3660cef98f761c13b43e23792d03fe965dc7dc188e41636"
+    },
+    "successful_model_outputs": 0
+  },
+  "software": {
+    "anthropic": "1.0.0",
+    "openai": "3.3.1",
+    "runner_sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf",
+    "test_file_sha256": "1105b3b0e0a8e0403af7675f222d752e266ef102b7ebd024650022a1e72cb34d"
+  },
+  "tests": {
+    "command": "python -m pytest -q exp3_training_transfer/polymarket/tests/test_hosted_scale_holdout.py",
+    "passed": 6
+  },
+  "previous_amendment": {
+    "path": "runs/exp4_architecture_provider_sweep_hosted_transport_amendment_20260825T215806Z.json",
+    "sha256": "ff3c4eb3555aa1d34b79b8d1452241c8d5d7ae17d87671ff2f4c532bbe65e245"
+  }
+}

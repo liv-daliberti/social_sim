@@ -1,0 +1,60 @@
+{
+  "passes": [
+    {
+      "applied": true,
+      "arms": {
+        "abc_context": {
+          "dropped_transport_placeholders": 5,
+          "kept_unparseable_model_responses": 0,
+          "kept_with_model_response": 45,
+          "records_after": 45,
+          "records_before": 50
+        },
+        "abc_no_context": {
+          "dropped_transport_placeholders": 5,
+          "kept_unparseable_model_responses": 0,
+          "kept_with_model_response": 48,
+          "records_after": 48,
+          "records_before": 53
+        },
+        "baseline": {
+          "dropped_transport_placeholders": 5,
+          "kept_unparseable_model_responses": 0,
+          "kept_with_model_response": 71,
+          "records_after": 71,
+          "records_before": 76
+        }
+      },
+      "model": "gemini-3.1-pro-preview",
+      "total_dropped": 15
+    },
+    {
+      "applied": true,
+      "arms": {
+        "abc_context": {
+          "dropped_transport_placeholders": 0,
+          "kept_unparseable_model_responses": 0,
+          "kept_with_model_response": 45,
+          "records_after": 45,
+          "records_before": 45
+        },
+        "abc_no_context": {
+          "dropped_transport_placeholders": 0,
+          "kept_unparseable_model_responses": 0,
+          "kept_with_model_response": 48,
+          "records_after": 48,
+          "records_before": 48
+        },
+        "baseline": {
+          "dropped_transport_placeholders": 0,
+          "kept_unparseable_model_responses": 0,
+          "kept_with_model_response": 71,
+          "records_after": 71,
+          "records_before": 71
+        }
+      },
+      "model": "gemini-3.1-pro-preview",
+      "total_dropped": 0
+    }
+  ]
+}

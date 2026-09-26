@@ -1,0 +1,130 @@
+{
+  "schema_version": "frozen_frontier_evaluation_v1",
+  "status": "frozen",
+  "created_at": "2026-09-22T15:54:11.515514+00:00",
+  "freeze_stage": "after_local_development_before_frontier",
+  "evaluation_id": "fresh_finite_context_reversal_v1",
+  "target_inference_started_before_freeze": false,
+  "authorization_scope": "one_future_frozen_frontier_evaluation_25usd_v1",
+  "model": "gpt-5.6-sol",
+  "model_key": "gpt56_sol_fresh",
+  "max_output_tokens": 2048,
+  "reasoning_effort": "low",
+  "max_retries": 0,
+  "concurrency": 4,
+  "pricing": "batch",
+  "prices_nusd_per_token": {
+    "input_upper": 2500,
+    "output": 10000
+  },
+  "pricing_valid_through": "2026-11-21",
+  "budget_usd": "24",
+  "contexts": [
+    "positive",
+    "negative",
+    "broken"
+  ],
+  "family_order": [
+    "fresh001_base",
+    "fresh001_paraphrase",
+    "fresh004_base",
+    "fresh004_paraphrase",
+    "fresh008_base",
+    "fresh008_paraphrase",
+    "fresh011_base",
+    "fresh011_paraphrase",
+    "fresh014_base",
+    "fresh014_paraphrase",
+    "fresh018_base",
+    "fresh018_paraphrase",
+    "fresh022_base",
+    "fresh022_paraphrase",
+    "fresh025_base",
+    "fresh025_paraphrase",
+    "fresh029_base",
+    "fresh029_paraphrase",
+    "fresh032_base",
+    "fresh032_paraphrase",
+    "fresh035_base",
+    "fresh035_paraphrase",
+    "fresh039_base",
+    "fresh039_paraphrase",
+    "fresh041_base",
+    "fresh041_paraphrase",
+    "fresh044_base",
+    "fresh044_paraphrase",
+    "fresh048_base",
+    "fresh048_paraphrase",
+    "fresh051_base",
+    "fresh051_paraphrase",
+    "fresh054_base",
+    "fresh054_paraphrase",
+    "fresh058_base",
+    "fresh058_paraphrase",
+    "fresh062_base",
+    "fresh062_paraphrase",
+    "fresh065_base",
+    "fresh065_paraphrase",
+    "fresh069_base",
+    "fresh069_paraphrase",
+    "fresh072_base",
+    "fresh072_paraphrase",
+    "fresh075_base",
+    "fresh075_paraphrase",
+    "fresh079_base",
+    "fresh079_paraphrase"
+  ],
+  "output_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/frontier_gpt56_sol.jsonl",
+  "artifacts": {
+    "plan": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_plan.jsonl",
+      "sha256": "f499587d013d57df52f055aba13d4dfafc018dba104cb77c0d002b22f628856d"
+    },
+    "protocol": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/PROTOCOL.md",
+      "sha256": "08641d5daa778d902f5a363ca6bee7731d16cd9f4fb570497acc111c92513031"
+    },
+    "scoring": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/analyze.py",
+      "sha256": "ddd66886b0f98692d52aeecd69ee3b8177147256bd0b917ca377515401bcce91"
+    },
+    "review": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_review.json",
+      "sha256": "4bf3a067c734d9d7d95ece0dab30f48e3592a5ccd54ff7112a182b1cef3245fd"
+    },
+    "freshness": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_freshness.json",
+      "sha256": "54eb4d515d6f9256f35b70565a3b0ed8b1ae9df19078ca86294777039cf65bad"
+    },
+    "adjudication": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/ADJUDICATION.json",
+      "sha256": "dc9d22f211977ca61917ac86365ca0ac37a254435a1f3dba10142902ad40f1fd"
+    },
+    "material_audit": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/material_audit.json",
+      "sha256": "614d778bc3c4b1d011f0fdf257dabb18cabb728b8006374119cca0f3dff5cde0"
+    },
+    "families": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/families.jsonl",
+      "sha256": "c878c48b71e3ab0d5003f536e63782ce382ac89f6f99b330f87a8d7720e6d8fb"
+    },
+    "candidate_plan": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/candidate_v5/probability_plan.jsonl",
+      "sha256": "ea957ccba5dffd78060416fceeba3b504d304f2b30a3982df55205783268400d"
+    }
+  },
+  "code_sha256": {
+    "run_frozen_frontier.py": "a94fb8d8bdcb5fbb29bf2d05feaa015886002391457e1e5c37c4069d09ecc775",
+    "frontier_budget.py": "17d2083b4eaf1c71e775bbb66702eb7d92c71160754483ad2b899299099ee0a8",
+    "run_openai.py": "ac7b43339eed1d7a4e5baab570b9885f3d54bd5d331adca18cb7c195f55dd83c",
+    "run_local.py": "d76d65f94e34939a62898821fdd5a27db34abebe8ff20f8dd877da85eb7e0ec8",
+    "frontier_token_certificate.py": "c9f45330d36278586d973586573c64a3997b3f5c3dfb52659709e59bea8a8741",
+    "collect_frontier_token_counts.py": "c128a2fbafb93502185723d65eb0d24d1a18e7afb24734c36da25001b881af89",
+    "run_frozen_frontier_batch.py": "667f9b9b1c84b43031c5c2d127d8c035c1843c826f1d1ebb38bdd38585934924"
+  },
+  "token_certificate_output": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/frontier_token_certificate.json",
+  "local_design_freeze": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+    "sha256": "941402255c608932a6bf236f84df631da313446f3288e6d2f930555afadc841d"
+  }
+}

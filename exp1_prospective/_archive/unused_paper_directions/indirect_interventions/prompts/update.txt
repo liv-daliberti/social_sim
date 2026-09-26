@@ -1,0 +1,27 @@
+You previously produced the structured forecast below for a binary prediction
+market. Treat that forecast as your only prior context.
+
+QUESTION: {question}
+
+RESOLUTION CRITERIA:
+{resolution_criteria}
+
+INITIAL STRUCTURED FORECAST:
+{initial_forecast}
+
+{context_block}
+
+NEW EVIDENCE:
+{evidence}
+
+Update the forecast using only the material above. Do not browse, call tools, or
+add facts. Preserve the initial event-model fields except where the hypothetical
+causal bridge explicitly changes them. Return only one JSON object:
+{
+  "yes_prob": 0.0,
+  "h1_posterior": 0.0,
+  "rationale": "concise explanation of the revision"
+}
+
+Both probabilities must be numbers in [0,1] and must be identical. If the evidence
+is immaterial or insufficient without a bridge, retain the initial probability.

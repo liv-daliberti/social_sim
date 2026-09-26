@@ -1,0 +1,40 @@
+{
+  "analysis_completion_fix": {
+    "reason": "Completeness now requires both gain and ordinary suites, not gain alone; no metric or design changes.",
+    "recorded_at": "2026-09-22T03:25:27.648902+00:00",
+    "sha256": "f0cbbdff19d5d90b3bba06b985473b10938b8efed7b49e5cd84ec9dd49c89eeb"
+  },
+  "cancelled_predecessors": [
+    "31444960",
+    "31444961"
+  ],
+  "jobs": [
+    {
+      "disclosure": "disclosed",
+      "job_id": "31444965"
+    },
+    {
+      "disclosure": "undisclosed",
+      "job_id": "31444966"
+    }
+  ],
+  "reason_for_resource_change": "allcs rewritten to cs/short and delayed; approved mltheory/all/none A5000 inference resources",
+  "resources": {
+    "account": "mltheory",
+    "cpus": 8,
+    "gpu": "a5000:1",
+    "hours": 8,
+    "memory": "80G",
+    "partition": "all",
+    "qos": "none"
+  },
+  "sha256": {
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/analyze.py": "5a40f0245dbba9f0937ed3dba169436fc877afbbf485c2fc3e0f8ccdcc306a8e",
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/checkpoint_inventory.json": "40b848d9a4a1a97282aeb63030b69fc2629ee3a6e2b251672f00864953e9d66d",
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/data/frozen_manifest.json": "222169569599c2926ffccfde8e6db97e88e01bad7f253a6691c2bd63376db0af",
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/run_inference.py": "81f13598322bd31558849f94f36bb3ab1873c78a80a5b9c03b04c422695891c1",
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/run_inference.sbatch": "7bda5da263fef48220c0eb5b14c4a1d782f9d0b2dfc6b40ca926ddc04bae1043",
+    "exp3_training_transfer/overnight_diagnostics_20260921/evidence_use/test_evidence.py": "e267de7d3aa7eed2d844f62f7ec6d8594b2b722673f8dee0937aa95d41d7002a"
+  },
+  "submitted_at": "2026-09-22T03:22:04.797008+00:00"
+}

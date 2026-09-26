@@ -1,0 +1,47 @@
+{
+  "recorded_at": "2026-09-22T02:33:05.870623+00:00",
+  "focused_tests": {
+    "passed": 39,
+    "failed": 0,
+    "command": "python -m pytest -q exp1_prospective/context_reversal/tests/test_reasoning_local_v2.py exp1_prospective/context_reversal/tests/test_direction_companion.py exp1_prospective/context_reversal/tests/test_reasoning_local.py exp1_prospective/context_reversal/tests/test_finalize_local_diagnostics.py"
+  },
+  "direction_responses": {
+    "planned": 720,
+    "valid": 720,
+    "independently_audited": 720
+  },
+  "probability_followup_complete": true,
+  "frontier_api_calls": 0,
+  "new_human_review_requested": false,
+  "paper": {
+    "canonical_tex": "/n/fs/similarity/social_sim/paper/main.tex",
+    "canonical_pdf": "/n/fs/similarity/social_sim/paper/main.pdf",
+    "completed_direction_results_included": true,
+    "unfinished_reasoning_results_included": false,
+    "previous_build_exit_code": 0,
+    "previous_build_pages": 73,
+    "previous_build_overfull_or_undefined_references": false,
+    "build_exit_code": 0,
+    "build_pages": 74,
+    "pdf_sha256": "0eefaad1ecdca3e16bca78113503a462b059598c78b54f2b6dc873e2325b52fa",
+    "overfull_or_undefined_references": false,
+    "completed_reasoning_results_included": true
+  },
+  "existing_paper_test_baseline": "Ten pre-existing wording/value failures recorded in results/frontier_gpt56_pilot_v1/validation.md; not rerun during this appendix-only update.",
+  "continuation_independent_review": "Passed: live dependencies, unchanged model/decode settings, preserved saved outputs, symmetric parser, bounded continuation mocks.",
+  "updated_at": "2026-09-22T03:07:20.588351+00:00",
+  "probability_followup": {
+    "disabled": {
+      "planned": 320,
+      "valid": 320
+    },
+    "enabled": {
+      "planned": 320,
+      "valid": 300,
+      "truncated_baselines": 5,
+      "blocked_updates": 15
+    },
+    "independent_audit_checks": 8578,
+    "frontier_api_calls": 0
+  }
+}

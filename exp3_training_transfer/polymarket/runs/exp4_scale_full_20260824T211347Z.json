@@ -1,0 +1,213 @@
+{
+  "advance_script_sha256": "1bb84f0ec341f6957471f7243559180a6fd13ed03ecbac987b69b80a4be407db",
+  "builder_sha256": "346786fa62464301a783e804f7689af50b6c1b183711164d022e3144907fe9dd",
+  "canary": {
+    "adapter_sha256": "a5a99867b88fb103e9310d71847d60b0f498fc386880256a5eac21f40feaec05",
+    "development_parse_coverage": 1.0,
+    "final_eval": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/scale_canary_qwen3_14b_market_20260824_162846_j30866036/debug_0824T16:31:21/eval_results/11.json",
+    "job_id": "30866036",
+    "report": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/scale_canary_qwen3_14b_market_20260824_162846_j30866036",
+    "state": "COMPLETED"
+  },
+  "dry_run": false,
+  "evaluation_jobs": [
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--dependency=afterok:30870543:30870544:30870545",
+        "--export=ALL,MODEL_KEY=qwen3_4b,MODEL=Qwen/Qwen3-4B-Instruct-2507,PROMPT_TEMPLATE=biased_news,ADAPTER_SPECS=42:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_031628_j30505537/debug_0813T03:17:37/saved_models/step_00301;43:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_035132_j30505538/debug_0813T03:52:00/saved_models/step_00301;44:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_035633_j30505539/debug_0813T03:56:57/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_scale_extension.sbatch"
+      ],
+      "environment": {
+        "ADAPTER_SPECS": "42:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_031628_j30505537/debug_0813T03:17:37/saved_models/step_00301;43:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_035132_j30505538/debug_0813T03:52:00/saved_models/step_00301;44:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_035633_j30505539/debug_0813T03:56:57/saved_models/step_00301",
+        "MODEL": "Qwen/Qwen3-4B-Instruct-2507",
+        "MODEL_KEY": "qwen3_4b",
+        "PROMPT_TEMPLATE": "biased_news"
+      },
+      "job_id": "30870546",
+      "model_key": "qwen3_4b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--dependency=afterok:30870543:30870544:30870545",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,ADAPTER_SPECS=42:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_qwen3_8b_market_20260823_213146_j30856247/debug_0823T21:32:11/saved_models/step_00301;43:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_qwen3_8b_market_20260823_213248_j30856248/debug_0823T21:33:18/saved_models/step_00301;44:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_qwen3_8b_market_20260823_213248_j30856249/debug_0823T21:33:10/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_scale_extension.sbatch"
+      ],
+      "environment": {
+        "ADAPTER_SPECS": "42:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_qwen3_8b_market_20260823_213146_j30856247/debug_0823T21:32:11/saved_models/step_00301;43:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_qwen3_8b_market_20260823_213248_j30856248/debug_0823T21:33:18/saved_models/step_00301;44:path=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_qwen3_8b_market_20260823_213248_j30856249/debug_0823T21:33:10/saved_models/step_00301",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think"
+      },
+      "job_id": "30870547",
+      "model_key": "qwen3_8b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--dependency=afterok:30870543:30870544:30870545",
+        "--export=ALL,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think,ADAPTER_SPECS=42:job=30870543;43:job=30870544;44:job=30870545",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_scale_extension.sbatch"
+      ],
+      "environment": {
+        "ADAPTER_SPECS": "42:job=30870543;43:job=30870544;44:job=30870545",
+        "MODEL": "Qwen/Qwen3-14B",
+        "MODEL_KEY": "qwen3_14b",
+        "PROMPT_TEMPLATE": "auto_no_think"
+      },
+      "job_id": "30870548",
+      "model_key": "qwen3_14b"
+    }
+  ],
+  "evaluator_sha256": "4130fd351af884bd5d0b3b20c2b6e7335eed5abe93a91017f1d056ff171ec2b0",
+  "existing_adapters": {
+    "qwen3_4b": {
+      "adapter_sha256": {
+        "42": "987db436ca279637c41f66eae506f69d19fcb99901068e4065b5cc34f2bb7362",
+        "43": "2bd259870eff9396b7429d11a4577137b8f8f6329c334639c3fb66ea0573bd08",
+        "44": "d41ee05883865a4df550036e8a5987a38bb6e81620b7c6878a5c2ec402e74bf1"
+      },
+      "summary": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/exp3b_locked_test_j30505540.summary.json",
+      "summary_sha256": "f003ea5218fc1f7dccc461707a2a0b2d152fe85cbfe31df8ea1131f60d043b1a"
+    },
+    "qwen3_8b": {
+      "adapter_sha256": {
+        "42": "1c8e187fb061a64bc6f4a36f3bf4b6bfa84a93725d6f56ab71214c2bbc818e67",
+        "43": "a4833bf8bd2665aee492f0cd1c18377a9adb067f733ffeba5a51ff7d7dcbb731",
+        "44": "ce577e15c432ce408f6fbb7e4295074cdcf4057f39d95da3187d5a31ba2b64b0"
+      },
+      "summary": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/exp3b_qwen3_8b_locked_test_j30856250.summary.json",
+      "summary_sha256": "ef0cea8a35b1fe44876ea379f80706e8fda0ded911ceba09b9121b630c4b82a3"
+    }
+  },
+  "finalization_job": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--partition=all",
+      "--time=01:00:00",
+      "--mem=16G",
+      "--cpus-per-task=2",
+      "--exclude=node206",
+      "--dependency=afterok:30870546:30870547:30870548",
+      "--export=ALL,EVALUATION_SPECS=qwen3_4b:30870546;qwen3_8b:30870547;qwen3_14b:30870548",
+      "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/finalize_scale_extension.sbatch"
+    ],
+    "environment": {
+      "EVALUATION_SPECS": "qwen3_4b:30870546;qwen3_8b:30870547;qwen3_14b:30870548"
+    },
+    "job_id": "30870549"
+  },
+  "finalizer_script_sha256": "028e6aeb3f66a139dce13ecd9c8fa3e2868139d145e151f196ef93f733d9acd0",
+  "holdout_manifest_sha256": "f210b7cc0d7c9ea099af06a46af8a6852250902697d2a84944f7d046dd3f4ec6",
+  "holdout_public_description": {
+    "count": 318,
+    "distinct_events": 227,
+    "distinct_series": 0,
+    "distinct_templates": 288,
+    "first_decision_ts": "2026-01-01T00:00:00Z",
+    "last_decision_ts": "2026-06-08T00:00:00Z",
+    "outcomes_summarized": false
+  },
+  "holdout_tasks_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24",
+  "launcher_sha256": "fd978c151eb1543b95d7b5b9df9427a68f601dab6d4e2f5c75708643e26d2fb9",
+  "locked_script_sha256": "8d5c4a57d1c8b7042fc05428adf69a7761f2b487b9e87c3eadbba6ff25644c77",
+  "protocol_sha256": "228ba2bc0ae35c29984f4993244e931b01b1ca60947d70ecfa4eea1da9516a56",
+  "protocol_version": "exp4_qwen_scale_v1",
+  "renderer_sha256": "25d2b66d92dd791fdebc560e00771c594f0505eb0c3fa27fb724a0131137479c",
+  "submitted_at": "20260824T211347Z",
+  "train_script_sha256": "c49ca069836c82379a472a9c7993805627aff3d60beac4493f3c64505aa6bac8",
+  "training_jobs": [
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=30:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think,SEED=42,RUN_KIND=train,MAX_TRAIN=4800,EVAL_STEPS=25,VLLM_RATIO=0.78,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_scale_extension.sh"
+      ],
+      "environment": {
+        "EVAL_STEPS": "25",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-14B",
+        "MODEL_KEY": "qwen3_14b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "train",
+        "SEED": "42",
+        "VLLM_RATIO": "0.78"
+      },
+      "job_id": "30870543",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=30:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think,SEED=43,RUN_KIND=train,MAX_TRAIN=4800,EVAL_STEPS=25,VLLM_RATIO=0.78,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_scale_extension.sh"
+      ],
+      "environment": {
+        "EVAL_STEPS": "25",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-14B",
+        "MODEL_KEY": "qwen3_14b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "train",
+        "SEED": "43",
+        "VLLM_RATIO": "0.78"
+      },
+      "job_id": "30870544",
+      "seed": 43
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--time=30:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think,SEED=44,RUN_KIND=train,MAX_TRAIN=4800,EVAL_STEPS=25,VLLM_RATIO=0.78,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_scale_extension.sh"
+      ],
+      "environment": {
+        "EVAL_STEPS": "25",
+        "MAX_TRAIN": "4800",
+        "MODEL": "Qwen/Qwen3-14B",
+        "MODEL_KEY": "qwen3_14b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "train",
+        "SEED": "44",
+        "VLLM_RATIO": "0.78"
+      },
+      "job_id": "30870545",
+      "seed": 44
+    }
+  ]
+}

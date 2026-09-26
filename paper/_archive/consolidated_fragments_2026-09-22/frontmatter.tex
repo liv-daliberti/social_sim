@@ -1,0 +1,105 @@
+\begin{abstract}
+Judgmental forecasting requires inferring predictive relationships from sparse
+observations and contextual knowledge. We ask whether language models recover
+and use these relationships. Across prediction markets and synthetic worlds,
+models selectively update forecasts, infer relationships from context, and
+revise them as direct evidence accumulates. Larger tested models infer arbitrary
+conventions; intervening on one model's internal representation changes its
+forecast. Training improves forecasts across domains, but an eight-seed
+replication weakens structural-transfer claims. A supervised pilot learns
+response-form selection in distribution where the tested RL recipe fails,
+without transferring to a new domain or arbitrary labels. Accuracy gains on
+compositions of familiar mechanisms exceed a fixed prior, but a gain intervention
+does not establish transferred evidence use. Historical-market training lowers
+mean error on unseen event families. These findings support context-sensitive
+inductive forecasting while distinguishing in-domain learnability, transfer,
+and episode-specific evidence use.\footnotemark
+\end{abstract}
+\footnotetext{%
+  \micon{huggingface.png}\;%
+  \href{https://huggingface.co/datasets/anonymous-review/forecasting-study-data}%
+  {\textbf{Study dataset and artifacts}}\qquad
+  \micon{gh_logo.png}\;%
+  \href{https://github.com/anonymous-review/forecasting-study-code}%
+  {\textbf{Code repository}}\quad
+  \textit{Links anonymized for review.}}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\setlength{\columnsep}{6pt}
+\begin{wrapfigure}{r}{0.44\textwidth}
+\vspace{-1.2em}
+\centering
+\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_revised.pdf}
+\vspace{-0.45cm}
+\caption{\textbf{Motivation.} Judgmental forecasts combine observations with
+contextual knowledge about the process that generated them. Frontier models,
+asked to forecast this question, average $P(H)\approx0.68$ (see
+App.~\ref{app:carnival-coin-probe}).}
+\vspace{0pt}
+\label{fig:world-knowledge-evidence}
+\end{wrapfigure}
+
+Judgmental forecasting is a demanding form of reasoning central to decisions
+about political, social, and economic futures. Unlike settings with abundant
+historical data for statistical extrapolation, judgmental forecasting requires
+integrating sparse, noisy evidence with contextual knowledge to form calibrated
+beliefs about future outcomes
+\citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
+This creates an inductive challenge: forecasters must
+infer from limited observations the relationships that govern how evidence
+impacts outcomes, and use those relationships to anticipate how events may
+unfold
+\citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates this identification problem
+in a low-stakes setting. A researcher observes a carnival coin-flipping machine
+and, after seeing two heads, must estimate the probability that the next flip
+will be heads. A judgmental forecast may incorporate contextual knowledge (e.g.,
+whether the game is rigged) to infer the process generating the observed
+outcomes.
+
+Language models (LMs) now approach crowd accuracy in judgmental forecasting
+\citep{halawi2024approaching,schoenegger2024wisdom}, but accurate predictions need
+not imply recovery of the underlying task structure. Models recover latent
+structure in some settings \citep{li2023emergent}, yet can predict accurately
+using relationships that fail to generalize in others \citep{vafa2025foundation}.
+This distinction matters when decision-makers ask how and whether a forecast
+should change under alternative evidence or events. Answering such questions
+requires predictive relationships that generalize across changes in context.
+
+\noindent
+\textbf{Present work.}
+We study whether LMs exhibit inductive reasoning in forecasting tasks through a
+series of progressively more stringent behavioral tests spanning both real-world
+prediction markets and controlled synthetic environments. First, we evaluate
+whether LMs respond selectively to new evidence, distinguishing
+outcome-relevant information from topically related but orthogonal information
+(\hyperref[sec:exp1]{Exp.~1}). Second, we test whether LMs infer predictive
+relationships from described context before statistical evidence accumulates. We
+construct synthetic forecasting problems in which the numerical observations are
+identical across conditions and only the described setting varies, isolating the
+contribution of background knowledge to the LM's forecast
+(\hyperref[sec:exp2]{Exp.~2}). Finally, we test whether relationships learned
+during fine-tuning transfer to new settings. We fine-tune LMs with reinforcement
+learning from verifiable rewards (RLVR) on both synthetic tasks and historical
+prediction market data, diagnose component failures with a supervised pilot,
+and evaluate on held-out structures and domains
+(\hyperref[sec:exp3]{Exp.~3}, \hyperref[sec:exp4]{Exp.~4}).
+
+\noindent\textbf{Results.}
+All nine systems move $1.9$--$7.5\times$ farther for outcome-relevant than topical
+evidence, conditional on updating (\hyperref[sec:exp1]{Exp.~1}). In Coin City,
+forecasts track context-selected relationships ($r=.52$--$.70$) and revise them
+as direct evidence arrives; larger models infer episode-local conventions, with
+a causal intervention linking the induced representation to Qwen3-14B's forecast
+(\hyperref[sec:exp2]{Exp.~2}). Training transfers across domains, but its
+advantage over an answer-matched shuffled control under joint domain and structure
+shift is uncertain at eight seeds (Qwen3-8B:
+$\eEightJointEst{}$, 95\% CI $\eEightJointCi{}$). A supervised pilot learns response-form selection in distribution but fails
+under domain or label changes. A separate composition benchmark improves
+accuracy over a fixed prior, without clear evidence of transferred gain tracking
+(\hyperref[sec:exp3]{Exp.~3}). On 318 held-out markets, training lowers mean
+error for every tested base and several checkpoints reach crowd performance,
+although the Qwen3-32B improvement is uncertain
+(\hyperref[sec:exp4]{Exp.~4}).

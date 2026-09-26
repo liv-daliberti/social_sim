@@ -1,0 +1,78 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\setlength{\columnsep}{6pt}
+\begin{wrapfigure}{r}{0.44\textwidth}
+\vspace{-4.2em}
+\centering
+\includegraphics[width=\linewidth,trim=0 72pt 0 0,clip]{teaser_revised.pdf}
+\vspace{-0.45cm}
+\caption{\textbf{Motivation.} Judgmental forecasts combine observations with
+contextual knowledge about the process that generated them. Frontier models,
+asked to forecast this question, answer with $P(H) = 0.68$ (see
+App.~\ref{app:carnival-coin-probe}).}
+\vspace{-1.0cm}
+\label{fig:world-knowledge-evidence}
+\end{wrapfigure}
+
+Judgmental forecasting is a demanding form of reasoning central to decisions
+about political, social, and economic futures. Unlike settings with abundant
+historical data for statistical extrapolation, judgmental forecasting requires
+integrating sparse, noisy evidence with contextual knowledge to form calibrated
+beliefs about future outcomes
+\citep{tetlock2016superforecasting,mellers2014psychological,lawrence2006judgmental}.
+This makes judgmental forecasting fundamentally inductive: forecasters must
+infer from limited observations the relationships that govern how evidence
+impacts outcomes, and use those relationships to anticipate how events may
+unfold
+\citep{tenenbaum2006theory,griffiths2010probabilistic,tenenbaum2011mind,lake2017building}.
+Figure~\ref{fig:world-knowledge-evidence} illustrates this identification problem
+in a low-stakes setting. A researcher observes a carnival coin-flipping machine
+and, after seeing two heads, must estimate the probability that the next flip
+will be heads. A judgmental forecast may incorporate contextual knowledge (e.g.,
+whether the game is rigged) to infer the
+process generating the observed outcomes.
+
+Language Models (LMs) now approach crowd accuracy in forecasting tasks
+\citep{halawi2024approaching,schoenegger2024wisdom}, raising a deeper question
+about what underlies their predictive accuracy. Prior work has shown that in some
+settings, models recover latent structure that supports their prediction
+\citep{li2023emergent}, while in others, they predict accurately despite learning
+relationships that fail to generalize beyond their observed setting
+\citep{vafa2025foundation}. This distinction is particularly consequential for
+judgmental forecasting, where decision-makers often care not only about what will
+happen, but how the forecast should change under alternative evidence or events.
+Such counterfactual questions require models to capture predictive relationships
+that generalize across changes in context, rather than merely reproduce accurate
+probabilities in the observed setting.
+
+\noindent
+\textbf{Present work.}
+We study whether LMs exhibit inductive reasoning in forecasting through
+progressively stronger behavioral experiments spanning real-world prediction
+markets and controlled synthetic environments. First, we test whether LMs react
+selectively to evidence by studying whether they distinguish outcome-relevant
+evidence from topically related but orthogonal information
+(\hyperref[sec:exp1]{Exp.~1}). Second, we test whether LMs recover predictive
+relationships from context by varying contextual information while holding
+numerical evidence fixed in a controlled synthetic environment
+(\hyperref[sec:exp2]{Exp.~2}). Finally, we test whether LMs transfer what they
+learn to new settings (\hyperref[sec:exp3]{Exp.~3} and
+\hyperref[sec:exp4]{Exp.~4}) by fine-tuning models on forecasting tasks and
+evaluating transfer to unseen synthetic structures and held-out historical
+prediction markets.
+
+\noindent\textbf{Results.}
+Across four experiments, LMs show behavioral signatures of inductive forecasting.
+All nine systems update $1.9$--$7.5\times$ more to outcome-relevant than topical
+evidence (\hyperref[sec:exp1]{Exp.~1}). In Coin City, our controlled task,
+forecasts track context-selected relationships ($r=.52$--$.70$) and revise them
+as direct evidence arrives; larger models recover episode-local conventions that
+affect forecasts under intervention (\hyperref[sec:exp2]{Exp.~2}). Episode-matched
+training improves joint domain-and-mechanism transfer beyond an answer-matched
+shuffled control at all three tested Qwen3 sizes (8B MAE $4.46$ vs.~$4.71$;
+\hyperref[sec:exp3]{Exp.~3}). On 318
+held-out markets, proper-score training improves every tested base; several
+trained checkpoints reach crowd performance (\hyperref[sec:exp4]{Exp.~4}).
+Together, LMs select, revise, and transfer predictive relationships, and training
+improves forecasts on unseen events.

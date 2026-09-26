@@ -1,0 +1,141 @@
+{
+  "action": "replace_flat_release_with_fail_closed_priority_tiers",
+  "applied_at_utc": "20260821T032908Z",
+  "campaigns": [
+    "mechanism_family_structural_ood",
+    "coin_city_structural_transfer_v1",
+    "polymarket_8b_extension"
+  ],
+  "scientific_configuration_changed": false,
+  "replaced_controller": {
+    "job_id": "30806646",
+    "state_before_cancellation": "PENDING_DEPENDENCY",
+    "action_before_cancellation": "release all 14 held Qwen3-8B and Llama-3.1-8B Coin City jobs after the ten-job Qwen3-4B wave",
+    "cancellation_scope": "operational release controller only; no scientific job was cancelled"
+  },
+  "priority_tiers": [
+    {
+      "tier": 1,
+      "controller_job_id": "30806768",
+      "controller_name": "c3_release_t1_close",
+      "dependency": {
+        "type": "afterok",
+        "jobs": [
+          "30723979",
+          "30723980",
+          "30723981",
+          "30723982",
+          "30723983",
+          "30723984",
+          "30723998",
+          "30723999",
+          "30724000",
+          "30724001"
+        ],
+        "description": "all ten Qwen3-4B Coin City first-wave jobs"
+      },
+      "release_jobs": [
+        "30788373",
+        "30730367",
+        "30730368",
+        "30730369",
+        "30730370",
+        "30730371",
+        "30724002",
+        "30724003"
+      ],
+      "description": "complete the remaining six Structural-OOD cells and run the Qwen3-8B and Llama-3.1-8B Coin City base endpoints"
+    },
+    {
+      "tier": 2,
+      "controller_job_id": "30806769",
+      "controller_name": "c3_release_t2_q8coin",
+      "dependency": {
+        "type": "afterok",
+        "jobs": [
+          "30788373",
+          "30730367",
+          "30730368",
+          "30730369",
+          "30730370",
+          "30730371",
+          "30724002",
+          "30724003"
+        ],
+        "description": "all tier-1 scientific jobs"
+      },
+      "release_jobs": [
+        "30730378",
+        "30730379",
+        "30730380",
+        "30730381",
+        "30730382",
+        "30730383"
+      ],
+      "description": "Qwen3-8B Coin City causal and population-prior arms, seeds 42-44"
+    },
+    {
+      "tier": 3,
+      "controller_job_id": "30806770",
+      "controller_name": "c3_release_t3_llcoin",
+      "dependency": {
+        "type": "afterok",
+        "jobs": [
+          "30730378",
+          "30730379",
+          "30730380",
+          "30730381",
+          "30730382",
+          "30730383"
+        ],
+        "description": "all six tier-2 Qwen3-8B Coin City jobs"
+      },
+      "release_jobs": [
+        "30730384",
+        "30730385",
+        "30730386",
+        "30730387",
+        "30730388",
+        "30730389"
+      ],
+      "description": "Llama-3.1-8B Coin City causal and population-prior arms, seeds 42-44"
+    },
+    {
+      "tier": 4,
+      "controller_job_id": "30806773",
+      "controller_name": "c3_release_t4_poly",
+      "dependency": {
+        "type": "afterok",
+        "jobs": [
+          "30730384",
+          "30730385",
+          "30730386",
+          "30730387",
+          "30730388",
+          "30730389"
+        ],
+        "description": "all six tier-3 Llama-3.1-8B Coin City jobs"
+      },
+      "release_jobs": [
+        "30730372",
+        "30730373",
+        "30730374",
+        "30730375",
+        "30730376",
+        "30730377"
+      ],
+      "description": "Qwen3-8B and Llama-3.1-8B Polymarket training extension; locked evaluations retain their existing adapter dependencies"
+    }
+  ],
+  "fail_closed": true,
+  "unchanged_invariants": [
+    "models and arms",
+    "training seeds",
+    "datasets and prompts",
+    "training examples and update counts",
+    "optimizer and learning rate",
+    "rollout and evaluation protocols",
+    "checkpoint and result paths",
+    "A6000 training hardware requests"
+  ]
+}

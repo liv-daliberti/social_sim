@@ -1,0 +1,38 @@
+{
+  "protocol": "structure_components_v1",
+  "frozen_utc": "2026-09-22T03:19:36.038279+00:00",
+  "seed_base": 171000000,
+  "replicates_per_domain_label": 24,
+  "validation": {
+    "rows": 768,
+    "latent_pairs": 96,
+    "pairs_by_interface": {
+      "selection_only": 96,
+      "original": 96,
+      "oracle_both_patterns": 96,
+      "oracle_selected_pattern": 96
+    },
+    "checks": [
+      "same numeric evidence across cue flips",
+      "opposite cued references",
+      "same horizon-1 responses",
+      "oracle arithmetic reconstructs simulator targets",
+      "only target background changes in original paired prompts",
+      "no internal structure names"
+    ]
+  },
+  "sha256": {
+    "build_diagnostic.py": "9c7792d257c5880f55ecf3b501ff3681ceb2e82572a8e8e353655b87d6ba7079",
+    "PROTOCOL.md": "ef3a61c6f51e92e3b37ba39e09015cff6391f80ae92a0201415b97b871695631",
+    "diagnostic.jsonl": "a1f6024b1e33b9634a46e6284de1a94beed7d9dd0cbb1d674ad3cdedb4dad041",
+    "roster.json": "2c3bb8651db8a4aaf98d45021022948693fce9c25e609eed3de012a2c8e44280",
+    "evaluate.py": "8b97e3be35746368109e06b561741c332d3293290a82e604715c8f22edf8b91a",
+    "score.py": "2af896b2edc3b026f5d3e20a4e6d21f1afde8ceb6e872ad1bd53acf3b9490790",
+    "run.sbatch": "141538ec8388e7e283337cf679e1dd6700eda24c9fda0c37a20f06a425efb233"
+  },
+  "upstream_sha256": {
+    "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structure_selection/make_dataset.py": "336bdc7326081b4d38952c5f6ac3ea9d2c8ca4553fd832d1c6983c53e6a62c30",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/worlds.py": "9fdd9934516a75f6083ba98a7a7b04a0bfd7c69b91ac71bf27276756d3ba28c6",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/prompt.py": "e8d12d72d470a5187ff89c66cbddacf02ffbb8cd82bb65e12007b727e1a0ddca"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "corrected_evaluator": "exp3_training_transfer/polymarket/scripts/evaluate_llama3_2_3b_base_structured_recovery.py",
+  "corrected_evaluator_sha256": "29042e30b368c3ab079adb93d843237394818ef98a7ef70a870196edd4e7b766",
+  "correction": {
+    "from": "request backend explicitly xgrammar",
+    "sampling_change": false,
+    "schema_change": false,
+    "scientific_change": false,
+    "to": "request inherits engine default auto backend"
+  },
+  "failed_job_elapsed": "00:02:09",
+  "failed_job_exit_code": "1:0",
+  "failed_job_id": "30911975",
+  "failure": "vLLM required the request-level structured-output backend to match the engine-level backend: xgrammar != auto",
+  "holdout_generation_calls": 0,
+  "json_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "yes_prob": {
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "type": "number"
+      }
+    },
+    "required": [
+      "yes_prob"
+    ],
+    "type": "object"
+  },
+  "parent_amendment": "exp3_training_transfer/polymarket/runs/exp4_llama3_2_3b_base_structured_recovery_registration_v2.json",
+  "parent_amendment_sha256": "f77e4934bc11961cdc5ee23b553bf6c5bae6c857c9bf26439af2bd4924e8f6e1",
+  "protocol_version": "exp4_llama3_2_3b_base_structured_recovery_v2",
+  "registered_at_utc": "2026-08-26T22:27:00Z",
+  "status": "registered_before_corrected_execution"
+}

@@ -1,0 +1,16 @@
+{
+  "config_sha256": {
+    "budget_matched_lr1e6_s42": "35bbde934ba76591bee3f4535428f3937c3460bc5bf13500d909ef14ee39a712",
+    "budget_matched_lr1e6_s43": "c6820774b3eabb8c244e4bd00b782099187467a573043a7b770e4341e04cc6bd",
+    "budget_matched_lr1e6_s44": "77b3fdb066a84cf232bf108042e186a4f843ea8c74984941b6e0237e78d93de5"
+  },
+  "declared_at": "2026-09-24T16:07:20.863086+00:00",
+  "launch": true,
+  "learning_rate": 1e-06,
+  "model": "Qwen/Qwen3-8B",
+  "protocol": "budget_matched_sft_v1",
+  "protocol_sha256": "7945cf4b1a68baa396bdec6bbafa50928a039edd1fa88ebe50448a967c567fd2",
+  "reason": "The successful SFT arm differs from RL in learning rate and update budget together; this arm removes both.",
+  "reporting": "Exploratory. Reported whichever way it falls. Does not replace the four-seed higher-rate result.",
+  "updates": 2400
+}

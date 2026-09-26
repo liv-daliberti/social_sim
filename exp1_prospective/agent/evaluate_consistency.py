@@ -33,6 +33,15 @@ _OUT_DIR = _ROOT / "data" / "results"
 
 # ── helpers (mirrors viewer/app.py) ───────────────────────────────────────────
 
+_DATE_SUFFIX_RE = re.compile(r"_\d{4}-\d{2}-\d{2}$")
+
+def _norm_tid(tid: str | None) -> str | None:
+    """Strip date suffix from task_ids: pm_12345_2026-06-11 → pm_12345."""
+    if tid is None:
+        return None
+    return _DATE_SUFFIX_RE.sub("", tid)
+
+
 def _mean_se(vals: list) -> tuple:
     vals = [v for v in vals if v is not None]
     if not vals:
@@ -44,13 +53,53 @@ def _mean_se(vals: list) -> tuple:
     return mean, math.sqrt(var / len(vals))
 
 
+def _norm01(v):
+    """Normalise a yes-probability to [0,1].  Some models (e.g. Qwen-7B) emit
+    probabilities on a 0–100 scale; divide those by 100 so all forecasts are
+    comparable to the Polymarket mid-price."""
+    if v is None:
+        return None
+    return v / 100.0 if v > 1.5 else v
+
+
+def _spearman(xs: list, ys: list):
+    """Spearman rank correlation between two equal-length lists (ties → average
+    ranks).  Returns None if fewer than 3 paired points or zero variance."""
+    pairs = [(x, y) for x, y in zip(xs, ys) if x is not None and y is not None]
+    n = len(pairs)
+    if n < 3:
+        return None
+
+    def _rank(vals):
+        order = sorted(range(n), key=lambda i: vals[i])
+        ranks = [0.0] * n
+        i = 0
+        while i < n:
+            j = i
+            while j + 1 < n and vals[order[j + 1]] == vals[order[i]]:
+                j += 1
+            avg = (i + j) / 2.0 + 1.0
+            for k in range(i, j + 1):
+                ranks[order[k]] = avg
+            i = j + 1
+        return ranks
+
+    xr = _rank([p[0] for p in pairs])
+    yr = _rank([p[1] for p in pairs])
+    mx = sum(xr) / n
+    my = sum(yr) / n
+    num = sum((a - mx) * (b - my) for a, b in zip(xr, yr))
+    den = (sum((a - mx) ** 2 for a in xr) * sum((b - my) ** 2 for b in yr)) ** 0.5
+    return num / den if den else None
+
+
 def _load_initial_forecasts() -> dict[str, dict]:
     """Returns {model_name: {task_id: record}}."""
     by_model: dict[str, dict] = {}
     model_order: list[str] = []
 
     for path in sorted(_IF_DIR.glob("forecasts_*.jsonl"), reverse=True):
-        mani = path.with_suffix("").with_suffix(".manifest.json")
+        mani = path.with_name(path.stem + ".manifest.json")
         model_name = None
         if mani.exists():
             try:
@@ -75,7 +124,7 @@ def _load_initial_forecasts() -> dict[str, dict]:
                     continue
                 try:
                     rec = json.loads(line)
-                    tid = rec.get("task_id")
+                    tid = _norm_tid(rec.get("task_id"))
                     if tid and tid not in by_model[model_name]:
                         by_model[model_name][tid] = rec
                 except json.JSONDecodeError:
@@ -84,10 +133,12 @@ def _load_initial_forecasts() -> dict[str, dict]:
     return by_model, model_order
 
 
-def _load_counterfactuals(task_id: str) -> list[dict]:
-    packets: list[dict] = []
-    seen: set[str] = set()
+def _load_all_counterfactuals() -> dict[str, list[dict]]:
+    """Load all counterfactuals once; returns {task_id: [packets sorted by direction]}.
+    task_ids are normalized (date suffix stripped) so they match updated-forecast keys.
+    """
     _order = {"pro_H1": 0, "anti_H1": 1, "orthogonal": 2}
+    by_task: dict[str, dict] = {}  # norm_task_id -> {cf_id: rec}
 
     for path in sorted(_CF_DIR.glob("counterfactuals_*.jsonl"), reverse=True):
         with open(path) as f:
@@ -95,25 +146,31 @@ def _load_counterfactuals(task_id: str) -> list[dict]:
                 if not line.strip():
                     continue
                 try:
-                    rec = json.loads(line)
-                    if rec.get("task_id") != task_id:
-                        continue
-                    if rec.get("cf_index") is None:
-                        continue
+                    rec   = json.loads(line)
+                    tid   = _norm_tid(rec.get("task_id"))
                     cf_id = rec.get("cf_id", "")
-                    if cf_id and cf_id not in seen:
-                        seen.add(cf_id)
-                        packets.append(rec)
+                    if not tid or rec.get("cf_index") is None or not cf_id:
+                        continue
+                    if tid not in by_task:
+                        by_task[tid] = {}
+                    if cf_id not in by_task[tid]:
+                        by_task[tid][cf_id] = rec
                 except json.JSONDecodeError:
                     pass
 
-    packets.sort(key=lambda r: _order.get(r.get("direction", ""), 99))
-    return packets
+    result: dict[str, list[dict]] = {}
+    for tid, cf_map in by_task.items():
+        packets = list(cf_map.values())
+        packets.sort(key=lambda r: _order.get(r.get("direction", ""), 99))
+        result[tid] = packets
+    return result
 
 
-def _load_updated_forecasts(task_id: str, model: str | None = None) -> list[dict]:
-    records: list[dict] = []
-    seen: set[str] = set()
+def _load_all_updated_forecasts() -> dict[tuple, list[dict]]:
+    """Load all updated forecasts once; returns {(task_id, model): [records]}.
+    task_ids are normalized (date suffix stripped) so they match initial-forecast keys.
+    """
+    by_key: dict[tuple, dict] = {}  # (norm_task_id, model) -> {update_id: rec}
 
     for path in sorted(_UF_DIR.glob("updated_*.jsonl"), reverse=True):
         with open(path) as f:
@@ -121,19 +178,40 @@ def _load_updated_forecasts(task_id: str, model: str | None = None) -> list[dict
                 if not line.strip():
                     continue
                 try:
-                    rec = json.loads(line)
-                    if rec.get("task_id") != task_id:
+                    rec   = json.loads(line)
+                    tid   = _norm_tid(rec.get("task_id"))
+                    model = rec.get("forecast_model", "")
+                    uid   = rec.get("update_id", "")
+                    if not tid or not model or not uid:
                         continue
-                    if model and rec.get("forecast_model") != model:
-                        continue
-                    uid = rec.get("update_id", "")
-                    if uid and uid not in seen:
-                        seen.add(uid)
-                        records.append(rec)
+                    key = (tid, model)
+                    if key not in by_key:
+                        by_key[key] = {}
+                    existing = by_key[key].get(uid)
+                    if existing is None:
+                        by_key[key][uid] = rec
+                    elif (existing.get("delta_yes_prob") is None
+                          and rec.get("delta_yes_prob") is not None):
+                        # prefer a valid record over an error/parse-error record
+                        # (a failed run with a later date should not mask a good earlier run)
+                        by_key[key][uid] = rec
                 except json.JSONDecodeError:
                     pass
 
-    return records
+    return {k: list(v.values()) for k, v in by_key.items()}
+
+
+def _load_counterfactuals(task_id: str) -> list[dict]:
+    """Legacy single-task loader (kept for compatibility)."""
+    return _load_all_counterfactuals().get(task_id, [])
+
+
+def _load_updated_forecasts(task_id: str, model: str | None = None) -> list[dict]:
+    """Legacy single-task loader (kept for compatibility)."""
+    all_uf = _load_all_updated_forecasts()
+    if model:
+        return all_uf.get((task_id, model), [])
+    return [r for (tid, _), recs in all_uf.items() if tid == task_id for r in recs]
 
 
 def _compute_consistency(uf_records: list[dict], cf_lookup: dict) -> dict:
@@ -161,7 +239,7 @@ def _compute_consistency(uf_records: list[dict], cf_lookup: dict) -> dict:
             delta_yp   = r.get("delta_yes_prob")
 
             usf    = r.get("updated_structured_forecast") or {}
-            hyps   = usf.get("hypotheses", [])
+            hyps   = [h for h in usf.get("hypotheses", []) if isinstance(h, dict)]
             h1_upd = next((h for h in hyps if h.get("id") == "H1"), {})
             h1_post = h1_upd.get("posterior_probability")
 
@@ -326,15 +404,26 @@ def _anchoring_check(all_uf_records: list[dict]) -> dict:
 # ── Step 6b: market-price divergence ──────────────────────────────────────────
 
 def _market_divergence(initial_recs: dict[str, dict]) -> dict:
-    """Per-market: |agent_yes_prob - market_price|."""
+    """Agent-vs-market relationship, framed as a market-imitation control (not
+    calibration: markets are unresolved, so the mid-price is a proxy, not ground
+    truth).  Reports two threshold-free quantities over markets:
+      * spearman_rho — rank correlation between the agent's yes-probability and
+        the Polymarket mid-price (association / "does it track the crowd").
+      * mean_abs_divergence — mean |agent - market| in [0,1] (magnitude of
+        divergence / "does it copy the price").
+    yes_prob is normalised to [0,1] first so models on a 0–100 scale are handled.
+    """
     divs = []
     per_market = []
+    agent_ps, market_ps = [], []
     for tid, rec in initial_recs.items():
-        yp = rec.get("yes_prob")
+        yp = _norm01(rec.get("yes_prob"))
         mp = rec.get("yes_price_market")
         if yp is not None and mp is not None:
             d = abs(yp - mp)
             divs.append(d)
+            agent_ps.append(yp)
+            market_ps.append(mp)
             per_market.append({
                 "task_id":         tid,
                 "question":        rec.get("question", "")[:80],
@@ -345,7 +434,9 @@ def _market_divergence(initial_recs: dict[str, dict]) -> dict:
             })
     per_market.sort(key=lambda r: -r["abs_divergence"])
     mean_div, se_div = _mean_se(divs)
+    rho = _spearman(agent_ps, market_ps)
     return {
+        "spearman_rho":        round(rho, 3) if rho is not None else None,
         "mean_abs_divergence": round(mean_div, 4) if mean_div is not None else None,
         "se":                  round(se_div,  4) if se_div  is not None else None,
         "n": len(divs),
@@ -387,6 +478,12 @@ def build_report(date_str: str) -> tuple[dict, str]:
         "per_model":    {},
     }
 
+    # Load all updated forecasts and counterfactuals once (avoids re-scanning files per market)
+    print("  Loading updated forecasts index …")
+    uf_index  = _load_all_updated_forecasts()   # {(task_id, model): [recs]}
+    print("  Loading counterfactuals index …")
+    cf_index  = _load_all_counterfactuals()      # {task_id: [packets]}
+
     all_uf_by_model: dict[str, list[dict]] = {}
 
     for model in model_order:
@@ -398,8 +495,8 @@ def build_report(date_str: str) -> tuple[dict, str]:
 
         for tid in task_ids:
             rec        = model_ifs[tid]
-            uf_records = _load_updated_forecasts(tid, model)
-            cf_packets = _load_counterfactuals(tid)
+            uf_records = uf_index.get((tid, model), [])
+            cf_packets = cf_index.get(tid, [])
             cf_lookup  = {p["cf_id"]: p for p in cf_packets}
 
             all_uf_for_model.extend(uf_records)
@@ -409,7 +506,7 @@ def build_report(date_str: str) -> tuple[dict, str]:
                 cons_result = _compute_consistency(uf_records, cf_lookup)
 
             summary = (cons_result or {}).get("summary") or {}
-            yp  = rec.get("yes_prob")
+            yp  = _norm01(rec.get("yes_prob"))
             mp  = rec.get("yes_price_market")
             per_market_rows.append({
                 "task_id":            tid,
@@ -453,6 +550,7 @@ def build_report(date_str: str) -> tuple[dict, str]:
                 "ICS_se":   round(ics_se, 3) if ics_se is not None else None,
             },
             "market_divergence": {
+                "spearman_rho":        divergence.get("spearman_rho"),
                 "mean_abs_divergence": round(div_r,  4) if div_r  is not None else None,
                 "se":                  round(div_se, 4) if div_se is not None else None,
             },
@@ -481,8 +579,8 @@ def build_report(date_str: str) -> tuple[dict, str]:
             "",
             "### Consistency Metrics (averaged across markets)",
             "",
-            f"| Metric | Rate | SE |",
-            f"|--------|------|----|",
+            "| Metric | Rate | SE |",
+            "|--------|------|----|",
             f"| EHC (Evidence-Hypothesis) | {_pct(c['EHC_rate'])} | ±{_fmt(c['EHC_se'])} |",
             f"| HFC (Hypothesis-Forecast)  | {_pct(c['HFC_rate'])} | ±{_fmt(c['HFC_se'])} |",
             f"| ICS (Internal Coherence)   | {_pct(c['ICS_rate'])} | ±{_fmt(c['ICS_se'])} |",
@@ -504,13 +602,16 @@ def build_report(date_str: str) -> tuple[dict, str]:
             "",
             "### Baseline Checks",
             "",
-            "**Market-price divergence** (mean |agent − market|):  ",
+            "**Market association** (Spearman ρ, agent yes-prob vs. mid-price):  ",
+            f"`{_fmt(dv.get('spearman_rho'))}`",
+            "",
+            "**Market-price divergence** (mean |agent − market|, normalised):  ",
             f"`{_fmt(dv['mean_abs_divergence'], 4)}`",
             "",
             "**Anchoring check** — mean |Δyes_prob| by CF direction:",
             "",
-            f"| Direction | mean |Δ| | SE | n |",
-            f"|-----------|----------|----|---|",
+            "| Direction | mean |Δ| | SE | n |",
+            "|-----------|----------|----|---|",
         ]
         for d in ("pro_H1", "anti_H1", "orthogonal"):
             row = a.get(d, {})
@@ -563,10 +664,13 @@ def main():
     for model in report["models"]:
         c = report["per_model"][model]["consistency"]
         a = report["per_model"][model]["anchoring"]
+        dv = report["per_model"][model]["market_divergence"]
         sens = a.get("sensitivity_ratio")
         print(f"  {model}:")
         print(f"    EHC={_pct(c['EHC_rate'])}  HFC={_pct(c['HFC_rate'])}  ICS={_pct(c['ICS_rate'])}")
         print(f"    Sensitivity ratio: {_fmt(sens)}")
+        print(f"    Market: rho={_fmt(dv.get('spearman_rho'))}  "
+              f"|A-M|={_fmt(dv.get('mean_abs_divergence'), 4)}")
 
 
 if __name__ == "__main__":

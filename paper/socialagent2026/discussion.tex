@@ -1,0 +1,98 @@
+\section{Discussion: why inductive reasoning matters}
+\label{sec:discussion}
+
+Forecasting is our testbed for inductive reasoning, not the boundary of the
+claim. It makes otherwise hidden choices observable: which evidence matters,
+which population offers the relevant comparison, when local behavior should
+override context, and whether a relationship survives a new world. Each choice
+implies a different numerical forecast. The same ability matters whenever a
+social agent must generalize from sparse evidence rather than repeat a familiar
+pattern.
+
+In practice, a forecast is rarely the last question. Users need to know which
+evidence should change a decision, whether the conclusion survives in a different
+population, and what observation should trigger revision. A model that reaches
+the right number through a topical cue or a familiar base rate may still be
+unable to support those judgments. Average
+accuracy can hide that weakness precisely because most evaluation cases resemble
+the past. It becomes costly when a decision concerns a new group, an unusual
+institution, or a policy that changes the usual pathway.
+
+We designed the experiments around alternatives left open by the preceding
+study. The market study tests whether forecasts ignore topical chatter and follow
+evidence up or down, but leaves open a verbal shortcut. Coin City makes the hidden
+comparison visible; conflicting local cases test revision, arbitrary labels
+remove familiar semantics, and an intervention connects the induced
+representation to behavior. Transfer to a new domain and response pathway then
+tests whether the result is specific to one prompt, while historical markets test
+accuracy outside training. No single step is sufficient; together, these
+successively stronger contrasts narrow the explanations for success.
+
+These distinctions extend beyond forecasting. A persuasion model should respond to
+both a message and who delivers it. A coordination model should distinguish
+shared payoffs from what participants know about one another. A policy model
+should distinguish similar language from the institutional pathway through which
+an effect occurs. In synthetic populations, these paired changes can reveal
+whether conditional relationships survive even when aggregate averages look
+human-like
+\citep{park2023generative,aher2023simulate,argyle2023out,bisbee2024synthetic}.
+For social agents in particular, the relationship is often the object of
+interest: who knows what, which group treats a message as credible, or which
+institution transmits an action into an outcome. Matching a population average
+while missing those dependencies can produce a convincing static simulation and
+a misleading response to intervention.
+
+For evaluation, this implies measuring both outcomes and reasons for change. Hold
+surface content fixed while changing the relevant analogue;
+provide local evidence that contradicts context; replace meaningful cues with a
+new convention; and test the relationship again after the setting changes.
+Headline accuracy and parameter count cannot substitute for these checks because
+the relevant capability depends on the population, pathway, and decision at hand.
+
+\section{Limitations: what these studies do and do not establish}
+\label{sec:limitations}
+
+The evidence supports a specific claim: models use context-dependent predictive
+relationships in these tasks. It does not establish human-like understanding or
+a general internal world model. The market packets are controlled pieces of
+text, Coin City offers two simple response patterns, and the transfer study spans
+two constructed worlds. Real settings contain strategic interaction,
+unreliable cues, changing variables, and feedback over longer horizons.
+
+The internal result is narrower still. Decoding identifies a representation
+associated with the selected convention, and one intervention shows that this
+representation affects one checkpoint's forecast. That is stronger than a
+correlation alone, but not a claim about every model or every form of reasoning.
+Likewise, the historical study covers one market cohort and training recipe.
+Additional architectures, later cohorts, interactive settings, and deliberately
+misleading evidence would test how far the pattern extends.
+
+Performance is heterogeneous. Smaller checkpoints often struggle when the
+KIV/ZOR meaning must be induced anew, and historical-market gains narrow at the
+strongest Qwen base. Because the scale comparison uses one training recipe across
+model sizes, its nonmonotonic shape should not be read as a law of capacity:
+larger models may need different learning rates, schedules, or amounts of data.
+The sequence is useful partly because it shows where performance changes rather
+than collapsing inductive reasoning into one yes-or-no score.
+
+\section{Ethics, artifacts, and conclusion}
+\label{sec:conclusion}
+
+The studies use public market data, model outputs, synthetic worlds, and an unpaid
+adult review of synthetic materials. No identifying or sensitive information was
+collected. Counterfactual packets were evaluated offline, never posted to markets,
+and never used for trading. We report aggregate behavior rather than recommend a
+deployment or trading strategy.
+
+An anonymized artifact contains prompts, fixed datasets, saved model responses,
+analysis code, and figure builders.
+The appendix records the implementation and statistical details omitted from the
+main narrative.
+
+Forecast accuracy is a starting point, not a sufficient test of inductive
+reasoning. Stronger tests ask whether a model notices relevant evidence, moves in
+the implied direction, chooses and revises comparisons, infers new conventions,
+and preserves relationships under change. The larger tested models pass these
+contrasts, subject to the limits above. For social agents, these experiments test
+both real-world accuracy and relationship-sensitive updating without presuming a
+general theory of the world.

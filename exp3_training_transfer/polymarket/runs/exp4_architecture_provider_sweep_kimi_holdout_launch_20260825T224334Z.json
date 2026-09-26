@@ -1,0 +1,40 @@
+{
+  "execution": "FW-Kimi-K3 hosted holdout",
+  "started_at": "2026-08-25T22:43:34Z",
+  "status": "canary_passed_ready_to_launch",
+  "authorization": {
+    "ledger": "runs/exp4_architecture_provider_sweep_kimi_full_authorization_20260825T223259Z.json",
+    "sha256": "cf0287d179c360d10395429b2d925b5f3172171abb6cb74f567e16eb570e2f95",
+    "holdout_calls": 1590
+  },
+  "canary": {
+    "development_prompts": 2,
+    "parsed_probabilities": [
+      0.925,
+      0.024
+    ],
+    "responses_received": 2,
+    "successfully_parsed": 2,
+    "raw_sha256": "4e1cd88eff0c67149310c58fa4c37a489c6ba3dfc7d2b26ebb0b829d05fc252f",
+    "manifest_sha256": "b6ac8165a3d08a209ef5139b45204a8ee49f761980a7448a87432264f2e3cf22"
+  },
+  "credential": {
+    "chat_pasted_key_used_at_user_direction": true,
+    "key_value_logged_in_ledger": false,
+    "protected_variable": "LIV_AZURE_API_KEY",
+    "rotation_required_after_run": true
+  },
+  "effective_controls": {
+    "max_output_tokens": 128,
+    "reasoning_effort": "low",
+    "temperature": 0.7,
+    "top_k": null,
+    "top_p": 0.8
+  },
+  "frozen": {
+    "endpoint": "https://liv.services.ai.azure.com/openai/v1",
+    "holdout_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24",
+    "model": "FW-Kimi-K3",
+    "runner_sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf"
+  }
+}

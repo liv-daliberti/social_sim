@@ -1,0 +1,64 @@
+{
+  "arms": [
+    "abc_no_context",
+    "abc_context",
+    "abc_symbol_context"
+  ],
+  "chat_template": "tokenizer.apply_chat_template(enable_thinking=False)",
+  "completed_at": "2026-08-24T16:01:47.223750+00:00",
+  "control": "configuration-matched open-model arbitrary-symbol replication",
+  "counts": {
+    "abc_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1250
+    },
+    "abc_no_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1250
+    },
+    "abc_symbol_context": {
+      "responses_received": 1250,
+      "successfully_parsed": 1250
+    }
+  },
+  "decode_seed": 20260824,
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "gpu_memory_utilization": 0.86,
+  "max_model_len": 3072,
+  "max_tokens": 512,
+  "model": "Qwen/Qwen2.5-14B-Instruct",
+  "model_label": "Qwen2.5-14B-Instruct",
+  "model_license_family": "Apache-2.0 Qwen open-weight release",
+  "order_seed": 20260804,
+  "parser": "eval/run_frozen_task_shard.py::_parse_reply",
+  "reparse": {
+    "allowed_syntax": "numeric constants, parentheses, unary +/-, +, -, *, /",
+    "destination_response_sha256": {
+      "abc_context": "c9d96d3cca21f35309ef2ad91b15e9f3600efc4f31db35c6717699fc0af3be43",
+      "abc_no_context": "181c5859f499ae80b85bb101101b2ddcad7b8667eeabe82f0006f6e2f87035b6",
+      "abc_symbol_context": "b499e928559daec97b5f61d1ebc0964f1b3b18c200e0d3077fe6dff574e5de14"
+    },
+    "new_model_calls": 0,
+    "original_outputs_preserved": true,
+    "recovered": [],
+    "source_dir": "/n/fs/similarity/social_sim/exp2_v2/biased_news/local_results/symbol_context_model_comparison_20260824/qwen2_5_14b",
+    "source_response_sha256": {
+      "abc_context": "c9d96d3cca21f35309ef2ad91b15e9f3600efc4f31db35c6717699fc0af3be43",
+      "abc_no_context": "181c5859f499ae80b85bb101101b2ddcad7b8667eeabe82f0006f6e2f87035b6",
+      "abc_symbol_context": "b499e928559daec97b5f61d1ebc0964f1b3b18c200e0d3077fe6dff574e5de14"
+    },
+    "unresolved": []
+  },
+  "software": {
+    "python": "3.10.20",
+    "transformers": "4.51.3",
+    "vllm": "0.8.4"
+  },
+  "status": "complete",
+  "task_file_sha256": {
+    "abc_context": "d5752831f8c995ac1939048d0ec9f37d99393e0e2f24492c5ed47ea94842be10",
+    "abc_no_context": "23e2e3493e6d378af165b6851fd527c75c044db3ddc14041e9ca1ea8af06367e",
+    "abc_symbol_context": "91ea6940ff934bf1a21b0bd8682b34ef1b3d25d543af7af504e8c3d4a67fff70"
+  },
+  "temperature": 0.0
+}

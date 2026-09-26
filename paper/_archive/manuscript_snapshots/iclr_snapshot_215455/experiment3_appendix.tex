@@ -1,0 +1,557 @@
+% ============================================================
+%  APPENDIX — EXPERIMENT 3 FULL DETAILS  (training & transfer)
+%  Place after the Experiment 2 appendix.
+% ============================================================
+
+\section{Experiments 3 and 4: Training and Transfer}
+\label{app:exp3}
+
+This appendix reports the complete Coin City A-to-B design and Qwen3-4B
+endpoints, the completed Qwen3-4B structural-OOD factorial, and the Experiment~4
+historical-market protocol and results. It also records the effective training
+and evaluation configuration for every reported cell.
+
+\subsection{Experiment 3: Coin City Domain and Structural Transfer}
+\label{app:exp3-coin-structural}
+
+\subsubsection{Data-generating processes}
+
+Training uses only Structure~A, the direct relationship from Experiment~2. On
+the displayed scale of domain $d$,
+\begin{equation}
+  y_{t+1}=b_d+g_jx_t+\epsilon_t,\qquad
+  \epsilon_t\sim\mathcal N(0,\sigma_d^2).
+  \label{eq:exp3-coin-a}
+\end{equation}
+A pulse acts in the next period and has no residual effect under zero subsequent
+input. The unseen evaluation mechanism, Structure~B, is
+\begin{align}
+  m_{t+1}&=\rho m_t+g_jx_t,\\
+  y_{t+1}-b_d&=\phi(y_t-b_d)+\lambda m_{t+1}+\epsilon_t.
+  \label{eq:exp3-coin-b}
+\end{align}
+This is a linear-Gaussian latent-state process in the sense of
+\citet{kalman1960new}: it introduces a persistent mediator and outcome carry-over,
+so a single pulse has both immediate and delayed effects. Model prompts disclose neither equation,
+parameter values, internal variable, nor structure label.
+
+Coin City uses $b=50$, range $[0,100]$, driver pool
+$\{-12,-8,-4,0,4,8,12\}$, and $\sigma=1.6$. Held-out Coin Harbor uses
+$b=180$, range $[40,320]$, driver pool
+$\{-24,-16,-8,0,8,16,24\}$, and $\sigma=4.5$, together with new terminology,
+units, and qualitative descriptions. Evaluation gains follow
+$g\sim\mathrm{Uniform}(.22,.92)$. Structure~B independently samples
+$\rho\sim\mathrm{Uniform}(.48,.74)$,
+$\phi\sim\mathrm{Uniform}(.18,.42)$, and
+$\lambda\sim\mathrm{Uniform}(.68,.94)$. A reference and its matched target share
+these parameters but have independent inputs and noise.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Exact Coin City--Coin Harbor domain contrast.} Both
+surfaces instantiate the same Structure~A and B simulators and task template; Coin
+Harbor changes the semantic setting, time unit, numeric scale, interventions, noise,
+and pathway descriptions.}
+\label{tab:exp3-domain-contrast}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{p{.20\linewidth}p{.36\linewidth}p{.36\linewidth}}
+\toprule
+\textbf{Field} & \textbf{Coin City (train and test)} & \textbf{Coin Harbor (test only)} \\
+\midrule
+Driver $\to$ outcome & Net campaign news $\to$ candidate support & Net shipping
+bulletin $\to$ cargo-flow index \\
+Time unit & Week & Tide cycle \\
+Resting level / support & 50 / $[0,100]$ & 180 / $[40,320]$ \\
+Observed-input pool & $\{-12,-8,-4,0,4,8,12\}$ &
+$\{-24,-16,-8,0,8,16,24\}$ \\
+Evaluation shocks & $\{-12,-6,0,6,12\}$ & $\{-24,-12,0,12,24\}$ \\
+Observation-noise SD & 1.6 support points & 4.5 cargo-index points \\
+Structure A description & Synchronized citywide alerts; reactions occur mostly in
+the same week & Synchronized fleetwide radio; responses occur mostly in the same
+tide cycle \\
+Structure B description & Neighborhood conversations and local organizations;
+reactions build gradually and persist & Dockside crews and harbor groups; responses
+build gradually and persist \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsubsection{Training episodes and matched control}
+
+Each training prompt contains two 14-case Coin City reference systems, both
+governed by Equation~\ref{eq:exp3-coin-a}. One draws
+$g\in[.18,.46]$ and the other $g\in[.68,.98]$; their order is randomized.
+The target shares exactly one reference gain, selected in balanced fashion, and
+shows $k\in\{0,2,4,8\}$ independently generated cases. Its national/local
+background description identifies the matching weak or strong response as in
+Experiment~2. There are 1,200 rows at each $k$, or 4,800 per training run.
+
+The causal and population-prior datasets have byte-identical prompts. Causal
+reward uses the target's noise-free forecasts. For the control, targets are
+deranged within each $k$ stratum with a fixed permutation: no row keeps its own
+target, while the complete multiset of target vectors is exactly preserved.
+Consequently the control can learn the output format and population distribution
+but cannot improve reward by using that row's references or target history.
+The Qwen3-4B structureless diagnostic additionally scrambles displayed drivers
+and rewards a flat intervention response; it is not a confirmatory comparator.
+
+\input{tables/exp3_training_example}
+
+\subsubsection{Evaluation interface and qualitative hint}
+
+Every evaluation prompt contains a complete 14-period Structure~A reference, a
+complete 14-period Structure~B reference, and a target governed by one of them.
+For Coin City the two reference descriptions are:
+\begin{quote}\small
+Residents receive campaign developments through synchronized citywide alerts.
+Reactions occur mostly during the same week as the news.
+
+Campaign developments usually spread through neighborhood conversations and
+local organizations. Reactions may build gradually and persist after the
+original news has faded.
+\end{quote}
+Coin Harbor uses the matched fleetwide-radio versus dockside-network descriptions.
+The target receives the correct description, no description, or the other
+pathway's description. The three prompt variants reuse the exact reference and
+target trajectories, scenario grid, and gold forecasts; the freeze records a
+common numeric hash for every cue triplet.
+
+Each task requests ten counterfactuals: shocks
+$\{-2u_d,-u_d,0,u_d,2u_d\}$ at horizons one and three, with $u_d=6$ in Coin City
+and $u_d=12$ in Coin Harbor. The shock occurs in the next period and all later
+inputs are zero. The response vector consists of the eight nonzero-shock minus
+zero-shock contrasts. The full endpoint contains
+\[
+2\ {\rm domains}\times2\ {\rm structures}\times3\ {\rm hints}\times
+4\ k{\rm\ values}\times30\ {\rm episodes}=1,440
+\]
+paired prompts. Training and evaluation seed bands begin at 81,000,000 and
+91,000,000, respectively.
+
+\paragraph{Exact task template and prompt variants.}
+\label{app:exp3-coin-prompts}
+The following is the task string emitted by the registered renderer before the
+model-specific chat wrapper is applied. Bracketed uppercase fields below denote
+row-specific substitutions; they are not shown to the model. Line wrapping is
+typographic, while the blank-line-separated sections and all fixed wording are
+part of the prompt.
+
+\begin{quote}
+\begingroup\ttfamily\scriptsize\raggedright
+Forecasting task in [DOMAIN].
+
+\smallskip
+The resting level of [OUTCOME] is [BASELINE]. Values are bounded to
+[LOWER, UPPER].
+
+\smallskip
+The reference systems are complete examples. The target system may share a
+stable response pattern with one reference. Infer from the information shown;
+no response equation or coefficient is provided.
+
+\smallskip
+REFERENCE SYSTEM 1
+
+Background: [REFERENCE 1 CONTEXT]
+
+[REFERENCE 1 TABLE: period, driver, and 14 observed outcomes]
+
+\smallskip
+REFERENCE SYSTEM 2
+
+Background: [REFERENCE 2 CONTEXT]
+
+[REFERENCE 2 TABLE: period, driver, and 14 observed outcomes]
+
+\smallskip
+TARGET SYSTEM
+
+[TARGET BACKGROUND, WHEN PRESENT]
+
+[TARGET TABLE WITH $k$ OBSERVATIONS, OR THE EXACT NO-OBSERVATION SENTENCE]
+
+\smallskip
+COUNTERFACTUAL FORECASTS
+
+For each scenario, apply the stated [DRIVER] in the next [PERIOD] and then set it
+to 0 in later periods. Forecast [OUTCOME] at the stated horizon.
+
+\smallskip
+A: shock=[VALUE]; horizon=1\quad $\ldots$\quad
+E: shock=[VALUE]; horizon=1
+
+F: shock=[VALUE]; horizon=3\quad $\ldots$\quad
+J: shock=[VALUE]; horizon=3
+
+\smallskip
+Return only strict JSON with exactly ten finite numbers in scenario order:
+
+\{"forecasts":[A,B,C,D,E,F,G,H,I,J]\}
+\endgroup
+\end{quote}
+
+The renderer realizes the variants as follows. Training always includes the
+correct strong/weak background and uses the same input string for causal and
+population-prior training; only the hidden reward target differs. At evaluation,
+\texttt{correct} inserts the target pathway's description, \texttt{none} omits
+the background line entirely, and \texttt{misleading} inserts the other
+pathway's description. Every cue triplet otherwise has identical tables,
+interventions, and targets. If $k=0$, the target block contains the exact
+sentence \emph{No target-system observations are available yet.}; otherwise it
+contains the same table format as the references with the first $k$ rows. The
+Qwen3-4B \texttt{structureless} diagnostic retains this shell but swaps every
+displayed $-12.0\leftrightarrow12.0$ and $-8.0\leftrightarrow8.0$ token through
+a collision-safe substitution. Untrained bases receive the same held-out
+prompts as trained models. Thus cue, reward-arm, structureless, and base
+comparisons do not introduce an unreported instruction change.
+
+\subsubsection{Estimands, roster, and validation criteria}
+
+The confirmatory grid is three models (Qwen3-4B, Qwen3-8B, and
+Llama-3.1-8B), two arms, and three training seeds, for 18 runs. Three
+Qwen3-4B structureless runs and three untrained endpoints are diagnostic.
+The primary estimand is population-prior minus causal response MAE on
+Structure~B in Coin Harbor with the correct hint, averaging the four $k$ values
+equally. Positive values favor causal training. Prespecified secondary contrasts
+apply the same estimator to Structure~A/Coin Harbor (domain transfer),
+Structure~B/Coin City (structural transfer), and the in-distribution cell.
+Paired absent-minus-correct and misleading-minus-correct contrasts measure hint
+use. Their paired $k=8$ minus $k=0$ difference tests whether observations override
+a misleading prior; negative values indicate a shrinking misleading-hint penalty.
+
+Greedy output is retained for continuity, and every checkpoint adds five draws at
+temperature $.7$. Draws are averaged within episode before inference. The
+hierarchical bootstrap resamples the three training seeds at the top level and
+paired episodes within each selected seed. Parse failures receive the full
+observable-range error penalty rather than being discarded.
+
+The generated freeze passes 17 fail-closed checks: exact row counts and factorial
+balance; byte-identical causal/prior prompts and held-out datasets; exact
+within-$k$ target marginals with no fixed reward links; absence of Structure~B
+from training prompts and metadata; cue-triplet numeric identity; train/evaluation
+identifier disjointness; hidden-equation leak scans; strict gold round trips; and
+oracle separation from the blind pathway mixture. Mean A--B response separation
+is 2.65 points in Coin City and 4.80 in Coin Harbor. Across all three tokenizers,
+the longest prompt is 1,071 tokens against the registered 2,304-token limit.
+
+The analysis plan assigns population-prior-minus-causal intervals to all four
+transfer cells, paired intervals to both cue penalties at every $k$, and the paired
+$k=8$ minus $k=0$ change in misleading-minus-correct error to evidence override.
+The protocol archive records versioned input, analysis, and output hashes. Full
+optimization and compute parameters are in
+Section~\ref{app:exp3-complete-training-setup}.
+
+\subsubsection{Round-300 Qwen3-4B results}
+\label{app:exp3-coin-qwen4b}
+
+All nine Qwen3-4B causal, population-prior, and structureless runs have produced
+the complete 1,440-task greedy evaluation and the registered five-draw stochastic
+evaluation at round 300; the untrained Qwen3-4B endpoint is also complete under
+both regimes. The task universe is identical across conditions, and parse rates
+are 100\% for every trained arm and 99.97\% for the stochastic base. The analysis
+averages the four evidence depths equally and, for stochastic decoding, averages
+draws within task before the seed-first bootstrap. The two larger-model grids
+were incomplete at the analysis freeze.
+
+Under five-draw stochastic decoding, the joint-cell MAEs are $6.15$, $6.76$,
+$4.81$, and $4.49$ for base, structureless, population-prior, and causal training,
+respectively. The prior-minus-causal difference is $.319$ $[.134,.489]$; causal
+training has the lowest point estimate in all four cells, with all four intervals
+excluding zero. The stochastic nearest-pathway Structure~B accuracy is zero for
+causal training and $.873$ for base. Table~\ref{tab:exp3-coin-stochastic} reports
+the complete transfer grid.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Qwen3-4B Coin City round-300 stochastic endpoint.}
+Entries are response MAE under the correct hint after averaging five draws within
+task. Intervals use the registered paired seed-first bootstrap; lower is better.}
+\label{tab:exp3-coin-stochastic}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_qwen3_4b_stochastic}}
+\end{minipage}
+\end{center}
+
+The qualitative hint also affects the held-out joint cell. Averaged over evidence
+depths, omitting the hint raises causal response MAE by $.151$ $[.079,.235]$,
+and a misleading hint raises it by $.313$ $[.228,.415]$. The misleading-hint
+penalty is smaller at $k=8$ than at $k=0$, but the evidence-override contrast
+$-.116$ $[-.309,.100]$ includes zero. Table~\ref{tab:exp3-coin-cue-by-k}
+reports every prespecified hint-by-depth estimate.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Qwen3-4B hint use in the Coin Harbor/Structure B
+joint-transfer cell under five-draw stochastic decoding.} MAE averages draws
+within task and training seeds equally. Positive contrasts mean that removing or
+reversing the qualitative hint increases error. The evidence-override row is the
+$k=8$ minus $k=0$ change in the misleading-minus-correct penalty.}
+\label{tab:exp3-coin-cue-by-k}
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_qwen3_4b_cue_by_k}}
+\end{minipage}
+\end{center}
+
+Greedy decoding yields joint-cell MAEs of $6.09$, $6.69$, $4.77$, and $4.59$,
+respectively, and a prior-minus-causal difference of $.174$ $[.039,.316]$. Causal
+training has the lowest point estimate in all four cells. The interval excludes
+zero in the in-distribution and joint cells, but includes zero in the domain-only
+and structure-only cells, marginally so for structure-only ($[-.002,.248]$).
+Correct, absent, and misleading hints yield causal MAE of $4.59$, $4.68$, and
+$4.86$ in the joint cell. Its nearest-pathway Structure~B accuracy is $.025$,
+versus $.817$ for base.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Qwen3-4B Coin City round-300 greedy endpoint.}
+Entries are response MAE under the correct hint. Intervals use the same registered
+paired seed-first bootstrap; lower is better.}
+\label{tab:exp3-coin-greedy}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_qwen3_4b_greedy}}
+\end{minipage}
+\end{center}
+
+Across both decoding regimes, lower response error does not imply recovery of the
+mediated shape. The full cross-model endpoint is excluded because the Qwen3-8B and
+Llama-3.1-8B causal/prior grids were incomplete at the analysis freeze.
+
+
+\subsection{Experiment 4: Historical Polymarket Pastcasting}
+\label{app:exp3b-protocol}
+
+This study asks whether outcome-based training transfers to events and normalized
+question families unseen during training, using a point-in-time cutoff and sealed
+test.
+
+\subsubsection{Frozen sample and leakage gates}
+
+\paragraph{Frozen source and sample.}
+The source export has 1,788,703 rows and SHA-256
+\texttt{5697f767\ldots f638e7d} (the full digest is stored in the manifest).
+The builder scans the entire file and fails on checksum drift. The frozen calendar
+splits contain 1,736 train, 512 development, and 1,024 test markets, with YES rates
+.311, .275, and .301. Train contains 991 distinct events and 1,456 normalized
+question templates; development contains 292 and 453; test contains 493 and 866.
+The selected archive rows have no official series identifiers, so event and
+template components supply the operative family groups.
+
+\paragraph{Eligibility and point-in-time censoring.}
+We admit literal Yes/No markets resolved by an extreme final token price. A
+boundary-aware domain rule selects political, governmental, macroeconomic, and
+geopolitical questions while explicitly rejecting culture, awards, sports,
+esports, and crypto categories. This rule is fixed before model training. One task
+is built 30 days before the earliest archived terminal timestamp. At least four
+distinct UTC dates must have genuine pre-cutoff YES candles, the latest candle must
+be no more than seven days stale, and its price must remain in $[.02,.98]$. We keep
+at most the latest 14 dates. Empty, carry-forward, and post-cutoff candles are
+rejected. The prompt omits the outcome, final prices and volume, market status,
+realized terminal time, and the tags used for domain selection.
+
+The archive records timestamped price history but not revisions to static question
+or resolution-rules text. We therefore treat those strings as time-invariant. This
+is a residual point-in-time limitation: the audit can prove that no timestamped or
+outcome field crosses the cutoff, but cannot prove that an archived rule was never
+edited later.
+
+\paragraph{Family-disjoint temporal split.}
+Before applying sample caps, every development row sharing an event, available
+series, or normalized template with train is removed; the same rule removes test
+rows matching train or development. Numeric values and month names are normalized
+in template keys. The final intersection is zero for each pair of splits. Sampling
+within a split is a stable hash of task identifier and protocol version, so row
+order in the export cannot change membership.
+
+\subsubsection{Registered training and sealed evaluation}
+
+\paragraph{Matched update budget.}
+The target domain yields 1,736 unique train markets rather than 4,800. We preserve
+the precommitted 300-round comparison with Experiment~3A using a deterministic,
+balanced schedule of 4,800 presentations: every market appears twice and 1,328
+appear a third time. Schedule order and task files are hash-locked. With batch size
+16 this gives exactly 300 rollout-and-update rounds (2,400 AdamW steps). This distinction between unique markets and
+presentations is retained in every manifest and table. The longest wrapped prompt
+is 1,012 Qwen tokens against the 1,792-token training limit, so OAT's prompt filter
+drops no task.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Experiment~4 training configuration. Test data are absent from the
+training process and evaluated once by a dependent job.}
+\label{tab:exp3b-hparams}
+\scriptsize
+\begin{tabular}{p{.34\linewidth}p{.59\linewidth}}
+\toprule
+\textbf{Quantity} & \textbf{Value} \\
+\midrule
+Base / adapter & Qwen3-4B-Instruct-2507; LoRA rank 32, $\alpha=64$ \\
+Algorithm & Dr.~GRPO; $\beta=0$; AdamW, lr $10^{-6}$ \\
+Unique train / presentations & 1,736 / 4,800 balanced repetitions \\
+Rounds / seeds & 300; $42,43,44$ \\
+Rollout & 16 prompts, 8 samples each; temperature 1.3 \\
+Output & one JSON probability; 128 new-token limit \\
+Reward & $1-(\hat p-y)^2$ only \\
+Development & 512 tasks; greedy evaluation every 25 rounds \\
+Locked test & 1,024 tasks; greedy, once after all seeds succeed \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsubsection{Completed locked-test accuracy}
+\label{app:exp3b-results}
+\paragraph{Frozen comparators and decision rule.}
+The latest genuine market price has test Brier .11369 and log loss .36581. Platt
+calibration fit on train only uses intercept .03166 and market-logit slope 1.20747;
+it obtains test Brier .11232 and log loss .36046. Its Brier improvement over the
+raw market is $-.00137$ with family-bootstrap 95\% interval
+$[-.00262,-.00011]$. Train prevalence obtains .21042 Brier. These deterministic
+comparators were frozen before learned-model results. The primary learned
+contrast is the mean loss over three trained seeds minus base loss. Invalid JSON
+receives Brier loss one. We report trained minus raw market and trained minus
+train-only Platt separately, using 5,000 bootstrap resamples of connected
+event/template components.
+
+All test forecasts parse. The three-seed trained mean obtains Brier .11589 versus
+.13160 for the base, a
+difference of $-.01572$ with 95\% interval $[-.02528,-.00667]$. Its difference
+from the raw market is $.00219$ with interval $[-.00264,.00721]$, and its
+difference from train-only Platt is $.00356$ with interval
+$[-.00125,.00874]$. Thus the learned model passes the primary base-relative
+decision but not the stronger market-improvement criterion.
+The result establishes transfer relative to the untrained model, not an advantage
+over the market signal.
+
+\begin{center}
+\begin{minipage}{.9\linewidth}
+\centering
+\captionof{table}{\textbf{Per-seed locked-test results.}
+Every trained seed improves on the untrained Brier score of $.1316$; the main
+text reports only the predeclared three-seed mean.}
+\label{tab:exp3b-seed-results}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\resizebox{\linewidth}{!}{%
+\input{tables/exp3b_endpoint_seed_results}
+}
+\end{minipage}
+\end{center}
+
+\subsubsection{Secondary evidence-updating analysis}
+\label{app:exp3b-update}
+After the locked-test decision, we apply the exact Experiment~1 update prompt and
+all nine frozen packets for each of its 100 markets (three pro-$H_1$, three
+anti-$H_1$, and three orthogonal). The packet and initial-context SHA-256 digests
+are \texttt{6741be0a\ldots8796d36} and
+\texttt{c550cf05\ldots0c098}. Every condition receives the same canonical first
+structured Qwen~2.5-7B forecast for each market, so this paired analysis isolates
+conditional revision rather than web retrieval or initial event-model
+construction. Search and thinking are disabled; decoding is greedy with a
+1,500-token output cap. The longest prompt is 1,480 tokens against a 6,144-token
+context limit.
+
+The paired evaluation produces all 900 packet-conditioned revisions for the base
+and each final adapter, with 100\% parse coverage and ICS equal to one. Base
+EHC/HFC is $.909$ on 591 eligible directional updates. Seeds 42, 43, and 44 obtain
+$.917$, $.922$, and $.918$ (592, 588, and 591 eligible updates), for a
+three-seed mean of $.919$. The paired market-bootstrap trained-minus-base
+difference is $+.0101$ with 95\% interval $[+.0004,+.0207]$ for both metrics.
+Sensitivity is $4.64\times$ for base and averages $4.83\times$ after training;
+its difference of $+.19$ has interval $[-.07,+.48]$. The secondary analysis
+therefore detects a small improvement in directional consistency, but not
+selectivity. It does not alter the locked-test decision and is a secondary
+updating result, not a second transfer result.
+
+\begin{center}
+\begin{minipage}{.82\linewidth}
+\centering
+\captionof{table}{\textbf{Per-seed evidence-updating results.}
+The main text reports only the three-seed mean. All conditions use identical
+fixed contexts and evidence packets.}
+\label{tab:exp3b-update-seed-results}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\input{tables/exp3b_update_seed_results}
+}
+\end{minipage}
+\end{center}
+
+\input{experiment3_training_setup_appendix}
+
+\subsection{Reproducibility}
+\label{app:exp3-repro}
+
+\paragraph{Structural-OOD mechanism family.}
+\path{exp3_training_transfer/mechanism_family/} contains the mechanism catalog,
+paired disclosed/undisclosed builders, reward definitions, trainer, endpoint
+evaluator, and hierarchical contrast code. The Qwen3-4B analysis is
+archived as \path{reports/c3_completed_qwen3_4b_factorial.json}; it records the
+execution-manifest hash, hashes for all 48 score files and four analysis programs,
+the 103,680 scored row-draws, bootstrap seed, and every reported contrast.
+
+\paragraph{Confirmatory Coin City transfer.}
+\path{exp3_training_transfer/coin_city_structural/} contains the two mechanism
+simulators, paired prompt renderer, deterministic builder, 17 validation checks,
+trainer, strict scorer, and table renderer. Its manifest records effective
+hyperparameters and data, source, adapter, and result hashes.
+\path{make_qwen3_4b_endpoint_outputs.py} fails closed on the exact ten
+five-draw files (72,000 scored draws), averages draws within task, performs the
+paired seed-first bootstrap, and writes Figure~\ref{fig:exp3-transfer-results}
+and Table~\ref{tab:exp3-coin-stochastic}. \path{make_interim_outputs.py}
+verifies the common greedy task universe at round 300, scores the nine Qwen3-4B
+checkpoints and untrained model, and writes Table~\ref{tab:exp3-coin-greedy}.
+
+\paragraph{Historical pastcasting and updating.}
+The \path{polymarket/scripts/} subtree contains the checksum-verified builder,
+task validator, trainer, baseline and test evaluators, and paired-update analyzer.
+Its manifests preserve sample membership, prompt and adapter hashes, parse
+coverage, and bootstrap configuration; the result summaries are independent of
+the generated paper tables.
+
+\subsection{Scope and Limitations}
+\label{app:exp3-limitations}
+
+The completed endpoint claims cover Qwen3-4B in the broad-composition study,
+Coin City under both registered decoding regimes, and historical-market
+training.
+
+\textbf{Coin City.} The A-to-B design combines a held-out domain with an unseen
+persistent-mediator mechanism and withholds equations and graph labels. Causal
+training lowers joint-transfer MAE relative to the population-prior control
+under both decoding regimes, while mechanism-shape accuracy remains poor. The
+qualitative hints use a fixed three-level intervention, and Structure~B is one
+topology; the result concerns this registered transfer contrast.
+
+\textbf{Broad structural OOD.} The four held-out blocks cover unseen topologies,
+nonlinearities, mechanism compositions, and parameter extrapolation. The
+complete Qwen3-4B factorial favors causal training under repeated sampling but
+is unresolved under greedy decoding, and mechanism classification remains near
+chance. Results from the incomplete larger-model cells are excluded.
+
+\textbf{Historical archive.} Timestamped prices are fully censored, but the
+archive lacks edit histories for static question and resolution-rule text.
+Current tags select the target domain but never enter prompts. The study uses one
+30-day cutoff and price-extreme binary resolutions. Its balanced 300-round
+schedule repeats the 1,736 unique training markets; the family-disjoint sealed
+test supplies the generalization comparison.
+
+\textbf{Evidence updating.} The secondary analysis fixes one Qwen~2.5-7B
+initial structured forecast per market and reuses the synthetic Experiment~1
+packets. It isolates conditional revision under controlled evidence rather than
+initial event-model construction, retrieval, or naturally occurring updates.
+
+\textbf{Model and optimization scale.} The reported trained endpoints use
+Qwen3-4B, 300 Dr.\ GRPO rollout-and-update rounds, and three seeds per arm. The
+current results do not establish invariance across model scale or architecture.

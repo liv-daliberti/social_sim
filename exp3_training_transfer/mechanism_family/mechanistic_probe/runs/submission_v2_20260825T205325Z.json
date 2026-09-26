@@ -1,0 +1,192 @@
+{
+  "code_and_data_sha256": {
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/analyze_probe_v2.py": "7880fe6b9b4be295ed26e70e6387df397c966396d19f4184329e2079dd52b04e",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/data/auxiliary_targets_v2.jsonl": "1a8777ca2793b008cda119dfb3a9548e2efa8a2e7a97f14aa655ec2b494e094e",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/data/task_manifest.json": "364072b8d87cacd283ba776542086471a684ad1d3c6709a789c987370a053eef",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/data/tasks.jsonl": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/extract_hidden_states.py": "7bd6adfe6507e8f1e336186b6ef6782b000d5b137ac7d79e803d99a5e17ee88a",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/launch_probe_v2.py": "f25d3eba5099f6c6abaa9e427909d1cf578ee93143f8771772bc3e3b1bf96d1d",
+    "exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch": "18f8bb832aa5b7fbe8da768f242b614096aa2a46574430b097105078e735fef1"
+  },
+  "created_at": "2026-08-25T20:53:25.105164+00:00",
+  "include_base": false,
+  "jobs": [
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s43_20260819_073032_j30730349/debug_0819T07:30:53/saved_models/step_00301",
+      "adapter_config_sha256": "93ab7d219a560795df6e078c8e0d0ab3cfc45854822ec52d5ece1931711f5d01",
+      "adapter_weights_sha256": "672929f1d791b6129439047d449f827fc32d1d5fcb9e63a730c0e7a515a55bd8",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=disclosed_causal_family_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_causal_family_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s43_20260819_073032_j30730349/debug_0819T07:30:53/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s43",
+      "job_id": "30890393",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_causal_family_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s44_20260819_075532_j30730350/debug_0819T07:55:53/saved_models/step_00301",
+      "adapter_config_sha256": "d8aa96e17674fc1ff149dbc0e6f4080818f12c494c90b91956cbb36752613f58",
+      "adapter_weights_sha256": "b4d2bb76d4032c121eb374b6544c945871922364ba6f882dd90ae3ef65aa163d",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=disclosed_causal_family_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_causal_family_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s44_20260819_075532_j30730350/debug_0819T07:55:53/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_causal_family_s44",
+      "job_id": "30890394",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_causal_family_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s43_20260819_075833_j30730352/debug_0819T07:58:54/saved_models/step_00301",
+      "adapter_config_sha256": "e03d74077da076816a8760db199c3dbf6f28862b03bd48edc57e9cc380dc811b",
+      "adapter_weights_sha256": "779a78f222c83600b48a76ea4d9ca437d74e14a494180797fadfe055810ef616",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=disclosed_population_prior_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_population_prior_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s43_20260819_075833_j30730352/debug_0819T07:58:54/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s43",
+      "job_id": "30890395",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_population_prior_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s44_20260819_160852_j30730353/debug_0819T16:09:21/saved_models/step_00301",
+      "adapter_config_sha256": "3ae347dda38104c6875298206a2e7fc99e28bf9e32e776794c32f47595bcac11",
+      "adapter_weights_sha256": "9f864f0e3e4cbe218d9edbbd4b39b4a1329ade1581501464fdc6900a8334eb58",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=disclosed_population_prior_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_population_prior_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s44_20260819_160852_j30730353/debug_0819T16:09:21/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "disclosed_population_prior_s44",
+      "job_id": "30890396",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_disclosed_population_prior_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s43_20260820_081424_j30730361/debug_0820T08:14:46/saved_models/step_00301",
+      "adapter_config_sha256": "177af7d6160e6ec8c87b192c752ae2a4eccbc08c4deee7bc994ba5bdaa6ad1dd",
+      "adapter_weights_sha256": "348dfb5bc4c2d52fb8e96db1d89e14de35912d3b7fa205f690812c5ee4d57e30",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=undisclosed_causal_family_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_causal_family_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s43_20260820_081424_j30730361/debug_0820T08:14:46/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s43",
+      "job_id": "30890397",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_causal_family_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s44_20260820_104839_j30730362/debug_0820T10:49:01/saved_models/step_00301",
+      "adapter_config_sha256": "a6ef08d084f64b98bd56d9ecb5021f1787e50fa77a1839630cde66a763088524",
+      "adapter_weights_sha256": "0e30537728447c00e9df60436aa5fe1ab016628b2a4c7e84dd360c949a10b780",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=undisclosed_causal_family_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_causal_family_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s44_20260820_104839_j30730362/debug_0820T10:49:01/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_causal_family_s44",
+      "job_id": "30890398",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_causal_family_s44",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s43_20260820_132854_j30730364/debug_0820T13:29:21/saved_models/step_00301",
+      "adapter_config_sha256": "5dd6f13d42fa3f5c0067f5eb626d9ce3498360e9b2451d6313583ddf93409e7d",
+      "adapter_weights_sha256": "5e8fa953f9e632a04532a0f748ba5d0932ba5df194a2a35399a4fb0cafb4d836",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=undisclosed_population_prior_s43,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_population_prior_s43,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s43_20260820_132854_j30730364/debug_0820T13:29:21/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s43",
+      "job_id": "30890399",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_population_prior_s43",
+      "submitted": true
+    },
+    {
+      "action": "submit",
+      "adapter": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s44_20260820_175419_j30730365/debug_0820T17:54:40/saved_models/step_00301",
+      "adapter_config_sha256": "510c7babb492ef26799716788e3b6e063d7e2cfe1778d2f0e0a57d1ada0b2d5f",
+      "adapter_weights_sha256": "6952860d7da100c78c7d1b03bdb058f853c3afdc30b982ea38a168c5320632cb",
+      "already_complete": false,
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,MODEL_COMMIT=b968826d9c46dd6066d109eabc6255188de91218,MODEL_LABEL=Qwen3-8B,ENDPOINT_LABEL=undisclosed_population_prior_s44,RUN_DIR=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_population_prior_s44,BATCH_SIZE=1,ADAPTER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s44_20260820_175419_j30730365/debug_0820T17:54:40/saved_models/step_00301",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/run_probe_v2.sbatch"
+      ],
+      "endpoint": "undisclosed_population_prior_s44",
+      "job_id": "30890400",
+      "model": "Qwen/Qwen3-8B",
+      "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+      "model_key": "qwen3_8b",
+      "model_snapshot": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+      "run_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanistic_probe/runs/qwen3_8b_undisclosed_population_prior_s44",
+      "submitted": true
+    }
+  ],
+  "models": [
+    "qwen3_8b"
+  ],
+  "protocol": "exp3_mechanism_probe_v2",
+  "seeds": [
+    43,
+    44
+  ],
+  "submitted": true
+}

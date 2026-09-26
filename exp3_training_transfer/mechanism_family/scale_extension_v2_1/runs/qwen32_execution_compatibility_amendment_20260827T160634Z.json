@@ -1,0 +1,47 @@
+{
+  "created_at": "20260827T160634Z",
+  "evidence": [
+    {
+      "amendment": "exp3_training_transfer/polymarket/runs/exp4_qwen32_vllm_allreduce_compatibility_amendment_20260826T142114Z.json",
+      "sha256": "e867bbfc968e3d721330b7d2181f74a25346e3ebffddaa2cdb3e74db87700b81"
+    },
+    {
+      "amendment": "exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_reentrant_checkpoint_compatibility_amendment_20260826T192211Z.json",
+      "sha256": "549c07f0181220cd28e7803895654cbce326410fca7c74adcc49c45ddc6c51fe"
+    },
+    {
+      "amendment": "exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_adapter_artifact_contract_compatibility_amendment_20260827T015821Z.json",
+      "sha256": "300c29576d4b29705809fefeaef530c6927a5bb0809da2a3a7842724e953ec87"
+    },
+    {
+      "passing_replacement_canary_job_id": "30910721",
+      "status": "COMPLETED"
+    }
+  ],
+  "execution_only_changes_added": [
+    "--disable-custom-all-reduce",
+    "--gradient-checkpointing-use-reentrant"
+  ],
+  "kind": "qwen32_execution_compatibility_amendment",
+  "mechanism_trainer_amended_sha256": "28de53c88b4edbf7e7dd6054a5650ab6a34b0832adc766b10d13ea9d3ee80652",
+  "mechanism_trainer_original_sha256": "21245577ada407f3a5210230e066eb88fe3660974ee9cec071254726ac006a79",
+  "original_canary_ledger": "exp3_training_transfer/mechanism_family/scale_extension_v2_1/runs/scale_v2_1_canary_20260825T213006Z.json",
+  "original_canary_ledger_sha256": "bffac16ff79308950dc58f8a73b7875d0f5f06acef729dca6b656d6b55d9984a",
+  "protocol": "c3_mechanism_scale_v2_1",
+  "reason": "Carry forward the validated Qwen3-32B execution fixes before the scale-extension Qwen3-32B canaries start.",
+  "scientific_hyperparameters_changed": false,
+  "scope": {
+    "completed_jobs_unaffected": [
+      "30891292",
+      "30891293"
+    ],
+    "future_full_training": "qwen3_32b only",
+    "model_key": "qwen3_32b",
+    "pending_canary_jobs": [
+      "30891294",
+      "30891295"
+    ]
+  },
+  "trainer_wrapper_amended_sha256": "48751254a49f8debe7c6da9dd10b88b7aed539575120efc6b7a01f3afd262c0c",
+  "trainer_wrapper_original_sha256": "c1dcac2cba715061323a504ca3a7be85f58fd9955f78e661b533a47c94887c95"
+}

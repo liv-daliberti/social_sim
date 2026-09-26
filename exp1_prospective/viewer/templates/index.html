@@ -166,6 +166,8 @@
   }
   .model-prob-chip.partial { border-color: #4a3a10; background: #231e10; }
   .model-prob-chip.none    { opacity: .45; }
+  .model-prob-chip.local   { border-color: #2d4a2d; background: #141e14; }
+  .model-prob-chip.local .mpc-name { color: #5a8a5a; }
   .mpc-name {
     font-size: 9px;
     font-weight: 700;
@@ -1204,6 +1206,46 @@
     vertical-align: middle;
   }
 
+  .agg-model-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .agg-model-tab {
+    padding: 7px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #e8ecff;
+    color: #2563eb;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .agg-model-tab:hover { background: #dbe4ff; }
+
+  .agg-model-tab.active {
+    background: #2563eb;
+    color: #fff;
+    border-color: #2563eb;
+  }
+
+  .agg-model-tab.cross-tab {
+    background: #12122a;
+    color: #a5b4fc;
+    border: 2px solid #3a3d5c;
+  }
+  .agg-model-tab.cross-tab:hover { background: #1a1a3e; }
+  .agg-model-tab.cross-tab.active {
+    background: #2d2d6e;
+    color: #c7d2fe;
+    border-color: #6366f1;
+  }
+
   .back-btn {
     display: inline-flex;
     align-items: center;
@@ -1258,8 +1300,19 @@
   <div id="sidebar-header">
     <h1>Exp 1 — Forecast Viewer</h1>
     <p>{{ model_order | length }} model{{ 's' if model_order | length != 1 else '' }} ·
-       {{ models_data.values() | map('length') | sum }} market forecasts total</p>
-    <span class="blind-badge" style="margin-top:6px;display:inline-flex">market-blind forecasts</span>
+       {{ market_list | length }} markets · {{ models_data.values() | map('length') | sum }} forecasts</p>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;">
+      {% for m in model_order %}
+        {%- set pfx = m.split('-')[0] | lower %}
+        {%- set label = 'GPT-5.4'         if pfx.startswith('gpt')
+                   else 'Claude Opus 4.8' if pfx.startswith('claude')
+                   else 'DeepSeek V4-Pro'  if pfx.startswith('deep')
+                   else m %}
+        {%- set n = models_data[m] | length %}
+        <span class="model-badge" title="{{ m }}  ({{ n }} markets)">{{ label }}  {{ n }}</span>
+      {% endfor %}
+    </div>
+    <span class="blind-badge" style="margin-top:6px;display:inline-flex">market-blind · k=5 · --no-third-turn</span>
   </div>
 
   <!-- market list: all markets across all models, per-model prob chips -->
@@ -1282,9 +1335,19 @@
             {%- set k_done = mp.k_done if mp else 0 %}
             {%- set k_total = mp.k if mp else 0 %}
             {%- set is_partial = mp and k_total and k_done < k_total %}
-            {%- set chip_cls = 'partial' if is_partial else ('none' if not mp else '') %}
             {%- set _pfx = model_name.split('-')[0] | lower %}
-            {%- set abbrev = 'GPT' if _pfx == 'gpt' else 'CLD' if _pfx == 'claude' else (_pfx[:4] | upper) %}
+            {%- set _is_local = _pfx.startswith('qwen') or _pfx.startswith('llama') %}
+            {%- set chip_cls = 'partial' if is_partial else ('none' if not mp else ('local' if _is_local else '')) %}
+            {%- set _parts = model_name.split('-') %}
+            {%- set _sz   = (_parts | last) %}
+            {%- set _fam0 = (_parts | first) | lower %}
+            {%- set _lver = _fam0.replace('llama', '') %}
+            {%- set abbrev = 'GPT'                       if _pfx.startswith('gpt')
+                        else 'CLD'                       if _pfx.startswith('claude')
+                        else 'DSK'                       if _pfx.startswith('deep')
+                        else ('Q-' ~ _sz)                if _pfx.startswith('qwen')
+                        else ('L' ~ _lver ~ '-' ~ _sz)   if _pfx.startswith('llama')
+                        else (_pfx[:4] | upper) %}
             <div class="model-prob-chip {{ chip_cls }}">
               <span class="mpc-name">{{ abbrev }}</span>
               {%- if mp and mp.yes_prob is not none %}
@@ -1665,10 +1728,15 @@ function renderUFSection(records) {
       const okColor= ok===true?'#15803d':ok===false?'#dc2626':'#aaa';
       const traceId= `uftrace-${cfKey}-run${run.initial_run_id}`;
       const gen    = run.generation || {};
+      const novelty = run.novelty_assessment;
+      const noveltyIcon = novelty
+        ? (novelty.toLowerCase().includes('novel') || novelty.toLowerCase().includes('new') || novelty.toLowerCase().includes('surprising') ? '🆕' : '📚')
+        : '';
       html += `<div class="uf-run-chip" onclick="toggleUFTrace('${traceId}')">
         <div style="font-size:10px;color:#aaa;margin-bottom:3px">run ${(run.initial_run_id??0)+1}</div>
         <div style="font-size:15px;font-weight:700;color:${dColor}">${dStr}</div>
         <div style="font-size:12px;color:${okColor}">${okIcon}</div>
+        ${noveltyIcon ? `<div style="font-size:11px;margin-top:2px" title="${esc(novelty||'')}">${noveltyIcon}</div>` : ''}
         <div style="font-size:9px;color:#ccc;margin-top:3px">▶ trace</div>
       </div>`;
     }
@@ -1683,12 +1751,18 @@ function renderUFSection(records) {
       const outTok  = (gen.output_tokens||0).toLocaleString();
       const promptId   = `ufprompt-${cfKey}-run${run.initial_run_id}`;
       const responseId = `ufresponse-${cfKey}-run${run.initial_run_id}`;
+      const runNovelty = run.novelty_assessment;
       html += `<div class="uf-trace-block" id="${traceId}">
         <div class="uf-trace-header">
           <strong>Run ${(run.initial_run_id??0)+1} trace</strong>
           <span>${inTok} in / ${outTok} out tokens</span>
           <span style="margin-left:auto;color:#bbb">no web search</span>
         </div>
+        ${runNovelty ? `<div class="uf-trace-section">
+          <div style="padding:8px 12px;font-size:12px;color:#555;background:#fafbff;border-bottom:1px solid #f0f0f0">
+            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#aaa;margin-right:8px">Novelty</span>${esc(runNovelty)}
+          </div>
+        </div>` : ''}
         <div class="uf-trace-section">
           <div class="uf-trace-section-label" onclick="toggleUFText('${promptId}')">
             <span class="chevron" id="chev-${promptId}">▶</span> Prompt (initial SF + evidence injected)
@@ -1847,9 +1921,11 @@ function renderMatrixContent(taskId) {
       ? ''
       : `onclick="selectCell('${tid}','${mn}','${step}')"`;
 
+    const isLocal = /^(qwen|llama)/i.test(modelName);
+    const localTag = isLocal ? ' <span style="font-size:9px;color:#5a8a5a;font-weight:600;letter-spacing:.03em">local</span>' : '';
     html += `<tr>
       <td class="model-name-cell">
-        <span class="model-badge" style="${st==='none'?'opacity:.5':''}">${esc(modelName)}</span>
+        <span class="model-badge" style="${st==='none'?'opacity:.5':''}${isLocal?';border-color:#2d4a2d;color:#7acc7a;background:#141e14':''}">${esc(modelName)}</span>${localTag}
         ${st !== 'none' ? _runProgressHTML(mData) : '<div style="font-size:10px;color:#bbb;margin-top:5px">not run</div>'}
       </td>
       <td class="matrix-cell${st==='none'?' no-data':st==='partial'?' partial':''}" id="mc-${sid}-forecast"  ${clickOrNot('forecast')}>${cellForecast(mData, st)}</td>
@@ -2218,7 +2294,13 @@ function renderCFSection(packets) {
           <div class="cf-story-header">
             <span class="cf-story-num" style="color:${m.borderColor}">Story ${storyNum}</span>
             ${p.news_date ? `<span class="cf-date-badge">${esc(p.news_date)}</span>` : ''}
-            ${p.angle ? `<span class="cf-angle-badge" title="${esc(p.angle)}">angle ${storyNum}</span>` : ''}
+            ${p.slot_type ? `<span class="cons-slot-badge" style="margin-left:4px">${esc(p.slot_type.split('—')[0].trim().split(' ')[0].trim())}</span>` : ''}
+            ${p.plausibility_rating != null ? (() => {
+              const r = p.plausibility_rating;
+              const pColor = r >= 4 ? '#15803d' : r >= 3 ? '#d97706' : '#dc2626';
+              const stars = '★'.repeat(r) + '☆'.repeat(5 - r);
+              return `<span style="font-size:12px;color:${pColor};margin-left:6px;cursor:help" title="${esc(p.plausibility_note || '')}">${stars}</span>`;
+            })() : ''}
           </div>
 
           ${p.error ? `<div class="error-card" style="margin:8px 0">${esc(p.error)}</div>` : `
@@ -2492,17 +2574,780 @@ function toggleUFText(textId) {
   if (chev) chev.classList.toggle('open', !open);
 }
 
+// ── direction scatter chart ──────────────────────────────────────────────────────
+
+function renderDeltaScatterSVG(dirData, opts = {}) {
+  // dirData modes:
+  //   single-model: { pro_H1: [deltas], anti_H1: [...], orthogonal: [...] }
+  //   multi-model:  { modelName: { pro_H1: [...], ... }, ... }  (opts.multi=true)
+  const W = opts.width  || 540;
+  const H = opts.height || 310;
+  const ML = 52, MR = 16, MT = 32, MB = 44;
+  const PW = W - ML - MR, PH = H - MT - MB;
+
+  const yMin = -0.46, yMax = 0.58;
+  const toY  = v => MT + PH - Math.max(0, Math.min(PH, ((v - yMin) / (yMax - yMin)) * PH));
+
+  const DIRS       = ['pro_H1', 'anti_H1', 'orthogonal'];
+  const DIR_COLOR  = { pro_H1: '#16a34a', anti_H1: '#dc2626', orthogonal: '#7c3aed' };
+  const DIR_BG     = { pro_H1: '#f0fdf4cc', anti_H1: '#fff1f2cc', orthogonal: '#f5f3ffcc' };
+  const DIR_LABEL  = { pro_H1: 'pro-H₁', anti_H1: 'anti-H₁', orthogonal: 'orthogonal' };
+  const MOD_COLOR  = ['#2563eb','#d97706','#7c3aed','#16a34a','#dc2626'];
+  const MOD_SHAPE  = ['circle','diamond','circle','diamond','circle'];
+
+  function seeded(seed) {
+    let s = (seed >>> 0) || 1;
+    return () => { s = Math.imul(s, 1664525) + 1013904223 >>> 0; return s / 4294967295; };
+  }
+  function median(arr) {
+    const s = [...arr].sort((a,b)=>a-b);
+    const m = s.length >> 1;
+    return s.length % 2 ? s[m] : (s[m-1]+s[m])/2;
+  }
+
+  const slotW = PW / 3;
+  const xCtr  = i => ML + slotW * i + slotW / 2;
+  const y0    = toY(0);
+  const isMulti = !!opts.multi;
+  const modelNames = isMulti ? Object.keys(dirData) : [];
+
+  let s = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif;display:block">`;
+
+  // title
+  const title = opts.title || '(A) Direction-selective updating';
+  s += `<text x="${ML}" y="18" font-size="12" font-weight="700" fill="#1a1a2e">${title}</text>`;
+
+  // background stripes
+  DIRS.forEach((d,i) => {
+    s += `<rect x="${ML+slotW*i}" y="${MT}" width="${slotW}" height="${PH}" fill="${DIR_BG[d]}"/>`;
+  });
+
+  // vertical dividers
+  [1,2].forEach(i => {
+    const x = ML + slotW * i;
+    s += `<line x1="${x}" y1="${MT}" x2="${x}" y2="${MT+PH}" stroke="#e5e7eb" stroke-width="1"/>`;
+  });
+
+  // y gridlines + labels
+  [-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5].forEach(v => {
+    if (v < yMin || v > yMax) return;
+    const y = toY(v);
+    s += `<line x1="${ML}" y1="${y}" x2="${ML+PW}" y2="${y}" stroke="${v===0?'#aaa':'#eee'}" stroke-width="${v===0?1:0.8}" stroke-dasharray="${v===0?'5,3':''}"/>`;
+    s += `<text x="${ML-6}" y="${y+4}" text-anchor="end" font-size="9.5" fill="${v===0?'#888':'#bbb'}">${v>=0?'+':''}${Math.round(v*100)}%</text>`;
+  });
+
+  // y axis label
+  s += `<text transform="translate(12,${MT+PH/2}) rotate(-90)" text-anchor="middle" font-size="9.5" fill="#888">Forecast revision Δp̂</text>`;
+
+  if (!isMulti) {
+    // single model: direction-colored dots + median bar
+    const rng = seeded(42);
+    DIRS.forEach((d,di) => {
+      const vals = (dirData[d] || []).map(Number).filter(v => !isNaN(v));
+      const cx   = xCtr(di);
+      const jW   = slotW * 0.38;
+      vals.forEach(v => {
+        const x = cx + (rng() - 0.5) * jW;
+        const y = toY(Math.max(yMin, Math.min(yMax, v)));
+        s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.5" fill="${DIR_COLOR[d]}" fill-opacity="0.55" stroke="${DIR_COLOR[d]}" stroke-width="0.6"/>`;
+      });
+      if (vals.length) {
+        const med = median(vals);
+        const my  = toY(Math.max(yMin, Math.min(yMax, med)));
+        const bw  = jW * 0.75;
+        s += `<line x1="${(cx-bw).toFixed(1)}" y1="${my.toFixed(1)}" x2="${(cx+bw).toFixed(1)}" y2="${my.toFixed(1)}" stroke="${DIR_COLOR[d]}" stroke-width="3.5" stroke-linecap="round"/>`;
+      }
+    });
+  } else {
+    // multi-model: per-model color, sub-banded within each direction zone
+    const nM   = modelNames.length;
+    const subW = slotW / (nM + 1);
+    modelNames.forEach((mn, mi) => {
+      const color = MOD_COLOR[mi % MOD_COLOR.length];
+      const rng   = seeded(mi * 7919 + 31);
+      const jW    = subW * 0.55;
+      DIRS.forEach((d, di) => {
+        const vals = ((dirData[mn] || {})[d] || []).map(Number).filter(v => !isNaN(v));
+        const xBand = ML + slotW * di + subW * (mi + 1);
+        vals.forEach(v => {
+          const x = xBand + (rng() - 0.5) * jW;
+          const y = toY(Math.max(yMin, Math.min(yMax, v)));
+          s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${color}" fill-opacity="0.5" stroke="${color}" stroke-width="0.6"/>`;
+        });
+        if (vals.length) {
+          const med = median(vals);
+          const my  = toY(Math.max(yMin, Math.min(yMax, med)));
+          const bw  = jW * 0.7;
+          s += `<line x1="${(xBand-bw).toFixed(1)}" y1="${my.toFixed(1)}" x2="${(xBand+bw).toFixed(1)}" y2="${my.toFixed(1)}" stroke="${color}" stroke-width="3" stroke-linecap="round"/>`;
+        }
+      });
+    });
+
+    // model legend
+    const legX = ML + PW - 4;
+    const legY = MT + 6;
+    modelNames.forEach((mn, mi) => {
+      const color = MOD_COLOR[mi % MOD_COLOR.length];
+      const ly    = legY + mi * 16;
+      s += `<circle cx="${legX-68}" cy="${ly+3}" r="4" fill="${color}" fill-opacity="0.7"/>`;
+      s += `<text x="${legX-61}" y="${ly+7}" font-size="9.5" fill="#444">${esc(mn.replace('claude-opus-','Opus ').replace(/llama(\d+\.\d+)-/,'Llama-$1 ').replace('qwen2.5-','Qwen ').replace('gpt-','GPT ').replace('DeepSeek-V4-Pro','DeepSeek'))}</text>`;
+    });
+  }
+
+  // EHC/HFC annotation
+  if (opts.ehc != null && opts.hfc != null) {
+    const ax = ML + PW - 4, ay = MT + (isMulti ? modelNames.length * 16 + 12 : 8);
+    s += `<rect x="${ax-82}" y="${ay-1}" width="86" height="26" rx="4" fill="#fff" fill-opacity="0.85" stroke="#e5e7eb" stroke-width="0.8"/>`;
+    s += `<text x="${ax-39}" y="${ay+10}" text-anchor="middle" font-size="9" fill="#888">EHC = HFC = ${Math.round(opts.ehc*100)}%</text>`;
+    s += `<text x="${ax-39}" y="${ay+21}" text-anchor="middle" font-size="9" fill="#aaa">across all updates</text>`;
+  }
+
+  // x direction labels
+  DIRS.forEach((d,i) => {
+    s += `<text x="${xCtr(i).toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="11" fill="${DIR_COLOR[d]}" font-weight="600">${DIR_LABEL[d]}</text>`;
+  });
+
+  s += `</svg>`;
+  return s;
+}
+
+// ── Chart B: before/after forecast revision ──────────────────────────────────────
+
+function renderBeforeAfterSVG(beforeAfter, opts = {}) {
+  // beforeAfter: {pro_H1: [[p0, p_updated], ...], anti_H1: [...], orthogonal: [...]}
+  const W = opts.width || 310, H = opts.height || 290;
+  const ML = 46, MR = 14, MT = 28, MB = 38;
+  const PW = W-ML-MR, PH = H-MT-MB;
+  const toX = v => ML + Math.max(0,Math.min(PW, v*PW));
+  const toY = v => MT + PH - Math.max(0,Math.min(PH, v*PH));
+  const DIR_COLOR = {pro_H1:'#16a34a', anti_H1:'#dc2626', orthogonal:'#7c3aed'};
+  const DIR_LABEL = {pro_H1:'pro-H₁', anti_H1:'anti-H₁', orthogonal:'orthogonal'};
+
+  let s = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif;display:block">`;
+  s += `<text x="${ML}" y="18" font-size="12" font-weight="700" fill="#1a1a2e">${opts.title||'(B) Before / after forecast revision'}</text>`;
+
+  // light grid
+  [0,.2,.4,.6,.8,1].forEach(v => {
+    const x=toX(v), y=toY(v);
+    s += `<line x1="${x}" y1="${MT}" x2="${x}" y2="${MT+PH}" stroke="#eee" stroke-width="0.7"/>`;
+    s += `<line x1="${ML}" y1="${y}" x2="${ML+PW}" y2="${y}" stroke="#eee" stroke-width="0.7"/>`;
+    s += `<text x="${x}" y="${H-4}" text-anchor="middle" font-size="9" fill="#bbb">${Math.round(v*100)}%</text>`;
+    s += `<text x="${ML-5}" y="${y+4}" text-anchor="end" font-size="9" fill="#bbb">${Math.round(v*100)}%</text>`;
+  });
+  // diagonal (no change)
+  s += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(1)}" y2="${toY(1)}" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>`;
+
+  // dots (thinned)
+  Object.entries(beforeAfter||{}).forEach(([d,pts]) => {
+    const color = DIR_COLOR[d]||'#888';
+    const step = Math.max(1, Math.floor(pts.length/150));
+    pts.forEach((pt,i) => {
+      if(i%step!==0) return;
+      const x=toX(Math.max(0,Math.min(1,pt[0]))), y=toY(Math.max(0,Math.min(1,pt[1])));
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.8" fill="${color}" fill-opacity="0.45" stroke="none"/>`;
+    });
+  });
+
+  // legend
+  Object.entries(DIR_LABEL).forEach(([d,lbl],i) => {
+    const lx=ML+4, ly=MT+8+i*14;
+    s += `<circle cx="${lx+4}" cy="${ly+3}" r="3.5" fill="${DIR_COLOR[d]}" fill-opacity="0.7"/>`;
+    s += `<text x="${lx+11}" y="${ly+7}" font-size="9.5" fill="#444">${lbl}</text>`;
+  });
+
+  s += `<text x="${ML+PW/2}" y="${H-2}" text-anchor="middle" font-size="9.5" fill="#888">Initial forecast p̂₀</text>`;
+  s += `<text transform="translate(11,${MT+PH/2}) rotate(-90)" text-anchor="middle" font-size="9.5" fill="#888">Updated forecast p̂'</text>`;
+  s += `</svg>`;
+  return s;
+}
+
+// ── Chart C: agent vs. market ─────────────────────────────────────────────────────
+
+function renderAgentMarketSVG(perMarketByModel, opts = {}) {
+  // perMarketByModel: [{model, question, market_id, yes_prob, yes_price_market}, ...]
+  const W = opts.width||340, H = opts.height||290;
+  const ML=46, MR=14, MT=28, MB=38;
+  const PW=W-ML-MR, PH=H-MT-MB;
+  const MAX=0.65;
+  const toX = v => ML + Math.max(0,Math.min(PW,(v/MAX)*PW));
+  const toY = v => MT + PH - Math.max(0,Math.min(PH,(v/MAX)*PH));
+  const MOD_COLOR = {'claude-opus-4-8':'#7c3aed','gpt-5.4':'#2563eb','DeepSeek-V4-Pro':'#d97706','qwen2.5-7b':'#16a34a','llama3.1-8b':'#dc2626'};
+  function mlabel(mn){
+    if(!mn) return '';
+    const p=mn.toLowerCase();
+    if(p.includes('claude')) return 'Opus 4.8';
+    if(p.includes('gpt'))    return 'GPT-5.4';
+    if(p.includes('deep'))   return 'DeepSeek';
+    const pts=mn.split('-'); const sz=pts[pts.length-1]; const fam=pts[0].toLowerCase();
+    if(p.includes('qwen'))  return 'Qwen '+sz;
+    if(p.includes('llama')) return 'Llama-'+fam.replace('llama','')+' '+sz;
+    return mn.slice(0,10);
+  }
+
+  let s = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif;display:block">`;
+  s += `<text x="${ML}" y="18" font-size="12" font-weight="700" fill="#1a1a2e">${opts.title||'(C) Not imitating the market'}</text>`;
+
+  // below-diagonal shading
+  s += `<polygon points="${toX(0)},${toY(0)} ${toX(MAX)},${toY(0)} ${toX(MAX)},${toY(MAX)}" fill="#fef3c7" fill-opacity="0.5"/>`;
+  s += `<text x="${toX(0.42)}" y="${toY(0.06)}" font-size="8.5" fill="#d97706" font-style="italic">agents below market price</text>`;
+
+  [0,.2,.4,.6].forEach(v => {
+    const x=toX(v), y=toY(v);
+    s += `<line x1="${x}" y1="${MT}" x2="${x}" y2="${MT+PH}" stroke="#eee" stroke-width="0.7"/>`;
+    s += `<line x1="${ML}" y1="${y}" x2="${ML+PW}" y2="${y}" stroke="#eee" stroke-width="0.7"/>`;
+    s += `<text x="${x}" y="${H-4}" text-anchor="middle" font-size="9" fill="#bbb">${Math.round(v*100)}%</text>`;
+    s += `<text x="${ML-5}" y="${y+4}" text-anchor="end" font-size="9" fill="#bbb">${Math.round(v*100)}%</text>`;
+  });
+  s += `<line x1="${toX(0)}" y1="${toY(0)}" x2="${toX(MAX)}" y2="${toY(MAX)}" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>`;
+
+  // dots
+  (perMarketByModel||[]).forEach(pt => {
+    if(pt.yes_prob==null||pt.yes_price_market==null) return;
+    const color = MOD_COLOR[pt.model]||'#888';
+    const x=toX(Math.max(0,Math.min(MAX,pt.yes_price_market)));
+    const y=toY(Math.max(0,Math.min(MAX,pt.yes_prob)));
+    const shape = pt.model.includes('claude')?'diamond':'circle';
+    if(shape==='diamond'){
+      const r=4.5;
+      s += `<polygon points="${x},${y-r} ${x+r},${y} ${x},${y+r} ${x-r},${y}" fill="${color}" fill-opacity="0.75"/>`;
+    } else {
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" fill="${color}" fill-opacity="0.65"/>`;
+    }
+  });
+
+  // legend (unique models only)
+  const seenModels = [...new Set((perMarketByModel||[]).map(p=>p.model))];
+  seenModels.forEach((mn,i) => {
+    const color=MOD_COLOR[mn]||'#888';
+    const lx=ML+PW-72, ly=MT+6+i*14;
+    if(mn.includes('claude')){
+      s += `<polygon points="${lx+4},${ly-1} ${lx+8},${ly+3} ${lx+4},${ly+7} ${lx},${ly+3}" fill="${color}" fill-opacity="0.8"/>`;
+    } else {
+      s += `<circle cx="${lx+4}" cy="${ly+3}" r="3.5" fill="${color}" fill-opacity="0.8"/>`;
+    }
+    s += `<text x="${lx+12}" y="${ly+7}" font-size="9.5" fill="#444">${mlabel(mn)}</text>`;
+  });
+  // "Below market" legend item
+  const bly = MT+6+seenModels.length*14;
+  s += `<rect x="${ML+PW-72}" y="${bly}" width="8" height="8" fill="#fef3c7" stroke="#d97706" stroke-width="0.8"/>`;
+  s += `<text x="${ML+PW-61}" y="${bly+7}" font-size="9.5" fill="#d97706">Below market</text>`;
+
+  s += `<text x="${ML+PW/2}" y="${H-2}" text-anchor="middle" font-size="9.5" fill="#888">Polymarket mid-price</text>`;
+  s += `<text transform="translate(11,${MT+PH/2}) rotate(-90)" text-anchor="middle" font-size="9.5" fill="#888">Agent median p̂</text>`;
+  s += `</svg>`;
+  return s;
+}
+
+// ── Asymmetry / Wald test annotation ─────────────────────────────────────────────
+
+function renderWaldAnnotation(wald) {
+  if (!wald) return '';
+  const sym = wald.lbeta != null ? (wald.lbeta >= 0 ? '+' : '') + wald.lbeta.toFixed(4) : '—';
+  const pFmt = wald.p_value != null ? wald.p_value.toFixed(4) : '—';
+  const pStar = !wald.p_value ? '' : wald.p_value<0.001?'***':wald.p_value<0.01?'**':wald.p_value<0.05?'*':'';
+  const isSymm = wald.p_value != null && wald.p_value > 0.05;
+  const bg = isSymm ? '#f0fdf4' : '#fff7ed';
+  const border = isSymm ? '#bbf7d0' : '#fed7aa';
+  const color  = isSymm ? '#15803d' : '#c2410c';
+  const verdict = isSymm ? 'symmetric (fail to reject H₀)' : 'asymmetric (reject H₀)';
+  return `<div style="margin-top:8px;padding:7px 10px;background:${bg};border:1px solid ${border};border-radius:6px;font-size:11px">
+    <strong style="color:${color}">Asymmetry Wald test</strong>
+    <span style="color:#666"> — H₀: |β<sub>pro</sub>| = |β<sub>anti</sub>|  (β<sub>pro</sub> + β<sub>anti</sub> = 0)</span><br>
+    <span style="color:#555">β<sub>pro</sub> + β<sub>anti</sub> = ${sym}  ·  χ²(1) = ${wald.statistic?.toFixed(3)||'—'}  ·  p = ${pFmt} ${pStar}</span>
+    <span style="color:${color};font-weight:600;margin-left:8px">→ ${verdict}</span>
+  </div>`;
+}
+
+// ── ICS failure table ─────────────────────────────────────────────────────────────
+
+function renderICSFailures(perMarket) {
+  const failures = (perMarket||[]).filter(m => m.ICS_rate != null && m.ICS_rate < 1.0)
+    .sort((a,b) => (a.ICS_rate??1) - (b.ICS_rate??1));
+  if (!failures.length) return `<div style="font-size:11px;color:#bbb;padding:8px 0">No ICS failures yet — all updates internally coherent ✓</div>`;
+
+  let html = `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#dc2626;margin-bottom:6px">ICS < 1 — incoherent updates (${failures.length} markets)</div>
+  <table style="width:100%;border-collapse:collapse;font-size:11px">
+    <thead><tr style="background:#fff1f2">
+      <th style="padding:4px 8px;text-align:left;color:#b91c1c;border-bottom:1px solid #fecaca">Question</th>
+      <th style="padding:4px 8px;text-align:right;color:#b91c1c;border-bottom:1px solid #fecaca">ICS</th>
+      <th style="padding:4px 8px;text-align:right;color:#b91c1c;border-bottom:1px solid #fecaca">EHC</th>
+      <th style="padding:4px 8px;text-align:right;color:#b91c1c;border-bottom:1px solid #fecaca">n updates</th>
+    </tr></thead><tbody>`;
+  failures.forEach(m => {
+    const tid = (m.task_id||'').replace(/'/g,"\\'");
+    html += `<tr style="border-bottom:1px solid #fef2f2;cursor:pointer" onclick="loadForecast('${tid}')">
+      <td style="padding:4px 8px;color:#444;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(m.question||'')}">${esc((m.question||'').slice(0,60))}${(m.question||'').length>60?'…':''}</td>
+      <td style="padding:4px 8px;text-align:right;font-weight:700;color:#dc2626">${m.ICS_rate!=null?Math.round(m.ICS_rate*100)+'%':'—'}</td>
+      <td style="padding:4px 8px;text-align:right;color:#888">${m.EHC_rate!=null?Math.round(m.EHC_rate*100)+'%':'—'}</td>
+      <td style="padding:4px 8px;text-align:right;color:#888">${m.n_updates??'—'}</td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+  return html;
+}
+
+// ── cross-model update agreement panel ───────────────────────────────────────────
+
+function renderUpdateAgreementPanel(agr) {
+  if (!agr) return '<div style="color:#bbb;font-size:11px;padding:8px 0">No update data yet</div>';
+  const sa = agr.sign_agreement || {};
+  const cc = agr.cf_consistency || {};
+  const overall = sa.overall_rate;
+  const rateColor = v => v==null?'#aaa':v>=0.7?'#15803d':v>=0.5?'#d97706':'#dc2626';
+  const DIR_LABEL = {pro_H1:'pro-H₁', anti_H1:'anti-H₁', orthogonal:'orthogonal'};
+  const DIR_COLOR = {pro_H1:'#16a34a', anti_H1:'#dc2626', orthogonal:'#7c3aed'};
+
+  let html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">`;
+
+  // Sign agreement block
+  html += `<div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">Cross-model sign agreement</div>
+    <div style="font-size:28px;font-weight:800;color:${rateColor(overall)}">${overall!=null?Math.round(overall*100)+'%':'—'}</div>
+    <div style="font-size:10px;color:#aaa;margin-bottom:10px">of CF instances where all models agree on Δp̂ sign  (n=${sa.n_cf_instances||0})</div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead><tr style="background:#f7f9ff"><th style="padding:4px 8px;text-align:left;border-bottom:1px solid #e5e7eb">Direction</th><th style="padding:4px 8px;text-align:right;border-bottom:1px solid #e5e7eb">Rate</th><th style="padding:4px 8px;text-align:right;border-bottom:1px solid #e5e7eb">n</th></tr></thead>
+      <tbody>`;
+  ['pro_H1','anti_H1','orthogonal'].forEach(d => {
+    const bd = (sa.by_direction||{})[d]||{};
+    html += `<tr style="border-bottom:1px solid #f3f4f6">
+      <td style="padding:4px 8px"><span style="font-size:10px;font-weight:600;color:${DIR_COLOR[d]}">${DIR_LABEL[d]}</span></td>
+      <td style="padding:4px 8px;text-align:right;font-weight:700;color:${rateColor(bd.rate)}">${bd.rate!=null?Math.round(bd.rate*100)+'%':'—'}</td>
+      <td style="padding:4px 8px;text-align:right;color:#aaa">${bd.n||0}</td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+
+  // Pairwise table
+  const pairs = Object.entries(sa.pairwise||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,10);
+  if (pairs.length) {
+    html += `<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin:10px 0 4px">Pairwise agreement</div>
+    <table style="width:100%;border-collapse:collapse;font-size:10px">`;
+    pairs.forEach(([pk,v]) => {
+      const [m1,m2] = pk.split('||');
+      function ms(mn){const pts=mn.split('-');const sz=pts[pts.length-1];const pfx=pts[0].toLowerCase();return mn.includes('claude')?'Opus':mn.includes('gpt')?'GPT':mn.toLowerCase().includes('deep')?'DS':pfx.includes('qwen')?'Q-'+sz:'L'+pfx.replace('llama','')+'-'+sz;}
+      html += `<tr style="border-bottom:1px solid #f5f5f5">
+        <td style="padding:3px 6px;color:#555">${ms(m1)} × ${ms(m2)}</td>
+        <td style="padding:3px 6px;text-align:right;font-weight:700;color:${rateColor(v.rate)}">${v.rate!=null?Math.round(v.rate*100)+'%':'—'}</td>
+        <td style="padding:3px 6px;text-align:right;color:#aaa">n=${v.n}</td>
+      </tr>`;
+    });
+    html += `</table>`;
+  }
+  html += `</div>`;
+
+  // CF consistency block
+  html += `<div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">CF packet consistency (within-market σ)</div>
+    <div style="font-size:10px;color:#aaa;margin-bottom:8px">Low σ = model responds to argument structure, not surface features</div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead><tr style="background:#f7f9ff"><th style="padding:4px 8px;text-align:left;border-bottom:1px solid #e5e7eb">Model</th><th style="padding:4px 8px;text-align:right;border-bottom:1px solid #e5e7eb">Mean σ</th><th style="padding:4px 8px;text-align:right;border-bottom:1px solid #e5e7eb">n</th></tr></thead>
+      <tbody>`;
+  Object.entries(cc.by_model||{}).sort((a,b)=>(a[1].mean_std??9)-(b[1].mean_std??9)).forEach(([mn,v]) => {
+    function mlabel(m){const pts=m.split('-');const sz=pts[pts.length-1];const fam=pts[0].toLowerCase();const p=m.toLowerCase();return p.includes('claude')?'Opus 4.8':p.includes('gpt')?'GPT-5.4':p.includes('deep')?'DeepSeek':p.includes('qwen')?'Qwen '+sz:p.includes('llama')?'Llama-'+fam.replace('llama','')+' '+sz:m.slice(0,12);}
+    const sigColor = v.mean_std==null?'#aaa':v.mean_std<0.03?'#15803d':v.mean_std<0.06?'#d97706':'#dc2626';
+    html += `<tr style="border-bottom:1px solid #f3f4f6">
+      <td style="padding:4px 8px;color:#444">${mlabel(mn)}</td>
+      <td style="padding:4px 8px;text-align:right;font-weight:700;color:${sigColor}">${v.mean_std!=null?'±'+Math.round(v.mean_std*100)+'pp':'—'}</td>
+      <td style="padding:4px 8px;text-align:right;color:#aaa">${v.n||0}</td>
+    </tr>`;
+  });
+  html += `</tbody></table>`;
+
+  // by direction
+  html += `<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin:10px 0 4px">By direction</div>
+  <table style="width:100%;border-collapse:collapse;font-size:10px">`;
+  ['pro_H1','anti_H1','orthogonal'].forEach(d => {
+    const v = (cc.by_direction||{})[d]||{};
+    const sigColor = v.mean_std==null?'#aaa':v.mean_std<0.03?'#15803d':v.mean_std<0.06?'#d97706':'#dc2626';
+    html += `<tr style="border-bottom:1px solid #f5f5f5">
+      <td style="padding:3px 6px;color:${DIR_COLOR[d]};font-weight:600">${DIR_LABEL[d]}</td>
+      <td style="padding:3px 6px;text-align:right;font-weight:700;color:${sigColor}">${v.mean_std!=null?'±'+Math.round(v.mean_std*100)+'pp':'—'}</td>
+      <td style="padding:3px 6px;text-align:right;color:#aaa">n=${v.n||0}</td>
+    </tr>`;
+  });
+  html += `</table></div></div>`;
+  return html;
+}
+
+// ── model size vs consistency metrics chart ──────────────────────────────────────
+
+function renderModelSizeChart(modelSummary) {
+  if (!modelSummary || !modelSummary.length)
+    return '<div style="color:#bbb;font-size:11px;padding:8px 0">No model summary available.</div>';
+
+  function paramB(mn) {
+    const p = (mn || '').toLowerCase().replace(/:/g, '-');
+    if (p.includes('qwen2.5-7b'))   return 7;
+    if (p.includes('qwen2.5-14b'))  return 14;
+    if (p.includes('qwen2.5-32b'))  return 32;
+    if (p.includes('qwen2.5-72b'))  return 72;
+    if (p.includes('llama3.1-8b'))  return 8;
+    if (p.includes('llama3.1-70b')) return 70;
+    if (p.includes('llama3.3-70b')) return 70;
+    return null; // frontier / unknown
+  }
+
+  function shortLabel(mn) {
+    const p = (mn || '').toLowerCase().replace(/:/g, '-');
+    if (p.includes('claude'))        return 'Claude\nOpus 4.8';
+    if (p.includes('gpt'))           return 'GPT-5.4';
+    if (p.includes('deep'))          return 'DeepSeek\nV4-Pro';
+    if (p.includes('qwen2.5-7b'))    return 'Qwen\n7B';
+    if (p.includes('qwen2.5-14b'))   return 'Qwen\n14B';
+    if (p.includes('qwen2.5-32b'))   return 'Qwen\n32B';
+    if (p.includes('qwen2.5-72b'))   return 'Qwen\n72B';
+    if (p.includes('llama3.1-8b'))   return 'Llama3.1\n8B';
+    if (p.includes('llama3.1-70b'))  return 'Llama3.1\n70B';
+    if (p.includes('llama3.3-70b'))  return 'Llama3.3\n70B';
+    return mn.slice(0, 10);
+  }
+
+  const local    = [...modelSummary.filter(m => paramB(m.model) !== null)]
+                     .sort((a, b) => paramB(a.model) - paramB(b.model));
+  const frontier = modelSummary.filter(m => paramB(m.model) === null);
+  const ordered  = [...local, ...frontier];
+  const n = ordered.length;
+  if (n === 0) return '<div style="color:#bbb;font-size:11px">No models found.</div>';
+
+  const W = 680, H = 340;
+  const ML = 50, MR = 110, MT = 42, MB = 88;
+  const PW = W - ML - MR, PH = H - MT - MB;
+
+  const localN    = local.length;
+  const frontierN = frontier.length;
+  const gapPx     = (localN > 0 && frontierN > 0) ? 28 : 0;
+  const usableW   = PW - gapPx;
+
+  function xOf(i) {
+    const m = ordered[i];
+    const pb = paramB(m.model);
+    if (pb !== null) {
+      // Log-scale position within local zone
+      const logMin = localN ? Math.log10(Math.min(...local.map(x => paramB(x.model))) * 0.85) : 0;
+      const logMax = localN ? Math.log10(Math.max(...local.map(x => paramB(x.model))) * 1.15) : 2;
+      const logV   = Math.log10(pb);
+      const frac   = (logV - logMin) / (logMax - logMin);
+      const zoneW  = localN > 0 ? usableW * (localN / n) : usableW;
+      return ML + frac * zoneW;
+    } else {
+      const fi = frontier.findIndex(fm => fm.model === m.model);
+      const zoneStart = ML + (localN > 0 ? usableW * (localN / n) + gapPx : 0);
+      const zoneW     = usableW * (frontierN / n);
+      return zoneStart + zoneW / frontierN * (fi + 0.5);
+    }
+  }
+
+  const toY = v => MT + PH * (1 - Math.max(0, Math.min(1, v)));
+
+  let s = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif;display:block">`;
+
+  // title
+  s += `<text x="${ML}" y="22" font-size="12" font-weight="700" fill="#1a1a2e">(D) Consistency metrics by model size</text>`;
+
+  // gridlines
+  [0, 0.25, 0.5, 0.75, 1.0].forEach(v => {
+    const y = toY(v);
+    const isZero = v === 0;
+    s += `<line x1="${ML}" y1="${y}" x2="${ML+PW}" y2="${y}" stroke="${isZero ? '#ccc' : '#eee'}" stroke-width="${isZero ? 1 : 0.8}"/>`;
+    s += `<text x="${ML-6}" y="${y+4}" text-anchor="end" font-size="9" fill="#bbb">${Math.round(v*100)}%</text>`;
+  });
+
+  // Y axis label
+  s += `<text transform="translate(13,${MT+PH/2}) rotate(-90)" text-anchor="middle" font-size="9.5" fill="#888">Consistency rate</text>`;
+
+  // Separator + zone labels
+  if (localN > 0 && frontierN > 0) {
+    const sepX = ML + usableW * (localN / n) + gapPx / 2;
+    s += `<line x1="${sepX}" y1="${MT-12}" x2="${sepX}" y2="${MT+PH}" stroke="#e5e7eb" stroke-width="1.5" stroke-dasharray="6,3"/>`;
+    s += `<text x="${ML + usableW*(localN/n)/2}" y="${MT-3}" text-anchor="middle" font-size="9" fill="#aaa" font-style="italic">open-weight</text>`;
+    s += `<text x="${ML + usableW*(localN/n) + gapPx + usableW*(frontierN/n)/2}" y="${MT-3}" text-anchor="middle" font-size="9" fill="#aaa" font-style="italic">frontier</text>`;
+  }
+
+  // Metric lines + dots
+  const METRICS = [
+    { key: 'EHC_rate', color: '#2563eb', label: 'EHC' },
+    { key: 'HFC_rate', color: '#7c3aed', label: 'HFC' },
+    { key: 'ICS_rate', color: '#16a34a', label: 'ICS' },
+  ];
+
+  for (const metric of METRICS) {
+    // Connecting line through local models only
+    const localPts = local
+      .map((m, li) => {
+        const v = m[metric.key];
+        return v !== null && v !== undefined ? { x: xOf(li), y: toY(v) } : null;
+      })
+      .filter(Boolean);
+
+    if (localPts.length >= 2) {
+      let d = `M${localPts[0].x.toFixed(1)},${localPts[0].y.toFixed(1)}`;
+      for (let k = 1; k < localPts.length; k++)
+        d += ` L${localPts[k].x.toFixed(1)},${localPts[k].y.toFixed(1)}`;
+      s += `<path d="${d}" fill="none" stroke="${metric.color}" stroke-width="1.8" stroke-opacity="0.5" stroke-dasharray="5,3"/>`;
+    }
+
+    // Dots (all models)
+    for (let i = 0; i < ordered.length; i++) {
+      const m  = ordered[i];
+      const v  = m[metric.key];
+      const x  = xOf(i);
+      if (v === null || v === undefined) {
+        s += `<circle cx="${x.toFixed(1)}" cy="${(MT+PH+2).toFixed(1)}" r="3.5" fill="none" stroke="#ddd" stroke-width="1" stroke-dasharray="2,1"/>`;
+        continue;
+      }
+      const y   = toY(v);
+      const pct = Math.round(v * 100);
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.5" fill="${metric.color}" stroke="#fff" stroke-width="1.5"/>`;
+      // Value label — offset up/down to reduce overlap
+      const labelOffY = metric.key === 'EHC_rate' ? -9 : metric.key === 'HFC_rate' ? 5 : 14;
+      s += `<text x="${(x+7).toFixed(1)}" y="${(y+labelOffY).toFixed(1)}" font-size="8.5" fill="${metric.color}" font-weight="700">${pct}%</text>`;
+    }
+  }
+
+  // X-axis tick labels (rotated -40°)
+  for (let i = 0; i < ordered.length; i++) {
+    const m  = ordered[i];
+    const x  = xOf(i);
+    const pb = paramB(m.model);
+    const [namePart, sizePart] = shortLabel(m.model).split('\n');
+    const ty = MT + PH + 14;
+    s += `<line x1="${x}" y1="${MT+PH}" x2="${x}" y2="${MT+PH+6}" stroke="#ddd" stroke-width="1"/>`;
+    s += `<text x="${x}" y="${ty}" text-anchor="end" font-size="9" fill="#555" font-weight="600"
+            transform="rotate(-40,${x},${ty})">${esc(namePart)}</text>`;
+    const ty2 = ty + 14;
+    s += `<text x="${x}" y="${ty2}" text-anchor="end" font-size="8" fill="#aaa"
+            transform="rotate(-40,${x},${ty2})">${esc(sizePart || '')}</text>`;
+  }
+
+  // Legend (right margin)
+  METRICS.forEach((m, i) => {
+    const lx = W - MR + 12;
+    const ly = MT + 26 + i * 24;
+    s += `<line x1="${lx}" y1="${ly-4}" x2="${lx+14}" y2="${ly-4}" stroke="${m.color}" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="4,2"/>`;
+    s += `<circle cx="${lx+7}" cy="${ly-4}" r="4.5" fill="${m.color}" stroke="#fff" stroke-width="1.5"/>`;
+    s += `<text x="${lx+18}" y="${ly}" font-size="10" fill="#444" font-weight="600">${m.label}</text>`;
+  });
+  // No-data legend
+  s += `<circle cx="${W-MR+19}" cy="${MT+26+3*24-4}" r="3.5" fill="none" stroke="#ddd" stroke-width="1" stroke-dasharray="2,1"/>`;
+  s += `<text x="${W-MR+30}" y="${MT+26+3*24}" font-size="10" fill="#aaa">no data yet</text>`;
+
+  s += '</svg>';
+  return `<div style="overflow-x:auto">${s}</div>`;
+}
+
+// ── regression chart + table ─────────────────────────────────────────────────────
+
+function renderRegressionSVG(fit, opts = {}) {
+  // Scatter of initial_yes_prob vs delta_yes_prob, colored by direction,
+  // with OLS fitted lines per direction overlaid.
+  if (!fit) return '<div style="color:#bbb;font-size:11px;padding:8px 0">Not enough data to fit regression yet</div>';
+
+  const W = opts.width  || 400;
+  const H = opts.height || 270;
+  const ML = 50, MR = 16, MT = 30, MB = 40;
+  const PW = W - ML - MR, PH = H - MT - MB;
+
+  const xMin = 0, xMax = 1;
+  const yMin = -0.46, yMax = 0.58;
+  const toX = v => ML + ((v - xMin) / (xMax - xMin)) * PW;
+  const toY = v => MT + PH - Math.max(0, Math.min(PH, ((v - yMin) / (yMax - yMin)) * PH));
+
+  const DIR_COLOR = { pro_H1: '#16a34a', anti_H1: '#dc2626', orthogonal: '#7c3aed' };
+  const DIR_LABEL = { pro_H1: 'pro-H₁', anti_H1: 'anti-H₁', orthogonal: 'orthogonal' };
+
+  const title = opts.title || '(B) Revision vs. initial forecast';
+
+  let s = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif;display:block">`;
+
+  s += `<text x="${ML}" y="18" font-size="12" font-weight="700" fill="#1a1a2e">${title}</text>`;
+
+  // axes
+  [-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5].forEach(v => {
+    if (v < yMin || v > yMax) return;
+    const y = toY(v);
+    s += `<line x1="${ML}" y1="${y}" x2="${ML+PW}" y2="${y}" stroke="${v===0?'#aaa':'#eee'}" stroke-width="${v===0?1:0.7}" stroke-dasharray="${v===0?'4,3':''}"/>`;
+    s += `<text x="${ML-6}" y="${y+4}" text-anchor="end" font-size="9" fill="${v===0?'#888':'#ccc'}">${v>=0?'+':''}${Math.round(v*100)}%</text>`;
+  });
+  [0,0.25,0.5,0.75,1].forEach(v => {
+    const x = toX(v);
+    s += `<line x1="${x}" y1="${MT}" x2="${x}" y2="${MT+PH}" stroke="#eee" stroke-width="0.7"/>`;
+    s += `<text x="${x}" y="${H-6}" text-anchor="middle" font-size="9" fill="#bbb">${Math.round(v*100)}%</text>`;
+  });
+
+  s += `<text x="${ML+PW/2}" y="${H-1}" text-anchor="middle" font-size="9.5" fill="#888">Initial forecast p̂₀</text>`;
+  s += `<text transform="translate(12,${MT+PH/2}) rotate(-90)" text-anchor="middle" font-size="9.5" fill="#888">Revision Δp̂</text>`;
+
+  // scatter dots (thinned: max 200 per direction for performance)
+  const scatter = fit.scatter || {};
+  Object.entries(scatter).forEach(([d, pts]) => {
+    const color = DIR_COLOR[d] || '#888';
+    const step  = Math.max(1, Math.floor(pts.length / 200));
+    pts.forEach((pt, i) => {
+      if (i % step !== 0) return;
+      const x = toX(Math.max(0, Math.min(1, pt[0])));
+      const y = toY(Math.max(yMin, Math.min(yMax, pt[1])));
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="${color}" fill-opacity="0.25" stroke="none"/>`;
+    });
+  });
+
+  // fitted lines
+  const grid = fit.grid || [];
+  const lines = fit.lines || {};
+  Object.entries(lines).forEach(([d, vals]) => {
+    const color = DIR_COLOR[d] || '#888';
+    const pts2  = vals.map((v, i) => `${toX(grid[i]).toFixed(1)},${toY(Math.max(yMin,Math.min(yMax,v))).toFixed(1)}`).join(' ');
+    s += `<polyline points="${pts2}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>`;
+  });
+
+  // legend
+  Object.entries(DIR_LABEL).forEach(([d, lbl], i) => {
+    const color = DIR_COLOR[d];
+    const lx = ML + PW - 72, ly = MT + 8 + i * 16;
+    s += `<line x1="${lx}" y1="${ly+3}" x2="${lx+14}" y2="${ly+3}" stroke="${color}" stroke-width="2"/>`;
+    s += `<text x="${lx+18}" y="${ly+7}" font-size="9.5" fill="#444">${lbl}</text>`;
+  });
+
+  // R² annotation
+  const r2 = fit.r_squared;
+  s += `<text x="${ML+PW-2}" y="${MT+PH-4}" text-anchor="end" font-size="9" fill="#aaa">R²=${r2 != null ? r2.toFixed(3) : '—'}  n=${fit.n||0}</text>`;
+
+  s += `</svg>`;
+  return s;
+}
+
+function renderRegressionTable(fit, opts = {}) {
+  if (!fit) return '';
+  const coef  = fit.coefficients || {};
+  const se    = fit.se    || {};
+  const tstat = fit.t_stats  || {};
+  const pval  = fit.p_values || {};
+
+  function pStar(p) {
+    if (p == null) return '';
+    if (p < 0.001) return '***'; if (p < 0.01) return '**';
+    if (p < 0.05)  return '*';   if (p < 0.1)  return '†';
+    return '';
+  }
+  function pColor(p) {
+    if (p == null) return '#aaa';
+    if (p < 0.001) return '#15803d'; if (p < 0.01) return '#16a34a';
+    if (p < 0.05)  return '#d97706'; if (p < 0.1)  return '#ca8a04';
+    return '#888';
+  }
+  function fmt(v) { return v != null ? (v >= 0 ? '+' : '') + v.toFixed(4) : '—'; }
+  function fmtSE(v) { return v != null ? v.toFixed(4) : '—'; }
+  function fmtP(v)  { return v != null ? v.toFixed(4) : '—'; }
+
+  const rows = [
+    { key: 'intercept',        label: 'Intercept (orthogonal)',    desc: 'Expected Δp̂ for orthogonal CFs at p̂₀=0' },
+    { key: 'pro_H1',           label: 'β pro-H₁',                 desc: 'Extra revision vs. orthogonal for pro-H₁ CFs' },
+    { key: 'anti_H1',          label: 'β anti-H₁',                desc: 'Extra revision vs. orthogonal for anti-H₁ CFs' },
+    { key: 'initial_yes_prob', label: 'β initial forecast (p̂₀)',  desc: 'How revision scales with initial probability' },
+  ];
+
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:10px">
+    <thead>
+      <tr style="background:#f7f9ff">
+        <th style="padding:6px 10px;text-align:left;font-weight:700;color:#444;border-bottom:2px solid #e5e7eb">Term</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:700;color:#444;border-bottom:2px solid #e5e7eb">Coef.</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:700;color:#444;border-bottom:2px solid #e5e7eb">SE</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:700;color:#444;border-bottom:2px solid #e5e7eb">t</th>
+        <th style="padding:6px 10px;text-align:right;font-weight:700;color:#444;border-bottom:2px solid #e5e7eb">p</th>
+        <th style="padding:6px 4px;text-align:left;font-weight:700;color:#444;border-bottom:2px solid #e5e7eb"></th>
+      </tr>
+    </thead><tbody>`;
+
+  rows.forEach(row => {
+    const c = coef[row.key], s2 = se[row.key], t = tstat[row.key], p = pval[row.key];
+    const coefColor = c == null ? '#aaa' : c > 0.005 ? '#16a34a' : c < -0.005 ? '#dc2626' : '#888';
+    html += `<tr title="${esc(row.desc)}" style="border-bottom:1px solid #f3f4f6;cursor:help">
+      <td style="padding:5px 10px;color:#444;font-weight:600">${esc(row.label)}</td>
+      <td style="padding:5px 10px;text-align:right;font-weight:700;color:${coefColor};font-variant-numeric:tabular-nums">${fmt(c)}</td>
+      <td style="padding:5px 10px;text-align:right;color:#888;font-variant-numeric:tabular-nums">${fmtSE(s2)}</td>
+      <td style="padding:5px 10px;text-align:right;color:#888;font-variant-numeric:tabular-nums">${t != null ? t.toFixed(2) : '—'}</td>
+      <td style="padding:5px 10px;text-align:right;font-weight:600;color:${pColor(p)};font-variant-numeric:tabular-nums">${fmtP(p)}</td>
+      <td style="padding:5px 4px;color:${pColor(p)};font-weight:700">${pStar(p)}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table>
+  <div style="margin-top:6px;font-size:10px;color:#bbb;display:flex;gap:16px;flex-wrap:wrap">
+    <span>R² = <strong style="color:#555">${fit.r_squared != null ? fit.r_squared.toFixed(4) : '—'}</strong></span>
+    <span>RMSE = <strong style="color:#555">${fit.rmse != null ? fit.rmse.toFixed(4) : '—'}</strong></span>
+    <span>n = <strong style="color:#555">${fit.n || 0}</strong></span>
+    <span style="margin-left:auto;color:#bbb">† p&lt;0.1  * p&lt;0.05  ** p&lt;0.01  *** p&lt;0.001</span>
+  </div>`;
+  return html;
+}
+
 // ── aggregate report ────────────────────────────────────────────────────────────
+
+// Fetch JSON, but fail with a readable message if the server returns an
+// HTML error page (e.g. a 500, or a stale/restarting backend behind the proxy)
+// instead of letting response.json() throw "Unexpected token '<'".
+async function getJSON(url) {
+  const res = await fetch(url);
+  const ct  = res.headers.get('content-type') || '';
+  if (!res.ok || !ct.includes('application/json')) {
+    throw new Error(`${url} returned ${res.status} (${ct || 'no content-type'}) — backend not serving JSON`);
+  }
+  return res.json();
+}
 
 async function loadAggregate() {
   const el = document.getElementById('empty-state');
   el.className = '';
   el.innerHTML = '<div style="padding:40px;color:#999;text-align:center">Loading overview…</div>';
   try {
-    const res  = await fetch('/api/aggregate');
-    const data = await res.json();
-    el.className = 'agg';
-    el.innerHTML = renderAggregate(data);
+    const [data, scatter, reg] = await Promise.all([
+      getJSON('/api/aggregate'),
+      getJSON('/api/delta_scatter'),
+      getJSON('/api/regression'),
+    ]);
+    el.className  = 'agg';
+    el.innerHTML  = renderAggregate(data);
+
+    // Flatten per-market data for Chart C (agent vs market)
+    const allPerMarket = [];
+    for (const [mn, mStats] of Object.entries(data.models||{})) {
+      for (const pm of (mStats.per_market||[])) {
+        if (pm.yes_prob != null && pm.yes_price_market != null)
+          allPerMarket.push({model: mn, ...pm});
+      }
+    }
+
+    for (const mn of (data.model_order || [])) {
+      const sid   = mn.replace(/[^a-zA-Z0-9]/g, '_');
+      const mData = (scatter.models||{})[mn];
+      const mReg  = (reg.by_model||{})[mn];
+      const cons  = ((data.models||{})[mn]||{}).consistency||{};
+      const perM  = ((data.models||{})[mn]||{}).per_market||[];
+      const mPerMarket = allPerMarket.filter(p => p.model === mn);
+
+      const scatterEl  = document.getElementById(`delta-scatter-${sid}`);
+      const baEl       = document.getElementById(`before-after-${sid}`);
+      const amEl       = document.getElementById(`agent-market-${sid}`);
+      const regEl      = document.getElementById(`regression-${sid}`);
+      const icsEl      = document.getElementById(`ics-failures-${sid}`);
+
+      if (scatterEl) scatterEl.innerHTML = mData
+        ? renderDeltaScatterSVG(mData, {ehc:cons.EHC_rate, hfc:cons.HFC_rate})
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">No update data yet</div>';
+
+      if (baEl) baEl.innerHTML = mReg?.before_after
+        ? renderBeforeAfterSVG(mReg.before_after)
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">No update data yet</div>';
+
+      if (amEl) amEl.innerHTML = mPerMarket.length
+        ? renderAgentMarketSVG(mPerMarket)
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">No forecast data yet</div>';
+
+      if (regEl) regEl.innerHTML = mReg
+        ? renderRegressionSVG(mReg) + renderRegressionTable(mReg) + renderWaldAnnotation(mReg.wald_symmetry)
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">Not enough data to fit regression yet</div>';
+
+      if (icsEl) icsEl.innerHTML = renderICSFailures(perM);
+    }
   } catch(e) {
     el.innerHTML = '<div style="padding:40px;color:#dc2626">Failed to load overview: ' + esc(String(e)) + '</div>';
   }
@@ -2530,128 +3375,298 @@ function renderAggregate(data) {
     orthogonal: { label: '↔ Orthogonal', cls: 'ortho'},
   };
 
+  function _modelTabLabel(mn) {
+    const pts = mn.split('-'); const pfx = pts[0].toLowerCase(); const sz = pts[pts.length - 1];
+    if (pfx.startsWith('gpt'))    return 'GPT';
+    if (pfx.startsWith('claude')) return 'Opus 4.8';
+    if (pfx.startsWith('deep'))   return 'DeepSeek';
+    if (pfx.startsWith('qwen'))   return 'Qwen ' + sz;
+    if (pfx.startsWith('llama'))  return 'Llama-' + pfx.replace('llama', '') + ' ' + sz;
+    return mn.slice(0, 14);
+  }
+
+  const firstModel = order[0];
+  const totalMarkets = (models[firstModel] || {}).n_markets || 0;
+
   let html = `<div style="margin-bottom:16px;display:flex;align-items:baseline;gap:12px">
     <span style="font-size:16px;font-weight:800;color:#1a1a2e">Results Overview</span>
-    <span style="font-size:12px;color:#888">${order.length} model${order.length!==1?'s':''} · ${(models[order[0]]||{}).n_markets||0} markets</span>
+    <span style="font-size:12px;color:#888">${order.length} model${order.length!==1?'s':''} · ${totalMarkets} markets</span>
   </div>`;
 
+  // ── model tab bar ──
+  html += `<div class="agg-model-tabs">`;
+  html += `<div class="agg-model-tab cross-tab" id="aggtab-__cross__"
+    onclick="selectAggModel('__cross__')">
+    All Models
+    <span style="font-size:10px;opacity:0.7;margin-left:4px">κ</span>
+  </div>`;
+  for (const mn of order) {
+    const sid     = mn.replace(/[^a-zA-Z0-9]/g, '_');
+    const isFirst = mn === firstModel;
+    const nm      = models[mn] || {};
+    html += `<div class="agg-model-tab${isFirst?' active':''}" id="aggtab-${sid}"
+      onclick="selectAggModel('${mn.replace(/'/g, "\\'")}')">
+      ${esc(_modelTabLabel(mn))}
+      <span style="font-size:10px;opacity:0.65;margin-left:4px">${nm.n_markets||0}</span>
+    </div>`;
+  }
+  html += `</div>`;
+
+  // ── cross-model panel (lazy-loaded) ──
+  html += `<div id="aggpanel-__cross__" class="agg-model-panel" style="display:none">
+    <div id="cross-model-content">
+      <div style="padding:40px;text-align:center;color:#999">Click to load cross-model analysis…</div>
+    </div>
+  </div>`;
+
+  // ── per-model panels ──
   for (const modelName of order) {
+    const sid     = modelName.replace(/[^a-zA-Z0-9]/g, '_');
+    const isFirst = modelName === firstModel;
     const m    = models[modelName] || {};
     const f    = m.forecast    || {};
     const cons = m.consistency || {};
     const perM = m.per_market  || [];
-
-    const anc  = m.anchoring || {};
+    const anc  = m.anchoring   || {};
     const sens = anc.sensitivity_ratio;
-    const sensColor = sens == null ? '#aaa' : sens >= 5 ? '#15803d' : sens >= 2 ? '#d97706' : '#dc2626';
 
-    const statChips = [
-      { key: 'mean-forecast', label: 'Mean forecast',    val: f.mean_yes_prob   != null ? Math.round(f.mean_yes_prob*100)+'%'   : '—', sub: 'agent median across mkts', color: '#2563eb' },
-      { key: 'krun-sigma',    label: 'k-run σ',          val: f.mean_run_std    != null ? '±'+Math.round(f.mean_run_std*100)+'pp' : '—', sub: 'avg intra-market spread',  color: '#7c3aed' },
-      { key: 'calibration',   label: '|Agent − Market|', val: f.mean_divergence != null ? Math.round(f.mean_divergence*100)+'pp' : '—', sub: 'avg calibration gap',       color: '#d97706' },
-      { key: 'EHC', label: 'EHC', val: fmtRate(cons.EHC_rate), sub: 'evidence → hypothesis',  color: rateColor(cons.EHC_rate) },
-      { key: 'HFC', label: 'HFC', val: fmtRate(cons.HFC_rate), sub: 'hypothesis → forecast',  color: rateColor(cons.HFC_rate) },
-      { key: 'ICS', label: 'ICS', val: fmtRate(cons.ICS_rate), sub: 'internal coherence',     color: rateColor(cons.ICS_rate) },
-      { key: 'sensitivity',   label: 'Sensitivity',      val: sens != null ? sens.toFixed(1)+'×' : '—',  sub: 'directed ÷ orthogonal |Δ|', color: sensColor },
-    ];
+    // Derive punchline for this model
+    const isLocal = /^(qwen|llama)/i.test(modelName);
+    const sensColor = sens == null ? '#64748b'
+      : sens >= 10 ? '#15803d' : sens >= 4 ? '#d97706' : '#dc2626';
+    const sensLabel = sens == null ? 'no update data yet'
+      : sens >= 10 ? `strong causal selectivity — ${sens.toFixed(1)}× sensitivity`
+      : sens >=  4 ? `moderate selectivity — ${sens.toFixed(1)}× sensitivity`
+      : `low selectivity — ${sens.toFixed(1)}× sensitivity (updates near-uniformly)`;
+    const coherenceOk = cons.EHC_rate != null && cons.EHC_rate >= 0.95 && cons.ICS_rate >= 0.95;
+    const coherenceLabel = cons.EHC_rate == null ? 'insufficient Stage 3 data'
+      : coherenceOk ? `coherent — EHC ${fmtRate(cons.EHC_rate)} · ICS ${fmtRate(cons.ICS_rate)}`
+      : `partial coherence — EHC ${fmtRate(cons.EHC_rate)} · ICS ${fmtRate(cons.ICS_rate)}`;
+    const coherenceColor = cons.EHC_rate == null ? '#64748b'
+      : coherenceOk ? '#15803d' : '#d97706';
 
-    html += `<div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px">
-      <div style="padding:12px 20px;background:#f7f9ff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <span class="model-badge">${esc(modelName)}</span>
-        <span style="font-size:13px;font-weight:600;color:#444">${m.n_markets||0} markets · k=5 runs each</span>
-        <span style="font-size:12px;color:#888">${m.n_with_uf||0}/${m.n_markets||0} with model updates</span>
-        ${cons.n_markets_with_data != null ? `<span style="font-size:11px;color:#bbb;margin-left:auto">${cons.n_markets_with_data} mkts in consistency stats</span>` : ''}
-      </div>
+    html += `<div class="agg-model-panel" id="aggpanel-${sid}" style="display:${isFirst?'block':'none'}">
+      <div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px">
 
-      <div style="padding:16px 20px">
-
-        <!-- summary stat chips -->
-        <div class="agg-stat-grid">
-          ${statChips.map(s => `<div class="agg-stat-chip" data-metric="${s.key}" style="cursor:help">
-            <div class="chip-label">${esc(s.label)}</div>
-            <div class="chip-val" style="color:${s.color}">${esc(s.val)}</div>
-            <div class="chip-sub">${esc(s.sub)}</div>
-          </div>`).join('')}
+        <!-- header -->
+        <div style="padding:12px 20px;background:#f7f9ff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span class="model-badge${isLocal?' local':''}">${esc(modelName)}</span>
+          ${isLocal ? '<span style="font-size:10px;color:#5a8a5a;font-weight:700;background:#141e14;border:1px solid #2d4a2d;padding:2px 7px;border-radius:8px">local</span>' : ''}
+          <span style="font-size:13px;font-weight:600;color:#444">${m.n_markets||0} markets · k=5 runs each</span>
+          <span style="font-size:12px;color:#888">${m.n_with_uf||0}/${m.n_markets||0} with Stage 3 updates</span>
+          ${cons.n_markets_with_data != null ? `<span style="font-size:11px;color:#bbb;margin-left:auto">${cons.n_markets_with_data} mkts in consistency analysis</span>` : ''}
         </div>
 
-        <!-- per-market table -->
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">Per-market breakdown — click any row to open detail</div>
-        <table class="agg-mkt-table">
-          <thead><tr>
-            <th>Question</th><th>Category</th><th>Agent</th><th>Market</th>
-            <th>k-run σ</th><th>Divergence</th><th>EHC</th><th>HFC</th><th>ICS</th><th>n updates</th>
-          </tr></thead>
-          <tbody>
-            ${perM.map(pm => {
-              const ac  = pm.yes_prob==null?'#aaa':pm.yes_prob<0.25?'#dc2626':pm.yes_prob<0.55?'#d97706':'#16a34a';
-              const div = pm.yes_prob!=null&&pm.yes_price_market!=null ? pm.yes_prob-pm.yes_price_market : null;
-              const ds  = div!=null ? (div>=0?'+':'')+Math.round(div*100)+'pp' : '—';
-              const dc  = div==null?'#aaa':Math.abs(div)<0.05?'#888':div>0?'#2563eb':'#d97706';
-              const tid = pm.task_id.replace(/'/g,"\\'");
-              return `<tr onclick="loadForecast('${tid}')">
-                <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(pm.question)}">${esc(pm.question)}</td>
-                <td><span style="font-size:10px;background:#f0f3ff;color:#3344aa;padding:2px 6px;border-radius:4px;white-space:nowrap">${esc(pm.category||'—')}</span></td>
-                <td style="font-weight:700;color:${ac}">${pm.yes_prob!=null?Math.round(pm.yes_prob*100)+'%':'—'}</td>
-                <td style="color:#d97706;font-weight:600">${pm.yes_price_market!=null?Math.round(pm.yes_price_market*100)+'%':'—'}</td>
-                <td style="color:#7c3aed;font-weight:600">${pm.yes_prob_std!=null?'±'+Math.round(pm.yes_prob_std*100)+'pp':'—'}</td>
-                <td style="font-weight:700;color:${dc}">${ds}</td>
-                <td style="font-weight:700;color:${rateColor(pm.EHC_rate)}">${fmtRate(pm.EHC_rate)}</td>
-                <td style="font-weight:700;color:${rateColor(pm.HFC_rate)}">${fmtRate(pm.HFC_rate)}</td>
-                <td style="font-weight:700;color:${rateColor(pm.ICS_rate)}">${fmtRate(pm.ICS_rate)}</td>
-                <td>${pm.n_updates>0?`<span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:4px;font-weight:700;font-size:12px">${pm.n_updates}</span>`:'<span style="color:#ddd;font-size:12px">—</span>'}</td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-
-        <!-- direction + category breakdown -->
-        <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div>
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">By direction</div>
-            <table class="agg-mini-table">
-              <thead><tr><th>Direction</th><th>EHC</th><th>HFC</th><th>ICS</th><th title="Mean absolute Δyes_prob — anchoring baseline">mean |Δ|</th></tr></thead>
-              <tbody>
-                ${['pro_H1','anti_H1','orthogonal'].map(dir => {
-                  const dm  = dirMeta[dir] || { label: dir, cls: 'ortho' };
-                  const bd  = (m.by_direction || {})[dir] || {};
-                  const ad  = (anc[dir] || {});
-                  const mad = ad.mean_abs_delta;
-                  // bar: scale to max 40pp shown as 100%
-                  const barW = mad != null ? Math.min(100, Math.round(mad / 0.40 * 100)) : 0;
-                  const barColor = dir === 'orthogonal' ? '#a78bfa' : dir === 'pro_H1' ? '#16a34a' : '#dc2626';
-                  return `<tr>
-                    <td><span class="cf-direction-badge ${dm.cls}" style="margin:0;font-size:10px">${dm.label}</span></td>
-                    <td style="font-weight:700;color:${rateColor(bd.EHC_rate)}">${fmtRate(bd.EHC_rate)}${bd.EHC_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.EHC_se*100)}pp</span>`:''}</td>
-                    <td style="font-weight:700;color:${rateColor(bd.HFC_rate)}">${fmtRate(bd.HFC_rate)}${bd.HFC_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.HFC_se*100)}pp</span>`:''}</td>
-                    <td style="font-weight:700;color:${rateColor(bd.ICS_rate)}">${fmtRate(bd.ICS_rate)}${bd.ICS_se!=null?`<span style="font-size:9px;color:#aaa"> ±${Math.round(bd.ICS_se*100)}pp</span>`:''}</td>
-                    <td style="min-width:90px">
-                      ${mad != null ? `
-                        <div style="display:flex;align-items:center;gap:5px">
-                          <div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden">
-                            <div style="width:${barW}%;height:100%;background:${barColor};border-radius:3px"></div>
-                          </div>
-                          <span style="font-size:11px;font-weight:700;color:${barColor};min-width:32px">${Math.round(mad*100)}pp</span>
-                        </div>
-                        ${ad.se!=null?`<div style="font-size:9px;color:#bbb;margin-top:1px">±${Math.round(ad.se*100)}pp · n=${ad.n}</div>`:''}
-                      ` : '<span style="color:#ccc;font-size:11px">—</span>'}
-                    </td>
-                  </tr>`;
-                }).join('')}
-              </tbody>
-            </table>
-            ${sens != null ? `
-              <div style="margin-top:8px;padding:6px 10px;background:#f0fdf4;border-radius:6px;font-size:11px;color:#15803d;border:1px solid #bbf7d0">
-                <strong>Sensitivity ratio ${sens.toFixed(1)}×</strong>
-                <span style="color:#6b7280"> — directed CFs move the forecast ${sens.toFixed(1)}× more than orthogonal ones</span>
-              </div>
-            ` : ''}
+        <!-- punchline banner -->
+        <div style="padding:10px 20px;background:${isLocal?'#fafafa':'#f0fdf4'};border-bottom:1px solid ${isLocal?'#e5e7eb':'#bbf7d0'};display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">${sens==null?'⏳':sens>=10?'✅':sens>=4?'⚠️':'🔴'}</span>
+            <div>
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#888;font-weight:700">Act 1 · Causal Selectivity</div>
+              <div style="font-size:12px;font-weight:600;color:${sensColor}">${sensLabel}</div>
+            </div>
           </div>
-          <div>
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">By category</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">${cons.EHC_rate==null?'⏳':coherenceOk?'✅':'⚠️'}</span>
+            <div>
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#888;font-weight:700">Act 2 · Internal Coherence</div>
+              <div style="font-size:12px;font-weight:600;color:${coherenceColor}">${coherenceLabel}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">${f.mean_divergence==null?'⏳':'📊'}</span>
+            <div>
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#888;font-weight:700">Act 3 · Calibration</div>
+              <div style="font-size:12px;font-weight:600;color:#d97706">${f.mean_divergence!=null ? `|A−M| = ${Math.round(f.mean_divergence*100)}pp · independent view confirmed` : 'loading…'}</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:16px 20px">
+
+          <!-- ── ACT 1: CAUSAL SELECTIVITY ── -->
+          <div style="margin-bottom:4px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#1a1a2e">Act 1</span>
+            <span style="font-size:13px;font-weight:700;color:#1a1a2e">Causal Selectivity</span>
+            <span style="font-size:11px;color:#888">— does the model know <em>what</em> to update on?</span>
+          </div>
+          <p style="font-size:12px;color:#555;margin:0 0 12px;line-height:1.5">
+            A model with a causal world model should revise its forecast more in response to
+            directionally relevant evidence than to topically adjacent but causally unrelated evidence.
+            Sensitivity ≫ 1 is the key indicator.
+          </p>
+
+          <!-- sensitivity chip + by-direction table side by side -->
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-start">
+            <!-- big sensitivity chip -->
+            <div style="background:${sens==null?'#f8fafc':sens>=10?'#f0fdf4':sens>=4?'#fffbeb':'#fef2f2'};border:1.5px solid ${sens==null?'#e2e8f0':sens>=10?'#bbf7d0':sens>=4?'#fde68a':'#fecaca'};border-radius:10px;padding:16px 20px;min-width:140px;text-align:center">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:6px">Sensitivity ratio</div>
+              <div style="font-size:36px;font-weight:900;color:${sensColor};line-height:1">${sens!=null ? sens.toFixed(1)+'×' : '—'}</div>
+              <div style="font-size:10px;color:#888;margin-top:6px">directed ÷ orthogonal |Δ|</div>
+              ${sens != null ? `<div style="font-size:10px;margin-top:6px;padding:3px 8px;border-radius:6px;font-weight:600;background:${sensColor}22;color:${sensColor}">${sens>=10?'strong':sens>=4?'moderate':'weak'} selectivity</div>` : ''}
+            </div>
+
+            <!-- by-direction table -->
+            <div style="flex:1;min-width:260px">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:6px">Mean |Δ| by CF direction</div>
+              <table class="agg-mini-table">
+                <thead><tr><th>Direction</th><th>EHC</th><th>HFC</th><th>ICS</th><th title="Mean |Δyes_prob| — from normalised probs">mean |Δ|</th></tr></thead>
+                <tbody>
+                  ${['pro_H1','anti_H1','orthogonal'].map(dir => {
+                    const dm  = dirMeta[dir] || { label: dir, cls: 'ortho' };
+                    const bd  = (m.by_direction || {})[dir] || {};
+                    const ad  = (anc[dir] || {});
+                    const mad = ad.mean_abs_delta;
+                    const barW = mad != null ? Math.min(100, Math.round(mad / 0.20 * 100)) : 0;
+                    const barColor = dir === 'orthogonal' ? '#a78bfa' : dir === 'pro_H1' ? '#16a34a' : '#dc2626';
+                    return `<tr>
+                      <td><span class="cf-direction-badge ${dm.cls}" style="margin:0;font-size:10px">${dm.label}</span></td>
+                      <td style="font-weight:700;color:${rateColor(bd.EHC_rate)}">${fmtRate(bd.EHC_rate)}</td>
+                      <td style="font-weight:700;color:${rateColor(bd.HFC_rate)}">${fmtRate(bd.HFC_rate)}</td>
+                      <td style="font-weight:700;color:${rateColor(bd.ICS_rate)}">${fmtRate(bd.ICS_rate)}</td>
+                      <td style="min-width:110px">
+                        ${mad != null ? `
+                          <div style="display:flex;align-items:center;gap:5px">
+                            <div style="flex:1;height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden">
+                              <div style="width:${barW}%;height:100%;background:${barColor};border-radius:4px"></div>
+                            </div>
+                            <span style="font-size:12px;font-weight:800;color:${barColor};min-width:36px">${Math.round(mad*100)}pp</span>
+                          </div>
+                          ${ad.n!=null?`<div style="font-size:9px;color:#bbb;margin-top:1px">n=${ad.n}</div>`:''}
+                        ` : '<span style="color:#ccc;font-size:11px">—</span>'}
+                      </td>
+                    </tr>`;
+                  }).join('')}
+                </tbody>
+              </table>
+              ${sens != null ? `
+                <div style="margin-top:8px;padding:6px 10px;background:${sens>=4?'#f0fdf4':'#fef2f2'};border-radius:6px;font-size:11px;color:${sensColor};border:1px solid ${sens>=4?'#bbf7d0':'#fecaca'}">
+                  <strong>Sensitivity ${sens.toFixed(1)}×</strong>
+                  <span style="color:#6b7280"> — directional evidence moves the forecast ${sens.toFixed(1)}× more than causally irrelevant evidence</span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+
+          <!-- direction scatter + regression -->
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin:0 0 28px;align-items:flex-start">
+            <div id="delta-scatter-${sid}" style="overflow-x:auto;flex:0 0 auto"></div>
+            <div id="regression-${sid}" style="flex:1;min-width:320px"></div>
+          </div>
+
+          <!-- ── ACT 2: INTERNAL COHERENCE ── -->
+          <div style="margin-bottom:4px;display:flex;align-items:center;gap:8px;border-top:2px solid #f0f2f8;padding-top:20px">
+            <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#1a1a2e">Act 2</span>
+            <span style="font-size:13px;font-weight:700;color:#1a1a2e">Internal Coherence</span>
+            <span style="font-size:11px;color:#888">— does the model keep its own accounting consistent?</span>
+          </div>
+          <p style="font-size:12px;color:#555;margin:0 0 12px;line-height:1.5">
+            EHC checks that hypothesis-level beliefs move in the right direction.
+            HFC checks that the headline forecast follows.
+            ICS checks the structural invariant <em>ŷ = P(H₁)</em> is preserved after updating.
+          </p>
+
+          <!-- EHC / HFC / ICS chips -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+            ${[
+              { key:'EHC', label:'EHC', val:cons.EHC_rate, sub:'evidence → hypothesis', note:'|Δ| ≥ 3pp' },
+              { key:'HFC', label:'HFC', val:cons.HFC_rate, sub:'hypothesis → forecast', note:'|Δ| ≥ 3pp' },
+              { key:'ICS', label:'ICS', val:cons.ICS_rate, sub:'structural invariant', note:'all records' },
+            ].map(s => {
+              const col = rateColor(s.val);
+              return `<div class="agg-stat-chip" data-metric="${s.key}" style="cursor:help;min-width:110px">
+                <div class="chip-label">${esc(s.label)}</div>
+                <div class="chip-val" style="color:${col}">${fmtRate(s.val)}</div>
+                <div class="chip-sub">${esc(s.sub)}</div>
+                <div style="font-size:9px;color:#bbb;margin-top:2px">${esc(s.note)}</div>
+              </div>`;
+            }).join('')}
+            <div style="flex:1;min-width:200px;padding:10px 14px;background:#fafbff;border:1px solid #e5e7eb;border-radius:8px;font-size:11px;color:#555;line-height:1.6">
+              ${cons.EHC_rate == null
+                ? '<em style="color:#bbb">No consistency data — Stage 3 updates not yet linked for this model.</em>'
+                : cons.EHC_rate >= 0.95
+                  ? `<strong style="color:#15803d">Coherent:</strong> directional updates propagate correctly from hypothesis → forecast. EHC ≈ HFC means no "understanding without action" gap.`
+                  : `<strong style="color:#d97706">Partial:</strong> some directional updates fail to propagate correctly. EHC−HFC gap of ${Math.abs(Math.round((cons.EHC_rate-cons.HFC_rate)*100))}pp suggests occasional decoupling.`}
+            </div>
+          </div>
+
+          <!-- before/after scatter -->
+          <div style="margin:0 0 20px">
+            <div id="before-after-${sid}" style="overflow-x:auto"></div>
+          </div>
+
+          <!-- ICS failures -->
+          <div id="ics-failures-${sid}" style="margin-bottom:24px"></div>
+
+          <!-- ── ACT 3: CALIBRATION ── -->
+          <div style="margin-bottom:4px;display:flex;align-items:center;gap:8px;border-top:2px solid #f0f2f8;padding-top:20px">
+            <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#1a1a2e">Act 3</span>
+            <span style="font-size:13px;font-weight:700;color:#1a1a2e">Calibration</span>
+            <span style="font-size:11px;color:#888">— does the agent have its own independent view?</span>
+          </div>
+          <p style="font-size:12px;color:#555;margin:0 0 12px;line-height:1.5">
+            This section confirms design validity: the agent must not be imitating market prices.
+            Systematic divergence from Polymarket confirms the agent holds an independent world model.
+          </p>
+
+          <!-- calibration chips -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+            ${[
+              { key:'mean-forecast', label:'Mean forecast', val: f.mean_yes_prob   != null ? Math.round(f.mean_yes_prob*100)+'%'    : '—', sub:'agent median across mkts', color:'#2563eb' },
+              { key:'krun-sigma',    label:'k-run σ',       val: f.mean_run_std    != null ? '±'+Math.round(f.mean_run_std*100)+'pp' : '—', sub:'avg intra-market spread',  color:'#7c3aed' },
+              { key:'calibration',   label:'|Agent − Mkt|', val: f.mean_divergence != null ? Math.round(f.mean_divergence*100)+'pp'  : '—', sub:'avg calibration gap',       color:'#d97706' },
+            ].map(s => `<div class="agg-stat-chip" data-metric="${s.key}" style="cursor:help">
+              <div class="chip-label">${esc(s.label)}</div>
+              <div class="chip-val" style="color:${s.color}">${esc(s.val)}</div>
+              <div class="chip-sub">${esc(s.sub)}</div>
+            </div>`).join('')}
+          </div>
+
+          <!-- agent-vs-market scatter -->
+          <div style="margin:0 0 24px">
+            <div id="agent-market-${sid}" style="overflow-x:auto"></div>
+          </div>
+
+          <!-- ── PER-MARKET DETAIL ── -->
+          <div style="border-top:2px solid #f0f2f8;padding-top:20px;margin-bottom:8px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px">Per-market breakdown — click any row to drill in</div>
+          </div>
+          <table class="agg-mkt-table">
+            <thead><tr>
+              <th>Question</th><th>Category</th><th>Agent</th><th>Market</th>
+              <th>k-run σ</th><th>Divergence</th><th>EHC</th><th>HFC</th><th>ICS</th><th>n updates</th>
+            </tr></thead>
+            <tbody>
+              ${perM.map(pm => {
+                const ac  = pm.yes_prob==null?'#aaa':pm.yes_prob<0.25?'#dc2626':pm.yes_prob<0.55?'#d97706':'#16a34a';
+                const div = pm.yes_prob!=null&&pm.yes_price_market!=null ? pm.yes_prob-pm.yes_price_market : null;
+                const ds  = div!=null ? (div>=0?'+':'')+Math.round(div*100)+'pp' : '—';
+                const dc  = div==null?'#aaa':Math.abs(div)<0.05?'#888':div>0?'#2563eb':'#d97706';
+                const tid = pm.task_id.replace(/'/g,"\\'");
+                return `<tr onclick="loadForecast('${tid}')">
+                  <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(pm.question)}">${esc(pm.question)}</td>
+                  <td><span style="font-size:10px;background:#f0f3ff;color:#3344aa;padding:2px 6px;border-radius:4px;white-space:nowrap">${esc(pm.category||'—')}</span></td>
+                  <td style="font-weight:700;color:${ac}">${pm.yes_prob!=null?Math.round(pm.yes_prob*100)+'%':'—'}</td>
+                  <td style="color:#d97706;font-weight:600">${pm.yes_price_market!=null?Math.round(pm.yes_price_market*100)+'%':'—'}</td>
+                  <td style="color:#7c3aed;font-weight:600">${pm.yes_prob_std!=null?'±'+Math.round(pm.yes_prob_std*100)+'pp':'—'}</td>
+                  <td style="font-weight:700;color:${dc}">${ds}</td>
+                  <td style="font-weight:700;color:${rateColor(pm.EHC_rate)}">${fmtRate(pm.EHC_rate)}</td>
+                  <td style="font-weight:700;color:${rateColor(pm.HFC_rate)}">${fmtRate(pm.HFC_rate)}</td>
+                  <td style="font-weight:700;color:${rateColor(pm.ICS_rate)}">${fmtRate(pm.ICS_rate)}</td>
+                  <td>${pm.n_updates>0?`<span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:4px;font-weight:700;font-size:12px">${pm.n_updates}</span>`:'<span style="color:#ddd;font-size:12px">—</span>'}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+
+          <!-- by category (collapsed to bottom) -->
+          ${Object.keys(m.by_category||{}).length > 0 ? `
+          <div style="margin-top:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:6px">By category</div>
             <table class="agg-mini-table">
               <thead><tr><th>Category</th><th>n</th><th>EHC</th><th>HFC</th><th>ICS</th></tr></thead>
               <tbody>
-                ${Object.entries(m.by_category || {}).map(([cat, bd]) => `<tr>
+                ${Object.entries(m.by_category||{}).map(([cat, bd]) => `<tr>
                   <td><span style="font-size:10px;background:#f0f3ff;color:#3344aa;padding:1px 5px;border-radius:3px">${esc(cat)}</span></td>
                   <td style="color:#aaa;font-size:11px">${bd.n||0}</td>
                   <td style="font-weight:700;color:${rateColor(bd.EHC_rate)}">${fmtRate(bd.EHC_rate)}</td>
@@ -2660,14 +3675,462 @@ function renderAggregate(data) {
                 </tr>`).join('')}
               </tbody>
             </table>
-          </div>
-        </div>
+          </div>` : ''}
 
+        </div>
       </div>
     </div>`;
   }
 
   return html;
+}
+
+// ── cross-model view ─────────────────────────────────────────────────────────
+
+function renderCrossModel(data) {
+  const { model_order, kappa_pairs, market_kappas, kappa_by_category, model_summary, cross_avg, per_market, threshold } = data;
+  const mktKappaMap = {};  // model → {kappa, n_shared}
+  for (const mk of (market_kappas || [])) mktKappaMap[mk.model] = mk;
+  if (!model_order.length) return '<div style="padding:40px;text-align:center;color:#bbb">No data.</div>';
+
+  const fmtR  = v => v == null ? '—' : Math.round(v * 100) + '%';
+  const rateC = v => v == null ? '#aaa' : v >= 0.8 ? '#15803d' : v >= 0.6 ? '#d97706' : '#dc2626';
+  const nModels = model_order.length;
+  const nShared = per_market.filter(m => m.n_models === nModels).length;
+  const nUnanimous = per_market.filter(m => m.unanimous && m.n_models >= 2).length;
+
+  function mlabel(mn) {
+    if (!mn) return '';
+    const p = mn.toLowerCase();
+    if (p.includes('claude')) return 'Opus 4.8';
+    if (p.includes('gpt'))    return 'GPT';
+    if (p.includes('deep'))   return 'DeepSeek';
+    const pts = mn.split('-'); const sz = pts[pts.length - 1]; const fam = pts[0].toLowerCase();
+    if (p.includes('qwen'))  return 'Qwen ' + sz;
+    if (p.includes('llama')) return 'Llama-' + fam.replace('llama', '') + ' ' + sz;
+    return mn.slice(0, 12);
+  }
+
+  // stash category data for live filter
+  window._cmCatData   = kappa_by_category || {};
+  window._cmAllPairs  = kappa_pairs;
+  window._cmAllMkts   = market_kappas;
+  window._cmModels    = model_order;
+
+  // kappa lookup builder
+  function buildKappaLookup(pairs) {
+    const lk = {};
+    for (const p of (pairs || [])) {
+      lk[p.m1 + '||' + p.m2] = p;
+      lk[p.m2 + '||' + p.m1] = p;
+    }
+    return lk;
+  }
+  const kappaLookup = buildKappaLookup(kappa_pairs);
+
+  function kappaBg(k) {
+    if (k == null) return '#f5f5f5';
+    if (k >= 0.8) return '#bbf7d0'; if (k >= 0.6) return '#d1fae5';
+    if (k >= 0.4) return '#fef9c3'; if (k >= 0.2) return '#ffedd5';
+    return '#fee2e2';
+  }
+  function kappaTc(k) {
+    if (k == null) return '#ccc';
+    if (k >= 0.6) return '#166534'; if (k >= 0.4) return '#92400e';
+    if (k >= 0.2) return '#c2410c'; return '#991b1b';
+  }
+  function kappaLabel(k) {
+    if (k == null) return '—';
+    if (k >= 0.8) return 'Excellent'; if (k >= 0.6) return 'Substantial';
+    if (k >= 0.4) return 'Moderate';  if (k >= 0.2) return 'Fair';
+    return 'Slight';
+  }
+
+  // ── header ──
+  let html = `<div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px">
+    <div style="padding:12px 20px;background:#1a1a2e;border-bottom:1px solid #2d2d4e;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="font-size:14px;font-weight:700;color:#e0e0f0">All-Models Overview</span>
+      <span style="font-size:11px;color:#7878aa">${nModels} models · ${per_market.length} markets with ≥2 forecasts</span>
+      <span style="font-size:11px;color:#7878aa;margin-left:auto">${nShared} full-coverage · ${nUnanimous}/${per_market.length} unanimous direction</span>
+    </div>
+
+    <!-- narrative summary banner -->
+    <div style="padding:14px 20px;background:#0f0f1e;border-bottom:1px solid #1e1e3a">
+      <div style="font-size:13px;font-weight:700;color:#c8c8e8;margin-bottom:8px;letter-spacing:.02em">What the experiment shows</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+        <div style="background:#1a2a1a;border:1px solid #2d4a2d;border-radius:8px;padding:10px 14px">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#5a9a5a;font-weight:700;margin-bottom:4px">Act 1 · Causal Selectivity</div>
+          <div style="font-size:12px;color:#b0d0b0;line-height:1.5">Frontier models (DeepSeek, Claude, GPT) update <strong style="color:#4ade80">9–35× more</strong> in response to causally relevant evidence than orthogonal evidence. Local 7–8B models show only 2–3×.</div>
+        </div>
+        <div style="background:#1a1a2e;border:1px solid #2d2d5a;border-radius:8px;padding:10px 14px">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#5a5aaa;font-weight:700;margin-bottom:4px">Act 2 · Internal Coherence</div>
+          <div style="font-size:12px;color:#b0b0d8;line-height:1.5">Frontier models maintain <strong style="color:#818cf8">≥98% EHC/HFC/ICS</strong>: hypothesis beliefs and headline forecasts stay structurally consistent. Local models lag by 8–12pp.</div>
+        </div>
+        <div style="background:#2a1a0a;border:1px solid #4a3a0a;border-radius:8px;padding:10px 14px">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#aa7a2a;font-weight:700;margin-bottom:4px">Act 3 · Calibration (design check)</div>
+          <div style="font-size:12px;color:#d8c0a0;line-height:1.5">Models diverge substantially from Polymarket prices, confirming an <strong style="color:#fb923c">independent world model</strong> — not price imitation. Frontier pairwise κ 0.66–0.74; local κ 0.33–0.51.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:20px 20px 0">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-start">
+        <div id="delta-scatter-cross" style="overflow-x:auto;flex:0 0 auto"><div style="color:#bbb;font-size:11px;padding:8px 0">Loading direction chart…</div></div>
+        <div id="regression-cross" style="flex:1;min-width:320px"><div style="color:#bbb;font-size:11px;padding:8px 0">Loading regression…</div></div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-start">
+        <div id="agent-market-cross" style="overflow-x:auto;flex:0 0 auto"><div style="color:#bbb;font-size:11px;padding:8px 0">Loading agent-vs-market chart…</div></div>
+      </div>
+      <div id="update-agreement-cross" style="margin-bottom:20px"><div style="color:#bbb;font-size:11px;padding:8px 0">Loading cross-model agreement…</div></div>
+      <div id="model-size-chart-cross" style="margin-bottom:20px"><div style="color:#bbb;font-size:11px;padding:8px 0">Loading model-size chart…</div></div>`;
+
+  // helper: render kappa matrix tbody rows for any pairs/mktKappas set
+  function _kappaMatrixRows(pairs, mktKappas, models) {
+    const lk  = buildKappaLookup(pairs);
+    const mkm = {};
+    for (const mk of (mktKappas || [])) mkm[mk.model] = mk;
+    return models.map(m1 => {
+      const mk  = mkm[m1] || {};
+      const mkk = mk.kappa; const mkn = mk.n_shared || 0;
+      return `<tr>
+        <td style="padding:6px 10px;font-size:11px;font-weight:700;color:#444;white-space:nowrap;border-bottom:1px solid #f5f5f5">${esc(mlabel(m1))}</td>
+        ${models.map(m2 => {
+          if (m1 === m2) return '<td style="background:#f5f5f5;padding:8px 12px;text-align:center;border-bottom:1px solid #f5f5f5;color:#bbb">—</td>';
+          const pair = lk[m1 + '||' + m2];
+          const k  = pair ? pair.kappa  : null;
+          const ns = pair ? pair.n_shared : 0;
+          return `<td style="background:${kappaBg(k)};padding:8px 12px;text-align:center;border-bottom:1px solid #f5f5f5"
+            title="${k != null ? 'κ=' + k + ' (' + kappaLabel(k) + ') · n=' + ns : 'insufficient data (n=' + ns + ')'}">
+            <span style="font-size:15px;font-weight:800;color:${kappaTc(k)}">${k != null ? k.toFixed(2) : '—'}</span>
+            ${ns > 0 ? `<div style="font-size:9px;color:#aaa;margin-top:1px">n=${ns}</div>` : ''}
+          </td>`;
+        }).join('')}
+        <td style="background:${kappaBg(mkk)};padding:8px 12px;text-align:center;border-bottom:1px solid #f5f5f5;border-left:2px solid #e5e7eb"
+          title="${mkk != null ? 'κ vs Polymarket=' + mkk + ' (' + kappaLabel(mkk) + ') · n=' + mkn : 'insufficient data'}">
+          <span style="font-size:15px;font-weight:800;color:${kappaTc(mkk)}">${mkk != null ? mkk.toFixed(2) : '—'}</span>
+          ${mkn > 0 ? `<div style="font-size:9px;color:#aaa;margin-top:1px">n=${mkn}</div>` : ''}
+        </td>
+      </tr>`;
+    }).join('');
+  }
+  // expose for filter onclick
+  window._kappaMatrixRows = _kappaMatrixRows;
+
+  const allCats = Object.keys(kappa_by_category || {}).sort();
+
+  // ── kappa matrix ──────────────────────────────────────────────────────────
+  html += `<div style="margin-bottom:24px">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#666">
+        Pairwise Agreement — Cohen's κ
+        <span style="font-size:10px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">
+          &nbsp;binarized at ${Math.round(threshold * 100)}% threshold
+        </span>
+      </div>
+    </div>
+    <!-- category filter pills -->
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+      <span class="kappa-cat-pill active" data-cat="__all__"
+        onclick="filterKappaMatrix('__all__')"
+        style="padding:3px 10px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;background:#1a1a2e;color:#c7d2fe;border:1.5px solid #3a3d5c">
+        All
+      </span>
+      ${allCats.map(cat => `<span class="kappa-cat-pill" data-cat="${esc(cat)}"
+        onclick="filterKappaMatrix('${esc(cat).replace(/'/g,"\\'")}')"
+        style="padding:3px 10px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;background:#f0f3ff;color:#3344aa;border:1.5px solid #dde4ff">
+        ${esc(cat)}
+        <span style="font-size:9px;opacity:.65;margin-left:2px">${(kappa_by_category[cat]||{}).n||0}</span>
+      </span>`).join('')}
+    </div>
+    <div style="overflow-x:auto">
+    <table style="border-collapse:collapse;font-size:13px">
+      <thead><tr>
+        <th style="padding:6px 10px;text-align:left;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid #eee"></th>
+        ${model_order.map(m => `<th style="padding:6px 10px;font-size:10px;color:#444;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid #eee;white-space:nowrap">${esc(mlabel(m))}</th>`).join('')}
+        <th style="padding:6px 10px;font-size:10px;color:#d97706;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid #eee;white-space:nowrap;border-left:2px solid #e5e7eb">vs Mkt</th>
+      </tr></thead>
+      <tbody id="kappa-matrix-body">
+        ${_kappaMatrixRows(kappa_pairs, market_kappas, model_order)}
+      </tbody>
+    </table>
+    </div>
+    <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:#888">
+      ${[['#bbf7d0','#166534','≥0.8 Excellent'],['#d1fae5','#166534','≥0.6 Substantial'],
+         ['#fef9c3','#92400e','≥0.4 Moderate'],['#ffedd5','#c2410c','≥0.2 Fair'],
+         ['#fee2e2','#991b1b','<0.2 Slight']].map(([bg,tc,lbl]) =>
+        `<span style="display:inline-flex;align-items:center;gap:4px">
+          <span style="display:inline-block;width:14px;height:14px;background:${bg};border-radius:3px;border:1px solid #e5e7eb"></span>
+          <span style="color:${tc};font-weight:600">${lbl}</span>
+        </span>`).join('')}
+    </div>
+  </div>`;
+
+  // ── model comparison table ─────────────────────────────────────────────────
+  html += `<div style="margin-bottom:24px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#666;margin-bottom:10px">
+      Cross-Model Metric Comparison
+    </div>
+    <div style="overflow-x:auto">
+    <table style="border-collapse:collapse;font-size:13px;width:100%">
+      <thead><tr style="background:#fafbff">
+        <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap">Model</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap">n</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap" title="Mean of per-market median yes_prob">Forecast</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap" title="Mean k-run standard deviation">k-run σ</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap" title="Mean |agent − market price|">|A−M|</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap">EHC</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap">HFC</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap">ICS</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #e5e7eb;white-space:nowrap" title="Mean directed |Δ| ÷ mean orthogonal |Δ|">Sensitivity</th>
+        <th style="padding:8px 12px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#d97706;border-bottom:2px solid #e5e7eb;white-space:nowrap;border-left:2px solid #e5e7eb" title="Cohen's κ vs Polymarket binary direction (YES/NO at 50%)">vs Mkt κ</th>
+      </tr></thead>
+      <tbody>
+        ${model_summary.map(s => {
+          const isLocal = /^(qwen|llama)/i.test(s.model || '');
+          const rowBg   = isLocal ? '#f6fbf6' : '#fff';
+          const mk      = mktKappaMap[s.model] || {};
+          const mkk     = mk.kappa;
+          return `<tr style="background:${rowBg};border-bottom:1px solid #f5f5f5">
+            <td style="padding:10px 12px;white-space:nowrap">
+              <span class="model-badge" style="${isLocal?'border-color:#2d4a2d;color:#7acc7a;background:#141e14':''}">
+                ${esc(s.model || '')}
+              </span>
+              ${isLocal ? '<span style="font-size:9px;color:#5a8a5a;margin-left:4px;font-weight:600">local</span>' : ''}
+            </td>
+            <td style="padding:10px 12px;text-align:right;color:#888;font-size:12px">${s.n_markets ?? '—'}</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:700;color:#2563eb">${s.mean_yes_prob != null ? Math.round(s.mean_yes_prob*100)+'%' : '—'}</td>
+            <td style="padding:10px 12px;text-align:right;color:#7c3aed;font-weight:600">${s.mean_run_std != null ? '±'+Math.round(s.mean_run_std*100)+'pp' : '—'}</td>
+            <td style="padding:10px 12px;text-align:right;color:#d97706;font-weight:600">${s.mean_divergence != null ? Math.round(s.mean_divergence*100)+'pp' : '—'}</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:700;color:${rateC(s.EHC_rate)}">${fmtR(s.EHC_rate)}</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:700;color:${rateC(s.HFC_rate)}">${fmtR(s.HFC_rate)}</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:700;color:${rateC(s.ICS_rate)}">${fmtR(s.ICS_rate)}</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:600;color:#555">${s.sensitivity != null ? s.sensitivity.toFixed(1)+'×' : '—'}</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:700;color:${kappaTc(mkk)};background:${mkk!=null?kappaBg(mkk):'#fff'};border-left:2px solid #e5e7eb" title="${mkk != null ? 'κ vs market=' + mkk + ' (' + kappaLabel(mkk) + ')' : '—'}">${mkk != null ? mkk.toFixed(2) : '—'}</td>
+          </tr>`;
+        }).join('')}
+        ${(() => {
+          const mktVals = (market_kappas||[]).map(mk=>mk.kappa).filter(k=>k!=null);
+          const avgMktK = mktVals.length ? mktVals.reduce((a,b)=>a+b,0)/mktVals.length : null;
+          const roundedAvg = avgMktK != null ? Math.round(avgMktK*100)/100 : null;
+          return `<tr style="background:#f0f4ff;border-top:2px solid #c7d2fe">
+          <td style="padding:10px 12px;font-weight:700;color:#1e3a8a;white-space:nowrap">
+            <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em">Average</span>
+          </td>
+          <td style="padding:10px 12px;text-align:right;color:#aaa">—</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:800;color:#2563eb">${cross_avg.mean_yes_prob != null ? Math.round(cross_avg.mean_yes_prob*100)+'%' : '—'}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:700;color:#7c3aed">${cross_avg.mean_run_std != null ? '±'+Math.round(cross_avg.mean_run_std*100)+'pp' : '—'}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:700;color:#d97706">${cross_avg.mean_divergence != null ? Math.round(cross_avg.mean_divergence*100)+'pp' : '—'}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:800;color:${rateC(cross_avg.EHC_rate)}">${fmtR(cross_avg.EHC_rate)}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:800;color:${rateC(cross_avg.HFC_rate)}">${fmtR(cross_avg.HFC_rate)}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:800;color:${rateC(cross_avg.ICS_rate)}">${fmtR(cross_avg.ICS_rate)}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:700;color:#555">${cross_avg.sensitivity != null ? cross_avg.sensitivity.toFixed(1)+'×' : '—'}</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:800;color:${kappaTc(roundedAvg)};background:${roundedAvg!=null?kappaBg(roundedAvg):'#f0f4ff'};border-left:2px solid #c7d2fe">${roundedAvg != null ? roundedAvg.toFixed(2) : '—'}</td>
+        </tr>`;})()}
+      </tbody>
+    </table>
+    </div>
+  </div>`;
+
+  // ── vs Market κ by category ────────────────────────────────────────────────
+  html += `<div style="margin-bottom:24px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#666;margin-bottom:10px">
+      vs Market κ — By Category
+      <span style="font-size:10px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">
+        &nbsp;how well each model tracks Polymarket direction within each domain
+      </span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="border-collapse:collapse;font-size:12px;width:100%">
+      <thead><tr style="background:#fafbff">
+        <th style="padding:6px 10px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #eee;white-space:nowrap">Category</th>
+        <th style="padding:6px 10px;text-align:right;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#aaa;border-bottom:2px solid #eee">n</th>
+        ${model_order.map(m => {
+          const isLocal = /^(qwen|llama)/i.test(m || '');
+          return `<th style="padding:6px 10px;text-align:center;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:${isLocal?'#5a8a5a':'#444'};border-bottom:2px solid #eee;white-space:nowrap">${esc(mlabel(m))}</th>`;
+        }).join('')}
+      </tr></thead>
+      <tbody>
+        <!-- overall row -->
+        <tr style="background:#f0f4ff;border-bottom:2px solid #c7d2fe">
+          <td style="padding:7px 10px;font-weight:700;color:#1e3a8a;font-size:11px">All categories</td>
+          <td style="padding:7px 10px;text-align:right;color:#aaa;font-size:11px">—</td>
+          ${model_order.map(m => {
+            const mk = mktKappaMap[m] || {};
+            const k  = mk.kappa;
+            return `<td style="padding:7px 10px;text-align:center;background:${kappaBg(k)};font-weight:800;color:${kappaTc(k)}"
+              title="${k != null ? 'κ=' + k + ' (' + kappaLabel(k) + ') · n=' + (mk.n_shared||0) : '—'}">${k != null ? k.toFixed(2) : '—'}</td>`;
+          }).join('')}
+        </tr>
+        ${allCats.map(cat => {
+          const cd  = kappa_by_category[cat] || {};
+          const mks = cd.market_kappas || [];
+          const mkm = {};
+          for (const mk of mks) mkm[mk.model] = mk;
+          return `<tr style="border-bottom:1px solid #f5f5f5">
+            <td style="padding:7px 10px">
+              <span style="font-size:10px;background:#f0f3ff;color:#3344aa;padding:2px 7px;border-radius:4px">${esc(cat)}</span>
+            </td>
+            <td style="padding:7px 10px;text-align:right;color:#aaa;font-size:11px">${cd.n||0}</td>
+            ${model_order.map(m => {
+              const mk = mkm[m] || {};
+              const k  = mk.kappa;
+              const ns = mk.n_shared || 0;
+              return `<td style="padding:7px 10px;text-align:center;background:${kappaBg(k)};font-weight:700;color:${kappaTc(k)}"
+                title="${k != null ? 'κ=' + k + ' (' + kappaLabel(k) + ') · n=' + ns : 'n=' + ns + ' (insufficient)'}">${k != null ? k.toFixed(2) : '<span style=\"color:#ccc;font-size:11px\">—</span>'}</td>`;
+            }).join('')}
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>`;
+
+  // ── per-market consensus ───────────────────────────────────────────────────
+  const allModels = model_order;
+  html += `<div style="margin-bottom:8px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#666;margin-bottom:6px">
+      Per-Market Forecast Comparison
+      <span style="font-size:10px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">
+        &nbsp;${per_market.filter(m=>m.unanimous).length}/${per_market.length} unanimous direction ·
+        click a row to open detail
+      </span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="border-collapse:collapse;font-size:12px;width:100%">
+      <thead><tr style="background:#fafbff">
+        <th style="padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #eee">Question</th>
+        <th style="padding:6px 8px;text-align:center;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #eee">Mkt</th>
+        ${allModels.map(m => `<th style="padding:6px 8px;text-align:center;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #eee;white-space:nowrap">${esc(mlabel(m))}</th>`).join('')}
+        <th style="padding:6px 8px;text-align:center;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #eee">Spread</th>
+        <th style="padding:6px 8px;text-align:center;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#888;border-bottom:2px solid #eee">Agree?</th>
+      </tr></thead>
+      <tbody>
+        ${per_market.map(m => {
+          const tid    = m.task_id.replace(/'/g, "\\'");
+          const spread = Math.round(m.std_prob * 100);
+          const spreadC = spread < 5 ? '#15803d' : spread < 15 ? '#d97706' : '#dc2626';
+          const mpStr  = m.yes_price_market != null ? Math.round(m.yes_price_market*100)+'%' : '—';
+          return `<tr style="border-bottom:1px solid #f5f5f5;cursor:pointer" onclick="loadForecast('${tid}')">
+            <td style="padding:7px 8px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(m.question)}">${esc(m.question)}</td>
+            <td style="padding:7px 8px;text-align:center;color:#d97706;font-weight:600;white-space:nowrap">${mpStr}</td>
+            ${allModels.map(mn => {
+              const yp = (m.model_probs || {})[mn];
+              if (yp == null) return '<td style="padding:7px 8px;text-align:center;color:#ccc;font-size:11px">—</td>';
+              const c = yp < 0.25 ? '#dc2626' : yp < 0.55 ? '#d97706' : '#15803d';
+              return `<td style="padding:7px 8px;text-align:center;font-weight:700;color:${c}">${Math.round(yp*100)}%</td>`;
+            }).join('')}
+            <td style="padding:7px 8px;text-align:center;font-weight:600;color:${spreadC}">±${spread}pp</td>
+            <td style="padding:7px 8px;text-align:center">${m.unanimous && m.n_models >= 2
+              ? '<span style="color:#15803d;font-size:13px;font-weight:700">✓</span>'
+              : '<span style="color:#dc2626;font-size:13px">✗</span>'}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>`;
+
+  html += `</div></div>`;
+  return html;
+}
+
+function selectAggModel(modelName) {
+  const sid = modelName.replace(/[^a-zA-Z0-9]/g, '_');
+  document.querySelectorAll('.agg-model-tab').forEach(el => {
+    el.classList.toggle('active', el.id === 'aggtab-' + sid);
+  });
+  document.querySelectorAll('.agg-model-panel').forEach(el => {
+    el.style.display = el.id === 'aggpanel-' + sid ? 'block' : 'none';
+  });
+  if (modelName === '__cross__') _ensureCrossModel();
+}
+
+function filterKappaMatrix(cat) {
+  const isAll  = cat === '__all__';
+  const catObj = isAll ? null : (window._cmCatData || {})[cat] || {};
+  const pairs  = isAll ? window._cmAllPairs  : (catObj.pairs         || []);
+  const mkts   = isAll ? window._cmAllMkts   : (catObj.market_kappas || []);
+  const models = window._cmModels || [];
+  const tbody  = document.getElementById('kappa-matrix-body');
+  if (tbody && window._kappaMatrixRows) {
+    tbody.innerHTML = window._kappaMatrixRows(pairs, mkts, models);
+  }
+  document.querySelectorAll('.kappa-cat-pill').forEach(el => {
+    const active = el.dataset.cat === cat;
+    el.style.background     = active ? '#1a1a2e' : '#f0f3ff';
+    el.style.color          = active ? '#c7d2fe' : '#3344aa';
+    el.style.borderColor    = active ? '#3a3d5c' : '#dde4ff';
+  });
+}
+
+let _crossModelLoaded = false;
+async function _ensureCrossModel() {
+  if (_crossModelLoaded) return;
+  const el = document.getElementById('cross-model-content');
+  if (!el) return;
+  el.innerHTML = '<div style="padding:40px;text-align:center;color:#999">Loading cross-model analysis…</div>';
+  try {
+    const [data, scatter, reg, agr, agg] = await Promise.all([
+      getJSON('/api/cross_model'),
+      getJSON('/api/delta_scatter'),
+      getJSON('/api/regression'),
+      getJSON('/api/update_agreement'),
+      getJSON('/api/aggregate'),
+    ]);
+    _crossModelLoaded = true;
+    el.innerHTML = renderCrossModel(data);
+
+    // (A) direction scatter — all models
+    const scatterEl = document.getElementById('delta-scatter-cross');
+    if (scatterEl) {
+      scatterEl.innerHTML = (scatter.models && Object.keys(scatter.models).length)
+        ? renderDeltaScatterSVG(scatter.models, { multi: true, title: '(A) Direction-selective updating — all models', width: 620 })
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">No update data yet</div>';
+    }
+
+    // (B) overall regression + Wald
+    const regEl = document.getElementById('regression-cross');
+    if (regEl) {
+      regEl.innerHTML = reg.overall
+        ? renderRegressionSVG(reg.overall, { title: '(B) Revision vs. initial forecast — all models' })
+          + renderRegressionTable(reg.overall)
+          + renderWaldAnnotation(reg.overall.wald_symmetry)
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">Not enough data yet</div>';
+    }
+
+    // (C) agent vs. market — all models combined from aggregate
+    const amEl = document.getElementById('agent-market-cross');
+    if (amEl) {
+      const allPerMarket = [];
+      for (const [mn, mStats] of Object.entries(agg.models||{})) {
+        for (const pm of (mStats.per_market||[])) {
+          if (pm.yes_prob != null && pm.yes_price_market != null)
+            allPerMarket.push({model: mn, ...pm});
+        }
+      }
+      amEl.innerHTML = allPerMarket.length
+        ? renderAgentMarketSVG(allPerMarket, { title: '(C) Agent forecast vs. Polymarket price', width: 380 })
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">No forecast-vs-market data yet</div>';
+    }
+
+    // Cross-model update agreement panel
+    const agrEl = document.getElementById('update-agreement-cross');
+    if (agrEl) {
+      agrEl.innerHTML = agr.sign_agreement
+        ? renderUpdateAgreementPanel(agr)
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">Not enough data for agreement analysis yet</div>';
+    }
+
+    // (D) Model size vs consistency metrics chart
+    const sizeEl = document.getElementById('model-size-chart-cross');
+    if (sizeEl) {
+      sizeEl.innerHTML = (data.model_summary && data.model_summary.length)
+        ? renderModelSizeChart(data.model_summary)
+        : '<div style="color:#bbb;font-size:11px;padding:8px 0">No model summary data yet</div>';
+    }
+  } catch(e) {
+    el.innerHTML = '<div style="padding:40px;color:#dc2626">Failed: ' + esc(String(e)) + '</div>';
+  }
 }
 
 window.addEventListener('DOMContentLoaded', () => {

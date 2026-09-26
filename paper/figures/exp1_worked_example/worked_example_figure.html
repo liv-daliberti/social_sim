@@ -1,0 +1,472 @@
+<title>Exp 1 — GPT-5.4 Worked Example</title>
+<style>
+  :root{
+    --bg:#f6f6f8; --surface:#ffffff; --surface-2:#f0f1f4; --inset:#f8f8fb;
+    --ink:#191c23; --muted:#5c6472; --faint:#8b93a3; --line:#e4e5ea; --line-2:#d7d9e0;
+    --accent:#ea580c;              /* GPT-5.4 / frontier */
+    --pro:#15a34a; --anti:#dc2626; --ortho:#7c3aed;
+    --pro-wash:#e9f7ee; --anti-wash:#fdecec; --ortho-wash:#f2ecfb;
+    --shadow:0 1px 2px rgba(20,22,30,.04), 0 6px 20px rgba(20,22,30,.05);
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0d0f13; --surface:#161920; --surface-2:#1c2029; --inset:#12151b;
+      --ink:#e9ebf0; --muted:#9aa2b1; --faint:#6b7382; --line:#262b34; --line-2:#323844;
+      --accent:#fb7a3c;
+      --pro:#2dd071; --anti:#f26262; --ortho:#a78bfa;
+      --pro-wash:#11291c; --anti-wash:#2c1414; --ortho-wash:#1f1730;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f6f8; --surface:#ffffff; --surface-2:#f0f1f4; --inset:#f8f8fb;
+    --ink:#191c23; --muted:#5c6472; --faint:#8b93a3; --line:#e4e5ea; --line-2:#d7d9e0;
+    --accent:#ea580c; --pro:#15a34a; --anti:#dc2626; --ortho:#7c3aed;
+    --pro-wash:#e9f7ee; --anti-wash:#fdecec; --ortho-wash:#f2ecfb;
+    --shadow:0 1px 2px rgba(20,22,30,.04), 0 6px 20px rgba(20,22,30,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d0f13; --surface:#161920; --surface-2:#1c2029; --inset:#12151b;
+    --ink:#e9ebf0; --muted:#9aa2b1; --faint:#6b7382; --line:#262b34; --line-2:#323844;
+    --accent:#fb7a3c; --pro:#2dd071; --anti:#f26262; --ortho:#a78bfa;
+    --pro-wash:#11291c; --anti-wash:#2c1414; --ortho-wash:#1f1730;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:44px 24px 64px;}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  /* ---------- masthead ---------- */
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;}
+  h1{font-size:clamp(26px,3.4vw,38px);line-height:1.12;margin:.32em 0 .28em;letter-spacing:-.015em;
+    text-wrap:balance;font-weight:680;}
+  .dek{color:var(--muted);font-size:16.5px;max-width:64ch;margin:0;}
+  .dek b{color:var(--ink);font-weight:600}
+  .masthead{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:8px;}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px;font-size:13px;color:var(--muted);}
+  .legend .k{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none;}
+  .modelchip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;
+    font-weight:600;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));
+    background:color-mix(in srgb,var(--accent) 8%,transparent);padding:5px 11px;border-radius:999px;}
+  .modelchip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+
+  /* ---------- stage scaffold ---------- */
+  .stage{display:grid;grid-template-columns:76px 1fr;gap:22px;position:relative;padding:30px 0;}
+  .stage + .stage{border-top:1px solid var(--line);}
+  .rail{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .num{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:700;
+    font-size:18px;color:var(--accent);border:1.5px solid color-mix(in srgb,var(--accent) 45%,var(--line));
+    background:var(--surface);font-variant-numeric:tabular-nums;}
+  .rail .stem{flex:1;width:2px;background:linear-gradient(var(--line-2),transparent);border-radius:2px;min-height:12px;}
+  .rail .label{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--faint);writing-mode:vertical-rl;transform:rotate(180deg);margin-top:2px;font-weight:600;}
+  .body{min-width:0}
+  .stage h2{font-size:12.5px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 14px;font-weight:600;}
+  .stage h2 .q{color:var(--faint);font-weight:500;text-transform:none;letter-spacing:0;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;
+    box-shadow:var(--shadow);}
+
+  /* ---------- stage 1: question ---------- */
+  .qcard{display:grid;grid-template-columns:1fr auto;gap:20px 26px;align-items:center;}
+  .qtext{font-family:var(--serif);font-size:clamp(21px,2.6vw,27px);line-height:1.22;font-weight:600;
+    letter-spacing:-.01em;text-wrap:balance;}
+  .qmeta{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:14px;}
+  .pill{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:999px;padding:4px 10px;}
+  .pill b{color:var(--ink);font-weight:600}
+  .gauge{text-align:center;min-width:142px;padding:6px 4px;}
+  .gauge .cap{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .gauge .val{font-size:34px;font-weight:720;letter-spacing:-.02em;line-height:1.1;margin-top:2px;}
+  .gauge .sub{font-size:11.5px;color:var(--muted);margin-top:1px;}
+  .track{height:7px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);
+    margin-top:10px;overflow:hidden;position:relative;}
+  .track > .mkt{position:absolute;inset:0 auto 0 0;background:var(--faint);border-radius:6px;}
+  .track > .mdl{position:absolute;top:-3px;bottom:-3px;width:2.5px;background:var(--accent);border-radius:2px;}
+  .track-key{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:6px;display:flex;justify-content:center;gap:12px}
+  .track-key .mm{color:var(--accent);font-weight:600}
+
+  /* ---------- stage 2: event model ---------- */
+  .grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;}
+  .sub-h{font-size:11px;font-family:var(--mono);letter-spacing:.11em;text-transform:uppercase;
+    color:var(--faint);font-weight:600;margin:0 0 9px;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+  .chip{font-size:12.5px;background:var(--inset);border:1px solid var(--line);border-radius:8px;
+    padding:5px 10px;color:var(--ink);}
+  .mech{list-style:none;margin:0 0 4px;padding:0;display:flex;flex-direction:column;gap:8px;}
+  .mech li{position:relative;padding-left:18px;font-size:13.5px;color:var(--ink);}
+  .mech li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;
+    background:var(--line-2);}
+  .latent{background:var(--inset);border:1px solid var(--line);border-radius:12px;padding:14px 15px;}
+  .latent .row{display:flex;gap:10px;font-size:13px;color:var(--muted);padding:7px 0;}
+  .latent .row + .row{border-top:1px dashed var(--line);}
+  .latent .row .ix{font-family:var(--mono);font-size:11px;color:var(--faint);flex:none;width:16px;}
+  .pivot{background:color-mix(in srgb,var(--accent) 9%,var(--surface));
+    border:1.5px solid color-mix(in srgb,var(--accent) 55%,var(--line));border-radius:12px;padding:13px 15px;margin-bottom:12px;}
+  .pivot .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;display:flex;align-items:center;gap:6px;}
+  .pivot .txt{font-size:14px;color:var(--ink);margin-top:6px;font-weight:500;line-height:1.4;}
+  .pivot .txt em{font-style:normal;background:color-mix(in srgb,var(--accent) 20%,transparent);
+    padding:0 4px;border-radius:4px;font-weight:600;}
+
+  /* hypotheses bars */
+  .hyps{display:flex;flex-direction:column;gap:14px;margin-top:2px;}
+  .hyp .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px;}
+  .hyp .name{font-weight:650;font-size:13.5px;}
+  .hyp .name .tone{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:5px;margin-left:6px;}
+  .tone.yes{color:var(--pro);background:var(--pro-wash);}
+  .tone.no{color:var(--anti);background:var(--anti-wash);}
+  .hyp .desc{font-size:12px;color:var(--muted);margin:0 0 8px;line-height:1.4;}
+  .pp{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .bar{flex:1;height:9px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);position:relative;overflow:hidden;}
+  .bar .prior{position:absolute;inset:0 auto 0 0;background:var(--line-2);opacity:.7;}
+  .bar .post{position:absolute;inset:0 auto 0 0;border-radius:6px;}
+  .post.yes{background:var(--pro)} .post.no{background:var(--anti)}
+  .arrowto{color:var(--faint)}
+
+  .mapping{margin-top:16px;border-top:1px solid var(--line);padding-top:14px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .mapping .eq{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+  .mapping .eq b{color:var(--ink)}
+  .phat{display:inline-flex;align-items:baseline;gap:8px;font-family:var(--mono);
+    background:var(--surface-2);border:1px solid var(--line-2);border-radius:9px;padding:7px 13px;}
+  .phat .lab{font-size:11px;color:var(--muted)} .phat .v{font-size:22px;font-weight:720;letter-spacing:-.01em;}
+  .rationale{font-size:13px;color:var(--muted);line-height:1.5;margin:16px 0 0;
+    border-left:2px solid var(--line-2);padding-left:13px;}
+  .rationale b{color:var(--ink);font-weight:600}
+
+  /* ---------- stage 3: dispatch ---------- */
+  .flowin{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;
+    color:var(--pro);font-weight:600;margin-bottom:12px;}
+  .flowin .icon{font-size:15px}
+  .dispatch{border:1px solid var(--line);border-left:4px solid var(--pro);border-radius:12px;
+    background:var(--surface);overflow:hidden;box-shadow:var(--shadow);}
+  .dispatch .head{display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:11px 18px;background:var(--pro-wash);border-bottom:1px solid var(--line);flex-wrap:wrap;}
+  .dateline{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--pro);font-weight:600;}
+  .synth{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--line-2);border-radius:6px;padding:2px 7px;}
+  .dispatch .headline{font-family:var(--serif);font-size:20px;line-height:1.24;font-weight:700;
+    padding:16px 18px 4px;letter-spacing:-.01em;text-wrap:balance;}
+  .dispatch .lede{font-family:var(--serif);font-size:15px;line-height:1.55;color:var(--ink);
+    padding:6px 18px 16px;}
+  .dispatch .lede .drop{float:left;font-size:40px;line-height:.82;font-weight:700;padding:4px 8px 0 0;color:var(--pro);}
+  .targets{display:flex;gap:9px;align-items:flex-start;padding:11px 18px;border-top:1px dashed var(--line);
+    background:var(--inset);font-size:12.5px;color:var(--muted);}
+  .targets .t{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+    font-weight:700;flex:none;padding-top:1px;}
+
+  /* ---------- stage 4: update ---------- */
+  .update{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;}
+  .moveviz{background:var(--inset);border:1px solid var(--line);border-radius:14px;padding:18px 20px;min-width:230px;}
+  .moverow{display:flex;align-items:center;gap:12px;font-family:var(--mono);}
+  .moverow .from{font-size:26px;font-weight:700;color:var(--muted);letter-spacing:-.02em;}
+  .moverow .to{font-size:32px;font-weight:760;color:var(--pro);letter-spacing:-.02em;}
+  .moverow .ar{color:var(--faint);font-size:19px;}
+  .delta{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-weight:700;font-size:13px;
+    color:var(--pro);background:var(--pro-wash);border-radius:7px;padding:3px 9px;margin-top:12px;}
+  .icsline{font-size:11.5px;color:var(--faint);font-family:var(--mono);margin-top:12px;line-height:1.5;}
+  .icsline b{color:var(--muted);font-weight:600}
+  .updbars{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+  .updbars .lab{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--muted);}
+  .minibar{height:7px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line);position:relative;overflow:hidden;}
+  .minibar > span{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--pro);}
+  .minibar > .ghost{background:var(--line-2);opacity:.7;}
+
+  /* ---------- selectivity strip ---------- */
+  .selhead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+  .selhead p{margin:0;color:var(--muted);font-size:14px;max-width:60ch}
+  .trip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;}
+  .tc{background:var(--surface);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;}
+  .tc .band{padding:8px 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+    font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  .tc.pro .band{color:var(--pro);background:var(--pro-wash);}
+  .tc.anti .band{color:var(--anti);background:var(--anti-wash);}
+  .tc.ortho .band{color:var(--ortho);background:var(--ortho-wash);}
+  .tc .hl{font-family:var(--serif);font-size:14.5px;line-height:1.32;font-weight:600;padding:13px 14px 6px;color:var(--ink);text-wrap:balance;}
+  .tc .why{font-size:12px;color:var(--muted);line-height:1.45;padding:0 14px 14px;flex:1;}
+  .tc .foot{margin-top:auto;border-top:1px solid var(--line);padding:12px 14px;background:var(--inset);
+    display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .tc .prob{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--muted);}
+  .tc .prob b{color:var(--ink);font-size:20px;font-weight:760}
+  .dchip{font-family:var(--mono);font-weight:700;font-size:13px;border-radius:7px;padding:4px 9px;display:inline-flex;gap:5px;align-items:center;}
+  .tc.pro .dchip{color:var(--pro);background:var(--pro-wash)}
+  .tc.anti .dchip{color:var(--anti);background:var(--anti-wash)}
+  .tc.ortho .dchip{color:var(--ortho);background:var(--ortho-wash)}
+  .takeaway{margin-top:18px;background:var(--inset);border:1px solid var(--line);border-radius:12px;
+    padding:15px 18px;font-size:14px;color:var(--ink);line-height:1.5;display:flex;gap:12px;align-items:flex-start;}
+  .takeaway .b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+    font-weight:700;flex:none;padding-top:3px;}
+  .takeaway b{font-weight:650}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:38px;border-top:1px solid var(--line);padding-top:20px;
+    display:grid;grid-template-columns:1fr;gap:16px;}
+  .caption{font-size:12.5px;color:var(--muted);line-height:1.6;}
+  .caption .figlab{font-weight:700;color:var(--ink);}
+  .prov{font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.7;}
+  .prov b{color:var(--muted);font-weight:600}
+
+  @media (max-width:760px){
+    .stage{grid-template-columns:44px 1fr;gap:14px}
+    .num{width:36px;height:36px;font-size:15px}
+    .rail .label{display:none}
+    .qcard{grid-template-columns:1fr}
+    .grid2{grid-template-columns:1fr}
+    .update{grid-template-columns:1fr}
+    .trip{grid-template-columns:1fr}
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- ================= MASTHEAD ================= -->
+  <header class="masthead">
+    <div class="eyebrow">Experiment 1 · Worked example</div>
+    <h1>One forecast, watched as it updates</h1>
+    <p class="dek">A single real episode from the study: <b>GPT-5.4</b> builds a causal model of an open
+      prediction market, states its hypotheses, then revises the forecast when a piece of evidence is
+      injected — moving <b>only</b> for evidence that bears on the variable it decided was pivotal. Read
+      top to bottom.</p>
+    <div class="legend">
+      <span class="modelchip"><span class="dot"></span>GPT-5.4 · frontier agent</span>
+      <span class="k"><span class="swatch" style="background:var(--pro)"></span>pro-H₁ evidence (pushes YES up)</span>
+      <span class="k"><span class="swatch" style="background:var(--anti)"></span>anti-H₁ evidence (pushes YES down)</span>
+      <span class="k"><span class="swatch" style="background:var(--ortho)"></span>orthogonal evidence (should not move it)</span>
+    </div>
+  </header>
+
+  <!-- ================= STAGE 1 : QUESTION ================= -->
+  <section class="stage">
+    <div class="rail"><div class="num">1</div><div class="stem"></div><div class="label">The question</div></div>
+    <div class="body">
+      <h2>The market</h2>
+      <div class="card qcard">
+        <div>
+          <div class="qtext">Will Trump order a federal review of AI-model releases by June&nbsp;30,&nbsp;2026?</div>
+          <div class="qmeta">
+            <span class="pill">category&nbsp;<b>Tech</b></span>
+            <span class="pill">resolves&nbsp;<b>Jun 30, 2026</b></span>
+            <span class="pill">sampled&nbsp;<b>Jun 11, 2026</b></span>
+            <span class="pill tnum"><b>20</b>&nbsp;days to resolution</span>
+          </div>
+        </div>
+        <div class="gauge">
+          <div class="cap">Polymarket price</div>
+          <div class="val tnum">38%</div>
+          <div class="sub">the crowd, at sampling</div>
+          <div class="track"><span class="mkt" style="width:38%"></span><span class="mdl" style="left:46%"></span></div>
+          <div class="track-key"><span>market 38%</span><span class="mm">▏GPT-5.4 0.46</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STAGE 2 : EVENT MODEL ================= -->
+  <section class="stage">
+    <div class="rail"><div class="num">2</div><div class="stem"></div><div class="label">The model</div></div>
+    <div class="body">
+      <h2>The event model GPT-5.4 builds <span class="q">— what actually decides this question</span></h2>
+      <div class="card">
+        <div class="grid2">
+          <!-- left: actors + mechanisms -->
+          <div>
+            <div class="sub-h">Key actors</div>
+            <div class="chips">
+              <span class="chip">Donald Trump</span>
+              <span class="chip">White House policy staff</span>
+              <span class="chip">Dept. of Commerce</span>
+              <span class="chip">NIST</span>
+              <span class="chip">National-security agencies</span>
+              <span class="chip">Frontier AI labs · OpenAI / Anthropic / Google / Meta / xAI</span>
+              <span class="chip">Polymarket resolvers</span>
+            </div>
+            <div class="sub-h">Causal mechanisms</div>
+            <ul class="mech">
+              <li>Presidential action can directly <b>create or direct</b> a federal AI-release review framework.</li>
+              <li>To qualify it must review the <b>public release</b> of new models — not procurement or internal use.</li>
+              <li>The <b>June 2, 2026 executive order</b> already set up a <em>voluntary</em> pre-release access framework.</li>
+              <li>Resolution turns on whether that voluntary order <b>counts</b> — or whether follow-up action makes it binding.</li>
+            </ul>
+          </div>
+          <!-- right: latent variables, pivot highlighted -->
+          <div>
+            <div class="pivot">
+              <div class="tag">◆ Pivotal latent variable</div>
+              <div class="txt">Does the <em>voluntary</em> June-2 framework count as a qualifying federal
+                “review” — or is a <em>binding new action</em> still needed before June 30?</div>
+            </div>
+            <div class="latent">
+              <div class="sub-h" style="margin-bottom:4px">Other latent variables</div>
+              <div class="row"><span class="ix">v₁</span>How resolvers read a voluntary framework vs. mandatory pre-clearance.</div>
+              <div class="row"><span class="ix">v₂</span>Whether follow-up documents before June 30 make the process explicit.</div>
+              <div class="row"><span class="ix">v₃</span>Whether the June-2 order is real oversight or only national-security screening.</div>
+              <div class="row"><span class="ix">v₄</span>Whether any additional executive action lands before the deadline.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- hypotheses -->
+        <div class="mapping" style="border-top:1px solid var(--line);margin-top:20px;padding-top:18px;display:block">
+          <div class="sub-h">Two hypotheses, prior → posterior</div>
+          <div class="hyps">
+            <div class="hyp">
+              <div class="top"><div class="name">H₁<span class="tone yes">YES</span></div>
+                <div class="pp tnum">prior 22% <span class="arrowto">→</span> post <b style="color:var(--pro)">46%</b></div></div>
+              <p class="desc">By Jun 30, Trump has taken (or takes) executive action creating/directing a federal
+                review process for public AI-model releases — with the June-2 order potentially qualifying as a
+                voluntary pre-release framework.</p>
+              <div class="pp"><span class="tnum" style="width:34px">22→46</span>
+                <div class="bar"><span class="prior" style="width:22%"></span><span class="post yes" style="width:46%"></span></div></div>
+            </div>
+            <div class="hyp">
+              <div class="top"><div class="name">H₂<span class="tone no">NO</span></div>
+                <div class="pp tnum">prior 78% <span class="arrowto">→</span> post <b style="color:var(--anti)">54%</b></div></div>
+              <p class="desc">The June-2 order is judged too voluntary / too national-security-focused / explicitly
+                non-preclearance to qualify, and no stronger action lands in time.</p>
+              <div class="pp"><span class="tnum" style="width:34px">78→54</span>
+                <div class="bar"><span class="prior" style="width:78%"></span><span class="post no" style="width:54%"></span></div></div>
+            </div>
+          </div>
+          <div class="mapping">
+            <span class="eq">mapping&nbsp;·&nbsp;binary market, so&nbsp; <b>p̂ = P(H₁)</b></span>
+            <span class="phat"><span class="lab">initial forecast</span><span class="v tnum" style="color:var(--accent)">0.46</span></span>
+            <span class="eq">confidence <b>medium</b>&nbsp;·&nbsp;market said <b>0.38</b></span>
+          </div>
+        </div>
+
+        <p class="rationale"><b>Why 0.46.</b> Trump had already signed a June-2 executive order creating a
+          <b>voluntary</b> pre-release federal-access and benchmarking framework for frontier models — a big jump
+          from the 22% prior. But the same White House fact sheet explicitly disclaims mandatory licensing or
+          pre-clearance, so it settles just below 50%: it is genuinely unclear whether resolvers will count a
+          voluntary framework as a “review process.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STAGE 3 : COUNTERFACTUAL ================= -->
+  <section class="stage">
+    <div class="rail"><div class="num">3</div><div class="stem"></div><div class="label">The evidence</div></div>
+    <div class="body">
+      <h2>An evidence packet is injected <span class="q">— web search off; the agent can only reason from it</span></h2>
+      <div class="flowin"><span class="icon">↳</span> pro-H₁ · targets the pivotal latent · plausibility 4/5</div>
+      <article class="dispatch">
+        <div class="head">
+          <span class="dateline">WASHINGTON · June 10, 2026</span>
+          <span class="synth">synthetic evidence packet</span>
+        </div>
+        <div class="headline">OMB tracking figures show agencies racing to finalize AI-release review framework</div>
+        <p class="lede"><span class="drop">I</span>nternal Office of Management and Budget tracking figures
+          reviewed by Reuters showed <b>14 federal agencies</b> had returned comments this week on a draft
+          framework for reviewing the public release of certain advanced AI models — with target deadlines of
+          <b>June 24</b> for final criteria and <b>June 27</b> for presidential sign-off. Commerce, Defense,
+          Homeland Security and Justice were listed with implementation tasks. The compressed timeline and
+          cross-agency staffing suggest the administration is preparing a <b>binding federal process before the
+          end of June</b>.</p>
+        <div class="targets"><span class="t">targets →</span>
+          <span>Whether a binding, White-House-directed review of public AI-model releases is already being
+            drafted and coordinated — the voluntary-vs-binding crux the agent flagged as pivotal.</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= STAGE 4 : UPDATE ================= -->
+  <section class="stage">
+    <div class="rail"><div class="num">4</div><div class="label">The update</div></div>
+    <div class="body">
+      <h2>GPT-5.4 revises — coherently</h2>
+      <div class="card">
+        <div class="update">
+          <div class="moveviz">
+            <div class="moverow"><span class="from tnum">0.46</span><span class="ar">→</span><span class="to tnum">0.67</span></div>
+            <span class="delta">▲ +21 pp&nbsp;·&nbsp;correct direction</span>
+            <div class="updbars">
+              <div class="lab"><span>P(H₁) posterior</span><span class="tnum">0.46 → 0.67</span></div>
+              <div class="minibar"><span class="ghost" style="width:46%"></span><span style="width:67%"></span></div>
+              <div class="lab"><span>forecast p̂</span><span class="tnum">0.46 → 0.67</span></div>
+              <div class="minibar"><span class="ghost" style="width:46%"></span><span style="width:67%"></span></div>
+            </div>
+            <div class="icsline"><b>p̂ = P(H₁) still holds</b><br>hypothesis and headline move together (ICS).</div>
+          </div>
+          <div>
+            <p class="rationale" style="margin-top:0"><b>Updated rationale.</b> This doesn't just reinterpret
+              the June-2 order — it points to a near-complete interagency process for a draft framework
+              <em>explicitly</em> reviewing the public release of advanced AI models, with concrete deadlines
+              before June 30 and a planned presidential sign-off. That <b>sharply raises</b> the odds of a
+              qualifying action; the residual doubt is only whether the final version is framed as binding
+              enough for resolvers to count.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SELECTIVITY STRIP ================= -->
+  <section class="stage" style="border-top:1px solid var(--line)">
+    <div class="rail"><div class="num" style="color:var(--muted);border-color:var(--line-2)">✦</div></div>
+    <div class="body">
+      <div class="selhead">
+        <h2 style="margin:0">The same 0.46 forecast, three different packets</h2>
+      </div>
+      <p style="margin:8px 0 0;color:var(--muted);font-size:14px;max-width:66ch">The packet above is one of three
+        the agent saw independently from the same starting point. Directional evidence moves the forecast hard;
+        AI-adjacent but causally-irrelevant evidence barely moves it at all.</p>
+
+      <div class="trip">
+        <div class="tc pro">
+          <div class="band"><span>pro-H₁ · confirming</span><span>◆ pivotal latent</span></div>
+          <div class="hl">Agencies race to finalize an AI-release review framework — June 27 sign-off</div>
+          <div class="why">A near-complete interagency process, with deadlines before June 30 — a qualifying binding action now looks imminent.</div>
+          <div class="foot"><span class="prob tnum">0.46→<b style="color:var(--pro)">0.67</b></span><span class="dchip">▲ +21</span></div>
+        </div>
+        <div class="tc anti">
+          <div class="band"><span>anti-H₁ · disconfirming</span><span>◆ pivotal latent</span></div>
+          <div class="hl">White House rules out any June order creating AI-release reviews</div>
+          <div class="why">The administration explicitly forecloses new June action, opting for nonbinding guidance later — the main path to YES closes.</div>
+          <div class="foot"><span class="prob tnum">0.46→<b style="color:var(--anti)">0.27</b></span><span class="dchip">▼ −19</span></div>
+        </div>
+        <div class="tc ortho">
+          <div class="band"><span>orthogonal · null</span><span>off-latent</span></div>
+          <div class="hl">Utilities warn the AI data-center surge is straining summer power planning</div>
+          <div class="why">Real AI news — but about electricity demand, and utilities say they aren't seeking federal controls. Off the resolution's latent.</div>
+          <div class="foot"><span class="prob tnum">0.46→<b>0.44</b></span><span class="dchip">→ −2</span></div>
+        </div>
+      </div>
+
+      <div class="takeaway"><span class="b">reading</span>
+        <div>Two near-mirror packets swing the forecast <b>+21</b> and <b>−19</b> points across the 50% line;
+          the AI-adjacent-but-irrelevant one holds at <b>−2</b>. The update tracks the <b>variable the agent said
+          mattered</b> — will a qualifying federal review actually land — not the mere presence of AI-policy news.
+          That is the signature of a coherent, updateable event model.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="caption"><span class="figlab">Figure X.</span> A single Experiment-1 episode illustrating
+      direction-selective belief updating. GPT-5.4 forecasts whether Trump orders a federal review of AI-model
+      releases by June 30, 2026 (initial p̂ = 0.46 = P(H₁), above the 0.38 Polymarket price). It isolates one
+      pivotal latent variable — whether the existing voluntary June-2 executive order counts as a qualifying
+      federal “review,” or a binding new action is still needed. A confirming packet (an interagency draft
+      framework with a June-27 sign-off) raises the forecast to 0.67 (+21 pp); a mirror-image disconfirming
+      packet (a White House statement ruling out any June order) lowers it to 0.27 (−19 pp); an orthogonal
+      AI-adjacent packet (data-center power strain) leaves it essentially unchanged (0.44, −2 pp). Hypothesis
+      posterior and headline forecast move together throughout (p̂ = P(H₁); ICS preserved). Web search is
+      disabled during updates, so revisions are driven only by the injected evidence.</div>
+    <div class="prov"><b>provenance</b> &nbsp;model <b>gpt-5.4</b> · market <b>pm_2363609</b> · run 0 (of k=5)
+      · packets: synthetic, human-reviewed · initial forecast 2026-06-11 · updates 2026-06-15<br>
+      <b>source</b> &nbsp;initial_forecasts/forecasts_gpt-5.4_2026-06-11.jsonl · counterfactuals_2026-06-10.jsonl ·
+      updated_forecasts/updated_gpt-5-4_2026-06-15.jsonl · all text verbatim from the run</div>
+  </footer>
+</div>

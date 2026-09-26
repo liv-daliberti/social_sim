@@ -1,0 +1,58 @@
+{
+  "configuration_selection_criterion": "Required-answer schema completion and deployment availability only; forecast accuracy was not evaluated.",
+  "deployment_selection": {
+    "chosen": "gemini-3.6-flash",
+    "reason": "No Pro-tier Gemini deployment can serve the 3,750-call design on this project. gemini-3.1-pro-preview and its gemini-pro-latest alias share a 250 requests/day cap that the paid billing tier does not lift, and gemini-2.5-pro returns NotFoundError under every name form. gemini-3.6-flash (3.6-flash-07-2026) is the newest generally available Gemini text deployment on the key and accepted 40 simultaneous requests in 2.5 seconds.",
+    "rejected": [
+      {
+        "deployment": "gemini-3.1-pro-preview",
+        "reason": "generate_requests_per_model_per_day limit 250, unchanged after enabling billing",
+        "task_shaped_calls_spent": 3766
+      },
+      {
+        "deployment": "gemini-pro-latest",
+        "reason": "aliases the gemini-3.1-pro quota bucket",
+        "task_shaped_calls_spent": 0
+      },
+      {
+        "deployment": "gemini-2.5-pro",
+        "reason": "NotFoundError for every name form on this key",
+        "task_shaped_calls_spent": 0
+      }
+    ],
+    "tier_note": "Gemini 3.6 Flash is Google's fast tier, not its Pro tier. It is newer than every other deployment in this comparison but is not tier-matched to Claude Opus 4.8, GPT-5.6, DeepSeek V4 Pro, or Kimi K3."
+  },
+  "deployment_smoke_calls": {
+    "count": 126,
+    "experimental_task": false,
+    "purpose": "Throughput and availability probes across candidate deployments, using a trivial non-experimental prompt."
+  },
+  "excluded_task_shaped_calls": {
+    "archived_configuration_pilot": 15,
+    "total_this_deployment": 15
+  },
+  "final_production_configuration": {
+    "effective_max_output_tokens": 16384,
+    "http_client_retries": 0,
+    "max_pre_model_transport_retries": 12,
+    "min_request_interval_seconds": 0.15,
+    "parallel_shards": 15,
+    "reasoning_effort": "low",
+    "temperature": 0
+  },
+  "model": "gemini-3.6-flash",
+  "pilots": [
+    {
+      "archive": "gemini_36_flash_low_reasoning_max16384_20260811",
+      "attempts": 15,
+      "parsed": 15,
+      "status": "completed_configuration_pilot"
+    }
+  ],
+  "production_configuration_changed_after_pilot": false,
+  "superseded_deployment_archives": [
+    "gemini_31_pro_low_reasoning_max16384_20260811",
+    "gemini_31_pro_quota_blocked_20260811",
+    "gemini_31_pro_partial_daily_capped_20260811"
+  ]
+}

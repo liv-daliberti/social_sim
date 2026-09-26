@@ -1,0 +1,56 @@
+{
+  "configuration_selection_criterion": "Required-answer schema completion and deployment throughput only; forecast accuracy was not evaluated.",
+  "deployment_smoke_calls": {
+    "count": 15,
+    "experimental_task": false,
+    "purpose": "Confirm the deployment answers 15 simultaneous requests without rate-limit errors at the planned shard fan-out."
+  },
+  "excluded_task_shaped_calls": {
+    "archived_configuration_pilot": 15,
+    "archived_infrastructure_failure": 3750,
+    "direct_unarchived_probes": 2,
+    "total": 3767,
+    "total_with_model_response": 70
+  },
+  "final_production_configuration": {
+    "effective_max_output_tokens": 16384,
+    "http_client_retries": 0,
+    "max_pre_model_transport_retries": 8,
+    "parallel_shards": 15,
+    "reasoning_effort": "low",
+    "shared_rate_limit_per_minute": 22,
+    "temperature": 0
+  },
+  "model": "gemini-3.1-pro-preview",
+  "pilots": [
+    {
+      "attempts": 1,
+      "archive": null,
+      "parsed": 1,
+      "purpose": "Confirm the OpenAI-compatible Chat Completions protocol returns the required JSON.",
+      "status": "completed_probe"
+    },
+    {
+      "archive": "gemini_31_pro_low_reasoning_max16384_20260811",
+      "attempts": 15,
+      "parsed": 15,
+      "status": "completed_configuration_pilot"
+    },
+    {
+      "archive": "gemini_31_pro_quota_blocked_20260811",
+      "attempts": 3750,
+      "parsed": 54,
+      "purpose": "First production attempt; discarded because the project rate cap rejected 3,696 requests before the model ran.",
+      "status": "aborted_infrastructure_failure"
+    },
+    {
+      "attempts": 1,
+      "archive": null,
+      "parsed": 1,
+      "purpose": "Confirm the rate cap is per-minute and carries no exhausted daily quota.",
+      "status": "completed_probe"
+    }
+  ],
+  "production_configuration_changed_after_pilot": true,
+  "production_configuration_change": "Added a shared 22 requests/minute token bucket across shards and pre-model retries on rejected requests. Sampling parameters and prompt handling are unchanged."
+}

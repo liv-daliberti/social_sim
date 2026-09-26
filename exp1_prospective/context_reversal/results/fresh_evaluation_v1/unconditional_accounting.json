@@ -1,0 +1,196 @@
+{
+  "schema_version": "context_reversal_unconditional_accounting_v1",
+  "rule": "Every planned call appears in the denominator. Model failures, instrument failures and failures cascading from a failed baseline are reported separately and none is dropped.",
+  "taxonomy": {
+    "ok": {
+      "attribution": "none",
+      "label": "Valid answer"
+    },
+    "model_refusal": {
+      "attribution": "model",
+      "label": "Declined by a safety classifier"
+    },
+    "model_unparseable": {
+      "attribution": "model",
+      "label": "Answer not a valid probability"
+    },
+    "model_framing": {
+      "attribution": "model",
+      "label": "Reasoning frame malformed"
+    },
+    "instrument_truncation": {
+      "attribution": "instrument",
+      "label": "Hit the output token budget"
+    },
+    "instrument_harness_kill": {
+      "attribution": "instrument",
+      "label": "Killed mid-batch by an allocation boundary"
+    },
+    "cascade_blocked": {
+      "attribution": "cascade",
+      "label": "Blocked by its own failed baseline"
+    },
+    "not_attempted": {
+      "attribution": "cascade",
+      "label": "Never dispatched"
+    },
+    "pending": {
+      "attribution": "pending",
+      "label": "Run still in progress; not yet attributable"
+    }
+  },
+  "arms": [
+    {
+      "arm": "GPT-5.6 Sol",
+      "planned_records": 576,
+      "categories": {
+        "ok": 576
+      },
+      "in_progress": false,
+      "by_attribution": {
+        "none": 576
+      },
+      "sources": [
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/frontier_gpt56_sol.jsonl",
+          "sha256": "edac92d9fddd306a1d1acc4988b4a5245091057d9333b8d33cd7a07b17b12904"
+        }
+      ],
+      "plan": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_plan.jsonl",
+        "sha256": "f499587d013d57df52f055aba13d4dfafc018dba104cb77c0d002b22f628856d"
+      }
+    },
+    {
+      "arm": "Claude Opus 5",
+      "planned_records": 576,
+      "categories": {
+        "ok": 339,
+        "model_refusal": 84,
+        "cascade_blocked": 153
+      },
+      "in_progress": false,
+      "by_attribution": {
+        "none": 339,
+        "model": 84,
+        "cascade": 153
+      },
+      "sources": [
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/frontier_claude_opus5.jsonl",
+          "sha256": "5a7b6ce1c990f51aa72c456abeb04beb2384adb2958d5b2d2793c686e1d7494a"
+        }
+      ],
+      "plan": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_plan.jsonl",
+        "sha256": "f499587d013d57df52f055aba13d4dfafc018dba104cb77c0d002b22f628856d"
+      }
+    },
+    {
+      "arm": "Qwen3-32B thinking off",
+      "planned_records": 3840,
+      "categories": {
+        "ok": 3840
+      },
+      "in_progress": false,
+      "by_attribution": {
+        "none": 3840
+      },
+      "sources": [
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard00.jsonl",
+          "sha256": "bdd6600912a1f336811569762238bd5ec5a28e0510266b8234c2404c97279b89"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard01.jsonl",
+          "sha256": "99dfad4e525fbd487b5106d442aac409df323724470cc79ec40055dd06bc3b21"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard02.jsonl",
+          "sha256": "25151358730542491a3f3c265371f7bb9b113a68a0a1d00d2ed290f192d2874c"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard03.jsonl",
+          "sha256": "bc812b29903594844a411e678110e5fc0a489c471a6d6a05248e77392ec3e3f2"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard04.jsonl",
+          "sha256": "9fa429e86a5db62df65ae4756dfa1891cf02a6dc8a78167de8836e80e8f7c23c"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard05.jsonl",
+          "sha256": "91e2caa6e9f465bb8aa0a3a76edc7afe81083707211a281d62da34f82aa04aa7"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard06.jsonl",
+          "sha256": "c1eae00ffb057d54cc230a93137f115e7711c96f5742c5349fb3de76d07cbc63"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/disabled_shard07.jsonl",
+          "sha256": "f7ab74550889869eea6da566b14205cea67337764046acb5dae860e6e8115c81"
+        }
+      ],
+      "plan": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/probability_plan.jsonl",
+        "sha256": "0be8994b7b6edfc491e410b563a424d549c86817258e3c62e8b37c97bed3b1f8"
+      }
+    },
+    {
+      "arm": "Qwen3-32B thinking on",
+      "planned_records": 3840,
+      "categories": {
+        "ok": 3803,
+        "model_framing": 5,
+        "cascade_blocked": 27,
+        "instrument_truncation": 5
+      },
+      "in_progress": false,
+      "by_attribution": {
+        "none": 3803,
+        "model": 5,
+        "cascade": 27,
+        "instrument": 5
+      },
+      "sources": [
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard00.jsonl",
+          "sha256": "08ea6b05465327fb6dbf5abfd6a9562dcbebf3705f69fe163186263233b2efa8"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard01.jsonl",
+          "sha256": "8de2e20fd6faa90d4c2e150bcc30d549f5153df6b6721bf997fbb13a753e2847"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard02.jsonl",
+          "sha256": "816deec13cf4fafd6758889cf8443f82d394b661c669cc54e0afeeb34da8b8b2"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard03.jsonl",
+          "sha256": "dccf0e6a46e7a22b24b742d123e133125b42f4a418b252cdeb8f478380ab25c4"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard04.jsonl",
+          "sha256": "b39bb62667f4232ac078ea6d99c9bd0ccfc8ee49ffe3fb27119c19002366ddb2"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard05.jsonl",
+          "sha256": "deeb535e7f6a66cbbadb6ba97205a792e238034c1f2d3b83c894759d673d7a3a"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard06.jsonl",
+          "sha256": "d65f673deeba95a975d7687506c87007b5f8843e91692e4a617b0d812fa3701e"
+        },
+        {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard07.jsonl",
+          "sha256": "e4f9660597f929a62ee626c3850506a6afd4b4d7d3a02f3a7953e798b7cacf6e"
+        }
+      ],
+      "plan": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/probability_plan.jsonl",
+        "sha256": "0be8994b7b6edfc491e410b563a424d549c86817258e3c62e8b37c97bed3b1f8"
+      }
+    }
+  ],
+  "created_at": "2026-09-23T14:28:26.451184+00:00",
+  "code_sha256": "bc038cd9f247a8c446eacd059e0b797698e9b8622f6bf7e69f8092583b10d2b2"
+}

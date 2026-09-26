@@ -1,0 +1,28 @@
+{
+  "adapter_conversions": [
+    {"adapter_config_sha256": "818461cbc8dc0816502aa921cd841b83ec2ac04fd87efefc1969768b5f46dc7b", "adapter_path": "exp3_training_transfer/polymarket/reports/qwen32_train_qwen3_32b_market_20260826_225326_j30913530/debug_0826T22:53:55/saved_models/step_00301", "job_id": "30913530", "source_bin_sha256": "1a7533f2f64087735c1680ba61316448ce6e6f2e6df31c9380b60f8feafefb62", "target_safetensors_sha256": "2564e3718dd6f3ea5e571bf0a98966cca2ee05936b3dac3456ab36ad738571b2", "tensor_count": 896, "target_bytes": 536992848},
+    {"adapter_config_sha256": "85faf812acb4162f9198fb2a85c41af2eb092385e4b2ffaaf7a8c5156898b407", "adapter_path": "exp3_training_transfer/polymarket/reports/qwen32_train_qwen3_32b_market_20260827_025318_j30913531/debug_0827T03:11:10/saved_models/step_00301", "job_id": "30913531", "source_bin_sha256": "28108856438eda6db30d2d3077e8c1a04e430b745b5d4baa20fab08fc3e15e22", "target_safetensors_sha256": "83e3a846fff12f8154b732e050ab82062606ef630569c2526a8add803da0800e", "tensor_count": 896, "target_bytes": 536992848},
+    {"adapter_config_sha256": "f79bc6ccea61c66c6aa5a2de64332016f7fe25e3f809282aa1eac1d9c6f6bf52", "adapter_path": "exp3_training_transfer/polymarket/reports/qwen32_train_qwen3_32b_market_20260827_044254_j30913532/debug_0827T04:43:22/saved_models/step_00301", "job_id": "30913532", "source_bin_sha256": "095686314a3ce2fa976dd8f68447eb4a86696e7c8d997909f4cdd28390aa459b", "target_safetensors_sha256": "a8add10b41994b832d91283c885b8e7fcd695a261808324296f0d01b4172a704", "tensor_count": 896, "target_bytes": 536992848}
+  ],
+  "completed_training_jobs": {
+    "30913530": {"end": "2026-08-28T16:34:45", "exit_code": "0:0"},
+    "30913531": {"end": "2026-08-28T21:04:50", "exit_code": "0:0"},
+    "30913532": {"end": "2026-08-28T22:05:03", "exit_code": "0:0"}
+  },
+  "created_at": "20260829T223605Z",
+  "evaluation_jobs_prepared": ["30913533", "30913560"],
+  "evaluator_change": {
+    "after": "resolve qwen32_train_qwen3_32b_market_* job reports in the Qwen-only wrapper",
+    "before": "inherited generic scale_train_qwen3_32b_market_* resolver",
+    "frozen_parent_evaluator_sha256": "4130fd351af884bd5d0b3b20c2b6e7335eed5abe93a91017f1d056ff171ec2b0",
+    "new_qwen_wrapper_sha256": "4b9c5c174a8dbe39338396454831bec39fb2a7e509ba330add6fb17c48650b62",
+    "old_qwen_wrapper_sha256": "c279050fc274e1fa875e5db191bc81cc0ce6d9567204267930d651bc4a497a95"
+  },
+  "extends_artifact_contract_amendment": "exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_adapter_artifact_contract_compatibility_amendment_20260827T015821Z.json",
+  "extends_artifact_contract_amendment_sha256": "300c29576d4b29705809fefeaef530c6927a5bb0809da2a3a7842724e953ec87",
+  "kind": "qwen32_completed_training_artifact_and_evaluator_path_compatibility_amendment",
+  "parent_full_ledger": "exp3_training_transfer/polymarket/runs/exp4_qwen32_full_20260827T020056Z.json",
+  "parent_full_ledger_sha256": "0c63a0bc003c922a41c1ee0671e9a49ca253b775dd59ef23fc9187f664f43b0d",
+  "scientific_hyperparameters_changed": false,
+  "tests": {"command": "python -m pytest -q exp3_training_transfer/polymarket/tests/test_qwen32_extension.py", "passed": 15, "test_file_sha256": "a142d17d5115d37a1315b769ecc94922179d6ab8d05fdc1190fddc50b9f5056d"}
+}

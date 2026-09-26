@@ -1,0 +1,7 @@
+# Fixed same-hardware comparator amendment: approved before control outcomes
+
+2026-09-22 03:33UTC. All four prepared matched45/46 cells are approved together, subject to the same first-update infrastructure gate. The final primary comparison now uses ten newly trained matched checkpoints onA5000 (five seeds per disclosure) versus the ten shuffled controls onA5000. Training prompts, budgets, seed roster and target-vector multisets remain those already frozen; the only scientific difference between arms is compatible-episode target assignment. Both arms use identical operational hardware and actor allocation.
+
+Total new training roster is now fixed at20: ten requested shuffled controls, six matched runs needed because earlier42–44 weights are missing, and four matched45/46 runs that remove the hardware difference. This is no seed extension or hyperparameter search. No further training cells are authorized under this amendment. Current historical matched45/46 fresh evaluation remains supplementary and is not substituted into the primary comparison. No newly trained matched/control contrast existed when this roster was fixed.
+
+Historical-hardware sensitivity may be reported separately using reused45/46 plus recovered42–44, explicitly labeled mixed hardware. The default analysis uses same-hardware matches and cannot silently fall back to historical weights. A partial report names missing cells and does not claim five seeds. This amendment overrides the primary-comparator reuse language inPROTOCOL.md; all preceding freezes and ledgers remain available.

@@ -1,0 +1,219 @@
+{
+  "audit_status": "passed",
+  "model_key": "qwen2_5_72b_instruct",
+  "audit_method": "Independent stdlib score/provenance recomputation, NumPy bootstrap check, local tokenizer reconstruction; no model inference.",
+  "files": {
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/direction_plan.jsonl": "478b2e76395fbec66aed89aca5ca43d9ed8fce77e0fe2d3472768bb2bf882ea3",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/probability_plan.jsonl": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/development_v1/development_plan.jsonl": "cf6d5e30b5e3bd3ebd42be5348019c485f2f50f62d5a8b2ae07000ac5cbfb4a4",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/direction_qwen2_5_72b_instruct.jsonl": "69b7e96790ba3609eab774af4eb399ee3394270a5e24bb9ea09926f6ed61e3f2",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/development_v1/qwen2_5_72b_instruct_retry_eager.jsonl": "92a2bd44b97d2b9d3d2e290923fa727113432ec087cb16807fc80a846ec3474f",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/direction_qwen2_5_72b_instruct/summary.json": "17230882d937eff8761a9312ee04cd02b1d178a0266ac94357ec2c5e7586e07e"
+  },
+  "checks": {
+    "80 unique units": 1,
+    "20 families": 1,
+    "20 units per context": 1,
+    "repeat zero only": 1,
+    "240 responses": 1,
+    "complete manifest": 1,
+    "frozen direction input hash": 1,
+    "frozen parent hash": 1,
+    "run config signature": 1,
+    "frozen runner hash": 1,
+    "frozen helper hash": 2,
+    "prespecified decode": 4,
+    "vllm version": 1,
+    "parent exact source repeat0": 80,
+    "parent unit hash": 80,
+    "exact parent scenario": 80,
+    "original update scenario and prior placeholder": 240,
+    "exact parent news": 240,
+    "frozen direction prompt hash": 240,
+    "no numeric forecast display or elicitation": 240,
+    "unique response cell": 240,
+    "direction stage and condition": 240,
+    "response valid status and model": 240,
+    "strict exact enum JSON": 240,
+    "raw parsed label agreement": 240,
+    "response unit metadata": 240,
+    "exact response prompt and hash": 240,
+    "response provenance": 240,
+    "per-request seed": 240,
+    "no numeric prior or forecast fields": 240,
+    "all240 planned responses covered": 1,
+    "320 existing repeat0 numeric responses": 1,
+    "unique existing numeric cell": 320,
+    "original full-plan numeric input hash": 320,
+    "numeric raw/parsed valid": 320,
+    "numeric probability range": 320,
+    "numeric exact parent prompt hash": 320,
+    "numeric own prior match": 240,
+    "summary cell expected target": 12,
+    "summary cell label counts": 12,
+    "summary cell denominator": 12,
+    "summary cell accuracy": 11,
+    "masked new news unscored": 1,
+    "summary aggregate signed": 1,
+    "summary aggregate paired": 1,
+    "summary aggregate broken": 1,
+    "summary aggregate controls": 1,
+    "summary pooled cross-tab": 4,
+    "summary per-cell cross-tab": 44,
+    "summary endpoint count": 5,
+    "cross-tab denominators": 1,
+    "summary total coverage": 1,
+    "independent family bootstrap CI": 1,
+    "tokenizer template hash": 1,
+    "independent chat prompt hash": 240,
+    "independent prompt token count": 240
+  },
+  "checks_passed": 6048,
+  "coverage": {
+    "families": 20,
+    "units": 80,
+    "planned": 240,
+    "present": 240,
+    "valid": 240,
+    "missing": 0
+  },
+  "scores": {
+    "signed_correct": 25,
+    "signed_planned": 40,
+    "paired_correct": 6,
+    "paired_planned": 20,
+    "broken_unchanged_correct": 6,
+    "broken_planned": 20,
+    "controls_unchanged_correct": 150,
+    "controls_planned": 160
+  },
+  "cell_scores": {
+    "positive:new_news": {
+      "expected": "increase",
+      "correct": 12,
+      "planned": 20,
+      "labels": {
+        "increase": 12,
+        "decrease": 8
+      }
+    },
+    "positive:no_news": {
+      "expected": "unchanged",
+      "correct": 18,
+      "planned": 20,
+      "labels": {
+        "unchanged": 18,
+        "decrease": 1,
+        "increase": 1
+      }
+    },
+    "positive:repeated_news": {
+      "expected": "unchanged",
+      "correct": 19,
+      "planned": 20,
+      "labels": {
+        "unchanged": 19,
+        "increase": 1
+      }
+    },
+    "negative:new_news": {
+      "expected": "decrease",
+      "correct": 13,
+      "planned": 20,
+      "labels": {
+        "increase": 7,
+        "decrease": 13
+      }
+    },
+    "negative:no_news": {
+      "expected": "unchanged",
+      "correct": 17,
+      "planned": 20,
+      "labels": {
+        "unchanged": 17,
+        "decrease": 3
+      }
+    },
+    "negative:repeated_news": {
+      "expected": "unchanged",
+      "correct": 18,
+      "planned": 20,
+      "labels": {
+        "unchanged": 18,
+        "decrease": 2
+      }
+    },
+    "broken:new_news": {
+      "expected": "unchanged",
+      "correct": 6,
+      "planned": 20,
+      "labels": {
+        "decrease": 8,
+        "increase": 6,
+        "unchanged": 6
+      }
+    },
+    "broken:no_news": {
+      "expected": "unchanged",
+      "correct": 19,
+      "planned": 20,
+      "labels": {
+        "unchanged": 19,
+        "decrease": 1
+      }
+    },
+    "broken:repeated_news": {
+      "expected": "unchanged",
+      "correct": 19,
+      "planned": 20,
+      "labels": {
+        "unchanged": 19,
+        "decrease": 1
+      }
+    },
+    "masked:new_news": {
+      "expected": null,
+      "correct": null,
+      "planned": 20,
+      "labels": {
+        "decrease": 9,
+        "increase": 8,
+        "unchanged": 3
+      }
+    },
+    "masked:no_news": {
+      "expected": "unchanged",
+      "correct": 20,
+      "planned": 20,
+      "labels": {
+        "unchanged": 20
+      }
+    },
+    "masked:repeated_news": {
+      "expected": "unchanged",
+      "correct": 20,
+      "planned": 20,
+      "labels": {
+        "unchanged": 20
+      }
+    }
+  },
+  "signed_new_news_cross_tab": {
+    "both_correct": 22,
+    "classification_incorrect_numeric_correct": 3,
+    "both_incorrect": 12,
+    "classification_correct_numeric_incorrect": 3
+  },
+  "endpoint_flags_new_news": {
+    "baseline_at_zero": 0,
+    "baseline_at_one": 0,
+    "update_at_zero": 0,
+    "update_at_one": 0,
+    "expected_direction_blocked_by_baseline_endpoint": 0
+  },
+  "signed_ci95": [
+    0.5,
+    0.75
+  ],
+  "unclear_total": 0
+}

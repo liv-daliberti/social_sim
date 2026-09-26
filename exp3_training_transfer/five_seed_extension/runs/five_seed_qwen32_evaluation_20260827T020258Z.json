@@ -1,0 +1,27 @@
+{
+  "adapter_jobs": {
+    "42": "30913530",
+    "43": "30913531",
+    "44": "30913532",
+    "45": "30894222",
+    "46": "30894223"
+  },
+  "central_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/five_seed_training_20260825T232245Z.json",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--partition=all",
+    "--gres=gpu:a6000:2",
+    "--cpus-per-task=10",
+    "--mem=140G",
+    "--time=12:00:00",
+    "--exclude=node206",
+    "--dependency=afterok:30913530:30913531:30913532:30894222:30894223",
+    "--export=ALL,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,ADAPTER_SPECS=42:job=30913530;43:job=30913531;44:job=30913532;45:job=30894222;46:job=30894223,TENSOR_PARALLEL_SIZE=2",
+    "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/evaluate_exp4_five_seed.sbatch"
+  ],
+  "created_at": "20260827T020258Z",
+  "evaluation_job_id": "30913560",
+  "parent_full_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_full_20260827T020056Z.json",
+  "protocol": "exp3_exp4_five_seed_extension_v1"
+}

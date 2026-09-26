@@ -1,0 +1,137 @@
+{
+  "audit_status": "passed",
+  "checks_passed": 8578,
+  "checks": {
+    "terminal comparison retains invalids": 1,
+    "finalizer complete": 1,
+    "paired definitions unchanged from initial frozen comparator": 1,
+    "comparison provenance comparison_script": 1,
+    "comparison provenance submission": 1,
+    "comparison provenance design": 1,
+    "immutable strict response hash": 2,
+    "immutable strict manifest hash": 2,
+    "both manifests terminal": 2,
+    "all320 exact planned keys": 2,
+    "status counts preserved": 2,
+    "recovery signature": 2,
+    "recovery input hash": 2,
+    "source recovery settings identical except parser provenance": 2,
+    "source record hash": 640,
+    "source lineage": 640,
+    "row run/input provenance": 640,
+    "unit metadata": 640,
+    "request seed": 640,
+    "received output retained unchanged": 427,
+    "reused origin": 427,
+    "independent symmetric final parse": 625,
+    "independent chat serialization": 625,
+    "prompt token count": 625,
+    "token accounting": 625,
+    "independent original strict parse": 427,
+    "baseline no supplied prior": 160,
+    "exact frozen prompt and hash": 640,
+    "updates use own recovered context baseline": 480,
+    "new calls only previously unattempted updates": 198,
+    "exact recovery-only generation set": 2,
+    "no new baselines and exact repaired count": 2,
+    "all320 records retained in summary": 2,
+    "independent planned signed metric": 2,
+    "independent planned paired metric": 2,
+    "truncation retained as failure": 5,
+    "unrecoverable blocked branch retained": 15,
+    "mode inference settings matched": 1,
+    "independent paired contrast sign_accuracy": 1,
+    "independent paired bootstrap sign_accuracy": 1,
+    "every paired family vector": 60,
+    "independent paired contrast paired_reversal": 1,
+    "independent paired bootstrap paired_reversal": 1,
+    "independent paired contrast broken_mean_absolute_movement_pp": 1,
+    "independent paired bootstrap broken_mean_absolute_movement_pp": 1
+  },
+  "inference_performed": false,
+  "arms": {
+    "disabled": {
+      "status_counts": {
+        "ok": 320
+      },
+      "original_status_counts": {
+        "blocked_baseline": 198,
+        "ok": 19,
+        "parse_error": 103
+      },
+      "source_response_sha256": "e7dba9ffeac8500205040c447af0b55a46ce226586b34bdd2c372a264324fdc4",
+      "source_manifest_sha256": "fed3115763b6b64321020296150d8c3adf975e29c5bc2a7d94981d62412b5a9a",
+      "recovery_response_sha256": "af07f4781c3af398ecab2f86db070a48f917096c13de63c018ed8611e5256610",
+      "recovered_format_records": 103,
+      "new_previously_blocked_updates": 198,
+      "baseline_generation_requests": 0,
+      "signed_correct": 25,
+      "paired_correct": 6,
+      "broken_observed": 20,
+      "failed_baselines": []
+    },
+    "enabled": {
+      "status_counts": {
+        "blocked_baseline": 15,
+        "ok": 300,
+        "parse_error": 5
+      },
+      "original_status_counts": {
+        "blocked_baseline": 15,
+        "ok": 300,
+        "parse_error": 5
+      },
+      "source_response_sha256": "f29610d0838038369dd9cdde37445bd802baaa6b5a1a7225ebbaa4149814ab69",
+      "source_manifest_sha256": "b964ae7f09a837f9fe41ee1a7309732f4460856ebda02173578cc7fb281ad44e",
+      "recovery_response_sha256": "55df17f781046299ac1a5735d49906edf17961ee00a0cb2e48856614a16a1eb1",
+      "recovered_format_records": 0,
+      "new_previously_blocked_updates": 0,
+      "baseline_generation_requests": 0,
+      "signed_correct": 30,
+      "paired_correct": 12,
+      "broken_observed": 19,
+      "failed_baselines": [
+        "dev_16:masked:r0",
+        "dev_16:negative:r0",
+        "dev_16:broken:r0",
+        "dev_16:positive:r0",
+        "dev_06:positive:r0"
+      ]
+    }
+  },
+  "independently_recomputed_paired_contrasts": {
+    "sign_accuracy": {
+      "estimate": 12.5,
+      "ci95": [
+        -2.5,
+        27.5
+      ],
+      "n_observed_families": 20,
+      "n_planned_families": 20
+    },
+    "paired_reversal": {
+      "estimate": 30.0,
+      "ci95": [
+        5.0,
+        55.0
+      ],
+      "n_observed_families": 20,
+      "n_planned_families": 20
+    },
+    "broken_mean_absolute_movement_pp": {
+      "estimate": -7.105263157894737,
+      "ci95": [
+        -16.317616959064324,
+        1.3157894736842106
+      ],
+      "n_observed_families": 19,
+      "n_planned_families": 20
+    }
+  },
+  "provenance": {
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/local_diagnostics_v1/reasoning_comparison.json": "7d150a26172dd948164b2f4abd09f86f5cf84398025fa33453b37aa3d5a1f7c0",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/completion.json": "7234afdbeab99816e51c9207e2840dcc00503611df86f667e90d59c8dedf262e",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/probability_plan.jsonl": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b"
+  },
+  "interpretation": "All20 failed enabled records remain present; binary denominators40/20; broken movement uses19 observed common pairs without imputation."
+}

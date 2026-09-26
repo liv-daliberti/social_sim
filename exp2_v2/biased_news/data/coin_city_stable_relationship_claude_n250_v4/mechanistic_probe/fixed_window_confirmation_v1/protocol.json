@@ -1,0 +1,100 @@
+{
+  "code_sha256": {
+    "analyze_fixed_window_confirmation.py": "cb83c5bca383d6e43a1e748940d872f68af74c5f8358147de276ae936bbcf46b",
+    "build_arbitrary_symbol_probe_tasks.py": "abcccc3e4801794e8b16b1c1e09d81ed6c00a381732b41d520675c9aab76ed9f",
+    "engine/coin_city_stable_relationship_claude_n250.py": "732eeee13b764936284fd7a034fc7d63f1bc5678431115dd230199f33f8830eb",
+    "freeze_fixed_window_confirmation.py": "e021536f65fae75db3b432b0e9be35d95aa736412fbd0685e7e3741bfadfef00",
+    "patch_fixed_window_confirmation.py": "b6e27a3b32c18ecbeb1baf42818651c9a4fcb7a83a325d66f617945c2b2be076",
+    "patch_symbol_label_activations.py": "673a0fd314595fa8979836517a4e3482e089473045f67b7b63ee5e5d45692424",
+    "symbol_relational_common.py": "e21a31b54a16886b0940116dfc94cd2a5f63586bb38a0955cf19c48869ff99d2"
+  },
+  "conditions": [
+    "unpatched",
+    "self_mid_window",
+    "cross_mid_window",
+    "cross_late_window",
+    "cross_embedding_only"
+  ],
+  "decode": "greedy, max_new_tokens 160",
+  "depths": [
+    0,
+    4
+  ],
+  "episodes": {
+    "development_episodes": 0,
+    "factorial_cells": {
+      "A:False:KIV": 11,
+      "A:False:ZOR": 11,
+      "A:True:KIV": 11,
+      "A:True:ZOR": 11,
+      "B:False:KIV": 11,
+      "B:False:ZOR": 11,
+      "B:True:KIV": 11,
+      "B:True:ZOR": 11
+    },
+    "registered_seed_base": 930000,
+    "sealed_test_episodes": 88,
+    "seed_base": 960000,
+    "selection": "first eleven generator indices in each factorial cell",
+    "source": "engine.coin_city_stable_relationship_claude_n250.make_episode",
+    "test_per_factorial_cell": 11
+  },
+  "episodes_sha256": "5fb311bced69fe6d29def4eeca815b24fb569c4a94b7f27a181497d6c20926cd",
+  "estimand": "d_e = s_e/2 [(g_{W<-C} - g_W) + (g_C - g_{C<-W})], s_e = +1 for a strong-response City C; identical to analyze_symbol_relational_probe",
+  "frozen_at": "2026-09-25T01:53:38.884814+00:00",
+  "gates": {
+    "min_complete_episode_fraction": 0.875,
+    "min_self_patch_exact_match_fraction": 0.90625
+  },
+  "hidden_state_layer_convention": "0 is the token-embedding output; n is the output of transformer block n",
+  "hypotheses": {
+    "H1_mid_positive": "At k=0, the mean symmetric shift d_e under cross_mid_window is greater than zero.",
+    "H2_mid_exceeds_late": "At k=0, the mean of the per-episode difference d_e(cross_mid_window) - d_e(cross_late_window) is greater than zero."
+  },
+  "models": {
+    "llama3_1_70b": {
+      "late_window": [
+        35,
+        36,
+        37
+      ],
+      "mid_window": [
+        19,
+        20,
+        21
+      ],
+      "model_commit": "1605565b47bb9346c5515c34102e054115b4f98b",
+      "model_id": "meta-llama/Llama-3.1-70B-Instruct",
+      "transformer_layers": 80,
+      "window_source": "mid: a central window of the development sweep's plateau (start 11, 15, 19, 22 give .78, .78, .77, .79), not its maximum; late: the registered v1 window, where the sweep gives .02"
+    },
+    "qwen3_14b": {
+      "late_window": [
+        33,
+        34,
+        35
+      ],
+      "mid_window": [
+        19,
+        20,
+        21
+      ],
+      "model_commit": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "model_id": "Qwen/Qwen3-14B",
+      "transformer_layers": 40,
+      "window_source": "mid: the window the 160-episode development set selected for the registered v2 test; late: the window the 64-episode development set selected for the registered v1 test"
+    }
+  },
+  "multiplicity": "Holm over the four primary tests (H1 and H2 in each model) at family-wise alpha .05",
+  "patch_site": "both exact City C symbol subtokens, prefill only",
+  "primary_depth": 0,
+  "reported_secondary": [
+    "k=4 for every cross condition",
+    "cross_late_window and cross_embedding_only at k=0 on their own",
+    "episode-bootstrap 95% intervals"
+  ],
+  "status": "frozen_before_any_fresh_episode_generation",
+  "study": "fixed_window_confirmation_v1",
+  "tasks_sha256": "550b45bb41c007fc4888b7030797e890a79ba4b5abe3b01d90a4f275a089996b",
+  "test": "one-sided episode sign flip, 200000 draws, seed 20260825; complete-case episodes only"
+}

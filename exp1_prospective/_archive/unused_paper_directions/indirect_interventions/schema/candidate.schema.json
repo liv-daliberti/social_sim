@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "candidate.schema.json",
+  "title": "Private indirect-intervention candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol_version",
+    "candidate_id",
+    "development_only",
+    "split",
+    "family_index",
+    "market",
+    "initial_event_model",
+    "evidence",
+    "bridge_frame",
+    "contexts",
+    "generation"
+  ],
+  "properties": {
+    "protocol_version": {"type": "string", "minLength": 1},
+    "candidate_id": {"type": "string", "pattern": "^[a-z0-9_-]+$"},
+    "development_only": {"type": "boolean"},
+    "split": {"enum": ["development", "core"]},
+    "family_index": {"type": "integer", "minimum": 0, "maximum": 2},
+    "market": {
+      "type": "object",
+      "required": ["task_id", "market_id", "question", "resolution_criteria"],
+      "properties": {
+        "task_id": {"type": "string"},
+        "market_id": {"type": "string"},
+        "question": {"type": "string", "minLength": 10},
+        "resolution_criteria": {"type": "string", "minLength": 20},
+        "category": {"type": "string"},
+        "end_time": {"type": ["string", "null"]}
+      }
+    },
+    "initial_event_model": {
+      "type": "object",
+      "required": ["key_actors", "key_mechanisms", "latent_variables"],
+      "properties": {
+        "key_actors": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+        "key_mechanisms": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+        "latent_variables": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["headline", "text", "surface_valence"],
+      "properties": {
+        "headline": {"type": "string", "minLength": 10},
+        "text": {"type": "string", "minLength": 40},
+        "surface_valence": {"enum": ["positive", "negative", "neutral"]}
+      }
+    },
+    "bridge_frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prefix", "suffix"],
+      "properties": {
+        "prefix": {"type": "string", "minLength": 20},
+        "suffix": {"type": "string", "minLength": 20}
+      }
+    },
+    "contexts": {
+      "type": "object",
+      "required": ["positive", "negative", "broken"],
+      "properties": {
+        "positive": {"$ref": "#/$defs/context"},
+        "negative": {"$ref": "#/$defs/context"},
+        "broken": {"$ref": "#/$defs/context"}
+      }
+    },
+    "generation": {
+      "type": "object",
+      "required": ["generator_id", "prompt_sha256", "status"],
+      "properties": {
+        "generator_id": {"type": "string"},
+        "prompt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "status": {"enum": ["draft_for_human_validation", "human_edited"]},
+        "editor_id": {"type": "string", "minLength": 1},
+        "edited_at": {"type": "string", "format": "date-time"},
+        "notes": {"type": "string"}
+      },
+      "allOf": [{
+        "if": {"properties": {"status": {"const": "human_edited"}}},
+        "then": {"required": ["editor_id", "edited_at"]}
+      }]
+    }
+  },
+  "$defs": {
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bridge_text", "intended_label", "chain_nodes", "chain_edges"],
+      "properties": {
+        "bridge_text": {"type": "string", "minLength": 30},
+        "decisive_clause": {"type": "string", "minLength": 3},
+        "intended_label": {"enum": ["increase_yes", "decrease_yes", "no_material_effect"]},
+        "chain_nodes": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+        "chain_edges": {"type": "array", "minItems": 2, "items": {"enum": ["+", "-", "0"]}}
+      }
+    }
+  }
+}

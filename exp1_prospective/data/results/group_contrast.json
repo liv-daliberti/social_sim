@@ -1,0 +1,189 @@
+{
+  "analysis": "exp1_hosted_vs_open_weight_group_contrast",
+  "generated_at_utc": "2026-08-26T18:50:59.375978+00:00",
+  "record_source": "consistency_report_2026-06-17.json",
+  "resamples": 20000,
+  "seed": 20260617,
+  "clustering": "whole markets, retaining all packets and repeated runs",
+  "hosted": [
+    "claude-opus-4-8",
+    "gpt-5.4",
+    "DeepSeek-V4-Pro"
+  ],
+  "open_weight": [
+    "qwen2.5:72b",
+    "llama3.3:70b",
+    "llama3.1:70b",
+    "qwen2.5:32b",
+    "qwen2.5:14b",
+    "llama3.1:8b"
+  ],
+  "per_model": {
+    "claude-opus-4-8": {
+      "label": "Claude Opus~4.8",
+      "auc": 0.9838,
+      "diff": 10.6848,
+      "sens": 23.957,
+      "abstention": 0.7106,
+      "sens_move": 6.9569
+    },
+    "gpt-5.4": {
+      "label": "GPT-5.4",
+      "auc": 0.9938,
+      "diff": 8.3963,
+      "sens": 8.2188,
+      "abstention": 0.0835,
+      "sens_move": 7.5323
+    },
+    "DeepSeek-V4-Pro": {
+      "label": "DeepSeek V4-Pro",
+      "auc": 0.9674,
+      "diff": 11.2383,
+      "sens": 8.8563,
+      "abstention": 0.4441,
+      "sens_move": 4.9421
+    },
+    "qwen2.5:72b": {
+      "label": "Qwen~2.5-72B",
+      "auc": 0.9505,
+      "diff": 9.6284,
+      "sens": 4.2335,
+      "abstention": 0.2419,
+      "sens_move": 3.2093
+    },
+    "llama3.3:70b": {
+      "label": "Llama~3.3-70B",
+      "auc": 0.9894,
+      "diff": 12.2651,
+      "sens": 6.3501,
+      "abstention": 0.1074,
+      "sens_move": 5.6682
+    },
+    "llama3.1:70b": {
+      "label": "Llama~3.1-70B",
+      "auc": 0.9784,
+      "diff": 11.8607,
+      "sens": 4.6011,
+      "abstention": 0.0253,
+      "sens_move": 4.4848
+    },
+    "qwen2.5:32b": {
+      "label": "Qwen~2.5-32B",
+      "auc": 0.906,
+      "diff": 8.6745,
+      "sens": 3.186,
+      "abstention": 0.1114,
+      "sens_move": 2.8312
+    },
+    "qwen2.5:14b": {
+      "label": "Qwen~2.5-14B",
+      "auc": 0.8524,
+      "diff": 7.6761,
+      "sens": 2.8881,
+      "abstention": 0.2611,
+      "sens_move": 2.164
+    },
+    "llama3.1:8b": {
+      "label": "Llama~3.1-8B",
+      "auc": 0.7914,
+      "diff": 5.6008,
+      "sens": 1.9455,
+      "abstention": 0.0111,
+      "sens_move": 1.9314
+    }
+  },
+  "group_means": {
+    "auc": {
+      "hosted": 0.9817,
+      "open_weight": 0.9113
+    },
+    "diff": {
+      "hosted": 10.1065,
+      "open_weight": 9.2843
+    },
+    "sens": {
+      "hosted": 13.6774,
+      "open_weight": 3.8674
+    },
+    "abstention": {
+      "hosted": 0.4127,
+      "open_weight": 0.1264
+    },
+    "sens_move": {
+      "hosted": 6.4771,
+      "open_weight": 3.3815
+    }
+  },
+  "contrasts": {
+    "auc": {
+      "hosted_minus_open_weight": 0.0703,
+      "ci95": [
+        0.0622,
+        0.0785
+      ],
+      "excludes_zero": true,
+      "share_of_resamples_favouring_hosted": 1.0,
+      "groups_fully_separated": false,
+      "open_weight_models_above_weakest_hosted": [
+        "Llama~3.3-70B",
+        "Llama~3.1-70B"
+      ]
+    },
+    "diff": {
+      "hosted_minus_open_weight": 0.8222,
+      "ci95": [
+        -0.0091,
+        1.6866
+      ],
+      "excludes_zero": false,
+      "share_of_resamples_favouring_hosted": 0.9739,
+      "groups_fully_separated": false,
+      "open_weight_models_above_weakest_hosted": [
+        "Qwen~2.5-72B",
+        "Llama~3.3-70B",
+        "Llama~3.1-70B",
+        "Qwen~2.5-32B"
+      ]
+    },
+    "sens": {
+      "hosted_minus_open_weight": 9.81,
+      "ci95": [
+        7.2326,
+        14.2305
+      ],
+      "excludes_zero": true,
+      "share_of_resamples_favouring_hosted": 1.0,
+      "groups_fully_separated": true,
+      "open_weight_models_above_weakest_hosted": []
+    },
+    "abstention": {
+      "hosted_minus_open_weight": 0.2864,
+      "ci95": [
+        0.244,
+        0.3292
+      ],
+      "excludes_zero": true,
+      "share_of_resamples_favouring_hosted": 1.0,
+      "groups_fully_separated": false,
+      "open_weight_models_above_weakest_hosted": [
+        "Qwen~2.5-72B",
+        "Llama~3.3-70B",
+        "Qwen~2.5-32B",
+        "Qwen~2.5-14B"
+      ]
+    },
+    "sens_move": {
+      "hosted_minus_open_weight": 3.0956,
+      "ci95": [
+        2.3135,
+        4.0843
+      ],
+      "excludes_zero": true,
+      "share_of_resamples_favouring_hosted": 1.0,
+      "groups_fully_separated": false,
+      "open_weight_models_above_weakest_hosted": [
+        "Llama~3.3-70B"
+      ]
+    }
+  }
+}

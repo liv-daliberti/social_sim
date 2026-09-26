@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Review progress{% endblock %}
+{% block content %}
+  <section class="card">
+    <p class="eyebrow">Private study administration</p>
+    <h2>Reviewer progress</h2>
+    <table>
+      <thead><tr><th>Reviewer</th><th>Panel</th><th>Completed</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for row in progress %}
+          <tr>
+            <td>{{ row.reviewer_id }}</td>
+            <td>{{ row.panel|replace('_', ' ') }}</td>
+            <td>{{ row.completed }} / {{ row.total }}</td>
+            <td>{% if row.completed == row.total %}Complete{% else %}In progress{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="actions">
+      <a class="button-link" href="{{ url_for('export_json', token=token) }}">Download JSON</a>
+      <a href="{{ url_for('export_csv', token=token) }}">Download CSV</a>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{
+  "amended_file_sha256": "24b05285ab9714da2412a2f0c5438483d9ac07d952a084db1e0b76abb9727e6e",
+  "amendment": "sign_flip_null_tractability",
+  "applied_to": "qwen3_14b_symbol_relational_v2",
+  "change": "The frozen primary test enumerates all 2**n sign assignments. That is tractable for the 16-episode design (65,536 means) but not for the 88-episode sealed test (2**88 is about 3e26). Enumeration is retained for n <= 20; above it the identical null is sampled with 200,000 draws under seed 20260825. The estimand, the endpoint and the one-sided direction are unchanged; only how the null distribution is obtained differs.",
+  "evidence": "analyze_symbol_relational_probe.py raised ValueError('Maximum allowed dimension exceeded') while building the null, so relational_probe_results.json had not been written when the amendment was made.",
+  "frozen_protocol_text": "exact one-sided episode sign-flip test",
+  "made_before_any_result_existed": true,
+  "monte_carlo_standard_error_at_p_0_05": 0.000487,
+  "v1_verification": "Re-running the 16-episode run under the amended code reproduces every patching value exactly (maximum absolute difference 0.0 across 53 numeric leaves), keeps the scheme string 'exact episode-level sign flip', and leaves the stability gate unchanged. Only a descriptive null_draws field is added."
+}

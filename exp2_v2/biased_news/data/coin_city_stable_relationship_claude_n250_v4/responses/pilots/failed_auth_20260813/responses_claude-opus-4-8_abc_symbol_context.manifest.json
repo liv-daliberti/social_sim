@@ -1,0 +1,46 @@
+{
+  "api_protocol": "anthropic_messages",
+  "arm": "abc_symbol_context",
+  "context_alignment": "episode_randomized_arbitrary_symbol_mapping",
+  "effective_max_output_tokens": 1024,
+  "endpoint": "https://liv.services.ai.azure.com/anthropic",
+  "episodes": [
+    0
+  ],
+  "execution_mode": "local_login_node",
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "http_client_retries": 0,
+  "max_attempts": 1,
+  "max_tokens": 512,
+  "model": "claude-opus-4-8",
+  "new_errors_this_run": 1,
+  "newly_parsed_this_run": 0,
+  "order_seed": 20260804,
+  "planned_calls_this_model": 1250,
+  "pre_model_transport_retry_policy": {
+    "max_retries": 12,
+    "model_responses_never_repeated": true,
+    "retried_http_status": [
+      408,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "shard_transport_retries": 0
+  },
+  "prefixes": [
+    0
+  ],
+  "reasoning_effort": null,
+  "responses_received": 1,
+  "sampling_matches_truthful_arm": true,
+  "selected_model_calls": 1,
+  "status": "complete",
+  "successfully_parsed": 0,
+  "task_file": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/design/tasks_abc_symbol_context.jsonl",
+  "task_file_sha256": "91ea6940ff934bf1a21b0bd8682b34ef1b3d25d543af7af504e8c3d4a67fff70",
+  "temperature": null,
+  "updated_at": "2026-08-13T18:46:40.249726+00:00"
+}

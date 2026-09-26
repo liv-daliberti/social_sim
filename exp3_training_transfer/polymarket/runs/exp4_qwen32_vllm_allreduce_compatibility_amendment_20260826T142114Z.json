@@ -1,0 +1,43 @@
+{
+  "change_rationale": {
+    "--disable-custom-all-reduce": "the failed A6000 tensor-parallel actor reached CUDA-graph capture and then failed in vLLM custom_all_reduce.cuh; this selects vLLM's supported NCCL fallback"
+  },
+  "corrected_launcher_sha256": "787af58aa4ad7a7fe3afbbd3960bdb0dc8037261151aace6ff4ceb776bafe32d",
+  "corrected_shared_trainer_sha256": "28de53c88b4edbf7e7dd6054a5650ab6a34b0832adc766b10d13ea9d3ee80652",
+  "corrected_trainer_sha256": "769f6a2e6733a6ce34df3a45d80119fba15e66f404ffe5dde99c697bfd65e77c",
+  "execution_only_changes_added": [
+    "--disable-custom-all-reduce"
+  ],
+  "execution_only_changes_retained": [
+    "--no-use_fused_lm_head",
+    "--lora_sync_only"
+  ],
+  "failed_canary_exit_code": "0:0",
+  "failed_canary_job_id": "30892281",
+  "failed_canary_state": "TIMEOUT",
+  "failure_message": "Cuda error /workspace/csrc/custom_all_reduce.cuh:453 invalid argument",
+  "failure_stage": "vLLM actor initialization after model loading and CUDA-graph capture",
+  "kind": "vllm_allreduce_compatibility_amendment",
+  "obsolete_advance_job_id": "30892282",
+  "protocol_version": "exp4_qwen32_scale_v1",
+  "recorded_at": "20260826T142114Z",
+  "replacement_canary": {
+    "eval_steps": 10,
+    "max_train": 160,
+    "performance_threshold": false,
+    "seed": 42
+  },
+  "scientific_hyperparameters_changed": false,
+  "supersedes_compatibility_amendment": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_compatibility_amendment_20260825T220836Z.json",
+  "supersedes_compatibility_amendment_sha256": "a7686dfda89159864a350df997cd4b2294f46aac8ed941bb3ef3682f78f844d5",
+  "supersedes_registration": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260825T221201Z.json",
+  "unchanged": [
+    "model checkpoint and non-thinking prompt template",
+    "training and development examples",
+    "rank-32 LoRA with alpha 64",
+    "learning rate, optimizer, and schedule",
+    "reward, rollout sampling, and global batch sizes",
+    "4800-presentation full budget and seed roster",
+    "sealed-evaluation estimands"
+  ]
+}

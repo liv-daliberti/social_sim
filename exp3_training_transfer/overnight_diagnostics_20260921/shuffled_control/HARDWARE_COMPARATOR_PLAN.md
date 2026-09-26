@@ -1,0 +1,5 @@
+# Prepared comparator extension: not submitted
+
+Four further matched training cells are prepared: disclosed/undisclosed × seeds45/46, using the same2A5000, actor memory.76, frozen source, original causal-family prompts and targets, and full fixed training budget as the new controls. Together with the six missing-weight recoveries this would yield a fully matched five-seed hardware comparator. `additional_matched_roster.json` records exact environments; these four require parent resource review before submission.
+
+Historical matched45/46 were trained on2A6000 with actor fraction.38. Fresh evaluation of those existing weights is valid, but a contrast against newA5000 controls has an execution-hardware caveat. Allocation matching in nominalGB does not establish identical kernels or trajectories. Six recovery seeds42–44 and all new controls shareA5000 hardware and memory allocation. The extra four would eliminate this caveat for the primary five-seed contrast; historical45/46 can then remain a separately labeled replication sensitivity check. No arm or seed is chosen based on a measured contrast.

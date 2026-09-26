@@ -1,0 +1,42 @@
+{
+  "execution": "FW-Kimi-K3 hosted development canary and full holdout",
+  "authorized_at": "2026-08-25T22:32:59Z",
+  "authorization": {
+    "development_canary_calls": 2,
+    "destination": "liv",
+    "holdout_calls": 1590,
+    "holdout_draws": 5,
+    "model": "FW-Kimi-K3",
+    "tasks_per_holdout_draw": 318,
+    "user_message": "run the kimi stuff? Run all of them?"
+  },
+  "credential_handling": {
+    "chat_pasted_key_reused": false,
+    "required_protected_variable": "LIV_AZURE_API_KEY",
+    "runtime_alias": "AZURE_AI_API_KEY",
+    "status": "missing",
+    "value_logged": false
+  },
+  "canary_gate": {
+    "development_draw_index": 0,
+    "development_tasks": 2,
+    "holdout_requires_both_responses_parseable": true,
+    "max_output_tokens_may_change_using_development_only": true,
+    "starting_max_output_tokens": 128
+  },
+  "effective_requested_controls": {
+    "max_output_tokens": 128,
+    "reasoning_effort": "low",
+    "temperature": 0.7,
+    "top_k": null,
+    "top_p": 0.8
+  },
+  "frozen_inputs": {
+    "holdout_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24",
+    "prompt_text_changed": false,
+    "protocol_sha256": "87bdbcb19f5fc6fc138ea1bdc1ed5c27c811c981c504adff0a4dbd7e14e749dd",
+    "runner_sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf",
+    "scoring_changed": false
+  },
+  "status": "authorized_blocked_on_protected_credential"
+}

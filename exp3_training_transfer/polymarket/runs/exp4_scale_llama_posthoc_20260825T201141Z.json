@@ -1,0 +1,101 @@
+{
+  "registered_at": "20260825T201141Z",
+  "status": "complete",
+  "submitted_at": "20260825T201316Z",
+  "completed_at": "2026-08-25T16:17:28-04:00",
+  "protocol_version": "exp4_scale_llama_posthoc_v1",
+  "parent_protocol": "exp4_qwen_scale_v1",
+  "classification": "post_hoc_architecture_comparator",
+  "rationale": "Add Llama-3.1-8B to the main scale figure using the same 318-market holdout and stochastic decoder; the older 1,024-market temperature-zero result is not comparable and will not be mixed into the figure.",
+  "timing_disclosure": "The 318-market holdout and Qwen results were already opened before this comparator was registered. The Llama adapters were trained and frozen before the holdout was constructed and have not been modified using holdout feedback.",
+  "model": {
+    "key": "llama3_1_8b",
+    "checkpoint": "meta-llama/Llama-3.1-8B-Instruct",
+    "prompt_template": "auto",
+    "seeds": [42, 43, 44]
+  },
+  "holdout": {
+    "n": 318,
+    "manifest": "exp3_training_transfer/polymarket/data/exp4_scale_registered/manifest.json",
+    "manifest_sha256": "f210b7cc0d7c9ea099af06a46af8a6852250902697d2a84944f7d046dd3f4ec6",
+    "tasks": "exp3_training_transfer/polymarket/data/exp4_scale_registered/test.tasks.jsonl",
+    "tasks_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24"
+  },
+  "decoding": {
+    "mode": "five_draw_non_thinking_stochastic",
+    "draws": 5,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "sampling_seed": 20260824,
+    "max_tokens": 128,
+    "incomplete_draw_policy": "endpoint_task_brier_loss_one"
+  },
+  "frozen_sources": {
+    "parent_protocol_sha256": "228ba2bc0ae35c29984f4993244e931b01b1ca60947d70ecfa4eea1da9516a56",
+    "evaluator_sha256": "4130fd351af884bd5d0b3b20c2b6e7335eed5abe93a91017f1d056ff171ec2b0",
+    "slurm_wrapper_sha256": "8d5c4a57d1c8b7042fc05428adf69a7761f2b487b9e87c3eadbba6ff25644c77",
+    "training_lineage_ledger": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260824T012515Z.json",
+    "training_lineage_ledger_sha256": "b56248abaa0aaa977256a19660c8788af9fcee3b962dc133415d65ca4bc5f6a4"
+  },
+  "adapters": {
+    "42": {
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_llama3_1_8b_market_20260823_213348_j30856251/debug_0823T21:34:11/saved_models/step_00301",
+      "weights_sha256": "6ff58730c61c3b7a2d31abec3d6330a685485e4f1c6af415738ae3437c61daf1",
+      "config_sha256": "20069b3773ed70674ddae8ff1e17a5158910203d9454749ab3e0616b22ac41c8"
+    },
+    "43": {
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_llama3_1_8b_market_20260823_213448_j30856252/debug_0823T21:35:11/saved_models/step_00301",
+      "weights_sha256": "076d51fcef3d8f5351136c39c499e40e7beb630e977f37e8ad4cbd6e11fe1157",
+      "config_sha256": "3bed21e22fd2c82adeb147c41e3d4fa2e5d63efd4d3124474af8908ea0d2cee5"
+    },
+    "44": {
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_llama3_1_8b_market_20260823_213550_j30856253/debug_0823T21:36:12/saved_models/step_00301",
+      "weights_sha256": "e1f4f2dfa59307a910fd42bc499380e883b5eb386bc10cb31fcec3434c8fda30",
+      "config_sha256": "64a8cd6808b6a31c41be168f75867f8cf7922984d123627c8ec94fd7461d9a53"
+    }
+  },
+  "reporting": {
+    "placement": "separate unconnected Llama-8B architecture point in the main figure",
+    "qwen_curve": "solid connected 4B-8B-14B trajectory",
+    "decision_rule": "descriptive post-hoc comparator; report regardless of direction",
+    "retain_original_llama_result": "appendix only"
+  },
+  "scheduler": {
+    "account": "mltheory",
+    "partition": "all",
+    "requested_qos": "normal",
+    "resolved_qos": "none",
+    "gres": "gpu:a6000:1",
+    "memory": "48G",
+    "cpus": 8,
+    "walltime": "00:30:00",
+    "job_id": "30889436",
+    "start_time": "2026-08-25T16:13:09-04:00",
+    "elapsed": "00:04:19",
+    "exit_code": "0:0"
+  },
+  "results": {
+    "summary": "exp3_training_transfer/polymarket/reports/exp4_scale_llama3_1_8b_stochastic_j30889436.summary.json",
+    "summary_sha256": "05c414b98a481a4c989966377255c5e2912c28eed3cc69aee6c6f908da6d3b5f",
+    "raw": "exp3_training_transfer/polymarket/reports/exp4_scale_llama3_1_8b_stochastic_j30889436.jsonl",
+    "raw_sha256": "7960694da50c4d028da284a405c066294502266d05fbc155b975f8ea48777cdb",
+    "raw_rows": 318,
+    "trained_seed_mean_brier": 0.12642974319706817,
+    "base_brier": 0.16417377306307376,
+    "trained_minus_base_brier": {
+      "estimate": -0.03774402986600559,
+      "ci95_low": -0.05859781852577255,
+      "ci95_high": -0.019455538392696092
+    },
+    "trained_minus_market_brier": {
+      "estimate": -0.00011819862683123503,
+      "ci95_low": -0.0004550035753476317,
+      "ci95_high": 0.00011862905623393738
+    },
+    "base_draw_parse_coverage": 0.9943396226415094,
+    "base_complete_task_parse_coverage": 0.9779874213836478,
+    "trained_draw_parse_coverage": 1.0,
+    "trained_complete_task_parse_coverage": 1.0
+  }
+}

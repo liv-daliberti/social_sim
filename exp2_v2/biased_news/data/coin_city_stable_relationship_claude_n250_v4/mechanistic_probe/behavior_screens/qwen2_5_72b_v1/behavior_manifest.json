@@ -1,0 +1,44 @@
+{
+  "backend": "vllm_tensor_parallel",
+  "behavior_sha256": "20308ba3629ee2cdf588d803312bc6b5d0624a875b714b102187fec4b150c875",
+  "behavior_summary": {
+    "generation_seconds": 20.67329239845276,
+    "load_seconds": 261.84730410575867,
+    "parsed_count": 96,
+    "record_count": 96,
+    "token_count_max": 730,
+    "token_count_min": 604
+  },
+  "completed_at": "2026-08-24T16:22:48.479310+00:00",
+  "cuda": {
+    "device_count": 4,
+    "devices": [
+      "NVIDIA L40",
+      "NVIDIA L40",
+      "NVIDIA L40",
+      "NVIDIA L40"
+    ]
+  },
+  "decode_seed": 20260824,
+  "decoding": {
+    "chat_template": "single user message; add_generation_prompt=True; enable_thinking=False",
+    "max_new_tokens": 160,
+    "temperature": 0.0
+  },
+  "gpu_memory_utilization": 0.9,
+  "model": "Qwen/Qwen2.5-72B-Instruct",
+  "model_commit": "495f39366efef23836d0cfae4fbe635880d2be31",
+  "model_label": "Qwen2.5-72B-Instruct",
+  "parameter_count": null,
+  "software": {
+    "python": "3.10.20",
+    "torch": "2.6.0+cu124",
+    "transformers": "4.51.3",
+    "vllm": "0.8.4"
+  },
+  "status": "complete",
+  "study": "qwen_behavioral_size_screen_v1",
+  "task_manifest_sha256": "4b73ac0e9634d144feead8a35668f4ddd85c6c6ac8ab0207ef2d17f01d4c4ecb",
+  "tasks_sha256": "2e0f65d6801b96616fb53b764470960a96b4c08c73483006ca626477de30ccb8",
+  "tensor_parallel_size": 4
+}

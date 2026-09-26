@@ -1,0 +1,1061 @@
+% ============================================================
+%  APPENDIX — EXPERIMENT 3 FULL DETAILS  (training & transfer)
+%  Place after the Experiment 2 appendix.
+% ============================================================
+
+\section{Experiments 3 and 4: Training and Transfer}
+\label{app:exp3}
+
+The main Experiment~3 result is a matched Qwen3-4B analysis of Coin City
+domain-plus-structure transfer at the registered round 300 under greedy and
+five-draw stochastic decoding. The larger-model roster was incomplete at the
+analysis freeze. This appendix reports the complete design, a completed complementary
+Qwen3-4B study of broader unseen mechanism compositions, and earlier
+surface-domain and disclosed-graph diagnostics. Experiment~4 reports the completed
+Qwen3-4B historical-market triplet and documents the prespecified 8B extension.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Guide to Experiments~3 and~4.} Each row states the
+distribution shift, purpose, and material included.}
+\label{tab:exp3-roadmap}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{.19\linewidth}p{.28\linewidth}p{.31\linewidth}p{.10\linewidth}}
+\toprule
+Setting & What changes at test time & Evidential role & Material \\
+\midrule
+Coin City A$\to$B & Hidden structure, surface domain, and qualitative hint reliability & Main Experiment~3; matched round-300 checkpoint & Protocol and result \\
+Coin-$*$ domains & Surface, units, scale, noise, and sensitivity range; fixed graph & Precursor & Qwen3-4B endpoints \\
+Disclosed structures & Supplied state-space graph and response horizon & Diagnostic & Qwen3-4B endpoints \\
+Broad mechanism OOD & Unseen graph/function compositions and extrapolated parameters & Appendix structural-transfer study & Completed Qwen3-4B factorial \\
+Polymarket pastcasting & Event and normalized question family & Experiment~4 real-world transfer & Qwen3-4B triplet \\
+Polymarket roster & Qwen scale and matched Qwen/Llama comparison & Registered extension; no result & Protocol only \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsection{Experiment 3: Coin City Domain and Structural Transfer}
+\label{app:exp3-coin-structural}
+
+\subsubsection{Data-generating processes}
+
+Training uses only Structure~A, the direct relationship from Experiment~2. On
+the displayed scale of domain $d$,
+\begin{equation}
+  y_{t+1}=b_d+g_jx_t+\epsilon_t,\qquad
+  \epsilon_t\sim\mathcal N(0,\sigma_d^2).
+  \label{eq:exp3-coin-a}
+\end{equation}
+A pulse acts in the next period and has no residual effect under zero subsequent
+input. The unseen evaluation mechanism, Structure~B, is
+\begin{align}
+  m_{t+1}&=\rho m_t+g_jx_t,\\
+  y_{t+1}-b_d&=\phi(y_t-b_d)+\lambda m_{t+1}+\epsilon_t.
+  \label{eq:exp3-coin-b}
+\end{align}
+It introduces a persistent mediator and outcome carry-over, so a single pulse has
+both immediate and delayed effects. Model prompts disclose neither equation,
+parameter values, internal variable, nor structure label.
+
+Coin City uses $b=50$, range $[0,100]$, driver pool
+$\{-12,-8,-4,0,4,8,12\}$, and $\sigma=1.6$. Held-out Coin Harbor uses
+$b=180$, range $[40,320]$, driver pool
+$\{-24,-16,-8,0,8,16,24\}$, and $\sigma=4.5$, together with new terminology,
+units, and qualitative descriptions. Evaluation gains follow
+$g\sim\mathrm{Uniform}(.22,.92)$. Structure~B independently samples
+$\rho\sim\mathrm{Uniform}(.48,.74)$,
+$\phi\sim\mathrm{Uniform}(.18,.42)$, and
+$\lambda\sim\mathrm{Uniform}(.68,.94)$. A reference and its matched target share
+these parameters but have independent inputs and noise.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Exact Coin City--Coin Harbor domain contrast.} Both
+surfaces instantiate the same Structure~A and B simulators and task template; Coin
+Harbor changes the semantic setting, time unit, numeric scale, interventions, noise,
+and pathway descriptions.}
+\label{tab:exp3-domain-contrast}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{p{.20\linewidth}p{.36\linewidth}p{.36\linewidth}}
+\toprule
+\textbf{Field} & \textbf{Coin City (train and test)} & \textbf{Coin Harbor (test only)} \\
+\midrule
+Driver $\to$ outcome & Net campaign news $\to$ candidate support & Net shipping
+bulletin $\to$ cargo-flow index \\
+Time unit & Week & Tide cycle \\
+Resting level / support & 50 / $[0,100]$ & 180 / $[40,320]$ \\
+Observed-input pool & $\{-12,-8,-4,0,4,8,12\}$ &
+$\{-24,-16,-8,0,8,16,24\}$ \\
+Evaluation shocks & $\{-12,-6,0,6,12\}$ & $\{-24,-12,0,12,24\}$ \\
+Observation-noise SD & 1.6 support points & 4.5 cargo-index points \\
+Structure A description & Synchronized citywide alerts; reactions occur mostly in
+the same week & Synchronized fleetwide radio; responses occur mostly in the same
+tide cycle \\
+Structure B description & Neighborhood conversations and local organizations;
+reactions build gradually and persist & Dockside crews and harbor groups; responses
+build gradually and persist \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsubsection{Training episodes and matched control}
+
+Each training prompt contains two 14-case Coin City reference systems, both
+governed by Equation~\ref{eq:exp3-coin-a}. One draws
+$g\in[.18,.46]$ and the other $g\in[.68,.98]$; their order is randomized.
+The target shares exactly one reference gain, selected in balanced fashion, and
+shows $k\in\{0,2,4,8\}$ independently generated cases. Its national/local
+background description identifies the matching weak or strong response as in
+Experiment~2. There are 1,200 rows at each $k$, or 4,800 per training run.
+
+The causal and population-prior datasets have byte-identical prompts. Causal
+reward uses the target's noise-free forecasts. For the control, targets are
+deranged within each $k$ stratum with a fixed permutation: no row keeps its own
+target, while the complete multiset of target vectors is exactly preserved.
+Consequently the control can learn the output format and population distribution
+but cannot improve reward by using that row's references or target history.
+The Qwen3-4B structureless diagnostic additionally scrambles displayed drivers
+and rewards a flat intervention response; it is not a confirmatory comparator.
+
+\subsubsection{Evaluation interface and qualitative hint}
+
+Every evaluation prompt contains a complete 14-period Structure~A reference, a
+complete 14-period Structure~B reference, and a target governed by one of them.
+For Coin City the two reference descriptions are:
+\begin{quote}\small
+Residents receive campaign developments through synchronized citywide alerts.
+Reactions occur mostly during the same week as the news.
+
+Campaign developments usually spread through neighborhood conversations and
+local organizations. Reactions may build gradually and persist after the
+original news has faded.
+\end{quote}
+Coin Harbor uses the matched fleetwide-radio versus dockside-network descriptions.
+The target receives the correct description, no description, or the other
+pathway's description. The three prompt variants reuse the exact reference and
+target trajectories, scenario grid, and gold forecasts; the freeze records a
+common numeric hash for every cue triplet.
+
+Each task requests ten counterfactuals: shocks
+$\{-2u_d,-u_d,0,u_d,2u_d\}$ at horizons one and three, with $u_d=6$ in Coin City
+and $u_d=12$ in Coin Harbor. The shock occurs in the next period and all later
+inputs are zero. The response vector consists of the eight nonzero-shock minus
+zero-shock contrasts. The full endpoint contains
+\[
+2\ {\rm domains}\times2\ {\rm structures}\times3\ {\rm hints}\times
+4\ k{\rm\ values}\times30\ {\rm episodes}=1,440
+\]
+paired prompts. Training and evaluation seed bands begin at 81,000,000 and
+91,000,000, respectively.
+
+\paragraph{Exact task template and prompt variants.}
+\label{app:exp3-coin-prompts}
+The following is the task string emitted by the registered renderer before the
+model-specific chat wrapper is applied. Bracketed uppercase fields below denote
+row-specific substitutions; they are not shown to the model. Line wrapping is
+typographic, while the blank-line-separated sections and all fixed wording are
+part of the prompt.
+
+\begin{quote}
+\begingroup\ttfamily\scriptsize\raggedright
+Forecasting task in [DOMAIN].
+
+\smallskip
+The resting level of [OUTCOME] is [BASELINE]. Values are bounded to
+[LOWER, UPPER].
+
+\smallskip
+The reference systems are complete examples. The target system may share a
+stable response pattern with one reference. Infer from the information shown;
+no response equation or coefficient is provided.
+
+\smallskip
+REFERENCE SYSTEM 1
+
+Background: [REFERENCE 1 CONTEXT]
+
+[REFERENCE 1 TABLE: period, driver, and 14 observed outcomes]
+
+\smallskip
+REFERENCE SYSTEM 2
+
+Background: [REFERENCE 2 CONTEXT]
+
+[REFERENCE 2 TABLE: period, driver, and 14 observed outcomes]
+
+\smallskip
+TARGET SYSTEM
+
+[TARGET BACKGROUND, WHEN PRESENT]
+
+[TARGET TABLE WITH $k$ OBSERVATIONS, OR THE EXACT NO-OBSERVATION SENTENCE]
+
+\smallskip
+COUNTERFACTUAL FORECASTS
+
+For each scenario, apply the stated [DRIVER] in the next [PERIOD] and then set it
+to 0 in later periods. Forecast [OUTCOME] at the stated horizon.
+
+\smallskip
+A: shock=[VALUE]; horizon=1\quad $\ldots$\quad
+E: shock=[VALUE]; horizon=1
+
+F: shock=[VALUE]; horizon=3\quad $\ldots$\quad
+J: shock=[VALUE]; horizon=3
+
+\smallskip
+Return only strict JSON with exactly ten finite numbers in scenario order:
+
+\{"forecasts":[A,B,C,D,E,F,G,H,I,J]\}
+\endgroup
+\end{quote}
+
+The renderer realizes the variants as follows. Training always includes the
+correct strong/weak background and uses the same input string for causal and
+population-prior training; only the hidden reward target differs. At evaluation,
+\texttt{correct} inserts the target pathway's description, \texttt{none} omits
+the background line entirely, and \texttt{misleading} inserts the other
+pathway's description. Every cue triplet otherwise has identical tables,
+interventions, and targets. If $k=0$, the target block contains the exact
+sentence \emph{No target-system observations are available yet.}; otherwise it
+contains the same table format as the references with the first $k$ rows. The
+Qwen3-4B \texttt{structureless} diagnostic retains this shell but swaps every
+displayed $-12.0\leftrightarrow12.0$ and $-8.0\leftrightarrow8.0$ token through
+a collision-safe substitution. Untrained bases receive the same held-out
+prompts as trained models. Thus cue, reward-arm, structureless, and base
+comparisons do not introduce an unreported instruction change.
+
+\subsubsection{Estimands, roster, and validation criteria}
+
+The confirmatory grid is three models (Qwen3-4B, Qwen3-8B, and
+Llama-3.1-8B), two arms, and three training seeds, for 18 runs. Three
+Qwen3-4B structureless runs and three untrained endpoints are diagnostic.
+The primary estimand is population-prior minus causal response MAE on
+Structure~B in Coin Harbor with the correct hint, averaging the four $k$ values
+equally. Positive values favor causal training. Prespecified secondary contrasts
+apply the same estimator to Structure~A/Coin Harbor (domain transfer),
+Structure~B/Coin City (structural transfer), and the in-distribution cell.
+Paired absent-minus-correct and misleading-minus-correct contrasts measure hint
+use. Their paired $k=8$ minus $k=0$ difference tests whether observations override
+a misleading prior; negative values indicate a shrinking misleading-hint penalty.
+
+Greedy output is retained for continuity, and every checkpoint adds five draws at
+temperature $.7$. Draws are averaged within episode before inference. The
+hierarchical bootstrap resamples the three training seeds at the top level and
+paired episodes within each selected seed. Parse failures receive the full
+observable-range error penalty rather than being discarded.
+
+The generated freeze passes 17 fail-closed checks: exact row counts and factorial
+balance; byte-identical causal/prior prompts and held-out datasets; exact
+within-$k$ target marginals with no fixed reward links; absence of Structure~B
+from training prompts and metadata; cue-triplet numeric identity; train/evaluation
+identifier disjointness; hidden-equation leak scans; strict gold round trips; and
+oracle separation from the blind pathway mixture. Mean A--B response separation
+is 2.65 points in Coin City and 4.80 in Coin Harbor. Across all three tokenizers,
+the longest prompt is 1,071 tokens against the registered 2,304-token limit.
+
+The analysis plan assigns population-prior-minus-causal intervals to all four
+transfer cells, paired intervals to both cue penalties at every $k$, and the paired
+$k=8$ minus $k=0$ change in misleading-minus-correct error to evidence override.
+The protocol archive records versioned input, analysis, and output hashes. Full
+optimization and compute parameters are in
+Section~\ref{app:exp3-complete-training-setup}.
+
+\subsubsection{Round-300 Qwen3-4B results}
+\label{app:exp3-coin-qwen4b}
+
+All nine Qwen3-4B causal, population-prior, and structureless runs have produced
+the complete 1,440-task greedy evaluation and the registered five-draw stochastic
+evaluation at round 300; the untrained Qwen3-4B endpoint is also complete under
+both regimes. The task universe is identical across conditions, and parse rates
+are 100\% for every trained arm and 99.97\% for the stochastic base. The analysis
+averages the four evidence depths equally and, for stochastic decoding, averages
+draws within task before the seed-first bootstrap. The two larger-model grids
+were incomplete at the analysis freeze.
+
+Under five-draw stochastic decoding, the joint-cell MAEs are $6.15$, $6.76$,
+$4.81$, and $4.49$ for base, structureless, population-prior, and causal training,
+respectively. The prior-minus-causal difference is $.319$ $[.134,.489]$; causal
+training has the lowest point estimate in all four cells, with all four intervals
+excluding zero. The stochastic nearest-pathway Structure~B accuracy is zero for
+causal training and $.873$ for base. Table~\ref{tab:exp3-coin-stochastic} reports
+the complete transfer grid.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Qwen3-4B Coin City round-300 stochastic endpoint.}
+Entries are response MAE under the correct hint after averaging five draws within
+task. Intervals use the registered paired seed-first bootstrap; lower is better.}
+\label{tab:exp3-coin-stochastic}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_qwen3_4b_stochastic}}
+\end{minipage}
+\end{center}
+
+Greedy decoding yields joint-cell MAEs of $6.09$, $6.69$, $4.77$, and $4.59$,
+respectively, and a prior-minus-causal difference of $.174$ $[.039,.316]$. Causal
+training has the lowest point estimate in all four cells. The interval excludes
+zero in the in-distribution and joint cells, but includes zero in the domain-only
+and structure-only cells, marginally so for structure-only ($[-.002,.248]$).
+Correct, absent, and misleading hints yield causal MAE of $4.59$, $4.68$, and
+$4.86$ in the joint cell. Its nearest-pathway Structure~B accuracy is $.025$,
+versus $.817$ for base.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Qwen3-4B Coin City round-300 greedy endpoint.}
+Entries are response MAE under the correct hint. Intervals use the same registered
+paired seed-first bootstrap; lower is better.}
+\label{tab:exp3-coin-greedy}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_qwen3_4b_greedy}}
+\end{minipage}
+\end{center}
+
+Across both decoding regimes, lower response error does not imply recovery of the
+mediated shape. The full cross-model endpoint is excluded because the Qwen3-8B and
+Llama-3.1-8B causal/prior grids were incomplete at the analysis freeze.
+
+\IfFileExists{tables/exp3_coin_structural_diagnostics.tex}{%
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Experiment~3 transfer-cell diagnostics under repeated
+decoding.} Entries are response MAE under the correct qualitative hint, averaged
+equally over evidence depths. Structureless applies only to Qwen3-4B.}
+\label{tab:exp3-coin-structural-diagnostics}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3_coin_structural_diagnostics}}
+\end{minipage}
+\end{center}
+}{}
+
+\subsection{Domain-Transfer Precursor: Coin-\texorpdfstring{$*$}{*}}
+\label{app:exp3-domains}
+
+This diagnostic asks whether training on one to three
+surface domains improves forecasting on two unseen domains when the causal
+structure and total number of training rows are held fixed. This earlier
+Coin-$*$ precursor is distinct from the main Coin City/Coin Harbor factorial;
+Figure~\ref{fig:exp3d-domains} shows its full five-domain roster.
+
+\input{fig_exp3d_domains}
+
+\subsubsection{Design and anti-shortcut controls}
+
+Every domain in this precursor instantiates the same fixed structure: a driver
+$x_t$ moves a hidden state that retains $0.9$ of its previous deviation from
+baseline, and the observable reports that state with measurement noise. Domain
+names, terminology, units, and numerical parameterization differ, while the causal
+topology is preserved. Writing $y^{\mathrm{c}}$ and $u^{\mathrm{c}}$ for the
+canonical observable and driver, domain $d$ displays
+\begin{equation}
+  y_d = o_d + s_d\,(y^{\mathrm{c}} - 50), \qquad x_d = i_d\,u^{\mathrm{c}},
+  \qquad g_d = (s_d / i_d)\, g^{\mathrm{c}},
+  \label{eq:exp3d-skin}
+\end{equation}
+with per-domain offset $o_d$, observable scale $s_d$, and driver scale $i_d$. The
+map is affine and invertible, so reward targets and the slope target transform
+identically and the Kalman oracle remains optimal in canonical space. Observation
+noise is set per domain on the underlying structure rather than inherited from
+$s_d$, so scale and noise are not confounded. Table~\ref{tab:exp3d-domains} gives
+the resulting displayed parameters.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{The Coin-$*$ domain family: the display skin.} Offset
+$o_d$, observable scale $s_d$, and driver scale $i_d$ are the parameters of
+Equation~\ref{eq:exp3d-skin}. The sensitivity to be inferred follows from them as
+$(s_d/i_d)\,g^{\mathrm{c}}$ with $g^{\mathrm{c}}\sim\mathrm{Uniform}(0.1,1.0)$, and
+$\sigma = s_d\sigma_y$ is the displayed observation noise, set per domain so that
+scale and noise are not confounded. Note that no two domains share a sensitivity
+range, and that the two held-out ranges lie inside the span of the three training
+ranges. The table is generated directly from the domain registry used to build
+the datasets, so it cannot drift from what the model saw.}
+\label{tab:exp3d-domains}
+\scriptsize
+\resizebox{\linewidth}{!}{\input{tables/exp3d_domains}}
+\end{minipage}
+\end{center}
+
+Two consequences matter for interpretation. The implied sensitivity $g_d$ differs
+across domains even at the same canonical draw, so a policy that memorizes a
+numeric regime in training cannot apply it to a held-out domain. And because each
+domain draws its episodes from a disjoint seed block, no canonical episode is ever
+re-skinned into two domains; CoinFishing is not CoinCity's numbers multiplied by
+four.
+
+Rows carry their own reward tolerances, scaled by $s_d$ for the level term and by
+$s_d/i_d$ for the slope term, together with the domain's observable range. Without
+domain scaling, a fixed tolerance in displayed units would make CoinFishing
+roughly four times harder than CoinCity at equal relative accuracy. Forecasts outside $[0,100]$
+would also be clipped, including every CoinFishing answer above 100 crates, which
+would destroy the measured slope.
+
+\subsubsection{Registered protocol and completion}
+
+The preflight is fail-closed and gates submission: row-matching across arms,
+nesting of the training sets, absence of any held-out domain from training,
+train/evaluation seed disjointness, targets inside the declared range, skin-scaled
+tolerances, byte-identical held-out splits, and an oracle-versus-constant reward
+margin on each held-out domain. It passes on the submitted datasets. All four arms
+carry exactly 4{,}800 training rows in equal per-domain shares; on training rows
+the correlation between the true displayed sensitivity and the slope target is
+$1.00$ for $D_1$--$D_3$ and undefined for the structureless control, whose slope
+targets are identically zero; and on the held-out domains an oracle that knows the
+hidden sensitivity outscores a constant ``ignore the driver'' policy by $0.548$
+reward on CoinBasketball and $0.560$ on CoinClinic. Its manifest is
+\texttt{domain\_family/protocol/exp3d\_manifest.json}.
+
+\paragraph{Training and read-out.}
+Every arm fine-tunes \texttt{Qwen3-4B-Instruct-2507} with rank-32,
+$\alpha{=}64$ LoRA adapters and Dr.~GRPO for 300 rollout-and-update rounds at seeds 42, 43, and 44.
+Each update samples 16 prompts with eight rollouts per prompt at temperature 1.3;
+the learning rate is $10^{-6}$ and greedy held-out evaluation runs every 25
+updates. Reward weights level and slope accuracy equally, with tolerances scaled
+by each domain's display skin; an invalid response receives zero reward. The
+full registered grid completed at all three seeds. The main-text endpoint table
+pools the three validated seeds and evaluates the deterministic step-zero base
+once. The registered launcher and scorer are \texttt{launch\_domains.py} and
+\texttt{transfer\_report\_domains.py}.
+
+\subsubsection{Completed endpoint read-out}
+\label{app:exp3-domain-results}
+
+All twelve registered training runs reached step 300 and every held-out
+completion parsed. Each trained cell in Table~\ref{tab:exp3d-endpoint-results}
+pools 2,160 records per held-out domain; the deterministic base is evaluated once
+on 1,440 prompts.
+
+The complete grid shows predictive transfer without a monotonic diversity effect.
+$D_2$ gives the lowest causal-arm MAE on both held-out domains, reducing the base
+from $6.64$ to $3.11$ on CoinBasketball and from $12.82$ to $7.27$ on CoinClinic.
+Adding CoinFarm in $D_3$ does not improve either endpoint, so the prespecified
+$D_1\!\to D_2\!\to D_3$ monotonicity prediction is not supported. The
+structureless control is also mixed: it is best on CoinBasketball but worse than
+every causal arm on CoinClinic.
+
+Sensitivity recovery is weaker. No trained arm beats the blind prior-midpoint
+floor ($\tilde\varepsilon<1$), although the causal arms retain more episode
+ordering than the control. These endpoints support transfer of forecast accuracy,
+not accurate recovery of a reusable episode-specific mechanism.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Completed held-out Coin-domain transfer endpoint.}
+The base is deterministic; trained entries pool the three registered seeds.
+$\pi$ is MAE in displayed units, $\tilde\varepsilon$ is normalized sensitivity
+error, and $\rho$ is episode-level rank correlation.}
+\label{tab:exp3d-endpoint-results}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{\input{tables/exp3d_endpoint_results}}
+\end{minipage}
+\end{center}
+
+The qualitative pattern replicates (Table~\ref{tab:exp3d-seed-results}). Every
+causal seed beats the deterministic base MAE on both domains. Every structureless
+seed beats every causal seed on CoinBasketball and trails every causal seed on
+CoinClinic. The $D_2$ and $D_3$ ranges overlap, providing no seed-level basis for
+a monotonic domain-count claim.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Per-seed held-out domain transfer.} Metrics follow
+Table~\ref{tab:exp3d-endpoint-results}; $\pi$ remains in each domain's own units,
+while $\tilde\varepsilon$ and $\rho$ are dimensionless. Every completion parses.}
+\label{tab:exp3d-seed-results}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\input{tables/exp3d_seed_results}
+}
+\end{minipage}
+\end{center}
+
+\subsection{Secondary Diagnostic: Causal-Structure Transfer}
+\label{app:exp3-structures}
+
+This completed arm varies the disclosed causal graph while retaining the election
+setting. It complements the primary domain test by asking whether training can
+use an unseen described graph; because the graph is supplied in the prompt, it is
+not a test of discovering causal structure from observations alone.
+\subsubsection{World Family}
+\label{app:exp3-family}
+
+Each world is a linear-Gaussian state-space model with one hidden scalar, the per-episode gain
+$g\sim\mathrm{Uniform}(0.1,1.0)$, which occupies a single designated slot of $B$ (an input gain) or of
+$A$ (a persistence):
+\begin{align}
+s_t &= \text{base} + A\,(s_{t-1}-\text{base}) + B(g)\,u_t + w_t, & w_t&\sim\mathcal N(0,\sigma_s^2 I),\\
+y_t &= C\,s_t + v_t, & v_t&\sim\mathcal N(0,\sigma_y^2 I),
+\end{align}
+with $\text{base}=50$, $\sigma_s=1$, $\sigma_y=2$, a weekly driver $|u_t|\sim\mathrm{Uniform}\{3,\dots,12\}$
+with random sign, horizon $T=10$, and $y_t$ clipped to $[0,100]$ and rounded. Experiment~2's biased-news
+world is exactly the \texttt{direct} structure ($d{=}m{=}p{=}1$, $A{=}[\phi]$, $B{=}[g]$, $C{=}[1]$,
+$\phi{=}0.9$). The catalog holds $12$ single-poll structures, split $8$ training / $4$ held-out
+(Table~\ref{tab:exp3-worlds}).
+
+\paragraph{Design gates.} Every world is asserted at import: the spectral radius
+of $A$ must be below one at both ends of the gain range, the resting observable
+$C\cdot\text{base}$ must lie in $[25,75]$, and clipping must remain below $0.4\%$.
+These gates keep all reported processes stable, centered away from the bounds,
+and identifiable under the probe below.
+
+Distinctness is checked within each observational interface by applying
+structure $A$'s Kalman oracle to structure $B$'s data. Each world's native oracle
+is best, by $21\%$ for the deepest chain to $463\%$ for the most separated pair;
+no held-out world is an observational relabeling of a training world.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{The $12$ worlds, and how each is probed.} $h^\star$ is the first-response horizon: the
+earliest week at which a pulse on the probed driver moves the probed poll, i.e.\ the smallest $h$ with
+$(CA^{h-1}B)\neq0$. ``response at $h^\star$'' is that sensitivity, evaluated at the two ends of the gain
+range. Where it \emph{varies} with $g$ the probe identifies the gain and recovery ($\varepsilon,\rho$) is
+defined; where it is constant, $g$ sits on a persistence and no input$\to$output response can identify
+it at any horizon, so those worlds are scored on forecast error alone.}
+\label{tab:exp3-worlds}
+\footnotesize
+\begin{tabular}{l l c c c}
+\toprule
+Structure & split & $h^\star$ & response at $h^\star$ ($g{=}0.1\to1.0$) & recovery defined \\
+\midrule
+\texttt{direct} (the Exp-2 world) & held-out & $1$ & $0.100 \to 1.000$ & yes \\
+\texttt{two\_news\_feedback}      & held-out & $1$ & $0.100 \to 1.000$ & yes \\
+\texttt{mediators}                & held-out & $2$ & $0.270 \to 0.675$ & yes \\
+\texttt{chain4}                   & held-out & $4$ & $0.022 \to 0.216$ & yes \\
+\midrule
+\texttt{echo}                     & training & $1$ & $0.100 \to 1.000$ & yes \\
+\texttt{inhibitory}               & training & $1$ & $0.100 \to 1.000$ & yes \\
+\texttt{lagged}                   & training & $2$ & $0.100 \to 1.000$ & yes \\
+\texttt{chain2}                   & training & $2$ & $0.060 \to 0.600$ & yes \\
+\texttt{two\_news\_split}         & training & $2$ & $0.060 \to 0.600$ & yes \\
+\texttt{chain3}                   & training & $3$ & $0.042 \to 0.423$ & yes \\
+\texttt{hidden\_phi}              & training & $1$ & $0.700$ (constant)  & --- ($g$ is $\phi$) \\
+\texttt{chain2\_hidden\_phi}      & training & $2$ & $0.300$ (constant)  & --- ($g$ is $\phi$) \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsubsection{Instrument: Probing at the First-Response Horizon}
+\label{app:exp3-probe}
+
+Experiment~2 reads recovery by asking for the poll under each of four shocks
+$\{-10,-5,+5,+10\}$ and taking the slope of the answers. Applied at a fixed one-week horizon this is
+\emph{degenerate} in every delayed world: $y_{k+1}$ does not depend on $u_{k+1}$, so all four targets
+coincide, the true slope is $0$, and a constant reply is optimal. Six of the twelve worlds are blind this
+way (Fig.~\ref{fig:exp3-probe}a). We therefore probe each world at its own $h^\star$. Under a single
+pulse $u$ at week $k{+}1$ and no news thereafter,
+\begin{equation}
+\mathbb E[y_{k+h}] \;=\; C\Big(\text{base} + A^{h}(s_k-\text{base}) + A^{h-1} B\,u\Big),
+\end{equation}
+so the slope of the four answers against the shock magnitude estimates $\gamma^\star=(CA^{h^\star-1}B)$,
+which equals $g$ exactly in the direct world and is an affine image of it elsewhere. The prompt states
+the horizon explicitly (``news in week $k{+}1$, none in weeks $k{+}2$--$k{+}h^\star$; predict the poll in
+week $k{+}h^\star$''), and asks for all four scenarios in one reply, which is what makes the slope
+readable from a single completion.
+
+\paragraph{Identifiability guard.}  Even at $h^\star$, a short prefix may leave $g$ unidentified: the
+filter has not seen enough polls. We score only (structure, prefix) cells in which knowing $g$
+improves oracle performance over the prior-blind filter by at least $0.1$ poll points.
+This retains every prefix $k\in\{1,2,3,5,7,9\}$ for \texttt{direct} and \texttt{two\_news\_feedback}, and
+$k\geq5$ for \texttt{mediators} and \texttt{chain4}.
+
+\input{fig_exp3_probe_diagnostic}
+
+\subsubsection{Reward}
+\label{app:exp3-reward}
+
+The agent never sees $g$; it emits only poll forecasts. Forecast accuracy alone is
+improvable without inference because a policy can answer at the prior-mean gain.
+The registered reward therefore scores response as well as level from the four
+jointly elicited forecasts $\hat p_i$ (Eq.~\eqref{eq:exp3-reward}):
+\begin{equation}
+r=(1-w)\cdot\tfrac14\sum_{i}\max\!\big(0,1-|\hat p_i-\mu_i|/S\big)\;+\;w\cdot\max\!\big(0,1-|\mathrm{slope}(\hat p)-\gamma^\star|/S_g\big),
+\label{eq:exp3-reward}
+\end{equation}
+with $w{=}0.5$, $S{=}15$ poll points, $S_g{=}0.5$, and $\mu_i$ the noise-free target under shock $i$. The
+slope term is per-episode: it is earned only by reading \emph{this} city's history. A reply missing any
+of the four scenarios, or truncated at the token budget, earns $r{=}0$; partial credit is refused because
+a missing scenario corrupts the slope. Under $h^\star$ the constant policy's take falls from $70\%$ to
+$46\%$ of the oracle's, and it falls in \emph{every} world rather than only the immediate ones
+(Fig.~\ref{fig:exp3-probe}b).
+
+\subsubsection{Structureless Control}
+\label{app:exp3-control}
+
+Training against this reward can still lower held-out error for reasons unrelated to the
+driver--outcome relationship: the model may learn the JSON format, learn to track the poll's level, or learn to stop over-reacting to news.
+The control arm removes the driver--outcome relationship. Its training rows use the same
+worlds, the same prompts, and the same episodes, but (i) the \emph{displayed} news is resampled
+independently of the polls, so news and poll share zero mutual information; (ii) every scenario's target
+is the expected poll under \emph{zero} input, so all four coincide; and (iii) the slope target is $0$. A
+control-trained model can learn format, level-tracking, and news suppression. Its
+training data contain no news$\to$poll relation.
+
+Both reported arms are evaluated on the same real held-out worlds. Family and
+structureless held-out files are byte-identical, and the preflight aborts on any
+target, seed, structure, horizon, or prompt drift. Empirically the manipulation
+does what it claims: on family training rows the displayed news correlates
+$+0.385$ with the observed poll change, and on structureless rows $+0.017$.
+
+\paragraph{Control interpretation.} The structureless arm sees incoherent
+news--poll pairs, which are off-distribution at test time, and a news-ignoring
+constant already earns $86\%$ of its achievable training reward versus $46\%$
+on family data. Both asymmetries favor the family arm, so failures to separate
+from the control remain informative.
+
+The exception is \texttt{chain4}: its small true response range
+$[0.022,0.216]$ lies close to the control's zero-slope target. The control is
+therefore accidentally trained toward the average answer, and its lower raw
+$\varepsilon$ on this world is not interpreted; its near-zero $\rho$ remains a
+valid indicator that it does not order cities.
+
+Even where valid, family minus structureless does not isolate per-city inference:
+a family win can arise from applying the disclosed graph at a population-average
+gain. We scope this contrast to whether training used forecast structure at all.
+
+\subsubsection{Data}
+\label{app:exp3-data}
+
+Training rows are drawn only from the $8$ training structures ($600$ episodes each, $4800$ rows); each row
+is one (structure, episode, prefix $k\in[1,9]$) with a shock quadruple sampled two-negative/two-positive
+from a wider pool than the evaluation shocks, so the model learns the response across a range rather than
+memorizing four points. The held-out split is drawn only from the $4$ held-out structures ($60$ cities
+each $\times$ six prefixes $k\in\{1,2,3,5,7,9\}$, $1440$ rows) at the canonical four shocks. Train and
+held-out episodes come from disjoint seed bands ($10^5$-based vs.\ $9\!\times\!10^{7}$-based), so no city
+is shared; and because the two splits contain \emph{disjoint structures}, the held-out set tests transfer
+across structures as well as cities.
+
+\paragraph{Information supplied in the prompt.} As in Experiment~2's parity prompt, the generative
+structure is \emph{disclosed} and only $g$ is hidden. A verbalizer describes the
+number of latent opinions, their carry-over fractions and couplings, the drivers,
+the poll readout, and the noise scales. The sole hidden slot is marked as ``an
+UNKNOWN amount $g$ \dots\ inferring it is your job''. This arm tests whether the
+model can use a disclosed but unseen state-space structure and estimate its free
+parameter. It does not test graph induction. The structure-agnostic references
+receive less information than the model and are conservative comparators.
+
+\paragraph{Output contract.} The model returns exactly one JSON object carrying
+\texttt{poll\_A}\dots\texttt{poll\_D}, with reasoning capped at two short
+sentences. Greedy parse coverage is $100\%$ at every held-out checkpoint,
+including step zero, so before/after differences are not formatting gains.
+
+\subsubsection{Training Setup}
+\label{app:exp3-train}
+
+We fine-tune \texttt{Qwen3-4B-Instruct-2507} with Dr.\ GRPO\footnote{The bias-corrected GRPO of Liu et
+al., \emph{Understanding R1-Zero-Like Training: A Critical Perspective} (2025), which removes the
+response-length and reward-standard-deviation biases of the group-relative advantage.} as implemented in
+the OAT framework\footnote{\emph{OAT: A research-friendly framework for LLM online alignment},
+\url{https://github.com/sail-sg/oat}.}, a single-GPU actor--learner setup collocating a vLLM sampler with
+the learner. Optimization is over LoRA adapters only, on top of the frozen base; the objective is the
+unbiased Dr.\ GRPO variant (no length normalization, no standard-deviation division in the group-relative
+advantage) with KL penalty $\beta{=}0$. Full hyperparameters are in Table~\ref{tab:exp3-hparams}.
+
+Temperature $1.3$ and reward scale $15$ preserve within-group reward variation;
+all reported runs use this registered configuration.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Experiment~3 causal-structure training configuration. Both reported arms use
+identical optimization and paired episodes; only prompts or supervision differ as
+specified in Section~\ref{app:exp3-control}.}
+\label{tab:exp3-hparams}
+\small
+\begin{tabular}{ll}
+\toprule
+\textbf{Quantity} & \textbf{Value} \\
+\midrule
+Base model              & \texttt{Qwen3-4B-Instruct-2507} (frozen) \\
+Adapter                 & LoRA, rank $32$, $\alpha{=}64$ \\
+Algorithm               & Dr.\ GRPO (\texttt{critic\_type=drgrpo}), $\beta{=}0$ \\
+Group size / prompts    & $8$ samples $\times$ $16$ prompts per step (rollout batch $128$) \\
+Sampling                & temperature $1.3$, top-$p$ $1.0$, max $1024$ new tokens \\
+Optimizer               & AdamW, lr $10^{-6}$, constant; ZeRO-2, reference offload \\
+Rounds / seeds / arms    & $300$ rounds; seeds $42,43,44$; family, structureless \\
+Train rows              & $4800$ ($8$ structures $\times$ $600$ episodes) \\
+Held-out rows           & $1440$ ($4$ structures $\times$ $60$ cities $\times$ $6$ prefixes) \\
+Reward                  & Eq.~\eqref{eq:exp3-reward}; $w{=}0.5$, $S{=}15$, $S_g{=}0.5$ \\
+Evaluation              & greedy (temperature $0$), every $25$ steps \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsubsection{Read-out and References}
+\label{app:exp3-readout}
+
+Each held-out record is one (structure, city, prefix) asked under four shocks jointly, so one completion
+yields the forecast error $\pi=\overline{|\hat p_i-\mu_i|}$ and the implied response
+$\hat\gamma=\mathrm{slope}_i(\text{shock}_i,\hat p_i)$. Where recovery is defined we report
+$\varepsilon=\overline{|\hat\gamma-\gamma^\star|}$ per city and $\rho$, the Spearman correlation of
+$\hat\gamma$ with $g$ across cities. A forecaster whose $\hat\gamma$ never varies is \emph{blind}, not
+undefined: it orders no cities, so $\rho=0$ (the Experiment-2 convention for always-prior).
+
+Six references are computed on the \emph{identical} episodes at the same $h^\star$
+(Table~\ref{tab:exp3-refs}). The read-out refuses to score a dump whose references were written under a
+different probe horizon, so results from the pre-$h^\star$ generation cannot be silently mixed with
+current ones.
+
+\input{exp3_refs_table}
+
+\clearpage
+\subsubsection{Results}
+\label{app:exp3-results}
+
+The family and structureless grids are complete at 300 steps for all three paired
+seeds. Table~\ref{tab:exp3-transfer} is the endpoint read-out.
+
+We report worlds separately because delayed-world forecast errors dominate a
+pooled MAE and raw response scales are incommensurable: $\gamma^\star$ spans
+$0.10$--$1.00$ in \texttt{direct} but only $0.022$--$0.216$ in
+\texttt{chain4}. The per-world, training-dynamics, and evidence-depth panels then
+show where separation occurs, whether it persists, and how it changes with the
+amount of visible history.
+
+Family training lowers forecast error relative to the untrained base on all four
+held-out structures (Table~\ref{tab:exp3-transfer}). On the two immediate-response worlds it also separates from
+the structureless control: MAE is 3.13 versus 4.16 on \texttt{direct} and 3.33
+versus 4.76 on \texttt{two\_news\_feedback}, and its response remains more
+informative in every world, with $\rho=.370$--$.407$ on the immediate worlds
+against $.014$--$.033$ for the control. The harder delayed worlds prevent a broad
+transfer claim: the control has lower forecast MAE on \texttt{mediators} and
+\texttt{chain4}, and normalized recovery error is below the blind floor only for
+the family model on \texttt{direct} ($\tilde\varepsilon=.93$), just above the floor
+on \texttt{two\_news\_feedback} ($1.01$), and well above it on both delayed worlds.
+
+The family-minus-structureless contrast can arise from a population-average gain
+for each disclosed graph rather than per-city gain inference. We therefore
+interpret it as evidence of forecast-structure use only in the immediate-response
+worlds, not individualized latent-parameter recovery.
+
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{\textbf{Synthetic structure transfer by held-out world.}
+Qwen3-4B evaluated untrained (base), after family training, and after
+structureless-control training. $\pi$ is forecast MAE. $\tilde\varepsilon$ is
+recovery error divided by the blind prior-mean floor; values below one beat not
+inferring. $\rho$ measures response informativeness. No pooled row is reported
+because delayed-world forecast scales and raw response scales differ.}
+\label{tab:exp3-transfer}
+\scriptsize
+\input{tables/exp3_transfer}
+\end{minipage}
+\end{center}
+
+Two reference points keep the endpoint in scale. The untrained model's held-out
+forecast MAE is $9.72$, worse than persistence ($6.70$), so a large raw gain need
+not imply recovery. Freezing $g$ at the range midpoint while using the disclosed
+structure attains MAE $3.13$, and the best single constant response attains $5.58$.
+A trained model between $9.72$ and $5.58$ has improved forecasting without
+demonstrating latent inference. We count evidence for latent inference only when a
+model beats the prior-blind floor, retains positive $\rho$, and separates from
+the structureless control.
+
+\paragraph{Training dynamics.}
+Figure~\ref{fig:exp3-curves} shows when the arms separate and whether the
+step-300 endpoint is stable.
+
+\input{fig_exp3_transfer_curves}
+
+\clearpage
+\paragraph{World-level diagnostic.}
+Figure~\ref{fig:exp3-per-env} disaggregates the endpoint by held-out world,
+separating immediate-response success from the harder delayed worlds and reading
+recovery error together with informativeness.
+
+\input{fig_exp3_per_env}
+
+\clearpage
+\paragraph{Evidence-depth diagnostic.}
+Figure~\ref{fig:exp3-per-week} shows how performance changes with visible history,
+pooling only the two held-out worlds on a common response scale.
+
+\input{fig_exp3_per_week}
+
+\subsection{Experiment 4: Historical Polymarket Pastcasting}
+\label{app:exp3b-protocol}
+
+This study asks whether outcome-based training transfers to events and normalized
+question families unseen during training, using a point-in-time cutoff and sealed
+test.
+
+\subsubsection{Frozen sample and leakage gates}
+
+\paragraph{Frozen source and sample.}
+The source export has 1,788,703 rows and SHA-256
+\texttt{5697f767\ldots f638e7d} (the full digest is stored in the manifest).
+The builder scans the entire file and fails on checksum drift. The frozen calendar
+splits contain 1,736 train, 512 development, and 1,024 test markets, with YES rates
+.311, .275, and .301. Train contains 991 distinct events and 1,456 normalized
+question templates; development contains 292 and 453; test contains 493 and 866.
+The selected archive rows have no official series identifiers, so event and
+template components supply the operative family groups.
+
+\paragraph{Eligibility and point-in-time censoring.}
+We admit literal Yes/No markets resolved by an extreme final token price. A
+boundary-aware domain rule selects political, governmental, macroeconomic, and
+geopolitical questions while explicitly rejecting culture, awards, sports,
+esports, and crypto categories. This rule is fixed before model training. One task
+is built 30 days before the earliest archived terminal timestamp. At least four
+distinct UTC dates must have genuine pre-cutoff YES candles, the latest candle must
+be no more than seven days stale, and its price must remain in $[.02,.98]$. We keep
+at most the latest 14 dates. Empty, carry-forward, and post-cutoff candles are
+rejected. The prompt omits the outcome, final prices and volume, market status,
+realized terminal time, and the tags used for domain selection.
+
+The archive records timestamped price history but not revisions to static question
+or resolution-rules text. We therefore treat those strings as time-invariant. This
+is a residual point-in-time limitation: the audit can prove that no timestamped or
+outcome field crosses the cutoff, but cannot prove that an archived rule was never
+edited later.
+
+\paragraph{Family-disjoint temporal split.}
+Before applying sample caps, every development row sharing an event, available
+series, or normalized template with train is removed; the same rule removes test
+rows matching train or development. Numeric values and month names are normalized
+in template keys. The final intersection is zero for each pair of splits. Sampling
+within a split is a stable hash of task identifier and protocol version, so row
+order in the export cannot change membership.
+
+\subsubsection{Registered training and sealed evaluation}
+
+\paragraph{Matched update budget.}
+The target domain yields 1,736 unique train markets rather than 4,800. We preserve
+the precommitted 300-round comparison with Experiment~3A using a deterministic,
+balanced schedule of 4,800 presentations: every market appears twice and 1,328
+appear a third time. Schedule order and task files are hash-locked. With batch size
+16 this gives exactly 300 rollout-and-update rounds (2,400 AdamW steps). This distinction between unique markets and
+presentations is retained in every manifest and table. The longest wrapped prompt
+is 1,012 Qwen tokens against the 1,792-token training limit, so OAT's prompt filter
+drops no task.
+
+\begin{center}
+\begin{minipage}{\linewidth}
+\centering
+\captionof{table}{Experiment~4 training configuration. Test data are absent from the
+training process and evaluated once by a dependent job.}
+\label{tab:exp3b-hparams}
+\scriptsize
+\begin{tabular}{p{.34\linewidth}p{.59\linewidth}}
+\toprule
+\textbf{Quantity} & \textbf{Value} \\
+\midrule
+Base / adapter & Qwen3-4B-Instruct-2507; LoRA rank 32, $\alpha=64$ \\
+Algorithm & Dr.~GRPO; $\beta=0$; AdamW, lr $10^{-6}$ \\
+Unique train / presentations & 1,736 / 4,800 balanced repetitions \\
+Rounds / seeds & 300; $42,43,44$ \\
+Rollout & 16 prompts, 8 samples each; temperature 1.3 \\
+Output & one JSON probability; 128 new-token limit \\
+Reward & $1-(\hat p-y)^2$ only \\
+Development & 512 tasks; greedy evaluation every 25 rounds \\
+Locked test & 1,024 tasks; greedy, once after all seeds succeed \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\subsubsection{Completed locked-test accuracy}
+\label{app:exp3b-results}
+\paragraph{Frozen comparators and decision rule.}
+The latest genuine market price has test Brier .11369 and log loss .36581. Platt
+calibration fit on train only uses intercept .03166 and market-logit slope 1.20747;
+it obtains test Brier .11232 and log loss .36046. Its Brier improvement over the
+raw market is $-.00137$ with family-bootstrap 95\% interval
+$[-.00262,-.00011]$. Train prevalence obtains .21042 Brier. These deterministic
+comparators were frozen before learned-model results. The primary learned
+contrast is the mean loss over three trained seeds minus base loss. Invalid JSON
+receives Brier loss one. We report trained minus raw market and trained minus
+train-only Platt separately, using 5,000 bootstrap resamples of connected
+event/template components.
+
+All test forecasts parse. The three-seed trained mean obtains Brier .11589 versus
+.13160 for the base, a
+difference of $-.01572$ with 95\% interval $[-.02528,-.00667]$. Its difference
+from the raw market is $.00219$ with interval $[-.00264,.00721]$, and its
+difference from train-only Platt is $.00356$ with interval
+$[-.00125,.00874]$. Thus the learned model passes the primary base-relative
+decision but not the stronger market-improvement criterion.
+The result establishes transfer relative to the untrained model, not an advantage
+over the market signal.
+
+\begin{center}
+\begin{minipage}{.9\linewidth}
+\centering
+\captionof{table}{\textbf{Per-seed locked-test results.}
+Every trained seed improves on the untrained Brier score of $.1316$; the main
+text reports only the predeclared three-seed mean.}
+\label{tab:exp3b-seed-results}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\resizebox{\linewidth}{!}{%
+\input{tables/exp3b_endpoint_seed_results}
+}
+\end{minipage}
+\end{center}
+
+\subsubsection{Secondary evidence-updating analysis}
+\label{app:exp3b-update}
+After the locked-test decision, we apply the exact Experiment~1 update prompt and
+all nine frozen packets for each of its 100 markets (three pro-$H_1$, three
+anti-$H_1$, and three orthogonal). The packet and initial-context SHA-256 digests
+are \texttt{6741be0a\ldots8796d36} and
+\texttt{c550cf05\ldots0c098}. Every condition receives the same canonical first
+structured Qwen~2.5-7B forecast for each market, so this paired analysis isolates
+conditional revision rather than web retrieval or initial event-model
+construction. Search and thinking are disabled; decoding is greedy with a
+1,500-token output cap. The longest prompt is 1,480 tokens against a 6,144-token
+context limit.
+
+The paired evaluation produces all 900 packet-conditioned revisions for the base
+and each final adapter, with 100\% parse coverage and ICS equal to one. Base
+EHC/HFC is $.909$ on 591 eligible directional updates. Seeds 42, 43, and 44 obtain
+$.917$, $.922$, and $.918$ (592, 588, and 591 eligible updates), for a
+three-seed mean of $.919$. The paired market-bootstrap trained-minus-base
+difference is $+.0101$ with 95\% interval $[+.0004,+.0207]$ for both metrics.
+Sensitivity is $4.64\times$ for base and averages $4.83\times$ after training;
+its difference of $+.19$ has interval $[-.07,+.48]$. The secondary analysis
+therefore detects a small improvement in directional consistency, but not
+selectivity. It does not alter the locked-test decision and is a secondary
+updating result, not a second transfer result.
+
+\begin{center}
+\begin{minipage}{.82\linewidth}
+\centering
+\captionof{table}{\textbf{Per-seed evidence-updating results.}
+The main text reports only the three-seed mean. All conditions use identical
+fixed contexts and evidence packets.}
+\label{tab:exp3b-update-seed-results}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{%
+\input{tables/exp3b_update_seed_results}
+}
+\end{minipage}
+\end{center}
+
+\input{experiment3_training_setup_appendix}
+
+\subsection{Reproducibility}
+\label{app:exp3-repro}
+
+\paragraph{Coin-$*$ domains.}
+\path{exp3_training_transfer/domain_family/} contains the domain registry,
+renderer, dataset builder, validation checks, trainer, and evaluator. The builder
+writes \path{protocol/exp3d_manifest.json}; \path{transfer_report_domains.py}
+recomputes all endpoint metrics from saved evaluation dumps.
+
+\paragraph{Causal structures.}
+\path{exp3_training_transfer/dag_family/} contains the state-space engine,
+catalog, structure verbalizer, paired dataset builder, trainer, evaluator, and
+cross-oracle checks. \path{transfer_report.py} and the plotting scripts
+generate Figs.~\ref{fig:exp3-probe}--\ref{fig:exp3-per-week} from the catalog or
+saved dumps. Every reported cell is therefore recoverable from stored prompts,
+completions, and references.
+
+\paragraph{Structural-OOD mechanism family.}
+\path{exp3_training_transfer/mechanism_family/} contains the mechanism catalog,
+paired disclosed/undisclosed builders, reward definitions, trainer, endpoint
+evaluator, and hierarchical contrast code. The Qwen3-4B analysis is
+archived as \path{reports/c3_completed_qwen3_4b_factorial.json}; it records the
+execution-manifest hash, hashes for all 48 score files and four analysis programs,
+the 103,680 scored row-draws, bootstrap seed, and every reported contrast.
+
+\paragraph{Confirmatory Coin City transfer.}
+\path{exp3_training_transfer/coin_city_structural/} contains the two mechanism
+simulators, paired prompt renderer, deterministic builder, 17 validation checks,
+trainer, strict scorer, and table renderer. Its manifest records effective
+hyperparameters and data, source, adapter, and result hashes.
+\path{make_qwen3_4b_endpoint_outputs.py} fails closed on the exact ten
+five-draw files (72,000 scored draws), averages draws within task, performs the
+paired seed-first bootstrap, and writes Figure~\ref{fig:exp3-transfer-results}
+and Table~\ref{tab:exp3-coin-stochastic}. \path{make_interim_outputs.py}
+verifies the common greedy task universe at round 300, scores the nine Qwen3-4B
+checkpoints and untrained model, and writes Table~\ref{tab:exp3-coin-greedy}.
+
+\paragraph{Historical pastcasting and updating.}
+The \path{polymarket/scripts/} subtree contains the checksum-verified builder,
+task validator, trainer, baseline and test evaluators, and paired-update analyzer.
+Its manifests preserve sample membership, prompt and adapter hashes, parse
+coverage, and bootstrap configuration; the result summaries are independent of
+the generated paper tables.
+
+\subsection{Scope and Limitations}
+\label{app:exp3-limitations}
+
+The completed endpoint claims cover Qwen3-4B in the broad-composition study,
+Coin City under both registered decoding regimes, and historical-market training.
+The larger-model protocols specify scale and architecture comparisons; they do
+not broaden the current empirical claims.
+
+\textbf{Coin City confirmation scope.} The A-to-B design crosses an unseen
+persistent-mediator mechanism with a held-out domain and withholds equations and
+graph labels. At round 300, causal training lowers joint-transfer MAE relative to
+the population-prior control under both decoding regimes, but the mechanism-shape
+diagnostic remains poor. The qualitative hints can be correct, absent, or
+misleading, but
+they come from a fixed three-level intervention and the unseen family contains one
+topology. The result therefore concerns this A-to-B contrast, not unrestricted
+structure discovery or calibration to arbitrary natural cues.
+
+\textbf{Coin-$*$ domain scope.} The five domains are affine display skins over a
+fixed driver--state--observable graph. They vary names, units, scale, noise, and
+sensitivity range, but not causal topology or genre. The held-out ranges also lie
+inside the training ranges' convex hull. This is a controlled interpolation test,
+not evidence of transfer to arbitrary natural domains or unseen mechanisms.
+
+\textbf{Historical archive scope.} Timestamped prices are censored completely,
+but the archive lacks edit histories for static question and resolution-rule
+text; current tags select the target domain but never enter prompts. The design
+uses one 30-day cutoff and price-extreme binary resolutions, so it need not extend
+to other horizons, unresolved markets, or qualitatively adjudicated settlements.
+The 300-round schedule repeats the 1,736 unique training markets in a balanced
+way, increasing reuse; the family-disjoint sealed test, not training fit, carries
+the generalization claim. The resulting gain shows predictive reuse across held-out event families but does
+not show that the learned procedure recovers an explicit event model or causal
+graph.
+
+\textbf{Evidence-updating scope.} The secondary analysis fixes one Qwen~2.5-7B
+initial structured forecast per market and reuses the synthetic Experiment~1
+packets. This isolates conditional revision under controlled evidence;
+it does not test whether training improves initial event-model construction,
+retrieval, or updating to naturally occurring information.
+
+\textbf{Causal-structure diagnostic.} The prompt supplies the graph and hides only
+one scalar, so this arm tests use of a disclosed but unseen state-space
+structure, not graph induction.
+Moreover, \texttt{chain4}'s $h^\star{=}4$ response is only $0.02$--$0.22$ against
+poll noise $\sigma_y{=}2$, making it a low-power endpoint. The single global slope
+tolerance is not adjusted to each world's response range, and the forecast-based
+reward optimizes response recovery only indirectly rather than directly scoring
+the hidden parameter.
+
+\textbf{Model and optimization scale.} The reported endpoint results use
+Qwen3-4B, 300 Dr.\ GRPO rollout-and-update rounds, and three seeds per arm. The
+additional protocols define a Qwen checkpoint/scale contrast and an approximately
+parameter-matched Qwen/Llama contrast. The legacy open-weight roster used an
+earlier one-step probe and structure family, so its endpoints are incompatible
+with $h^\star$ and are not pooled with the reported factorial.
+\clearpage

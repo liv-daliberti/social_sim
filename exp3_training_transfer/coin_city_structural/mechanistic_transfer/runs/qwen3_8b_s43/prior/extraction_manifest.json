@@ -1,0 +1,63 @@
+{
+  "adapters": [
+    {
+      "adapter_config_sha256": "ce1f14ebb4f782789efd550e7465175c7fd09ed2836092e25e54718d1ef472d5",
+      "adapter_weights_sha256": "3ac6e5d5460fc0c0a16e83950e221677f740bb5082ad8de58a743e9c268b8038",
+      "arm": "matched",
+      "job_id": "30730379",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/causal_qwen3_8b_s43_20260822_090426_j30730379/debug_0822T09:08:48/saved_models/step_00301",
+      "seed": 43
+    },
+    {
+      "adapter_config_sha256": "13d071524a7eabcf98d218f572ff10614b72664e6de57b6f720d304e878a7ff5",
+      "adapter_weights_sha256": "ef0eef85a7712bd7563d795afe57990ba6f6f49b0ee40eb16f54ca7f557b3327",
+      "arm": "prior",
+      "job_id": "30730382",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/population_prior_qwen3_8b_s43_20260822_095138_j30730382/debug_0822T09:52:12/saved_models/step_00301",
+      "seed": 43
+    }
+  ],
+  "anchors": [
+    "reference_1_end",
+    "reference_2_end",
+    "target_background_end",
+    "target_evidence_end",
+    "query_end",
+    "final_prompt"
+  ],
+  "created_at": "2026-08-26T01:35:40.429058+00:00",
+  "full_frozen_record_count": 512,
+  "include_base": false,
+  "model": "Qwen/Qwen3-8B",
+  "model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "outputs": [
+    {
+      "dtype": "float16",
+      "elapsed_seconds": 85.03548622131348,
+      "endpoint": "prior",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/mechanistic_transfer/runs/qwen3_8b_s43/prior/states_prior.npy",
+      "sha256": "4f7389b2264dde226d16619c9b7cd05ab7e0f94209f70f5814c3c65094006ebe",
+      "shape": [
+        512,
+        37,
+        6,
+        4096
+      ],
+      "status": "complete"
+    }
+  ],
+  "protocol_sha256": "2a11785f819b4aa81b1197e8e74ffb76138b207624d6d1e7a7482949399df36d",
+  "record_count": 512,
+  "requested_arms": [
+    "prior"
+  ],
+  "resolved_model_commit": "b968826d9c46dd6066d109eabc6255188de91218",
+  "seed": 43,
+  "status": "endpoint_extraction_complete",
+  "study": "coin_city_exp3_reference_transplant_qwen8_v1",
+  "task_manifest_sha256": "71960808d037166fc54430abe82c70de2deebd1089e09e82b6d9b51cb06db779",
+  "tasks_sha256": "da2f3506fd8ad570865a28d18e66b15d881212aa41acdcc71315e9c6b69c9ce9",
+  "token_count_max": 1071,
+  "token_count_median": 998.0,
+  "token_count_min": 925
+}

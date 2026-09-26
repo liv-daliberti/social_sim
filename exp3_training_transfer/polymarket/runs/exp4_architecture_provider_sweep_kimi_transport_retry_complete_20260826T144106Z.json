@@ -1,0 +1,42 @@
+{
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "classification": "post_hoc_transport_only_repair_completion",
+  "status": "complete",
+  "completed_at": "2026-08-26T14:41:06Z",
+  "model": "FW-Kimi-K3",
+  "parent_amendment": {
+    "path": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_kimi_transport_retry_20260826T141000Z.json",
+    "sha256": "11355542c656676f4269d8b6427b79458f26feacb70ed34d6ea99ee15c0b3849"
+  },
+  "execution": {
+    "retry_records": 13,
+    "retry_records_parsed": 13,
+    "successful_records_preserved": 1577,
+    "final_draws": 1590,
+    "final_draw_parse_coverage": 1,
+    "final_complete_task_parse_coverage": 1,
+    "prompts_changed": false,
+    "decoding_changed": false,
+    "max_output_tokens": 1024,
+    "holdout_informed": true
+  },
+  "result": {
+    "brier": 0.12681767704402525,
+    "market_brier": 0.12654794182389942,
+    "hosted_minus_market": {
+      "estimate": 0.00026973522012578805,
+      "ci95_low": -0.0004564264820846879,
+      "ci95_high": 0.001088944697986581
+    },
+    "summary": "exp3_training_transfer/polymarket/reports/exp4_hosted_kimi_repair/exp4_hosted_FW-Kimi-K3_stochastic.summary.json",
+    "summary_sha256": "0529bc45705bd330729e3348459370dd72c32a32af6f92aa797df36f3291762b",
+    "raw": "exp3_training_transfer/polymarket/reports/exp4_hosted_kimi_repair/exp4_hosted_FW-Kimi-K3_stochastic.jsonl",
+    "raw_sha256": "a8a843f5920c4a366addc21deb35a4c8bd39136b117417f7726ad6f48462002e"
+  },
+  "disclosure": {
+    "original_128_token_failure_preserved": true,
+    "pre_transport_retry_archive": "exp3_training_transfer/polymarket/reports/exp4_hosted_kimi_repair/pre_transport_retry_20260826T140726Z",
+    "test_was_used_for_configuration": true,
+    "figure_label": "Kimi*"
+  }
+}

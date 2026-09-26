@@ -1,0 +1,77 @@
+{
+  "api_protocol": "OpenAI Responses API",
+  "application_attempts": 1,
+  "arms": [
+    "abc_no_context",
+    "abc_context",
+    "abc_symbol_context"
+  ],
+  "azure_resource": "liv",
+  "classification": "post_hoc_run_to_run_repeat",
+  "deployment": "gpt-5.6-sol",
+  "episodes": 250,
+  "files": [
+    {
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/ROBUSTNESS_EXTENSION_PROTOCOL.md",
+      "sha256": "2a12df6c40effc19c882debbc63df13ceb1946cbcf782b423965aa03206567bf"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/eval/run_coin_city_gpt56_k0_repeat.py",
+      "sha256": "ca69eeb1ad295aee96668d6505f15ae76a0c3b43b15c5619099a771a52416759"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/eval/run_coin_city_gpt56_k0_repeat_local.sh",
+      "sha256": "61f4c815572feced3bb665a2a23d1cc50709d6f505cd46e12ec4b6bf51b844d1"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/analysis/analyze_coin_city_gpt56_k0_repeat.py",
+      "sha256": "11a64c636c360826db3fb3b94513abed8fa0aab84ddbd7ef80aff77ed79a39b3"
+    }
+  ],
+  "http_client_retries": 0,
+  "kind": "gpt56_k0_repeat_registration",
+  "max_output_tokens": 4096,
+  "original_response_files": [
+    {
+      "arm": "abc_no_context",
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/responses/responses_gpt-5.6-sol_abc_no_context.jsonl",
+      "sha256": "8b29c198fff9a83ca166addaa9dc8f8254edb7119b1f83e79beec393bb9f4c3e"
+    },
+    {
+      "arm": "abc_context",
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/responses/responses_gpt-5.6-sol_abc_context.jsonl",
+      "sha256": "ede1e77049b850f68997e43e11adeed06a3d327f619ca19aca61bf031b583d98"
+    },
+    {
+      "arm": "abc_symbol_context",
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/local_results/symbol_context_model_comparison_20260824/hosted/responses_gpt-5.6-sol_abc_symbol_context.jsonl",
+      "sha256": "8063c40b2d614957385af2d2dad2edffdcff6e0b3473610de9164cd4dd0f3147"
+    }
+  ],
+  "planned_calls": 750,
+  "prefixes": [
+    0
+  ],
+  "protocol_version": "coin_city_robustness_v1",
+  "provider_native_sampling": true,
+  "reasoning_effort": "low",
+  "registered_at": "2026-08-26T16:17:29.626685+00:00",
+  "status": "registered_before_model_calls",
+  "task_files": [
+    {
+      "arm": "abc_no_context",
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/design/tasks_abc_no_context.jsonl",
+      "sha256": "23e2e3493e6d378af165b6851fd527c75c044db3ddc14041e9ca1ea8af06367e"
+    },
+    {
+      "arm": "abc_context",
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/design/tasks_abc_context.jsonl",
+      "sha256": "d5752831f8c995ac1939048d0ec9f37d99393e0e2f24492c5ed47ea94842be10"
+    },
+    {
+      "arm": "abc_symbol_context",
+      "path": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/design/tasks_abc_symbol_context.jsonl",
+      "sha256": "91ea6940ff934bf1a21b0bd8682b34ef1b3d25d543af7af504e8c3d4a67fff70"
+    }
+  ]
+}\n

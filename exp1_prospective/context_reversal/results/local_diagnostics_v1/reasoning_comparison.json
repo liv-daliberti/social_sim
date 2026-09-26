@@ -1,0 +1,4123 @@
+{
+  "all_valid": false,
+  "arms": {
+    "disabled": {
+      "broken_stability": {
+        "drift_adjusted": {
+          "absolute_movement_bounded": false,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "complete_planned_observations",
+          "signed_mean_equivalent": false,
+          "status": "criterion_not_met"
+        },
+        "raw_new_news": {
+          "absolute_movement_bounded": false,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "complete_planned_observations",
+          "signed_mean_equivalent": false,
+          "status": "criterion_not_met"
+        }
+      },
+      "coverage": {
+        "by_context_condition": {
+          "broken": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            }
+          },
+          "masked": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            }
+          },
+          "negative": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            }
+          },
+          "positive": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 0,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 20,
+              "valid": 20
+            }
+          }
+        },
+        "totals": {
+          "expected": 320,
+          "invalid_present": 0,
+          "missing_record": 0,
+          "present": 320,
+          "reason:ok": 320,
+          "valid": 320
+        }
+      },
+      "decode": {
+        "enable_thinking": false,
+        "guided_decoding": null,
+        "max_tokens": 4096,
+        "n": 1,
+        "per_request_seed": "SHA256(canonical JSON [base_seed, trial_id, stage, condition]) first 64 bits modulo 2**31-1",
+        "seed": 20260921,
+        "skip_special_tokens": false,
+        "temperature": 0.7,
+        "thinking": "disabled",
+        "top_p": 1.0
+      },
+      "diagnostics": {
+        "endpoint_blocking": {
+          "negative": {
+            "n_direction_blocked": 5,
+            "n_missing_baselines": 0,
+            "n_planned": 20,
+            "n_valid_baselines": 20
+          },
+          "pooled": {
+            "n_direction_blocked": 5,
+            "n_missing_baselines": 0,
+            "n_planned": 40,
+            "n_valid_baselines": 40
+          },
+          "positive": {
+            "n_direction_blocked": 0,
+            "n_missing_baselines": 0,
+            "n_planned": 20,
+            "n_valid_baselines": 20
+          }
+        },
+        "endpoint_trials": [
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_01",
+            "trial_id": "dev_01:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_01",
+            "trial_id": "dev_01:negative:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_02",
+            "trial_id": "dev_02:positive:r0"
+          },
+          {
+            "baseline_probability": 1.0,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_02",
+            "trial_id": "dev_02:negative:r0"
+          },
+          {
+            "baseline_probability": 0.6,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_03",
+            "trial_id": "dev_03:positive:r0"
+          },
+          {
+            "baseline_probability": 0.25,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_03",
+            "trial_id": "dev_03:negative:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_04",
+            "trial_id": "dev_04:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_04",
+            "trial_id": "dev_04:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_05",
+            "trial_id": "dev_05:positive:r0"
+          },
+          {
+            "baseline_probability": 0.4,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_05",
+            "trial_id": "dev_05:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_06",
+            "trial_id": "dev_06:positive:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": true,
+            "context_id": "negative",
+            "family_id": "dev_06",
+            "trial_id": "dev_06:negative:r0"
+          },
+          {
+            "baseline_probability": 0.8,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_07",
+            "trial_id": "dev_07:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_07",
+            "trial_id": "dev_07:negative:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_08",
+            "trial_id": "dev_08:positive:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": true,
+            "context_id": "negative",
+            "family_id": "dev_08",
+            "trial_id": "dev_08:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_09",
+            "trial_id": "dev_09:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_09",
+            "trial_id": "dev_09:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_10",
+            "trial_id": "dev_10:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_10",
+            "trial_id": "dev_10:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_11",
+            "trial_id": "dev_11:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_11",
+            "trial_id": "dev_11:negative:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_12",
+            "trial_id": "dev_12:positive:r0"
+          },
+          {
+            "baseline_probability": 0.8,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_12",
+            "trial_id": "dev_12:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_13",
+            "trial_id": "dev_13:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_13",
+            "trial_id": "dev_13:negative:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_14",
+            "trial_id": "dev_14:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_14",
+            "trial_id": "dev_14:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_15",
+            "trial_id": "dev_15:positive:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": true,
+            "context_id": "negative",
+            "family_id": "dev_15",
+            "trial_id": "dev_15:negative:r0"
+          },
+          {
+            "baseline_probability": 0.98,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_16",
+            "trial_id": "dev_16:positive:r0"
+          },
+          {
+            "baseline_probability": 0.95,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_16",
+            "trial_id": "dev_16:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_17",
+            "trial_id": "dev_17:positive:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": true,
+            "context_id": "negative",
+            "family_id": "dev_17",
+            "trial_id": "dev_17:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_18",
+            "trial_id": "dev_18:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_18",
+            "trial_id": "dev_18:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_19",
+            "trial_id": "dev_19:positive:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": true,
+            "context_id": "negative",
+            "family_id": "dev_19",
+            "trial_id": "dev_19:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_20",
+            "trial_id": "dev_20:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_20",
+            "trial_id": "dev_20:negative:r0"
+          }
+        ],
+        "failure_counts": {},
+        "max_model_len": [
+          8192
+        ],
+        "max_tokens": [
+          4096
+        ],
+        "n_reasoning_closed": 0,
+        "n_reasoning_empty": 0,
+        "n_reasoning_present": 0,
+        "n_records": 320,
+        "n_responses_received": 320,
+        "n_truncated": 0,
+        "output_tokens_received": {
+          "max": 16,
+          "mean": 12.48125,
+          "median": 13.0,
+          "n": 320,
+          "sum": 3994
+        },
+        "prompt_tokens_received": {
+          "max": 367,
+          "mean": 304.2375,
+          "median": 315.5,
+          "n": 320,
+          "sum": 97356
+        },
+        "reasoning_characters_received": {
+          "max": 0,
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 320,
+          "sum": 0
+        },
+        "status_counts": {
+          "ok": 320
+        },
+        "tokens_by_stage": {
+          "baseline": {
+            "max": 14,
+            "mean": 12.35,
+            "median": 13.0,
+            "n": 80,
+            "sum": 988
+          },
+          "update": {
+            "max": 16,
+            "mean": 12.525,
+            "median": 13.0,
+            "n": 240,
+            "sum": 3006
+          }
+        },
+        "truncation_by_stage": {
+          "baseline": 0,
+          "update": 0
+        }
+      },
+      "manifest": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/format_recovery_v2/qwen3_32b_unconstrained_nonthinking.jsonl.manifest.json",
+        "sha256": "1d26e92b70ea4aceb0d5592861efab4b4beeb7deed625f1c359f646f77186e18"
+      },
+      "manifest_status": "complete",
+      "missing_records": 0,
+      "model_key": "qwen3_32b_unconstrained_nonthinking",
+      "original_strict_format": {
+        "broken_mean_absolute_movement_pp": {
+          "bootstrap_draws_defined": 0,
+          "bootstrap_draws_requested": 2000,
+          "ci90": null,
+          "ci95": null,
+          "denominator": 0,
+          "estimate": null,
+          "interval_status": "insufficient_observed_families",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 0,
+          "n_missing": 20,
+          "n_observed": 0,
+          "n_planned": 20
+        },
+        "coverage": {
+          "expected": 320,
+          "invalid_present": 301,
+          "missing_record": 0,
+          "present": 320,
+          "reason:blocked_baseline": 198,
+          "reason:ok": 19,
+          "reason:parse_error": 103,
+          "valid": 19
+        },
+        "diagnostics": {
+          "endpoint_blocking": {
+            "negative": {
+              "n_direction_blocked": 1,
+              "n_missing_baselines": 16,
+              "n_planned": 20,
+              "n_valid_baselines": 4
+            },
+            "pooled": {
+              "n_direction_blocked": 1,
+              "n_missing_baselines": 34,
+              "n_planned": 40,
+              "n_valid_baselines": 6
+            },
+            "positive": {
+              "n_direction_blocked": 0,
+              "n_missing_baselines": 18,
+              "n_planned": 20,
+              "n_valid_baselines": 2
+            }
+          },
+          "endpoint_trials": [
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_01",
+              "trial_id": "dev_01:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_01",
+              "trial_id": "dev_01:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_02",
+              "trial_id": "dev_02:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_02",
+              "trial_id": "dev_02:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_03",
+              "trial_id": "dev_03:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_03",
+              "trial_id": "dev_03:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_04",
+              "trial_id": "dev_04:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_04",
+              "trial_id": "dev_04:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_05",
+              "trial_id": "dev_05:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_05",
+              "trial_id": "dev_05:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_06",
+              "trial_id": "dev_06:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_06",
+              "trial_id": "dev_06:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_07",
+              "trial_id": "dev_07:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_07",
+              "trial_id": "dev_07:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_08",
+              "trial_id": "dev_08:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_08",
+              "trial_id": "dev_08:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_09",
+              "trial_id": "dev_09:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_09",
+              "trial_id": "dev_09:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_10",
+              "trial_id": "dev_10:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_10",
+              "trial_id": "dev_10:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_11",
+              "trial_id": "dev_11:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_11",
+              "trial_id": "dev_11:negative:r0"
+            },
+            {
+              "baseline_probability": 0.0,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_12",
+              "trial_id": "dev_12:positive:r0"
+            },
+            {
+              "baseline_probability": 0.8,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_12",
+              "trial_id": "dev_12:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_13",
+              "trial_id": "dev_13:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_13",
+              "trial_id": "dev_13:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_14",
+              "trial_id": "dev_14:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_14",
+              "trial_id": "dev_14:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_15",
+              "trial_id": "dev_15:positive:r0"
+            },
+            {
+              "baseline_probability": 0.0,
+              "blocked": true,
+              "context_id": "negative",
+              "family_id": "dev_15",
+              "trial_id": "dev_15:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_16",
+              "trial_id": "dev_16:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_16",
+              "trial_id": "dev_16:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_17",
+              "trial_id": "dev_17:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_17",
+              "trial_id": "dev_17:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_18",
+              "trial_id": "dev_18:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_18",
+              "trial_id": "dev_18:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_19",
+              "trial_id": "dev_19:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_19",
+              "trial_id": "dev_19:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_20",
+              "trial_id": "dev_20:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_20",
+              "trial_id": "dev_20:negative:r0"
+            }
+          ],
+          "failure_counts": {
+            "blocked_baseline": 198,
+            "invalid_final_json": 103
+          },
+          "max_model_len": [
+            8192
+          ],
+          "max_tokens": [
+            4096
+          ],
+          "n_reasoning_closed": 0,
+          "n_reasoning_empty": 0,
+          "n_reasoning_present": 0,
+          "n_records": 320,
+          "n_responses_received": 122,
+          "n_truncated": 0,
+          "output_tokens_received": {
+            "max": 14,
+            "mean": 12.434426229508198,
+            "median": 13.0,
+            "n": 122,
+            "sum": 1517
+          },
+          "prompt_tokens_received": {
+            "max": 367,
+            "mean": 282.27868852459017,
+            "median": 281.5,
+            "n": 122,
+            "sum": 34438
+          },
+          "reasoning_characters_received": {
+            "max": 0,
+            "mean": 0.0,
+            "median": 0.0,
+            "n": 122,
+            "sum": 0
+          },
+          "status_counts": {
+            "blocked_baseline": 198,
+            "ok": 19,
+            "parse_error": 103
+          },
+          "tokens_by_stage": {
+            "baseline": {
+              "max": 14,
+              "mean": 12.35,
+              "median": 13.0,
+              "n": 80,
+              "sum": 988
+            },
+            "update": {
+              "max": 14,
+              "mean": 12.595238095238095,
+              "median": 13.0,
+              "n": 42,
+              "sum": 529
+            }
+          },
+          "truncation_by_stage": {
+            "baseline": 0,
+            "update": 0
+          }
+        },
+        "format_recovery": {
+          "additional_generation_requests": 198,
+          "baseline_generation_requests": 0,
+          "recovered_format_records": 103,
+          "reused_received_completions": 122,
+          "source_parser_version": "strict-json-after-thinking-close-v1",
+          "target_parser_version": "strict-json-optional-single-markdown-fence-after-thinking-close-v2"
+        },
+        "primary": {
+          "direction_correct": {
+            "negative": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 20,
+              "n_families_observed": 0,
+              "n_missing": 20,
+              "n_observed": 0,
+              "n_planned": 20,
+              "n_success": 0
+            },
+            "pooled": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 40,
+              "estimate": 0.0,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 40,
+              "n_families_observed": 1,
+              "n_missing": 39,
+              "n_observed": 1,
+              "n_planned": 40,
+              "n_success": 0
+            },
+            "positive": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 20,
+              "n_families_observed": 1,
+              "n_missing": 19,
+              "n_observed": 1,
+              "n_planned": 20,
+              "n_success": 0
+            }
+          },
+          "paired_reversal": {
+            "both_directions_correct": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 20,
+              "n_families_observed": 0,
+              "n_missing": 20,
+              "n_observed": 0,
+              "n_planned": 20,
+              "n_success": 0
+            },
+            "positive_minus_negative_pp": {
+              "bootstrap_draws_defined": 0,
+              "bootstrap_draws_requested": 2000,
+              "ci90": null,
+              "ci95": null,
+              "denominator": 0,
+              "estimate": null,
+              "interval_status": "insufficient_observed_families",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 0,
+              "n_missing": 20,
+              "n_observed": 0,
+              "n_planned": 20
+            }
+          }
+        },
+        "role": "Original strict-format v1 results preserved before the symmetric formatting amendment",
+        "source_manifest": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/qwen3_32b_unconstrained_nonthinking.jsonl.manifest.json",
+          "sha256": "fed3115763b6b64321020296150d8c3adf975e29c5bc2a7d94981d62412b5a9a"
+        },
+        "source_response": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/qwen3_32b_unconstrained_nonthinking.jsonl",
+          "sha256": "e7dba9ffeac8500205040c447af0b55a46ce226586b34bdd2c372a264324fdc4"
+        },
+        "source_run_signature": "ee4792ad193c227a33d28ad812171589ab5ccfe353827aa1704e36f868a79771",
+        "validated_v2_lineage_counts": {
+          "previously_blocked_unattempted_update": 198,
+          "reparsed_received_completion": 122
+        }
+      },
+      "present_records": 320,
+      "primary": {
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.35,
+              0.75
+            ],
+            "ci95": [
+              0.3,
+              0.75
+            ],
+            "denominator": 20,
+            "estimate": 0.55,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 9,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 20,
+            "n_planned": 20,
+            "n_success": 11
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.525,
+              0.725
+            ],
+            "ci95": [
+              0.5,
+              0.75
+            ],
+            "denominator": 40,
+            "estimate": 0.625,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 15,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 40,
+            "n_planned": 40,
+            "n_success": 25
+          },
+          "positive": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.5475000000000002,
+              0.85
+            ],
+            "ci95": [
+              0.5,
+              0.9
+            ],
+            "denominator": 20,
+            "estimate": 0.7,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 6,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 20,
+            "n_planned": 20,
+            "n_success": 14
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.15,
+              0.45
+            ],
+            "ci95": [
+              0.1,
+              0.5
+            ],
+            "denominator": 20,
+            "estimate": 0.3,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 14,
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 20,
+            "n_planned": 20,
+            "n_success": 6
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              7.75,
+              32.0
+            ],
+            "ci95": [
+              5.549999999999999,
+              34.15249999999998
+            ],
+            "denominator": 20,
+            "estimate": 19.65,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 20,
+            "n_missing": 0,
+            "n_observed": 20,
+            "n_planned": 20
+          }
+        }
+      },
+      "raw_updates": {
+        "broken": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                8.35,
+                20.05
+              ],
+              "ci95": [
+                7.54875,
+                21.301249999999992
+              ],
+              "denominator": 20,
+              "estimate": 14.05,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                2.2475,
+                16.25
+              ],
+              "ci95": [
+                1.25,
+                17.7
+              ],
+              "denominator": 20,
+              "estimate": 9.45,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.7500000000000007
+              ],
+              "ci95": [
+                0.0,
+                0.7500000000000007
+              ],
+              "denominator": 20,
+              "estimate": 0.2500000000000002,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.7500000000000007
+              ],
+              "ci95": [
+                0.0,
+                0.7500000000000007
+              ],
+              "denominator": 20,
+              "estimate": 0.2500000000000002,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          }
+        },
+        "masked": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                11.25,
+                20.01249999999999
+              ],
+              "ci95": [
+                10.75,
+                21.25
+              ],
+              "denominator": 20,
+              "estimate": 15.5,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.4999999999999999,
+                13.75
+              ],
+              "ci95": [
+                -0.49999999999999983,
+                15.0
+              ],
+              "denominator": 20,
+              "estimate": 7.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          }
+        },
+        "negative": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                12.5,
+                21.5
+              ],
+              "ci95": [
+                11.75,
+                22.25
+              ],
+              "denominator": 20,
+              "estimate": 16.75,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -9.0,
+                6.249999999999998
+              ],
+              "ci95": [
+                -10.5,
+                7.75
+              ],
+              "denominator": 20,
+              "estimate": -2.25,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                1.0000000000000007
+              ],
+              "ci95": [
+                0.0,
+                1.2500000000000004
+              ],
+              "denominator": 20,
+              "estimate": 0.5000000000000002,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -0.4999999999999999,
+                0.5000000000000007
+              ],
+              "ci95": [
+                -0.7499999999999998,
+                0.7500000000000007
+              ],
+              "denominator": 20,
+              "estimate": 2.6645352591003756e-16,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          }
+        },
+        "positive": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                18.45,
+                33.9525
+              ],
+              "ci95": [
+                17.6,
+                35.75
+              ],
+              "denominator": 20,
+              "estimate": 25.6,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                7.4,
+                28.502499999999998
+              ],
+              "ci95": [
+                5.998749999999999,
+                30.802499999999988
+              ],
+              "denominator": 20,
+              "estimate": 17.4,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 20,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.7500000000000007
+              ],
+              "ci95": [
+                0.0,
+                0.7500000000000007
+              ],
+              "denominator": 20,
+              "estimate": 0.2500000000000002,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.7500000000000007
+              ],
+              "ci95": [
+                0.0,
+                0.7500000000000007
+              ],
+              "denominator": 20,
+              "estimate": 0.2500000000000002,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 20,
+              "n_missing": 0,
+              "n_observed": 20,
+              "n_planned": 20
+            }
+          }
+        }
+      },
+      "record_complete": true,
+      "response": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/format_recovery_v2/qwen3_32b_unconstrained_nonthinking.jsonl",
+        "sha256": "af07f4781c3af398ecab2f86db070a48f917096c13de63c018ed8611e5256610"
+      },
+      "run_signature": "f8f0af4761a5f19cbad7c4f6bb78b0ccc7602c7dc923a20f70fa096694a8307a",
+      "status_counts": {
+        "ok": 320
+      }
+    },
+    "enabled": {
+      "broken_stability": {
+        "drift_adjusted": {
+          "absolute_movement_bounded": null,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "missing_planned_observations",
+          "signed_mean_equivalent": null,
+          "status": "indeterminate"
+        },
+        "raw_new_news": {
+          "absolute_movement_bounded": null,
+          "criterion": "90% signed-mean CI strictly inside +/-2 pp AND upper 95% mean-absolute CI below 2 pp",
+          "interpretation": "Exploratory development diagnostic; nonsignificance is not equivalence.",
+          "margin_pp": 2.0,
+          "reason": "missing_planned_observations",
+          "signed_mean_equivalent": null,
+          "status": "indeterminate"
+        }
+      },
+      "coverage": {
+        "by_context_condition": {
+          "broken": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 19,
+              "reason:parse_error": 1,
+              "valid": 19
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            }
+          },
+          "masked": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 19,
+              "reason:parse_error": 1,
+              "valid": 19
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            }
+          },
+          "negative": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 19,
+              "reason:parse_error": 1,
+              "valid": 19
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 1,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 1,
+              "reason:ok": 19,
+              "valid": 19
+            }
+          },
+          "positive": {
+            "baseline": {
+              "expected": 20,
+              "invalid_present": 2,
+              "missing_record": 0,
+              "present": 20,
+              "reason:ok": 18,
+              "reason:parse_error": 2,
+              "valid": 18
+            },
+            "new_news": {
+              "expected": 20,
+              "invalid_present": 2,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 2,
+              "reason:ok": 18,
+              "valid": 18
+            },
+            "no_news": {
+              "expected": 20,
+              "invalid_present": 2,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 2,
+              "reason:ok": 18,
+              "valid": 18
+            },
+            "repeated_news": {
+              "expected": 20,
+              "invalid_present": 2,
+              "missing_record": 0,
+              "present": 20,
+              "reason:blocked_baseline": 2,
+              "reason:ok": 18,
+              "valid": 18
+            }
+          }
+        },
+        "totals": {
+          "expected": 320,
+          "invalid_present": 20,
+          "missing_record": 0,
+          "present": 320,
+          "reason:blocked_baseline": 15,
+          "reason:ok": 300,
+          "reason:parse_error": 5,
+          "valid": 300
+        }
+      },
+      "decode": {
+        "enable_thinking": true,
+        "guided_decoding": null,
+        "max_tokens": 4096,
+        "n": 1,
+        "per_request_seed": "SHA256(canonical JSON [base_seed, trial_id, stage, condition]) first 64 bits modulo 2**31-1",
+        "seed": 20260921,
+        "skip_special_tokens": false,
+        "temperature": 0.7,
+        "thinking": "enabled",
+        "top_p": 1.0
+      },
+      "diagnostics": {
+        "endpoint_blocking": {
+          "negative": {
+            "n_direction_blocked": 0,
+            "n_missing_baselines": 1,
+            "n_planned": 20,
+            "n_valid_baselines": 19
+          },
+          "pooled": {
+            "n_direction_blocked": 1,
+            "n_missing_baselines": 3,
+            "n_planned": 40,
+            "n_valid_baselines": 37
+          },
+          "positive": {
+            "n_direction_blocked": 1,
+            "n_missing_baselines": 2,
+            "n_planned": 20,
+            "n_valid_baselines": 18
+          }
+        },
+        "endpoint_trials": [
+          {
+            "baseline_probability": 0.65,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_01",
+            "trial_id": "dev_01:positive:r0"
+          },
+          {
+            "baseline_probability": 0.4,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_01",
+            "trial_id": "dev_01:negative:r0"
+          },
+          {
+            "baseline_probability": 0.25,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_02",
+            "trial_id": "dev_02:positive:r0"
+          },
+          {
+            "baseline_probability": 0.8,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_02",
+            "trial_id": "dev_02:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_03",
+            "trial_id": "dev_03:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_03",
+            "trial_id": "dev_03:negative:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_04",
+            "trial_id": "dev_04:positive:r0"
+          },
+          {
+            "baseline_probability": 0.75,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_04",
+            "trial_id": "dev_04:negative:r0"
+          },
+          {
+            "baseline_probability": 0.6,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_05",
+            "trial_id": "dev_05:positive:r0"
+          },
+          {
+            "baseline_probability": 0.4,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_05",
+            "trial_id": "dev_05:negative:r0"
+          },
+          {
+            "baseline_probability": null,
+            "blocked": null,
+            "context_id": "positive",
+            "family_id": "dev_06",
+            "trial_id": "dev_06:positive:r0"
+          },
+          {
+            "baseline_probability": 1.0,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_06",
+            "trial_id": "dev_06:negative:r0"
+          },
+          {
+            "baseline_probability": 1.0,
+            "blocked": true,
+            "context_id": "positive",
+            "family_id": "dev_07",
+            "trial_id": "dev_07:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_07",
+            "trial_id": "dev_07:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_08",
+            "trial_id": "dev_08:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_08",
+            "trial_id": "dev_08:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_09",
+            "trial_id": "dev_09:positive:r0"
+          },
+          {
+            "baseline_probability": 0.142857,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_09",
+            "trial_id": "dev_09:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_10",
+            "trial_id": "dev_10:positive:r0"
+          },
+          {
+            "baseline_probability": 1.0,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_10",
+            "trial_id": "dev_10:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_11",
+            "trial_id": "dev_11:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_11",
+            "trial_id": "dev_11:negative:r0"
+          },
+          {
+            "baseline_probability": 0.3,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_12",
+            "trial_id": "dev_12:positive:r0"
+          },
+          {
+            "baseline_probability": 0.8,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_12",
+            "trial_id": "dev_12:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_13",
+            "trial_id": "dev_13:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_13",
+            "trial_id": "dev_13:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_14",
+            "trial_id": "dev_14:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_14",
+            "trial_id": "dev_14:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_15",
+            "trial_id": "dev_15:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_15",
+            "trial_id": "dev_15:negative:r0"
+          },
+          {
+            "baseline_probability": null,
+            "blocked": null,
+            "context_id": "positive",
+            "family_id": "dev_16",
+            "trial_id": "dev_16:positive:r0"
+          },
+          {
+            "baseline_probability": null,
+            "blocked": null,
+            "context_id": "negative",
+            "family_id": "dev_16",
+            "trial_id": "dev_16:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_17",
+            "trial_id": "dev_17:positive:r0"
+          },
+          {
+            "baseline_probability": 0.25,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_17",
+            "trial_id": "dev_17:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_18",
+            "trial_id": "dev_18:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_18",
+            "trial_id": "dev_18:negative:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_19",
+            "trial_id": "dev_19:positive:r0"
+          },
+          {
+            "baseline_probability": 0.5,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_19",
+            "trial_id": "dev_19:negative:r0"
+          },
+          {
+            "baseline_probability": 0.0,
+            "blocked": false,
+            "context_id": "positive",
+            "family_id": "dev_20",
+            "trial_id": "dev_20:positive:r0"
+          },
+          {
+            "baseline_probability": 0.25,
+            "blocked": false,
+            "context_id": "negative",
+            "family_id": "dev_20",
+            "trial_id": "dev_20:negative:r0"
+          }
+        ],
+        "failure_counts": {
+          "blocked_baseline": 15,
+          "truncated": 5
+        },
+        "max_model_len": [
+          8192
+        ],
+        "max_tokens": [
+          4096
+        ],
+        "n_reasoning_closed": 300,
+        "n_reasoning_empty": 0,
+        "n_reasoning_present": 305,
+        "n_records": 320,
+        "n_responses_received": 305,
+        "n_truncated": 5,
+        "output_tokens_received": {
+          "max": 4096,
+          "mean": 966.4196721311475,
+          "median": 648.0,
+          "n": 305,
+          "sum": 294758
+        },
+        "prompt_tokens_received": {
+          "max": 363,
+          "mean": 299.74426229508197,
+          "median": 311.0,
+          "n": 305,
+          "sum": 91422
+        },
+        "reasoning_characters_received": {
+          "max": 18251,
+          "mean": 4280.350819672131,
+          "median": 2944.0,
+          "n": 305,
+          "sum": 1305507
+        },
+        "status_counts": {
+          "blocked_baseline": 15,
+          "ok": 300,
+          "parse_error": 5
+        },
+        "tokens_by_stage": {
+          "baseline": {
+            "max": 4096,
+            "mean": 1385.35,
+            "median": 1029.5,
+            "n": 80,
+            "sum": 110828
+          },
+          "update": {
+            "max": 4065,
+            "mean": 817.4666666666667,
+            "median": 543.0,
+            "n": 225,
+            "sum": 183930
+          }
+        },
+        "truncation_by_stage": {
+          "baseline": 5,
+          "update": 0
+        }
+      },
+      "manifest": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/format_recovery_v2/qwen3_32b_thinking.jsonl.manifest.json",
+        "sha256": "a0359b6c58e9c5b8f0b40d51c79c5e97fdb82f6fd184b52a0917f90fd90ac281"
+      },
+      "manifest_status": "complete_with_errors",
+      "missing_records": 0,
+      "model_key": "qwen3_32b_thinking",
+      "original_strict_format": {
+        "broken_mean_absolute_movement_pp": {
+          "bootstrap_draws_defined": 2000,
+          "bootstrap_draws_requested": 2000,
+          "ci90": [
+            3.6842105263157894,
+            12.222222222222221
+          ],
+          "ci95": [
+            2.6470588235294117,
+            13.16019736842104
+          ],
+          "denominator": 19,
+          "estimate": 7.631578947368421,
+          "interval_status": "descriptive_family_bootstrap",
+          "missing_policy": "observed_only_reported_explicitly",
+          "n_families_observed": 19,
+          "n_missing": 1,
+          "n_observed": 19,
+          "n_planned": 20
+        },
+        "coverage": {
+          "expected": 320,
+          "invalid_present": 20,
+          "missing_record": 0,
+          "present": 320,
+          "reason:blocked_baseline": 15,
+          "reason:ok": 300,
+          "reason:parse_error": 5,
+          "valid": 300
+        },
+        "diagnostics": {
+          "endpoint_blocking": {
+            "negative": {
+              "n_direction_blocked": 0,
+              "n_missing_baselines": 1,
+              "n_planned": 20,
+              "n_valid_baselines": 19
+            },
+            "pooled": {
+              "n_direction_blocked": 1,
+              "n_missing_baselines": 3,
+              "n_planned": 40,
+              "n_valid_baselines": 37
+            },
+            "positive": {
+              "n_direction_blocked": 1,
+              "n_missing_baselines": 2,
+              "n_planned": 20,
+              "n_valid_baselines": 18
+            }
+          },
+          "endpoint_trials": [
+            {
+              "baseline_probability": 0.65,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_01",
+              "trial_id": "dev_01:positive:r0"
+            },
+            {
+              "baseline_probability": 0.4,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_01",
+              "trial_id": "dev_01:negative:r0"
+            },
+            {
+              "baseline_probability": 0.25,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_02",
+              "trial_id": "dev_02:positive:r0"
+            },
+            {
+              "baseline_probability": 0.8,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_02",
+              "trial_id": "dev_02:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_03",
+              "trial_id": "dev_03:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_03",
+              "trial_id": "dev_03:negative:r0"
+            },
+            {
+              "baseline_probability": 0.0,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_04",
+              "trial_id": "dev_04:positive:r0"
+            },
+            {
+              "baseline_probability": 0.75,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_04",
+              "trial_id": "dev_04:negative:r0"
+            },
+            {
+              "baseline_probability": 0.6,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_05",
+              "trial_id": "dev_05:positive:r0"
+            },
+            {
+              "baseline_probability": 0.4,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_05",
+              "trial_id": "dev_05:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_06",
+              "trial_id": "dev_06:positive:r0"
+            },
+            {
+              "baseline_probability": 1.0,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_06",
+              "trial_id": "dev_06:negative:r0"
+            },
+            {
+              "baseline_probability": 1.0,
+              "blocked": true,
+              "context_id": "positive",
+              "family_id": "dev_07",
+              "trial_id": "dev_07:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_07",
+              "trial_id": "dev_07:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_08",
+              "trial_id": "dev_08:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_08",
+              "trial_id": "dev_08:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_09",
+              "trial_id": "dev_09:positive:r0"
+            },
+            {
+              "baseline_probability": 0.142857,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_09",
+              "trial_id": "dev_09:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_10",
+              "trial_id": "dev_10:positive:r0"
+            },
+            {
+              "baseline_probability": 1.0,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_10",
+              "trial_id": "dev_10:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_11",
+              "trial_id": "dev_11:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_11",
+              "trial_id": "dev_11:negative:r0"
+            },
+            {
+              "baseline_probability": 0.3,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_12",
+              "trial_id": "dev_12:positive:r0"
+            },
+            {
+              "baseline_probability": 0.8,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_12",
+              "trial_id": "dev_12:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_13",
+              "trial_id": "dev_13:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_13",
+              "trial_id": "dev_13:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_14",
+              "trial_id": "dev_14:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_14",
+              "trial_id": "dev_14:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_15",
+              "trial_id": "dev_15:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_15",
+              "trial_id": "dev_15:negative:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "positive",
+              "family_id": "dev_16",
+              "trial_id": "dev_16:positive:r0"
+            },
+            {
+              "baseline_probability": null,
+              "blocked": null,
+              "context_id": "negative",
+              "family_id": "dev_16",
+              "trial_id": "dev_16:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_17",
+              "trial_id": "dev_17:positive:r0"
+            },
+            {
+              "baseline_probability": 0.25,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_17",
+              "trial_id": "dev_17:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_18",
+              "trial_id": "dev_18:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_18",
+              "trial_id": "dev_18:negative:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_19",
+              "trial_id": "dev_19:positive:r0"
+            },
+            {
+              "baseline_probability": 0.5,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_19",
+              "trial_id": "dev_19:negative:r0"
+            },
+            {
+              "baseline_probability": 0.0,
+              "blocked": false,
+              "context_id": "positive",
+              "family_id": "dev_20",
+              "trial_id": "dev_20:positive:r0"
+            },
+            {
+              "baseline_probability": 0.25,
+              "blocked": false,
+              "context_id": "negative",
+              "family_id": "dev_20",
+              "trial_id": "dev_20:negative:r0"
+            }
+          ],
+          "failure_counts": {
+            "blocked_baseline": 15,
+            "truncated": 5
+          },
+          "max_model_len": [
+            8192
+          ],
+          "max_tokens": [
+            4096
+          ],
+          "n_reasoning_closed": 300,
+          "n_reasoning_empty": 0,
+          "n_reasoning_present": 305,
+          "n_records": 320,
+          "n_responses_received": 305,
+          "n_truncated": 5,
+          "output_tokens_received": {
+            "max": 4096,
+            "mean": 966.4196721311475,
+            "median": 648.0,
+            "n": 305,
+            "sum": 294758
+          },
+          "prompt_tokens_received": {
+            "max": 363,
+            "mean": 299.74426229508197,
+            "median": 311.0,
+            "n": 305,
+            "sum": 91422
+          },
+          "reasoning_characters_received": {
+            "max": 18251,
+            "mean": 4280.350819672131,
+            "median": 2944.0,
+            "n": 305,
+            "sum": 1305507
+          },
+          "status_counts": {
+            "blocked_baseline": 15,
+            "ok": 300,
+            "parse_error": 5
+          },
+          "tokens_by_stage": {
+            "baseline": {
+              "max": 4096,
+              "mean": 1385.35,
+              "median": 1029.5,
+              "n": 80,
+              "sum": 110828
+            },
+            "update": {
+              "max": 4065,
+              "mean": 817.4666666666667,
+              "median": 543.0,
+              "n": 225,
+              "sum": 183930
+            }
+          },
+          "truncation_by_stage": {
+            "baseline": 5,
+            "update": 0
+          }
+        },
+        "format_recovery": {
+          "additional_generation_requests": 0,
+          "baseline_generation_requests": 0,
+          "recovered_format_records": 0,
+          "reused_received_completions": 305,
+          "source_parser_version": "strict-json-after-thinking-close-v1",
+          "target_parser_version": "strict-json-optional-single-markdown-fence-after-thinking-close-v2"
+        },
+        "primary": {
+          "direction_correct": {
+            "negative": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.5,
+                0.85
+              ],
+              "ci95": [
+                0.5,
+                0.9
+              ],
+              "denominator": 20,
+              "estimate": 0.7,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 6,
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20,
+              "n_success": 14
+            },
+            "pooled": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.625,
+                0.875
+              ],
+              "ci95": [
+                0.6,
+                0.875
+              ],
+              "denominator": 40,
+              "estimate": 0.75,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 10,
+              "n_families_observed": 19,
+              "n_missing": 3,
+              "n_observed": 37,
+              "n_planned": 40,
+              "n_success": 30
+            },
+            "positive": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.65,
+                0.95
+              ],
+              "ci95": [
+                0.6,
+                0.95
+              ],
+              "denominator": 20,
+              "estimate": 0.8,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 4,
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20,
+              "n_success": 16
+            }
+          },
+          "paired_reversal": {
+            "both_directions_correct": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.4,
+                0.75
+              ],
+              "ci95": [
+                0.35,
+                0.8
+              ],
+              "denominator": 20,
+              "estimate": 0.6,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "counts_as_failure",
+              "n_failure_including_missing": 8,
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20,
+              "n_success": 12
+            },
+            "positive_minus_negative_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                19.37599277777778,
+                38.57142944117647
+              ],
+              "ci95": [
+                17.612065487616096,
+                40.45964713235292
+              ],
+              "denominator": 18,
+              "estimate": 29.345238888888886,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20
+            }
+          }
+        },
+        "role": "Original strict-format v1 results preserved before the symmetric formatting amendment",
+        "source_manifest": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/qwen3_32b_thinking.jsonl.manifest.json",
+          "sha256": "b964ae7f09a837f9fe41ee1a7309732f4460856ebda02173578cc7fb281ad44e"
+        },
+        "source_response": {
+          "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/qwen3_32b_thinking.jsonl",
+          "sha256": "f29610d0838038369dd9cdde37445bd802baaa6b5a1a7225ebbaa4149814ab69"
+        },
+        "source_run_signature": "27fe1489d4dc64587eb93013cc3f90a693a410d5b4710b810dc6beba9613ae15",
+        "validated_v2_lineage_counts": {
+          "reparsed_received_completion": 305,
+          "retained_unattempted_failure": 15
+        }
+      },
+      "present_records": 320,
+      "primary": {
+        "direction_correct": {
+          "negative": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.5,
+              0.85
+            ],
+            "ci95": [
+              0.5,
+              0.9
+            ],
+            "denominator": 20,
+            "estimate": 0.7,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 6,
+            "n_families_observed": 19,
+            "n_missing": 1,
+            "n_observed": 19,
+            "n_planned": 20,
+            "n_success": 14
+          },
+          "pooled": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.625,
+              0.875
+            ],
+            "ci95": [
+              0.6,
+              0.875
+            ],
+            "denominator": 40,
+            "estimate": 0.75,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 10,
+            "n_families_observed": 19,
+            "n_missing": 3,
+            "n_observed": 37,
+            "n_planned": 40,
+            "n_success": 30
+          },
+          "positive": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.65,
+              0.95
+            ],
+            "ci95": [
+              0.6,
+              0.95
+            ],
+            "denominator": 20,
+            "estimate": 0.8,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 4,
+            "n_families_observed": 18,
+            "n_missing": 2,
+            "n_observed": 18,
+            "n_planned": 20,
+            "n_success": 16
+          }
+        },
+        "paired_reversal": {
+          "both_directions_correct": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              0.4,
+              0.75
+            ],
+            "ci95": [
+              0.35,
+              0.8
+            ],
+            "denominator": 20,
+            "estimate": 0.6,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "counts_as_failure",
+            "n_failure_including_missing": 8,
+            "n_families_observed": 18,
+            "n_missing": 2,
+            "n_observed": 18,
+            "n_planned": 20,
+            "n_success": 12
+          },
+          "positive_minus_negative_pp": {
+            "bootstrap_draws_defined": 2000,
+            "bootstrap_draws_requested": 2000,
+            "ci90": [
+              19.37599277777778,
+              38.57142944117647
+            ],
+            "ci95": [
+              17.612065487616096,
+              40.45964713235292
+            ],
+            "denominator": 18,
+            "estimate": 29.345238888888886,
+            "interval_status": "descriptive_family_bootstrap",
+            "missing_policy": "observed_only_reported_explicitly",
+            "n_families_observed": 18,
+            "n_missing": 2,
+            "n_observed": 18,
+            "n_planned": 20
+          }
+        }
+      },
+      "raw_updates": {
+        "broken": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                3.6842105263157894,
+                12.222222222222221
+              ],
+              "ci95": [
+                2.6470588235294117,
+                13.16019736842104
+              ],
+              "denominator": 19,
+              "estimate": 7.631578947368421,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -2.2222222222222223,
+                7.894736842105263
+              ],
+              "ci95": [
+                -2.8947368421052633,
+                8.75
+              ],
+              "denominator": 19,
+              "estimate": 2.8947368421052633,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          }
+        },
+        "masked": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                16.944444444444443,
+                22.783625730994146
+              ],
+              "ci95": [
+                16.25,
+                23.23566176470588
+              ],
+              "denominator": 19,
+              "estimate": 20.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -2.6315789473684212,
+                13.055555555555555
+              ],
+              "ci95": [
+                -4.413312693498452,
+                14.210526315789474
+              ],
+              "denominator": 19,
+              "estimate": 5.263157894736842,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                2.2500000000000004
+              ],
+              "ci95": [
+                0.0,
+                2.5000000000000004
+              ],
+              "denominator": 19,
+              "estimate": 0.7894736842105264,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                2.2500000000000004
+              ],
+              "ci95": [
+                0.0,
+                2.5000000000000004
+              ],
+              "denominator": 19,
+              "estimate": 0.7894736842105264,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          }
+        },
+        "negative": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                19.134919166666666,
+                28.383457894736843
+              ],
+              "ci95": [
+                18.491695635964913,
+                29.303593513157896
+              ],
+              "denominator": 19,
+              "estimate": 23.515036842105264,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                -21.11111111111111,
+                -3.7491072500000007
+              ],
+              "ci95": [
+                -22.50328947368421,
+                -1.7673665263157918
+              ],
+              "denominator": 19,
+              "estimate": -13.063910526315789,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 19,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                1.5039473684210487
+              ],
+              "ci95": [
+                0.0,
+                1.6666666666666663
+              ],
+              "denominator": 19,
+              "estimate": 0.5263157894736841,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                1.5039473684210487
+              ],
+              "ci95": [
+                0.0,
+                1.6666666666666663
+              ],
+              "denominator": 19,
+              "estimate": 0.5263157894736841,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 19,
+              "n_missing": 1,
+              "n_observed": 19,
+              "n_planned": 20
+            }
+          }
+        },
+        "positive": {
+          "new_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                17.1875,
+                25.263157894736842
+              ],
+              "ci95": [
+                16.5,
+                26.11111111111111
+              ],
+              "denominator": 18,
+              "estimate": 21.11111111111111,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                12.368421052631579,
+                23.848290598290596
+              ],
+              "ci95": [
+                11.499264705882354,
+                24.736842105263158
+              ],
+              "denominator": 18,
+              "estimate": 18.333333333333332,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20
+            }
+          },
+          "no_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 18,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.0,
+                0.0
+              ],
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "denominator": 18,
+              "estimate": 0.0,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20
+            }
+          },
+          "repeated_news": {
+            "mean_absolute_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.5249999999999999,
+                5.012499999999989
+              ],
+              "ci95": [
+                0.0,
+                5.7894736842105265
+              ],
+              "denominator": 18,
+              "estimate": 2.5,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20
+            },
+            "signed_mean_pp": {
+              "bootstrap_draws_defined": 2000,
+              "bootstrap_draws_requested": 2000,
+              "ci90": [
+                0.5249999999999999,
+                5.012499999999989
+              ],
+              "ci95": [
+                0.0,
+                5.7894736842105265
+              ],
+              "denominator": 18,
+              "estimate": 2.5,
+              "interval_status": "descriptive_family_bootstrap",
+              "missing_policy": "observed_only_reported_explicitly",
+              "n_families_observed": 18,
+              "n_missing": 2,
+              "n_observed": 18,
+              "n_planned": 20
+            }
+          }
+        }
+      },
+      "record_complete": true,
+      "response": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/local_diagnostics_v1/format_recovery_v2/qwen3_32b_thinking.jsonl",
+        "sha256": "55df17f781046299ac1a5735d49906edf17961ee00a0cb2e48856614a16a1eb1"
+      },
+      "run_signature": "cbf36340e15de8b209d5b2b6a021c14764af1b4bb8d4373cbfb66ba09300f4c7",
+      "status_counts": {
+        "blocked_baseline": 15,
+        "ok": 300,
+        "parse_error": 5
+      }
+    }
+  },
+  "comparison_version": "qwen3_paired_reasoning_comparison_v2",
+  "created_at": "2026-09-22T02:56:00.518705+00:00",
+  "definitions": {
+    "bootstrap": {
+      "draws": 2000,
+      "interval": "Percentile 95%; identical whole-family draws preserve contexts, arms, and modes; any undefined resample makes the magnitude interval unavailable",
+      "seed": 20260921,
+      "unit": "family_id"
+    },
+    "broken_mean_absolute_movement_pp": "100 * abs(new_news minus own broken-context baseline); only valid measurements, missingness explicit",
+    "contrast": "Enabled minus disabled; binary rates in percentage points, movement in probability points",
+    "design": "All original 20 families, four contexts, repeat 0; 80 units and 320 records per mode",
+    "endpoint_blocking": "Exact baseline 1 in positive context or exact baseline 0 in negative context; separate missing baselines; no post-hoc threshold",
+    "frozen_before_new_response_inspection": true,
+    "interpretation": "Exploratory development diagnostic; no confirmatory inference, model ranking, or new materials review",
+    "paired_binary_denominator": "All 20 families; each contributes its mean of two direction successes and its one paired-reversal success",
+    "paired_magnitude_denominator": "Families with valid broken movement in both modes only; report both marginal and common-pair means; never impute a forecast or movement",
+    "paired_reversal": "Both positive increase and negative decrease within each of 20 families; zero and invalid measurements fail",
+    "reference": "Existing constrained Qwen3 repeat0 from matched comparison JSON; descriptive reference only, excluded from paired contrasts",
+    "sign_accuracy": "Strict expected sign of new_news minus own context baseline, pooled over 40 positive/negative trials; zero and invalid measurements fail",
+    "version": "qwen3_paired_reasoning_comparison_v1"
+  },
+  "definitions_sha256": "3a94cec4d620673fb2f5da70dd5a6b287436ef2106c915e69abc009e9b9a81cd",
+  "expected_records_per_mode": 320,
+  "formatting_amendment": {
+    "application": "Both modes accept only one optional surrounding Markdown json or unlabeled fence around strict final JSON; enabled still requires the thinking close",
+    "comparison_definitions_changed": false,
+    "parser_version": "strict-json-optional-single-markdown-fence-after-thinking-close-v2",
+    "provenance": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/FORMAT_RECOVERY_AMENDMENT.md",
+      "sha256": "7a29e2dde2b7f0317bc12b4af09f0edc9b834746058797fadd1a71c6ecc97831"
+    },
+    "sampling_policy": "Reuse every already-received completion; generate only previously blocked unattempted updates; no new baselines or retries of malformed/truncated outputs"
+  },
+  "original_constrained_reference": {
+    "broken_mean_absolute_movement_pp": {
+      "bootstrap_draws_defined": 2000,
+      "bootstrap_draws_requested": 2000,
+      "ci90": [
+        9.0,
+        17.75
+      ],
+      "ci95": [
+        8.0,
+        18.75
+      ],
+      "denominator": 20,
+      "estimate": 13.25,
+      "interval_status": "descriptive_family_bootstrap",
+      "missing_policy": "observed_only_reported_explicitly",
+      "n_families_observed": 20,
+      "n_missing": 0,
+      "n_observed": 20,
+      "n_planned": 20
+    },
+    "coverage": {
+      "expected": 320,
+      "invalid_present": 0,
+      "missing_record": 0,
+      "present": 320,
+      "reason:ok": 320,
+      "valid": 320
+    },
+    "deployment": {
+      "backend": "local_vllm",
+      "decode": {
+        "chat_template_mode": "qwen-no-thinking",
+        "guided_backend": "outlines:no-fallback",
+        "guided_regex": "\\{\"probability\": (?:0(?:\\.[0-9]{1,6})?|1(?:\\.0{1,6})?)\\}",
+        "max_tokens": 128,
+        "n": 1,
+        "per_request_seed": "SHA256(canonical JSON [base_seed, trial_id, stage, condition]) first 64 bits modulo 2**31-1",
+        "seed": 20260921,
+        "temperature": 0.7,
+        "top_p": 1.0
+      },
+      "snapshot_revision": "9216db5781bf21249d130ec9da846c4624c16137"
+    },
+    "paired_reversal": {
+      "bootstrap_draws_defined": 2000,
+      "bootstrap_draws_requested": 2000,
+      "ci90": [
+        0.15,
+        0.45
+      ],
+      "ci95": [
+        0.1,
+        0.5
+      ],
+      "denominator": 20,
+      "estimate": 0.3,
+      "interval_status": "descriptive_family_bootstrap",
+      "missing_policy": "counts_as_failure",
+      "n_failure_including_missing": 14,
+      "n_families_observed": 20,
+      "n_missing": 0,
+      "n_observed": 20,
+      "n_planned": 20,
+      "n_success": 6
+    },
+    "provenance": {
+      "local_repeat0_audit": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/frontier_gpt56_pilot_v1/local_repeat0_audit.json",
+        "sha256": "fe05d188efa07a1ffd675e37e85b594eedcbba61b67e483b743a7d6ec6ac6a06"
+      },
+      "matched_comparison": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/results/frontier_gpt56_pilot_v1/comparison.json",
+        "sha256": "0518a26dacf5976acef41c9f50bdd230e09ba0b7d0ddf52fe0afc13c519cd515"
+      },
+      "matched_design": {
+        "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/frontier_gpt56_pilot_v1/plan.jsonl",
+        "sha256": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b"
+      }
+    },
+    "role": "Separate constrained nonthinking repeat0 reference; excluded from paired-mode contrasts",
+    "sign_accuracy": {
+      "bootstrap_draws_defined": 2000,
+      "bootstrap_draws_requested": 2000,
+      "ci90": [
+        0.525,
+        0.725
+      ],
+      "ci95": [
+        0.5,
+        0.75
+      ],
+      "denominator": 40,
+      "estimate": 0.625,
+      "interval_status": "descriptive_family_bootstrap",
+      "missing_policy": "counts_as_failure",
+      "n_failure_including_missing": 15,
+      "n_families_observed": 20,
+      "n_missing": 0,
+      "n_observed": 40,
+      "n_planned": 40,
+      "n_success": 25
+    }
+  },
+  "paired_comparisons": {
+    "broken_mean_absolute_movement_pp": {
+      "disabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          7.54875,
+          21.301249999999992
+        ],
+        "estimate": 14.05,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 0,
+        "n_observed_families": 20,
+        "n_planned_families": 20
+      },
+      "disabled_on_common_pairs": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          8.054166666666667,
+          22.222916666666663
+        ],
+        "estimate": 14.736842105263158,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 1,
+        "n_observed_families": 19,
+        "n_planned_families": 20
+      },
+      "enabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          2.6470588235294117,
+          13.16019736842104
+        ],
+        "estimate": 7.631578947368421,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 1,
+        "n_observed_families": 19,
+        "n_planned_families": 20
+      },
+      "enabled_minus_disabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          -16.317616959064324,
+          1.3157894736842106
+        ],
+        "estimate": -7.105263157894737,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 1,
+        "n_observed_families": 19,
+        "n_planned_families": 20
+      },
+      "enabled_on_common_pairs": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          2.6470588235294117,
+          13.16019736842104
+        ],
+        "estimate": 7.631578947368421,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 1,
+        "n_observed_families": 19,
+        "n_planned_families": 20
+      },
+      "missing_policy": "Observed common pairs only; no zero imputation",
+      "paired_family_values": [
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_01"
+        },
+        {
+          "difference": -25.0,
+          "disabled": 25.0,
+          "enabled": 0.0,
+          "family_id": "dev_02"
+        },
+        {
+          "difference": -50.0,
+          "disabled": 50.0,
+          "enabled": 0.0,
+          "family_id": "dev_03"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_04"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_05"
+        },
+        {
+          "difference": -20.0,
+          "disabled": 20.0,
+          "enabled": 0.0,
+          "family_id": "dev_06"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_07"
+        },
+        {
+          "difference": 25.0,
+          "disabled": 0.0,
+          "enabled": 25.0,
+          "family_id": "dev_08"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 25.0,
+          "enabled": 25.0,
+          "family_id": "dev_09"
+        },
+        {
+          "difference": -25.0,
+          "disabled": 25.0,
+          "enabled": 0.0,
+          "family_id": "dev_10"
+        },
+        {
+          "difference": -20.0,
+          "disabled": 20.0,
+          "enabled": 0.0,
+          "family_id": "dev_11"
+        },
+        {
+          "difference": -50.0,
+          "disabled": 50.0,
+          "enabled": 0.0,
+          "family_id": "dev_12"
+        },
+        {
+          "difference": -9.999999999999998,
+          "disabled": 9.999999999999998,
+          "enabled": 0.0,
+          "family_id": "dev_13"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_14"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 25.0,
+          "enabled": 25.0,
+          "family_id": "dev_15"
+        },
+        {
+          "difference": null,
+          "disabled": 1.0000000000000009,
+          "enabled": null,
+          "family_id": "dev_16"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_17"
+        },
+        {
+          "difference": 25.0,
+          "disabled": 0.0,
+          "enabled": 25.0,
+          "family_id": "dev_18"
+        },
+        {
+          "difference": 5.0,
+          "disabled": 20.0,
+          "enabled": 25.0,
+          "family_id": "dev_19"
+        },
+        {
+          "difference": 10.000000000000002,
+          "disabled": 9.999999999999998,
+          "enabled": 20.0,
+          "family_id": "dev_20"
+        }
+      ],
+      "units": "probability_points"
+    },
+    "paired_reversal": {
+      "disabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          10.0,
+          50.0
+        ],
+        "estimate": 30.0,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 0,
+        "n_observed_families": 20,
+        "n_planned_families": 20
+      },
+      "enabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          35.0,
+          80.0
+        ],
+        "estimate": 60.0,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 0,
+        "n_observed_families": 20,
+        "n_planned_families": 20
+      },
+      "enabled_minus_disabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          5.0,
+          55.0
+        ],
+        "estimate": 30.0,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 0,
+        "n_observed_families": 20,
+        "n_planned_families": 20
+      },
+      "missing_policy": "Invalid measurements count as binary failures; every planned family retained",
+      "n_planned_trials": 20,
+      "paired_family_values": [
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_01"
+        },
+        {
+          "difference": -100.0,
+          "disabled": 100.0,
+          "enabled": 0.0,
+          "family_id": "dev_02"
+        },
+        {
+          "difference": 100.0,
+          "disabled": 0.0,
+          "enabled": 100.0,
+          "family_id": "dev_03"
+        },
+        {
+          "difference": 100.0,
+          "disabled": 0.0,
+          "enabled": 100.0,
+          "family_id": "dev_04"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_05"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_06"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_07"
+        },
+        {
+          "difference": 100.0,
+          "disabled": 0.0,
+          "enabled": 100.0,
+          "family_id": "dev_08"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_09"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_10"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_11"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_12"
+        },
+        {
+          "difference": 100.0,
+          "disabled": 0.0,
+          "enabled": 100.0,
+          "family_id": "dev_13"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_14"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_15"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_16"
+        },
+        {
+          "difference": 100.0,
+          "disabled": 0.0,
+          "enabled": 100.0,
+          "family_id": "dev_17"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 0.0,
+          "enabled": 0.0,
+          "family_id": "dev_18"
+        },
+        {
+          "difference": 100.0,
+          "disabled": 0.0,
+          "enabled": 100.0,
+          "family_id": "dev_19"
+        },
+        {
+          "difference": 100.0,
+          "disabled": 0.0,
+          "enabled": 100.0,
+          "family_id": "dev_20"
+        }
+      ],
+      "units": "percentage_points"
+    },
+    "sign_accuracy": {
+      "disabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          50.0,
+          75.0
+        ],
+        "estimate": 62.5,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 0,
+        "n_observed_families": 20,
+        "n_planned_families": 20
+      },
+      "enabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          60.0,
+          87.5
+        ],
+        "estimate": 75.0,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 0,
+        "n_observed_families": 20,
+        "n_planned_families": 20
+      },
+      "enabled_minus_disabled": {
+        "bootstrap_draws": 2000,
+        "bootstrap_draws_defined": 2000,
+        "ci95": [
+          -2.5,
+          27.5
+        ],
+        "estimate": 12.5,
+        "interval_status": "descriptive_paired_whole_family_bootstrap",
+        "n_missing_families": 0,
+        "n_observed_families": 20,
+        "n_planned_families": 20
+      },
+      "missing_policy": "Invalid measurements count as binary failures; every planned family retained",
+      "n_planned_trials": 40,
+      "paired_family_values": [
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_01"
+        },
+        {
+          "difference": -50.0,
+          "disabled": 100.0,
+          "enabled": 50.0,
+          "family_id": "dev_02"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 50.0,
+          "enabled": 100.0,
+          "family_id": "dev_03"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 50.0,
+          "enabled": 100.0,
+          "family_id": "dev_04"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_05"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 0.0,
+          "enabled": 50.0,
+          "family_id": "dev_06"
+        },
+        {
+          "difference": -50.0,
+          "disabled": 50.0,
+          "enabled": 0.0,
+          "family_id": "dev_07"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 50.0,
+          "enabled": 100.0,
+          "family_id": "dev_08"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 50.0,
+          "enabled": 50.0,
+          "family_id": "dev_09"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 50.0,
+          "enabled": 50.0,
+          "family_id": "dev_10"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_11"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_12"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 50.0,
+          "enabled": 100.0,
+          "family_id": "dev_13"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 100.0,
+          "enabled": 100.0,
+          "family_id": "dev_14"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 50.0,
+          "enabled": 50.0,
+          "family_id": "dev_15"
+        },
+        {
+          "difference": -50.0,
+          "disabled": 50.0,
+          "enabled": 0.0,
+          "family_id": "dev_16"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 50.0,
+          "enabled": 100.0,
+          "family_id": "dev_17"
+        },
+        {
+          "difference": 0.0,
+          "disabled": 50.0,
+          "enabled": 50.0,
+          "family_id": "dev_18"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 50.0,
+          "enabled": 100.0,
+          "family_id": "dev_19"
+        },
+        {
+          "difference": 50.0,
+          "disabled": 50.0,
+          "enabled": 100.0,
+          "family_id": "dev_20"
+        }
+      ],
+      "units": "percentage_points"
+    }
+  },
+  "provenance": {
+    "comparison_script": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/compare_reasoning_modes_v2.py",
+      "sha256": "a5c1e4b4ba8ea2ce7bcbc15272ed5b5e24b6b63e3e0470173027744d766a94dc"
+    },
+    "dependency_sha256": {
+      "analyze.py": "bb89ac5412b27007d1654f49dec9153ba5a0aeddf19635e3171ca8499d376476",
+      "run_local.py": "d76d65f94e34939a62898821fdd5a27db34abebe8ff20f8dd877da85eb7e0ec8",
+      "run_reasoning_local_v2.py": "3bfec917d994c5cf284f4f14dabbc90c088bc1fcec5572396d7e3d37b8f6032b"
+    },
+    "design": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/probability_plan.jsonl",
+      "sha256": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b"
+    },
+    "submission": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/local_diagnostics_v1/submission.json",
+      "sha256": "98821e205e4050bae16e3c6a32c4dacf55f0ca50ef75f6fb691fd412880b92c5"
+    }
+  },
+  "record_complete": true,
+  "schema_version": "qwen3_paired_reasoning_comparison_v1",
+  "status": "complete_with_invalid_responses"
+}

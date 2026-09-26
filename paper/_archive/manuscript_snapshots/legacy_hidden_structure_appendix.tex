@@ -1,0 +1,593 @@
+% ============================================================
+%  APPENDIX — EXPERIMENT 2 FULL DETAILS  (news-response design, 2026-06-18)
+%  Place after the main body, alongside the Experiment 1 appendix.
+% ============================================================
+
+\section{Experiment 2: Full Experimental Details}
+\label{app:legacy-hidden-structure-details}
+
+\subsection{Generative Process}
+\label{app:exp2-dgp}
+\begin{equation}
+ o_t = o_0 + \phi(o_{t-1}-o_0) + g x_t + \epsilon_t, \qquad p_t=o_t+\eta_t.
+\label{eq:exp2-dgp}
+\end{equation}
+
+Each episode is one city with a hidden news-responsiveness $g$, drawn once and never
+revealed.  The latent opinion mean-reverts toward $o_0=50$ at rate $\phi$ while responding to
+news in proportion to $g$, and is measured by a weekly poll as in Eq.~\eqref{eq:exp2-dgp};
+opinion is clipped to $[0,100]$ and the poll is rounded to an integer.  The mean-reversion keeps
+opinion inside the observable band, so the gain stays identifiable at every horizon rather than
+saturating at a boundary.  Parameters:
+
+\begin{table}[h]
+\centering
+\caption{Generative parameters for the news-response world.}
+\label{tab:exp2-params}
+\small
+\begin{tabular}{ll}
+\toprule
+\textbf{Quantity} & \textbf{Value} \\
+\midrule
+News-responsiveness $g$        & $\sim\mathrm{Uniform}(0.1,\,1.0)$, one per city \\
+Initial opinion $o_0$          & $50$ \\
+Mean-reversion $\phi$          & $0.90$ \\
+Horizon $K$                    & $10$ weeks (recovery read at each prefix $k=0,\dots,10$) \\
+Weekly news dose $x_t$         & signed integer, $|x_t|\sim\mathrm{Uniform}\{3,\dots,12\}$, sign $\pm$ w.p.\ $\tfrac12$ \\
+Test shocks                    & $\{-10,-5,+5,+10\}$ (four-point recovery slope) \\
+Opinion noise $\sigma_o$       & $1.0$ \\
+Poll noise $\sigma_p$          & $2.0$ \\
+Cities per model              & $250$ (shared seeds across all forecasters) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The news dose is shown to the agent as an explicit signed number, so the
+news$\rightarrow$poll relationship is a controlled, visible quantity; the only thing hidden
+is the gain $g$ that scales it.  Recovery is read at every prefix length $k=0,\dots,10$ by probing
+the four test shocks $\{-10,-5,+5,+10\}$ and taking the regression slope of
+Eq.~\eqref{eq:exp2-ghat}; the large shock magnitudes keep the estimate well-conditioned and the
+four-point fit removes level-anchoring noise (a single shock conflates the two; see
+Appendix~\ref{app:exp2-metrics}).
+
+\begin{equation}
+\hat g_k = \frac{\operatorname{Cov}_s(x^{(s)},\hat p_k^{(s)}-p_k)}{\operatorname{Var}_s(x^{(s)})}.
+\label{eq:exp2-ghat}
+\end{equation}
+
+\subsection{The Bayesian Oracle}
+\label{app:exp2-oracle}
+
+The optimal forecaster marginalises the latent $g$ over a uniform grid of $41$ values on
+$[0.1,1.0]$.  Under each hypothesis $g$, opinion is a linear-Gaussian state with known input
+$g x_t$, so a Kalman filter on the observed polls gives both the exact log-likelihood and the
+filtered opinion.  With state mean/variance $(\mu,v)$ initialised at $(50, 5^2)$, each step
+updates
+\begin{equation}
+\mu^- = o_0 + \phi(\mu - o_0) + g x_t,\quad v^- = \phi^2 v + \sigma_o^2,\quad
+s = v^- + \sigma_p^2,\quad
+\ell \mathrel{+}= -\tfrac12\!\left(\log 2\pi s + \tfrac{(p_t-\mu^-)^2}{s}\right),
+\end{equation}
+followed by the Kalman correction $K=v^-/s$, $\mu=\mu^-+K(p_t-\mu^-)$, $v=(1-K)v^-$.  The
+posterior over the grid is $P(g\mid p_{1:T})\propto \exp(\ell_g)$ (uniform prior); the
+recovered $\hat g_{\mathrm{Bayes}}$ is its mean, and the predicted poll is the posterior-weighted
+$\sum_g P(g\mid p_{1:T})\,\big(o_0+\phi(\mu_T^{(g)}-o_0) + g\,x_{T+1}\big)$.  Empirically this
+estimator's recovery rises monotonically with the number of observed weeks, from
+$\rho\approx0.67$ at $k=1$ to $\rho\approx0.94$ at $k=10$, with the slight pull-to-centre at the
+extremes expected of a Bayesian estimator under finite data.
+
+The two fixed shortcuts assume a constant gain and never update it: \emph{face value} uses
+$g{=}1$ (predict $p_T + x_{T+1}$) and \emph{ignore news} uses $g{=}0$ (predict $p_T$).
+
+\subsection{Secondary Informativeness References: Same-Information Forecasters}
+\label{app:exp2-parity-refs}
+
+The primary fair bar is the naive frequentist on the \emph{error} axis (\S\ref{app:exp2-metrics}).
+As a secondary reference on the \emph{informativeness} ($\rho$) axis we additionally construct two
+same-information forecasters handed \emph{exactly the same brief and nothing more} as the model,
+both read through the identical four-shock predict-then-slope pipeline.  These characterize how much
+of the across-city ordering is recoverable by a principled estimator told the prompt's structure;
+one caveat, below, is that under rank correlation a one-observation estimate is unidentified and so
+scores $\rho{=}0$ at $k{=}1$---a property of the metric at $k{=}1$, not a claim that the agents beat
+a well-posed estimator (which, on error, they do not).  Each forecaster is restricted to information
+the prompt actually gives:
+
+\begin{itemize}
+\item \textbf{No known baseline, no mean-reversion.}  The prompt never states $o_0{=}50$ and never
+mentions $\phi$, so the forecasters use neither; they regress only the \emph{consecutive} weekly
+poll changes $\Delta p_t = p_t - p_{t-1}$ on the news dose $x_t$.  The omitted mean-reversion pull
+$-(1-\phi)(o_{t-1}-o_0)$ in $\Delta p_t$ is a shared handicap the model also pays.
+\item \textbf{Believe the prompt (zero intercept).}  The prompt states the relationship is
+$\Delta o\approx g\,x$ plus a \emph{zero-mean} drift, i.e.\ no systematic intercept, so the
+forecasters take it at its word and fit through the origin.  A single change then identifies $g$, so
+the first estimate is at $k{=}2$.  This is the parity analogue of what the model is told; a
+forecaster that instead estimated a free intercept (the baseline reference below) would discard that
+disclosed structure.
+\item \textbf{A value at every $k$.}  The model is probed at every prefix, so the references answer
+at every prefix too: at $k=0,1$, where no change is yet available, each returns the range midpoint
+($0.55$)---a constant, hence recovery $\rho=0$.  These are real plotted points (``no recovery yet''),
+not gaps.  Note even the midpoint cannot help at $k{=}1$: with one poll and no baseline $g$ is
+unidentifiable, so any baseline-free forecaster scores $\rho\approx0$ there while the oracle, handed
+$o_0{=}50$, already reaches $0.66$---the gap is exactly the value of the known baseline.
+\item \textbf{Stated range and noise only.}  The $g\in[0.1,1.0]$ range and the noise scales are
+stated, so the forecasters may use them: the OLS slope is clamped to $[0.1,1.0]$ (without the clamp
+$\approx10\%$ of horizon estimates fall outside it), and the Bayes likelihood uses
+$\sigma=\sqrt{\sigma_o^2+2\sigma_p^2}=3$, the value implied by the prompt's ``about 1''/``about
+2.''  Recovery is essentially invariant to this scale (sweeping $\sigma\in[1,8]$ moves $\rho$ by
+$\leq0.02$), so it confers no hidden edge.
+\end{itemize}
+
+The \emph{OLS forecaster} is the through-origin slope $\hat g=\sum_t x_t\,\Delta p_t/\sum_t x_t^2$
+(clamped); the \emph{Bayes forecaster} is the posterior mean of $g$ over the uniform grid under
+$\Delta p_t\sim\mathcal N(g\,x_t,\sigma^2)$.  Both are well calibrated at the horizon (mean
+$\overline{\hat g}\approx0.55$, matching the true mean; regression slope $\beta\approx0.90$ for OLS
+and $0.80$ for Bayes, the lower value reflecting benign prior shrinkage), and the forecast wrapper is
+a no-op here---clipping rarely binds, so the recovered slope equals the direct estimate.  The two are
+nearly identical---$\rho\approx0.51$/$0.54$ at $k{=}2$ rising to $\approx0.89$ at $k{=}10$---and sit
+below the oracle most where data is scarce ($0.72$ at $k{=}2$, the value of the privileged baseline
+and $\phi$) and close by the horizon ($0.94$).  Each slope panel also carries the matching
+\emph{oracle} as a faint dotted peak: the Bayes oracle in the Bayes panel and, in the OLS panel, an
+\emph{OLS oracle}---the frequentist analogue that likewise knows $o_0{=}50$ and $\phi$ and regresses
+the $\phi$-corrected change $y_t=(p_t-o_0)-\phi(p_{t-1}-o_0)$ on $x_t$ through the origin.  Knowing
+the baseline, it identifies $g$ from $k{=}1$ ($\rho\approx0.62$) and rises to $0.92$, tracking just
+under the Bayes oracle (no prior or optimal filtering).  The oracles are plotted only as faint
+ceilings; the fair verdict is a model's position relative to the two forecasters, which we mark by
+shading each slope panel green above its forecaster (the model infers more than a principled
+same-information fit) and red below.
+
+\paragraph{Relation to the baseline naive-OLS.}  Both conditions use the same data-only forecasters
+with the same convention---consecutive poll changes, no $o_0{=}50$ anchor (the baseline reference,
+Appendix~\ref{app:exp2-metrics}, also drops it)---so the references are a consistent yardstick and
+the parity manipulation changes only what the \emph{model} is told.  The one principled difference is
+the intercept, and it tracks the disclosure: the \emph{parity} forecaster believes the stated
+zero-intercept structure and fits through the origin, identifying $g$ from a single change
+($\rho\approx0.51$ at $k{=}2$), whereas the \emph{baseline} forecaster---whose prompt never states
+the structure---must fit a free intercept and is under-determined with few weeks
+($\rho\approx0.00$ at $k{=}2$, $0.13$ at $k{=}3$).  The two converge by the horizon
+($\approx0.86$--$0.89$); the early gap is precisely the sample-efficiency value of disclosing the
+generative structure---the forecaster analogue of the experiment's central effect.
+
+\subsection{Prompt (multi-shock reasoning probe)}
+\label{app:exp2-prompt}
+
+At each prefix length the agent is shown the observed weeks as a table, asked to first
+\emph{estimate} the city's per-news response and then predict, and queried once at each of the four
+test shocks $\{-10,-5,+5,+10\}$.  Its recovered gain $\hat g_k$ is the slope of
+Eq.~\eqref{eq:exp2-ghat} across those four predictions, and we also store the stated rate.
+Responses are JSON; we accept only a well-formed object containing \texttt{predicted\_poll} and
+treat a missing or truncated object as missing data (with no fallback to stray numbers from the
+reasoning text), retrying up to three times before recording a miss.
+
+\begin{small}
+\begin{verbatim}
+You are tracking a local election campaign with a weekly tracking poll.
+Each week reports the net news (a signed number: positive = good news for
+the candidate, negative = bad) and the resulting poll (support, 0-100).
+
+How this city works (the same for every week):
+  - This city has a fixed news-responsiveness g, a number between 0.1 and
+    1.0 (you do not know which).
+  - Each week the underlying opinion moves by about g times that week's net
+    news, plus a small random drift of about 1 point.
+  - The reported poll is that opinion plus survey noise of about 2 points.
+  - Low g = sticky coverage (news barely moves the poll); high g = news
+    moves it nearly one-for-one.
+
+| Week | Net news | Poll |
+|------|----------|------|
+|    1 |    -3 |   49 |
+|    2 |    -4 |   45 |
+|    3 |    +9 |   54 |
+|    4 |   +12 |   64 |
+
+From the history above, estimate this city's g (poll points moved per +1
+point of net news).
+
+Given that next week's net news will be <shock>, predict next week's poll.
+You may reason step by step. Your reply is capped at about 500 tokens,
+which is ample room: use as much or as little reasoning as the inference
+needs, and be sure to finish the JSON within the limit.
+END your reply with the answer as a JSON object on its own line:
+{"rationale": "one short sentence", "points_per_news": <number>,
+ "predicted_poll": <integer 0-100>}
+\end{verbatim}
+\end{small}
+
+The open-weight models (Qwen~2.5-7B/14B/32B/72B, Llama~3.1-8B) are served via Ollama at temperature
+$0.1$; the frontier agents (GPT-5.4, Claude~Opus~4.8, DeepSeek~V4-Pro) are queried through their
+APIs at the same temperature.  All models reason step by step before answering, under a $2048$-token
+completion budget, with the prompt itself instructing brevity (``capped at about 500 tokens \ldots a
+few short sentences'')---enough for the most verbose models to finish (at smaller budgets the largest
+models truncate mid-reasoning, which the hardened parser records as a miss rather than a spurious
+number).  The exact per-run configuration---\texttt{max\_tokens}, \texttt{reason\_cap}, and a hash of
+the prompt template (\texttt{prompt\_sha})---is recorded in each run's manifest, so the prompt and
+budget for any result file are always recoverable.
+
+\subsection{Recovery and Cost Metrics}
+\label{app:exp2-metrics}
+
+Over cities $\{i\}$ with true gains $g_i$ and recovered gains $\hat g_{i,k}$
+(Eq.~\eqref{eq:exp2-ghat}, after $k$ observed weeks) we lead with two per-instance \emph{error}
+metrics.  The first is the \emph{recovery error} $\varepsilon_k=\frac1N\sum_i|\hat g_{i,k}-g_i|$
+(lower is better): did the forecaster infer the hidden gain?  The second is the \emph{next-poll
+forecast error} $\pi_k=\frac1N\sum_i\frac14\sum_{s}\bigl|\hat p_{i,k}(s)-\mu_{i,k}(s)\bigr|$, the
+mean gap (in poll points) between the poll a forecaster predicts under each held-out shock
+$s\in\{-10,-5,+5,+10\}$ and the ground-truth expected poll
+$\mu_{i,k}(s)=\mathrm{clip}\bigl(50+\phi(o_{i,k}-50)+g_i s,\,0,\,100\bigr)$ that shock produces in the
+generative process (with $o_{i,k}$ the true latent opinion after $k$ weeks).  Because the four shocks
+are counterfactual they never realize, so the target is the conditional \emph{mean}---the
+Bayes-optimal point forecast, which excludes the irreducible weekly drift and survey noise---and even
+the oracle, which must filter $o_{i,k}$ and $g_i$ from the polls, sits above zero.  We pair these with
+the \emph{informativeness} $\rho_k=\rho(\hat g_k,g)$ as a distinct, secondary axis, and additionally
+report the regression slope $\beta=\mathrm{Cov}(g,\hat g)/\mathrm{Var}(g)$ ($\beta\!\to\!1$ tracks the
+latent, $\beta\!\to\!0$ ignores it); the mean $\overline{\hat g}$ (a magnitude/calibration check); and
+the correlation of the model's \emph{stated} rate with $g$.  The recovery error is summarised in the
+main-text Table~\ref{tab:exp2-skill}; the next-poll error is tabulated per model in
+Table~\ref{tab:exp2-poll}.
+
+\paragraph{Why error, not correlation, is the headline.}  The claim under test---a useful prior yields
+a sensible estimate from sparse evidence (the carnival coin)---is about the \emph{calibration} of a
+single estimate, not about ordering a population.  Rank correlation is the wrong headline for it
+because $\rho$ is scale- and location-invariant: a forecaster whose $\hat g$ is an affine image of
+$g$, $\hat g=a+bg$ with any $b>0$, attains $\rho=1$ regardless of $a$ and $b$.  An unregularized
+regression on one or two noisy weeks does exactly this---it preserves the across-city ordering while
+badly \emph{overshooting} the magnitude ($b\gg1$), so it scores high $\rho$ while being poorly
+calibrated ($\varepsilon$ larger than simply guessing the prior mean; see the naive frequentist at
+$k{=}2$ in Table~\ref{tab:exp2-skill}).  A prior-regularized forecaster makes the opposite trade,
+shrinking toward the range and lowering $\varepsilon$ at a small cost in early $\rho$.  Reporting only
+$\rho$ would therefore \emph{reward} the overshoot that a good world model avoids; we lead with
+$\varepsilon$ and read $\rho$ alongside it as the informativeness axis, and a forecaster is credited
+with recovering structure only when it is strong on \emph{both}.
+
+\paragraph{The fair statistical bar: a naive frequentist.}  The primary reference for
+\emph{calibration} is a \emph{naive frequentist}: an unregularized through-origin regression of the
+consecutive poll changes $p_t-p_{t-1}$ on the news dose $x_t$ over the first $k$ weeks, using only
+the data the agent sees---no prior, no clamp, no noise scales or $\phi$.  It needs two observations
+to be identified, so at $k{=}1$ the honest floor is instead guessing the prior mean ($0.55$).  This
+reference makes the sparse-regime point sharply on the error axis: with one or two noisy weeks it
+\emph{overshoots}, so its error is actually \emph{worse} than guessing the prior at $k{=}2$
+($\varepsilon\approx0.35$ vs.\ $0.22$) before settling toward the oracle as data accumulates
+($\varepsilon\approx0.16$ by $k{=}5$).  An agent that beats it in the sparse regime is regularizing
+where a one-line fit cannot.  We also report, as a secondary \emph{informativeness} reference, the
+same-information Bayes and OLS \emph{forecasters} of Appendix~\ref{app:exp2-parity-refs}, which take
+the prompt's disclosed structure at its word (through-origin fit); these rank-order cities well but,
+being data-only, share the frequentist's early miscalibration.
+
+\paragraph{Why multiple shocks.}  A single-shock readout, $\hat g=(\hat p-p_T)/x$, is
+contaminated: writing the prediction as $\hat p = \hat o_T + \hat g\,x$, the implied gain becomes
+$\hat g + (\hat o_T - p_T)/x$, so any error in where the forecaster anchors the level enters
+divided by $x$.  Regressing across the four shocks (Eq.~\eqref{eq:exp2-ghat}) sends that level term
+into the intercept and leaves the slope as a clean estimate of the gain.  The effect is
+substantial: a single-shock read materially lowers recovery for every forecaster, including the
+oracle, and can invert the model ordering by conflating level anchoring with the gain.  We therefore
+treat the four-shock slope as the faithful measure.
+
+\subsection{Extended Results}
+\label{app:exp2-extended}
+
+Table~\ref{tab:exp2-skill} and Figure~\ref{fig:exp2-skill} (main text) give the skill/calibration
+summary.  Three points warrant emphasis, now on the informativeness axis $\rho$ (which the main text
+demotes to secondary; recall $\rho$ alone rewards the overshoot a good prior avoids,
+\S\ref{app:exp2-metrics}).  First, $\rho$-recovery rises with the number of
+observed weeks for every model---they accumulate evidence rather than applying a fixed gain---and the
+asymptotic level orders by capability: frontier GPT-5.4/Claude $\approx0.84$/$0.82$, open-weight
+Qwen~2.5-32B/72B $\approx0.59$, down to Qwen~2.5-7B $0.29$ and Llama~3.1-8B $0.19$ (parity, $k=10$).
+Second, on the \emph{error} axis the fair bar is the naive frequentist, not the oracle: the
+frontier agents beat it in the sparse regime---where its unregularized fit overshoots---and converge
+with it as data accumulates, so an agent should be judged by whether it stays calibrated where the
+statistical fit cannot, and the strongest agents do (GPT/Claude
+beat it through $k\approx4$) but plateau and are overtaken by the horizon, while open-weight models
+trail it throughout.  Third,
+recovery does not entail calibration: several models track $g$ in rank while biasing $\overline{\hat
+g}$ high (Llama~3.1-8B $0.79$, GPT-5.4 $0.66$ vs.\ truth $0.55$), and rank and slope can diverge
+(Qwen~2.5-7B has higher $\beta$ but lower $\rho$ than 72B), so structural recovery and forecast
+calibration are distinct.
+
+\paragraph{Next-poll forecast error (the second headline metric).}  Table~\ref{tab:exp2-poll} reads
+the same probe through the forecast the recovered gain feeds: the mean gap between the poll each
+forecaster predicts under the four held-out shocks and the ground-truth expected poll $\mu_k(s)$
+(\S\ref{app:exp2-metrics}).  The pattern mirrors the recovery axis.  The frontier agents forecast to
+$\approx2.0$--$2.4$ poll points, approaching the oracle ($1.2$--$1.9$) and far below every fixed
+shortcut (face value $\approx3.9$, ignore-news $\approx4.3$); the naive frequentist \emph{overshoots}
+the same way it does on $\hat g$, forecasting worse than guessing the prior at $k{=}2$ ($3.1$ vs.\
+$2.3$), and the agents beat it through the sparse regime before pulling ahead of the always-prior
+forecast by $k{=}5$ ($2.0$ vs.\ $2.4$).  The green/red shading is against the frequentist bar (the
+always-prior floor at $k{=}1$), which converges quickly once identified, so the smaller open-weight
+models---strong against the shortcuts but weaker on level---turn red at larger $k$; the ordering by
+scale is monotone (Llama~3.1-8B, near face-value, forecasts at $6$--$10$ points).  Because the metric
+now includes the forecast \emph{level}, not just the slope, it is a stricter test than $\hat g$
+recovery, and the agents remain the only non-oracle forecaster near the ceiling throughout.
+
+% ----------------------------------------------------------------------------
+% Static copy of the generated table. SOURCE OF TRUTH: paper/generate_exp2_poll_table.py
+% To refresh: run `python paper/generate_exp2_poll_table.py` and paste tables/exp2_poll_table.tex.
+% Requires booktabs and \usepackage[table]{xcolor}.
+% ----------------------------------------------------------------------------
+\begin{table}[t]
+\centering
+\caption{\textbf{Next-poll forecast error} $\overline{|\hat p_{t+1}-p_{t+1}|}$ (poll points, lower is better), the second headline metric: does recovering $g$ translate into good forecasts? For each held-out shock $s$ the target is the ground-truth expected poll $\mu_k(s){=}\mathrm{clip}(50+\phi(o_k{-}50)+g s)$; the counterfactual shocks never realize, so this is the DGP's conditional mean, the Bayes-optimal point forecast (even the oracle, which must filter $o_k$ and $g$, sits above $0$). The \emph{Bayes oracle} is the ceiling and the fixed shortcuts (face value $g{=}1$, ignore news $g{=}0$) the floor. The fair statistical bar is the \emph{naive frequentist} (unregularized slope, predict $p_T{+}\hat g s$); undefined at $k{=}1$, so there the bar is \emph{always-guess-the-prior}. Cells are \colorbox{green!22}{green} where a model beats that per-$k$ bar, \colorbox{red!18}{red} where it falls short. The frontier agents forecast to $\approx2$ poll points---near the oracle, far below every shortcut, and beating the overshooting frequentist through the sparse regime. Frontier $n{=}100$; open-weight $n{=}68\text{--}250$.  \textsuperscript{$\dagger$}Frontier probe.}
+\label{tab:exp2-poll}
+\footnotesize
+\begin{tabular}{l@{\hskip 6pt}cccc}
+\toprule
+\textbf{Forecaster} & $k{=}1$ & $k{=}2$ & $k{=}3$ & $k{=}5$ \\
+\midrule
+Bayes oracle & 1.91 & 1.60 & 1.50 & 1.19 \\
+Naive freq. & --- & 3.13 & 2.55 & 2.15 \\
+Always-prior & 2.39 & 2.31 & 2.46 & 2.39 \\
+Face value ($g{=}1$) & 3.87 & 3.87 & 3.92 & 3.88 \\
+Ignore news ($g{=}0$) & 4.27 & 4.20 & 4.27 & 4.24 \\
+\midrule
+Claude Opus~4.8\textsuperscript{$\dagger$} & \cellcolor{red!18}2.40 & \cellcolor{green!22}2.36 & \cellcolor{green!22}2.44 & \cellcolor{green!22}2.04 \\
+GPT-5.4\textsuperscript{$\dagger$} & \cellcolor{green!22}2.36 & \cellcolor{green!22}2.45 & \cellcolor{green!22}2.41 & \cellcolor{green!22}2.04 \\
+DeepSeek V4-Pro\textsuperscript{$\dagger$} & \cellcolor{red!18}2.54 & \cellcolor{green!22}2.67 & \cellcolor{green!22}2.35 & \cellcolor{green!22}2.07 \\
+\midrule
+Qwen~2.5-72B & \cellcolor{red!18}3.20 & \cellcolor{green!22}2.72 & \cellcolor{red!18}2.61 & \cellcolor{red!18}2.52 \\
+Llama~3.3-70B & \cellcolor{red!18}2.72 & \cellcolor{green!22}3.11 & \cellcolor{red!18}2.76 & \cellcolor{red!18}2.53 \\
+Llama~3.1-70B & \cellcolor{red!18}2.87 & \cellcolor{green!22}2.67 & \cellcolor{red!18}2.60 & \cellcolor{red!18}2.42 \\
+Qwen~2.5-32B & \cellcolor{red!18}2.99 & \cellcolor{green!22}2.54 & \cellcolor{green!22}2.48 & \cellcolor{red!18}2.26 \\
+Mistral-Small-24B & \cellcolor{red!18}3.08 & \cellcolor{green!22}2.67 & \cellcolor{red!18}2.63 & \cellcolor{red!18}2.37 \\
+Qwen~2.5-14B & \cellcolor{red!18}3.33 & \cellcolor{green!22}2.85 & \cellcolor{red!18}2.68 & \cellcolor{red!18}2.53 \\
+Mistral-Nemo-12B & \cellcolor{red!18}4.52 & \cellcolor{red!18}3.84 & \cellcolor{red!18}4.35 & \cellcolor{red!18}5.55 \\
+Llama~3.1-8B & \cellcolor{red!18}10.31 & \cellcolor{red!18}7.14 & \cellcolor{red!18}6.30 & \cellcolor{red!18}6.86 \\
+Qwen~2.5-7B & \cellcolor{red!18}3.54 & \cellcolor{green!22}2.94 & \cellcolor{red!18}2.91 & \cellcolor{red!18}3.11 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.62\linewidth]{figures/exp2_informativeness.pdf}
+\caption{\textbf{Calibration vs.\ informativeness at the sparse anchor $k{=}2$} (the view the main-text
+figure demotes in favour of the two error axes).  $x$ = informativeness $\rho(\hat g,g)$ (higher is
+better ordering), $y$ = calibration error $\overline{|\hat g-g|}$ (lower is better).  The fixed
+shortcuts sit in the poor corners; the naive frequentist buys $\rho$ at the cost of calibration
+(upper-right); always-prior is calibrated but blind ($\rho{=}0$).  Only the frontier agents reach the
+good corner (bottom-right), informative \emph{and} calibrated---the joint property a single ordering
+number would hide.}
+\label{fig:exp2-informativeness}
+\end{figure}
+
+\subsection{Data-Quality and Robustness Checks}
+\label{app:exp2-robustness}
+
+The headline---agents recover the latent quickly but \emph{plateau} (or even dip) while the oracle
+and forecaster references keep accumulating---rests on the \emph{shape} of recovery at large $k$, so
+we audit data quality per model and per prefix length, on both the baseline and information-parity
+conditions.  The open-weight models run the full $250$ cities; the frontier agents (GPT-5.4,
+Claude~Opus~4.8, DeepSeek~V4-Pro) run $n{=}100$, with stable per-$k$ estimates (bootstrap
+SE${\approx}0.04$--$0.05$).
+
+\textbf{Missing predictions.}  After up to three retries, the fraction of probes returning no
+parseable forecast is $\approx0\%$ across models and $k$ (the hardened parser of
+Appendix~\ref{app:exp2-prompt} records a truncated or malformed reply as missing rather than
+scraping a number from the reasoning).  The sole exception is Qwen~2.5-7B in the parity condition at
+$k=0$, where the ``no weeks observed yet'' prompt yields no JSON on $\approx46\%$ of probes; since
+$k=0$ is the no-evidence prior (recovery $\approx0$ regardless) we report from $k\geq1$.  No
+accumulation failure occurs at the horizons that carry the claim.
+
+\textbf{Extreme predictions.}  Forecasts pinned to a boundary ($\hat p\leq2$ or $\geq98$) are
+rare---$0.1$--$2.0\%$ of predictions overall, lowest under parity---and, crucially, do \emph{not}
+increase with $k$: high-horizon ($k=8$--$10$) extreme rates are $\approx1$--$3\%$ (baseline) and
+$\lesssim1\%$ (parity).  A small spike at $k=1$ (models over-reacting to a single week) does not
+propagate.  High-$k$ recovery is therefore not depressed by boundary predictions.
+
+\textbf{Response consistency.}  The one quality gradient is monotonicity: a faithful forecaster
+should predict a weakly larger poll for a larger shock, yet some four-shock probes are
+non-monotonic.  This is low and roughly flat in $k$ under parity (Qwen~2.5-72B $3$--$13\%$, 32B
+$7$--$18\%$) but rises with $k$ under the baseline prompt, sharply for the small models (72B
+$13\%\!\to\!44\%$ over $k$; 7B $54$--$66\%$ throughout).  Because a non-monotonic quadruple yields a
+noisier slope (regression dilution), rising non-monotonicity could in principle attenuate recovery
+at large $k$ and \emph{manufacture} a plateau.
+
+\textbf{Ruling out the artifact.}  Two controls show the plateau is real recovery, not attenuation.
+First, the plateau is equally pronounced in the \emph{parity} condition, where non-monotonicity is
+low and flat: recovery rises to its level by $k\approx5$ and holds (Qwen~2.5-72B even dips, $0.65$ at
+$k=5$ to $0.58$ at $k=10$) while the forecaster climbs past it ($0.79\!\to\!0.89$).  Second,
+restricting the recovery correlation at each $k$ to the \emph{monotonic-only} cities leaves the
+curves essentially unchanged in both conditions---the models still plateau and the forecaster still
+overtakes them by the horizon.  We therefore read the non-monotonicity itself as a
+\emph{secondary behavioral signal}---coherent shock-response degrades with context length,
+especially for small and un-prompted models---rather than as a measurement confound.  We report the
+parity condition as the primary (clean) measure and the baseline as a robustness-confirmed
+secondary.
+
+\subsection{Qualitative: over-identifying \texorpdfstring{$g$}{g} from a single week}
+\label{app:exp2-traces}
+
+The $k{=}1$ over-reaction noted above has a clean qualitative signature in the reasoning traces, and
+inspecting it also explains an apparent ordering wrinkle: among the larger open-weight models
+Qwen~2.5-72B trails 32B at $k{=}1$ ($\rho\,0.24$ vs.\ $0.45$ on the shared cities), though a paired
+bootstrap puts the gap within noise at the current $n$ ($95\%$ CI on $\rho_{32}-\rho_{72}$ is
+$[-0.02,+0.45]$, and the two are statistically tied by $k{=}5$). We queried the live Qwen~2.5-72B
+server with the parity prompt at $k{=}1$ and logged the full generations; every reply completed
+normally (\texttt{finish\_reason}{=}\texttt{stop}, no truncation, $\approx1$k characters), so the
+behavior below is a genuine inferential choice rather than a cut-off, consistent with the
+$\approx0\%$ missing-prediction rate of \S\ref{app:exp2-robustness}.
+
+The model assumes the (undisclosed) baseline $o_0{=}50$ and then point-estimates $g$ by dividing a
+single week's deviation from $50$ by that week's news---reading one noisy observation as clean
+signal. For city~91 (true $g{=}0.18$, a very \emph{sticky} city), week~1 shows news $-5$ and poll
+$47$:
+\begin{quote}\small\itshape
+``assuming initial opinion was around 50\,\ldots\ the change in opinion from 50 to 47 is approximately
+$-3$. This gives us $-3 = g\times(-5)+1$\,\ldots\ $g = 0.8$.''
+\end{quote}
+The $-3$ is almost entirely drift and survey noise, but it is read as responsiveness, yielding
+$\hat g{=}0.8$ for a city whose true $g$ is $0.18$. The model even flags the tension and overrides
+its own caution---``$g = 1.0$. However, this seems high given the noise and drift\,\ldots\ a more
+reasonable estimate\,\ldots\ is $g \approx 0.8$''---and still commits to the inflated value. City~7
+($g{=}0.39$) is identical: ``$g = 5/5 = 1.0$\,\ldots\ let's use $0.9$.''
+
+Because a single poll cannot separate $g$ from the baseline and the per-week noise (the
+identifiability point of \S\ref{app:exp2-parity-refs}: with one observation $g$ is unidentified),
+this confident point-estimate over-fits the noise---worst on low-$g$ cities, where the true signal is
+smallest relative to it. It is a coherent but over-eager inference, not a hedge toward the prior; the
+smaller Qwen~2.5-32B is empirically more regularized at $k{=}1$, which is why its early $\hat g$
+tracks the true $g$ better. As $k$ grows the deviations accumulate, the noise averages down, and the
+two converge. The episode is a small illustration of the section's theme: in the sparse regime the
+useful move is to \emph{withhold} a confident estimate, and more scale does not automatically buy
+that restraint.
+
+\subsection{Prompt sensitivity of the few-shot edge}
+\label{app:exp2-promptsens}
+
+The over-identification of \S\ref{app:exp2-traces} raises a methodological question: is the early
+($k{=}1$) recovery a property of the agent, or an artifact of how we elicit $\hat g$? We probed this
+by varying \emph{only} the clause of the prompt (\S\ref{app:exp2-prompt}) that steers how the model
+should treat a short, noisy history, holding the generative-structure disclosure fixed:
+\emph{(i) assertive}---``estimate this city's $g$, seeing through the survey noise'' (implies the
+noise is removable); \emph{(ii) hedging}---``if the weeks so far cannot determine $g$, keep your
+estimate near the middle of its range'' (instructs regularization); and \emph{(iii) neutral}---
+``estimate this city's $g$,'' with no instruction on handling the uncertainty.
+
+The early readout moves with the steer while the rest of the curve does not. For the frontier agents
+(the cleanest sample), $\rho_1$ is ${\approx}.30$ under the assertive prompt, falls toward $0$ under
+the hedging prompt, and sits at ${\approx}.20$ under the neutral one, whereas $\rho_3$ and $\rho_5$
+are essentially unchanged across all three (${\approx}.6$ and ${\approx}.75$). So the \emph{level} of
+the sparse-data edge is prompt-sensitive, but its \emph{shape}---rising with $k$ toward the
+forecaster---is not. We therefore adopt the \textbf{neutral} prompt as primary: the assertive wording
+manufactures over-confidence (it asserts a signal the single week does not contain) and the hedging
+wording manufactures restraint, so only the neutral readout reflects the model's \emph{own}
+disposition. Under it, at $n{=}100$ per frontier model, GPT-5.4 and Claude retain a genuine but
+\emph{modest} single-week edge ($\rho_1{\approx}.19$--$.22$, with calibration error
+$\varepsilon_1{\approx}.20$ near the oracle's $.18$), climbing to $\rho_5{\approx}.76$ by $k{=}5$; the open-weight models do not recover from one week
+($\rho_1{\approx}0$ or negative, e.g.\ Qwen~2.5-7B $-.10$, Llama~3.1-8B $-.26$). This
+tempers---without overturning---the few-shot story: there is a real single-week advantage for the
+strongest agents, but a smaller one than an assertive elicitation would suggest. (The three
+conditions were sequential design iterations, not a matched same-$n$ sweep; we read the directional
+sensitivity as motivation for the neutral choice and report the neutral condition at full $n$, with a
+controlled three-arm comparison left to future work.)
+
+\subsection{The carnival-coin vignette: do frontier agents actually give the world-model answer?}
+\label{app:exp2-carnival}
+
+The Introduction motivates the paper with a cartoon: an observer sees two heads in two flips of
+an unfamiliar coin at a carnival and must forecast the next flip.  A \emph{na\"ive} forecaster
+assumes a fair coin and answers $0.5$; a \emph{frequentist} uses only the two flips and answers
+$1.0$; a \emph{world-model} forecaster reasons about an unknown, possibly-biased coin and lands in
+between. Here we test the vignette directly with
+the three frontier agents and record what they actually say.
+
+\paragraph{Probe.}  We reuse the Experiment~2 evaluation harness (the same Azure AI Foundry clients
+and call path as the recovery probe) and query each agent $n{=}8$ times at temperature $0.7$ on the
+neutral prompt below.  Two design choices keep the elicitation fair.  First, the prompt establishes
+only that the coin is \emph{unfamiliar} and that the two flips are the sole evidence; it never raises
+the fair-versus-rigged framing, since naming either side pre-loads the answer (calling it simply ``a
+coin'' cues the textbook fair-coin reflex, and an early pilot with that wording drew a flat $0.5$
+from every model).  Second, we forbid calculation: the agent must reason in plain words rather than
+recite a rule.  Without this constraint all three models collapse onto Laplace's rule of succession
+and return an identical, rigid $3/4=0.75$; the no-math instruction elicits the graded
+judgment the figure is about, not a formula lookup.
+
+\begin{small}
+\begin{verbatim}
+You are at a carnival game. A coin you have never seen before is flipped
+twice in front of you, and it comes up heads both times. These two flips
+are everything you know about this coin.
+
+What is the probability that the next flip comes up heads?
+
+Think about it intuitively, the way you actually would in the moment -- do
+NOT use any formula, rule, or calculation, and do not work out any numbers
+in your reasoning. Just reason in plain words about what you'd expect and
+why. Then END your reply with your gut answer as a JSON object on its own
+line:
+{"rationale": "one short sentence, no math",
+ "p_heads": <number between 0 and 1>}
+\end{verbatim}
+\end{small}
+
+\paragraph{Result.}  Every agent places the next flip above even odds but well short of certainty,
+exactly the world-model region of the cartoon (Table~\ref{tab:carnival}).  Per-model medians span
+$0.67$--$0.75$ and the pooled mean over all $24$ samples is $0.68$---closer to the figure's
+world-model value ($\approx0.65$) than to either the na\"ive ($0.5$) or frequentist ($1.0$) anchor.
+None of the $24$ completions reverted to $0.5$ or $1.0$.  Notably, Claude and DeepSeek frequently
+cite the \emph{setting} unprompted---``a sketchy carnival,'' ``carnival coins are often rigged''---to
+justify a head-leaning coin, importing world knowledge from the single word ``carnival'' with no
+steer from us; GPT-5.4 stays more conservative, leaning on the thinness of two flips
+(Table~\ref{tab:carnival-samples}).  This is the same disposition Experiment~2 measures with a poll
+instead of a coin: a useful prior reads some signal from a single observation.
+
+\begin{table}[h]
+\centering
+\caption{Frontier-agent forecasts on the carnival-coin vignette ($n{=}8$ samples each, temperature
+$0.7$, no-math elicitation).  Reference anchors: na\"ive $0.5$, frequentist $1.0$, figure
+world-model $\approx0.65$.}
+\label{tab:carnival}
+\small
+\begin{tabular}{l c c c}
+\toprule
+Model & Median $P(\text{heads})$ & Mean & Range \\
+\midrule
+Claude Opus~4.8  & $0.675$ & $0.68$ & $[0.65,\,0.75]$ \\
+GPT-5.4          & $0.670$ & $0.64$ & $[0.60,\,0.67]$ \\
+DeepSeek V4-Pro  & $0.750$ & $0.71$ & $[0.60,\,0.75]$ \\
+\midrule
+Pooled ($n{=}24$) & $0.700$ & $0.68$ & $[0.60,\,0.75]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Representative verbatim rationales (one short sentence each, as emitted).  The agents reason
+qualitatively about an unknown, possibly-biased coin rather than applying a rule.}
+\label{tab:carnival-samples}
+\small
+\begin{tabular}{l c p{8.3cm}}
+\toprule
+Model & $P$ & Rationale \\
+\midrule
+Claude Opus~4.8 & $0.75$ & Carnival coins are often rigged and two heads makes me suspect it favors heads. \\
+Claude Opus~4.8 & $0.65$ & Two heads gently nudge me toward heads, and the carnival setting adds suspicion, but it's weak evidence. \\
+GPT-5.4         & $0.67$ & Two heads in a row makes this unfamiliar coin feel somewhat more head-leaning, but not overwhelmingly so. \\
+GPT-5.4         & $0.60$ & Two heads in a row makes heads feel somewhat more likely next, but the evidence is still very thin. \\
+DeepSeek V4-Pro & $0.75$ & A carnival coin showing two heads seems likely rigged or biased toward heads. \\
+DeepSeek V4-Pro & $0.60$ & Two heads in a row slightly favors the coin being biased toward heads, but the evidence is weak. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The probe script (\texttt{eval/run\_coin\_probe.py}) and the raw per-sample log
+(\texttt{data/coin\_probe/}) are included with the Experiment~2 code; the saved JSONL records the
+exact prompt, sampling settings, and every completion so the table is reproducible.
+
+\subsection{Limitations and Future Directions}
+\label{app:exp2-limitations}
+
+\textbf{Frontier-agent sample size.}  The three frontier agents (GPT-5.4, Claude~Opus~4.8,
+DeepSeek~V4-Pro) are run on $n{=}100$ cities---a verified subset of the open-weight $250$ (seeds
+$0\ldots99\subset0\ldots249$, byte-identical episodes)---with stable estimates (bootstrap
+SE${\approx}0.04$--$0.05$), so the headline---they are calibrated near the oracle and beat the naive
+frequentist in the sparse regime but do not exceed a well-posed estimator---is well-supported.  The
+open-weight rerun is still accumulating toward $250$, so its rows are noisier; the harness is
+model-agnostic and both the skill figure and table accommodate additional cities directly.
+
+\textbf{Information parity.}  We run a parity condition that states the generative structure in the
+prompt---the $g$-range, the accumulation, and the noise scales---and read both the behavioural
+slope and the model's stated gain (Appendix~\ref{app:exp2-parity-refs}), distinguishing ``cannot
+infer'' from ``can use when told,'' against the fair forecaster references of
+Appendix~\ref{app:exp2-parity-refs}.  A finer dose-response---vague hint vs.\ a named ``sticky''
+pollster vs.\ full disclosure---remains future work.
+
+\textbf{Measurement noise and multi-sampling.}  The four-shock slope is read from single-sample
+predictions, so part of the non-monotonicity (Appendix~\ref{app:exp2-robustness}) is sampling noise
+that \emph{multi-sample averaging}---querying each shock several times and averaging before taking
+the slope---would reduce, tightening the recovery estimates (most in the baseline condition, where
+non-monotonicity is highest).  We deliberately do not multi-sample: the monotonic-only control
+already shows the plateau is not an attenuation artifact, the primary (parity) condition is already
+clean, and a non-trivial share of the inconsistency is \emph{genuine}---a coherent forecaster
+should never predict a lower poll for more positive news---so averaging it away would suppress a
+behavioral signal that is itself diagnostic of an incoherent world model.  Multi-sampling at the
+$\sim$$3\times$ cost remains available for a revision if tighter baseline estimates are required.
+
+\textbf{Calibration vs.\ recovery.}  The over-estimation of $\overline{\hat g}$ by the larger
+model suggests a prior that news moves polls more than this world warrants.  Separating the
+recovered \emph{structure} from its \emph{magnitude} (e.g.\ allowing a per-model affine
+correction) would quantify how much of the residual forecast error is mis-calibration rather than
+failure to infer.
+
+\textbf{Continuous vs.\ binary latent.}  We draw $g$ continuously to expose the full recovery
+curve; a binary biased/straight design recovers the original two-condition framing as a special
+case and could be reported alongside for a cleaner verbal contrast.

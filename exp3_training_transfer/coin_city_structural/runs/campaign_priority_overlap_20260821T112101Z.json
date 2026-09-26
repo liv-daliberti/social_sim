@@ -1,0 +1,98 @@
+{
+  "action": "overlap_tier1_with_active_qwen3_4b_coin_city_wave",
+  "applied_at_utc": "20260821T112101Z",
+  "supersedes_scheduler_control_in": "campaign_priority_tiers_20260821T032908Z.json",
+  "scientific_configuration_changed": false,
+  "motivation": "All nine Qwen3-4B Coin City training jobs were already allocated; unused A6000 capacity could run Tier-1 work without displacing them.",
+  "verified_qwen3_4b_state_before_release": {
+    "running_training_jobs": [
+      "30723979",
+      "30723980",
+      "30723981",
+      "30723982",
+      "30723983",
+      "30723984",
+      "30723998",
+      "30723999",
+      "30724000"
+    ],
+    "completed_base_job": "30724001",
+    "completed_base_exit_code": "0:0"
+  },
+  "released_tier1_jobs": {
+    "remaining_structural_ood": [
+      "30788373",
+      "30730367",
+      "30730368",
+      "30730369",
+      "30730370",
+      "30730371"
+    ],
+    "coin_city_base_endpoints": [
+      "30724002",
+      "30724003"
+    ]
+  },
+  "controller_changes": {
+    "cancelled_obsolete_tier1_controller": "30806768",
+    "cancelled_obsolete_tier2_controller": "30806769",
+    "qwen3_4b_success_barrier": {
+      "job_id": "30813412",
+      "type": "afterok",
+      "jobs": [
+        "30723979",
+        "30723980",
+        "30723981",
+        "30723982",
+        "30723983",
+        "30723984",
+        "30723998",
+        "30723999",
+        "30724000"
+      ],
+      "note": "The Qwen3-4B base endpoint was already verified complete with exit 0:0 and was outside SLURM's retained dependency window."
+    },
+    "replacement_tier2_controller": {
+      "job_id": "30813413",
+      "action": "release Qwen3-8B Coin City jobs 30730378-30730383",
+      "afterok": [
+        "30813412",
+        "30788373",
+        "30730367",
+        "30730368",
+        "30730369",
+        "30730370",
+        "30730371",
+        "30724002",
+        "30724003"
+      ]
+    },
+    "unchanged_tier3_controller": "30806770",
+    "unchanged_tier4_controller": "30806773"
+  },
+  "post_release_observation": {
+    "running": {
+      "30724002": "node205",
+      "30724003": "node205"
+    },
+    "eligible_pending_priority": [
+      "30788373",
+      "30730367",
+      "30730368",
+      "30730369",
+      "30730370",
+      "30730371"
+    ]
+  },
+  "fail_closed": true,
+  "unchanged_invariants": [
+    "models and arms",
+    "training seeds",
+    "datasets and prompts",
+    "training examples and update counts",
+    "optimizer and learning rate",
+    "rollout and evaluation protocols",
+    "checkpoint and result paths",
+    "A6000 training hardware requests"
+  ]
+}

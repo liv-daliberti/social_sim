@@ -1,0 +1,79 @@
+{
+  "action": "prioritize_coin_city_canaries",
+  "applied_at_utc": "20260820T235514Z",
+  "campaign": "coin_city_structural_transfer_v1",
+  "canary_jobs": [
+    "30723972",
+    "30723973",
+    "30723974",
+    "30723975",
+    "30723976",
+    "30723977"
+  ],
+  "canary_scheduler_update": {
+    "account": {
+      "from": "allcs",
+      "to": "mltheory"
+    },
+    "partition": {
+      "from": "cs",
+      "to": "all"
+    },
+    "qos": {
+      "from": "short",
+      "to": "normal"
+    },
+    "requested_hardware_unchanged": "gres/gpu:a6000:2",
+    "excluded_nodes_unchanged": [
+      "node206"
+    ],
+    "time_limit": "02:00:00"
+  },
+  "result_at_verification": {
+    "30723972": "RUNNING on node207",
+    "30723973": "PENDING (Resources)",
+    "30723974": "PENDING (Priority)",
+    "30723975": "PENDING (Priority)",
+    "30723976": "PENDING (Priority)",
+    "30723977": "PENDING (Priority)",
+    "priority_before": 4230,
+    "priority_after": 8076
+  },
+  "reversibly_held_competing_pending_jobs": [
+    "30572831",
+    "30572829",
+    "30572828",
+    "30659550",
+    "30659546",
+    "30659547",
+    "30791532",
+    "30791529",
+    "30791533",
+    "30791531",
+    "30791530",
+    "30791523",
+    "30791522",
+    "30791520",
+    "30791519",
+    "30659549",
+    "30800804",
+    "30800805"
+  ],
+  "hold_scope": "Only user-owned jobs verified PENDING and requesting A6000 GPUs with priority greater than the canaries were held.",
+  "scientific_configuration_changed": false,
+  "scientific_invariants": [
+    "model",
+    "arm",
+    "seed",
+    "dataset",
+    "training examples and steps",
+    "optimizer and learning rate",
+    "rollout settings",
+    "evaluation settings",
+    "GPU model and count"
+  ],
+  "rollback": {
+    "release_competing_jobs": "scontrol release <job_id>",
+    "restore_pending_canary_routing": "scontrol update JobId=<job_id> Account=allcs Partition=cs QOS=short"
+  }
+}

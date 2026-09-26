@@ -1,0 +1,45 @@
+{
+  "submitted_utc": "2026-09-22T03:18:27.900083+00:00",
+  "jobs": [
+    {
+      "model": "Qwen/Qwen3-8B",
+      "job_id": "31444956",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=all,cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:1",
+        "--mem=64G",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--job-name=structdiag_8b",
+        "--output=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/structure/logs/%x_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/structure/logs/%x_%j.err",
+        "--export=ALL,MODEL=Qwen/Qwen3-8B,TP=1",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/structure/run.sbatch"
+      ]
+    },
+    {
+      "model": "Qwen/Qwen3-32B",
+      "job_id": "31444957",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=all,cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:2",
+        "--mem=100G",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--job-name=structdiag_32b",
+        "--output=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/structure/logs/%x_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/structure/logs/%x_%j.err",
+        "--export=ALL,MODEL=Qwen/Qwen3-32B,TP=2",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/structure/run.sbatch"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2724 @@
+{
+  "aggregate_sha256": "3e06ea4ab398e53bdb3b3ba09d074d4d860ed8f3f7e1f999dc5181f8af7a8be6",
+  "bootstrap_repetitions": 10000,
+  "bootstrap_seed": 20260825,
+  "conditions": [
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "base",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.12650356566745075,
+            0.4867987985419513
+          ],
+          "macro_development_baseline_r2": [
+            -0.009309431727286743,
+            0.018679291114542057
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.0005173159896346924,
+            0.0030719740893078336
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.22859432872093674,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": 0.018309762903482074,
+            "mae": 0.30245218759277187,
+            "n": 15,
+            "oracle_test_mean_r2": -0.1494249628164359,
+            "rmse": 0.3290133736305965
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": -0.11261616136708331,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": -0.005828599280955027,
+            "mae": 0.23528485475766955,
+            "n": 15,
+            "oracle_test_mean_r2": -0.010284178035598668,
+            "rmse": 0.2664349807450283
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.5466100494704772,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.0021754601354001535,
+            "mae": 0.21217806161731328,
+            "n": 15,
+            "oracle_test_mean_r2": -0.09163497099480855,
+            "rmse": 0.24517534279504208
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.056958269096700834,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 3.453570955214147e-05,
+            "mae": 0.3265050322136007,
+            "n": 15,
+            "oracle_test_mean_r2": -0.0030819884387724983,
+            "rmse": 0.36097809921460117
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.05904091391567656,
+          "0.003": -0.058860248175062246,
+          "0.1": -0.05365107017617554,
+          "100": -0.0026579322767497637,
+          "3": -0.022734310958242132
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": -0.0026579322767497637,
+        "groups": 4,
+        "macro_centered_correlation": 0.17988662148025789,
+        "macro_development_baseline_r2": 0.0036727898668698356,
+        "macro_oracle_test_mean_r2": -0.06360652507140391,
+        "mae": 0.26910503404533886,
+        "mae_improvement_over_development_baseline": 0.001296477147172348,
+        "n": 60,
+        "rmse": 0.3039956972638112,
+        "selected_alpha": 100.0
+      },
+      "k": 3,
+      "model": "qwen3_8b",
+      "parse_coverage": 0.9983333333333333,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.24482033174877454,
+            -0.013118009377139625
+          ],
+          "macro_development_baseline_r2": [
+            -45.22690457791074,
+            -22.926317921899432
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.42372147251157405,
+            -0.3399606864004629
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.2570401553593355,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -79.60941984499922,
+            "mae": 0.70790375,
+            "n": 15,
+            "oracle_test_mean_r2": -93.38292447872388,
+            "rmse": 0.9047512914469921
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": -0.025183442836991043,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -18.086541448955302,
+            "mae": 0.38997625,
+            "n": 15,
+            "oracle_test_mean_r2": -18.17109660177855,
+            "rmse": 0.54158343564073
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.23289787460882963,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -21.115837453181065,
+            "mae": 0.27940375,
+            "n": 15,
+            "oracle_test_mean_r2": -23.195048161325396,
+            "rmse": 0.3782417707988944
+          },
+          "persistent_threshold": {
+            "centered_correlation": -0.02968330791390114,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -4.516861622143426,
+            "mae": 0.5395181250000001,
+            "n": 15,
+            "oracle_test_mean_r2": -4.534054373200671,
+            "rmse": 0.7361608855413615
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": -0.13620119517976434,
+        "macro_development_baseline_r2": -30.83216509231975,
+        "macro_oracle_test_mean_r2": -34.82078090375712,
+        "mae": 0.47920046875000005,
+        "mae_improvement_over_development_baseline": -0.3813435972222222,
+        "n": 60,
+        "rmse": 0.6702401069231723
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/base_disclosed_qwen3_8b_j30639761/stochastic_n5.scores.jsonl",
+      "seed": 0,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "base",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.10610693345948295,
+            0.2930442897831257
+          ],
+          "macro_development_baseline_r2": [
+            -0.015395347567155722,
+            0.011758371135825332
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.003534718104747786,
+            0.001072908103959938
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.4634839133690976,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.053387985581981434,
+            "mae": 0.3147158502863153,
+            "n": 15,
+            "oracle_test_mean_r2": -0.23337321733984684,
+            "rmse": 0.3408164086358838
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.19822127359364297,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.012390769209423724,
+            "mae": 0.23677882805988987,
+            "n": 15,
+            "oracle_test_mean_r2": 0.008015897874738775,
+            "rmse": 0.2640108794565004
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.2945377441484633,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.014902830263625932,
+            "mae": 0.21047482531148007,
+            "n": 15,
+            "oracle_test_mean_r2": -0.07771103771225851,
+            "rmse": 0.24360670443953247
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.3585654444832141,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.018370211257195512,
+            "mae": 0.3244947634685885,
+            "n": 15,
+            "oracle_test_mean_r2": 0.015310832658052997,
+            "rmse": 0.35765328454307554
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.04267540949956056,
+          "0.003": -0.04253804516819856,
+          "0.1": -0.03839858431225571,
+          "100": 0.0030268542173031154,
+          "3": -0.00764774922951611
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.0030268542173031154,
+        "groups": 4,
+        "macro_centered_correlation": 0.09696013721405569,
+        "macro_development_baseline_r2": -0.0019310437129340663,
+        "macro_oracle_test_mean_r2": -0.0719393811298284,
+        "mae": 0.27161606678156847,
+        "mae_improvement_over_development_baseline": -0.0012145555890572535,
+        "n": 60,
+        "rmse": 0.30541679196599375,
+        "selected_alpha": 100.0
+      },
+      "k": 6,
+      "model": "qwen3_8b",
+      "parse_coverage": 0.9983333333333333,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.13922661956972085,
+            0.1033530304955997
+          ],
+          "macro_development_baseline_r2": [
+            -46.76448774727555,
+            -20.896654204732545
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.4254189649884258,
+            -0.3304249384259258
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.208147311688424,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -90.70883369770107,
+            "mae": 0.7464004166666667,
+            "n": 15,
+            "oracle_test_mean_r2": -106.37886392887796,
+            "rmse": 0.9650324100775062
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.11785745735390303,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -14.98426141843412,
+            "mae": 0.37102124999999997,
+            "n": 15,
+            "oracle_test_mean_r2": -15.055073182347293,
+            "rmse": 0.49561910594435654
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.0025227621050845778,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -12.592962806981129,
+            "mae": 0.22760375,
+            "n": 15,
+            "oracle_test_mean_r2": -13.87089921266843,
+            "rmse": 0.29653424705602444
+          },
+          "persistent_threshold": {
+            "centered_correlation": -0.0031810475929715783,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -4.5268960085270535,
+            "mae": 0.5571697916666667,
+            "n": 15,
+            "oracle_test_mean_r2": -4.544120030752387,
+            "rmse": 0.7368300673500245
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": -0.023998416008144285,
+        "macro_development_baseline_r2": -30.70323848291084,
+        "macro_oracle_test_mean_r2": -34.96223908866152,
+        "mae": 0.4755488020833333,
+        "mae_improvement_over_development_baseline": -0.3776919305555554,
+        "n": 60,
+        "rmse": 0.6722679820029376
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/base_disclosed_qwen3_8b_j30639761/stochastic_n5.scores.jsonl",
+      "seed": 0,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "base",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.1330393925600196,
+            0.3250745480652191
+          ],
+          "macro_development_baseline_r2": [
+            -0.012291919827947046,
+            0.0237620676184549
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.00243364279279719,
+            0.0031771920704456984
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.026812301431517152,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.019785734752601813,
+            "mae": 0.3099256658737399,
+            "n": 15,
+            "oracle_test_mean_r2": -0.19402957873512583,
+            "rmse": 0.3353364648668901
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.4255814997585015,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.020710938370811283,
+            "mae": 0.2347241608496998,
+            "n": 15,
+            "oracle_test_mean_r2": 0.01637292338419305,
+            "rmse": 0.26289644012334534
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.44997881341061785,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.01114212265315595,
+            "mae": 0.2117810941919487,
+            "n": 15,
+            "oracle_test_mean_r2": -0.08182530808671973,
+            "rmse": 0.24407125805029325
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.4049440293869983,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.014441272068180244,
+            "mae": 0.3237437106827309,
+            "n": 15,
+            "oracle_test_mean_r2": 0.01136964841228616,
+            "rmse": 0.3583683172186268
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.0513843781733479,
+          "0.003": -0.05128448877606695,
+          "0.1": -0.04814932681690154,
+          "100": 0.0017144297143119325,
+          "3": -0.014006595497835811
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.0017144297143119325,
+        "groups": 4,
+        "macro_centered_correlation": 0.10183975429159978,
+        "macro_development_baseline_r2": 0.006627149584886416,
+        "macro_oracle_test_mean_r2": -0.06202807875634159,
+        "mae": 0.27004365789952983,
+        "mae_improvement_over_development_baseline": 0.00035785329298138047,
+        "n": 60,
+        "rmse": 0.30395876064497374,
+        "selected_alpha": 100.0
+      },
+      "k": 9,
+      "model": "qwen3_8b",
+      "parse_coverage": 0.9983333333333333,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.1629975352653945,
+            0.10748338156737622
+          ],
+          "macro_development_baseline_r2": [
+            -46.169059312847864,
+            -19.94841222270822
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.41237588969907396,
+            -0.31413542598379623
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.2531505032990351,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -86.6958835327314,
+            "mae": 0.7340079166666666,
+            "n": 15,
+            "oracle_test_mean_r2": -101.68023226665404,
+            "rmse": 0.9436825358888797
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.09059660653543608,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -15.869745139957029,
+            "mae": 0.37874958333333336,
+            "n": 15,
+            "oracle_test_mean_r2": -15.944479679067381,
+            "rmse": 0.5091620352864924
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.1036891285913638,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -12.617942994343627,
+            "mae": 0.22131666666666666,
+            "n": 15,
+            "oracle_test_mean_r2": -13.898227901333016,
+            "rmse": 0.29680659683888994
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.10927453386000958,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -3.9286661430156355,
+            "mae": 0.503696875,
+            "n": 15,
+            "oracle_test_mean_r2": -3.944025841308777,
+            "rmse": 0.6958111654340626
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": -0.03924212287373831,
+        "macro_development_baseline_r2": -29.778059452511922,
+        "macro_oracle_test_mean_r2": -33.866741422090804,
+        "mae": 0.4594427604166667,
+        "mae_improvement_over_development_baseline": -0.3615858888888889,
+        "n": 60,
+        "rmse": 0.6561307111750946
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/base_disclosed_qwen3_8b_j30639761/stochastic_n5.scores.jsonl",
+      "seed": 0,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 1,
+      "all_failed_tasks_imputed": 1,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "base",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.0329849749140392,
+            0.41355201493502414
+          ],
+          "macro_development_baseline_r2": [
+            -0.018649339950738694,
+            0.02201164301907935
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.0021304038023256906,
+            0.0038567141559901355
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.02947122958236183,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.004370084789265816,
+            "mae": 0.30516733582891814,
+            "n": 15,
+            "oracle_test_mean_r2": -0.17597996163971175,
+            "rmse": 0.3327922467781668
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.1046307718797066,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.002374218506105419,
+            "mae": 0.23354115383343302,
+            "n": 15,
+            "oracle_test_mean_r2": -0.002045023738832308,
+            "rmse": 0.2653463301824655
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.7272579574895738,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.008270276533076548,
+            "mae": 0.21215828793371724,
+            "n": 15,
+            "oracle_test_mean_r2": -0.08496715069606253,
+            "rmse": 0.24442541759856262
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.015006920753965031,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": -0.001857528587194901,
+            "mae": 0.3273777997244555,
+            "n": 15,
+            "oracle_test_mean_r2": -0.004979949603243217,
+            "rmse": 0.36131944650353814
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.07009969807344679,
+          "0.003": -0.06996839973927721,
+          "0.1": -0.0658436848634073,
+          "100": 0.0015753777622257992,
+          "3": -0.024067482520215705
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.0015753777622257992,
+        "groups": 4,
+        "macro_centered_correlation": 0.2043561051352209,
+        "macro_development_baseline_r2": 0.0011042204156803126,
+        "macro_oracle_test_mean_r2": -0.06699302141946245,
+        "mae": 0.26956114433013095,
+        "mae_improvement_over_development_baseline": 0.0008403668623802596,
+        "n": 60,
+        "rmse": 0.3047354925368955,
+        "selected_alpha": 100.0
+      },
+      "k": 3,
+      "model": "qwen3_8b",
+      "parse_coverage": 0.9963888888888889,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.10076937594074419,
+            0.15003293828959388
+          ],
+          "macro_development_baseline_r2": [
+            -61.28098756581387,
+            -25.813346003556546
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.4677351515624999,
+            -0.36255308715277773
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.06085028887337468,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -110.38104429993217,
+            "mae": 0.7968579166666667,
+            "n": 15,
+            "oracle_test_mean_r2": -129.41240977463826,
+            "rmse": 1.0635109276981283
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.0831574786070547,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -18.28217676633965,
+            "mae": 0.4137116666666667,
+            "n": 15,
+            "oracle_test_mean_r2": -18.367598601804342,
+            "rmse": 0.5443519499999518
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.21270185809357262,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -20.017788430668695,
+            "mae": 0.2851525,
+            "n": 15,
+            "oracle_test_mean_r2": -21.993766544048828,
+            "rmse": 0.3687324011195879
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.1659859554625312,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -4.776432241972729,
+            "mae": 0.550056875,
+            "n": 15,
+            "oracle_test_mean_r2": -4.794433919074192,
+            "rmse": 0.7532801696476384
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.02432296621234699,
+        "macro_development_baseline_r2": -38.36436043472832,
+        "macro_oracle_test_mean_r2": -43.6420522098914,
+        "mae": 0.5114447395833334,
+        "mae_improvement_over_development_baseline": -0.4135878680555555,
+        "n": 60,
+        "rmse": 0.729857714972904
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/base_undisclosed_qwen3_8b_j30639764/stochastic_n5.scores.jsonl",
+      "seed": 0,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 1,
+      "all_failed_tasks_imputed": 1,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "base",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.29619855004150397,
+            0.2610818147142455
+          ],
+          "macro_development_baseline_r2": [
+            -0.023772819702727894,
+            0.01723007271889006
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.0031360676492921263,
+            0.002256158269010982
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.07186698386807348,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.025681855427881484,
+            "mae": 0.3099144788974137,
+            "n": 15,
+            "oracle_test_mean_r2": -0.20093312939891672,
+            "rmse": 0.33630447929604385
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.205031312841517,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.01348350329607384,
+            "mae": 0.23515106528554694,
+            "n": 15,
+            "oracle_test_mean_r2": 0.009113472510548615,
+            "rmse": 0.26386478243607936
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.2638443457177663,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.00391053200610636,
+            "mae": 0.21235989145804382,
+            "n": 15,
+            "oracle_test_mean_r2": -0.08973677641692301,
+            "rmse": 0.24496208790380214
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.0830433637075459,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.0027764350357629697,
+            "mae": 0.32515756009412317,
+            "n": 15,
+            "oracle_test_mean_r2": -0.0003315436219748502,
+            "rmse": 0.36048285960032306
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.03359035159449439,
+          "0.003": -0.03346502027629872,
+          "0.1": -0.02962657181082823,
+          "100": -0.0009904038202069032,
+          "3": -0.0056655507625648915
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": -0.0009904038202069032,
+        "groups": 4,
+        "macro_centered_correlation": -0.011909163259194232,
+        "macro_development_baseline_r2": -0.0013778462724845786,
+        "macro_oracle_test_mean_r2": -0.07047199423181649,
+        "mae": 0.2706457489337819,
+        "mae_improvement_over_development_baseline": -0.000244237741270692,
+        "n": 60,
+        "rmse": 0.30523746607372726,
+        "selected_alpha": 100.0
+      },
+      "k": 6,
+      "model": "qwen3_8b",
+      "parse_coverage": 0.9963888888888889,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.07760039149118737,
+            0.12001935613547332
+          ],
+          "macro_development_baseline_r2": [
+            -81.40011572542743,
+            -39.296119799897376
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.5653153972222221,
+            -0.4345527431134259
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.027734250593984627,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -161.3339129623644,
+            "mae": 1.0128929166666667,
+            "n": 15,
+            "oracle_test_mean_r2": -189.07145166065945,
+            "rmse": 1.2839288054639166
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.015802828287978948,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -25.823538674318485,
+            "mae": 0.4974449999999999,
+            "n": 15,
+            "oracle_test_mean_r2": -25.942369444048712,
+            "rmse": 0.6420366036829599
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.06529253863704491,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -29.161732196951615,
+            "mae": 0.32811291666666664,
+            "n": 15,
+            "oracle_test_mean_r2": -31.997374152308048,
+            "rmse": 0.44171885040383246
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.15381816082868474,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -4.133337444591666,
+            "mae": 0.5439677083333334,
+            "n": 15,
+            "oracle_test_mean_r2": -4.1493349806588125,
+            "rmse": 0.7101115882270723
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.019148549971408538,
+        "macro_development_baseline_r2": -55.11313031955654,
+        "macro_oracle_test_mean_r2": -62.79013255941876,
+        "mae": 0.5956046354166666,
+        "mae_improvement_over_development_baseline": -0.49774776388888875,
+        "n": 60,
+        "rmse": 0.830671142586705
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/base_undisclosed_qwen3_8b_j30639764/stochastic_n5.scores.jsonl",
+      "seed": 0,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "base",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            0.22051548997395698,
+            0.5864297780791332
+          ],
+          "macro_development_baseline_r2": [
+            0.04353297031348522,
+            0.17961702126511095
+          ],
+          "mae_improvement_over_development_baseline": [
+            0.005392953380396538,
+            0.02745381630060828
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.48792655715316247,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": 0.18619515618755178,
+            "mae": 0.2760520408457559,
+            "n": 15,
+            "oracle_test_mean_r2": 0.04714586435579349,
+            "rmse": 0.29956181319277214
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.20794871062105152,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.036273107108678815,
+            "mae": 0.23954397615964731,
+            "n": 15,
+            "oracle_test_mean_r2": 0.03200402878627373,
+            "rmse": 0.2607991926739849
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.45351853999694997,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.13672003889931195,
+            "mae": 0.19581874761303014,
+            "n": 15,
+            "oracle_test_mean_r2": 0.05555881054556289,
+            "rmse": 0.22804761306657598
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.5776636819389395,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.1062127824113962,
+            "mae": 0.3057703506755851,
+            "n": 15,
+            "oracle_test_mean_r2": 0.10342717676144975,
+            "rmse": 0.3412757446181712
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": 0.00500708467816155,
+          "0.003": 0.005026813419013676,
+          "0.1": 0.005645251457620015,
+          "100": 0.004804021444934858,
+          "3": 0.011615506867862724
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.011615506867862724,
+        "groups": 4,
+        "macro_centered_correlation": 0.43176437242752586,
+        "macro_development_baseline_r2": 0.11635027115173469,
+        "macro_oracle_test_mean_r2": 0.05953397011226996,
+        "mae": 0.2542962788235046,
+        "mae_improvement_over_development_baseline": 0.016105232369006628,
+        "n": 60,
+        "rmse": 0.28558201383875415,
+        "selected_alpha": 3.0
+      },
+      "k": 9,
+      "model": "qwen3_8b",
+      "parse_coverage": 0.9963888888888889,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.022730758812108287,
+            0.1106448629531182
+          ],
+          "macro_development_baseline_r2": [
+            -73.27887430801651,
+            -33.0715126650845
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.4985258623842591,
+            -0.39915544490740734
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.016764884398461747,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -142.1989524457474,
+            "mae": 0.9446395833333334,
+            "n": 15,
+            "oracle_test_mean_r2": -166.66695431015205,
+            "rmse": 1.2058859479997823
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": -0.04886210941275406,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -21.498914736670294,
+            "mae": 0.4470616666666667,
+            "n": 15,
+            "oracle_test_mean_r2": -21.598587020357943,
+            "rmse": 0.5880070565849954
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.09455000696221598,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -19.549250873276133,
+            "mae": 0.28017583333333335,
+            "n": 15,
+            "oracle_test_mean_r2": -21.48117963475807,
+            "rmse": 0.3645992664470816
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.15019453128217466,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -3.794819193652528,
+            "mae": 0.511553125,
+            "n": 15,
+            "oracle_test_mean_r2": -3.8097617712278087,
+            "rmse": 0.6862981220415136
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.04477938610829371,
+        "macro_development_baseline_r2": -46.76048431233659,
+        "macro_oracle_test_mean_r2": -53.38912068412397,
+        "mae": 0.5458575520833333,
+        "mae_improvement_over_development_baseline": -0.4480006805555554,
+        "n": 60,
+        "rmse": 0.7752178654398617
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/base_undisclosed_qwen3_8b_j30639764/stochastic_n5.scores.jsonl",
+      "seed": 0,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "causal_family",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.45563055176300105,
+            0.008630110431883014
+          ],
+          "macro_development_baseline_r2": [
+            -0.01065485724259445,
+            0.004274709911450298
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.001785000740491667,
+            0.0003631358750581333
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.006665705099480648,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.012328996479175958,
+            "mae": 0.30766995046767043,
+            "n": 15,
+            "oracle_test_mean_r2": -0.18529875837165344,
+            "rmse": 0.3341082146871474
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": -0.30072633047545566,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": -0.0030049607653719335,
+            "mae": 0.23692780052379805,
+            "n": 15,
+            "oracle_test_mean_r2": -0.007448031480584483,
+            "rmse": 0.26606073964361326
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.5610464825889295,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.004687523344208411,
+            "mae": 0.21269666377937335,
+            "n": 15,
+            "oracle_test_mean_r2": -0.08888673627164101,
+            "rmse": 0.2448665289414463
+          },
+          "persistent_threshold": {
+            "centered_correlation": -0.08105646371384152,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": -0.0008738509056269717,
+            "mae": 0.32718113611066235,
+            "n": 15,
+            "oracle_test_mean_r2": -0.003993206160548102,
+            "rmse": 0.3611420214948721
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.056651724549136195,
+          "0.003": -0.055777982700699225,
+          "0.1": -0.04071846488914105,
+          "100": -7.438578478499713e-05,
+          "3": -0.011284570095230095
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": -7.438578478499713e-05,
+        "groups": 4,
+        "macro_centered_correlation": -0.23737374546942686,
+        "macro_development_baseline_r2": -0.002880071201491613,
+        "macro_oracle_test_mean_r2": -0.07140668307110676,
+        "mae": 0.271118887720376,
+        "mae_improvement_over_development_baseline": -0.0007173765278647992,
+        "n": 60,
+        "rmse": 0.3052866656875036,
+        "selected_alpha": 100.0
+      },
+      "k": 3,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.28718538393741927,
+            0.03448186344593791
+          ],
+          "macro_development_baseline_r2": [
+            -32.77944783020745,
+            -15.353392386594649
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.30958716579861106,
+            -0.2502073935185184
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.30464492466953763,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -72.67467163612955,
+            "mae": 0.77034625,
+            "n": 15,
+            "oracle_test_mean_r2": -85.26325536641333,
+            "rmse": 0.8649587938162142
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.014315238605408613,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -5.50299985330503,
+            "mae": 0.2569808333333333,
+            "n": 15,
+            "oracle_test_mean_r2": -5.531808747146604,
+            "rmse": 0.3161248419170555
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.24962064766184028,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -5.4787726093653815,
+            "mae": 0.16428291666666667,
+            "n": 15,
+            "oracle_test_mean_r2": -6.08787155999486,
+            "rmse": 0.20472183335463595
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.055221022729106096,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -1.787624865918557,
+            "mae": 0.32269895833333334,
+            "n": 15,
+            "oracle_test_mean_r2": -1.7963122218182144,
+            "rmse": 0.5232917138025166
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": -0.12118232774921578,
+        "macro_development_baseline_r2": -21.361017241179628,
+        "macro_oracle_test_mean_r2": -24.669811973843252,
+        "mae": 0.3785772395833334,
+        "mae_improvement_over_development_baseline": -0.28072036805555556,
+        "n": 60,
+        "rmse": 0.5394056630828837
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s42_20260821_164321_j30788373/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "causal_family",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.3247056302775191,
+            0.16063751471672252
+          ],
+          "macro_development_baseline_r2": [
+            -0.04255432400603871,
+            0.024304776775317345
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.007185825376107358,
+            0.002515567222101446
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.224229738998771,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.07512578424597693,
+            "mae": 0.3180053420481437,
+            "n": 15,
+            "oracle_test_mean_r2": -0.258825205631972,
+            "rmse": 0.34431500878062976
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.12356307379037557,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.0067130011514008325,
+            "mae": 0.23776791849557666,
+            "n": 15,
+            "oracle_test_mean_r2": 0.0023129786699387367,
+            "rmse": 0.26476869147081566
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.34857458088416904,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.033290319579811434,
+            "mae": 0.20944420656923582,
+            "n": 15,
+            "oracle_test_mean_r2": -0.05759484938012416,
+            "rmse": 0.24132245495435992
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.13128856877309897,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.008898071708476007,
+            "mae": 0.32561718170479675,
+            "n": 15,
+            "oracle_test_mean_r2": 0.005809171938158997,
+            "rmse": 0.35937471182318886
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.037315399613439826,
+          "0.003": -0.036330329116437854,
+          "0.1": -0.01830553178987293,
+          "100": 0.010873927502540681,
+          "3": 0.004479417174735045
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.010873927502540681,
+        "groups": 4,
+        "macro_centered_correlation": -0.07948816932986637,
+        "macro_development_baseline_r2": -0.006556097951572165,
+        "macro_oracle_test_mean_r2": -0.0770744761009996,
+        "mae": 0.27270866220443823,
+        "mae_improvement_over_development_baseline": -0.002307151011927022,
+        "n": 60,
+        "rmse": 0.3066113158454741,
+        "selected_alpha": 100.0
+      },
+      "k": 6,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.19545565529468567,
+            0.12782603844137833
+          ],
+          "macro_development_baseline_r2": [
+            -29.567249177754974,
+            -14.35984827269441
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.29779089427083316,
+            -0.24099753472222213
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.13928332581610786,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -66.42625658248083,
+            "mae": 0.7304241666666667,
+            "n": 15,
+            "oracle_test_mean_r2": -77.94719122336103,
+            "rmse": 0.8274672964333193
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.0855706917463593,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -5.442004855010909,
+            "mae": 0.2536425,
+            "n": 15,
+            "oracle_test_mean_r2": -5.4705435353402025,
+            "rmse": 0.3146387999390465
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.17997439618267647,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -4.976533946405426,
+            "mae": 0.16195291666666664,
+            "n": 15,
+            "oracle_test_mean_r2": -5.5384151505543056,
+            "rmse": 0.1966266992138911
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.09366301720942732,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -1.7218919570734634,
+            "mae": 0.32608937500000007,
+            "n": 15,
+            "oracle_test_mean_r2": -1.7303744628943178,
+            "rmse": 0.5170852315554065
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": -0.03500600326074943,
+        "macro_development_baseline_r2": -19.641671835242658,
+        "macro_oracle_test_mean_r2": -22.671631093037462,
+        "mae": 0.36802723958333333,
+        "mae_improvement_over_development_baseline": -0.2701703680555555,
+        "n": 60,
+        "rmse": 0.5219527987831392
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s42_20260821_164321_j30788373/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "causal_family",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.10568832733018645,
+            0.3559119663269843
+          ],
+          "macro_development_baseline_r2": [
+            -0.013455361670730366,
+            0.03044887379249141
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.0026749194417054257,
+            0.003865749918720021
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.11271371845777116,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.030093300987831917,
+            "mae": 0.309443907952248,
+            "n": 15,
+            "oracle_test_mean_r2": -0.20609832862073008,
+            "rmse": 0.3370269241218322
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.448036300812813,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.025890156988595314,
+            "mae": 0.2348216108176105,
+            "n": 15,
+            "oracle_test_mean_r2": 0.02157508469465408,
+            "rmse": 0.26220032124671266
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.31829851154960337,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.028091096060172904,
+            "mae": 0.2102071552972282,
+            "n": 15,
+            "oracle_test_mean_r2": -0.06328287767498497,
+            "rmse": 0.24197053312950334
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.2949466465650636,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.014124909133373054,
+            "mae": 0.3249297668939194,
+            "n": 15,
+            "oracle_test_mean_r2": 0.01105229949070119,
+            "rmse": 0.35842583046089493
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.07222003170453853,
+          "0.003": -0.07148728720070902,
+          "0.1": -0.05486695275636652,
+          "100": 0.005649672900091052,
+          "3": -0.0002368769898413725
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.005649672900091052,
+        "groups": 4,
+        "macro_centered_correlation": 0.13434953857151108,
+        "macro_development_baseline_r2": 0.009503215298577339,
+        "macro_oracle_test_mean_r2": -0.059188455527589945,
+        "mae": 0.2698506102402515,
+        "mae_improvement_over_development_baseline": 0.0005509009522597363,
+        "n": 60,
+        "rmse": 0.3038729055417169,
+        "selected_alpha": 100.0
+      },
+      "k": 9,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.07610043497839918,
+            0.2593495409055145
+          ],
+          "macro_development_baseline_r2": [
+            -29.129349166322804,
+            -14.305437042378873
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.29405384675925916,
+            -0.23911703177083327
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.07247102756137301,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -65.8273329672097,
+            "mae": 0.7310591666666667,
+            "n": 15,
+            "oracle_test_mean_r2": -77.24593121606468,
+            "rmse": 0.8237840491192661
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.25286317040539646,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -5.258153326885372,
+            "mae": 0.24747083333333333,
+            "n": 15,
+            "oracle_test_mean_r2": -5.285877527855007,
+            "rmse": 0.3101164849193767
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.16333620508359784,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -5.1157259121744545,
+            "mae": 0.16444625000000002,
+            "n": 15,
+            "oracle_test_mean_r2": -5.69069318762076,
+            "rmse": 0.19890321371733372
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.21985330829896546,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -1.6049069851507376,
+            "mae": 0.317184375,
+            "n": 15,
+            "oracle_test_mean_r2": -1.613024918930917,
+            "rmse": 0.5058512215655657
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.09546282529553428,
+        "macro_development_baseline_r2": -19.451529797855066,
+        "macro_oracle_test_mean_r2": -22.458881712617842,
+        "mae": 0.36504015625,
+        "mae_improvement_over_development_baseline": -0.2671832847222222,
+        "n": 60,
+        "rmse": 0.5172621048821723
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s42_20260821_164321_j30788373/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "population_prior",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.3056250311566515,
+            0.21642620909143634
+          ],
+          "macro_development_baseline_r2": [
+            -0.015079380958975373,
+            0.006304882586695676
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.002111178708334255,
+            0.000849847435088081
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.08798265852487006,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.004425964320559972,
+            "mae": 0.30689843955258655,
+            "n": 15,
+            "oracle_test_mean_r2": -0.17604538892599075,
+            "rmse": 0.3328015043299396
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": -0.03319482674978378,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": -0.0012145823227909247,
+            "mae": 0.23657676016673565,
+            "n": 15,
+            "oracle_test_mean_r2": -0.0056497220921571945,
+            "rmse": 0.2658231724361174
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.25182448223588766,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": -0.006089589827273256,
+            "mae": 0.21277299838932598,
+            "n": 15,
+            "oracle_test_mean_r2": -0.10067705927367365,
+            "rmse": 0.2461886509926463
+          },
+          "persistent_threshold": {
+            "centered_correlation": -0.2999199529151139,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": -0.008274593987311452,
+            "mae": 0.3278411991239574,
+            "n": 15,
+            "oracle_test_mean_r2": -0.011417014633341882,
+            "rmse": 0.36247475527914563
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.03431479747879754,
+          "0.003": -0.03407365590787648,
+          "0.1": -0.027744339694164455,
+          "100": -0.0011593777711559339,
+          "3": -0.003519657152789818
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": -0.0011593777711559339,
+        "groups": 4,
+        "macro_centered_correlation": -0.04231823898847002,
+        "macro_development_baseline_r2": -0.005001182614483901,
+        "macro_oracle_test_mean_r2": -0.07344729623129087,
+        "mae": 0.27102234930815144,
+        "mae_improvement_over_development_baseline": -0.0006208381156402321,
+        "n": 60,
+        "rmse": 0.30553870474153033,
+        "selected_alpha": 100.0
+      },
+      "k": 3,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.10011210259534309,
+            0.19650086584359944
+          ],
+          "macro_development_baseline_r2": [
+            -27.004118239984688,
+            -14.532760787264442
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.3164908270833332,
+            -0.2712752603587962
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.002471597615916869,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -43.946482664591166,
+            "mae": 0.587705,
+            "n": 15,
+            "oracle_test_mean_r2": -51.62636162217154,
+            "rmse": 0.6755914886847919
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.0068038965031533396,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -13.341776064141502,
+            "mae": 0.3739804166666667,
+            "n": 15,
+            "oracle_test_mean_r2": -13.40531146525665,
+            "rmse": 0.4694650018571672
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.17116575047386837,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -17.813657881316583,
+            "mae": 0.2728391666666667,
+            "n": 15,
+            "oracle_test_mean_r2": -19.582415632815202,
+            "rmse": 0.3488626011322366
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.35327262109731866,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -0.6850018647330984,
+            "mae": 0.3317072916666666,
+            "n": 15,
+            "oracle_test_mean_r2": -0.6902530056127376,
+            "rmse": 0.406843035386755
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.04784559118563013,
+        "macro_development_baseline_r2": -18.94672961869559,
+        "macro_oracle_test_mean_r2": -21.32608543146403,
+        "mae": 0.39155796875000004,
+        "mae_improvement_over_development_baseline": -0.29370109722222215,
+        "n": 60,
+        "rmse": 0.4909296328048302
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s42_20260819_075732_j30730351/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "population_prior",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.07472390734495492,
+            0.4077864508131912
+          ],
+          "macro_development_baseline_r2": [
+            -0.05901419846358522,
+            0.059718912852212855
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.007698605969325282,
+            0.009973065362920886
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.2667191673671126,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.1554948945960355,
+            "mae": 0.3254199503786756,
+            "n": 15,
+            "oracle_test_mean_r2": -0.35292643857173056,
+            "rmse": 0.35695242017346024
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.38326789283988905,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.06933509428854667,
+            "mae": 0.23124762222578404,
+            "n": 15,
+            "oracle_test_mean_r2": 0.06521247261667851,
+            "rmse": 0.25628661340731196
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.025411261079645503,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.03501016130128931,
+            "mae": 0.2057932098475303,
+            "n": 15,
+            "oracle_test_mean_r2": -0.055713316813290614,
+            "rmse": 0.24110769493198486
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.5529871795396883,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.05958214833834696,
+            "mae": 0.3145360969682699,
+            "n": 15,
+            "oracle_test_mean_r2": 0.05665121217216762,
+            "rmse": 0.350065075754464
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.0033822357423995975,
+          "0.003": -0.002962687148831522,
+          "0.1": 0.003915237542604616,
+          "100": 0.005222295841086605,
+          "3": 0.013328962414855233
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.013328962414855233,
+        "groups": 4,
+        "macro_centered_correlation": 0.16103116098320483,
+        "macro_development_baseline_r2": 0.0021081273330368633,
+        "macro_oracle_test_mean_r2": -0.07169401764904376,
+        "mae": 0.269249219855065,
+        "mae_improvement_over_development_baseline": 0.0011522913374462096,
+        "n": 60,
+        "rmse": 0.30568625103931035,
+        "selected_alpha": 3.0
+      },
+      "k": 6,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.026517919392218568,
+            0.29602400090065106
+          ],
+          "macro_development_baseline_r2": [
+            -21.8231362205759,
+            -12.03440124823389
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.2866330399884258,
+            -0.2413983261574073
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.04017584689684392,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -31.46813462980537,
+            "mae": 0.47709999999999997,
+            "n": 15,
+            "oracle_test_mean_r2": -37.01587338827707,
+            "rmse": 0.5742023730431052
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.21186049939325374,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -13.54067124870442,
+            "mae": 0.37369250000000004,
+            "n": 15,
+            "oracle_test_mean_r2": -13.60508777397564,
+            "rmse": 0.4727091195637651
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.03613395588762071,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -15.843532883170678,
+            "mae": 0.25087916666666665,
+            "n": 15,
+            "oracle_test_mean_r2": -17.427070201520444,
+            "rmse": 0.33009153542679137
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.37177959700446556,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -0.7121608421616554,
+            "mae": 0.3447252083333333,
+            "n": 15,
+            "oracle_test_mean_r2": -0.717496621295773,
+            "rmse": 0.4101086911633407
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.12683257340331366,
+        "macro_development_baseline_r2": -15.391124900960532,
+        "macro_oracle_test_mean_r2": -17.191381996267236,
+        "mae": 0.36159921875,
+        "mae_improvement_over_development_baseline": -0.2637423472222221,
+        "n": 60,
+        "rmse": 0.4556072423851514
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s42_20260819_075732_j30730351/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "population_prior",
+      "development_n": 180,
+      "disclosure": "disclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            0.20478166975505016,
+            0.6117944347320273
+          ],
+          "macro_development_baseline_r2": [
+            0.006463033864296028,
+            0.21509672412338263
+          ],
+          "mae_improvement_over_development_baseline": [
+            0.005532698459665473,
+            0.03929661515841504
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.4446981080213143,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": 0.03561128113943235,
+            "mae": 0.28574243006746813,
+            "n": 15,
+            "oracle_test_mean_r2": -0.12916725197901036,
+            "rmse": 0.32610118437545593
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.4146702011296764,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.15877158150806425,
+            "mae": 0.21888539094490087,
+            "n": 15,
+            "oracle_test_mean_r2": 0.1550451419616895,
+            "rmse": 0.2436611117359003
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.22030374271716377,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.08070022310680292,
+            "mae": 0.20134130865253044,
+            "n": 15,
+            "oracle_test_mean_r2": -0.005727705815408157,
+            "rmse": 0.23533053292049105
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.6159521915355182,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.20232203129226378,
+            "mae": 0.28700892745159035,
+            "n": 15,
+            "oracle_test_mean_r2": 0.1998359627820595,
+            "rmse": 0.32240528467418844
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": 0.02669274846757766,
+          "0.003": 0.026701952501178267,
+          "0.1": 0.026051092114400348,
+          "100": 0.0035098854443283145,
+          "3": 0.008140039635385454
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.026701952501178267,
+        "groups": 4,
+        "macro_centered_correlation": 0.42390606085091814,
+        "macro_development_baseline_r2": 0.11935127926164082,
+        "macro_oracle_test_mean_r2": 0.054996536737332624,
+        "mae": 0.24824451427912247,
+        "mae_improvement_over_development_baseline": 0.022156996913388738,
+        "n": 60,
+        "rmse": 0.2850606721094374,
+        "selected_alpha": 0.003
+      },
+      "k": 9,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            0.013539514366116681,
+            0.34312667183973417
+          ],
+          "macro_development_baseline_r2": [
+            -22.801426990081207,
+            -12.051561160682914
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.28950293443287034,
+            -0.24820125179398145
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.14503528135866722,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -33.254653662074745,
+            "mae": 0.5159508333333334,
+            "n": 15,
+            "oracle_test_mean_r2": -39.10764989810322,
+            "rmse": 0.5897882340651318
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.14481969355503413,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -13.306418026449162,
+            "mae": 0.36798875000000003,
+            "n": 15,
+            "oracle_test_mean_r2": -13.369796788170598,
+            "rmse": 0.46888593812221535
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.08046994297121912,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -15.122024931955092,
+            "mae": 0.24344958333333336,
+            "n": 15,
+            "oracle_test_mean_r2": -16.637729998356246,
+            "rmse": 0.3229442732661731
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.3440029268545445,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -0.6857407038239005,
+            "mae": 0.33788937499999994,
+            "n": 15,
+            "oracle_test_mean_r2": -0.6909941472221506,
+            "rmse": 0.406932221814692
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.17858196118486624,
+        "macro_development_baseline_r2": -15.592209331075727,
+        "macro_oracle_test_mean_r2": -17.451542707963053,
+        "mae": 0.3663196354166666,
+        "mae_improvement_over_development_baseline": -0.2684627638888888,
+        "n": 60,
+        "rmse": 0.4575999947543911
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s42_20260819_075732_j30730351/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "causal_family",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.16850117294692898,
+            0.4156521831385179
+          ],
+          "macro_development_baseline_r2": [
+            -0.00459954658016671,
+            0.007788471731837421
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.0008455246606285203,
+            0.0009764940780835396
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.23728218829251183,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.003357245077399318,
+            "mae": 0.30645173305932816,
+            "n": 15,
+            "oracle_test_mean_r2": -0.17479406490349225,
+            "rmse": 0.3326244051487627
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.45560978387292494,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.005316994040973522,
+            "mae": 0.2357463257527782,
+            "n": 15,
+            "oracle_test_mean_r2": 0.0009107875838053614,
+            "rmse": 0.26495468464198796
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.173070308518375,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.0045315590554763086,
+            "mae": 0.21241365892276357,
+            "n": 15,
+            "oracle_test_mean_r2": -0.0890573635362597,
+            "rmse": 0.24488571333777137
+          },
+          "persistent_threshold": {
+            "centered_correlation": -0.035552135339691,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": -0.00093318441076784,
+            "mae": 0.32684637123859395,
+            "n": 15,
+            "oracle_test_mean_r2": -0.0040527245863770656,
+            "rmse": 0.3611527258930386
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.07630207138498829,
+          "0.003": -0.07611234310860637,
+          "0.1": -0.07218856047686445,
+          "100": -0.002689425583238564,
+          "3": -0.04041287211330408
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": -0.002689425583238564,
+        "groups": 4,
+        "macro_centered_correlation": 0.12106738207684269,
+        "macro_development_baseline_r2": 0.001389530902070668,
+        "macro_oracle_test_mean_r2": -0.06674834136058092,
+        "mae": 0.27036452224336593,
+        "mae_improvement_over_development_baseline": 3.698894914527795e-05,
+        "n": 60,
+        "rmse": 0.30464745355542727,
+        "selected_alpha": 100.0
+      },
+      "k": 3,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.21148339580240577,
+            0.10911291217728479
+          ],
+          "macro_development_baseline_r2": [
+            -36.632694695091054,
+            -16.929383810112263
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.3220992998842592,
+            -0.2594448955439814
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.44318661559810824,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -81.56216567832948,
+            "mae": 0.8170383333333333,
+            "n": 15,
+            "oracle_test_mean_r2": -95.66933049513916,
+            "rmse": 0.9156444178828373
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.23549167717632633,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -6.075533261861465,
+            "mae": 0.26245166666666664,
+            "n": 15,
+            "oracle_test_mean_r2": -6.106878531923234,
+            "rmse": 0.32974737086707756
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.13068621841430764,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -5.404212549240968,
+            "mae": 0.16784041666666666,
+            "n": 15,
+            "oracle_test_mean_r2": -6.006301768688492,
+            "rmse": 0.20354041800196998
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.18253444142814063,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -1.656859527909472,
+            "mae": 0.3099447916666667,
+            "n": 15,
+            "oracle_test_mean_r2": -1.6651393666268453,
+            "rmse": 0.5108706932623704
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": -0.03896167885198723,
+        "macro_development_baseline_r2": -23.674692754335346,
+        "macro_oracle_test_mean_r2": -27.36191254059443,
+        "mae": 0.38931880208333336,
+        "mae_improvement_over_development_baseline": -0.29146193055555547,
+        "n": 60,
+        "rmse": 0.5589176136937675
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s42_20260820_032118_j30730360/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "causal_family",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.1441483075507702,
+            0.2964485279358655
+          ],
+          "macro_development_baseline_r2": [
+            -0.01921108435399266,
+            0.030425453663575013
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.003963687498799281,
+            0.0033168965250568705
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.4220816364614355,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.06842224606117209,
+            "mae": 0.3174686556713127,
+            "n": 15,
+            "oracle_test_mean_r2": -0.25097627952713775,
+            "rmse": 0.34323990763047957
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.6191843296469909,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.04940264516579096,
+            "mae": 0.23202518889701337,
+            "n": 15,
+            "oracle_test_mean_r2": 0.045191727538823834,
+            "rmse": 0.2590165737786396
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.1852218603638834,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.02925921384693375,
+            "mae": 0.21014770146323825,
+            "n": 15,
+            "oracle_test_mean_r2": -0.062004939344822985,
+            "rmse": 0.24182507965057456
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.34469916920082355,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.02058061631222996,
+            "mae": 0.32305191734884553,
+            "n": 15,
+            "oracle_test_mean_r2": 0.017528126731736204,
+            "rmse": 0.35725038103601797
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.1156172500381856,
+          "0.003": -0.11515257935710543,
+          "0.1": -0.10233246988667308,
+          "100": 0.0016142380917609223,
+          "3": -0.03401843044376063
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.0016142380917609223,
+        "groups": 4,
+        "macro_centered_correlation": 0.08914500050562388,
+        "macro_development_baseline_r2": 0.007705057315945646,
+        "macro_oracle_test_mean_r2": -0.06256534115035017,
+        "mae": 0.27067336584510243,
+        "mae_improvement_over_development_baseline": -0.0002718546525912191,
+        "n": 60,
+        "rmse": 0.3045531249144361,
+        "selected_alpha": 100.0
+      },
+      "k": 6,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.13699301133012684,
+            0.1461342846304159
+          ],
+          "macro_development_baseline_r2": [
+            -37.02596958457533,
+            -17.56081789967884
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.327864709548611,
+            -0.2664366375578702
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.32984576399822485,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -83.42076035174715,
+            "mae": 0.8269633333333334,
+            "n": 15,
+            "oracle_test_mean_r2": -97.84549800800609,
+            "rmse": 0.9258933046883245
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.32354675430017227,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -6.591338601708986,
+            "mae": 0.27541041666666666,
+            "n": 15,
+            "oracle_test_mean_r2": -6.624968937373368,
+            "rmse": 0.3415552259060751
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.12311985158802927,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -5.497877962355863,
+            "mae": 0.16983708333333333,
+            "n": 15,
+            "oracle_test_mean_r2": -6.108773094323931,
+            "rmse": 0.20502346484101927
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.16284054470075104,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -1.4587015955656195,
+            "mae": 0.3116689583333333,
+            "n": 15,
+            "oracle_test_mean_r2": -1.4663638947769937,
+            "rmse": 0.4914502999467071
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.008355420853667299,
+        "macro_development_baseline_r2": -24.2421696278444,
+        "macro_oracle_test_mean_r2": -28.011400983620096,
+        "mae": 0.3959699479166667,
+        "mae_improvement_over_development_baseline": -0.29811307638888884,
+        "n": 60,
+        "rmse": 0.5606907352684591
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s42_20260820_032118_j30730360/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "causal_family",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.08866912834743632,
+            0.3191161945806103
+          ],
+          "macro_development_baseline_r2": [
+            -0.020290390017429934,
+            0.025279125864805428
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.004054098378167264,
+            0.002381617688505506
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.29407907457203186,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.05762051997359352,
+            "mae": 0.31562987923451113,
+            "n": 15,
+            "oracle_test_mean_r2": -0.23832893606033312,
+            "rmse": 0.34150042586336893
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.6309103162420922,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.03698668920166359,
+            "mae": 0.23333734226723965,
+            "n": 15,
+            "oracle_test_mean_r2": 0.03272077187628675,
+            "rmse": 0.26070262169668285
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.25436572054880036,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.02461857106479115,
+            "mae": 0.21082722396968345,
+            "n": 15,
+            "oracle_test_mean_r2": -0.06708187195821491,
+            "rmse": 0.24240241492905337
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.36803058346482476,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.015111162481624807,
+            "mae": 0.3249515961382897,
+            "n": 15,
+            "oracle_test_mean_r2": 0.012041626627484647,
+            "rmse": 0.3582465039257726
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.036815822822391514,
+          "0.003": -0.03646766657681763,
+          "0.1": -0.029644095396688164,
+          "100": 0.002428111445446579,
+          "3": -0.007237016760545334
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.002428111445446579,
+        "groups": 4,
+        "macro_centered_correlation": 0.11262402614652117,
+        "macro_development_baseline_r2": 0.004773975693621507,
+        "macro_oracle_test_mean_r2": -0.06516210237869416,
+        "mae": 0.27118651040243097,
+        "mae_improvement_over_development_baseline": -0.0007849992099197567,
+        "n": 60,
+        "rmse": 0.3048310540950764,
+        "selected_alpha": 100.0
+      },
+      "k": 9,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.08285242246599259,
+            0.20604020363061773
+          ],
+          "macro_development_baseline_r2": [
+            -35.004357652366295,
+            -16.79980194188931
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.3198049755787037,
+            -0.2564838201388888
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.1449029116504878,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -78.47588472859235,
+            "mae": 0.8011670833333333,
+            "n": 15,
+            "oracle_test_mean_r2": -92.05570540815457,
+            "rmse": 0.898367432485172
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.2930691753610857,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -6.54456642637851,
+            "mae": 0.27312291666666666,
+            "n": 15,
+            "oracle_test_mean_r2": -6.577989556958435,
+            "rmse": 0.3405013956928077
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.06626347420586692,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -5.611154443427494,
+            "mae": 0.16981791666666665,
+            "n": 15,
+            "oracle_test_mean_r2": -6.232699213824296,
+            "rmse": 0.2068028144201218
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.15348851019064338,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -1.4392332630392337,
+            "mae": 0.304611875,
+            "n": 15,
+            "oracle_test_mean_r2": -1.4468348911267785,
+            "rmse": 0.48950074802568827
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.058847824923843585,
+        "macro_development_baseline_r2": -23.017709715359395,
+        "macro_oracle_test_mean_r2": -26.578307267516017,
+        "mae": 0.3871799479166667,
+        "mae_improvement_over_development_baseline": -0.2893230763888889,
+        "n": 60,
+        "rmse": 0.5489498225221823
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s42_20260820_032118_j30730360/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "population_prior",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.22939912004220525,
+            0.28768918632885515
+          ],
+          "macro_development_baseline_r2": [
+            -0.009461047348275728,
+            0.012966477560622016
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.001221134339236308,
+            0.0024693559734384253
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.18411431012964358,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.0048685498325835574,
+            "mae": 0.30523487165512064,
+            "n": 15,
+            "oracle_test_mean_r2": -0.1765635960105445,
+            "rmse": 0.33287481829600823
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.10630063741864493,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.006533607358668592,
+            "mae": 0.23521723940864048,
+            "n": 15,
+            "oracle_test_mean_r2": 0.0021327902058558834,
+            "rmse": 0.26479259982530257
+          },
+          "mediated_saturating": {
+            "centered_correlation": -0.1795677898485873,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.0015591533343294328,
+            "mae": 0.21207256304833258,
+            "n": 15,
+            "oracle_test_mean_r2": -0.09230921985323226,
+            "rmse": 0.24525104744056878
+          },
+          "persistent_threshold": {
+            "centered_correlation": -0.008377093461617328,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.00012926883912356413,
+            "mae": 0.32680574439091875,
+            "n": 15,
+            "oracle_test_mean_r2": -0.0029869600609184754,
+            "rmse": 0.36096099992656555
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.04830941925599813,
+          "0.003": -0.048163408749885506,
+          "0.1": -0.043757510883838724,
+          "100": 0.001664853811950695,
+          "3": -0.0057561138727084404
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.001664853811950695,
+        "groups": 4,
+        "macro_centered_correlation": 0.02561751605952097,
+        "macro_development_baseline_r2": 0.0008383699248845078,
+        "macro_oracle_test_mean_r2": -0.06743174642970984,
+        "mae": 0.2698326046257531,
+        "mae_improvement_over_development_baseline": 0.0005689065667581206,
+        "n": 60,
+        "rmse": 0.3046972617683516,
+        "selected_alpha": 100.0
+      },
+      "k": 3,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.10880613656766804,
+            0.1992778714111437
+          ],
+          "macro_development_baseline_r2": [
+            -28.30303076383312,
+            -14.868826445993465
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.3106098958333332,
+            -0.26604027395833324
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.24938077820318935,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -51.599488309738234,
+            "mae": 0.6536591666666668,
+            "n": 15,
+            "oracle_test_mean_r2": -60.5870147968262,
+            "rmse": 0.7308480181439915
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": -0.03132835279789011,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -9.922361717645222,
+            "mae": 0.3282954166666666,
+            "n": 15,
+            "oracle_test_mean_r2": -9.970748795351058,
+            "rmse": 0.4096944026878449
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.13097958776773647,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -15.501522163742369,
+            "mae": 0.25048375,
+            "n": 15,
+            "oracle_test_mean_r2": -17.052905495084367,
+            "rmse": 0.32672306680951785
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.3635762471953223,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -0.7358176184216723,
+            "mae": 0.3127252083333333,
+            "n": 15,
+            "oracle_test_mean_r2": -0.7412271215483264,
+            "rmse": 0.41293218953121313
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.05346167599049482,
+        "macro_development_baseline_r2": -19.439797452386877,
+        "macro_oracle_test_mean_r2": -22.08797405220249,
+        "mae": 0.3862908854166667,
+        "mae_improvement_over_development_baseline": -0.2884340138888888,
+        "n": 60,
+        "rmse": 0.49478512628089594
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s42_20260820_111139_j30730363/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "population_prior",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.030990045249819815,
+            0.41277056608003626
+          ],
+          "macro_development_baseline_r2": [
+            -0.0052613903018968655,
+            0.026396273807443815
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.0016566724502334643,
+            0.0031617827050888273
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.3394592827195769,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.031001833388367706,
+            "mae": 0.31070343016071583,
+            "n": 15,
+            "oracle_test_mean_r2": -0.20716209576564104,
+            "rmse": 0.3371755186197983
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.1335445747213027,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.01022436424220663,
+            "mae": 0.2376174192832606,
+            "n": 15,
+            "oracle_test_mean_r2": 0.005839896254620003,
+            "rmse": 0.2643002860095485
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.4680962511599093,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.04221322046255249,
+            "mae": 0.20894133353276748,
+            "n": 15,
+            "oracle_test_mean_r2": -0.04783306235528095,
+            "rmse": 0.24020614864179515
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.4563995029927459,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.022853189095567106,
+            "mae": 0.321138244583241,
+            "n": 15,
+            "oracle_test_mean_r2": 0.019807782287639908,
+            "rmse": 0.3568356715618593
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.08403078176441517,
+          "0.003": -0.08387281448442946,
+          "0.1": -0.07905761626765043,
+          "100": -0.0010326608497870648,
+          "3": -0.029880986976791674
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": -0.0010326608497870648,
+        "groups": 4,
+        "macro_centered_correlation": 0.17964526153859525,
+        "macro_development_baseline_r2": 0.01107223510298963,
+        "macro_oracle_test_mean_r2": -0.05733686989466552,
+        "mae": 0.2696001068899962,
+        "mae_improvement_over_development_baseline": 0.0008014043025150186,
+        "n": 60,
+        "rmse": 0.3035509273110471,
+        "selected_alpha": 100.0
+      },
+      "k": 6,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            -0.0015817209974870775,
+            0.32545928155664455
+          ],
+          "macro_development_baseline_r2": [
+            -28.451066222393035,
+            -14.609977210768863
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.3078092596064814,
+            -0.26625062193287036
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": -0.07610007158955516,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -50.969128994575556,
+            "mae": 0.6507883333333333,
+            "n": 15,
+            "oracle_test_mean_r2": -59.848947760097,
+            "rmse": 0.7264555281467683
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.07732985083562859,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -10.318321276191666,
+            "mae": 0.33339125,
+            "n": 15,
+            "oracle_test_mean_r2": -10.368462491548593,
+            "rmse": 0.4170544521926963
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.2784674629384492,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -15.029790869644188,
+            "mae": 0.2448320833333333,
+            "n": 15,
+            "oracle_test_mean_r2": -16.53682459133961,
+            "rmse": 0.32201916656530966
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.3466271399047557,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -0.6451557569717281,
+            "mae": 0.31181020833333334,
+            "n": 15,
+            "oracle_test_mean_r2": -0.6502827214158748,
+            "rmse": 0.4020038420020075
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.15658109552231958,
+        "macro_development_baseline_r2": -19.240599224345786,
+        "macro_oracle_test_mean_r2": -21.85112939110027,
+        "mae": 0.38520546875,
+        "mae_improvement_over_development_baseline": -0.28734859722222217,
+        "n": 60,
+        "rmse": 0.4916745577840442
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s42_20260820_111139_j30730363/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    },
+    {
+      "all_failed_development_tasks_imputed": 0,
+      "all_failed_tasks_imputed": 0,
+      "all_failed_test_tasks_imputed": 0,
+      "arm": "population_prior",
+      "development_n": 180,
+      "disclosure": "undisclosed",
+      "gain_calibration": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            0.046578474463510995,
+            0.4816573747200641
+          ],
+          "macro_development_baseline_r2": [
+            -0.00939416361631502,
+            0.030413174032002763
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.0025303852826783512,
+            0.0035700044513254144
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.03308182776668049,
+            "development_baseline_mae": 0.3061735897435897,
+            "development_baseline_r2": -0.02855887235443122,
+            "mae": 0.3103954036420767,
+            "n": 15,
+            "oracle_test_mean_r2": -0.20430172261585877,
+            "rmse": 0.33677581264959044
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.06248527711371891,
+            "development_baseline_mae": 0.23613273650793654,
+            "development_baseline_r2": 0.005855196864252177,
+            "mae": 0.23761672930020108,
+            "n": 15,
+            "oracle_test_mean_r2": 0.001451374516132753,
+            "rmse": 0.2648829941370295
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.46752297505253043,
+            "development_baseline_mae": 0.21285434285714286,
+            "development_baseline_r2": 0.04860900204003271,
+            "mae": 0.20811688180737972,
+            "n": 15,
+            "oracle_test_mean_r2": -0.04083598164831681,
+            "rmse": 0.23940279687941832
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.4315280115672237,
+            "development_baseline_mae": 0.32644537566137566,
+            "development_baseline_r2": 0.021040314764576906,
+            "mae": 0.32315304294660196,
+            "n": 15,
+            "oracle_test_mean_r2": 0.017989257894890587,
+            "rmse": 0.3571665320103127
+          }
+        },
+        "development_alpha_scores": {
+          "0.0001": -0.09088112013197008,
+          "0.003": -0.09033101476329619,
+          "0.1": -0.07527268685814206,
+          "100": 0.0034527315409686454,
+          "3": -0.009943737083116438
+        },
+        "development_baseline_mae": 0.2704015111925112,
+        "development_cv_r2": 0.0034527315409686454,
+        "groups": 4,
+        "macro_centered_correlation": 0.24865452287503836,
+        "macro_development_baseline_r2": 0.011736410328607644,
+        "macro_oracle_test_mean_r2": -0.05642426796328806,
+        "mae": 0.26982051442406496,
+        "mae_improvement_over_development_baseline": 0.0005809967684462514,
+        "n": 60,
+        "rmse": 0.30350559274531963,
+        "selected_alpha": 100.0
+      },
+      "k": 9,
+      "model": "qwen3_8b",
+      "parse_coverage": 1.0,
+      "parse_failure_policy": "all-failed task imputed with frozen population-prior response; partial failures averaged over parsed draws",
+      "response_tracking": {
+        "bootstrap_ci95": {
+          "macro_centered_correlation": [
+            0.034881205056888936,
+            0.33798732752298666
+          ],
+          "macro_development_baseline_r2": [
+            -24.775348884500698,
+            -13.42348277625127
+          ],
+          "mae_improvement_over_development_baseline": [
+            -0.2950437696759258,
+            -0.25766483182870364
+          ]
+        },
+        "by_group": {
+          "feedback_saturating_extrap": {
+            "centered_correlation": 0.27195897468263075,
+            "development_baseline_mae": 0.08515634259259258,
+            "development_baseline_r2": -42.82128295006471,
+            "mae": 0.5961591666666667,
+            "n": 15,
+            "oracle_test_mean_r2": -50.30890220013576,
+            "rmse": 0.6670814407114523
+          },
+          "mediated_feedback_linear": {
+            "centered_correlation": 0.08559190559899593,
+            "development_baseline_mae": 0.06968814814814833,
+            "development_baseline_r2": -10.646836190430948,
+            "mae": 0.3399416666666666,
+            "n": 15,
+            "oracle_test_mean_r2": -10.698432757395317,
+            "rmse": 0.423063674100897
+          },
+          "mediated_saturating": {
+            "centered_correlation": 0.2258459879605977,
+            "development_baseline_mae": 0.04762702777777797,
+            "development_baseline_r2": -14.804062870538276,
+            "mae": 0.24427041666666666,
+            "n": 15,
+            "oracle_test_mean_r2": -16.289874873912492,
+            "rmse": 0.31974382631842946
+          },
+          "persistent_threshold": {
+            "centered_correlation": 0.13703870831608567,
+            "development_baseline_mae": 0.1889559675925926,
+            "development_baseline_r2": -0.779011263874402,
+            "mae": 0.3199622916666666,
+            "n": 15,
+            "oracle_test_mean_r2": -0.784555375705132,
+            "rmse": 0.4180382700595425
+          }
+        },
+        "development_baseline_mae": 0.09785687152777786,
+        "groups": 4,
+        "macro_centered_correlation": 0.1801088941395775,
+        "macro_development_baseline_r2": -17.262798318727086,
+        "macro_oracle_test_mean_r2": -19.520441301787173,
+        "mae": 0.37508338541666664,
+        "mae_improvement_over_development_baseline": -0.27722651388888875,
+        "n": 60,
+        "rmse": 0.47459789047901957
+      },
+      "score_file": "exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s42_20260820_111139_j30730363/stochastic_n5.scores.jsonl",
+      "seed": 42,
+      "test_n": 60
+    }
+  ],
+  "development_baseline": "development response/gain mean within world",
+  "model": "qwen3_8b",
+  "score_file_sha256": {
+    "exp3_training_transfer/mechanism_family/reports/base_disclosed_qwen3_8b_j30639761/stochastic_n5.scores.jsonl": "e94f11cedcf405b7891b05fa81d87f15f8a77ce34fc861e1194ff94943e61f32",
+    "exp3_training_transfer/mechanism_family/reports/base_undisclosed_qwen3_8b_j30639764/stochastic_n5.scores.jsonl": "92a59a7fb6f7001c1262c7cda52c2a53f0d314b47be7ce402538266c10f6765b",
+    "exp3_training_transfer/mechanism_family/reports/disclosed_causal_family_qwen3_8b_s42_20260821_164321_j30788373/stochastic_n5.scores.jsonl": "1c3cf05eb5e4635c4da901e88d538ef80965757c31376d2425267287870cfcf4",
+    "exp3_training_transfer/mechanism_family/reports/disclosed_population_prior_qwen3_8b_s42_20260819_075732_j30730351/stochastic_n5.scores.jsonl": "b312aa9789dc127863445ea68e18a05588d518e6ad30e2c879f9277f28a213ab",
+    "exp3_training_transfer/mechanism_family/reports/undisclosed_causal_family_qwen3_8b_s42_20260820_032118_j30730360/stochastic_n5.scores.jsonl": "2c40d6b9f49c59e9d41f40e765a8019e74b9e6d0a08ccb25426ce790e0abf15f",
+    "exp3_training_transfer/mechanism_family/reports/undisclosed_population_prior_qwen3_8b_s42_20260820_111139_j30730363/stochastic_n5.scores.jsonl": "8ead7df4e5bf946edacf8cd0e25370356337c51a882e979ce3f6b378bfe3b329"
+  },
+  "status": "complete",
+  "study": "exp3_output_episode_tracking_v2",
+  "tasks_sha256": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+  "training_seeds": [
+    42
+  ],
+  "variance_unit": "episode; stochastic draws averaged within task"
+}

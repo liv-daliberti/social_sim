@@ -1,0 +1,184 @@
+{
+  "absolute_cap_usd": "25",
+  "artifacts": {
+    "adjudication": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/ADJUDICATION.json",
+      "sha256": "dc9d22f211977ca61917ac86365ca0ac37a254435a1f3dba10142902ad40f1fd"
+    },
+    "candidate_plan": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/candidate_v5/probability_plan.jsonl",
+      "sha256": "ea957ccba5dffd78060416fceeba3b504d304f2b30a3982df55205783268400d"
+    },
+    "families": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/families.jsonl",
+      "sha256": "c878c48b71e3ab0d5003f536e63782ce382ac89f6f99b330f87a8d7720e6d8fb"
+    },
+    "freshness": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_freshness.json",
+      "sha256": "54eb4d515d6f9256f35b70565a3b0ed8b1ae9df19078ca86294777039cf65bad"
+    },
+    "material_audit": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/material_audit.json",
+      "sha256": "614d778bc3c4b1d011f0fdf257dabb18cabb728b8006374119cca0f3dff5cde0"
+    },
+    "plan": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_plan.jsonl",
+      "sha256": "f499587d013d57df52f055aba13d4dfafc018dba104cb77c0d002b22f628856d"
+    },
+    "protocol": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/PROTOCOL.md",
+      "sha256": "08641d5daa778d902f5a363ca6bee7731d16cd9f4fb570497acc111c92513031"
+    },
+    "review": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_review.json",
+      "sha256": "4bf3a067c734d9d7d95ece0dab30f48e3592a5ccd54ff7112a182b1cef3245fd"
+    },
+    "scoring": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/analyze.py",
+      "sha256": "ddd66886b0f98692d52aeecd69ee3b8177147256bd0b917ca377515401bcce91"
+    },
+    "token_certificate": {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/frontier_claude_authorization_v1/input_token_certificate.json",
+      "sha256": "d55a80d57a17b101aeaef473723a0bc0ca267cba7bbd1ac2822ef45fa41681b8"
+    }
+  },
+  "authorization_scope": "one_future_frozen_frontier_evaluation_claude_opus5_25usd_v1",
+  "batch_pricing_available": false,
+  "budget_usd": "24",
+  "code_sha256": {
+    "collect_anthropic_token_certificate.py": "57fd225c17d36bbe92bd4dc7f43d2266986eb358b7e24e7a35cb833fa0884313",
+    "frontier_budget.py": "17d2083b4eaf1c71e775bbb66702eb7d92c71160754483ad2b899299099ee0a8",
+    "frontier_budget_anthropic.py": "39585a981d7db113fc8a120afea362e321d9289260cb08104152ddd79c1ed926",
+    "run_frozen_frontier_claude.py": "c420bb4c0c4c7eefceb1debdd221f16529c8f1574bde1a7a8413e489e6d9d05f",
+    "run_local.py": "d76d65f94e34939a62898821fdd5a27db34abebe8ff20f8dd877da85eb7e0ec8"
+  },
+  "cohort_inference_started_before_freeze": false,
+  "cohort_worst_case_usd": "17.82924",
+  "concurrency": 4,
+  "contexts": [
+    "positive",
+    "negative",
+    "broken"
+  ],
+  "created_at": "2026-09-22T17:42:31.923576+00:00",
+  "effort": "low",
+  "evaluation_id": "fresh_finite_context_reversal_claude_opus5_v1",
+  "family_order": [
+    "fresh001_base",
+    "fresh001_paraphrase",
+    "fresh004_base",
+    "fresh004_paraphrase",
+    "fresh008_base",
+    "fresh008_paraphrase",
+    "fresh011_base",
+    "fresh011_paraphrase",
+    "fresh014_base",
+    "fresh014_paraphrase",
+    "fresh018_base",
+    "fresh018_paraphrase",
+    "fresh022_base",
+    "fresh022_paraphrase",
+    "fresh025_base",
+    "fresh025_paraphrase",
+    "fresh029_base",
+    "fresh029_paraphrase",
+    "fresh032_base",
+    "fresh032_paraphrase",
+    "fresh035_base",
+    "fresh035_paraphrase",
+    "fresh039_base",
+    "fresh039_paraphrase",
+    "fresh041_base",
+    "fresh041_paraphrase",
+    "fresh044_base",
+    "fresh044_paraphrase",
+    "fresh048_base",
+    "fresh048_paraphrase",
+    "fresh051_base",
+    "fresh051_paraphrase",
+    "fresh054_base",
+    "fresh054_paraphrase",
+    "fresh058_base",
+    "fresh058_paraphrase",
+    "fresh062_base",
+    "fresh062_paraphrase",
+    "fresh065_base",
+    "fresh065_paraphrase",
+    "fresh069_base",
+    "fresh069_paraphrase",
+    "fresh072_base",
+    "fresh072_paraphrase",
+    "fresh075_base",
+    "fresh075_paraphrase",
+    "fresh079_base",
+    "fresh079_paraphrase"
+  ],
+  "freeze_stage": "after_local_development_after_gpt56_evaluation",
+  "gpt56_evaluation": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/frontier_design_freeze.json",
+    "sha256": "25d9e3444b2685775a4056d410b299b7109be502c2d1176223e66ab542399f0f"
+  },
+  "max_output_tokens": 1024,
+  "max_retries": 0,
+  "model": "claude-opus-5",
+  "model_key": "claude_opus5_fresh_foundry",
+  "output_path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/frontier_claude_opus5.jsonl",
+  "platform": "microsoft_foundry",
+  "pre_freeze_feasibility_probe": {
+    "arm": "paraphrase",
+    "calls": 4,
+    "families": [
+      "fresh001_paraphrase",
+      "fresh004_paraphrase"
+    ],
+    "free_text_schema_refusal_category_observed": "cyber",
+    "observed_output_tokens": [
+      219,
+      226,
+      229,
+      285
+    ],
+    "outputs_used_for_material_selection": false,
+    "outputs_used_in_analysis": false,
+    "purpose": [
+      "refusal_behaviour_under_structured_outputs",
+      "output_token_budget_sizing"
+    ],
+    "responses_retained_in_cohort": false,
+    "stage": "baseline"
+  },
+  "price_source": "https://www.anthropic.com/pricing (Claude Opus 5; Foundry billed at standard API rates)",
+  "prices_nusd_per_token": {
+    "input_upper": 5000,
+    "output": 25000
+  },
+  "pricing": "anthropic_opus5_standard",
+  "pricing_valid_through": "2026-11-21",
+  "schema_note": "Platform rejects minimum/maximum on a number; the [0, 1] range is enforced by the scorer.",
+  "schema_version": "frozen_frontier_evaluation_claude_v1",
+  "status": "frozen",
+  "structured_output_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "probability": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "probability"
+    ],
+    "type": "object"
+  },
+  "superseded_aborted_attempt": {
+    "actual_usd": "0.1733",
+    "archive": "runs/frontier_claude_authorization_v1/superseded_pre_resume_fix",
+    "cause": "ledger_resume_scope_check_defect",
+    "input_tokens": 19651,
+    "output_tokens": 3003,
+    "outputs_used_in_analysis": false,
+    "records_retained_outside_cohort": true,
+    "settled_calls": 19
+  },
+  "thinking": "adaptive_default",
+  "transport": "anthropic.AnthropicFoundry"
+}

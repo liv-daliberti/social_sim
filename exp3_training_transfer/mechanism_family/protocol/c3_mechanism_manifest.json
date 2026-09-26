@@ -1,0 +1,125 @@
+{
+  "blind_identifiability": {
+    "feedback_saturating_extrap": {
+      "n": 3,
+      "oracle_advantage": 2.3965196506439153,
+      "oracle_to_prior_error_ratio": 0.1390344305542673
+    },
+    "mediated_feedback_linear": {
+      "n": 3,
+      "oracle_advantage": 2.188552715607549,
+      "oracle_to_prior_error_ratio": 0.06342721287006609
+    },
+    "mediated_saturating": {
+      "n": 3,
+      "oracle_advantage": 1.7804525264427256,
+      "oracle_to_prior_error_ratio": 0.08725983162315326
+    },
+    "persistent_threshold": {
+      "n": 3,
+      "oracle_advantage": 0.41677825765949983,
+      "oracle_to_prior_error_ratio": 0.3869028136386954
+    }
+  },
+  "catalog": {
+    "balanced_training_worlds": {
+      "direct_linear": 600,
+      "direct_saturating": 600,
+      "direct_threshold": 600,
+      "feedback_linear": 600,
+      "mediated_linear": 600,
+      "persistent_linear": 600,
+      "persistent_saturating": 600,
+      "two_driver_linear": 600
+    },
+    "composition_disjoint": true,
+    "extrapolation_outside_hull": true
+  },
+  "confirmatory_arms": [
+    "causal_family",
+    "population_prior"
+  ],
+  "confirmatory_training_runs": 36,
+  "controls": {
+    "population_prior_unique_response_vectors": 1,
+    "structureless_driver_outcome_correlation": -0.015125961171116132
+  },
+  "dataset_hashes": {
+    "data/build_manifest.json": "c0c77c5021d649dffc611ce31d450dcd0a4385369777d5e19c98bee58b6dbec9",
+    "data/disclosed_causal_family/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/disclosed_causal_family/heldout/train/data-00000-of-00001.arrow": "18a600c71ffff6797eb351e931925273ddcaedbf1ac9e1a28c34d5b33e42ef9c",
+    "data/disclosed_causal_family/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/disclosed_causal_family/heldout/train/state.json": "e8d917dfa18bd7870483096199371e7c3a710e05340ad919fc07750c6dcd02fd",
+    "data/disclosed_causal_family/train/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/disclosed_causal_family/train/train/data-00000-of-00001.arrow": "9d53847ec3555f6a6b071c1c991094d4b45102432bfd16a021f06b64b0256e25",
+    "data/disclosed_causal_family/train/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/disclosed_causal_family/train/train/state.json": "f4fad450cde2809387182ed1862dc4ff2584e754f62a2b159f54358b3ea1839e",
+    "data/disclosed_population_prior/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/disclosed_population_prior/heldout/train/data-00000-of-00001.arrow": "18a600c71ffff6797eb351e931925273ddcaedbf1ac9e1a28c34d5b33e42ef9c",
+    "data/disclosed_population_prior/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/disclosed_population_prior/heldout/train/state.json": "e8d917dfa18bd7870483096199371e7c3a710e05340ad919fc07750c6dcd02fd",
+    "data/disclosed_population_prior/train/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/disclosed_population_prior/train/train/data-00000-of-00001.arrow": "fb0ca3218c6572d6913df1b1d56276e3e302b50e00eb861956808e7d7c5dcd53",
+    "data/disclosed_population_prior/train/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/disclosed_population_prior/train/train/state.json": "9bb4c6bc041f9d79b7e00367d83ab47b5674cca6961e471d97b53f96174a6667",
+    "data/disclosed_structureless/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/disclosed_structureless/heldout/train/data-00000-of-00001.arrow": "18a600c71ffff6797eb351e931925273ddcaedbf1ac9e1a28c34d5b33e42ef9c",
+    "data/disclosed_structureless/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/disclosed_structureless/heldout/train/state.json": "e8d917dfa18bd7870483096199371e7c3a710e05340ad919fc07750c6dcd02fd",
+    "data/disclosed_structureless/train/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/disclosed_structureless/train/train/data-00000-of-00001.arrow": "d8f87c36e10fa34b6fc6199921b0948ed79f48b0bb5f722e2b12abc1addbbb9f",
+    "data/disclosed_structureless/train/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/disclosed_structureless/train/train/state.json": "9fe38bb1db7b97b3ab1601267d6aa4f95a6261c66c350f8c77365a04a9dd8796",
+    "data/undisclosed_causal_family/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/undisclosed_causal_family/heldout/train/data-00000-of-00001.arrow": "d369c13892bdaedb73e5de11b886c457166b52e4e77f49dbd19def0abe8d43a9",
+    "data/undisclosed_causal_family/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/undisclosed_causal_family/heldout/train/state.json": "14cb9cd7e9696789112199eec4cffd4e3572287885c176c26a269b07bbc0532c",
+    "data/undisclosed_causal_family/train/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/undisclosed_causal_family/train/train/data-00000-of-00001.arrow": "8b33c392e967e3a0a5a360d061742057e1fdb1a94e81c88e900fa5bf577de379",
+    "data/undisclosed_causal_family/train/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/undisclosed_causal_family/train/train/state.json": "d0abd8e7b63d71417346e0caf9652f9faf5a81d27cec1202c17d9ce8687dfc4d",
+    "data/undisclosed_population_prior/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/undisclosed_population_prior/heldout/train/data-00000-of-00001.arrow": "d369c13892bdaedb73e5de11b886c457166b52e4e77f49dbd19def0abe8d43a9",
+    "data/undisclosed_population_prior/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/undisclosed_population_prior/heldout/train/state.json": "14cb9cd7e9696789112199eec4cffd4e3572287885c176c26a269b07bbc0532c",
+    "data/undisclosed_population_prior/train/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/undisclosed_population_prior/train/train/data-00000-of-00001.arrow": "e9fb5327badc09e3bded204d0b9c01cacf14cae3902000c222826f943e1f8c71",
+    "data/undisclosed_population_prior/train/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/undisclosed_population_prior/train/train/state.json": "0ac1d79653a785db992d71bfe43211bd55c624444b11a16fd8dfa4b388c5d459",
+    "data/undisclosed_structureless/heldout/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/undisclosed_structureless/heldout/train/data-00000-of-00001.arrow": "d369c13892bdaedb73e5de11b886c457166b52e4e77f49dbd19def0abe8d43a9",
+    "data/undisclosed_structureless/heldout/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/undisclosed_structureless/heldout/train/state.json": "14cb9cd7e9696789112199eec4cffd4e3572287885c176c26a269b07bbc0532c",
+    "data/undisclosed_structureless/train/dataset_dict.json": "c172eebfc28c1400d6be4338ce7d00191507ffb4ae64c315f039585c894df5b7",
+    "data/undisclosed_structureless/train/train/data-00000-of-00001.arrow": "c865857ab2706e73fa1ddfd8f6e5044a8789232ea0a6093fc4b6123b18882568",
+    "data/undisclosed_structureless/train/train/dataset_info.json": "7f3352fff342f57103534559276d231a5708913e2cf57090078c47f4ba9477bd",
+    "data/undisclosed_structureless/train/train/state.json": "b48876d88b3c1b9476859eea1653a36284f816ecaf2c74934700f5042c33cc96"
+  },
+  "diagnostic_structureless_runs": 6,
+  "disclosures": [
+    "disclosed",
+    "undisclosed"
+  ],
+  "expected_heldout_rows": 720,
+  "expected_train_rows": 4800,
+  "models": [
+    "Qwen/Qwen3-4B-Instruct-2507",
+    "Qwen/Qwen3-8B",
+    "meta-llama/Llama-3.1-8B-Instruct"
+  ],
+  "pairing": {
+    "heldout_identical_across_arms": true,
+    "paired_across_disclosure": true,
+    "train_task_ids_unique": true
+  },
+  "prompts": {
+    "gold_round_trips": 33120,
+    "undisclosed_leak_scan": true
+  },
+  "protocol": "c3_mechanism_disclosure_v3",
+  "seeds": [
+    42,
+    43,
+    44
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "created_utc": "2026-09-22T03:38:56.826453+00:00",
+  "launch_forecast_sft": true,
+  "rl_original_calibration": 0.0052401556666025265,
+  "rl_original_response_mae": 1.076883265625,
+  "best_oracle_fractional_mae_improvement": -0.3626870401222062,
+  "stronger_original_calibration": -0.9610289007716201,
+  "rl_selection_accuracy": 1.0,
+  "base_selection_accuracy": 1.0,
+  "selection_supervision_consideration": false,
+  "diagnostic_summary_sha256": {
+    "qwen3_8b_causal_s42.summary.json": "0abf2c009bd3ea9db47d579905762786ea12f06e2344841027a588553ac1967e",
+    "qwen3_32b_base.summary.json": "d82cd4cc345a5497f8bac8edca7d3e08be68a7e0584ea1983c7aaa1cd596c8e1",
+    "qwen3_8b_base.summary.json": "26852b7004e69829019ee8d4fa43168a87c9697612f069cd761a8280a31440a7"
+  },
+  "protocol_sha256": "e5844b844b2c445c1063021389b25879f0f5f7208c71b41ed290127056dbd103",
+  "config_sha256": {
+    "forecast_lr1e6": "b4187c070dbc6db81bf177eda7bfae3b2bd8be9a926acccec02d47e26be215c0",
+    "forecast_lr2e5": "4bebe185c2f9e7cdd23320f10e3830c06e3e36917dcdb95ffbeddd21469fabf4"
+  },
+  "code_sha256": {
+    "train_sft.py": "fdbeeb9ffe3d44b936bc08baf42dc8121e7f6e18b3b584db85b9d4b5926c8d61",
+    "prepare.py": "6d3f078a5196059dc18772803e695e61c6275b26f3f589e53844e9a090ceca54",
+    "run.sbatch": "4af50062463c5ef00afe0a8ccaa11e03934326a92f9983ae195d1a3ab488aafd",
+    "evaluate.sbatch": "6a81007680b3b42f16fb45bf07dcdc720c21691c9a043db0ae950edfab4e5a0b",
+    "check_gate.py": "7654c345c0dca515de51a2eac0b9587deb9e00dee3ca74645bf057d53e46856a"
+  },
+  "decision_type": "outcome_informed_exploratory_amendment",
+  "initial_gate_file": "gate_initial_closed.json",
+  "initial_gate_sha256": "a551f6deee540a589f33ebcc237a844a97e9ed5b52cf8a0d0b8c84511db0bd23",
+  "reason": "Perfect reference identification plus stronger conditional numerical use with frequent missing resting baseline warrants testing correct-forecast supervision; not full-task feasibility.",
+  "unchanged_training_configs": true
+}

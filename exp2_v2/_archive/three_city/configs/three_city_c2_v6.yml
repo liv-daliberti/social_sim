@@ -1,0 +1,79 @@
+experiment:
+  id: three_city_c2_v6
+  status: design_only_no_model_runs
+  description: "Infer from two cities and predict a third using independent repeated cases."
+
+model_prompt:
+  disclose_number_of_types: false
+  disclose_target_matches_reference: false
+  disclose_response_parameter: false
+  disclose_prior: false
+  disclose_equation: false
+  disclose_noise: false
+  disclose_context_relevance: false
+  ask_type_probability: false
+  ask_response_parameter: false
+  ask_one_forecast_only: true
+  state_cases_are_independent: true
+  state_each_case_starts_at_50: true
+
+hidden_evaluator_world:
+  starting_poll: 50.0
+  net_news_per_case: 8
+  high_response: 0.90
+  buffered_response: 0.30
+  case_noise: 4.30
+  per_case_discriminability_d_prime: 1.12
+  reference_residuals_mean_balanced: true
+  context_cue_reliability_for_oracle_only: 0.80
+
+design:
+  episodes: 120
+  reference_cases_per_city: 6
+  target_cases: 8
+  target_prefixes: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  pilot_prefix_ladder: [0, 1, 2, 3, 4, 6, 8]
+  context_conditions:
+    - none
+    - orthogonal
+    - cue_high
+    - cue_low
+  context_paraphrase_families: 3
+  balanced_factors:
+    - target_response
+    - reference_A_B_label
+    - context_paraphrase_family
+
+# Two information-matched anchors that bracket the model, plus the ceiling.
+# Naive, two-prototype, and clairvoyant were removed: the first two were
+# uninformative or hand-built for this exact task, and the clairvoyant
+# prediction is simply the scoring target restated.
+baselines:
+  - frequentist_target_only_sample_mean
+  - pooled_exemplar_regression
+  - target_only_structure_informed_bayes
+  - context_oracle_ceiling
+
+primary_metrics:
+  - next_poll_mae
+  - behavioral_response_error
+  - behavioral_type_accuracy
+  - hidden_kind_separation_by_k
+  - distance_to_frequentist_and_to_ceiling
+  - relevant_background_movement_vs_rational_benchmark_level
+  - background_direction_consistency
+  - context_selectivity_step_matched_relevant_vs_orthogonal
+
+gates_before_model_evaluation:
+  - frozen_public_tasks_and_private_answer_key
+  - prompt_non_disclosure_tests
+  - no_temporal_state_or_baseline_reset_ambiguity
+  - exact_factor_balance
+  - relevant_and_orthogonal_context_length_match
+  - target_information_increases_gradually_across_the_ladder
+  - frequentist_unavailable_at_k0_and_gradual_improvement_afterward
+  - bayes_ceiling_advantage_in_sparse_prefixes
+  - ceiling_gap_narrows_along_the_ladder
+  - orthogonal_context_invariance_for_deterministic_oracle
+  - independent_human_context_template_review
+  - equal_completed_episode_set_across_models

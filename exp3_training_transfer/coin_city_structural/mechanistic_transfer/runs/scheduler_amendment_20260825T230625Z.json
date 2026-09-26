@@ -1,0 +1,58 @@
+{
+  "study": "coin_city_exp3_reference_transplant_qwen8_v1",
+  "created_at": "2026-08-25T23:06:25Z",
+  "status": "scheduler_only_amendment",
+  "paper_external": true,
+  "scientific_protocol_changed": false,
+  "reason": "The default allcs account and long walltimes could not use visible 48 GB backfill. Measured canonical runtimes supported independent sub-hour endpoint jobs. This amendment changes scheduling only, not tasks, endpoints, estimands, splits, layers, draws, or gates.",
+  "canceled_failed_partial_submission_jobs": [
+    "30893194",
+    "30893195"
+  ],
+  "active_submission_ledger": "submission_20260825T225715Z.json",
+  "active_jobs": {
+    "activation_extractions": [
+      "30893325",
+      "30893327",
+      "30893329",
+      "30893331",
+      "30893333",
+      "30893335"
+    ],
+    "five_draw_behavior": [
+      "30893326",
+      "30893328",
+      "30893330",
+      "30893332",
+      "30893334",
+      "30893336"
+    ],
+    "base_diagnostics": [
+      "30893337",
+      "30893338"
+    ],
+    "common_probe": "30893339",
+    "patch_smoke": "30893340",
+    "patch_arrays": [
+      "30893341",
+      "30893342",
+      "30893343"
+    ],
+    "final_gate": "30893344"
+  },
+  "live_changes": {
+    "extraction_walltime": "00:30:00",
+    "behavior_walltime": "00:20:00",
+    "behavior_dependencies": "released immediately because the endpoint evaluator is canonical and already validated",
+    "novel_code_canary": "30893327, the full seed-42 population-prior extraction",
+    "remaining_extraction_dependency": "afterok:30893327",
+    "standalone_smokes_replaced": [
+      "30893324",
+      "30893515"
+    ]
+  },
+  "estimates_at_amendment": {
+    "first_matched_behavior": "2026-08-25T20:57:31-04:00",
+    "first_novel_activation_extraction": "2026-08-26T02:40:00-04:00"
+  }
+}

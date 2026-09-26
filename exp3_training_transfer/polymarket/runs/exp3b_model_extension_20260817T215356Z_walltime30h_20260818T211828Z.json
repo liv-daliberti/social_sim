@@ -1,0 +1,405 @@
+{
+  "baseline_sha256": "88239a4656a0c5bcec12c1a70734cafadf4e258ae4ec29920a0f041aeca19ed4",
+  "dataset_manifest_sha256": "91ee617aff7e8629ed2d17fd7165d80c01e4c78384ef4520e9d184ef8618de6d",
+  "evaluator_sha256": "dd393a593c31a79bb36e2b9bc2a58b856901c33b066aa5e04253a7803b9381d6",
+  "frozen_parent_protocol": "exp3b_registered_v1",
+  "locked_evaluations": [
+    {
+      "adapter_spec": "42:30730372;43:30730373;44:30730374",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,TRAIN_ADAPTERS=42:30730372;43:30730373;44:30730374",
+        "--dependency=afterok:30730372:30730373:30730374,afterany:30639769",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+      ],
+      "job_id": "30730390",
+      "model": "qwen3_8b",
+      "replaces_job_id": "30639769"
+    },
+    {
+      "adapter_spec": "42:30730375;43:30730376;44:30730377",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,TRAIN_ADAPTERS=42:30730375;43:30730376;44:30730377",
+        "--dependency=afterok:30730375:30730376:30730377,afterany:30639773",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+      ],
+      "job_id": "30730391",
+      "model": "llama3_1_8b",
+      "replaces_job_id": "30639773"
+    }
+  ],
+  "locked_script_sha256": "093a702201f45592c065bad442b21b01d5aab4f2cdc7085ff4c3078334dc2ea9",
+  "preflight_sha256": "e3fdeb2a1cc9b391432efe06d96a73b1095446b9e135b2e6caaca64dbd415bdf",
+  "protocol_version": "exp3b_model_extension_v1",
+  "scheduler_recovery": {
+    "locked_evaluation_replacements": {
+      "30639769": {
+        "adapter_spec": "42:30730372;43:30730373;44:30730374",
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:1",
+          "--time=03:00:00",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,TRAIN_ADAPTERS=42:30730372;43:30730373;44:30730374",
+          "--dependency=afterok:30730372:30730373:30730374,afterany:30639769",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+        ],
+        "model": "qwen3_8b",
+        "replacement_job_id": "30730390"
+      },
+      "30639773": {
+        "adapter_spec": "42:30730375;43:30730376;44:30730377",
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:1",
+          "--time=03:00:00",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,TRAIN_ADAPTERS=42:30730375;43:30730376;44:30730377",
+          "--dependency=afterok:30730375:30730376:30730377,afterany:30639773",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+        ],
+        "model": "llama3_1_8b",
+        "replacement_job_id": "30730391"
+      }
+    },
+    "reason": "20/24-hour allocations were below observed 8B training-plus-endpoint throughput; in-place TimeLimit update was permission-denied",
+    "registered_at": "20260818T211828Z",
+    "registrar": "exp3_training_transfer/register_walltime_replacements.py",
+    "registrar_sha256": "5e314e3ead2a298ae9396b10911ff47aed8bf783caba3e2bf8f98181ce40381f",
+    "scheduler_change_only": {
+      "time_limit": "1-06:00:00"
+    },
+    "scientific_configuration": "identical",
+    "source_ledger": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z.json",
+    "source_ledger_sha256": "2a28fc0c76d0f19bc88147dc736a532d1d64b0acbf29f84b69a72ddef202e5f6",
+    "training_replacements": {
+      "30639766": {
+        "campaign": "polymarket",
+        "cell": {
+          "model": "qwen3_8b",
+          "seed": 42
+        },
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:2",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+          "--time=1-06:00:00",
+          "--dependency=afterany:30639766",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+        ],
+        "replacement_job_id": "30730372",
+        "scheduler_change_only": {
+          "time_limit": "1-06:00:00"
+        },
+        "scientific_configuration": "identical",
+        "source_state": "PENDING"
+      },
+      "30639767": {
+        "campaign": "polymarket",
+        "cell": {
+          "model": "qwen3_8b",
+          "seed": 43
+        },
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:2",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+          "--time=1-06:00:00",
+          "--dependency=afterany:30639767",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+        ],
+        "replacement_job_id": "30730373",
+        "scheduler_change_only": {
+          "time_limit": "1-06:00:00"
+        },
+        "scientific_configuration": "identical",
+        "source_state": "PENDING"
+      },
+      "30639768": {
+        "campaign": "polymarket",
+        "cell": {
+          "model": "qwen3_8b",
+          "seed": 44
+        },
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:2",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+          "--time=1-06:00:00",
+          "--dependency=afterany:30639768",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+        ],
+        "replacement_job_id": "30730374",
+        "scheduler_change_only": {
+          "time_limit": "1-06:00:00"
+        },
+        "scientific_configuration": "identical",
+        "source_state": "PENDING"
+      },
+      "30639770": {
+        "campaign": "polymarket",
+        "cell": {
+          "model": "llama3_1_8b",
+          "seed": 42
+        },
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:2",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+          "--time=1-06:00:00",
+          "--dependency=afterany:30639770",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+        ],
+        "replacement_job_id": "30730375",
+        "scheduler_change_only": {
+          "time_limit": "1-06:00:00"
+        },
+        "scientific_configuration": "identical",
+        "source_state": "PENDING"
+      },
+      "30639771": {
+        "campaign": "polymarket",
+        "cell": {
+          "model": "llama3_1_8b",
+          "seed": 43
+        },
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:2",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+          "--time=1-06:00:00",
+          "--dependency=afterany:30639771",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+        ],
+        "replacement_job_id": "30730376",
+        "scheduler_change_only": {
+          "time_limit": "1-06:00:00"
+        },
+        "scientific_configuration": "identical",
+        "source_state": "PENDING"
+      },
+      "30639772": {
+        "campaign": "polymarket",
+        "cell": {
+          "model": "llama3_1_8b",
+          "seed": 44
+        },
+        "command": [
+          "sbatch",
+          "--parsable",
+          "--partition=all",
+          "--gres=gpu:a6000:2",
+          "--exclude=node206",
+          "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+          "--time=1-06:00:00",
+          "--dependency=afterany:30639772",
+          "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+        ],
+        "replacement_job_id": "30730377",
+        "scheduler_change_only": {
+          "time_limit": "1-06:00:00"
+        },
+        "scientific_configuration": "identical",
+        "source_state": "PENDING"
+      }
+    }
+  },
+  "submissions": [
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639766",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42"
+      },
+      "job_id": "30730372",
+      "model": "qwen3_8b",
+      "replaces_job_id": "30639766",
+      "scheduler_time_limit_override": "1-06:00:00",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639767",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "43"
+      },
+      "job_id": "30730373",
+      "model": "qwen3_8b",
+      "replaces_job_id": "30639767",
+      "scheduler_time_limit_override": "1-06:00:00",
+      "seed": 43
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639768",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "Qwen/Qwen3-8B",
+        "MODEL_KEY": "qwen3_8b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "44"
+      },
+      "job_id": "30730374",
+      "model": "qwen3_8b",
+      "replaces_job_id": "30639768",
+      "scheduler_time_limit_override": "1-06:00:00",
+      "seed": 44
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639770",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "42"
+      },
+      "job_id": "30730375",
+      "model": "llama3_1_8b",
+      "replaces_job_id": "30639770",
+      "scheduler_time_limit_override": "1-06:00:00",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639771",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "43"
+      },
+      "job_id": "30730376",
+      "model": "llama3_1_8b",
+      "replaces_job_id": "30639771",
+      "scheduler_time_limit_override": "1-06:00:00",
+      "seed": 43
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639772",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "environment": {
+        "COLLOCATE": "0",
+        "GPUS": "2",
+        "MODEL": "meta-llama/Llama-3.1-8B-Instruct",
+        "MODEL_KEY": "llama3_1_8b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "SEED": "44"
+      },
+      "job_id": "30730377",
+      "model": "llama3_1_8b",
+      "replaces_job_id": "30639772",
+      "scheduler_time_limit_override": "1-06:00:00",
+      "seed": 44
+    }
+  ],
+  "submitted_at": "20260817T215356Z",
+  "synthetic_canary_audit_sha256": "282dda7e10ba285c8e73e88766cfb2a6bbce7d41e89dd94730dc6c9b7609fa14",
+  "train_script_sha256": "cc73649774e7a70dd1be3ef9993af0a4d82e7bdccc50bd41377a9101090dc7c2",
+  "trainer_sha256": "750cbebac97a1b7bd3a5d53b9549673d21629237a1022f57d847b4cdb7246960"
+}

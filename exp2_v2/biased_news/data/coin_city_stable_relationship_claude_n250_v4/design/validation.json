@@ -1,0 +1,51 @@
+{
+  "benchmark_mae": {
+    "abc": {
+      "0": 2.547522223921562,
+      "1": 2.3249241752109873,
+      "2": 2.1308736246662137,
+      "3": 1.9881045986804324,
+      "4": 1.8351615722740713
+    },
+    "city_c": {
+      "0": null,
+      "1": 3.802760314833802,
+      "2": 2.4250392707057187,
+      "3": 2.1052041482126715,
+      "4": 1.8131532420994458
+    },
+    "structural_diagnostic": {
+      "0": 1.8415932613881583,
+      "1": 1.6403097424577489,
+      "2": 1.4949569405749306,
+      "3": 1.4300555267638084,
+      "4": 1.3372530440872343
+    }
+  },
+  "checks": {
+    "abc_benchmark_declines_every_case": true,
+    "abc_has_clear_sparse_data_benefit": true,
+    "all_four_city_c_rows_form_two_visible_pairs": true,
+    "analyst_benchmarks_use_displayed_rows_only": true,
+    "benchmarks_converge_by_four": true,
+    "city_c_benchmark_declines_every_case": true,
+    "closest_balanced_250_episode_factorial_design": true,
+    "context_always_correct": true,
+    "exact_dimensions": true,
+    "four_reference_rows_per_city": true,
+    "no_llm_responses": true,
+    "prompt_hashes_and_contracts": true,
+    "prompts_never_prescribe_an_estimator": true,
+    "prompts_state_stability_and_pairing": true,
+    "reference_patterns_visibly_separated": true,
+    "reference_rows_form_two_complete_visible_pairs": true,
+    "source_hashes_frozen": true,
+    "structural_matching_diagnostic_beats_abc": true
+  },
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "final_absolute_benchmark_gap": 0.022008330174625446,
+  "future_calls_if_run": 3750,
+  "llm_calls_made": 0,
+  "median_fitted_reference_slope_separation": 0.5784572274031563,
+  "status": "passed"
+}

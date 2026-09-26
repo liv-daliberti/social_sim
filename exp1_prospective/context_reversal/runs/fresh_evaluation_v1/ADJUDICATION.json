@@ -1,0 +1,93 @@
+{
+  "status": "complete",
+  "created_at": "2026-09-22T15:54:10.529022+00:00",
+  "candidate_version": "candidate_v5",
+  "candidate_plan_sha256": "ea957ccba5dffd78060416fceeba3b504d304f2b30a3982df55205783268400d",
+  "reviewer": "Llama-3.1-8B-Instruct and Qwen3-14B nonthinking screens; assistant author formal adjudication",
+  "review_artifacts": [
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/screening_candidate_v5/llama8b.jsonl",
+      "sha256": "c0b014d11bd09d400c137f97cfd37c164add58cd97a2e0b5ee9a0851b6c297e3"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/screening_candidate_v5/llama8b.jsonl.manifest.json",
+      "sha256": "ca249b9743a977cf24cda5b8fd73a4804331eefb1a573358865f356bd3e282e3"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/screening_candidate_v5/qwen14b.jsonl",
+      "sha256": "4470218b358b7b9a7e677b5cfafdecaacc743bbe5c0648523017ef92c2b64625"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/screening_candidate_v5/qwen14b.jsonl.manifest.json",
+      "sha256": "af4e494621c328f855e0ae0f8c05c71edcb610f31462d93df193fb227e2eaf56"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/candidate_v5/blind_review_packets.jsonl",
+      "sha256": "995796a7ccbe7e6e01f0fb7f0eab38955232ec51c8c920b138ff598766747ae6"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/candidate_v5/private_review_key.jsonl",
+      "sha256": "ab6d75bd3743c5360a9872b6629d4c34944429784c10e6a451f2314ec0121de1"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/material_audit.json",
+      "sha256": "614d778bc3c4b1d011f0fdf257dabb18cabb728b8006374119cca0f3dff5cde0"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/test_report.json",
+      "sha256": "46a4e744ae5a947fd369cfc7d4db3a040e8cd80b2cf6af4e49aa38874b76706c"
+    },
+    {
+      "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/final_adjudication_records.jsonl",
+      "sha256": "6f2184473418ed9339004820f152e4dcef5f684771b31a4dc67c2a4f1906c730"
+    }
+  ],
+  "summary": {
+    "llama8b": {
+      "planned": 720,
+      "received": 720,
+      "valid_final_judgments": 676,
+      "invalid_final_judgments": 44,
+      "direction_matches_oracle": 224,
+      "agreement_over_all_planned": 0.3111111111111111,
+      "endpoints_both_possible_among_valid": 676,
+      "directions": {
+        "decrease": 676
+      }
+    },
+    "qwen14b": {
+      "planned": 720,
+      "received": 720,
+      "valid_final_judgments": 720,
+      "invalid_final_judgments": 0,
+      "direction_matches_oracle": 182,
+      "agreement_over_all_planned": 0.25277777777777777,
+      "endpoints_both_possible_among_valid": 720,
+      "directions": {
+        "decrease": 198,
+        "increase": 305,
+        "unclear": 217
+      }
+    }
+  },
+  "unresolved_findings": 0,
+  "unresolved_findings_definition": "Unresolved contradictions or unspecified mechanisms in the final formal material, not the number of model disagreements. All model disagreements and invalid judgments remain reported.",
+  "target_model_outputs_used": false,
+  "frontier_model_outputs_used": false,
+  "outcome_based_family_filtering": false,
+  "all_80_retained": true,
+  "human_validation": false,
+  "limitations": [
+    "No new human validation. Screening checkpoints are separate from the target; Qwen3-14B shares its model family with Qwen3-32B.",
+    "Directional agreement is poor: model screening does not validate the gold labels. The source of the labels is the explicit finite rules, checked in two mathematical implementations and author adjudication.",
+    "Adjudication is by the assistant author, not a blinded independent human. Template-level logical checks resolve repeated claims of unspecified coupling, unknown outcomes, or wrong Boolean/negation logic.",
+    "The corpus has 80 parameterized instances, eight mechanism classes, and a shared outcome wrapper; it is not 80 independent mechanisms and does not establish real-world forecasting validity.",
+    "44 Llama review completions were invalid; these are retained as screening failures. None was regenerated or counted as an agreeing judgment.",
+    "Earlier candidate versions, both completed v3 screens, and the partial Qwen thinking screen remain archived. No target outputs informed material membership or revision."
+  ],
+  "repairs": [
+    "v4 separates local procedural approval coin from final inspection and restricts independence to channel systems.",
+    "v5 explicitly states independence of primitive draws except specified dependencies and conditioning. Both reviewers screened all 720 final packets."
+  ],
+  "adjudication_method": "Author comparison of the eight rule templates, global outcome formula, exact generated-instance checks and reviewer concern patterns. This is formal author adjudication, not an assertion that reviewers agreed or that every free-form rationale received independent human adjudication."
+}

@@ -1,0 +1,49 @@
+{
+  "attempt": 5,
+  "completion": {
+    "frontier_cost_upper_bound_usd": "1.773475",
+    "frontier_records": 576,
+    "frontier_status": "complete",
+    "incomplete_files": [
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard00.jsonl",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard01.jsonl",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard02.jsonl",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard03.jsonl",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard04.jsonl",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard05.jsonl",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard06.jsonl",
+      "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/fresh_evaluation_v1/enabled_shard07.jsonl"
+    ],
+    "progress": {
+      "disabled": {
+        "complete_shards": 8,
+        "planned_records": 3840,
+        "recorded": 3840
+      },
+      "enabled": {
+        "complete_shards": 0,
+        "planned_records": 3840,
+        "recorded": 840
+      }
+    },
+    "recorded_includes_durable_inflight_intents": true,
+    "status": "waiting_for_local_collection",
+    "updated_at": "2026-09-22T17:13:15.178944+00:00"
+  },
+  "continuation_command": [
+    "sbatch",
+    "--parsable",
+    "--begin=now+10minutes",
+    "--job-name=fresh-exp1-publish",
+    "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/publication/job_%j.out",
+    "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/publication/job_%j.err",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/publish.sbatch",
+    "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/fresh_evaluation_v1/publication/config.json",
+    "476a51bd3f3aa3767ccb951839ced0c4d42b36abe3115f0971fdd7cba263aaf5",
+    "6"
+  ],
+  "continuation_job_id": "31461034",
+  "status": "waiting",
+  "submission_stderr": "",
+  "updated_at": "2026-09-22T17:13:15.214213+00:00"
+}

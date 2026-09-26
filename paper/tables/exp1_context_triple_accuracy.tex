@@ -1,0 +1,12 @@
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Triples, all three correct} & \multicolumn{2}{c}{Items} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+System & Unconditional & Complete case & Direction & Exact \\
+\midrule
+GPT-5.6 & 48/48 & 48/48 & 144/144 & 144/144 \\
+Claude Opus 5 & 17/48 & 17/17 & 78/144 & 54/144 \\
+Qwen3-32B thinking off & 29/320 & 29/320 & 519/960 & 1/960 \\
+Qwen3-32B thinking on & 297/320 & 297/310 & 937/960 & 811/960 \\
+\bottomrule
+\end{tabular}

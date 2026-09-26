@@ -1,0 +1,40 @@
+{
+  "basis": {
+    "canary_elapsed": "02:11:03",
+    "canary_job_id": "30910721",
+    "canary_max_train": 160,
+    "canary_training_rounds": 10,
+    "full_max_train": 4800,
+    "full_training_rounds": 300,
+    "observed_learning_time_per_round_seconds": "approximately 580-600",
+    "projected_full_runtime_hours": "approximately 55-58"
+  },
+  "evaluation_data_changed": false,
+  "kind": "qwen32_measured_runtime_walltime_amendment",
+  "learning_rate_changed": false,
+  "max_train_changed": false,
+  "reason": "The registered 30-hour allocation was shorter than the runtime projected from the completed compatibility canary and would predictably terminate before all 4,800 presentations.",
+  "recorded_at": "20260827T020709Z",
+  "scheduler_change": {
+    "jobs": {
+      "42": "30913530",
+      "43": "30913531",
+      "44": "30913532",
+      "45": "30894222",
+      "46": "30894223"
+    },
+    "time_limit_after": "3-00:00:00",
+    "time_limit_before": "1-06:00:00"
+  },
+  "scheduler_estimates_after_change": {
+    "42": "2026-08-27T08:20:00",
+    "43": "2026-08-27T08:50:43",
+    "44": "2026-08-27T09:06:55",
+    "45": "Unknown",
+    "46": "Unknown"
+  },
+  "scientific_hyperparameters_changed": false,
+  "supersedes_recovery_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/qwen32_artifact_contract_and_full_launch_recovery_20260827T020346Z.json",
+  "supersedes_recovery_ledger_sha256": "74cbf2e752f746d616c8b9a6a30e21724e2e305bcc2e6a8ae56b1112f0a8fdfe",
+  "training_data_changed": false
+}

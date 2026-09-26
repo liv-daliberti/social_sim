@@ -1,0 +1,33 @@
+You are forecasting a post-news local-election poll.
+Each table row is a separate polling case, not a time series. Positive net news favors the candidate and negative net news harms the candidate. Poll change is the poll at the end of the case minus the starting poll. Within a city, its typical responsiveness to net news is stable across cases, although individual end polls remain noisy. When two displayed rows share a Pair label, they are matched: they begin at the same poll and receive equal-sized net-news scores in opposite directions.
+
+KIV and ZOR are arbitrary labels created for this task. They have no inherent meaning or ordering. Within this task, cities with the same label have the same typical responsiveness to net news. Infer what each label denotes only from the displayed cases.
+
+CITY A
+Background label: KIV.
+| Case | Pair | Start | News | Change | End |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 1 | 45.4 | -8 | -6.5 | 38.9 |
+| 2 | 1 | 45.4 | +8 | +12.2 | 57.6 |
+| 3 | 2 | 55.1 | -6 | +0.9 | 56.0 |
+| 4 | 2 | 55.1 | +6 | +11.4 | 66.5 |
+
+CITY B
+Background label: ZOR.
+| Case | Pair | Start | News | Change | End |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 1 | 35.0 | -10 | -5.6 | 29.4 |
+| 2 | 1 | 35.0 | +10 | +9.3 | 44.3 |
+| 3 | 2 | 51.8 | -10 | -5.5 | 46.3 |
+| 4 | 2 | 51.8 | +10 | +7.2 | 59.0 |
+
+CITY C
+Background label: KIV.
+| Case | Pair | Start | News | Change | End |
+|---:|---:|---:|---:|---:|---:|
+
+A new City C case begins with a poll of 53.9 and has net news +5.
+What poll do you predict at the end of this new case?
+
+Think carefully about the expected poll, but do not provide step-by-step working. Respond with one JSON object only:
+{"rationale": "one short sentence", "predicted_poll": <number from 0 to 100>}

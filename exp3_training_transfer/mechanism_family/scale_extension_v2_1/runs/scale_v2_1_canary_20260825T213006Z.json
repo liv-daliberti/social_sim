@@ -1,0 +1,366 @@
+{
+  "advance": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--dependency=afterok:30891292:30891293:30891294:30891295:30891296:30891297:30891298:30891299:30891300:30891301:30891302:30891303",
+      "--export=ALL,CANARY_LEDGER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/runs/scale_v2_1_canary_20260825T213006Z.json",
+      "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/advance.sbatch"
+    ],
+    "job_id": "30891304"
+  },
+  "compatibility_amendments": [
+    {
+      "path": "exp3_training_transfer/mechanism_family/scale_extension_v2_1/runs/qwen32_execution_compatibility_amendment_20260827T160634Z.json",
+      "sha256": "824320bb173e334590b2185cd2def42b205cafa1fc178d1ebd79125606e547dc"
+    }
+  ],
+  "code_and_data_sha256": {
+    "advance": "c784cea076e2e291ad34627efac8fa19f887d0e282c9649758fcf06701ec5fac",
+    "base_wrapper": "001a9b4c0ef1d1a2e4a6190b2c81326a984c6ab067440af0fb5a54e794324e1d",
+    "canary_audit": "825ae0c91f981529b7351bf8ea14db8649bec3907020a8678a4bac515c497757",
+    "data_build_manifest": "c0c77c5021d649dffc611ce31d450dcd0a4385369777d5e19c98bee58b6dbec9",
+    "finalize": "f080d05575546a8258928027b711cbae44e2516298447679b38d8c7ece8d6148",
+    "launcher": "516e676e8d4d60329179e113135c9306677d130b8c7d32f8e8440abbba98367b",
+    "mechanism_manifest": "bc19461eac022208d232fad75a0824fc2308a2d05520fabaecaca487afe09c8a",
+    "mechanism_trainer": "28de53c88b4edbf7e7dd6054a5650ab6a34b0832adc766b10d13ea9d3ee80652",
+    "output_analysis": "03391dcdf232479d25bd412e3d1953e9df2f80329c9b55d68b2c08b6f38ae0ad",
+    "output_contract": "24674dc2b9836337589fecda597122bc8781d43e68ff60ab6838d29deb5226b1",
+    "output_parse_runner": "3ed913063863f140313a7ae469d6bbac84f13f4a8dee1b1eb9d323e256679a2a",
+    "output_runner": "b412212722ea1897dc8beb960671524be12f016f02b5abe47b5d6748cf6f0820",
+    "probe_analysis": "7880fe6b9b4be295ed26e70e6387df397c966396d19f4184329e2079dd52b04e",
+    "probe_analysis_runner": "9f46d9d34322b8693101edef040e26b0cb200a868c6150b5e10f16ef99507e66",
+    "probe_auxiliary": "1a8777ca2793b008cda119dfb3a9548e2efa8a2e7a97f14aa655ec2b494e094e",
+    "probe_extract_runner": "5e257f6b7450132339c1e01b9da254b41fa36c72c2c1adf8a2c8b1cc441fd762",
+    "probe_extractor": "7bd6adfe6507e8f1e336186b6ef6782b000d5b137ac7d79e803d99a5e17ee88a",
+    "probe_tasks": "5c462b8e78c9e28a3e648f282cc3089d2a1db1e62ffd9f03fd295db7a7cfb5b6",
+    "prompt_renderer": "e96335d7f7ea0928c204428d3a5024891771ba030df876e27fac0b77a50d6a77",
+    "protocol": "e747dbc0da74a3cab5a9a89f7b3625ca97e679b22499cc468d4aee9dcfef3daa",
+    "scorer": "7f775bedf21096d1a8067d1b1be1bd89606764182d06b72d52baf2b99e930bcb",
+    "tp_evaluator": "68b2e006205ed1effd1f8ae0228b0f9792fec4357d6260d3d12ebc6931db2823",
+    "trainer_wrapper": "48751254a49f8debe7c6da9dd10b88b7aed539575120efc6b7a01f3afd262c0c",
+    "world_catalog": "f940d2d734258f5b45ff8db579d3de8cae02e6185c841e3f9faab8e397549f94"
+  },
+  "created_at": "20260825T213006Z",
+  "model_snapshots": {
+    "llama3_1_70b": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--meta-llama--Llama-3.1-70B-Instruct/snapshots/1605565b47bb9346c5515c34102e054115b4f98b",
+    "qwen3_14b": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-14B/snapshots/40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "qwen3_32b": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-32B/snapshots/9216db5781bf21249d130ec9da846c4624c16137"
+  },
+  "protocol": "c3_mechanism_scale_v2_1",
+  "stage": "canary",
+  "submissions": [
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=12",
+        "--mem=160G",
+        "--time=06:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think,SEED=42,RUN_KIND=canary,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_mechanism_rl.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "DISCLOSURE": "disclosed",
+        "MODEL": "Qwen/Qwen3-14B",
+        "MODEL_KEY": "qwen3_14b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "canary",
+        "SEED": 42
+      },
+      "job_id": "30891292",
+      "kind": "canary",
+      "model_key": "qwen3_14b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=12",
+        "--mem=160G",
+        "--time=06:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think,SEED=42,RUN_KIND=canary,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_mechanism_rl.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "DISCLOSURE": "undisclosed",
+        "MODEL": "Qwen/Qwen3-14B",
+        "MODEL_KEY": "qwen3_14b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "canary",
+        "SEED": 42
+      },
+      "job_id": "30891293",
+      "kind": "canary",
+      "model_key": "qwen3_14b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:4",
+        "--cpus-per-task=16",
+        "--mem=260G",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,SEED=42,RUN_KIND=canary,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_mechanism_rl.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "DISCLOSURE": "disclosed",
+        "MODEL": "Qwen/Qwen3-32B",
+        "MODEL_KEY": "qwen3_32b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "canary",
+        "SEED": 42
+      },
+      "job_id": "30891294",
+      "kind": "canary",
+      "model_key": "qwen3_32b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:4",
+        "--cpus-per-task=16",
+        "--mem=260G",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think,SEED=42,RUN_KIND=canary,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_mechanism_rl.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "DISCLOSURE": "undisclosed",
+        "MODEL": "Qwen/Qwen3-32B",
+        "MODEL_KEY": "qwen3_32b",
+        "PROMPT_TEMPLATE": "auto_no_think",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "canary",
+        "SEED": 42
+      },
+      "job_id": "30891295",
+      "kind": "canary",
+      "model_key": "qwen3_32b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:8",
+        "--cpus-per-task=24",
+        "--mem=460G",
+        "--time=16:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=llama3_1_70b,MODEL=meta-llama/Llama-3.1-70B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,RUN_KIND=canary,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_mechanism_rl.sh"
+      ],
+      "disclosure": "disclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "DISCLOSURE": "disclosed",
+        "MODEL": "meta-llama/Llama-3.1-70B-Instruct",
+        "MODEL_KEY": "llama3_1_70b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "canary",
+        "SEED": 42
+      },
+      "job_id": "30891296",
+      "kind": "canary",
+      "model_key": "llama3_1_70b",
+      "seed": 42
+    },
+    {
+      "arm": "causal_family",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:8",
+        "--cpus-per-task=24",
+        "--mem=460G",
+        "--time=16:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=llama3_1_70b,MODEL=meta-llama/Llama-3.1-70B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,RUN_KIND=canary,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_mechanism_rl.sh"
+      ],
+      "disclosure": "undisclosed",
+      "environment": {
+        "ARM": "causal_family",
+        "DISCLOSURE": "undisclosed",
+        "MODEL": "meta-llama/Llama-3.1-70B-Instruct",
+        "MODEL_KEY": "llama3_1_70b",
+        "PROMPT_TEMPLATE": "auto",
+        "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+        "RUN_KIND": "canary",
+        "SEED": 42
+      },
+      "job_id": "30891297",
+      "kind": "canary",
+      "model_key": "llama3_1_70b",
+      "seed": 42
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:1",
+        "--cpus-per-task=12",
+        "--mem=64G",
+        "--time=06:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_base_eval.sh"
+      ],
+      "disclosure": "disclosed",
+      "job_id": "30891298",
+      "kind": "base_evaluation",
+      "model_key": "qwen3_14b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:1",
+        "--cpus-per-task=12",
+        "--mem=64G",
+        "--time=06:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,MODEL_KEY=qwen3_14b,MODEL=Qwen/Qwen3-14B,PROMPT_TEMPLATE=auto_no_think",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_base_eval.sh"
+      ],
+      "disclosure": "undisclosed",
+      "job_id": "30891299",
+      "kind": "base_evaluation",
+      "model_key": "qwen3_14b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=16",
+        "--mem=140G",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_base_eval.sh"
+      ],
+      "disclosure": "disclosed",
+      "job_id": "30891300",
+      "kind": "base_evaluation",
+      "model_key": "qwen3_32b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=16",
+        "--mem=140G",
+        "--time=08:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,MODEL_KEY=qwen3_32b,MODEL=Qwen/Qwen3-32B,PROMPT_TEMPLATE=auto_no_think",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_base_eval.sh"
+      ],
+      "disclosure": "undisclosed",
+      "job_id": "30891301",
+      "kind": "base_evaluation",
+      "model_key": "qwen3_32b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:4",
+        "--cpus-per-task=24",
+        "--mem=260G",
+        "--time=16:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,MODEL_KEY=llama3_1_70b,MODEL=meta-llama/Llama-3.1-70B-Instruct,PROMPT_TEMPLATE=auto",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_base_eval.sh"
+      ],
+      "disclosure": "disclosed",
+      "job_id": "30891302",
+      "kind": "base_evaluation",
+      "model_key": "llama3_1_70b"
+    },
+    {
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--account=allcs",
+        "--partition=cs",
+        "--qos=medium",
+        "--gres=gpu:a6000:4",
+        "--cpus-per-task=24",
+        "--mem=260G",
+        "--time=16:00:00",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,MODEL_KEY=llama3_1_70b,MODEL=meta-llama/Llama-3.1-70B-Instruct,PROMPT_TEMPLATE=auto",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/scale_extension_v2_1/large_base_eval.sh"
+      ],
+      "disclosure": "undisclosed",
+      "job_id": "30891303",
+      "kind": "base_evaluation",
+      "model_key": "llama3_1_70b"
+    }
+  ]
+}

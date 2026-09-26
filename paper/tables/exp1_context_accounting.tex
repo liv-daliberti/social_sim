@@ -1,0 +1,12 @@
+\begin{tabular}{lcccccccc}
+\toprule
+& & & \multicolumn{3}{c}{Model failure} & \multicolumn{2}{c}{Instrument failure} & \multicolumn{2}{c}{Cascade} \\
+\cmidrule(lr){4-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10}
+System & Planned & Valid & Refused & Unparseable & Frame & Truncated & Killed & Blocked & Unsent \\
+\midrule
+GPT-5.6 & 576 & 576 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+Claude Opus 5 & 576 & 339 & 84 & 0 & 0 & 0 & 0 & 153 & 0 \\
+Qwen3-32B thinking off & 3840 & 3840 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+Qwen3-32B thinking on & 3840 & 3803 & 0 & 0 & 5 & 5 & 0 & 27 & 0 \\
+\bottomrule
+\end{tabular}

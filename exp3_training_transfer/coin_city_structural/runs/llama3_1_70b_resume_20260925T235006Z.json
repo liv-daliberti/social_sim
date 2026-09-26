@@ -1,0 +1,23 @@
+{
+    "kind": "llama3_1_70b_coin_city_resume",
+    "created_at": "20260925T235006Z",
+    "parent_jobs": [
+        "30929140",
+        "30929139"
+    ],
+    "reason": "Resume the seed-42 Llama-3.1-70B Coin City runs (cancelled 2026-08-31 at adapter snapshots 169 causal and 179 population_prior) toward the registered 300 rounds. Identical export string to the parent jobs minus the afterok dependency, with OUT_DIR pinned to the existing report directory so supervise_llama3_1_70b.sh resumes from the highest complete adapter. Allocation-only; no scientific setting changes.",
+    "submissions": [
+        {
+            "job_id": "31519302",
+            "arm": "causal",
+            "seed": 42,
+            "out_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/causal_llama3_1_70b_s42_20260828_075600_j30929140"
+        },
+        {
+            "job_id": "31519303",
+            "arm": "population_prior",
+            "seed": 42,
+            "out_dir": "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/reports/population_prior_llama3_1_70b_s42_20260828_063001_j30929139"
+        }
+    ]
+}

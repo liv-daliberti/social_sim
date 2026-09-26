@@ -1,0 +1,1435 @@
+{
+  "canary_barrier_correction": {
+    "canary_job_ids": [
+      "30723972",
+      "30723973",
+      "30723974",
+      "30723975",
+      "30723976",
+      "30723977"
+    ],
+    "effective_roster_count": 56,
+    "reason": "scheduler replacements made the original afterany roster non-authoritative",
+    "recorded_at": "20260818T212454Z",
+    "registrar": "exp3_training_transfer/record_coin_effective_barrier.py",
+    "registrar_sha256": "1be4aad57c382f065da3f231c6c6552865849ac43432348b6483f233a55e649b",
+    "scheduler_change_only": {
+      "canary_dependency": "afterany:30639718:30639719:30639720:30639721:30639722:30639723:30730348:30730349:30730350:30730351:30730352:30730353:30730354:30730355:30730356:30730357:30730358:30730359:30639736:30639737:30639738:30639739:30639740:30639741:30730360:30730361:30730362:30730363:30730364:30730365:30730366:30730367:30730368:30730369:30730370:30730371:30639754:30639755:30639756:30639757:30639758:30639759:30639760:30639761:30639762:30639763:30639764:30639765:30730372:30730373:30730374:30730375:30730376:30730377:30730390:30730391"
+    },
+    "scientific_configuration": "identical",
+    "source_ledger": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z.json",
+    "source_ledger_sha256": "35400385040687f59f1bc232f645228a0e7089fbd9305816ab5369f6a0f36b94"
+  },
+  "cancelled_source_job_ids": [
+    "30639724",
+    "30639725",
+    "30639726",
+    "30639727",
+    "30639728",
+    "30639729",
+    "30639730",
+    "30639731",
+    "30639732",
+    "30639733",
+    "30639734",
+    "30639735",
+    "30639742",
+    "30639743",
+    "30639744",
+    "30639745",
+    "30639746",
+    "30639747",
+    "30639748",
+    "30639749",
+    "30639750",
+    "30639751",
+    "30639752",
+    "30639753",
+    "30639766",
+    "30639767",
+    "30639768",
+    "30639770",
+    "30639771",
+    "30639772",
+    "30723985",
+    "30723987",
+    "30723988",
+    "30723989",
+    "30723990",
+    "30723991",
+    "30723992",
+    "30723993",
+    "30723994",
+    "30723995",
+    "30723996",
+    "30723997",
+    "30639769",
+    "30639773"
+  ],
+  "cancelled_superseded_finalizers": [
+    "30728529",
+    "30728530",
+    "30730393",
+    "30731849",
+    "30733626"
+  ],
+  "coin_analysis_extension": {
+    "added_outputs": [
+      "absent_minus_correct_interval_by_k",
+      "all_transfer_cell_population_prior_minus_causal_intervals",
+      "k8_minus_k0_misleading_penalty_interaction",
+      "machine_readable_registered_estimates"
+    ],
+    "cancellation_command": [
+      "scancel",
+      "30733626"
+    ],
+    "coin_ledger": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json",
+    "coin_ledger_sha256": "6a87b673400954beac6ce3f2e41da818b17be15f5fcedeedab2077e10d7f7f49",
+    "finalizer_script": "exp3_training_transfer/coin_city_structural/finalize_campaign.sbatch",
+    "finalizer_script_sha256": "3967908a21da3b513f76f8a28b3b7f4ce59a84c8a4013bb3e76d8d443e1bce7a",
+    "old_finalizer": "30733626",
+    "old_renderer_sha256": "3ac0c0d5f0e1df15d2fb82652f278e43d2e66d1fa785ebbf582c1262552fc868",
+    "preexecution_assertion": "all 31 Coin City DAG jobs were PENDING",
+    "reason": "render every prespecified transfer-cell and cue contrast with seed-first paired uncertainty, including the k=8-minus-k=0 evidence-override interaction",
+    "registered_at": "20260818T220924Z",
+    "registrar": "exp3_training_transfer/register_coin_analysis_extension.py",
+    "registrar_sha256": "9542f7778e4db9620f2e9630d03bd3ca65ad3fa3026f214d9a3aaffa839fd1ea",
+    "regression_tests": [
+      "coin_city_structural/tests/test_protocol.py::test_renderer_uses_frozen_no_hint_label",
+      "coin_city_structural/tests/test_protocol.py::test_all_registered_estimands_render_with_seed_first_intervals"
+    ],
+    "renderer": "exp3_training_transfer/coin_city_structural/make_paper_outputs.py",
+    "renderer_sha256": "39327b7f5a4d75c25749a6f8a9e0d1d6d0c9c89183e1626b4d1153b0afb7aee6",
+    "replacement_finalizer": "30788375",
+    "scientific_configuration": "identical",
+    "scope": "post-run inference, machine-readable estimates, and table rendering only",
+    "variance_unit": "training seed; paired latent episode within seed; draws averaged"
+  },
+  "coin_analysis_repair": {
+    "coin_ledger": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z.json",
+    "coin_ledger_sha256": "155c1a54e2e75bc8de562e15623b9f2f80f90f15dce356a729d3378e25c6dcd8",
+    "finalizer_script": "exp3_training_transfer/coin_city_structural/finalize_campaign.sbatch",
+    "finalizer_script_sha256": "3967908a21da3b513f76f8a28b3b7f4ce59a84c8a4013bb3e76d8d443e1bce7a",
+    "old_finalizer": "30731849",
+    "old_renderer_sha256": "fbd2464a4de0f19047818d2d85109fd7d94e13b6ab24390fa4bd7e90cc5de67e",
+    "reason": "paper renderer used `absent` while the frozen no-hint cue key is `none`",
+    "registered_at": "20260818T213628Z",
+    "registrar": "exp3_training_transfer/register_coin_analysis_repair.py",
+    "registrar_sha256": "e605207258e6d2d0c24699c42035fce57795acaebf936541cd4472afa97c688d",
+    "regression_test": "coin_city_structural/tests/test_protocol.py::test_renderer_uses_frozen_no_hint_label",
+    "renderer": "exp3_training_transfer/coin_city_structural/make_paper_outputs.py",
+    "renderer_sha256": "3ac0c0d5f0e1df15d2fb82652f278e43d2e66d1fa785ebbf582c1262552fc868",
+    "replacement_finalizer": "30733626",
+    "scientific_configuration": "identical",
+    "scope": "post-run validation and table rendering only"
+  },
+  "derived_ledgers": {
+    "coin_city": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json",
+    "mechanism": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T215355Z_walltime30h_20260818T211828Z_runtimefix_20260819T172806Z.json",
+    "polymarket": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z_walltime30h_20260818T211828Z.json"
+  },
+  "locked_evaluation_replacements": {
+    "30639769": {
+      "adapter_spec": "42:30730372;43:30730373;44:30730374",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,TRAIN_ADAPTERS=42:30730372;43:30730373;44:30730374",
+        "--dependency=afterok:30730372:30730373:30730374,afterany:30639769",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+      ],
+      "model": "qwen3_8b",
+      "replacement_job_id": "30730390"
+    },
+    "30639773": {
+      "adapter_spec": "42:30730375;43:30730376;44:30730377",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:1",
+        "--time=03:00:00",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,TRAIN_ADAPTERS=42:30730375;43:30730376;44:30730377",
+        "--dependency=afterok:30730375:30730376:30730377,afterany:30639773",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/locked_test_model_extension.sbatch"
+      ],
+      "model": "llama3_1_8b",
+      "replacement_job_id": "30730391"
+    }
+  },
+  "paper_verifier": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--partition=cs",
+      "--cpus-per-task=2",
+      "--mem=8G",
+      "--time=00:30:00",
+      "--dependency=afterok:30788374:30788375",
+      "--export=ALL,MECHANISM_LEDGER=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T215355Z_walltime30h_20260818T211828Z_runtimefix_20260819T172806Z.json,POLY_EXTENSION_LEDGER=/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z_walltime30h_20260818T211828Z.json,COIN_LEDGER=/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json,HANDOFF=/n/fs/similarity/social_sim/exp3_training_transfer/runs/runtime_recovery_20260819T172806Z.json,EXPECTED_VERIFIER_SHA256=dd759d2a509ce3f704956b848439070d42323f9c1060c6d8406737ed906316d2,EXPECTED_MECHANISM_LEDGER_SHA256=0b69936d949316af4c4694fe277fbe83559253caf1516a2322bedf50d48d9e18,EXPECTED_POLY_EXTENSION_LEDGER_SHA256=9ecd3e356725448ebc0ed27594a615aea48e70ed45a9fa8bad72a42edd4a8dca,EXPECTED_COIN_LEDGER_SHA256=6a87b673400954beac6ce3f2e41da818b17be15f5fcedeedab2077e10d7f7f49,EXPECTED_HANDOFF_SHA256=318d2b40372b92bf328ec0987a2186c426219d3bcbce39d96585187cbdf2417f",
+      "/n/fs/similarity/social_sim/exp3_training_transfer/verify_paper_handoff.sbatch"
+    ],
+    "dependency_job_ids": [
+      "30788374",
+      "30788375"
+    ],
+    "dependency_semantics": "afterok",
+    "inputs": {
+      "coin_city": {
+        "path": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json",
+        "sha256": "6a87b673400954beac6ce3f2e41da818b17be15f5fcedeedab2077e10d7f7f49"
+      },
+      "handoff": {
+        "path": "exp3_training_transfer/runs/runtime_recovery_20260819T172806Z.json",
+        "sha256": "318d2b40372b92bf328ec0987a2186c426219d3bcbce39d96585187cbdf2417f"
+      },
+      "mechanism": {
+        "path": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T215355Z_walltime30h_20260818T211828Z_runtimefix_20260819T172806Z.json",
+        "sha256": "0b69936d949316af4c4694fe277fbe83559253caf1516a2322bedf50d48d9e18"
+      },
+      "polymarket": {
+        "path": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z_walltime30h_20260818T211828Z.json",
+        "sha256": "9ecd3e356725448ebc0ed27594a615aea48e70ed45a9fa8bad72a42edd4a8dca"
+      }
+    },
+    "job_id": "30788376",
+    "registered_at": "20260819T172807Z",
+    "registrar": "exp3_training_transfer/register_paper_verifier.py",
+    "registrar_sha256": "8436c9821c9cc4c396ca7e2da6955dd2f48f0e77cfd53e45c93e1e3b3cd2f87d",
+    "script": "exp3_training_transfer/verify_paper_handoff.sbatch",
+    "script_sha256": "69f49115d0f1d54144f8829df739079771931f6e3f339b3f32c6de755632df9e",
+    "superseded_verifier": {
+      "cancellation_command": [
+        "scancel",
+        "30737167"
+      ],
+      "job_id": "30737167",
+      "reason": "replacement adds fail-closed verifier and input hash enforcement",
+      "validated_name": "c3_verify_paper",
+      "validated_state": "PENDING"
+    },
+    "verifier": "exp3_training_transfer/verify_paper_handoff.py",
+    "verifier_sha256": "dd759d2a509ce3f704956b848439070d42323f9c1060c6d8406737ed906316d2"
+  },
+  "parent_handoff": "exp3_training_transfer/runs/runtime_recovery_20260819T172806Z.json",
+  "parent_handoff_sha256": "318d2b40372b92bf328ec0987a2186c426219d3bcbce39d96585187cbdf2417f",
+  "reason": "20/24-hour allocations were below observed 8B training-plus-endpoint throughput; in-place TimeLimit update was permission-denied",
+  "registered_at": "20260818T211828Z",
+  "registrar": "exp3_training_transfer/register_walltime_replacements.py",
+  "registrar_sha256": "5e314e3ead2a298ae9396b10911ff47aed8bf783caba3e2bf8f98181ce40381f",
+  "replacement_finalizers": {
+    "coin_city": "30788375",
+    "current": "30788374"
+  },
+  "runtime_recoveries": [
+    {
+      "canary_dependency": "afterany:30639718:30639719:30639720:30639721:30639722:30639723:30788373:30730349:30730350:30730351:30730352:30730353:30730354:30730355:30730356:30730357:30730358:30730359:30639736:30639737:30639738:30639739:30639740:30639741:30730360:30730361:30730362:30730363:30730364:30730365:30730366:30730367:30730368:30730369:30730370:30730371:30639754:30639755:30639756:30639757:30639758:30639759:30639760:30639761:30639762:30639763:30639764:30639765:30730372:30730373:30730374:30730375:30730376:30730377:30730390:30730391",
+      "cancellation_command": [
+        "scancel",
+        "30730348",
+        "30730392",
+        "30737088"
+      ],
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "disclosed",
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "derived_ledgers": {
+        "coin_city": "exp3_training_transfer/coin_city_structural/runs/coin_city_structural_20260818T203858Z_walltime30h_20260818T211828Z_effectivebarrier_20260818T212454Z_runtimefix_20260819T172806Z.json",
+        "mechanism": "exp3_training_transfer/mechanism_family/runs/c3_mechanism_20260817T215355Z_walltime30h_20260818T211828Z_runtimefix_20260819T172806Z.json",
+        "polymarket": "exp3_training_transfer/polymarket/runs/exp3b_model_extension_20260817T215356Z_walltime30h_20260818T211828Z.json"
+      },
+      "failure_markers": [
+        "torch.distributed.DistBackendError",
+        "Call to bind failed : Cannot assign requested address"
+      ],
+      "reason": "source allocation remained RUNNING after an NCCL communicator bind timeout and produced no further output",
+      "registered_at": "20260819T172806Z",
+      "registrar": "exp3_training_transfer/repair_stalled_current_cell.py",
+      "registrar_sha256": "4ed512d29a09dddb0cbb22f704ead401c88ebaa4199dea10ed4cbbbb6509c156",
+      "replacement_command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639724,afterany:30730348",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_finalizers": {
+        "coin_city": "30788375",
+        "current": "30788374"
+      },
+      "replacement_job_id": "30788373",
+      "scheduler_change_only": {
+        "dependency_added": "afterany:30730348"
+      },
+      "scientific_configuration": "identical",
+      "source_job_id": "30730348",
+      "source_log": "exp3_training_transfer/mechanism_family/logs/train_30730348.out",
+      "source_log_sha256_pre_cancel": "5a516445ee3a9d79f27f3696f48b11241b8115fbbb2ae932549dd7d2a91e3ac1",
+      "source_log_stale_seconds": 19184,
+      "source_scheduler_snapshot": "JobId=30730348 JobName=c3_mech UserId=od2961(363432) GroupId=grad(930) MCS_label=N/A Priority=4664 Nice=0 Account=allcs QOS=medium JobState=RUNNING Reason=None Dependency=(null) Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=06:01:34 TimeLimit=1-06:00:00 TimeMin=N/A SubmitTime=2026-08-18T17:18:27 EligibleTime=2026-08-18T17:18:44 AccrueTime=2026-08-18T17:18:44 StartTime=2026-08-19T07:26:32 EndTime=2026-08-20T13:26:32 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-08-19T07:26:32 Scheduler=Backfill Partition=cs AllocNode:Sid=wash:2703316 ReqNodeList=(null) ExcNodeList=node206 NodeList=node207 BatchHost=node207 NumNodes=1 NumCPUs=8 NumTasks=1 CPUs/Task=8 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=8,mem=100G,node=1,billing=44,gres/gpu=2,gres/gpu:a6000=2 AllocTRES=cpu=8,mem=100G,node=1,billing=44,gres/gpu=2,gres/gpu:a6000=2 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=8 MinMemoryNode=100G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh SubmitLine=sbatch --parsable --partition=all --gres=gpu:a6000:2 --cpus-per-task=8 --mem=100G --exclude=node206 --export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True --time=1-06:00:00 --dependency=afterany:30639724 /n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh WorkDir=/n/fs/similarity/social_sim StdErr=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/logs/train_30730348.err StdIn=/dev/null StdOut=/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/logs/train_30730348.out TresPerNode=gres/gpu:a6000:2 TresPerTask=cpu=8"
+    }
+  ],
+  "scheduler_change_only": {
+    "time_limit": "1-06:00:00"
+  },
+  "scientific_configuration": "identical",
+  "source_handoff": "exp3_training_transfer/runs/walltime_recovery_20260818T211828Z.json",
+  "source_handoff_sha256": "d369d45106b7c97b46a724cbea0b25beed003bc503d2a9e712cf98486f551f91",
+  "training_replacements": {
+    "30639724": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "disclosed",
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639724",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730348",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639725": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "disclosed",
+        "model": "qwen3_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639725",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730349",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639726": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "disclosed",
+        "model": "qwen3_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639726",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730350",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639727": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "disclosed",
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639727",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730351",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639728": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "disclosed",
+        "model": "qwen3_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639728",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730352",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639729": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "disclosed",
+        "model": "qwen3_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639729",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730353",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639730": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "disclosed",
+        "model": "llama3_1_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639730",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730354",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639731": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "disclosed",
+        "model": "llama3_1_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639731",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730355",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639732": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "disclosed",
+        "model": "llama3_1_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639732",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730356",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "RUNNING"
+    },
+    "30639733": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "disclosed",
+        "model": "llama3_1_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639733",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730357",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639734": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "disclosed",
+        "model": "llama3_1_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639734",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730358",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639735": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "disclosed",
+        "model": "llama3_1_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=disclosed,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639735",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730359",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639742": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "undisclosed",
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639742",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730360",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639743": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "undisclosed",
+        "model": "qwen3_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639743",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730361",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639744": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "undisclosed",
+        "model": "qwen3_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639744",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730362",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639745": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "undisclosed",
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639745",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730363",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639746": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "undisclosed",
+        "model": "qwen3_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639746",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730364",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639747": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "undisclosed",
+        "model": "qwen3_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639747",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730365",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639748": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "undisclosed",
+        "model": "llama3_1_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639748",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730366",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639749": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "undisclosed",
+        "model": "llama3_1_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639749",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730367",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639750": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "causal_family",
+        "disclosure": "undisclosed",
+        "model": "llama3_1_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=causal_family,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639750",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730368",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639751": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "undisclosed",
+        "model": "llama3_1_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639751",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730369",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639752": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "undisclosed",
+        "model": "llama3_1_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639752",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730370",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639753": {
+      "campaign": "mechanism",
+      "cell": {
+        "arm": "population_prior",
+        "disclosure": "undisclosed",
+        "model": "llama3_1_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--exclude=node206",
+        "--export=ALL,DISCLOSURE=undisclosed,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,MAX_TRAIN=4800,EVAL_STEPS=25,COLLOCATE=0,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,STRUCTURED_OUTPUT=forecast_array,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639753",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/mechanism_family/mechanism_rl.sh"
+      ],
+      "replacement_job_id": "30730371",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639766": {
+      "campaign": "polymarket",
+      "cell": {
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639766",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "replacement_job_id": "30730372",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639767": {
+      "campaign": "polymarket",
+      "cell": {
+        "model": "qwen3_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639767",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "replacement_job_id": "30730373",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639768": {
+      "campaign": "polymarket",
+      "cell": {
+        "model": "qwen3_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639768",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "replacement_job_id": "30730374",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639770": {
+      "campaign": "polymarket",
+      "cell": {
+        "model": "llama3_1_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639770",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "replacement_job_id": "30730375",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639771": {
+      "campaign": "polymarket",
+      "cell": {
+        "model": "llama3_1_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639771",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "replacement_job_id": "30730376",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30639772": {
+      "campaign": "polymarket",
+      "cell": {
+        "model": "llama3_1_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--export=ALL,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,COLLOCATE=0,GPUS=2,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--time=1-06:00:00",
+        "--dependency=afterany:30639772",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/scripts/polymarket_rl_model_extension.sh"
+      ],
+      "replacement_job_id": "30730377",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723985": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "causal",
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=causal,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,TAG=causal_qwen3_8b_s42,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723985",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730378",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723987": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "causal",
+        "model": "qwen3_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=causal,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,TAG=causal_qwen3_8b_s43,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723987",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730379",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723988": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "causal",
+        "model": "qwen3_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=causal,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,TAG=causal_qwen3_8b_s44,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723988",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730380",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723989": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "population_prior",
+        "model": "qwen3_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=42,TAG=population_prior_qwen3_8b_s42,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723989",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730381",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723990": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "population_prior",
+        "model": "qwen3_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=43,TAG=population_prior_qwen3_8b_s43,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723990",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730382",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723991": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "population_prior",
+        "model": "qwen3_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=population_prior,MODEL_KEY=qwen3_8b,MODEL=Qwen/Qwen3-8B,PROMPT_TEMPLATE=auto_no_think,SEED=44,TAG=population_prior_qwen3_8b_s44,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723991",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730383",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723992": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "causal",
+        "model": "llama3_1_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=causal,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,TAG=causal_llama3_1_8b_s42,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723992",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730384",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723993": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "causal",
+        "model": "llama3_1_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=causal,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,TAG=causal_llama3_1_8b_s43,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723993",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730385",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723994": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "causal",
+        "model": "llama3_1_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=causal,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,TAG=causal_llama3_1_8b_s44,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723994",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730386",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723995": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "population_prior",
+        "model": "llama3_1_8b",
+        "seed": 42
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=42,TAG=population_prior_llama3_1_8b_s42,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723995",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730387",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723996": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "population_prior",
+        "model": "llama3_1_8b",
+        "seed": 43
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=43,TAG=population_prior_llama3_1_8b_s43,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723996",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730388",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    },
+    "30723997": {
+      "campaign": "coin_city",
+      "cell": {
+        "arm": "population_prior",
+        "model": "llama3_1_8b",
+        "seed": 44
+      },
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=cs",
+        "--cpus-per-task=8",
+        "--mem=100G",
+        "--export=ALL,ARM=population_prior,MODEL_KEY=llama3_1_8b,MODEL=meta-llama/Llama-3.1-8B-Instruct,PROMPT_TEMPLATE=auto,SEED=44,TAG=population_prior_llama3_1_8b_s44,MAX_TRAIN=4800,EVAL_STEPS=50,GPUS=2,BATCH=16,ROLLOUT_PER_PROMPT=8,LORA_RANK=32,LORA_ALPHA=64,VLLM_RATIO=0.38,MAX_MODEL_LEN=3072,PROMPT_MAX_LENGTH=2304,GEN_LEN=192,LR=0.000001,TEMP=1.3,RESPONSE_W=0.60,EVAL_BATCH=120,ZERO_STAGE=2,STOCHASTIC_N=5,STOCHASTIC_TEMP=0.7,PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "--gres=gpu:a6000:2",
+        "--exclude=node206",
+        "--time=1-06:00:00",
+        "--dependency=afterok:30723978,afterany:30723997",
+        "/n/fs/similarity/social_sim/exp3_training_transfer/coin_city_structural/train.sh"
+      ],
+      "replacement_job_id": "30730389",
+      "scheduler_change_only": {
+        "time_limit": "1-06:00:00"
+      },
+      "scientific_configuration": "identical",
+      "source_state": "PENDING"
+    }
+  }
+}

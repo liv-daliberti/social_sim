@@ -1,0 +1,1167 @@
+{
+  "generated_at": "2026-08-25T19:11:18.521891+00:00",
+  "analysis": {
+    "directions": [
+      "pro_H1",
+      "anti_H1"
+    ],
+    "thresholds_pp": [
+      0,
+      1,
+      3,
+      5
+    ],
+    "threshold_rule": "eligible iff abs(delta) >= threshold",
+    "correctness_rule": "expected_direction * delta > 0",
+    "threshold_0_interpretation": "unconditional over all valid relevant records; zero movement is incorrect",
+    "aggregation": "directional correctness is computed within market and averaged equally across markets; eligibility fractions are record-weighted",
+    "normalization": "initial yes, updated yes, and updated H1 are normalized independently from the documented [0,1]/[0,100] formats before deltas are computed",
+    "deduplication": "same rule as evaluate_consistency._load_all_updated_forecasts"
+  },
+  "source_files": [
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_2026-06-07.jsonl",
+      "bytes": 10699829,
+      "sha256": "f2a6f76cbf1a65b5089e19ec9b3ad793456123bca9262a18089ad7071377ea57"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_2026-06-08.jsonl",
+      "bytes": 1575601,
+      "sha256": "f8368dbc0de5a704458364912ec3c9afcbd0ca6376c0c9b3a2decb5e4abc84cb"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_DeepSeek-V4-Pro_2026-06-10.jsonl",
+      "bytes": 70948430,
+      "sha256": "da6a01a5f2571e95680a6d0dedeb0f83f3450064de9fc0140202bff565dbf65d"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_DeepSeek-V4-Pro_2026-06-11.jsonl",
+      "bytes": 6004607,
+      "sha256": "c82113a779e13c075535da35d52fb0e6ca43bcf3cd71d54f9b4d4d40ac84ab91"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_DeepSeek-V4-Pro_2026-06-16.jsonl",
+      "bytes": 55548268,
+      "sha256": "011f2c0a2909ead030892e7747e557439a721f33b48113fae82cdd34eafbf79c"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_claude-opus-4-8_2026-06-07.jsonl",
+      "bytes": 4585158,
+      "sha256": "483f8c9a00b2746317134572f1fb8939a4257065b5b722b986540fed9d6a5ea6"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_claude-opus-4-8_2026-06-10.jsonl",
+      "bytes": 59243584,
+      "sha256": "e88f3c0d33b9961254e8f5e7775124e18a4303ff1b04b12bcea92bac3f1dafcf"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_claude-opus-4-8_2026-06-11.jsonl",
+      "bytes": 1448162,
+      "sha256": "2129bc6e373abf084c52f4c480e38e7d9184c25a22cb84e1f0d9fc0a11899abf"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_claude-opus-4-8_2026-06-15.jsonl",
+      "bytes": 21793086,
+      "sha256": "db528ec19adbdc79ab9ad15d1f2bc4bd811d68215d955f873e8a577b57d3f271"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_gpt-5-4_2026-06-15.jsonl",
+      "bytes": 113349005,
+      "sha256": "6da8bc3f5ea6109cb25a4ad1471a9a4645999f2dc290cc11656df8ec55d7eee1"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_llama3.1-70b_2026-06-13.jsonl",
+      "bytes": 18271790,
+      "sha256": "ecc8f99494c145b9592dc8f867469af9bc5504fec3da7fdb723a2eabfd8d4f67"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_llama3.1-8b_2026-06-09.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_llama3.1-8b_2026-06-10.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_llama3.1-8b_2026-06-11.jsonl",
+      "bytes": 5803798,
+      "sha256": "c1e90343694b5b0883faa18f64df5ea2f4243a3c180f5cff71035e2811f9da16"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_llama3.1-8b_2026-06-12.jsonl",
+      "bytes": 43221005,
+      "sha256": "074123cbe3c32738df0f3ae27ca17038a469d83098fbe7397f4fca2b444c8c3c"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_llama3.3-70b_2026-06-15.jsonl",
+      "bytes": 20116778,
+      "sha256": "2e3d8fcb55ed74a2058d3f54d4474ebae77f122fcb24625847eb12d2087f01bc"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-14b_2026-06-11.jsonl",
+      "bytes": 18123000,
+      "sha256": "6ab959ea0b6ab239799920f966937ca9380dedd9aaa754e85b4a25de2b71ffed"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-32b_2026-06-12.jsonl",
+      "bytes": 13361416,
+      "sha256": "12434b55366bb29e2c265f4a9347c40a1f0b0287708b1fe03573727175b026e3"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-32b_2026-06-13.jsonl",
+      "bytes": 19094100,
+      "sha256": "5c1dda84cbe23465e525791fefe07bed38e58f5a54f6b1a3ebabbffddc3bdc98"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-72b_2026-06-12.jsonl",
+      "bytes": 23146400,
+      "sha256": "590e54800c8a93d8984a1617896f95b1ab0cd86471ffcc4976da8849b7c4172a"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-7b_2026-06-09.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-7b_2026-06-10.jsonl",
+      "bytes": 23299841,
+      "sha256": "8fab25d3d3c6bf72021060550f4f93b5acd4b43719c35829bfbe93ecf7976170"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-7b_2026-06-11.jsonl",
+      "bytes": 28953604,
+      "sha256": "ead494a8a0a882deb70ed711f3aa2af6f245bd4cc1d10d8a91ce6e171cb5990f"
+    },
+    {
+      "path": "exp1_prospective/data/updated_forecasts/updated_qwen2.5-7b_2026-06-12.jsonl",
+      "bytes": 31262102,
+      "sha256": "b16411a02c2c1caac7bf5e9ef8388080d4c6f7aa195325bafa805e7fcc7e7b7c"
+    }
+  ],
+  "model_order": [
+    "claude-opus-4-8",
+    "gpt-5.4",
+    "DeepSeek-V4-Pro",
+    "qwen2.5:72b",
+    "llama3.3:70b",
+    "llama3.1:70b",
+    "qwen2.5:32b",
+    "qwen2.5:14b",
+    "llama3.1:8b",
+    "qwen2.5:7b"
+  ],
+  "per_model": {
+    "claude-opus-4-8": {
+      "relevant_records": 3119,
+      "EHC": {
+        "valid_relevant_records": 2119,
+        "invalid_relevant_records": 1000,
+        "markets_with_valid_records": 79,
+        "below_3pp_records": 383,
+        "below_3pp_fraction": 0.1807456347333648,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9821729957805904,
+            "market_macro_standard_error": 0.005345483633334157,
+            "eligible_records": 2119,
+            "eligible_fraction": 1.0,
+            "correct_records": 2078,
+            "markets_with_eligible_records": 79
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9861274728472456,
+            "market_macro_standard_error": 0.004595947655069412,
+            "eligible_records": 2055,
+            "eligible_fraction": 0.9697970740915526,
+            "correct_records": 2024,
+            "markets_with_eligible_records": 79
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9903234483694254,
+            "market_macro_standard_error": 0.003849393541610517,
+            "eligible_records": 1736,
+            "eligible_fraction": 0.8192543652666352,
+            "correct_records": 1716,
+            "markets_with_eligible_records": 78
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9951540113134316,
+            "market_macro_standard_error": 0.002669526662502324,
+            "eligible_records": 1339,
+            "eligible_fraction": 0.6319018404907976,
+            "correct_records": 1330,
+            "markets_with_eligible_records": 78
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 2119,
+        "invalid_relevant_records": 1000,
+        "markets_with_valid_records": 79,
+        "below_3pp_records": 383,
+        "below_3pp_fraction": 0.1807456347333648,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9834388185654008,
+            "market_macro_standard_error": 0.004998497896564774,
+            "eligible_records": 2119,
+            "eligible_fraction": 1.0,
+            "correct_records": 2081,
+            "markets_with_eligible_records": 79
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9862115732368896,
+            "market_macro_standard_error": 0.00458340785610127,
+            "eligible_records": 2058,
+            "eligible_fraction": 0.9712128362435111,
+            "correct_records": 2027,
+            "markets_with_eligible_records": 79
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9903234483694254,
+            "market_macro_standard_error": 0.003849393541610517,
+            "eligible_records": 1736,
+            "eligible_fraction": 0.8192543652666352,
+            "correct_records": 1716,
+            "markets_with_eligible_records": 78
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9951540113134316,
+            "market_macro_standard_error": 0.002669526662502324,
+            "eligible_records": 1339,
+            "eligible_fraction": 0.6319018404907976,
+            "correct_records": 1330,
+            "markets_with_eligible_records": 78
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 2119,
+        "exact_after_normalization_records": 2116,
+        "exact_after_normalization_fraction": 0.9985842378480415,
+        "within_2pp_records": 2119,
+        "within_2pp_fraction": 1.0,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "gpt-5.4": {
+      "relevant_records": 2800,
+      "EHC": {
+        "valid_relevant_records": 2678,
+        "invalid_relevant_records": 122,
+        "markets_with_valid_records": 101,
+        "below_3pp_records": 185,
+        "below_3pp_fraction": 0.06908140403286034,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9842421192668719,
+            "market_macro_standard_error": 0.0054792089221798465,
+            "eligible_records": 2678,
+            "eligible_fraction": 1.0,
+            "correct_records": 2640,
+            "markets_with_eligible_records": 101
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9842421192668719,
+            "market_macro_standard_error": 0.0054792089221798465,
+            "eligible_records": 2649,
+            "eligible_fraction": 0.9891710231516057,
+            "correct_records": 2611,
+            "markets_with_eligible_records": 101
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9869419732858871,
+            "market_macro_standard_error": 0.00488792947560723,
+            "eligible_records": 2493,
+            "eligible_fraction": 0.9309185959671397,
+            "correct_records": 2465,
+            "markets_with_eligible_records": 101
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9883014772065442,
+            "market_macro_standard_error": 0.006771229716410639,
+            "eligible_records": 1962,
+            "eligible_fraction": 0.7326362957430919,
+            "correct_records": 1948,
+            "markets_with_eligible_records": 101
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 2684,
+        "invalid_relevant_records": 116,
+        "markets_with_valid_records": 101,
+        "below_3pp_records": 185,
+        "below_3pp_fraction": 0.06892697466467958,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9843108761425594,
+            "market_macro_standard_error": 0.005473772106981939,
+            "eligible_records": 2684,
+            "eligible_fraction": 1.0,
+            "correct_records": 2646,
+            "markets_with_eligible_records": 101
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9843108761425594,
+            "market_macro_standard_error": 0.005473772106981939,
+            "eligible_records": 2655,
+            "eligible_fraction": 0.9891952309985097,
+            "correct_records": 2617,
+            "markets_with_eligible_records": 101
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9870107301615746,
+            "market_macro_standard_error": 0.004881453938556118,
+            "eligible_records": 2499,
+            "eligible_fraction": 0.9310730253353204,
+            "correct_records": 2471,
+            "markets_with_eligible_records": 101
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9883702340822317,
+            "market_macro_standard_error": 0.006766418577304826,
+            "eligible_records": 1968,
+            "eligible_fraction": 0.7332339791356185,
+            "correct_records": 1954,
+            "markets_with_eligible_records": 101
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 2731,
+        "exact_after_normalization_records": 2731,
+        "exact_after_normalization_fraction": 1.0,
+        "within_2pp_records": 2731,
+        "within_2pp_fraction": 1.0,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "DeepSeek-V4-Pro": {
+      "relevant_records": 3000,
+      "EHC": {
+        "valid_relevant_records": 2929,
+        "invalid_relevant_records": 71,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 371,
+        "below_3pp_fraction": 0.12666439057698872,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9728850574712644,
+            "market_macro_standard_error": 0.006319634733847656,
+            "eligible_records": 2929,
+            "eligible_fraction": 1.0,
+            "correct_records": 2848,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9760770686085527,
+            "market_macro_standard_error": 0.005945552710050616,
+            "eligible_records": 2835,
+            "eligible_fraction": 0.9679071355411403,
+            "correct_records": 2766,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9772680804258765,
+            "market_macro_standard_error": 0.005911561768331874,
+            "eligible_records": 2558,
+            "eligible_fraction": 0.8733356094230112,
+            "correct_records": 2496,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9800078631776905,
+            "market_macro_standard_error": 0.005509612223556401,
+            "eligible_records": 2227,
+            "eligible_fraction": 0.7603277569136224,
+            "correct_records": 2177,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 2929,
+        "invalid_relevant_records": 71,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 370,
+        "below_3pp_fraction": 0.12632297712529875,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9732298850574712,
+            "market_macro_standard_error": 0.006151701797933327,
+            "eligible_records": 2929,
+            "eligible_fraction": 1.0,
+            "correct_records": 2849,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9761879060469764,
+            "market_macro_standard_error": 0.005890307728488038,
+            "eligible_records": 2836,
+            "eligible_fraction": 0.9682485489928303,
+            "correct_records": 2767,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9773789178643001,
+            "market_macro_standard_error": 0.005855768421539181,
+            "eligible_records": 2559,
+            "eligible_fraction": 0.8736770228747013,
+            "correct_records": 2497,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9801078631776905,
+            "market_macro_standard_error": 0.005468195726572731,
+            "eligible_records": 2228,
+            "eligible_fraction": 0.7606691703653123,
+            "correct_records": 2178,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 2961,
+        "exact_after_normalization_records": 2960,
+        "exact_after_normalization_fraction": 0.999662276258021,
+        "within_2pp_records": 2960,
+        "within_2pp_fraction": 0.999662276258021,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "qwen2.5:72b": {
+      "relevant_records": 1800,
+      "EHC": {
+        "valid_relevant_records": 1795,
+        "invalid_relevant_records": 5,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 15,
+        "below_3pp_fraction": 0.008356545961002786,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9632679738562089,
+            "market_macro_standard_error": 0.01069316347131439,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1729,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9632679738562089,
+            "market_macro_standard_error": 0.01069316347131439,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1729,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9632679738562089,
+            "market_macro_standard_error": 0.01069316347131439,
+            "eligible_records": 1780,
+            "eligible_fraction": 0.9916434540389972,
+            "correct_records": 1714,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9637581699346405,
+            "market_macro_standard_error": 0.010644120481793766,
+            "eligible_records": 1771,
+            "eligible_fraction": 0.9866295264623955,
+            "correct_records": 1706,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 1795,
+        "invalid_relevant_records": 5,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 15,
+        "below_3pp_fraction": 0.008356545961002786,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9632679738562089,
+            "market_macro_standard_error": 0.01069316347131439,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1729,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9632679738562089,
+            "market_macro_standard_error": 0.01069316347131439,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1729,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9632679738562089,
+            "market_macro_standard_error": 0.01069316347131439,
+            "eligible_records": 1780,
+            "eligible_fraction": 0.9916434540389972,
+            "correct_records": 1714,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9637581699346405,
+            "market_macro_standard_error": 0.010644120481793766,
+            "eligible_records": 1771,
+            "eligible_fraction": 0.9866295264623955,
+            "correct_records": 1706,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 1795,
+        "exact_after_normalization_records": 1795,
+        "exact_after_normalization_fraction": 1.0,
+        "within_2pp_records": 1795,
+        "within_2pp_fraction": 1.0,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "llama3.3:70b": {
+      "relevant_records": 1788,
+      "EHC": {
+        "valid_relevant_records": 1788,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 12,
+        "below_3pp_fraction": 0.006711409395973154,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9644444444444441,
+            "market_macro_standard_error": 0.008846701233147148,
+            "eligible_records": 1788,
+            "eligible_fraction": 1.0,
+            "correct_records": 1724,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9644444444444441,
+            "market_macro_standard_error": 0.008846701233147148,
+            "eligible_records": 1788,
+            "eligible_fraction": 1.0,
+            "correct_records": 1724,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.965347222222222,
+            "market_macro_standard_error": 0.008764948906138752,
+            "eligible_records": 1776,
+            "eligible_fraction": 0.9932885906040269,
+            "correct_records": 1714,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9742046221752103,
+            "market_macro_standard_error": 0.007661424887173171,
+            "eligible_records": 1601,
+            "eligible_fraction": 0.895413870246085,
+            "correct_records": 1561,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 1788,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 12,
+        "below_3pp_fraction": 0.006711409395973154,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9644444444444441,
+            "market_macro_standard_error": 0.008846701233147148,
+            "eligible_records": 1788,
+            "eligible_fraction": 1.0,
+            "correct_records": 1724,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9644444444444441,
+            "market_macro_standard_error": 0.008846701233147148,
+            "eligible_records": 1788,
+            "eligible_fraction": 1.0,
+            "correct_records": 1724,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.965347222222222,
+            "market_macro_standard_error": 0.008764948906138752,
+            "eligible_records": 1776,
+            "eligible_fraction": 0.9932885906040269,
+            "correct_records": 1714,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9742046221752103,
+            "market_macro_standard_error": 0.007661424887173171,
+            "eligible_records": 1601,
+            "eligible_fraction": 0.895413870246085,
+            "correct_records": 1561,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 1788,
+        "exact_after_normalization_records": 1788,
+        "exact_after_normalization_fraction": 1.0,
+        "within_2pp_records": 1788,
+        "within_2pp_fraction": 1.0,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "llama3.1:70b": {
+      "relevant_records": 1659,
+      "EHC": {
+        "valid_relevant_records": 1659,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 99,
+        "below_3pp_records": 10,
+        "below_3pp_fraction": 0.006027727546714889,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9607182940516271,
+            "market_macro_standard_error": 0.008846446825860407,
+            "eligible_records": 1659,
+            "eligible_fraction": 1.0,
+            "correct_records": 1593,
+            "markets_with_eligible_records": 99
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9607182940516271,
+            "market_macro_standard_error": 0.008846446825860407,
+            "eligible_records": 1659,
+            "eligible_fraction": 1.0,
+            "correct_records": 1593,
+            "markets_with_eligible_records": 99
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9605202350300387,
+            "market_macro_standard_error": 0.008915571301229396,
+            "eligible_records": 1649,
+            "eligible_fraction": 0.9939722724532851,
+            "correct_records": 1583,
+            "markets_with_eligible_records": 99
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9674692344032806,
+            "market_macro_standard_error": 0.007317414179339736,
+            "eligible_records": 1571,
+            "eligible_fraction": 0.946955997588909,
+            "correct_records": 1521,
+            "markets_with_eligible_records": 99
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 1659,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 99,
+        "below_3pp_records": 10,
+        "below_3pp_fraction": 0.006027727546714889,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9607182940516271,
+            "market_macro_standard_error": 0.008846446825860407,
+            "eligible_records": 1659,
+            "eligible_fraction": 1.0,
+            "correct_records": 1593,
+            "markets_with_eligible_records": 99
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9607182940516271,
+            "market_macro_standard_error": 0.008846446825860407,
+            "eligible_records": 1659,
+            "eligible_fraction": 1.0,
+            "correct_records": 1593,
+            "markets_with_eligible_records": 99
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9605202350300387,
+            "market_macro_standard_error": 0.008915571301229396,
+            "eligible_records": 1649,
+            "eligible_fraction": 0.9939722724532851,
+            "correct_records": 1583,
+            "markets_with_eligible_records": 99
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9674692344032806,
+            "market_macro_standard_error": 0.007317414179339736,
+            "eligible_records": 1571,
+            "eligible_fraction": 0.946955997588909,
+            "correct_records": 1521,
+            "markets_with_eligible_records": 99
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 1659,
+        "exact_after_normalization_records": 1659,
+        "exact_after_normalization_fraction": 1.0,
+        "within_2pp_records": 1659,
+        "within_2pp_fraction": 1.0,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "qwen2.5:32b": {
+      "relevant_records": 1800,
+      "EHC": {
+        "valid_relevant_records": 1795,
+        "invalid_relevant_records": 5,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 34,
+        "below_3pp_fraction": 0.01894150417827298,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9638888888888887,
+            "market_macro_standard_error": 0.009355559820958686,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1730,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9638888888888887,
+            "market_macro_standard_error": 0.009355559820958686,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1730,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9641830065359476,
+            "market_macro_standard_error": 0.009211768742759217,
+            "eligible_records": 1761,
+            "eligible_fraction": 0.981058495821727,
+            "correct_records": 1697,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9646405228758169,
+            "market_macro_standard_error": 0.00923112475596473,
+            "eligible_records": 1724,
+            "eligible_fraction": 0.9604456824512535,
+            "correct_records": 1661,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 1795,
+        "invalid_relevant_records": 5,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 34,
+        "below_3pp_fraction": 0.01894150417827298,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9638888888888887,
+            "market_macro_standard_error": 0.009355559820958686,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1730,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9638888888888887,
+            "market_macro_standard_error": 0.009355559820958686,
+            "eligible_records": 1795,
+            "eligible_fraction": 1.0,
+            "correct_records": 1730,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9641830065359476,
+            "market_macro_standard_error": 0.009211768742759217,
+            "eligible_records": 1761,
+            "eligible_fraction": 0.981058495821727,
+            "correct_records": 1697,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9646405228758169,
+            "market_macro_standard_error": 0.00923112475596473,
+            "eligible_records": 1724,
+            "eligible_fraction": 0.9604456824512535,
+            "correct_records": 1661,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 1795,
+        "exact_after_normalization_records": 1795,
+        "exact_after_normalization_fraction": 1.0,
+        "within_2pp_records": 1795,
+        "within_2pp_fraction": 1.0,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "qwen2.5:14b": {
+      "relevant_records": 1800,
+      "EHC": {
+        "valid_relevant_records": 1800,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 52,
+        "below_3pp_fraction": 0.028888888888888888,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9305555555555555,
+            "market_macro_standard_error": 0.011037212165017398,
+            "eligible_records": 1800,
+            "eligible_fraction": 1.0,
+            "correct_records": 1675,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9438870214752566,
+            "market_macro_standard_error": 0.010159571186041895,
+            "eligible_records": 1775,
+            "eligible_fraction": 0.9861111111111112,
+            "correct_records": 1675,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.943400703871292,
+            "market_macro_standard_error": 0.010180693488495561,
+            "eligible_records": 1748,
+            "eligible_fraction": 0.9711111111111111,
+            "correct_records": 1648,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9429569866408101,
+            "market_macro_standard_error": 0.010265671644855374,
+            "eligible_records": 1714,
+            "eligible_fraction": 0.9522222222222222,
+            "correct_records": 1615,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 1800,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 52,
+        "below_3pp_fraction": 0.028888888888888888,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9305555555555555,
+            "market_macro_standard_error": 0.011037212165017398,
+            "eligible_records": 1800,
+            "eligible_fraction": 1.0,
+            "correct_records": 1675,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9438870214752566,
+            "market_macro_standard_error": 0.010159571186041895,
+            "eligible_records": 1775,
+            "eligible_fraction": 0.9861111111111112,
+            "correct_records": 1675,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.943400703871292,
+            "market_macro_standard_error": 0.010180693488495561,
+            "eligible_records": 1748,
+            "eligible_fraction": 0.9711111111111111,
+            "correct_records": 1648,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9429569866408101,
+            "market_macro_standard_error": 0.010265671644855374,
+            "eligible_records": 1714,
+            "eligible_fraction": 0.9522222222222222,
+            "correct_records": 1615,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 1800,
+        "exact_after_normalization_records": 1800,
+        "exact_after_normalization_fraction": 1.0,
+        "within_2pp_records": 1800,
+        "within_2pp_fraction": 1.0,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    },
+    "llama3.1:8b": {
+      "relevant_records": 3604,
+      "EHC": {
+        "valid_relevant_records": 3601,
+        "invalid_relevant_records": 3,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 62,
+        "below_3pp_fraction": 0.01721743960011108,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.8813965517241381,
+            "market_macro_standard_error": 0.015481273499110862,
+            "eligible_records": 3601,
+            "eligible_fraction": 1.0,
+            "correct_records": 3192,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.8874695311074623,
+            "market_macro_standard_error": 0.015452513947883826,
+            "eligible_records": 3576,
+            "eligible_fraction": 0.9930574840322133,
+            "correct_records": 3191,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.8874909688013136,
+            "market_macro_standard_error": 0.015477113613372208,
+            "eligible_records": 3539,
+            "eligible_fraction": 0.9827825603998889,
+            "correct_records": 3157,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.8892565490434986,
+            "market_macro_standard_error": 0.015499442701630005,
+            "eligible_records": 3321,
+            "eligible_fraction": 0.9222438211607886,
+            "correct_records": 2970,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 3604,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 52,
+        "below_3pp_fraction": 0.014428412874583796,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.8838333333333336,
+            "market_macro_standard_error": 0.015513028086226111,
+            "eligible_records": 3604,
+            "eligible_fraction": 1.0,
+            "correct_records": 3204,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.8874072249589494,
+            "market_macro_standard_error": 0.015473836121580433,
+            "eligible_records": 3589,
+            "eligible_fraction": 0.9958379578246392,
+            "correct_records": 3203,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.8874327494982669,
+            "market_macro_standard_error": 0.015498554130008078,
+            "eligible_records": 3552,
+            "eligible_fraction": 0.9855715871254163,
+            "correct_records": 3169,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.8891995048855622,
+            "market_macro_standard_error": 0.01552095936223494,
+            "eligible_records": 3334,
+            "eligible_fraction": 0.9250832408435072,
+            "correct_records": 2982,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 3601,
+        "exact_after_normalization_records": 3591,
+        "exact_after_normalization_fraction": 0.9972229936128854,
+        "within_2pp_records": 3591,
+        "within_2pp_fraction": 0.9972229936128854,
+        "raw_h1_headline_scale_mismatch_records": 166
+      }
+    },
+    "qwen2.5:7b": {
+      "relevant_records": 5759,
+      "EHC": {
+        "valid_relevant_records": 5759,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 129,
+        "below_3pp_fraction": 0.02239972217398854,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.9016666666666664,
+            "market_macro_standard_error": 0.014445415662764215,
+            "eligible_records": 5759,
+            "eligible_fraction": 1.0,
+            "correct_records": 5198,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9024655172413791,
+            "market_macro_standard_error": 0.014399918380204779,
+            "eligible_records": 5754,
+            "eligible_fraction": 0.9991317937141865,
+            "correct_records": 5198,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9056489266888353,
+            "market_macro_standard_error": 0.01410917963501861,
+            "eligible_records": 5630,
+            "eligible_fraction": 0.9776002778260114,
+            "correct_records": 5114,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9081827414835573,
+            "market_macro_standard_error": 0.0142376629366129,
+            "eligible_records": 5486,
+            "eligible_fraction": 0.9525959367945824,
+            "correct_records": 4999,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "HFC": {
+        "valid_relevant_records": 5759,
+        "invalid_relevant_records": 0,
+        "markets_with_valid_records": 100,
+        "below_3pp_records": 140,
+        "below_3pp_fraction": 0.02430977600277826,
+        "thresholds": {
+          "0": {
+            "threshold_pp": 0,
+            "market_macro_directional_correctness": 0.8989999999999996,
+            "market_macro_standard_error": 0.014385700282399857,
+            "eligible_records": 5759,
+            "eligible_fraction": 1.0,
+            "correct_records": 5186,
+            "markets_with_eligible_records": 100
+          },
+          "1": {
+            "threshold_pp": 1,
+            "market_macro_directional_correctness": 0.9021798307867855,
+            "market_macro_standard_error": 0.014396850027405483,
+            "eligible_records": 5743,
+            "eligible_fraction": 0.9972217398853968,
+            "correct_records": 5186,
+            "markets_with_eligible_records": 100
+          },
+          "3": {
+            "threshold_pp": 3,
+            "market_macro_directional_correctness": 0.9053698102677312,
+            "market_macro_standard_error": 0.014105701421691022,
+            "eligible_records": 5619,
+            "eligible_fraction": 0.9756902239972217,
+            "correct_records": 5102,
+            "markets_with_eligible_records": 100
+          },
+          "5": {
+            "threshold_pp": 5,
+            "market_macro_directional_correctness": 0.9079000012352997,
+            "market_macro_standard_error": 0.014234465938263339,
+            "eligible_records": 5475,
+            "eligible_fraction": 0.9506858829657927,
+            "correct_records": 4987,
+            "markets_with_eligible_records": 100
+          }
+        }
+      },
+      "schema_adherence": {
+        "paired_valid_records": 5759,
+        "exact_after_normalization_records": 5747,
+        "exact_after_normalization_fraction": 0.9979163049140476,
+        "within_2pp_records": 5747,
+        "within_2pp_fraction": 0.9979163049140476,
+        "raw_h1_headline_scale_mismatch_records": 0
+      }
+    }
+  }
+}

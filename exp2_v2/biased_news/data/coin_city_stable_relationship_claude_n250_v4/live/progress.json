@@ -1,0 +1,131 @@
+{
+  "analysis_revision": "stable_relationship_claude_n250_v4",
+  "curve_mode": "matched_live",
+  "curves": {
+    "0": {
+      "abc_no_context_regression_mae": 2.557699137127311,
+      "arms": {
+        "abc_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 1.8184031970304528
+          }
+        },
+        "abc_no_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.6576900053637185
+          }
+        },
+        "baseline": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.3260137458460144
+          }
+        }
+      },
+      "city_c_regression_mae": null,
+      "common_n": 249
+    },
+    "1": {
+      "abc_no_context_regression_mae": 2.3249241752109873,
+      "arms": {
+        "abc_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.1465559666315452
+          }
+        },
+        "abc_no_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.438143352245784
+          }
+        },
+        "baseline": {
+          "llm_mae": {
+            "claude-opus-4-8": 3.7299411576782315
+          }
+        }
+      },
+      "city_c_regression_mae": 3.802760314833802,
+      "common_n": 250
+    },
+    "2": {
+      "abc_no_context_regression_mae": 2.1308736246662137,
+      "arms": {
+        "abc_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.078938704034988
+          }
+        },
+        "abc_no_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.0410324904796844
+          }
+        },
+        "baseline": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.668283602464916
+          }
+        }
+      },
+      "city_c_regression_mae": 2.4250392707057187,
+      "common_n": 250
+    },
+    "3": {
+      "abc_no_context_regression_mae": 1.9881045986804324,
+      "arms": {
+        "abc_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 1.9769542811192269
+          }
+        },
+        "abc_no_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.1278451219403505
+          }
+        },
+        "baseline": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.4849704233918217
+          }
+        }
+      },
+      "city_c_regression_mae": 2.1052041482126715,
+      "common_n": 250
+    },
+    "4": {
+      "abc_no_context_regression_mae": 1.8351615722740713,
+      "arms": {
+        "abc_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 1.7599875034349097
+          }
+        },
+        "abc_no_context": {
+          "llm_mae": {
+            "claude-opus-4-8": 1.929122690172962
+          }
+        },
+        "baseline": {
+          "llm_mae": {
+            "claude-opus-4-8": 2.20905595418721
+          }
+        }
+      },
+      "city_c_regression_mae": 1.8131532420994458,
+      "common_n": 250
+    }
+  },
+  "design_validation_status": "passed",
+  "epsilon": {
+    "case_noise_sd": 5.0,
+    "shown_to_llm": false
+  },
+  "expected": 3750,
+  "experiment": "coin_city_stable_relationship_claude_n250_v4",
+  "figure": "/n/fs/similarity/social_sim/exp2_v2/biased_news/data/coin_city_stable_relationship_claude_n250_v4/live/live_structure.png",
+  "future_calls_if_run": 3750,
+  "llm_calls_made": 3750,
+  "parsed": 3749,
+  "received": 3750,
+  "regression_inputs": "displayed rows and displayed query only",
+  "status": "interim_incomplete",
+  "updated_at": "2026-08-06T18:00:11.663742+00:00"
+}

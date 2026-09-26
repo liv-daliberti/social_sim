@@ -1,0 +1,54 @@
+{
+  "completion": "DeepSeek-V4-Pro hosted holdout",
+  "completed_at": "2026-08-25T22:29:25Z",
+  "status": "complete",
+  "authorization": {
+    "ledger": "runs/exp4_architecture_provider_sweep_deepseek_holdout_authorization_20260825T222245Z.json",
+    "sha256": "5b2fc08001c68f609a4c14a4c03a407de3b4023cb47e94f9f823cd4b157b10a8"
+  },
+  "execution": {
+    "calls": 1590,
+    "destination": "cos-tiktok-annotation-a-resource",
+    "draws": 5,
+    "model": "DeepSeek-V4-Pro",
+    "responses_received": 1590,
+    "successfully_parsed": 1590,
+    "tasks": 318
+  },
+  "metrics": {
+    "brier": 0.1265979006603774,
+    "log_loss_nats": 0.3927881027738854,
+    "market_brier": 0.12654794182389942,
+    "model_minus_market_brier": {
+      "ci95_high": 0.0010228783443708609,
+      "ci95_low": -0.0010466756435643571,
+      "estimate": 0.00004995883647798944,
+      "family_clusters": 223,
+      "bootstrap_repetitions": 5000
+    }
+  },
+  "effective_controls": {
+    "max_output_tokens": 128,
+    "reasoning_effort": null,
+    "temperature": 0.7,
+    "top_k": null,
+    "top_p": 0.8
+  },
+  "artifacts": {
+    "aggregate_raw": "reports/exp4_hosted/exp4_hosted_DeepSeek-V4-Pro_stochastic.jsonl",
+    "aggregate_raw_sha256": "e43b132c9e9796ad4a5eaf234e4b4aa57feac754d340281649c466402aaf1633",
+    "summary": "reports/exp4_hosted/exp4_hosted_DeepSeek-V4-Pro_stochastic.summary.json",
+    "summary_sha256": "4da9af272fa01d56df8d19005442f67e35949cfd239702bba387c058ad3d7f34"
+  },
+  "interpretation_boundary": {
+    "classification": "off_the_shelf_api_reference",
+    "decoder_identical_claim": false,
+    "hosted_panel_remains_separate": true,
+    "test_was_used_for_configuration": false
+  },
+  "remaining_hosted_models": {
+    "FW-Kimi-K3": "awaiting a rotated key installed as a protected environment variable",
+    "claude-opus-4-8": "credential blocked",
+    "gpt-5.6-sol": "deployment blocked"
+  }
+}

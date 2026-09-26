@@ -1,0 +1,45 @@
+{
+  "adapter_checkpoints": {
+    "seed_42": {
+      "adapter_config_sha256": "04b98366daa712bb55905608e195a5f372f1e1029ee54b50b240aef61e7fd847",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_031628_j30505537/debug_0813T03:17:37/saved_models/step_00301"
+    },
+    "seed_43": {
+      "adapter_config_sha256": "32b15ce911ff828d690ab203476457fc78626a42f51d8bab2b1625e1d9daca9d",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_035132_j30505538/debug_0813T03:52:00/saved_models/step_00301"
+    },
+    "seed_44": {
+      "adapter_config_sha256": "1df636a993f92ddec1b50940336f73b1023680fb6aac52a96d35d383374272c8",
+      "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/reports/train_market_20260813_035633_j30505539/debug_0813T03:56:57/saved_models/step_00301"
+    }
+  },
+  "analyzer_sha256": "6344660a2101790080a8373e573491045e2f8c78852f31a4aa4b02b6df78dee6",
+  "contexts_sha256": "c550cf05c24a1fbd03fb509a77632ec2015a10bd2e95db11a29746f6efa0c098",
+  "completed_at": "20260813T155727Z",
+  "design": "Paired fixed-context reapplication: base and all three final adapters receive the identical 100 initial structured forecasts and 900 frozen Experiment 1 evidence packets.",
+  "evaluator_sha256": "b86368e6ae7a3670b173fe91757b859f034086457a3c69dca5f6587e89656e6b",
+  "effective_time_limit": "01:00:00",
+  "job_id": "30535058",
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "output_manifests": {
+    "base": "a1b9188755fecab9a87784c98e6b1b1fedb63198b793aa520affa9853802e822",
+    "seed_42": "0993123c3e8a1d59e811f602b2ba5101986ce1fd3839a822a0c18488da23f845",
+    "seed_43": "7dc9872a818b89fca6366263e0c8b698e941fce6a9646d7985e6b96ea6a01708",
+    "seed_44": "dd3a7c1bd9de11cd8511f56d777d4e3c2aa69e2572595fdc832ac93f2ea5ce5e"
+  },
+  "packets_sha256": "6741be0afd69cb7a3e7e42b2ddf55719c6f93c495a77facea6b40eb1b8796d36",
+  "protocol_version": "exp3b_exp1_reapplication_v1",
+  "result": {
+    "path": "exp3_training_transfer/polymarket/reports/exp3b_exp1_reapplication_j30535058/summary.json",
+    "sha256": "bc154383af0ad2f3c74c93bd25cacec9ccb9595638c69d4303075bd2fa5295b7"
+  },
+  "slurm_script_sha256_at_submission": "1e73813d30c177061aac2cf8051fa8cc7d9f57fc14b6d7094e247a3399774459",
+  "slurm_script_sha256_effective": "76b9db5effc348fb5bbc8a6f439b003ef450ac966c05e1b770803c46453a2cf3",
+  "submission_command": [
+    "sbatch",
+    "--parsable",
+    "exp3_training_transfer/polymarket/scripts/exp1_reapplication.sbatch"
+  ],
+  "submitted_at": "20260813T154003Z",
+  "task_states": ["COMPLETED", "COMPLETED", "COMPLETED", "COMPLETED"]
+}

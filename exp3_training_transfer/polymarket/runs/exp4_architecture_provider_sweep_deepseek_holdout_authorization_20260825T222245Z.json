@@ -1,0 +1,40 @@
+{
+  "execution": "DeepSeek-V4-Pro hosted holdout",
+  "authorized_at": "2026-08-25T22:22:45Z",
+  "authorization": {
+    "calls": 1590,
+    "destination": "cos-tiktok-annotation-a-resource",
+    "draws": 5,
+    "model": "DeepSeek-V4-Pro",
+    "tasks_per_draw": 318,
+    "user_message": "Yes—send the 1,590 DeepSeek holdout prompts to cos-tiktok-annotation-a-resource."
+  },
+  "canary_gate": {
+    "development_prompts": 2,
+    "responses_received": 2,
+    "successfully_parsed": 2,
+    "status": "passed",
+    "ledger": "runs/exp4_architecture_provider_sweep_hosted_canary_result_20260825T222025Z.json",
+    "ledger_sha256": "0e306da0635f90f020c8b4a4f21b7c961049ec13f8047109540e539dd1d4aa92"
+  },
+  "effective_controls": {
+    "max_output_tokens": 128,
+    "reasoning_effort": null,
+    "temperature": 0.7,
+    "top_k": null,
+    "top_p": 0.8
+  },
+  "endpoint": "https://cos-tiktok-annotation-a-resource.services.ai.azure.com/openai/v1",
+  "frozen_inputs": {
+    "holdout_path": "data/exp4_scale_registered/test.tasks.jsonl",
+    "holdout_sha256": "ee9bd976402a746195291b4b43e209a084a0f1c6e5bf3f27c9d4ef638f1c7f24",
+    "runner_sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf"
+  },
+  "scope": {
+    "other_hosted_models_authorized": false,
+    "prompt_text_changed": false,
+    "scoring_changed": false,
+    "transport_retries_repeat_model_outputs": false
+  },
+  "status": "authorized_not_started"
+}

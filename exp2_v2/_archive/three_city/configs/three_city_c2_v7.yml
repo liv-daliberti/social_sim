@@ -1,0 +1,96 @@
+experiment:
+  id: three_city_c2_v7
+  status: preregistered_before_confirmatory_model_runs
+  description: "Recover two recurring response mechanisms and apply them to a third city."
+
+confirmatory:
+  primary_condition: relevant
+  primary_prefix_k: 2
+  primary_outcomes:
+    - paired_hint_improvement_in_forecast_mae
+    - paired_hint_improvement_in_structure_use_beta
+  inference:
+    - paired_by_episode
+    - episode_clustered_percentile_bootstrap
+    - report_each_model_as_a_separate_replication
+  models:
+    - id: claude-opus-4-8
+      endpoint: "https://liv-forecast.services.ai.azure.com/anthropic"
+    - id: DeepSeek-V4-Pro
+      endpoint: "https://liv-forecast.services.ai.azure.com/openai/v1"
+    - id: gpt-5.4
+      endpoint: "https://liv-forecast.services.ai.azure.com/openai/v1"
+  sampling:
+    temperature: 0.0
+    max_tokens: 512
+    one_received_completion_per_task: true
+    retry_received_but_unparseable: false
+    report_response_and_parse_rates_separately: true
+
+model_prompt:
+  arms:
+    - blind
+    - hint
+  hint_sentence: "When forecasting City C, consider whether the earlier cities' response patterns and background descriptions are informative."
+  arms_differ_by_exactly_one_sentence: true
+  disclose_number_of_types: false
+  disclose_target_matches_reference: false
+  disclose_response_parameter: false
+  disclose_prior: false
+  disclose_equation: false
+  disclose_noise_scale: false
+  state_cases_are_independent: true
+  state_each_case_starts_at_50: true
+  state_case_measurements_vary: true
+  ask_one_forecast_only: true
+  identical_reasoning_instruction: true
+  identical_token_budget: true
+  identical_json_schema: true
+
+hidden_evaluator_world:
+  starting_poll: 50.0
+  net_news_per_case: 8
+  high_response: 0.90
+  buffered_response: 0.30
+  case_noise: 4.30
+  reference_cases_are_centered_representative_exemplars: true
+  target_context_is_truthful: true
+  hidden_context_reliability: null
+
+design:
+  episodes: 120
+  seed_offset: 70000
+  reference_cases_per_city: 6
+  target_cases: 4
+  target_prefixes: [0, 1, 2, 4]
+  context_conditions:
+    - relevant
+    - none
+    - orthogonal
+  context_paraphrase_families: 3
+  balanced_factors:
+    - target_response
+    - reference_A_B_label
+    - context_paraphrase_family
+
+references:
+  - naive_population_midpoint
+  - target_only_city_C_average
+  - pooled_A_B_average
+  - empirical_two_prototype_public_data
+  - privileged_DGP_oracle_ceiling
+  empirical_context_weight: "one transparent pseudo-case"
+  empirical_context_match: "frozen analyst codebook over prompt-visible text"
+  context_weight_sensitivity: [0.0, 0.5, 1.0, 2.0]
+
+gates_before_model_evaluation:
+  - frozen_blind_and_hint_task_files
+  - frozen_private_answer_key
+  - prompt_pair_diff_is_exactly_one_sentence
+  - prompt_non_disclosure_tests
+  - exact_factor_balance
+  - relevant_context_always_truthful
+  - relevant_and_orthogonal_context_length_match
+  - public_data_hierarchical_reference_beats_target_only_in_sparse_regime
+  - task_and_source_hash_manifest
+  - preregistration_hash_recorded_before_model_calls

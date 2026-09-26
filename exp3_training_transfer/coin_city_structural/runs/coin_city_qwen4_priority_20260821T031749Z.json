@@ -1,0 +1,53 @@
+{
+  "action": "prioritize_complete_qwen3_4b_roster",
+  "applied_at_utc": "20260821T031749Z",
+  "campaign": "coin_city_structural_transfer_v1",
+  "scientific_configuration_changed": false,
+  "qwen3_4b_first_wave": {
+    "confirmatory_causal": ["30723979", "30723980", "30723981"],
+    "confirmatory_population_prior": ["30723982", "30723983", "30723984"],
+    "structureless_controls": ["30723998", "30723999", "30724000"],
+    "base_endpoint": ["30724001"]
+  },
+  "scheduler_adjustments": {
+    "pending_training_memory": {
+      "jobs": ["30723981", "30723982", "30723983", "30723984", "30723998", "30723999", "30724000"],
+      "previous_request": "100G",
+      "new_request": "56G",
+      "basis": "Matched canaries peaked below 45 GiB; training length does not change per-step host memory."
+    },
+    "pending_training_walltime": {
+      "jobs": ["30723981", "30723982", "30723983", "30723984", "30723998", "30723999", "30724000"],
+      "previous_limit": "24h",
+      "new_limit": "30h"
+    },
+    "running_jobs_retained": {
+      "jobs": ["30723979", "30723980"],
+      "note": "SLURM does not permit the submitting user to extend an active job's time limit; both retain their original 24h limit."
+    }
+  },
+  "held_until_qwen3_4b_passes": {
+    "qwen3_8b_training": ["30730378", "30730379", "30730380", "30730381", "30730382", "30730383"],
+    "llama3_1_8b_training": ["30730384", "30730385", "30730386", "30730387", "30730388", "30730389"],
+    "larger_base_endpoints": ["30724002", "30724003"]
+  },
+  "automatic_release": {
+    "job_id": "30806646",
+    "dependency": "afterok on all ten Qwen3-4B first-wave jobs",
+    "action": "release all held Qwen3-8B and Llama-3.1-8B Coin City jobs"
+  },
+  "verification": {
+    "running": ["30723979", "30723980", "30723981"],
+    "pending_qwen3_4b_jobs_are_eligible": true,
+    "larger_model_jobs_held": 14
+  },
+  "unchanged_invariants": [
+    "models and arms",
+    "training seeds",
+    "datasets and prompts",
+    "training examples and update counts",
+    "optimizer and learning rate",
+    "rollout and evaluation protocols",
+    "A6000 GPU requests"
+  ]
+}

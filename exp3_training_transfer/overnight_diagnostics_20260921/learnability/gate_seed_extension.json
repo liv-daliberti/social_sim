@@ -1,0 +1,19 @@
+{
+  "added_seeds": [
+    43,
+    44,
+    45
+  ],
+  "config_sha256": {
+    "forecast_lr2e5_s43": "c0bdb3f09806ab532e27d9d131bb8b115c0d16e5e744ebd94e12b4f684acdc33",
+    "forecast_lr2e5_s44": "b638d26091d6f0f8a654acc852c62c338eb180567e661d66a60bcfd89c65f7c6",
+    "forecast_lr2e5_s45": "79900a24d537654f3640734c3106dfd51a84d3db3e10d3f9e573d34642b1029e"
+  },
+  "extends": "conditional_supervised_learnability",
+  "frozen_at": "2026-09-23T02:58:18.008218+00:00",
+  "launch_forecast_sft": true,
+  "parent_data_sha256": "87d4315fe4526c1ac3d433a3981c75edff669457689a9fb810b6a470dab9ea5e",
+  "parent_gate_sha256": "b7f1f1fdc6fa0e86ad01edc771c203ff9dfda8003fbab70108c160050f6c7a7e",
+  "protocol": "conditional_supervised_learnability_seed_extension",
+  "reason": "The 2e-5 result is reported from one seed. These replications test whether it is seed-robust. No hyperparameter is changed and no evaluation result was used to choose them; the 1e-6 arm is not extended because it did not learn the task."
+}

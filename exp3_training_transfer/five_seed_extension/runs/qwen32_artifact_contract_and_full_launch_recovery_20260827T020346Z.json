@@ -1,0 +1,73 @@
+{
+  "compatibility_amendment": {
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_zero3_adapter_artifact_contract_compatibility_amendment_20260827T015821Z.json",
+    "sha256": "300c29576d4b29705809fefeaef530c6927a5bb0809da2a3a7842724e953ec87"
+  },
+  "completed_canary": {
+    "adapter_safetensors_sha256": "66478304f0d27ab047245cd46c02266c9bf0cec2227b48b83cdfd0e5250b9cdb",
+    "adapter_tensor_count": 896,
+    "development_parse_coverage_after_single_fence_normalization": 1.0,
+    "elapsed": "02:11:03",
+    "final_development_draws": 2560,
+    "final_development_evaluation_rows": 512,
+    "job_id": "30910721",
+    "state": "COMPLETED",
+    "training_rounds": 10
+  },
+  "failed_automatic_advance": {
+    "cause": "validator-only adapter filename and Markdown-fence contract mismatch",
+    "elapsed": "00:00:02",
+    "job_id": "30910722",
+    "state": "FAILED"
+  },
+  "five_seed_release": {
+    "combined_evaluation_dependency": "afterok:30913530:30913531:30913532:30894222:30894223",
+    "combined_evaluation_job_id": "30913560",
+    "dependencies_cleared_after_validated_full_submission": true,
+    "evaluation_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/five_seed_qwen32_evaluation_20260827T020258Z.json",
+    "evaluation_ledger_sha256": "4ef08442350acf69a8ff89420cbf89d7d842719af2b6cee57bac47af9d132d4c",
+    "obsolete_dynamic_scheduler_job_id": "30894368",
+    "obsolete_dynamic_scheduler_state": "CANCELLED",
+    "seed_jobs": {
+      "45": "30894222",
+      "46": "30894223"
+    }
+  },
+  "full_submission": {
+    "combined_finalizer_job_id": "30913543",
+    "completed_parent_evaluations_retained_as_inputs": [
+      "30870546",
+      "30870547",
+      "30870548"
+    ],
+    "ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_full_20260827T020056Z.json",
+    "ledger_sha256": "0c63a0bc003c922a41c1ee0671e9a49ca253b775dd59ef23fc9187f664f43b0d",
+    "locked_evaluation_job_id": "30913533",
+    "recovered_finalizer_dependency": "afterok:30913533",
+    "training_jobs": {
+      "42": "30913530",
+      "43": "30913531",
+      "44": "30913532"
+    }
+  },
+  "kind": "qwen32_artifact_contract_and_full_launch_recovery",
+  "recorded_at": "20260827T020346Z",
+  "runtime_compatibility": {
+    "behavior": "ZeRO-3 saves consolidated PEFT weights in both bin and safetensors formats",
+    "oat_deepspeed_sha256": "d1aa97a750b388ea74801150ebd5370160e46828ca58b2123c2beb226e4f9ff3"
+  },
+  "supersedes_recovery_ledger": "/n/fs/similarity/social_sim/exp3_training_transfer/five_seed_extension/runs/qwen32_reentrant_checkpoint_recovery_20260826T192712Z.json",
+  "supersedes_recovery_ledger_sha256": "be354bf92b95a17de2515618bbf59ca69014edc714a205cbaf443559b05e1590",
+  "superseding_registration": {
+    "path": "/n/fs/similarity/social_sim/exp3_training_transfer/polymarket/runs/exp4_qwen32_registration_20260827T015925Z.json",
+    "sha256": "a3f6b34158b2830e15b4d69a646dea388df9c452900d0d9a773fcb53c157aca5"
+  },
+  "validation": {
+    "adapter_reload": "896 tensor keys with identical shapes and dtypes",
+    "evaluation_data_changed": false,
+    "focused_tests": "14 passed",
+    "real_canary_validator": "pass",
+    "scientific_hyperparameters_changed": false,
+    "training_data_changed": false
+  }
+}

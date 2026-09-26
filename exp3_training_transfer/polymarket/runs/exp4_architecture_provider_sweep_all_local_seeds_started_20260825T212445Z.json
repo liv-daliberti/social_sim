@@ -1,0 +1,73 @@
+{
+  "recorded_at": "20260825T212445Z",
+  "protocol_version": "exp4_architecture_provider_sweep_v1",
+  "parent_execution_ledger": "exp3_training_transfer/polymarket/runs/exp4_architecture_provider_sweep_llama_canary_completion_20260825T211830Z.json",
+  "parent_execution_ledger_sha256": "0c21ee3db157c6a19ff345102fba090dcadc9f3fa1a2cde20b05653ce66b7a3a",
+  "scheduler": {
+    "account": "mltheory",
+    "partition": "all",
+    "excluded_nodes": [
+      "node206"
+    ],
+    "scientific_settings_changed": false
+  },
+  "qwen3_1_7b": {
+    "42": {
+      "job_id": "30890065",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:02:31-04:00",
+      "node": "node208",
+      "walltime": "08:00:00"
+    },
+    "43": {
+      "job_id": "30890108",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:02:35-04:00",
+      "node": "node208",
+      "walltime": "08:00:00"
+    },
+    "44": {
+      "job_id": "30890109",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:02:42-04:00",
+      "node": "node208",
+      "walltime": "08:00:00"
+    },
+    "evaluation": {
+      "job_id": "30890110",
+      "dependency": "afterok:30890065:30890108:30890109",
+      "walltime": "00:45:00"
+    }
+  },
+  "llama3_2_3b": {
+    "42": {
+      "job_id": "30890112",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:16:34-04:00",
+      "node": "node208",
+      "walltime": "10:00:00"
+    },
+    "43": {
+      "job_id": "30890113",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:18:23-04:00",
+      "node": "node208",
+      "walltime": "08:00:00"
+    },
+    "44": {
+      "job_id": "30890114",
+      "state": "RUNNING",
+      "start_time": "2026-08-25T17:21:38-04:00",
+      "node": "node207",
+      "walltime": "08:00:00"
+    },
+    "evaluation": {
+      "job_id": "30890115",
+      "dependency": "afterok:30890112:30890113:30890114",
+      "walltime": "00:45:00"
+    }
+  },
+  "hosted_development_calls_started": false,
+  "hosted_holdout_calls_started": false,
+  "status": "all_six_local_training_seeds_running"
+}

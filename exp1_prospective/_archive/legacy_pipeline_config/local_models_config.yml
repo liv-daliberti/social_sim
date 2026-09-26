@@ -1,0 +1,96 @@
+# Local model agent configuration (Step 2b)
+# Used by: agent/run_local_forecast.py, agent/local_updated_forecast.py
+#
+# Override any value via CLI flags; these are reference defaults.
+
+# ── Ollama serving ─────────────────────────────────────────────────────────────
+ollama_endpoint: http://localhost:11434/v1
+
+# ── Web search ────────────────────────────────────────────────────────────────
+web_search:
+  provider: auto               # "tavily" | "duckduckgo" | "auto"
+                               # auto = Tavily if TAVILY_API_KEY is set, else DDG
+  max_results: 5
+  max_chars_per_result: 800    # truncate each snippet to keep context manageable
+
+# ── JSON output ───────────────────────────────────────────────────────────────
+json_repair_attempts: 1        # extra prompt if final turn output fails to parse
+
+# ── Models ────────────────────────────────────────────────────────────────────
+# Pull with: ollama pull <model_id>
+models:
+  - model_id: qwen2.5:7b
+    display_name: qwen2.5-7b
+    context_window: 32768
+    max_tokens: 1500
+    temperature: 0.1
+    max_search_calls: 6        # cap on web_search calls per turn-loop pass
+    do_third_turn: true
+    k_runs: 3
+
+  - model_id: llama3.1:8b
+    display_name: llama3.1-8b
+    context_window: 131072
+    max_tokens: 1500
+    temperature: 0.1
+    max_search_calls: 6
+    do_third_turn: true
+    k_runs: 3
+
+  # ── Bigger models (Tier 1 — medium ~14B, RTX 3090 / A100) ──────────────────
+  - model_id: qwen2.5:14b
+    display_name: qwen2.5-14b
+    context_window: 131072
+    max_tokens: 1500
+    temperature: 0.1
+    max_search_calls: 6
+    do_third_turn: false
+    k_runs: 3
+
+  # ── Bigger models (Tier 2 — large ~32-70B, A100) ─────────────────────────
+  - model_id: qwen2.5:32b
+    display_name: qwen2.5-32b
+    context_window: 131072
+    max_tokens: 1500
+    temperature: 0.1
+    max_search_calls: 6
+    do_third_turn: false
+    k_runs: 3
+
+  - model_id: llama3.1:70b
+    display_name: llama3.1-70b
+    context_window: 131072
+    max_tokens: 1500
+    temperature: 0.1
+    max_search_calls: 6
+    do_third_turn: false
+    k_runs: 3
+
+  # ── Bigger models (Tier 3 — XL ~70-72B, A100) ────────────────────────────
+  - model_id: qwen2.5:72b
+    display_name: qwen2.5-72b
+    context_window: 131072
+    max_tokens: 1500
+    temperature: 0.1
+    max_search_calls: 6
+    do_third_turn: false
+    k_runs: 3
+
+  - model_id: llama3.3:70b
+    display_name: llama3.3-70b
+    context_window: 131072
+    max_tokens: 1500
+    temperature: 0.1
+    max_search_calls: 6
+    do_third_turn: false
+    k_runs: 3
+
+# ── Pilot recommendation ──────────────────────────────────────────────────────
+# First run: --n 5 --k 1 --no-third-turn  (fast sanity check on ~5 markets)
+# Full run:  --n 30 --k 3                 (sufficient for generalization claim)
+# Hardware:
+#   Tier 0 (7-8B):   ~5 GB VRAM (4-bit) — any RTX 2080 or CPU
+#   Tier 1 (11-14B): ~9 GB VRAM (4-bit) — RTX 3090, A5000, A6000
+#   Tier 2 (32-70B): ~20-43 GB VRAM (4-bit) — A6000 (48GB), A100 (80GB)
+#   Tier 3 (70-72B): ~43-44 GB VRAM (4-bit) — A6000 (48GB), A100 (80GB)
+# On node302 (A100 80GB) all tiers run on a single GPU.

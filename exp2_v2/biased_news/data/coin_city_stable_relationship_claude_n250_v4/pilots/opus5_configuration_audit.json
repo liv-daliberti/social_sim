@@ -1,0 +1,50 @@
+{
+  "configuration_selection_criterion": "Required-answer schema completion and deployment protocol only; forecast accuracy was not evaluated.",
+  "deployment_differences_from_opus_4_8": [
+    "Opus 5 rejects `temperature` as deprecated, so none is supplied. The Opus 4.8 run supplied none either, so the two runs match on this parameter.",
+    "Opus 5 returns an extended-thinking block ahead of its answer, so the reply is read from the first text block rather than from content[0]."
+  ],
+  "deployment_smoke_calls": {
+    "count": 1,
+    "experimental_task": false,
+    "purpose": "Confirm the Foundry Anthropic Messages deployment answers on the project endpoint."
+  },
+  "excluded_task_shaped_calls": {
+    "archived_configuration_pilot": 15,
+    "direct_unarchived_probes": 2,
+    "rejected_before_model_ran": 2,
+    "total_with_model_response": 17
+  },
+  "final_production_configuration": {
+    "effective_max_output_tokens": 4096,
+    "extended_thinking": "default",
+    "http_client_retries": 0,
+    "max_pre_model_transport_retries": 12,
+    "parallel_shards": 15,
+    "temperature_supplied": false
+  },
+  "model": "claude-opus-5",
+  "pilots": [
+    {
+      "attempts": 2,
+      "archive": null,
+      "parsed": 0,
+      "purpose": "Task-shaped probes supplying temperature; rejected with HTTP 400 before the model ran, so they produced no model response.",
+      "status": "rejected_parameter_probe"
+    },
+    {
+      "attempts": 2,
+      "archive": null,
+      "parsed": 2,
+      "purpose": "Confirm the Messages protocol returns the required JSON at 512- and 4,096-token ceilings.",
+      "status": "completed_probe"
+    },
+    {
+      "archive": "opus5_thinking_max4096_20260811",
+      "attempts": 15,
+      "parsed": 15,
+      "status": "completed_configuration_pilot"
+    }
+  ],
+  "production_configuration_changed_after_pilot": false
+}

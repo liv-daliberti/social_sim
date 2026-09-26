@@ -1,0 +1,20 @@
+% Experiment 3 — the headline result figure: family vs structureless control on the held-out worlds.
+% GENERATED: paper/figures/exp3_transfer_curves.pdf from the OAT eval dumps by
+% exp3_training_transfer/dag_family/plot_transfer_curves.py (references recomputed on the identical
+% episodes, at the dumps' own probe horizon). Regenerate with:  python3 plot_transfer_curves.py
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/exp3_transfer_curves.pdf}
+\caption{\textbf{Transfer to held-out worlds, against a structureless control.} Qwen3-4B trained with
+Dr.\ GRPO on the $8$ training structures (teal) and, identically, on \emph{structureless} data whose
+displayed news is independent of the polls (amber); both are evaluated on the same four held-out
+worlds. All three Experiment-2 axes are read together: next-poll error $\pi$, recovery error
+$\varepsilon=\overline{|\hat g-g|}$, and informativeness $\rho(\hat g,g)$. Reference lines are computed
+on the \emph{identical} episodes at each world's $h^\star$. The three metrics must be read jointly. Guessing the prior mean gives low
+$\varepsilon$ ($\varepsilon{=}.25$, $\rho{\approx}0$), and a good constant gives low $\pi$.
+Latent inference requires both calibration and informativeness. The structureless control can learn output format, level tracking, and
+news-suppression but no news$\to$poll structure. Separation shows whether training used forecast structure; it does not by
+itself establish per-city gain inference. Curves use all three paired seeds through the completed
+300-step endpoint.}
+\label{fig:exp3-curves}
+\end{figure*}

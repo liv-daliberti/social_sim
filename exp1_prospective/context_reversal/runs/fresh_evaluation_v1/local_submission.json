@@ -1,0 +1,193 @@
+{
+  "freeze": {
+    "path": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+    "sha256": "941402255c608932a6bf236f84df631da313446f3288e6d2f930555afadc841d"
+  },
+  "created_at": "2026-09-22T15:54:57.547494+00:00",
+  "shards": {
+    "0": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-0",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair00_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair00_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "0"
+      ],
+      "job_id": "31460680",
+      "stderr": "",
+      "returncode": 0
+    },
+    "1": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-1",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair01_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair01_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "1"
+      ],
+      "job_id": "31460681",
+      "stderr": "",
+      "returncode": 0
+    },
+    "2": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-2",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair02_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair02_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "2"
+      ],
+      "job_id": "31460682",
+      "stderr": "",
+      "returncode": 0
+    },
+    "3": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-3",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair03_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair03_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "3"
+      ],
+      "job_id": "31460683",
+      "stderr": "",
+      "returncode": 0
+    },
+    "4": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-4",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair04_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair04_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "4"
+      ],
+      "job_id": "31460684",
+      "stderr": "",
+      "returncode": 0
+    },
+    "5": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-5",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair05_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair05_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "5"
+      ],
+      "job_id": "31460685",
+      "stderr": "",
+      "returncode": 0
+    },
+    "6": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-6",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair06_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair06_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "6"
+      ],
+      "job_id": "31460686",
+      "stderr": "",
+      "returncode": 0
+    },
+    "7": {
+      "status": "submitted",
+      "command": [
+        "sbatch",
+        "--parsable",
+        "--partition=all",
+        "--gres=gpu:a6000:2",
+        "--mem=120G",
+        "--time=01:00:00",
+        "--job-name=fresh-pair-7",
+        "--output=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair07_%j.out",
+        "--error=/n/fs/similarity/social_sim/exp1_prospective/context_reversal/logs/fresh_evaluation_v1/pair07_%j.err",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/fresh/run.sbatch",
+        "exp1_prospective.context_reversal.fresh.run_pair",
+        "--freeze",
+        "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/data/fresh_evaluation_v1/frozen_v1/local_freeze.json",
+        "--shard",
+        "7"
+      ],
+      "job_id": "31460687",
+      "stderr": "",
+      "returncode": 0
+    }
+  }
+}

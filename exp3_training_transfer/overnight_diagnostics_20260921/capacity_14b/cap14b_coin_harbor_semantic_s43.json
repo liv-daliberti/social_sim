@@ -1,0 +1,33 @@
+{
+  "batch_size": 16,
+  "cell": "coin_harbor_semantic",
+  "comparison": "native-cell recipe held fixed; only the model scale differs from the Qwen3-8B native runs",
+  "data": "/n/fs/similarity/social_sim/exp3_training_transfer/overnight_diagnostics_20260921/native_cells/train_coin_harbor_semantic.jsonl",
+  "data_sha256": "8716f54858bd3fbbe1fa4ca68244991b1fb689eb0ae0a0bae76202b7cb60a2ab",
+  "domain": "coin_harbor",
+  "epochs": 1,
+  "label_kind": "semantic",
+  "learning_rate": 2e-05,
+  "lora_alpha": 64,
+  "lora_rank": 32,
+  "loss": "completion_only_per_sequence_mean",
+  "max_grad_norm": 1.0,
+  "max_length": 3072,
+  "model": "/n/fs/similarity/social_sim/.runtime/hf_home/hub/models--Qwen--Qwen3-14B/snapshots/40c069824f4251a91eefaf281ebe4c544efd3e18",
+  "name": "cap14b_coin_harbor_semantic_s43",
+  "protocol": "capacity_14b_supervised_v1",
+  "scheduler": "constant",
+  "seed": 43,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "down_proj",
+    "up_proj",
+    "gate_proj"
+  ],
+  "template": "auto_no_think",
+  "train_seed_base": 63000000,
+  "unique_prompts": 4800
+}

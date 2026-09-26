@@ -1,0 +1,40 @@
+{
+  "adapter": {
+    "path": "exp3_training_transfer/polymarket/scripts/evaluate_hosted_scale_holdout_liv.py",
+    "sha256": "d36d5c1203fd68b049f3e4a606c4d4e5f8254c89cc50a215f0e330883b9f157c"
+  },
+  "authorization": {
+    "development_canary": {
+      "models": [
+        "gpt-5.6-sol",
+        "claude-opus-4-8"
+      ],
+      "prompts_per_model": 2
+    },
+    "holdout": {
+      "condition": "launch_only_after_that_model_passes_its_two_prompt_development_canary",
+      "draws": 5,
+      "models": [
+        "gpt-5.6-sol",
+        "claude-opus-4-8"
+      ],
+      "responses_per_model": 1590,
+      "tasks_per_draw": 318
+    },
+    "source": "explicit user authorization in conversation"
+  },
+  "base_runner": {
+    "path": "exp3_training_transfer/polymarket/scripts/evaluate_hosted_scale_holdout.py",
+    "sha256": "2ff0eb21018f52526bba1e5979e642dfc00961ae9a66c737a3544427a0e461cf",
+    "status": "frozen_while_kimi_holdout_runs"
+  },
+  "created_at": "2026-08-25T23:02:13Z",
+  "destination": {
+    "anthropic_endpoint": "https://liv.services.ai.azure.com/anthropic",
+    "credential_env": "LIV_AZURE_API_KEY",
+    "openai_endpoint": "https://liv.services.ai.azure.com/openai/v1"
+  },
+  "protocol_sha256": "87bdbcb19f5fc6fc138ea1bdc1ed5c27c811c981c504adff0a4dbd7e14e749dd",
+  "registration_sha256": "700f152192b4822a6cb6b7bf820812fdc219a1812036fca40e253bd1700b49bd",
+  "status": "authorized_before_model_calls"
+}

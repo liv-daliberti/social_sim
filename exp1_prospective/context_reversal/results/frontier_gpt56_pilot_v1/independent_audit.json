@@ -1,0 +1,725 @@
+{
+  "all_checks_passed": true,
+  "artifacts": {
+    "manifest": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/frontier_gpt56_pilot_v1/gpt_5_6_frontier.jsonl.manifest.json",
+    "plan": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/runs/frontier_gpt56_pilot_v1/plan.jsonl",
+    "responses": "/n/fs/similarity/social_sim/exp1_prospective/context_reversal/responses/frontier_gpt56_pilot_v1/gpt_5_6_frontier.jsonl"
+  },
+  "audit_method": "Independent parsing, hashes, arithmetic and NumPy family bootstrap; no runner/analyzer imports or network",
+  "audit_policy": "All original materials, labels, families, and planned denominators retained. Ambiguity notes are post hoc descriptive caveats, not exclusions.",
+  "audit_status": "passed",
+  "broken_stability": {
+    "drift_adjusted": {
+      "absolute_ci95_pp": [
+        0.0,
+        1.4999999999999996
+      ],
+      "absolute_movement_bounded": true,
+      "criterion_met": true,
+      "mean_absolute_pp": 0.4999999999999999,
+      "mean_pp": -0.4999999999999999,
+      "n": 20,
+      "nonzero": 1,
+      "signed_ci90_pp": [
+        -1.4999999999999996,
+        0.0
+      ],
+      "signed_ci95_pp": [
+        -1.4999999999999996,
+        0.0
+      ],
+      "signed_mean_equivalent": true
+    },
+    "new_news": {
+      "absolute_ci95_pp": [
+        0.0,
+        1.4999999999999996
+      ],
+      "absolute_movement_bounded": true,
+      "criterion_met": true,
+      "mean_absolute_pp": 0.4999999999999999,
+      "mean_pp": -0.4999999999999999,
+      "n": 20,
+      "nonzero": 1,
+      "signed_ci90_pp": [
+        -1.4999999999999996,
+        0.0
+      ],
+      "signed_ci95_pp": [
+        -1.4999999999999996,
+        0.0
+      ],
+      "signed_mean_equivalent": true
+    }
+  },
+  "checks_passed": 2902,
+  "cost_usd": 0.712128,
+  "coverage": {
+    "contexts": 4,
+    "families": 20,
+    "invalid": 0,
+    "missing": 0,
+    "records": 320,
+    "repeats": 1,
+    "units": 80
+  },
+  "direction": {
+    "drift_adjusted": {
+      "failed_negative_families": [
+        "dev_07",
+        "dev_18"
+      ],
+      "failed_pair_families": [
+        "dev_07",
+        "dev_10",
+        "dev_18"
+      ],
+      "failed_positive_families": [
+        "dev_10"
+      ],
+      "negative_planned": 20,
+      "negative_success": 18,
+      "paired_ci95": [
+        0.7,
+        1.0
+      ],
+      "paired_planned": 20,
+      "paired_success": 17,
+      "pooled_ci95": [
+        0.85,
+        1.0
+      ],
+      "pooled_planned": 40,
+      "pooled_success": 37,
+      "positive_minus_negative": {
+        "absolute_ci95_pp": [
+          15.698749999999999,
+          24.351249999999993
+        ],
+        "mean_absolute_pp": 20.1,
+        "mean_pp": 19.8,
+        "n": 20,
+        "nonzero": 20,
+        "signed_ci90_pp": [
+          15.797500000000001,
+          23.6
+        ],
+        "signed_ci95_pp": [
+          15.098749999999999,
+          24.15
+        ]
+      },
+      "positive_planned": 20,
+      "positive_success": 19
+    },
+    "raw": {
+      "failed_negative_families": [
+        "dev_07",
+        "dev_18"
+      ],
+      "failed_pair_families": [
+        "dev_07",
+        "dev_10",
+        "dev_18"
+      ],
+      "failed_positive_families": [
+        "dev_10"
+      ],
+      "negative_planned": 20,
+      "negative_success": 18,
+      "paired_ci95": [
+        0.7,
+        1.0
+      ],
+      "paired_planned": 20,
+      "paired_success": 17,
+      "pooled_ci95": [
+        0.85,
+        1.0
+      ],
+      "pooled_planned": 40,
+      "pooled_success": 37,
+      "positive_minus_negative": {
+        "absolute_ci95_pp": [
+          15.698749999999999,
+          24.351249999999993
+        ],
+        "mean_absolute_pp": 20.1,
+        "mean_pp": 19.8,
+        "n": 20,
+        "nonzero": 20,
+        "signed_ci90_pp": [
+          15.797500000000001,
+          23.6
+        ],
+        "signed_ci95_pp": [
+          15.098749999999999,
+          24.15
+        ]
+      },
+      "positive_planned": 20,
+      "positive_success": 19
+    }
+  },
+  "directional_endpoint_blocks": [],
+  "family_new_news_pp": {
+    "dev_01": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -7.9999999999999964,
+      "positive": 7.000000000000006
+    },
+    "dev_02": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -20.0,
+      "positive": 15.000000000000002
+    },
+    "dev_03": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -17.0,
+      "positive": 16.000000000000004
+    },
+    "dev_04": {
+      "broken": 0.0,
+      "masked": -15.000000000000002,
+      "negative": -10.999999999999998,
+      "positive": 14.000000000000002
+    },
+    "dev_05": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -8.000000000000002,
+      "positive": 5.000000000000004
+    },
+    "dev_06": {
+      "broken": 0.0,
+      "masked": -15.000000000000002,
+      "negative": -18.0,
+      "positive": 9.999999999999998
+    },
+    "dev_07": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": 6.000000000000005,
+      "positive": 6.999999999999995
+    },
+    "dev_08": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -15.000000000000002,
+      "positive": 15.000000000000002
+    },
+    "dev_09": {
+      "broken": 0.0,
+      "masked": 6.000000000000005,
+      "negative": -12.0,
+      "positive": 15.000000000000002
+    },
+    "dev_10": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -20.0,
+      "positive": -15.000000000000002
+    },
+    "dev_11": {
+      "broken": 0.0,
+      "masked": 8.999999999999996,
+      "negative": -6.0,
+      "positive": 9.999999999999998
+    },
+    "dev_12": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -9.999999999999998,
+      "positive": 10.000000000000004
+    },
+    "dev_13": {
+      "broken": 0.0,
+      "masked": 6.999999999999995,
+      "negative": -8.000000000000002,
+      "positive": 9.999999999999998
+    },
+    "dev_14": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -9.999999999999998,
+      "positive": 12.0
+    },
+    "dev_15": {
+      "broken": 0.0,
+      "masked": 9.999999999999998,
+      "negative": -1.9999999999999962,
+      "positive": 3.0000000000000027
+    },
+    "dev_16": {
+      "broken": -9.999999999999998,
+      "masked": -8.000000000000002,
+      "negative": -13.0,
+      "positive": 15.000000000000002
+    },
+    "dev_17": {
+      "broken": 0.0,
+      "masked": 0.0,
+      "negative": -9.999999999999998,
+      "positive": 10.000000000000009
+    },
+    "dev_18": {
+      "broken": 0.0,
+      "masked": -9.999999999999998,
+      "negative": 12.999999999999995,
+      "positive": 9.999999999999998
+    },
+    "dev_19": {
+      "broken": 0.0,
+      "masked": 15.000000000000002,
+      "negative": -20.0,
+      "positive": 12.0
+    },
+    "dev_20": {
+      "broken": 0.0,
+      "masked": -8.000000000000002,
+      "negative": -15.000000000000002,
+      "positive": 10.999999999999998
+    }
+  },
+  "limitations": [
+    "Authored, unvalidated development materials.",
+    "One frontier repeat; inference settings differ from local pilot.",
+    "Cost is an estimate from recorded token usage and frozen published prices."
+  ],
+  "material_ambiguity_notes": [
+    {
+      "context_id": "negative",
+      "family_id": "dev_07",
+      "observation": "Canal carries water from usable storage; destination is unspecified. This could be read as flow through turbines, so the authored negative label depends on a material interpretation."
+    },
+    {
+      "context_id": "positive",
+      "family_id": "dev_10",
+      "observation": "Conveyor carries resin out of hopper A; destination is unspecified, as in dev_06. Delivery to the moulding line is a possible reading, so the authored positive label depends on a material interpretation."
+    },
+    {
+      "context_id": "negative",
+      "family_id": "dev_18",
+      "observation": "Pump carries suspended silt from Cedar basin; destination is unspecified. Downstream movement toward filters is a possible reading, so the authored negative label depends on a material interpretation."
+    }
+  ],
+  "movements": {
+    "broken": {
+      "drift_adjusted": {
+        "absolute_ci95_pp": [
+          0.0,
+          1.4999999999999996
+        ],
+        "mean_absolute_pp": 0.4999999999999999,
+        "mean_pp": -0.4999999999999999,
+        "n": 20,
+        "nonzero": 1,
+        "signed_ci90_pp": [
+          -1.4999999999999996,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          -1.4999999999999996,
+          0.0
+        ]
+      },
+      "new_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          1.4999999999999996
+        ],
+        "mean_absolute_pp": 0.4999999999999999,
+        "mean_pp": -0.4999999999999999,
+        "n": 20,
+        "nonzero": 1,
+        "signed_ci90_pp": [
+          -1.4999999999999996,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          -1.4999999999999996,
+          0.0
+        ]
+      },
+      "no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_minus_no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "masked": {
+      "drift_adjusted": {
+        "absolute_ci95_pp": [
+          2.7487499999999994,
+          7.7
+        ],
+        "mean_absolute_pp": 5.15,
+        "mean_pp": -0.45000000000000034,
+        "n": 20,
+        "nonzero": 10,
+        "signed_ci90_pp": [
+          -3.250000000000001,
+          2.2500000000000004
+        ],
+        "signed_ci95_pp": [
+          -3.651250000000001,
+          2.8
+        ]
+      },
+      "new_news": {
+        "absolute_ci95_pp": [
+          2.7487499999999994,
+          7.7
+        ],
+        "mean_absolute_pp": 5.15,
+        "mean_pp": -0.45000000000000034,
+        "n": 20,
+        "nonzero": 10,
+        "signed_ci90_pp": [
+          -3.250000000000001,
+          2.2500000000000004
+        ],
+        "signed_ci95_pp": [
+          -3.651250000000001,
+          2.8
+        ]
+      },
+      "no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_minus_no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "negative": {
+      "drift_adjusted": {
+        "absolute_ci95_pp": [
+          9.9,
+          14.3
+        ],
+        "mean_absolute_pp": 12.1,
+        "mean_pp": -10.2,
+        "n": 20,
+        "nonzero": 20,
+        "signed_ci90_pp": [
+          -13.05,
+          -7.047500000000001
+        ],
+        "signed_ci95_pp": [
+          -13.5,
+          -6.398750000000007
+        ]
+      },
+      "new_news": {
+        "absolute_ci95_pp": [
+          9.9,
+          14.3
+        ],
+        "mean_absolute_pp": 12.1,
+        "mean_pp": -10.2,
+        "n": 20,
+        "nonzero": 20,
+        "signed_ci90_pp": [
+          -13.05,
+          -7.047500000000001
+        ],
+        "signed_ci95_pp": [
+          -13.5,
+          -6.398750000000007
+        ]
+      },
+      "no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_minus_no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "positive": {
+      "drift_adjusted": {
+        "absolute_ci95_pp": [
+          9.55,
+          12.6
+        ],
+        "mean_absolute_pp": 11.100000000000001,
+        "mean_pp": 9.6,
+        "n": 20,
+        "nonzero": 20,
+        "signed_ci90_pp": [
+          7.0975,
+          11.750000000000002
+        ],
+        "signed_ci95_pp": [
+          6.500000000000002,
+          12.1
+        ]
+      },
+      "new_news": {
+        "absolute_ci95_pp": [
+          9.55,
+          12.6
+        ],
+        "mean_absolute_pp": 11.100000000000001,
+        "mean_pp": 9.6,
+        "n": 20,
+        "nonzero": 20,
+        "signed_ci90_pp": [
+          7.0975,
+          11.750000000000002
+        ],
+        "signed_ci95_pp": [
+          6.500000000000002,
+          12.1
+        ]
+      },
+      "no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_minus_no_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "repeated_news": {
+        "absolute_ci95_pp": [
+          0.0,
+          0.0
+        ],
+        "mean_absolute_pp": 0.0,
+        "mean_pp": 0.0,
+        "n": 20,
+        "nonzero": 0,
+        "signed_ci90_pp": [
+          0.0,
+          0.0
+        ],
+        "signed_ci95_pp": [
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "nonzero_broken_updates": [
+    {
+      "baseline": 0.3,
+      "change_pp": -9.999999999999998,
+      "family_id": "dev_16",
+      "new_news": 0.2
+    }
+  ],
+  "retained_direction_failures": [
+    {
+      "baseline": 0.62,
+      "change_pp": 6.000000000000005,
+      "context_id": "negative",
+      "family_id": "dev_07",
+      "new_news": 0.68
+    },
+    {
+      "baseline": 0.5,
+      "change_pp": -15.000000000000002,
+      "context_id": "positive",
+      "family_id": "dev_10",
+      "new_news": 0.35
+    },
+    {
+      "baseline": 0.45,
+      "change_pp": 12.999999999999995,
+      "context_id": "negative",
+      "family_id": "dev_18",
+      "new_news": 0.58
+    }
+  ],
+  "returned_models": {
+    "gpt-5.6-sol": 320
+  },
+  "sha256": {
+    "manifest": "bcf826ab6b5a9b665adfd75c9ac985985797bf0d3fdc1084954a7fec813bd928",
+    "plan": "8369c12fe4b8e802e05edb86ecee19024af5f3ab19eda442eb9d9cf7ac67b41b",
+    "responses": "eda98732ec765d385461da5501582b68012b14ba1b4d4353f9c07c1325a5e181"
+  },
+  "usage_totals": {
+    "cached_input_tokens": 0,
+    "input_tokens": 101072,
+    "output_tokens": 15392,
+    "reasoning_tokens": 9976,
+    "total_tokens": 116464
+  }
+}

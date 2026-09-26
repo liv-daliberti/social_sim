@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evaluation.schema.json",
+  "title": "Indirect-intervention model evaluation record",
+  "type": "object",
+  "required": ["protocol_version", "model", "market_id", "candidate_id", "condition", "initial_yes_prob"],
+  "properties": {
+    "protocol_version": {"type": "string"},
+    "model": {"type": "string"},
+    "market_id": {"type": "string"},
+    "candidate_id": {"type": "string"},
+    "condition": {"enum": ["positive", "negative", "broken", "masked", "direct_pro", "direct_anti", "orthogonal", "literal_null"]},
+    "initial_yes_prob": {"type": "number", "minimum": 0, "maximum": 1},
+    "updated_yes_prob": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "parse_valid": {"type": "boolean"},
+    "raw_response_path": {"type": ["string", "null"]}
+  }
+}

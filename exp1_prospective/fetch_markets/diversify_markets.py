@@ -18,7 +18,7 @@ import argparse
 import json
 import re
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -203,7 +203,7 @@ def main() -> None:
           f"median {sorted(dtds)[len(dtds)//2]:.0f}  "
           f"max {max(dtds):.0f}")
 
-    print(f"\nFull list:")
+    print("\nFull list:")
     for i, r in enumerate(chosen, 1):
         vol = r.get("volume_usd") or 0.0
         yp  = r.get("yes_price") or 0.0
@@ -212,7 +212,7 @@ def main() -> None:
         print(f"  {i:>3}. [{yp:.2f}] ${vol:>10,.0f}  {dtd:>4.0f}d  [{b}]  {r['question'][:65]}")
 
     if args.dry_run:
-        print(f"\n--dry-run: skipping write")
+        print("\n--dry-run: skipping write")
         return
 
     fetch_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")

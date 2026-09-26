@@ -1,0 +1,14 @@
+% Completed standalone direction diagnostic; all 720 planned outputs valid.
+% Source direction_summary.json SHA256 a03e18fc41caeacbcd9a788f2d674e52c83740fc906c82f08dfb4e199dc1f1f6
+% qwen2_5_72b_instruct summary SHA256 17230882d937eff8761a9312ee04cd02b1d178a0266ac94357ec2c5e7586e07e
+% llama3_1_70b_instruct summary SHA256 7cabea59ce93f0c0dc906e1c190ed27f2493d496ee4f65c59f76c41e2660147a
+% qwen3_32b summary SHA256 3bd671cb3f6c1918d555a9d3a5aaa3876811b36eaf53f6da7d3951f65e447b1c
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Model & \shortstack{Correct\\sign} & \shortstack{Paired\\reversal} & \shortstack{Broken\\unchanged} & \shortstack{Controls\\unchanged} \\
+\midrule
+Qwen2.5-72B & 25/40 & 6/20 & 6/20 & 150/160 \\
+Llama-3.1-70B & 31/40 & 11/20 & 7/20 & 155/160 \\
+Qwen3-32B & 28/40 & 9/20 & 2/20 & 150/160 \\
+\bottomrule
+\end{tabular}
